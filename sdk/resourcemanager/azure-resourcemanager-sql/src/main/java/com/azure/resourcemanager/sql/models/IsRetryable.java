@@ -7,15 +7,23 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Gets whether the error could be ignored and recommended action could be retried. Possible values are: Yes/No. */
+/**
+ * Gets whether the error could be ignored and recommended action could be retried. Possible values are: Yes/No.
+ */
 public enum IsRetryable {
-    /** Enum value Yes. */
+    /**
+     * Enum value Yes.
+     */
     YES("Yes"),
 
-    /** Enum value No. */
+    /**
+     * Enum value No.
+     */
     NO("No");
 
-    /** The actual serialized value for a IsRetryable instance. */
+    /**
+     * The actual serialized value for a IsRetryable instance.
+     */
     private final String value;
 
     IsRetryable(String value) {
@@ -24,7 +32,7 @@ public enum IsRetryable {
 
     /**
      * Parses a serialized value to a IsRetryable instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed IsRetryable object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum IsRetryable {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

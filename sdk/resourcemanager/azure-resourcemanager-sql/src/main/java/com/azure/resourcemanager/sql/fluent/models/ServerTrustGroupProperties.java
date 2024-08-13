@@ -11,7 +11,9 @@ import com.azure.resourcemanager.sql.models.ServerTrustGroupPropertiesTrustScope
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a server trust group. */
+/**
+ * Properties of a server trust group.
+ */
 @Fluent
 public final class ServerTrustGroupProperties {
     /*
@@ -26,13 +28,15 @@ public final class ServerTrustGroupProperties {
     @JsonProperty(value = "trustScopes", required = true)
     private List<ServerTrustGroupPropertiesTrustScopesItem> trustScopes;
 
-    /** Creates an instance of ServerTrustGroupProperties class. */
+    /**
+     * Creates an instance of ServerTrustGroupProperties class.
+     */
     public ServerTrustGroupProperties() {
     }
 
     /**
      * Get the groupMembers property: Group members information for the server trust group.
-     *
+     * 
      * @return the groupMembers value.
      */
     public List<ServerInfo> groupMembers() {
@@ -41,7 +45,7 @@ public final class ServerTrustGroupProperties {
 
     /**
      * Set the groupMembers property: Group members information for the server trust group.
-     *
+     * 
      * @param groupMembers the groupMembers value to set.
      * @return the ServerTrustGroupProperties object itself.
      */
@@ -52,7 +56,7 @@ public final class ServerTrustGroupProperties {
 
     /**
      * Get the trustScopes property: Trust scope of the server trust group.
-     *
+     * 
      * @return the trustScopes value.
      */
     public List<ServerTrustGroupPropertiesTrustScopesItem> trustScopes() {
@@ -61,7 +65,7 @@ public final class ServerTrustGroupProperties {
 
     /**
      * Set the trustScopes property: Trust scope of the server trust group.
-     *
+     * 
      * @param trustScopes the trustScopes value to set.
      * @return the ServerTrustGroupProperties object itself.
      */
@@ -72,23 +76,21 @@ public final class ServerTrustGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (groupMembers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groupMembers in model ServerTrustGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property groupMembers in model ServerTrustGroupProperties"));
         } else {
             groupMembers().forEach(e -> e.validate());
         }
         if (trustScopes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property trustScopes in model ServerTrustGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trustScopes in model ServerTrustGroupProperties"));
         }
     }
 

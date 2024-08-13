@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.fluent.models.CopyLongTermRetentionBackupParametersProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the information necessary to perform long term retention backup copy operation. */
+/**
+ * Contains the information necessary to perform long term retention backup copy operation.
+ */
 @Fluent
 public final class CopyLongTermRetentionBackupParameters {
     /*
@@ -17,13 +19,15 @@ public final class CopyLongTermRetentionBackupParameters {
     @JsonProperty(value = "properties")
     private CopyLongTermRetentionBackupParametersProperties innerProperties;
 
-    /** Creates an instance of CopyLongTermRetentionBackupParameters class. */
+    /**
+     * Creates an instance of CopyLongTermRetentionBackupParameters class.
+     */
     public CopyLongTermRetentionBackupParameters() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CopyLongTermRetentionBackupParametersProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Get the targetSubscriptionId property: The subscription that owns the target server.
-     *
+     * 
      * @return the targetSubscriptionId value.
      */
     public String targetSubscriptionId() {
@@ -41,7 +45,7 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Set the targetSubscriptionId property: The subscription that owns the target server.
-     *
+     * 
      * @param targetSubscriptionId the targetSubscriptionId value to set.
      * @return the CopyLongTermRetentionBackupParameters object itself.
      */
@@ -55,7 +59,7 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Get the targetResourceGroup property: The resource group that owns the target server.
-     *
+     * 
      * @return the targetResourceGroup value.
      */
     public String targetResourceGroup() {
@@ -64,7 +68,7 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Set the targetResourceGroup property: The resource group that owns the target server.
-     *
+     * 
      * @param targetResourceGroup the targetResourceGroup value to set.
      * @return the CopyLongTermRetentionBackupParameters object itself.
      */
@@ -78,7 +82,7 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Get the targetServerResourceId property: The resource Id of the target server that owns the database.
-     *
+     * 
      * @return the targetServerResourceId value.
      */
     public String targetServerResourceId() {
@@ -87,7 +91,7 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Set the targetServerResourceId property: The resource Id of the target server that owns the database.
-     *
+     * 
      * @param targetServerResourceId the targetServerResourceId value to set.
      * @return the CopyLongTermRetentionBackupParameters object itself.
      */
@@ -101,7 +105,7 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Get the targetServerFullyQualifiedDomainName property: The fully qualified domain name of the target server.
-     *
+     * 
      * @return the targetServerFullyQualifiedDomainName value.
      */
     public String targetServerFullyQualifiedDomainName() {
@@ -110,12 +114,12 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Set the targetServerFullyQualifiedDomainName property: The fully qualified domain name of the target server.
-     *
+     * 
      * @param targetServerFullyQualifiedDomainName the targetServerFullyQualifiedDomainName value to set.
      * @return the CopyLongTermRetentionBackupParameters object itself.
      */
-    public CopyLongTermRetentionBackupParameters withTargetServerFullyQualifiedDomainName(
-        String targetServerFullyQualifiedDomainName) {
+    public CopyLongTermRetentionBackupParameters
+        withTargetServerFullyQualifiedDomainName(String targetServerFullyQualifiedDomainName) {
         if (this.innerProperties() == null) {
             this.innerProperties = new CopyLongTermRetentionBackupParametersProperties();
         }
@@ -125,7 +129,7 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Get the targetDatabaseName property: The name of the database owns the copied backup.
-     *
+     * 
      * @return the targetDatabaseName value.
      */
     public String targetDatabaseName() {
@@ -134,7 +138,7 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Set the targetDatabaseName property: The name of the database owns the copied backup.
-     *
+     * 
      * @param targetDatabaseName the targetDatabaseName value to set.
      * @return the CopyLongTermRetentionBackupParameters object itself.
      */
@@ -148,7 +152,7 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Get the targetBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @return the targetBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy targetBackupStorageRedundancy() {
@@ -157,12 +161,12 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Set the targetBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @param targetBackupStorageRedundancy the targetBackupStorageRedundancy value to set.
      * @return the CopyLongTermRetentionBackupParameters object itself.
      */
-    public CopyLongTermRetentionBackupParameters withTargetBackupStorageRedundancy(
-        BackupStorageRedundancy targetBackupStorageRedundancy) {
+    public CopyLongTermRetentionBackupParameters
+        withTargetBackupStorageRedundancy(BackupStorageRedundancy targetBackupStorageRedundancy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new CopyLongTermRetentionBackupParametersProperties();
         }
@@ -172,7 +176,7 @@ public final class CopyLongTermRetentionBackupParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

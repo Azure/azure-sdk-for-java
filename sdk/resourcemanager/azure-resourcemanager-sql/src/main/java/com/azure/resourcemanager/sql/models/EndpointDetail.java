@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A domain name that the managed instance service needs to communicate with, along with additional details. */
+/**
+ * A domain name that the managed instance service needs to communicate with, along with additional details.
+ */
 @Immutable
 public final class EndpointDetail {
     /*
@@ -16,13 +18,15 @@ public final class EndpointDetail {
     @JsonProperty(value = "port", access = JsonProperty.Access.WRITE_ONLY)
     private Integer port;
 
-    /** Creates an instance of EndpointDetail class. */
+    /**
+     * Creates an instance of EndpointDetail class.
+     */
     public EndpointDetail() {
     }
 
     /**
      * Get the port property: The port an endpoint is connected to.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -31,7 +35,7 @@ public final class EndpointDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

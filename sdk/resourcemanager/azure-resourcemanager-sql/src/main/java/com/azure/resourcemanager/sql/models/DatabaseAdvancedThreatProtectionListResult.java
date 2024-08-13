@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.DatabaseAdvancedThreatProtect
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of the database's Advanced Threat Protection configurations. */
+/**
+ * A list of the database's Advanced Threat Protection configurations.
+ */
 @Immutable
 public final class DatabaseAdvancedThreatProtectionListResult {
     /*
@@ -24,13 +26,15 @@ public final class DatabaseAdvancedThreatProtectionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DatabaseAdvancedThreatProtectionListResult class. */
+    /**
+     * Creates an instance of DatabaseAdvancedThreatProtectionListResult class.
+     */
     public DatabaseAdvancedThreatProtectionListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<DatabaseAdvancedThreatProtectionInner> value() {
@@ -39,7 +43,7 @@ public final class DatabaseAdvancedThreatProtectionListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class DatabaseAdvancedThreatProtectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

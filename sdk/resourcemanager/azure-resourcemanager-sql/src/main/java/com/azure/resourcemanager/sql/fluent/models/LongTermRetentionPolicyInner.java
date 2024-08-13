@@ -6,33 +6,84 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.sql.models.BackupStorageAccessTier;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A long term retention policy. */
+/**
+ * A long term retention policy.
+ */
 @Fluent
 public final class LongTermRetentionPolicyInner extends ProxyResource {
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
-    private BaseLongTermRetentionPolicyProperties innerProperties;
+    private LongTermRetentionPolicyProperties innerProperties;
 
-    /** Creates an instance of LongTermRetentionPolicyInner class. */
+    /**
+     * Creates an instance of LongTermRetentionPolicyInner class.
+     */
     public LongTermRetentionPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
-    private BaseLongTermRetentionPolicyProperties innerProperties() {
+    private LongTermRetentionPolicyProperties innerProperties() {
         return this.innerProperties;
     }
 
     /**
+     * Get the makeBackupsImmutable property: The setting whether to make LTR backups immutable.
+     * 
+     * @return the makeBackupsImmutable value.
+     */
+    public Boolean makeBackupsImmutable() {
+        return this.innerProperties() == null ? null : this.innerProperties().makeBackupsImmutable();
+    }
+
+    /**
+     * Set the makeBackupsImmutable property: The setting whether to make LTR backups immutable.
+     * 
+     * @param makeBackupsImmutable the makeBackupsImmutable value to set.
+     * @return the LongTermRetentionPolicyInner object itself.
+     */
+    public LongTermRetentionPolicyInner withMakeBackupsImmutable(Boolean makeBackupsImmutable) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LongTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withMakeBackupsImmutable(makeBackupsImmutable);
+        return this;
+    }
+
+    /**
+     * Get the backupStorageAccessTier property: The BackupStorageAccessTier for the LTR backups.
+     * 
+     * @return the backupStorageAccessTier value.
+     */
+    public BackupStorageAccessTier backupStorageAccessTier() {
+        return this.innerProperties() == null ? null : this.innerProperties().backupStorageAccessTier();
+    }
+
+    /**
+     * Set the backupStorageAccessTier property: The BackupStorageAccessTier for the LTR backups.
+     * 
+     * @param backupStorageAccessTier the backupStorageAccessTier value to set.
+     * @return the LongTermRetentionPolicyInner object itself.
+     */
+    public LongTermRetentionPolicyInner withBackupStorageAccessTier(BackupStorageAccessTier backupStorageAccessTier) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LongTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withBackupStorageAccessTier(backupStorageAccessTier);
+        return this;
+    }
+
+    /**
      * Get the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @return the weeklyRetention value.
      */
     public String weeklyRetention() {
@@ -41,13 +92,13 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
 
     /**
      * Set the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @param weeklyRetention the weeklyRetention value to set.
      * @return the LongTermRetentionPolicyInner object itself.
      */
     public LongTermRetentionPolicyInner withWeeklyRetention(String weeklyRetention) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withWeeklyRetention(weeklyRetention);
         return this;
@@ -55,7 +106,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
 
     /**
      * Get the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @return the monthlyRetention value.
      */
     public String monthlyRetention() {
@@ -64,13 +115,13 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
 
     /**
      * Set the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @param monthlyRetention the monthlyRetention value to set.
      * @return the LongTermRetentionPolicyInner object itself.
      */
     public LongTermRetentionPolicyInner withMonthlyRetention(String monthlyRetention) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withMonthlyRetention(monthlyRetention);
         return this;
@@ -78,7 +129,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
 
     /**
      * Get the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @return the yearlyRetention value.
      */
     public String yearlyRetention() {
@@ -87,13 +138,13 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
 
     /**
      * Set the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @param yearlyRetention the yearlyRetention value to set.
      * @return the LongTermRetentionPolicyInner object itself.
      */
     public LongTermRetentionPolicyInner withYearlyRetention(String yearlyRetention) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withYearlyRetention(yearlyRetention);
         return this;
@@ -101,7 +152,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
 
     /**
      * Get the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
-     *
+     * 
      * @return the weekOfYear value.
      */
     public Integer weekOfYear() {
@@ -110,13 +161,13 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
 
     /**
      * Set the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
-     *
+     * 
      * @param weekOfYear the weekOfYear value to set.
      * @return the LongTermRetentionPolicyInner object itself.
      */
     public LongTermRetentionPolicyInner withWeekOfYear(Integer weekOfYear) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withWeekOfYear(weekOfYear);
         return this;
@@ -124,7 +175,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

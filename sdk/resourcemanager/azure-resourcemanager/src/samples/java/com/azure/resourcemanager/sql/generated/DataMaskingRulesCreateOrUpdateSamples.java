@@ -4,130 +4,108 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DataMaskingRuleInner;
 import com.azure.resourcemanager.sql.models.DataMaskingFunction;
-import com.azure.resourcemanager.sql.models.DataMaskingPolicyName;
 import com.azure.resourcemanager.sql.models.DataMaskingRuleState;
 
-/** Samples for DataMaskingRules CreateOrUpdate. */
+/**
+ * Samples for DataMaskingRules CreateOrUpdate.
+ */
 public final class DataMaskingRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataMaskingRuleCreateOrUpdateNumber.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/
+     * DataMaskingRuleCreateOrUpdateDefaultMin.json
      */
     /**
-     * Sample code: Create/Update data masking rule for numbers.
-     *
+     * Sample code: Create/Update data masking rule for default min.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createUpdateDataMaskingRuleForNumbers(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void createUpdateDataMaskingRuleForDefaultMin(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDataMaskingRules()
-            .createOrUpdateWithResponse(
-                "sqlcrudtest-6852",
-                "sqlcrudtest-2080",
-                "sqlcrudtest-331",
-                DataMaskingPolicyName.DEFAULT,
-                "rule1",
-                new DataMaskingRuleInner()
-                    .withSchemaName("dbo")
+            .createOrUpdateWithResponse("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1",
+                new DataMaskingRuleInner().withSchemaName("dbo")
                     .withTableName("Table_1")
                     .withColumnName("test1")
-                    .withMaskingFunction(DataMaskingFunction.NUMBER)
-                    .withNumberFrom("0")
-                    .withNumberTo("2"),
-                Context.NONE);
+                    .withMaskingFunction(DataMaskingFunction.DEFAULT),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataMaskingRuleCreateOrUpdateText.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/
+     * DataMaskingRuleCreateOrUpdateDefaultMax.json
      */
     /**
-     * Sample code: Create/Update data masking rule for text.
-     *
+     * Sample code: Create/Update data masking rule for default max.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createUpdateDataMaskingRuleForText(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void createUpdateDataMaskingRuleForDefaultMax(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDataMaskingRules()
-            .createOrUpdateWithResponse(
-                "sqlcrudtest-6852",
-                "sqlcrudtest-2080",
-                "sqlcrudtest-331",
-                DataMaskingPolicyName.DEFAULT,
-                "rule1",
-                new DataMaskingRuleInner()
+            .createOrUpdateWithResponse("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1",
+                new DataMaskingRuleInner().withAliasName("nickname")
+                    .withRuleState(DataMaskingRuleState.ENABLED)
                     .withSchemaName("dbo")
+                    .withTableName("Table_1")
+                    .withColumnName("test1")
+                    .withMaskingFunction(DataMaskingFunction.DEFAULT),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DataMaskingRuleCreateOrUpdateText.
+     * json
+     */
+    /**
+     * Sample code: Create/Update data masking rule for text.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createUpdateDataMaskingRuleForText(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getDataMaskingRules()
+            .createOrUpdateWithResponse("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1",
+                new DataMaskingRuleInner().withSchemaName("dbo")
                     .withTableName("Table_1")
                     .withColumnName("test1")
                     .withMaskingFunction(DataMaskingFunction.TEXT)
                     .withPrefixSize("1")
                     .withSuffixSize("0")
                     .withReplacementString("asdf"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataMaskingRuleCreateOrUpdateDefaultMin.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DataMaskingRuleCreateOrUpdateNumber.
+     * json
      */
     /**
-     * Sample code: Create/Update data masking rule for default min.
-     *
+     * Sample code: Create/Update data masking rule for numbers.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createUpdateDataMaskingRuleForDefaultMin(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void createUpdateDataMaskingRuleForNumbers(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDataMaskingRules()
-            .createOrUpdateWithResponse(
-                "sqlcrudtest-6852",
-                "sqlcrudtest-2080",
-                "sqlcrudtest-331",
-                DataMaskingPolicyName.DEFAULT,
-                "rule1",
-                new DataMaskingRuleInner()
-                    .withSchemaName("dbo")
+            .createOrUpdateWithResponse("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1",
+                new DataMaskingRuleInner().withSchemaName("dbo")
                     .withTableName("Table_1")
                     .withColumnName("test1")
-                    .withMaskingFunction(DataMaskingFunction.DEFAULT),
-                Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataMaskingRuleCreateOrUpdateDefaultMax.json
-     */
-    /**
-     * Sample code: Create/Update data masking rule for default max.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createUpdateDataMaskingRuleForDefaultMax(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
-            .manager()
-            .serviceClient()
-            .getDataMaskingRules()
-            .createOrUpdateWithResponse(
-                "sqlcrudtest-6852",
-                "sqlcrudtest-2080",
-                "sqlcrudtest-331",
-                DataMaskingPolicyName.DEFAULT,
-                "rule1",
-                new DataMaskingRuleInner()
-                    .withRuleState(DataMaskingRuleState.ENABLED)
-                    .withSchemaName("dbo")
-                    .withTableName("Table_1")
-                    .withColumnName("test1")
-                    .withAliasName("nickname")
-                    .withMaskingFunction(DataMaskingFunction.DEFAULT),
-                Context.NONE);
+                    .withMaskingFunction(DataMaskingFunction.NUMBER)
+                    .withNumberFrom("0")
+                    .withNumberTo("2"),
+                com.azure.core.util.Context.NONE);
     }
 }

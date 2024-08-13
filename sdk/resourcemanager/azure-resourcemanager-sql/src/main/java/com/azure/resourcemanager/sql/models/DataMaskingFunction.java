@@ -7,27 +7,43 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The masking function that is used for the data masking rule. */
+/**
+ * The masking function that is used for the data masking rule.
+ */
 public enum DataMaskingFunction {
-    /** Enum value Default. */
+    /**
+     * Enum value Default.
+     */
     DEFAULT("Default"),
 
-    /** Enum value CCN. */
+    /**
+     * Enum value CCN.
+     */
     CCN("CCN"),
 
-    /** Enum value Email. */
+    /**
+     * Enum value Email.
+     */
     EMAIL("Email"),
 
-    /** Enum value Number. */
+    /**
+     * Enum value Number.
+     */
     NUMBER("Number"),
 
-    /** Enum value SSN. */
+    /**
+     * Enum value SSN.
+     */
     SSN("SSN"),
 
-    /** Enum value Text. */
+    /**
+     * Enum value Text.
+     */
     TEXT("Text");
 
-    /** The actual serialized value for a DataMaskingFunction instance. */
+    /**
+     * The actual serialized value for a DataMaskingFunction instance.
+     */
     private final String value;
 
     DataMaskingFunction(String value) {
@@ -36,7 +52,7 @@ public enum DataMaskingFunction {
 
     /**
      * Parses a serialized value to a DataMaskingFunction instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DataMaskingFunction object, or null if unable to parse.
      */
@@ -54,7 +70,9 @@ public enum DataMaskingFunction {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

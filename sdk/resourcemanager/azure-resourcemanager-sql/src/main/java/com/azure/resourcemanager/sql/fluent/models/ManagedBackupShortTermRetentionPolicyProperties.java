@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a short term retention policy. */
+/**
+ * Properties of a short term retention policy.
+ */
 @Fluent
 public final class ManagedBackupShortTermRetentionPolicyProperties {
     /*
@@ -16,14 +18,16 @@ public final class ManagedBackupShortTermRetentionPolicyProperties {
     @JsonProperty(value = "retentionDays")
     private Integer retentionDays;
 
-    /** Creates an instance of ManagedBackupShortTermRetentionPolicyProperties class. */
+    /**
+     * Creates an instance of ManagedBackupShortTermRetentionPolicyProperties class.
+     */
     public ManagedBackupShortTermRetentionPolicyProperties() {
     }
 
     /**
      * Get the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -33,7 +37,7 @@ public final class ManagedBackupShortTermRetentionPolicyProperties {
     /**
      * Set the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the ManagedBackupShortTermRetentionPolicyProperties object itself.
      */
@@ -44,7 +48,7 @@ public final class ManagedBackupShortTermRetentionPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

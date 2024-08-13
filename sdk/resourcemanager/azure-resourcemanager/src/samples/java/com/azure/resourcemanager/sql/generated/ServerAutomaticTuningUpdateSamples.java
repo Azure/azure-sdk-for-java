@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ServerAutomaticTuningInner;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeDesired;
 import com.azure.resourcemanager.sql.models.AutomaticTuningServerMode;
@@ -12,62 +11,57 @@ import com.azure.resourcemanager.sql.models.AutomaticTuningServerOptions;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ServerAutomaticTuning Update. */
+/**
+ * Samples for ServerAutomaticTuning Update.
+ */
 public final class ServerAutomaticTuningUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerAutomaticTuningUpdateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ServerAutomaticTuningUpdateMax.json
      */
     /**
      * Sample code: Updates server automatic tuning settings with all properties.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updatesServerAutomaticTuningSettingsWithAllProperties(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        updatesServerAutomaticTuningSettingsWithAllProperties(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getServerAutomaticTunings()
-            .updateWithResponse(
-                "default-sql-onebox",
-                "testsvr11",
-                new ServerAutomaticTuningInner()
-                    .withDesiredState(AutomaticTuningServerMode.AUTO)
-                    .withOptions(
-                        mapOf(
-                            "createIndex",
-                            new AutomaticTuningServerOptions().withDesiredState(AutomaticTuningOptionModeDesired.OFF),
-                            "dropIndex",
-                            new AutomaticTuningServerOptions().withDesiredState(AutomaticTuningOptionModeDesired.ON),
-                            "forceLastGoodPlan",
-                            new AutomaticTuningServerOptions()
-                                .withDesiredState(AutomaticTuningOptionModeDesired.DEFAULT))),
-                Context.NONE);
+            .updateWithResponse("default-sql-onebox", "testsvr11",
+                new ServerAutomaticTuningInner().withDesiredState(AutomaticTuningServerMode.AUTO)
+                    .withOptions(mapOf("createIndex",
+                        new AutomaticTuningServerOptions().withDesiredState(AutomaticTuningOptionModeDesired.OFF),
+                        "dropIndex",
+                        new AutomaticTuningServerOptions().withDesiredState(AutomaticTuningOptionModeDesired.ON),
+                        "forceLastGoodPlan",
+                        new AutomaticTuningServerOptions().withDesiredState(AutomaticTuningOptionModeDesired.DEFAULT))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerAutomaticTuningUpdateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ServerAutomaticTuningUpdateMin.json
      */
     /**
      * Sample code: Updates server automatic tuning settings with minimal properties.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updatesServerAutomaticTuningSettingsWithMinimalProperties(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getServerAutomaticTunings()
-            .updateWithResponse(
-                "default-sql-onebox",
-                "testsvr11",
+            .updateWithResponse("default-sql-onebox", "testsvr11",
                 new ServerAutomaticTuningInner().withDesiredState(AutomaticTuningServerMode.AUTO),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

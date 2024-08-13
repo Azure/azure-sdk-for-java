@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for LongTermRetentionBackups ListByLocation. */
+/**
+ * Samples for LongTermRetentionBackups ListByLocation.
+ */
 public final class LongTermRetentionBackupsListByLocationSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LongTermRetentionBackupListByLocation.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/
+     * LongTermRetentionBackupListByLocation.json
      */
     /**
      * Sample code: Get all long term retention backups under the location.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getAllLongTermRetentionBackupsUnderTheLocation(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        getAllLongTermRetentionBackupsUnderTheLocation(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getLongTermRetentionBackups()
-            .listByLocation("japaneast", null, null, Context.NONE);
+            .listByLocation("japaneast", null, null, com.azure.core.util.Context.NONE);
     }
 }

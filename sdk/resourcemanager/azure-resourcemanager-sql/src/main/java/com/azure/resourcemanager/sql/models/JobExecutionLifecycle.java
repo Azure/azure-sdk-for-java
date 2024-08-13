@@ -8,42 +8,73 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The detailed state of the job execution. */
+/**
+ * The detailed state of the job execution.
+ */
 public final class JobExecutionLifecycle extends ExpandableStringEnum<JobExecutionLifecycle> {
-    /** Static value Created for JobExecutionLifecycle. */
+    /**
+     * Static value Created for JobExecutionLifecycle.
+     */
     public static final JobExecutionLifecycle CREATED = fromString("Created");
 
-    /** Static value InProgress for JobExecutionLifecycle. */
+    /**
+     * Static value InProgress for JobExecutionLifecycle.
+     */
     public static final JobExecutionLifecycle IN_PROGRESS = fromString("InProgress");
 
-    /** Static value WaitingForChildJobExecutions for JobExecutionLifecycle. */
-    public static final JobExecutionLifecycle WAITING_FOR_CHILD_JOB_EXECUTIONS =
-        fromString("WaitingForChildJobExecutions");
+    /**
+     * Static value WaitingForChildJobExecutions for JobExecutionLifecycle.
+     */
+    public static final JobExecutionLifecycle WAITING_FOR_CHILD_JOB_EXECUTIONS
+        = fromString("WaitingForChildJobExecutions");
 
-    /** Static value WaitingForRetry for JobExecutionLifecycle. */
+    /**
+     * Static value WaitingForRetry for JobExecutionLifecycle.
+     */
     public static final JobExecutionLifecycle WAITING_FOR_RETRY = fromString("WaitingForRetry");
 
-    /** Static value Succeeded for JobExecutionLifecycle. */
+    /**
+     * Static value Succeeded for JobExecutionLifecycle.
+     */
     public static final JobExecutionLifecycle SUCCEEDED = fromString("Succeeded");
 
-    /** Static value SucceededWithSkipped for JobExecutionLifecycle. */
+    /**
+     * Static value SucceededWithSkipped for JobExecutionLifecycle.
+     */
     public static final JobExecutionLifecycle SUCCEEDED_WITH_SKIPPED = fromString("SucceededWithSkipped");
 
-    /** Static value Failed for JobExecutionLifecycle. */
+    /**
+     * Static value Failed for JobExecutionLifecycle.
+     */
     public static final JobExecutionLifecycle FAILED = fromString("Failed");
 
-    /** Static value TimedOut for JobExecutionLifecycle. */
+    /**
+     * Static value TimedOut for JobExecutionLifecycle.
+     */
     public static final JobExecutionLifecycle TIMED_OUT = fromString("TimedOut");
 
-    /** Static value Canceled for JobExecutionLifecycle. */
+    /**
+     * Static value Canceled for JobExecutionLifecycle.
+     */
     public static final JobExecutionLifecycle CANCELED = fromString("Canceled");
 
-    /** Static value Skipped for JobExecutionLifecycle. */
+    /**
+     * Static value Skipped for JobExecutionLifecycle.
+     */
     public static final JobExecutionLifecycle SKIPPED = fromString("Skipped");
 
     /**
+     * Creates a new instance of JobExecutionLifecycle value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobExecutionLifecycle() {
+    }
+
+    /**
      * Creates or finds a JobExecutionLifecycle from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobExecutionLifecycle.
      */
@@ -54,7 +85,7 @@ public final class JobExecutionLifecycle extends ExpandableStringEnum<JobExecuti
 
     /**
      * Gets known JobExecutionLifecycle values.
-     *
+     * 
      * @return known JobExecutionLifecycle values.
      */
     public static Collection<JobExecutionLifecycle> values() {

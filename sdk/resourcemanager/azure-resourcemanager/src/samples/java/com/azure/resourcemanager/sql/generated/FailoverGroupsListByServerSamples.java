@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for FailoverGroups ListByServer. */
+/**
+ * Samples for FailoverGroups ListByServer.
+ */
 public final class FailoverGroupsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FailoverGroupList.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/FailoverGroupList.json
      */
     /**
      * Sample code: List failover group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listFailoverGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getFailoverGroups()
-            .listByServer("Default", "failover-group-primary-server", Context.NONE);
+            .listByServer("Default", "failover-group-primary-server", com.azure.core.util.Context.NONE);
     }
 }

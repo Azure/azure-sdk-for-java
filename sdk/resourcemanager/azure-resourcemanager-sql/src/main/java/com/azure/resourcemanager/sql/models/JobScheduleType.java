@@ -7,15 +7,23 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Schedule interval type. */
+/**
+ * Schedule interval type.
+ */
 public enum JobScheduleType {
-    /** Enum value Once. */
+    /**
+     * Enum value Once.
+     */
     ONCE("Once"),
 
-    /** Enum value Recurring. */
+    /**
+     * Enum value Recurring.
+     */
     RECURRING("Recurring");
 
-    /** The actual serialized value for a JobScheduleType instance. */
+    /**
+     * The actual serialized value for a JobScheduleType instance.
+     */
     private final String value;
 
     JobScheduleType(String value) {
@@ -24,7 +32,7 @@ public enum JobScheduleType {
 
     /**
      * Parses a serialized value to a JobScheduleType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed JobScheduleType object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum JobScheduleType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -7,18 +7,28 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Reason description if desired and actual state are different. */
+/**
+ * Reason description if desired and actual state are different.
+ */
 public enum AutomaticTuningServerReason {
-    /** Enum value Default. */
+    /**
+     * Enum value Default.
+     */
     DEFAULT("Default"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled"),
 
-    /** Enum value AutoConfigured. */
+    /**
+     * Enum value AutoConfigured.
+     */
     AUTO_CONFIGURED("AutoConfigured");
 
-    /** The actual serialized value for a AutomaticTuningServerReason instance. */
+    /**
+     * The actual serialized value for a AutomaticTuningServerReason instance.
+     */
     private final String value;
 
     AutomaticTuningServerReason(String value) {
@@ -27,7 +37,7 @@ public enum AutomaticTuningServerReason {
 
     /**
      * Parses a serialized value to a AutomaticTuningServerReason instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AutomaticTuningServerReason object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum AutomaticTuningServerReason {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

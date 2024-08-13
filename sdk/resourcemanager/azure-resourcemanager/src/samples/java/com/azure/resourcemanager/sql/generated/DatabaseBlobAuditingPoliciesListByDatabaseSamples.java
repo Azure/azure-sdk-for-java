@@ -4,24 +4,26 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DatabaseBlobAuditingPolicies ListByDatabase. */
+/**
+ * Samples for DatabaseBlobAuditingPolicies ListByDatabase.
+ */
 public final class DatabaseBlobAuditingPoliciesListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAuditingSettingsList.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/DatabaseAuditingSettingsList
+     * .json
      */
     /**
      * Sample code: List audit settings of a database.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAuditSettingsOfADatabase(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabaseBlobAuditingPolicies()
-            .listByDatabase("blobauditingtest-6852", "blobauditingtest-2080", "testdb", Context.NONE);
+            .listByDatabase("blobauditingtest-6852", "blobauditingtest-2080", "testdb",
+                com.azure.core.util.Context.NONE);
     }
 }

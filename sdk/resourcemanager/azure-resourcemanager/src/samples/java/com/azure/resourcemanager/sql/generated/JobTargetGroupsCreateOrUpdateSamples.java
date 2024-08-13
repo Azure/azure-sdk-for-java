@@ -4,85 +4,70 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.JobTargetGroupInner;
 import com.azure.resourcemanager.sql.models.JobTarget;
 import com.azure.resourcemanager.sql.models.JobTargetGroupMembershipType;
 import com.azure.resourcemanager.sql.models.JobTargetType;
 import java.util.Arrays;
 
-/** Samples for JobTargetGroups CreateOrUpdate. */
+/**
+ * Samples for JobTargetGroups CreateOrUpdate.
+ */
 public final class JobTargetGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobTargetGroupMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * CreateOrUpdateJobTargetGroupMin.json
      */
     /**
      * Sample code: Create or update a target group with minimal properties.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateATargetGroupWithMinimalProperties(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        createOrUpdateATargetGroupWithMinimalProperties(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getJobTargetGroups()
-            .createOrUpdateWithResponse(
-                "group1",
-                "server1",
-                "agent1",
-                "targetGroup1",
-                new JobTargetGroupInner().withMembers(Arrays.asList()),
-                Context.NONE);
+            .createOrUpdateWithResponse("group1", "server1", "agent1", "targetGroup1",
+                new JobTargetGroupInner().withMembers(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobTargetGroupMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * CreateOrUpdateJobTargetGroupMax.json
      */
     /**
      * Sample code: Create or update a target group with all properties.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateATargetGroupWithAllProperties(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        createOrUpdateATargetGroupWithAllProperties(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getJobTargetGroups()
-            .createOrUpdateWithResponse(
-                "group1",
-                "server1",
-                "agent1",
-                "targetGroup1",
-                new JobTargetGroupInner()
-                    .withMembers(
-                        Arrays
-                            .asList(
-                                new JobTarget()
-                                    .withMembershipType(JobTargetGroupMembershipType.EXCLUDE)
-                                    .withType(JobTargetType.SQL_DATABASE)
-                                    .withServerName("server1")
-                                    .withDatabaseName("database1"),
-                                new JobTarget()
-                                    .withMembershipType(JobTargetGroupMembershipType.INCLUDE)
-                                    .withType(JobTargetType.SQL_SERVER)
-                                    .withServerName("server1")
-                                    .withRefreshCredential("fakeTokenPlaceholder"),
-                                new JobTarget()
-                                    .withMembershipType(JobTargetGroupMembershipType.INCLUDE)
-                                    .withType(JobTargetType.SQL_ELASTIC_POOL)
-                                    .withServerName("server2")
-                                    .withElasticPoolName("pool1")
-                                    .withRefreshCredential("fakeTokenPlaceholder"),
-                                new JobTarget()
-                                    .withMembershipType(JobTargetGroupMembershipType.INCLUDE)
-                                    .withType(JobTargetType.SQL_SHARD_MAP)
-                                    .withServerName("server3")
-                                    .withShardMapName("shardMap1")
-                                    .withRefreshCredential("fakeTokenPlaceholder"))),
-                Context.NONE);
+            .createOrUpdateWithResponse("group1", "server1", "agent1", "targetGroup1",
+                new JobTargetGroupInner().withMembers(Arrays.asList(
+                    new JobTarget().withMembershipType(JobTargetGroupMembershipType.EXCLUDE)
+                        .withType(JobTargetType.SQL_DATABASE)
+                        .withServerName("server1")
+                        .withDatabaseName("database1"),
+                    new JobTarget().withMembershipType(JobTargetGroupMembershipType.INCLUDE)
+                        .withType(JobTargetType.SQL_SERVER)
+                        .withServerName("server1")
+                        .withRefreshCredential("fakeTokenPlaceholder"),
+                    new JobTarget().withMembershipType(JobTargetGroupMembershipType.INCLUDE)
+                        .withType(JobTargetType.SQL_ELASTIC_POOL)
+                        .withServerName("server2")
+                        .withElasticPoolName("pool1")
+                        .withRefreshCredential("fakeTokenPlaceholder"),
+                    new JobTarget().withMembershipType(JobTargetGroupMembershipType.INCLUDE)
+                        .withType(JobTargetType.SQL_SHARD_MAP)
+                        .withServerName("server3")
+                        .withShardMapName("shardMap1")
+                        .withRefreshCredential("fakeTokenPlaceholder"))),
+                com.azure.core.util.Context.NONE);
     }
 }

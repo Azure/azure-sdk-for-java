@@ -11,47 +11,51 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
 
-/** An instance of this class provides access to all the operations defined in ServerUsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerUsagesClient.
+ */
 public interface ServerUsagesClient {
     /**
-     * Gets server usages.
-     *
+     * Returns server usages.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server usages as paginated response with {@link PagedFlux}.
+     * @return represents the response to a list server metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ServerUsageInner> listByServerAsync(String resourceGroupName, String serverName);
 
     /**
-     * Gets server usages.
-     *
+     * Returns server usages.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server usages as paginated response with {@link PagedIterable}.
+     * @return represents the response to a list server metrics request as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerUsageInner> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * Gets server usages.
-     *
+     * Returns server usages.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server usages as paginated response with {@link PagedIterable}.
+     * @return represents the response to a list server metrics request as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerUsageInner> listByServer(String resourceGroupName, String serverName, Context context);

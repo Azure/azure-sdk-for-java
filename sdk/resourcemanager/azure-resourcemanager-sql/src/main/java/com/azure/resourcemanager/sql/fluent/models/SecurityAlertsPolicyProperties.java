@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties of a security alert policy. */
+/**
+ * Properties of a security alert policy.
+ */
 @Fluent
 public final class SecurityAlertsPolicyProperties {
     /*
@@ -65,14 +67,16 @@ public final class SecurityAlertsPolicyProperties {
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
-    /** Creates an instance of SecurityAlertsPolicyProperties class. */
+    /**
+     * Creates an instance of SecurityAlertsPolicyProperties class.
+     */
     public SecurityAlertsPolicyProperties() {
     }
 
     /**
      * Get the state property: Specifies the state of the policy, whether it is enabled or disabled or a policy has not
      * been applied yet on the specific database.
-     *
+     * 
      * @return the state value.
      */
     public SecurityAlertPolicyState state() {
@@ -82,7 +86,7 @@ public final class SecurityAlertsPolicyProperties {
     /**
      * Set the state property: Specifies the state of the policy, whether it is enabled or disabled or a policy has not
      * been applied yet on the specific database.
-     *
+     * 
      * @param state the state value to set.
      * @return the SecurityAlertsPolicyProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class SecurityAlertsPolicyProperties {
     /**
      * Get the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
      * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force.
-     *
+     * 
      * @return the disabledAlerts value.
      */
     public List<String> disabledAlerts() {
@@ -104,7 +108,7 @@ public final class SecurityAlertsPolicyProperties {
     /**
      * Set the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
      * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force.
-     *
+     * 
      * @param disabledAlerts the disabledAlerts value to set.
      * @return the SecurityAlertsPolicyProperties object itself.
      */
@@ -115,7 +119,7 @@ public final class SecurityAlertsPolicyProperties {
 
     /**
      * Get the emailAddresses property: Specifies an array of e-mail addresses to which the alert is sent.
-     *
+     * 
      * @return the emailAddresses value.
      */
     public List<String> emailAddresses() {
@@ -124,7 +128,7 @@ public final class SecurityAlertsPolicyProperties {
 
     /**
      * Set the emailAddresses property: Specifies an array of e-mail addresses to which the alert is sent.
-     *
+     * 
      * @param emailAddresses the emailAddresses value to set.
      * @return the SecurityAlertsPolicyProperties object itself.
      */
@@ -135,7 +139,7 @@ public final class SecurityAlertsPolicyProperties {
 
     /**
      * Get the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
-     *
+     * 
      * @return the emailAccountAdmins value.
      */
     public Boolean emailAccountAdmins() {
@@ -144,7 +148,7 @@ public final class SecurityAlertsPolicyProperties {
 
     /**
      * Set the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
-     *
+     * 
      * @param emailAccountAdmins the emailAccountAdmins value to set.
      * @return the SecurityAlertsPolicyProperties object itself.
      */
@@ -156,7 +160,7 @@ public final class SecurityAlertsPolicyProperties {
     /**
      * Get the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
-     *
+     * 
      * @return the storageEndpoint value.
      */
     public String storageEndpoint() {
@@ -166,7 +170,7 @@ public final class SecurityAlertsPolicyProperties {
     /**
      * Set the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
-     *
+     * 
      * @param storageEndpoint the storageEndpoint value to set.
      * @return the SecurityAlertsPolicyProperties object itself.
      */
@@ -178,7 +182,7 @@ public final class SecurityAlertsPolicyProperties {
     /**
      * Get the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
      * account.
-     *
+     * 
      * @return the storageAccountAccessKey value.
      */
     public String storageAccountAccessKey() {
@@ -188,7 +192,7 @@ public final class SecurityAlertsPolicyProperties {
     /**
      * Set the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
      * account.
-     *
+     * 
      * @param storageAccountAccessKey the storageAccountAccessKey value to set.
      * @return the SecurityAlertsPolicyProperties object itself.
      */
@@ -199,7 +203,7 @@ public final class SecurityAlertsPolicyProperties {
 
     /**
      * Get the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -208,7 +212,7 @@ public final class SecurityAlertsPolicyProperties {
 
     /**
      * Set the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the SecurityAlertsPolicyProperties object itself.
      */
@@ -219,7 +223,7 @@ public final class SecurityAlertsPolicyProperties {
 
     /**
      * Get the creationTime property: Specifies the UTC creation time of the policy.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -228,15 +232,14 @@ public final class SecurityAlertsPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model SecurityAlertsPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model SecurityAlertsPolicyProperties"));
         }
     }
 

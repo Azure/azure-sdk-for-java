@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DeletedServers Recover. */
+/**
+ * Samples for DeletedServers Recover.
+ */
 public final class DeletedServersRecoverSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeletedServerRecover.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeletedServerRecover.json
      */
     /**
      * Sample code: Recover deleted server.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void recoverDeletedServer(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDeletedServers()
-            .recover("japaneast", "sqlcrudtest-d-1414", Context.NONE);
+            .recover("japaneast", "sqlcrudtest-d-1414", com.azure.core.util.Context.NONE);
     }
 }

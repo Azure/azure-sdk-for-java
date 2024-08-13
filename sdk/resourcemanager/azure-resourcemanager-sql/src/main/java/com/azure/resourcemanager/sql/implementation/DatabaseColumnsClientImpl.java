@@ -34,22 +34,28 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatabaseColumnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabaseColumnsClient.
+ */
 public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DatabaseColumnsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of DatabaseColumnsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DatabaseColumnsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DatabaseColumnsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DatabaseColumnsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,97 +66,70 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
     public interface DatabaseColumnsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/columns")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/columns")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseColumnListResult>> listByDatabase(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<DatabaseColumnListResult>> listByDatabase(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @QueryParam(value = "schema", multipleQueryParams = true) List<String> schema,
             @QueryParam(value = "table", multipleQueryParams = true) List<String> table,
             @QueryParam(value = "column", multipleQueryParams = true) List<String> column,
             @QueryParam(value = "orderBy", multipleQueryParams = true) List<String> orderBy,
-            @QueryParam("$skiptoken") String skiptoken,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("$skiptoken") String skiptoken, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseColumnListResult>> listByTable(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("schemaName") String schemaName,
-            @PathParam("tableName") String tableName,
-            @QueryParam("$filter") String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DatabaseColumnListResult>> listByTable(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName, @PathParam("schemaName") String schemaName,
+            @PathParam("tableName") String tableName, @QueryParam("$filter") String filter,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseColumnInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("schemaName") String schemaName,
-            @PathParam("tableName") String tableName,
-            @PathParam("columnName") String columnName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DatabaseColumnInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName, @PathParam("schemaName") String schemaName,
+            @PathParam("tableName") String tableName, @PathParam("columnName") String columnName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseColumnListResult>> listByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseColumnListResult>> listByTableNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param schema Array of Get3ItemsItem.
-     * @param table Array of Get4ItemsItem.
-     * @param column Array of Get5ItemsItem.
-     * @param orderBy Array of Get6ItemsItem.
+     * @param schema The schema parameter.
+     * @param table The table parameter.
+     * @param column The column parameter.
+     * @param orderBy The orderBy parameter.
      * @param skiptoken An opaque token that identifies a starting point in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -158,20 +137,12 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseColumnInner>> listByDatabaseSinglePageAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        List<String> schema,
-        List<String> table,
-        List<String> column,
-        List<String> orderBy,
-        String skiptoken) {
+    private Mono<PagedResponse<DatabaseColumnInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
+        String serverName, String databaseName, List<String> schema, List<String> table, List<String> column,
+        List<String> orderBy, String skiptoken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -184,69 +155,43 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
-        List<String> schemaConverted =
-            (schema == null)
-                ? new ArrayList<>()
-                : schema.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> tableConverted =
-            (table == null)
-                ? new ArrayList<>()
-                : table.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> columnConverted =
-            (column == null)
-                ? new ArrayList<>()
-                : column.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> orderByConverted =
-            (orderBy == null)
-                ? new ArrayList<>()
-                : orderBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> schemaConverted = (schema == null)
+            ? new ArrayList<>()
+            : schema.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> tableConverted = (table == null)
+            ? new ArrayList<>()
+            : table.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> columnConverted = (column == null)
+            ? new ArrayList<>()
+            : column.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> orderByConverted = (orderBy == null)
+            ? new ArrayList<>()
+            : orderBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDatabase(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            schemaConverted,
-                            tableConverted,
-                            columnConverted,
-                            orderByConverted,
-                            skiptoken,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DatabaseColumnInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, schemaConverted, tableConverted, columnConverted, orderByConverted, skiptoken,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<DatabaseColumnInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param schema Array of Get3ItemsItem.
-     * @param table Array of Get4ItemsItem.
-     * @param column Array of Get5ItemsItem.
-     * @param orderBy Array of Get6ItemsItem.
+     * @param schema The schema parameter.
+     * @param table The table parameter.
+     * @param column The column parameter.
+     * @param orderBy The orderBy parameter.
      * @param skiptoken An opaque token that identifies a starting point in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,21 +200,12 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseColumnInner>> listByDatabaseSinglePageAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        List<String> schema,
-        List<String> table,
-        List<String> column,
-        List<String> orderBy,
-        String skiptoken,
-        Context context) {
+    private Mono<PagedResponse<DatabaseColumnInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
+        String serverName, String databaseName, List<String> schema, List<String> table, List<String> column,
+        List<String> orderBy, String skiptoken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -282,66 +218,43 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
-        List<String> schemaConverted =
-            (schema == null)
-                ? new ArrayList<>()
-                : schema.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> tableConverted =
-            (table == null)
-                ? new ArrayList<>()
-                : table.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> columnConverted =
-            (column == null)
-                ? new ArrayList<>()
-                : column.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> orderByConverted =
-            (orderBy == null)
-                ? new ArrayList<>()
-                : orderBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> schemaConverted = (schema == null)
+            ? new ArrayList<>()
+            : schema.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> tableConverted = (table == null)
+            ? new ArrayList<>()
+            : table.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> columnConverted = (column == null)
+            ? new ArrayList<>()
+            : column.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> orderByConverted = (orderBy == null)
+            ? new ArrayList<>()
+            : orderBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
-            .listByDatabase(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                schemaConverted,
-                tableConverted,
-                columnConverted,
-                orderByConverted,
-                skiptoken,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, schemaConverted,
+                tableConverted, columnConverted, orderByConverted, skiptoken, this.client.getSubscriptionId(),
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param schema Array of Get3ItemsItem.
-     * @param table Array of Get4ItemsItem.
-     * @param column Array of Get5ItemsItem.
-     * @param orderBy Array of Get6ItemsItem.
+     * @param schema The schema parameter.
+     * @param table The table parameter.
+     * @param column The column parameter.
+     * @param orderBy The orderBy parameter.
      * @param skiptoken An opaque token that identifies a starting point in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -349,27 +262,18 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatabaseColumnInner> listByDatabaseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        List<String> schema,
-        List<String> table,
-        List<String> column,
-        List<String> orderBy,
+    public PagedFlux<DatabaseColumnInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName, List<String> schema, List<String> table, List<String> column, List<String> orderBy,
         String skiptoken) {
-        return new PagedFlux<>(
-            () ->
-                listByDatabaseSinglePageAsync(
-                    resourceGroupName, serverName, databaseName, schema, table, column, orderBy, skiptoken),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, schema,
+            table, column, orderBy, skiptoken), nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -378,31 +282,28 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatabaseColumnInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
+    public PagedFlux<DatabaseColumnInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName) {
         final List<String> schema = null;
         final List<String> table = null;
         final List<String> column = null;
         final List<String> orderBy = null;
         final String skiptoken = null;
-        return new PagedFlux<>(
-            () ->
-                listByDatabaseSinglePageAsync(
-                    resourceGroupName, serverName, databaseName, schema, table, column, orderBy, skiptoken),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, schema,
+            table, column, orderBy, skiptoken), nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param schema Array of Get3ItemsItem.
-     * @param table Array of Get4ItemsItem.
-     * @param column Array of Get5ItemsItem.
-     * @param orderBy Array of Get6ItemsItem.
+     * @param schema The schema parameter.
+     * @param table The table parameter.
+     * @param column The column parameter.
+     * @param orderBy The orderBy parameter.
      * @param skiptoken An opaque token that identifies a starting point in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -411,28 +312,19 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseColumnInner> listByDatabaseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        List<String> schema,
-        List<String> table,
-        List<String> column,
-        List<String> orderBy,
-        String skiptoken,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByDatabaseSinglePageAsync(
-                    resourceGroupName, serverName, databaseName, schema, table, column, orderBy, skiptoken, context),
+    private PagedFlux<DatabaseColumnInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName, List<String> schema, List<String> table, List<String> column, List<String> orderBy,
+        String skiptoken, Context context) {
+        return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, schema,
+            table, column, orderBy, skiptoken, context),
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -441,29 +333,28 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseColumnInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName) {
+    public PagedIterable<DatabaseColumnInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName) {
         final List<String> schema = null;
         final List<String> table = null;
         final List<String> column = null;
         final List<String> orderBy = null;
         final String skiptoken = null;
-        return new PagedIterable<>(
-            listByDatabaseAsync(
-                resourceGroupName, serverName, databaseName, schema, table, column, orderBy, skiptoken));
+        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, schema, table,
+            column, orderBy, skiptoken));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param schema Array of Get3ItemsItem.
-     * @param table Array of Get4ItemsItem.
-     * @param column Array of Get5ItemsItem.
-     * @param orderBy Array of Get6ItemsItem.
+     * @param schema The schema parameter.
+     * @param table The table parameter.
+     * @param column The column parameter.
+     * @param orderBy The orderBy parameter.
      * @param skiptoken An opaque token that identifies a starting point in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -472,26 +363,18 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseColumnInner> listByDatabase(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        List<String> schema,
-        List<String> table,
-        List<String> column,
-        List<String> orderBy,
-        String skiptoken,
-        Context context) {
-        return new PagedIterable<>(
-            listByDatabaseAsync(
-                resourceGroupName, serverName, databaseName, schema, table, column, orderBy, skiptoken, context));
+    public PagedIterable<DatabaseColumnInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName, List<String> schema, List<String> table, List<String> column, List<String> orderBy,
+        String skiptoken, Context context) {
+        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, schema, table,
+            column, orderBy, skiptoken, context));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -503,18 +386,11 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseColumnInner>> listByTableSinglePageAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String filter) {
+    private Mono<PagedResponse<DatabaseColumnInner>> listByTableSinglePageAsync(String resourceGroupName,
+        String serverName, String databaseName, String schemaName, String tableName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -533,45 +409,25 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByTable(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            schemaName,
-                            tableName,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DatabaseColumnInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByTable(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+                    schemaName, tableName, filter, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<DatabaseColumnInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -584,19 +440,11 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseColumnInner>> listByTableSinglePageAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String filter,
-        Context context) {
+    private Mono<PagedResponse<DatabaseColumnInner>> listByTableSinglePageAsync(String resourceGroupName,
+        String serverName, String databaseName, String schemaName, String tableName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -615,42 +463,24 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByTable(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                schemaName,
-                tableName,
-                filter,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByTable(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, schemaName, tableName,
+                filter, this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -662,24 +492,17 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatabaseColumnInner> listByTableAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String filter) {
-        return new PagedFlux<>(
-            () ->
-                listByTableSinglePageAsync(resourceGroupName, serverName, databaseName, schemaName, tableName, filter),
-            nextLink -> listByTableNextSinglePageAsync(nextLink));
+    public PagedFlux<DatabaseColumnInner> listByTableAsync(String resourceGroupName, String serverName,
+        String databaseName, String schemaName, String tableName, String filter) {
+        return new PagedFlux<>(() -> listByTableSinglePageAsync(resourceGroupName, serverName, databaseName, schemaName,
+            tableName, filter), nextLink -> listByTableNextSinglePageAsync(nextLink));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -690,20 +513,18 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatabaseColumnInner> listByTableAsync(
-        String resourceGroupName, String serverName, String databaseName, String schemaName, String tableName) {
+    public PagedFlux<DatabaseColumnInner> listByTableAsync(String resourceGroupName, String serverName,
+        String databaseName, String schemaName, String tableName) {
         final String filter = null;
-        return new PagedFlux<>(
-            () ->
-                listByTableSinglePageAsync(resourceGroupName, serverName, databaseName, schemaName, tableName, filter),
-            nextLink -> listByTableNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByTableSinglePageAsync(resourceGroupName, serverName, databaseName, schemaName,
+            tableName, filter), nextLink -> listByTableNextSinglePageAsync(nextLink));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -716,26 +537,17 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseColumnInner> listByTableAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String filter,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByTableSinglePageAsync(
-                    resourceGroupName, serverName, databaseName, schemaName, tableName, filter, context),
-            nextLink -> listByTableNextSinglePageAsync(nextLink, context));
+    private PagedFlux<DatabaseColumnInner> listByTableAsync(String resourceGroupName, String serverName,
+        String databaseName, String schemaName, String tableName, String filter, Context context) {
+        return new PagedFlux<>(() -> listByTableSinglePageAsync(resourceGroupName, serverName, databaseName, schemaName,
+            tableName, filter, context), nextLink -> listByTableNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -746,8 +558,8 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseColumnInner> listByTable(
-        String resourceGroupName, String serverName, String databaseName, String schemaName, String tableName) {
+    public PagedIterable<DatabaseColumnInner> listByTable(String resourceGroupName, String serverName,
+        String databaseName, String schemaName, String tableName) {
         final String filter = null;
         return new PagedIterable<>(
             listByTableAsync(resourceGroupName, serverName, databaseName, schemaName, tableName, filter));
@@ -755,9 +567,9 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
 
     /**
      * List database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -770,23 +582,17 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseColumnInner> listByTable(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String filter,
-        Context context) {
+    public PagedIterable<DatabaseColumnInner> listByTable(String resourceGroupName, String serverName,
+        String databaseName, String schemaName, String tableName, String filter, Context context) {
         return new PagedIterable<>(
             listByTableAsync(resourceGroupName, serverName, databaseName, schemaName, tableName, filter, context));
     }
 
     /**
      * Get database column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -798,18 +604,11 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return database column along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DatabaseColumnInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName) {
+    public Mono<Response<DatabaseColumnInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String schemaName, String tableName, String columnName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -831,36 +630,22 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            schemaName,
-                            tableName,
-                            columnName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+                schemaName, tableName, columnName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get database column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -873,19 +658,11 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return database column along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseColumnInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
+    private Mono<Response<DatabaseColumnInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String schemaName, String tableName, String columnName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -907,33 +684,21 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                schemaName,
-                tableName,
-                columnName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, schemaName,
+            tableName, columnName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Get database column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -945,22 +710,17 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return database column on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatabaseColumnInner> getAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName) {
+    public Mono<DatabaseColumnInner> getAsync(String resourceGroupName, String serverName, String databaseName,
+        String schemaName, String tableName, String columnName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, schemaName, tableName, columnName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get database column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -973,24 +733,17 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return database column along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatabaseColumnInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, context)
-            .block();
+    public Response<DatabaseColumnInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, String schemaName, String tableName, String columnName, Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, schemaName, tableName, columnName,
+            context).block();
     }
 
     /**
      * Get database column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -1002,23 +755,16 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return database column.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseColumnInner get(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        return getWithResponse(
-                resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, Context.NONE)
-            .getValue();
+    public DatabaseColumnInner get(String resourceGroupName, String serverName, String databaseName, String schemaName,
+        String tableName, String columnName) {
+        return getWithResponse(resourceGroupName, serverName, databaseName, schemaName, tableName, columnName,
+            Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1030,31 +776,21 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DatabaseColumnInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DatabaseColumnInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1062,37 +798,26 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
      * @return a list of database columns along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseColumnInner>> listByDatabaseNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DatabaseColumnInner>> listByDatabaseNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1104,31 +829,21 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByTableNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DatabaseColumnInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DatabaseColumnInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1141,23 +856,13 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTableNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTableNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

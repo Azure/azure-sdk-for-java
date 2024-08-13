@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A server dns alias acquisition request. */
+/**
+ * A server dns alias acquisition request.
+ */
 @Fluent
 public final class ServerDnsAliasAcquisition {
     /*
@@ -17,14 +19,16 @@ public final class ServerDnsAliasAcquisition {
     @JsonProperty(value = "oldServerDnsAliasId", required = true)
     private String oldServerDnsAliasId;
 
-    /** Creates an instance of ServerDnsAliasAcquisition class. */
+    /**
+     * Creates an instance of ServerDnsAliasAcquisition class.
+     */
     public ServerDnsAliasAcquisition() {
     }
 
     /**
      * Get the oldServerDnsAliasId property: The id of the server alias that will be acquired to point to this server
      * instead.
-     *
+     * 
      * @return the oldServerDnsAliasId value.
      */
     public String oldServerDnsAliasId() {
@@ -34,7 +38,7 @@ public final class ServerDnsAliasAcquisition {
     /**
      * Set the oldServerDnsAliasId property: The id of the server alias that will be acquired to point to this server
      * instead.
-     *
+     * 
      * @param oldServerDnsAliasId the oldServerDnsAliasId value to set.
      * @return the ServerDnsAliasAcquisition object itself.
      */
@@ -45,15 +49,14 @@ public final class ServerDnsAliasAcquisition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (oldServerDnsAliasId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property oldServerDnsAliasId in model ServerDnsAliasAcquisition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property oldServerDnsAliasId in model ServerDnsAliasAcquisition"));
         }
     }
 

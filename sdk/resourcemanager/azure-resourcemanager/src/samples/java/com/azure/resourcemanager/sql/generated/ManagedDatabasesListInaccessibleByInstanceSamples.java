@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagedDatabases ListInaccessibleByInstance. */
+/**
+ * Samples for ManagedDatabases ListInaccessibleByInstance.
+ */
 public final class ManagedDatabasesListInaccessibleByInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/InaccessibleManagedDatabaseListByManagedInstance.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * InaccessibleManagedDatabaseListByManagedInstance.json
      */
     /**
      * Sample code: List inaccessible managed databases by managed instances.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listInaccessibleManagedDatabasesByManagedInstances(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        listInaccessibleManagedDatabasesByManagedInstances(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedDatabases()
-            .listInaccessibleByInstance("testrg", "testcl", Context.NONE);
+            .listInaccessibleByInstance("testrg", "testcl", com.azure.core.util.Context.NONE);
     }
 }

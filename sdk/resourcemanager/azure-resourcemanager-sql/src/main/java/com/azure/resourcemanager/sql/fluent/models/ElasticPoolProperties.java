@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.AlwaysEncryptedEnclaveType;
+import com.azure.resourcemanager.sql.models.AvailabilityZoneType;
 import com.azure.resourcemanager.sql.models.ElasticPoolLicenseType;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
 import com.azure.resourcemanager.sql.models.ElasticPoolState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of an elastic pool. */
+/**
+ * Properties of an elastic pool.
+ */
 @Fluent
 public final class ElasticPoolProperties {
     /*
@@ -71,13 +75,27 @@ public final class ElasticPoolProperties {
     @JsonProperty(value = "highAvailabilityReplicaCount")
     private Integer highAvailabilityReplicaCount;
 
-    /** Creates an instance of ElasticPoolProperties class. */
+    /*
+     * Type of enclave requested on the elastic pool.
+     */
+    @JsonProperty(value = "preferredEnclaveType")
+    private AlwaysEncryptedEnclaveType preferredEnclaveType;
+
+    /*
+     * Specifies the availability zone the pool's primary replica is pinned to.
+     */
+    @JsonProperty(value = "availabilityZone")
+    private AvailabilityZoneType availabilityZone;
+
+    /**
+     * Creates an instance of ElasticPoolProperties class.
+     */
     public ElasticPoolProperties() {
     }
 
     /**
      * Get the state property: The state of the elastic pool.
-     *
+     * 
      * @return the state value.
      */
     public ElasticPoolState state() {
@@ -86,7 +104,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Get the creationDate property: The creation date of the elastic pool (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -95,7 +113,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Get the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -104,7 +122,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Set the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
-     *
+     * 
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -115,7 +133,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Get the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
-     *
+     * 
      * @return the minCapacity value.
      */
     public Double minCapacity() {
@@ -124,7 +142,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Set the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
-     *
+     * 
      * @param minCapacity the minCapacity value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -135,7 +153,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Get the perDatabaseSettings property: The per database settings for the elastic pool.
-     *
+     * 
      * @return the perDatabaseSettings value.
      */
     public ElasticPoolPerDatabaseSettings perDatabaseSettings() {
@@ -144,7 +162,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Set the perDatabaseSettings property: The per database settings for the elastic pool.
-     *
+     * 
      * @param perDatabaseSettings the perDatabaseSettings value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -156,7 +174,7 @@ public final class ElasticPoolProperties {
     /**
      * Get the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
      * this elastic pool will be spread across multiple availability zones.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -166,7 +184,7 @@ public final class ElasticPoolProperties {
     /**
      * Set the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
      * this elastic pool will be spread across multiple availability zones.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -177,7 +195,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Get the licenseType property: The license type to apply for this elastic pool.
-     *
+     * 
      * @return the licenseType value.
      */
     public ElasticPoolLicenseType licenseType() {
@@ -186,7 +204,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Set the licenseType property: The license type to apply for this elastic pool.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -198,7 +216,7 @@ public final class ElasticPoolProperties {
     /**
      * Get the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
      * configuration defines the period when the maintenance updates will will occur.
-     *
+     * 
      * @return the maintenanceConfigurationId value.
      */
     public String maintenanceConfigurationId() {
@@ -208,7 +226,7 @@ public final class ElasticPoolProperties {
     /**
      * Set the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
      * configuration defines the period when the maintenance updates will will occur.
-     *
+     * 
      * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -220,7 +238,7 @@ public final class ElasticPoolProperties {
     /**
      * Get the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
      * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
-     *
+     * 
      * @return the highAvailabilityReplicaCount value.
      */
     public Integer highAvailabilityReplicaCount() {
@@ -230,7 +248,7 @@ public final class ElasticPoolProperties {
     /**
      * Set the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
      * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
-     *
+     * 
      * @param highAvailabilityReplicaCount the highAvailabilityReplicaCount value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -240,8 +258,48 @@ public final class ElasticPoolProperties {
     }
 
     /**
+     * Get the preferredEnclaveType property: Type of enclave requested on the elastic pool.
+     * 
+     * @return the preferredEnclaveType value.
+     */
+    public AlwaysEncryptedEnclaveType preferredEnclaveType() {
+        return this.preferredEnclaveType;
+    }
+
+    /**
+     * Set the preferredEnclaveType property: Type of enclave requested on the elastic pool.
+     * 
+     * @param preferredEnclaveType the preferredEnclaveType value to set.
+     * @return the ElasticPoolProperties object itself.
+     */
+    public ElasticPoolProperties withPreferredEnclaveType(AlwaysEncryptedEnclaveType preferredEnclaveType) {
+        this.preferredEnclaveType = preferredEnclaveType;
+        return this;
+    }
+
+    /**
+     * Get the availabilityZone property: Specifies the availability zone the pool's primary replica is pinned to.
+     * 
+     * @return the availabilityZone value.
+     */
+    public AvailabilityZoneType availabilityZone() {
+        return this.availabilityZone;
+    }
+
+    /**
+     * Set the availabilityZone property: Specifies the availability zone the pool's primary replica is pinned to.
+     * 
+     * @param availabilityZone the availabilityZone value to set.
+     * @return the ElasticPoolProperties object itself.
+     */
+    public ElasticPoolProperties withAvailabilityZone(AvailabilityZoneType availabilityZone) {
+        this.availabilityZone = availabilityZone;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

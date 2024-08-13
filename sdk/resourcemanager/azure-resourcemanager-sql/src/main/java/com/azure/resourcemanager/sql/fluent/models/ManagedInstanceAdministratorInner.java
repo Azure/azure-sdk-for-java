@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** An Azure SQL managed instance administrator. */
+/**
+ * An Azure SQL managed instance administrator.
+ */
 @Fluent
 public final class ManagedInstanceAdministratorInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class ManagedInstanceAdministratorInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ManagedInstanceAdministratorProperties innerProperties;
 
-    /** Creates an instance of ManagedInstanceAdministratorInner class. */
+    /**
+     * Creates an instance of ManagedInstanceAdministratorInner class.
+     */
     public ManagedInstanceAdministratorInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedInstanceAdministratorProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class ManagedInstanceAdministratorInner extends ProxyResource {
 
     /**
      * Get the administratorType property: Type of the managed instance administrator.
-     *
+     * 
      * @return the administratorType value.
      */
     public ManagedInstanceAdministratorType administratorType() {
@@ -43,7 +47,7 @@ public final class ManagedInstanceAdministratorInner extends ProxyResource {
 
     /**
      * Set the administratorType property: Type of the managed instance administrator.
-     *
+     * 
      * @param administratorType the administratorType value to set.
      * @return the ManagedInstanceAdministratorInner object itself.
      */
@@ -57,7 +61,7 @@ public final class ManagedInstanceAdministratorInner extends ProxyResource {
 
     /**
      * Get the login property: Login name of the managed instance administrator.
-     *
+     * 
      * @return the login value.
      */
     public String login() {
@@ -66,7 +70,7 @@ public final class ManagedInstanceAdministratorInner extends ProxyResource {
 
     /**
      * Set the login property: Login name of the managed instance administrator.
-     *
+     * 
      * @param login the login value to set.
      * @return the ManagedInstanceAdministratorInner object itself.
      */
@@ -80,7 +84,7 @@ public final class ManagedInstanceAdministratorInner extends ProxyResource {
 
     /**
      * Get the sid property: SID (object ID) of the managed instance administrator.
-     *
+     * 
      * @return the sid value.
      */
     public UUID sid() {
@@ -89,7 +93,7 @@ public final class ManagedInstanceAdministratorInner extends ProxyResource {
 
     /**
      * Set the sid property: SID (object ID) of the managed instance administrator.
-     *
+     * 
      * @param sid the sid value to set.
      * @return the ManagedInstanceAdministratorInner object itself.
      */
@@ -103,7 +107,7 @@ public final class ManagedInstanceAdministratorInner extends ProxyResource {
 
     /**
      * Get the tenantId property: Tenant ID of the managed instance administrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -112,7 +116,7 @@ public final class ManagedInstanceAdministratorInner extends ProxyResource {
 
     /**
      * Set the tenantId property: Tenant ID of the managed instance administrator.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ManagedInstanceAdministratorInner object itself.
      */
@@ -126,7 +130,7 @@ public final class ManagedInstanceAdministratorInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

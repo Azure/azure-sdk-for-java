@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The minimum per-database performance level capability. */
+/**
+ * The minimum per-database performance level capability.
+ */
 @Fluent
 public final class ElasticPoolPerDatabaseMinPerformanceLevelCapability {
     /*
@@ -34,13 +36,15 @@ public final class ElasticPoolPerDatabaseMinPerformanceLevelCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ElasticPoolPerDatabaseMinPerformanceLevelCapability class. */
+    /**
+     * Creates an instance of ElasticPoolPerDatabaseMinPerformanceLevelCapability class.
+     */
     public ElasticPoolPerDatabaseMinPerformanceLevelCapability() {
     }
 
     /**
      * Get the limit property: The minimum performance level per database.
-     *
+     * 
      * @return the limit value.
      */
     public Double limit() {
@@ -49,7 +53,7 @@ public final class ElasticPoolPerDatabaseMinPerformanceLevelCapability {
 
     /**
      * Get the unit property: Unit type used to measure performance level.
-     *
+     * 
      * @return the unit value.
      */
     public PerformanceLevelUnit unit() {
@@ -58,7 +62,7 @@ public final class ElasticPoolPerDatabaseMinPerformanceLevelCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -67,7 +71,7 @@ public final class ElasticPoolPerDatabaseMinPerformanceLevelCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -76,7 +80,7 @@ public final class ElasticPoolPerDatabaseMinPerformanceLevelCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ElasticPoolPerDatabaseMinPerformanceLevelCapability object itself.
      */
@@ -87,7 +91,7 @@ public final class ElasticPoolPerDatabaseMinPerformanceLevelCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

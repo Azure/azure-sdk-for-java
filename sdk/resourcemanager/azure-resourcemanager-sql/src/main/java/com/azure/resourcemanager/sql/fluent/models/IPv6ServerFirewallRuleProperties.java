@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an IPv6 server firewall rule. */
+/**
+ * The properties of an IPv6 server firewall rule.
+ */
 @Fluent
 public final class IPv6ServerFirewallRuleProperties {
     /*
@@ -17,18 +19,20 @@ public final class IPv6ServerFirewallRuleProperties {
     private String startIPv6Address;
 
     /*
-     * The end IP address of the firewall rule. Must be IPv6 format. Must be greater than or equal to startIpAddress.
+     * The end IP address of the firewall rule. Must be IPv6 format. Must be greater than or equal to startIpv6Address.
      */
     @JsonProperty(value = "endIPv6Address")
     private String endIPv6Address;
 
-    /** Creates an instance of IPv6ServerFirewallRuleProperties class. */
+    /**
+     * Creates an instance of IPv6ServerFirewallRuleProperties class.
+     */
     public IPv6ServerFirewallRuleProperties() {
     }
 
     /**
      * Get the startIPv6Address property: The start IP address of the firewall rule. Must be IPv6 format.
-     *
+     * 
      * @return the startIPv6Address value.
      */
     public String startIPv6Address() {
@@ -37,7 +41,7 @@ public final class IPv6ServerFirewallRuleProperties {
 
     /**
      * Set the startIPv6Address property: The start IP address of the firewall rule. Must be IPv6 format.
-     *
+     * 
      * @param startIPv6Address the startIPv6Address value to set.
      * @return the IPv6ServerFirewallRuleProperties object itself.
      */
@@ -48,8 +52,8 @@ public final class IPv6ServerFirewallRuleProperties {
 
     /**
      * Get the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
-     * than or equal to startIpAddress.
-     *
+     * than or equal to startIpv6Address.
+     * 
      * @return the endIPv6Address value.
      */
     public String endIPv6Address() {
@@ -58,8 +62,8 @@ public final class IPv6ServerFirewallRuleProperties {
 
     /**
      * Set the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
-     * than or equal to startIpAddress.
-     *
+     * than or equal to startIpv6Address.
+     * 
      * @param endIPv6Address the endIPv6Address value to set.
      * @return the IPv6ServerFirewallRuleProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class IPv6ServerFirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a server firewall rule. */
+/**
+ * The properties of a server firewall rule.
+ */
 @Fluent
 public final class ServerFirewallRuleProperties {
     /*
@@ -24,14 +26,16 @@ public final class ServerFirewallRuleProperties {
     @JsonProperty(value = "endIpAddress")
     private String endIpAddress;
 
-    /** Creates an instance of ServerFirewallRuleProperties class. */
+    /**
+     * Creates an instance of ServerFirewallRuleProperties class.
+     */
     public ServerFirewallRuleProperties() {
     }
 
     /**
      * Get the startIpAddress property: The start IP address of the firewall rule. Must be IPv4 format. Use value
      * '0.0.0.0' for all Azure-internal IP addresses.
-     *
+     * 
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
@@ -41,7 +45,7 @@ public final class ServerFirewallRuleProperties {
     /**
      * Set the startIpAddress property: The start IP address of the firewall rule. Must be IPv4 format. Use value
      * '0.0.0.0' for all Azure-internal IP addresses.
-     *
+     * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the ServerFirewallRuleProperties object itself.
      */
@@ -53,7 +57,7 @@ public final class ServerFirewallRuleProperties {
     /**
      * Get the endIpAddress property: The end IP address of the firewall rule. Must be IPv4 format. Must be greater than
      * or equal to startIpAddress. Use value '0.0.0.0' for all Azure-internal IP addresses.
-     *
+     * 
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
@@ -63,7 +67,7 @@ public final class ServerFirewallRuleProperties {
     /**
      * Set the endIpAddress property: The end IP address of the firewall rule. Must be IPv4 format. Must be greater than
      * or equal to startIpAddress. Use value '0.0.0.0' for all Azure-internal IP addresses.
-     *
+     * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the ServerFirewallRuleProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class ServerFirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

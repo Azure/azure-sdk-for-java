@@ -7,21 +7,33 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Automatic tuning desired state. */
+/**
+ * Automatic tuning desired state.
+ */
 public enum AutomaticTuningMode {
-    /** Enum value Inherit. */
+    /**
+     * Enum value Inherit.
+     */
     INHERIT("Inherit"),
 
-    /** Enum value Custom. */
+    /**
+     * Enum value Custom.
+     */
     CUSTOM("Custom"),
 
-    /** Enum value Auto. */
+    /**
+     * Enum value Auto.
+     */
     AUTO("Auto"),
 
-    /** Enum value Unspecified. */
+    /**
+     * Enum value Unspecified.
+     */
     UNSPECIFIED("Unspecified");
 
-    /** The actual serialized value for a AutomaticTuningMode instance. */
+    /**
+     * The actual serialized value for a AutomaticTuningMode instance.
+     */
     private final String value;
 
     AutomaticTuningMode(String value) {
@@ -30,7 +42,7 @@ public enum AutomaticTuningMode {
 
     /**
      * Parses a serialized value to a AutomaticTuningMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AutomaticTuningMode object, or null if unable to parse.
      */
@@ -48,7 +60,9 @@ public enum AutomaticTuningMode {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedInstancePrivateEndpointProperty model. */
+/**
+ * The ManagedInstancePrivateEndpointProperty model.
+ */
 @Fluent
 public final class ManagedInstancePrivateEndpointProperty {
     /*
@@ -16,13 +18,15 @@ public final class ManagedInstancePrivateEndpointProperty {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ManagedInstancePrivateEndpointProperty class. */
+    /**
+     * Creates an instance of ManagedInstancePrivateEndpointProperty class.
+     */
     public ManagedInstancePrivateEndpointProperty() {
     }
 
     /**
      * Get the id property: Resource id of the private endpoint.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class ManagedInstancePrivateEndpointProperty {
 
     /**
      * Set the id property: Resource id of the private endpoint.
-     *
+     * 
      * @param id the id value to set.
      * @return the ManagedInstancePrivateEndpointProperty object itself.
      */
@@ -42,7 +46,7 @@ public final class ManagedInstancePrivateEndpointProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ReplicationLinks ListByServer. */
+/**
+ * Samples for ReplicationLinks ListByServer.
+ */
 public final class ReplicationLinksListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ReplicationLinkListByServer.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ReplicationLinkListByServer.
+     * json
      */
     /**
      * Sample code: List replication links on server.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listReplicationLinksOnServer(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getReplicationLinks()
-            .listByServer("Default", "sourcesvr", Context.NONE);
+            .listByServer("Default", "sourcesvr", com.azure.core.util.Context.NONE);
     }
 }

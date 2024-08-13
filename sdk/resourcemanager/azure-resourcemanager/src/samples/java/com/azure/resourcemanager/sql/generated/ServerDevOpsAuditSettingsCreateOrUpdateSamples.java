@@ -4,64 +4,60 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ServerDevOpsAuditingSettingsInner;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
+import com.azure.resourcemanager.sql.models.DevOpsAuditingSettingsName;
 import java.util.UUID;
 
-/** Samples for ServerDevOpsAuditSettings CreateOrUpdate. */
+/**
+ * Samples for ServerDevOpsAuditSettings CreateOrUpdate.
+ */
 public final class ServerDevOpsAuditSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDevOpsAuditCreateMin.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-02-01-preview/examples/ServerDevOpsAuditCreateMin.
+     * json
      */
     /**
      * Sample code: Update a server's DevOps audit settings with minimal input.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updateAServerSDevOpsAuditSettingsWithMinimalInput(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        updateAServerSDevOpsAuditSettingsWithMinimalInput(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getServerDevOpsAuditSettings()
-            .createOrUpdate(
-                "devAuditTestRG",
-                "devOpsAuditTestSvr",
-                "default",
-                new ServerDevOpsAuditingSettingsInner()
-                    .withState(BlobAuditingPolicyState.ENABLED)
+            .createOrUpdate("devAuditTestRG", "devOpsAuditTestSvr", DevOpsAuditingSettingsName.DEFAULT,
+                new ServerDevOpsAuditingSettingsInner().withState(BlobAuditingPolicyState.ENABLED)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
                     .withStorageAccountAccessKey("fakeTokenPlaceholder"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerDevOpsAuditCreateMax.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-02-01-preview/examples/ServerDevOpsAuditCreateMax.
+     * json
      */
     /**
      * Sample code: Update a server's DevOps audit settings with all params.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updateAServerSDevOpsAuditSettingsWithAllParams(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        updateAServerSDevOpsAuditSettingsWithAllParams(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getServerDevOpsAuditSettings()
-            .createOrUpdate(
-                "devAuditTestRG",
-                "devOpsAuditTestSvr",
-                "default",
-                new ServerDevOpsAuditingSettingsInner()
-                    .withIsAzureMonitorTargetEnabled(true)
+            .createOrUpdate("devAuditTestRG", "devOpsAuditTestSvr", DevOpsAuditingSettingsName.DEFAULT,
+                new ServerDevOpsAuditingSettingsInner().withIsAzureMonitorTargetEnabled(true)
                     .withState(BlobAuditingPolicyState.ENABLED)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
                     .withStorageAccountAccessKey("fakeTokenPlaceholder")
                     .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

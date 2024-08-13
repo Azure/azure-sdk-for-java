@@ -30,24 +30,28 @@ import com.azure.resourcemanager.sql.fluent.models.RecoverableManagedDatabaseInn
 import com.azure.resourcemanager.sql.models.RecoverableManagedDatabaseListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RecoverableManagedDatabasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecoverableManagedDatabasesClient.
+ */
 public final class RecoverableManagedDatabasesClientImpl implements RecoverableManagedDatabasesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RecoverableManagedDatabasesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of RecoverableManagedDatabasesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RecoverableManagedDatabasesClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    RecoverableManagedDatabasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(RecoverableManagedDatabasesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,68 +62,54 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
     public interface RecoverableManagedDatabasesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/recoverableDatabases")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/recoverableDatabases")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecoverableManagedDatabaseListResult>> listByInstance(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RecoverableManagedDatabaseListResult>> listByInstance(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/recoverableDatabases/{recoverableDatabaseName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/recoverableDatabases/{recoverableDatabaseName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecoverableManagedDatabaseInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RecoverableManagedDatabaseInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("recoverableDatabaseName") String recoverableDatabaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoverableManagedDatabaseListResult>> listByInstanceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of recoverable managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of recoverable managed databases along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecoverableManagedDatabaseInner>> listByInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName) {
+    private Mono<PagedResponse<RecoverableManagedDatabaseInner>> listByInstanceSinglePageAsync(String resourceGroupName,
+        String managedInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -130,57 +120,38 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByInstance(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<RecoverableManagedDatabaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByInstance(this.client.getEndpoint(), resourceGroupName,
+                managedInstanceName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<RecoverableManagedDatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of recoverable managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of recoverable managed databases along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecoverableManagedDatabaseInner>> listByInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    private Mono<PagedResponse<RecoverableManagedDatabaseInner>> listByInstanceSinglePageAsync(String resourceGroupName,
+        String managedInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,38 +162,24 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByInstance(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByInstance(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of recoverable managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -230,18 +187,17 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @return a list of recoverable managed databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecoverableManagedDatabaseInner> listByInstanceAsync(
-        String resourceGroupName, String managedInstanceName) {
-        return new PagedFlux<>(
-            () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
+    public PagedFlux<RecoverableManagedDatabaseInner> listByInstanceAsync(String resourceGroupName,
+        String managedInstanceName) {
+        return new PagedFlux<>(() -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
             nextLink -> listByInstanceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of recoverable managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -250,18 +206,17 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @return a list of recoverable managed databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecoverableManagedDatabaseInner> listByInstanceAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
+    private PagedFlux<RecoverableManagedDatabaseInner> listByInstanceAsync(String resourceGroupName,
+        String managedInstanceName, Context context) {
+        return new PagedFlux<>(() -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of recoverable managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -269,16 +224,16 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @return a list of recoverable managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoverableManagedDatabaseInner> listByInstance(
-        String resourceGroupName, String managedInstanceName) {
+    public PagedIterable<RecoverableManagedDatabaseInner> listByInstance(String resourceGroupName,
+        String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
     /**
      * Gets a list of recoverable managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -287,16 +242,16 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @return a list of recoverable managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoverableManagedDatabaseInner> listByInstance(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    public PagedIterable<RecoverableManagedDatabaseInner> listByInstance(String resourceGroupName,
+        String managedInstanceName, Context context) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, context));
     }
 
     /**
      * Gets a recoverable managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param recoverableDatabaseName The recoverableDatabaseName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,13 +260,11 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @return a recoverable managed database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecoverableManagedDatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String recoverableDatabaseName) {
+    public Mono<Response<RecoverableManagedDatabaseInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String recoverableDatabaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -322,38 +275,26 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (recoverableDatabaseName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter recoverableDatabaseName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter recoverableDatabaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            recoverableDatabaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                recoverableDatabaseName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a recoverable managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param recoverableDatabaseName The recoverableDatabaseName parameter.
      * @param context The context to associate with this operation.
@@ -363,13 +304,11 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @return a recoverable managed database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecoverableManagedDatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String recoverableDatabaseName, Context context) {
+    private Mono<Response<RecoverableManagedDatabaseInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String recoverableDatabaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -380,35 +319,25 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (recoverableDatabaseName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter recoverableDatabaseName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter recoverableDatabaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                recoverableDatabaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, recoverableDatabaseName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Gets a recoverable managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param recoverableDatabaseName The recoverableDatabaseName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -417,17 +346,17 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @return a recoverable managed database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecoverableManagedDatabaseInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String recoverableDatabaseName) {
+    public Mono<RecoverableManagedDatabaseInner> getAsync(String resourceGroupName, String managedInstanceName,
+        String recoverableDatabaseName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, recoverableDatabaseName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a recoverable managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param recoverableDatabaseName The recoverableDatabaseName parameter.
      * @param context The context to associate with this operation.
@@ -437,16 +366,16 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @return a recoverable managed database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecoverableManagedDatabaseInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, String recoverableDatabaseName, Context context) {
+    public Response<RecoverableManagedDatabaseInner> getWithResponse(String resourceGroupName,
+        String managedInstanceName, String recoverableDatabaseName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, recoverableDatabaseName, context).block();
     }
 
     /**
      * Gets a recoverable managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param recoverableDatabaseName The recoverableDatabaseName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -455,22 +384,21 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      * @return a recoverable managed database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecoverableManagedDatabaseInner get(
-        String resourceGroupName, String managedInstanceName, String recoverableDatabaseName) {
+    public RecoverableManagedDatabaseInner get(String resourceGroupName, String managedInstanceName,
+        String recoverableDatabaseName) {
         return getWithResponse(resourceGroupName, managedInstanceName, recoverableDatabaseName, Context.NONE)
             .getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of recoverable managed databases along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableManagedDatabaseInner>> listByInstanceNextSinglePageAsync(String nextLink) {
@@ -478,62 +406,42 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RecoverableManagedDatabaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RecoverableManagedDatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of recoverable managed databases along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecoverableManagedDatabaseInner>> listByInstanceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<RecoverableManagedDatabaseInner>> listByInstanceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

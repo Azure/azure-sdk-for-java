@@ -15,6 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionBackupInner;
 import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionBackupOperationResultInner;
+import com.azure.resourcemanager.sql.models.ChangeLongTermRetentionBackupAccessTierParameters;
 import com.azure.resourcemanager.sql.models.CopyLongTermRetentionBackupParameters;
 import com.azure.resourcemanager.sql.models.DatabaseState;
 import com.azure.resourcemanager.sql.models.UpdateLongTermRetentionBackupParameters;
@@ -22,11 +23,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LongTermRetentionBackupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LongTermRetentionBackupsClient.
+ */
 public interface LongTermRetentionBackupsClient {
     /**
      * Lists the long term retention backups for a given location.
-     *
+     * 
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
@@ -36,12 +39,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState);
+    PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName, Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState);
 
     /**
      * Lists the long term retention backups for a given location.
-     *
+     * 
      * @param locationName The location of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -53,7 +56,7 @@ public interface LongTermRetentionBackupsClient {
 
     /**
      * Lists the long term retention backups for a given location.
-     *
+     * 
      * @param locationName The location of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,7 +68,7 @@ public interface LongTermRetentionBackupsClient {
 
     /**
      * Lists the long term retention backups for a given location.
-     *
+     * 
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
@@ -76,12 +79,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByLocation(
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context);
+    PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName, Boolean onlyLatestPerDatabase,
+        DatabaseState databaseState, Context context);
 
     /**
      * Lists the long term retention backups for a given server.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
@@ -92,15 +95,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByServerAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState);
+    PagedFlux<LongTermRetentionBackupInner> listByServerAsync(String locationName, String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState);
 
     /**
      * Lists the long term retention backups for a given server.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,7 +113,7 @@ public interface LongTermRetentionBackupsClient {
 
     /**
      * Lists the long term retention backups for a given server.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,7 +126,7 @@ public interface LongTermRetentionBackupsClient {
 
     /**
      * Lists the long term retention backups for a given server.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
@@ -138,16 +138,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByServer(
-        String locationName,
-        String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context);
+    PagedIterable<LongTermRetentionBackupInner> listByServer(String locationName, String longTermRetentionServerName,
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context);
 
     /**
      * Lists all long term retention backups for a database.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -159,16 +155,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState);
+    PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, Boolean onlyLatestPerDatabase, DatabaseState databaseState);
 
     /**
      * Lists all long term retention backups for a database.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -178,12 +170,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(
-        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName);
+    PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName);
 
     /**
      * Lists all long term retention backups for a database.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -193,12 +185,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByDatabase(
-        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName);
+    PagedIterable<LongTermRetentionBackupInner> listByDatabase(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName);
 
     /**
      * Lists all long term retention backups for a database.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -211,17 +203,13 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByDatabase(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
+    PagedIterable<LongTermRetentionBackupInner> listByDatabase(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
         Context context);
 
     /**
      * Gets a long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -232,15 +220,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LongTermRetentionBackupInner>> getWithResponseAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    Mono<Response<LongTermRetentionBackupInner>> getWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Gets a long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -251,15 +236,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a long term retention backup on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LongTermRetentionBackupInner> getAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    Mono<LongTermRetentionBackupInner> getAsync(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Gets a long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -271,16 +253,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a long term retention backup along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LongTermRetentionBackupInner> getWithResponse(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context);
+    Response<LongTermRetentionBackupInner> getWithResponse(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, Context context);
 
     /**
      * Gets a long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -291,15 +269,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a long term retention backup.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupInner get(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    LongTermRetentionBackupInner get(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -310,15 +285,12 @@ public interface LongTermRetentionBackupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -329,15 +301,12 @@ public interface LongTermRetentionBackupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -348,15 +317,12 @@ public interface LongTermRetentionBackupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -368,16 +334,12 @@ public interface LongTermRetentionBackupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, Context context);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -388,15 +350,12 @@ public interface LongTermRetentionBackupsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    Mono<Void> deleteAsync(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -406,15 +365,12 @@ public interface LongTermRetentionBackupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
+    void delete(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
         String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -425,16 +381,140 @@ public interface LongTermRetentionBackupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context);
+    void delete(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, Context context);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> changeAccessTierWithResponseAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginChangeAccessTierAsync(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginChangeAccessTier(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginChangeAccessTier(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> changeAccessTierAsync(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner changeAccessTier(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner changeAccessTier(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context);
 
     /**
      * Copy an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -444,19 +524,15 @@ public interface LongTermRetentionBackupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> copyWithResponseAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        CopyLongTermRetentionBackupParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> copyWithResponseAsync(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, CopyLongTermRetentionBackupParameters parameters);
 
     /**
      * Copy an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -469,16 +545,12 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginCopyAsync(
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
-            CopyLongTermRetentionBackupParameters parameters);
+        beginCopyAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+            String backupName, CopyLongTermRetentionBackupParameters parameters);
 
     /**
      * Copy an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -491,16 +563,12 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginCopy(
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
-            CopyLongTermRetentionBackupParameters parameters);
+        beginCopy(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+            String backupName, CopyLongTermRetentionBackupParameters parameters);
 
     /**
      * Copy an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -514,17 +582,12 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginCopy(
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
-            CopyLongTermRetentionBackupParameters parameters,
-            Context context);
+        beginCopy(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+            String backupName, CopyLongTermRetentionBackupParameters parameters, Context context);
 
     /**
      * Copy an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -536,16 +599,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LongTermRetentionBackupOperationResultInner> copyAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        CopyLongTermRetentionBackupParameters parameters);
+    Mono<LongTermRetentionBackupOperationResultInner> copyAsync(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, CopyLongTermRetentionBackupParameters parameters);
 
     /**
      * Copy an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -557,16 +616,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupOperationResultInner copy(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        CopyLongTermRetentionBackupParameters parameters);
+    LongTermRetentionBackupOperationResultInner copy(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, CopyLongTermRetentionBackupParameters parameters);
 
     /**
      * Copy an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -579,17 +634,13 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupOperationResultInner copy(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        CopyLongTermRetentionBackupParameters parameters,
+    LongTermRetentionBackupOperationResultInner copy(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, CopyLongTermRetentionBackupParameters parameters,
         Context context);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -599,19 +650,15 @@ public interface LongTermRetentionBackupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        UpdateLongTermRetentionBackupParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, UpdateLongTermRetentionBackupParameters parameters);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -624,16 +671,12 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginUpdateAsync(
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
-            UpdateLongTermRetentionBackupParameters parameters);
+        beginUpdateAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+            String backupName, UpdateLongTermRetentionBackupParameters parameters);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -646,16 +689,12 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginUpdate(
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
-            UpdateLongTermRetentionBackupParameters parameters);
+        beginUpdate(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+            String backupName, UpdateLongTermRetentionBackupParameters parameters);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -669,17 +708,12 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginUpdate(
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
-            UpdateLongTermRetentionBackupParameters parameters,
-            Context context);
+        beginUpdate(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+            String backupName, UpdateLongTermRetentionBackupParameters parameters, Context context);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -691,16 +725,13 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LongTermRetentionBackupOperationResultInner> updateAsync(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
+    Mono<LongTermRetentionBackupOperationResultInner> updateAsync(String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
         UpdateLongTermRetentionBackupParameters parameters);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -712,16 +743,12 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupOperationResultInner update(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        UpdateLongTermRetentionBackupParameters parameters);
+    LongTermRetentionBackupOperationResultInner update(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, UpdateLongTermRetentionBackupParameters parameters);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -734,19 +761,15 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupOperationResultInner update(
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        UpdateLongTermRetentionBackupParameters parameters,
+    LongTermRetentionBackupOperationResultInner update(String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, UpdateLongTermRetentionBackupParameters parameters,
         Context context);
 
     /**
-     * Lists the long term retention backups for a given location.
-     *
+     * Lists the long term retention backups for a given location based on resource group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
@@ -756,14 +779,14 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(
-        String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState);
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(String resourceGroupName,
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState);
 
     /**
-     * Lists the long term retention backups for a given location.
-     *
+     * Lists the long term retention backups for a given location based on resource group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -771,14 +794,14 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(
-        String resourceGroupName, String locationName);
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(String resourceGroupName,
+        String locationName);
 
     /**
-     * Lists the long term retention backups for a given location.
-     *
+     * Lists the long term retention backups for a given location based on resource group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -786,14 +809,14 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(
-        String resourceGroupName, String locationName);
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(String resourceGroupName,
+        String locationName);
 
     /**
-     * Lists the long term retention backups for a given location.
-     *
+     * Lists the long term retention backups for a given location based on resource group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
@@ -804,18 +827,14 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(
-        String resourceGroupName,
-        String locationName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context);
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(String resourceGroupName,
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context);
 
     /**
-     * Lists the long term retention backups for a given server.
-     *
+     * Lists the long term retention backups for a given server based on resource groups.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
@@ -826,18 +845,15 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase,
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase,
         DatabaseState databaseState);
 
     /**
-     * Lists the long term retention backups for a given server.
-     *
+     * Lists the long term retention backups for a given server based on resource groups.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -846,14 +862,14 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(
-        String resourceGroupName, String locationName, String longTermRetentionServerName);
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName);
 
     /**
-     * Lists the long term retention backups for a given server.
-     *
+     * Lists the long term retention backups for a given server based on resource groups.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -862,14 +878,14 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(
-        String resourceGroupName, String locationName, String longTermRetentionServerName);
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(String resourceGroupName, String locationName,
+        String longTermRetentionServerName);
 
     /**
-     * Lists the long term retention backups for a given server.
-     *
+     * Lists the long term retention backups for a given server based on resource groups.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
@@ -881,19 +897,15 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
         Context context);
 
     /**
-     * Lists all long term retention backups for a database.
-     *
+     * Lists all long term retention backups for a database based on a particular resource group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -905,19 +917,15 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState);
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState);
 
     /**
-     * Lists all long term retention backups for a database.
-     *
+     * Lists all long term retention backups for a database based on a particular resource group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -927,17 +935,14 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName);
+    PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName);
 
     /**
-     * Lists all long term retention backups for a database.
-     *
+     * Lists all long term retention backups for a database based on a particular resource group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -947,17 +952,14 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName);
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName);
 
     /**
-     * Lists all long term retention backups for a database.
-     *
+     * Lists all long term retention backups for a database based on a particular resource group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -970,20 +972,15 @@ public interface LongTermRetentionBackupsClient {
      * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState,
-        Context context);
+    PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context);
 
     /**
      * Gets a long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -994,18 +991,15 @@ public interface LongTermRetentionBackupsClient {
      * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LongTermRetentionBackupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
+    Mono<Response<LongTermRetentionBackupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
         String backupName);
 
     /**
      * Gets a long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1016,18 +1010,14 @@ public interface LongTermRetentionBackupsClient {
      * @return a long term retention backup on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LongTermRetentionBackupInner> getByResourceGroupAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    Mono<LongTermRetentionBackupInner> getByResourceGroupAsync(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Gets a long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1039,19 +1029,14 @@ public interface LongTermRetentionBackupsClient {
      * @return a long term retention backup along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LongTermRetentionBackupInner> getByResourceGroupWithResponse(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context);
+    Response<LongTermRetentionBackupInner> getByResourceGroupWithResponse(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context);
 
     /**
      * Gets a long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1062,18 +1047,14 @@ public interface LongTermRetentionBackupsClient {
      * @return a long term retention backup.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupInner getByResourceGroup(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    LongTermRetentionBackupInner getByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1084,18 +1065,15 @@ public interface LongTermRetentionBackupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteByResourceGroupWithResponseAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
+    Mono<Response<Flux<ByteBuffer>>> deleteByResourceGroupWithResponseAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
         String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1106,18 +1084,14 @@ public interface LongTermRetentionBackupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteByResourceGroupAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteByResourceGroupAsync(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1128,18 +1102,14 @@ public interface LongTermRetentionBackupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1151,19 +1121,14 @@ public interface LongTermRetentionBackupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1174,18 +1139,14 @@ public interface LongTermRetentionBackupsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteByResourceGroupAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1195,18 +1156,14 @@ public interface LongTermRetentionBackupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteByResourceGroup(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName);
+    void deleteByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Deletes a long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1217,19 +1174,159 @@ public interface LongTermRetentionBackupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteByResourceGroup(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        Context context);
+    void deleteByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName,
+        String longTermRetentionDatabaseName, String backupName, Context context);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> changeAccessTierByResourceGroupWithResponseAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
+        beginChangeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+            ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<LongTermRetentionBackupInner> changeAccessTierByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner changeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters);
+
+    /**
+     * Change a long term retention backup access tier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The locationName parameter.
+     * @param longTermRetentionServerName The longTermRetentionServerName parameter.
+     * @param longTermRetentionDatabaseName The longTermRetentionDatabaseName parameter.
+     * @param backupName The backupName parameter.
+     * @param parameters The parameters parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention backup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LongTermRetentionBackupInner changeAccessTierByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        ChangeLongTermRetentionBackupAccessTierParameters parameters, Context context);
 
     /**
      * Copy an existing long term retention backup to a different server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1239,22 +1336,18 @@ public interface LongTermRetentionBackupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> copyByResourceGroupWithResponseAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
+    Mono<Response<Flux<ByteBuffer>>> copyByResourceGroupWithResponseAsync(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
         CopyLongTermRetentionBackupParameters parameters);
 
     /**
      * Copy an existing long term retention backup to a different server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1267,19 +1360,14 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginCopyByResourceGroupAsync(
-            String resourceGroupName,
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
-            CopyLongTermRetentionBackupParameters parameters);
+        beginCopyByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, CopyLongTermRetentionBackupParameters parameters);
 
     /**
      * Copy an existing long term retention backup to a different server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1292,19 +1380,14 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginCopyByResourceGroup(
-            String resourceGroupName,
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
-            CopyLongTermRetentionBackupParameters parameters);
+        beginCopyByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, CopyLongTermRetentionBackupParameters parameters);
 
     /**
      * Copy an existing long term retention backup to a different server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1318,20 +1401,15 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginCopyByResourceGroup(
-            String resourceGroupName,
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
-            CopyLongTermRetentionBackupParameters parameters,
+        beginCopyByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, CopyLongTermRetentionBackupParameters parameters,
             Context context);
 
     /**
      * Copy an existing long term retention backup to a different server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1343,19 +1421,15 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LongTermRetentionBackupOperationResultInner> copyByResourceGroupAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        CopyLongTermRetentionBackupParameters parameters);
+    Mono<LongTermRetentionBackupOperationResultInner> copyByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, CopyLongTermRetentionBackupParameters parameters);
 
     /**
      * Copy an existing long term retention backup to a different server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1367,19 +1441,15 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupOperationResultInner copyByResourceGroup(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
+    LongTermRetentionBackupOperationResultInner copyByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
         CopyLongTermRetentionBackupParameters parameters);
 
     /**
      * Copy an existing long term retention backup to a different server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1392,20 +1462,15 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupOperationResultInner copyByResourceGroup(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        CopyLongTermRetentionBackupParameters parameters,
-        Context context);
+    LongTermRetentionBackupOperationResultInner copyByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        CopyLongTermRetentionBackupParameters parameters, Context context);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1415,22 +1480,18 @@ public interface LongTermRetentionBackupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateByResourceGroupWithResponseAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        UpdateLongTermRetentionBackupParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateByResourceGroupWithResponseAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, UpdateLongTermRetentionBackupParameters parameters);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1443,19 +1504,15 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginUpdateByResourceGroupAsync(
-            String resourceGroupName,
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
+        beginUpdateByResourceGroupAsync(String resourceGroupName, String locationName,
+            String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
             UpdateLongTermRetentionBackupParameters parameters);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1468,19 +1525,15 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginUpdateByResourceGroup(
-            String resourceGroupName,
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
+        beginUpdateByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName,
             UpdateLongTermRetentionBackupParameters parameters);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1494,20 +1547,15 @@ public interface LongTermRetentionBackupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
-        beginUpdateByResourceGroup(
-            String resourceGroupName,
-            String locationName,
-            String longTermRetentionServerName,
-            String longTermRetentionDatabaseName,
-            String backupName,
-            UpdateLongTermRetentionBackupParameters parameters,
+        beginUpdateByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName,
+            String longTermRetentionDatabaseName, String backupName, UpdateLongTermRetentionBackupParameters parameters,
             Context context);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1519,19 +1567,15 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LongTermRetentionBackupOperationResultInner> updateByResourceGroupAsync(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        UpdateLongTermRetentionBackupParameters parameters);
+    Mono<LongTermRetentionBackupOperationResultInner> updateByResourceGroupAsync(String resourceGroupName,
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
+        String backupName, UpdateLongTermRetentionBackupParameters parameters);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1543,19 +1587,15 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupOperationResultInner updateByResourceGroup(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
+    LongTermRetentionBackupOperationResultInner updateByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
         UpdateLongTermRetentionBackupParameters parameters);
 
     /**
      * Updates an existing long term retention backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
@@ -1568,12 +1608,7 @@ public interface LongTermRetentionBackupsClient {
      * @return a LongTermRetentionBackup operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionBackupOperationResultInner updateByResourceGroup(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName,
-        String backupName,
-        UpdateLongTermRetentionBackupParameters parameters,
-        Context context);
+    LongTermRetentionBackupOperationResultInner updateByResourceGroup(String resourceGroupName, String locationName,
+        String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
+        UpdateLongTermRetentionBackupParameters parameters, Context context);
 }

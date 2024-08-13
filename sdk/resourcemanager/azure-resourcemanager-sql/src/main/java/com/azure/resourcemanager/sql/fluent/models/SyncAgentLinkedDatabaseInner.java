@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure SQL Database sync agent linked database. */
+/**
+ * An Azure SQL Database sync agent linked database.
+ */
 @Immutable
 public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SyncAgentLinkedDatabaseProperties innerProperties;
 
-    /** Creates an instance of SyncAgentLinkedDatabaseInner class. */
+    /**
+     * Creates an instance of SyncAgentLinkedDatabaseInner class.
+     */
     public SyncAgentLinkedDatabaseInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SyncAgentLinkedDatabaseProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Get the databaseType property: Type of the sync agent linked database.
-     *
+     * 
      * @return the databaseType value.
      */
     public SyncMemberDbType databaseType() {
@@ -42,7 +46,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Get the databaseId property: Id of the sync agent linked database.
-     *
+     * 
      * @return the databaseId value.
      */
     public String databaseId() {
@@ -51,7 +55,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the sync agent linked database.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -60,7 +64,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Get the serverName property: Server name of the sync agent linked database.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -69,7 +73,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Get the databaseName property: Database name of the sync agent linked database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -78,7 +82,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Get the username property: User name of the sync agent linked database.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -87,7 +91,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.QueryMetricInterval;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The QueryStatistics model. */
+/**
+ * The QueryStatistics model.
+ */
 @Fluent
 public final class QueryStatisticsInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class QueryStatisticsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private QueryStatisticsProperties innerProperties;
 
-    /** Creates an instance of QueryStatisticsInner class. */
+    /**
+     * Creates an instance of QueryStatisticsInner class.
+     */
     public QueryStatisticsInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private QueryStatisticsProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Get the databaseName property: Database name of the database in which this query was executed.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -43,7 +47,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Get the queryId property: Unique query id (unique within one database).
-     *
+     * 
      * @return the queryId value.
      */
     public String queryId() {
@@ -52,7 +56,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Get the startTime property: The start time for the metric (ISO-8601 format).
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -61,7 +65,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Get the endTime property: The end time for the metric (ISO-8601 format).
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -70,7 +74,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Get the intervals property: List of intervals with appropriate metric data.
-     *
+     * 
      * @return the intervals value.
      */
     public List<QueryMetricInterval> intervals() {
@@ -79,7 +83,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Set the intervals property: List of intervals with appropriate metric data.
-     *
+     * 
      * @param intervals the intervals value to set.
      * @return the QueryStatisticsInner object itself.
      */
@@ -93,7 +97,7 @@ public final class QueryStatisticsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

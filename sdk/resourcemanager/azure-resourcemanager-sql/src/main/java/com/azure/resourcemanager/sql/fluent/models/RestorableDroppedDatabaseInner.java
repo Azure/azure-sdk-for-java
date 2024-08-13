@@ -7,13 +7,16 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.DatabaseKey;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** A restorable dropped database resource. */
+/**
+ * A restorable dropped database resource.
+ */
 @Fluent
 public final class RestorableDroppedDatabaseInner extends ProxyResource {
     /*
@@ -41,13 +44,15 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RestorableDroppedDatabaseProperties innerProperties;
 
-    /** Creates an instance of RestorableDroppedDatabaseInner class. */
+    /**
+     * Creates an instance of RestorableDroppedDatabaseInner class.
+     */
     public RestorableDroppedDatabaseInner() {
     }
 
     /**
      * Get the sku property: The name and tier of the SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -56,7 +61,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Set the sku property: The name and tier of the SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RestorableDroppedDatabaseInner object itself.
      */
@@ -67,7 +72,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -76,7 +81,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the RestorableDroppedDatabaseInner object itself.
      */
@@ -87,7 +92,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -96,7 +101,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the RestorableDroppedDatabaseInner object itself.
      */
@@ -107,7 +112,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestorableDroppedDatabaseProperties innerProperties() {
@@ -116,7 +121,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the databaseName property: The name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -125,7 +130,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the maxSizeBytes property: The max size of the database expressed in bytes.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -134,7 +139,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The creation date of the database (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -143,7 +148,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the deletionDate property: The deletion date of the database (ISO8601 format).
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -152,7 +157,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the earliestRestoreDate property: The earliest restore date of the database (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -161,7 +166,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the backupStorageRedundancy property: The storage account type used to store backups for this database.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -169,8 +174,31 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
     }
 
     /**
+     * Get the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @return the keys value.
+     */
+    public Map<String, DatabaseKey> keys() {
+        return this.innerProperties() == null ? null : this.innerProperties().keys();
+    }
+
+    /**
+     * Set the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @param keys the keys value to set.
+     * @return the RestorableDroppedDatabaseInner object itself.
+     */
+    public RestorableDroppedDatabaseInner withKeys(Map<String, DatabaseKey> keys) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableDroppedDatabaseProperties();
+        }
+        this.innerProperties().withKeys(keys);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

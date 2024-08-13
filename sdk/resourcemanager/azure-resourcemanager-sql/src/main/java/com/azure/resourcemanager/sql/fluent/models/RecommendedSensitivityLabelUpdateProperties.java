@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.RecommendedSensitivityLabelUpdateKind;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an operation executed on a recommended sensitivity label. */
+/**
+ * Properties of an operation executed on a recommended sensitivity label.
+ */
 @Fluent
 public final class RecommendedSensitivityLabelUpdateProperties {
     /*
@@ -36,13 +38,15 @@ public final class RecommendedSensitivityLabelUpdateProperties {
     @JsonProperty(value = "column", required = true)
     private String column;
 
-    /** Creates an instance of RecommendedSensitivityLabelUpdateProperties class. */
+    /**
+     * Creates an instance of RecommendedSensitivityLabelUpdateProperties class.
+     */
     public RecommendedSensitivityLabelUpdateProperties() {
     }
 
     /**
      * Get the op property: The op property.
-     *
+     * 
      * @return the op value.
      */
     public RecommendedSensitivityLabelUpdateKind op() {
@@ -51,7 +55,7 @@ public final class RecommendedSensitivityLabelUpdateProperties {
 
     /**
      * Set the op property: The op property.
-     *
+     * 
      * @param op the op value to set.
      * @return the RecommendedSensitivityLabelUpdateProperties object itself.
      */
@@ -62,7 +66,7 @@ public final class RecommendedSensitivityLabelUpdateProperties {
 
     /**
      * Get the schema property: Schema name of the column to update.
-     *
+     * 
      * @return the schema value.
      */
     public String schema() {
@@ -71,7 +75,7 @@ public final class RecommendedSensitivityLabelUpdateProperties {
 
     /**
      * Set the schema property: Schema name of the column to update.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the RecommendedSensitivityLabelUpdateProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class RecommendedSensitivityLabelUpdateProperties {
 
     /**
      * Get the table property: Table name of the column to update.
-     *
+     * 
      * @return the table value.
      */
     public String table() {
@@ -91,7 +95,7 @@ public final class RecommendedSensitivityLabelUpdateProperties {
 
     /**
      * Set the table property: Table name of the column to update.
-     *
+     * 
      * @param table the table value to set.
      * @return the RecommendedSensitivityLabelUpdateProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class RecommendedSensitivityLabelUpdateProperties {
 
     /**
      * Get the column property: Column name to update.
-     *
+     * 
      * @return the column value.
      */
     public String column() {
@@ -111,7 +115,7 @@ public final class RecommendedSensitivityLabelUpdateProperties {
 
     /**
      * Set the column property: Column name to update.
-     *
+     * 
      * @param column the column value to set.
      * @return the RecommendedSensitivityLabelUpdateProperties object itself.
      */
@@ -122,33 +126,29 @@ public final class RecommendedSensitivityLabelUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (op() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property op in model RecommendedSensitivityLabelUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property op in model RecommendedSensitivityLabelUpdateProperties"));
         }
         if (schema() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schema in model RecommendedSensitivityLabelUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schema in model RecommendedSensitivityLabelUpdateProperties"));
         }
         if (table() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property table in model RecommendedSensitivityLabelUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property table in model RecommendedSensitivityLabelUpdateProperties"));
         }
         if (column() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property column in model RecommendedSensitivityLabelUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property column in model RecommendedSensitivityLabelUpdateProperties"));
         }
     }
 

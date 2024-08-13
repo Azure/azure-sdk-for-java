@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.AdvancedThreatProtectionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of an Advanced Threat Protection state. */
+/**
+ * Properties of an Advanced Threat Protection state.
+ */
 @Fluent
 public final class AdvancedThreatProtectionProperties {
     /*
@@ -26,14 +28,16 @@ public final class AdvancedThreatProtectionProperties {
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
-    /** Creates an instance of AdvancedThreatProtectionProperties class. */
+    /**
+     * Creates an instance of AdvancedThreatProtectionProperties class.
+     */
     public AdvancedThreatProtectionProperties() {
     }
 
     /**
      * Get the state property: Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled
      * or a state has not been applied yet on the specific database or server.
-     *
+     * 
      * @return the state value.
      */
     public AdvancedThreatProtectionState state() {
@@ -43,7 +47,7 @@ public final class AdvancedThreatProtectionProperties {
     /**
      * Set the state property: Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled
      * or a state has not been applied yet on the specific database or server.
-     *
+     * 
      * @param state the state value to set.
      * @return the AdvancedThreatProtectionProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class AdvancedThreatProtectionProperties {
 
     /**
      * Get the creationTime property: Specifies the UTC creation time of the policy.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -63,15 +67,14 @@ public final class AdvancedThreatProtectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model AdvancedThreatProtectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model AdvancedThreatProtectionProperties"));
         }
     }
 

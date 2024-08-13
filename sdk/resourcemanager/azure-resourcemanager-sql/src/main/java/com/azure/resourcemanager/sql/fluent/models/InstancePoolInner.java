@@ -11,7 +11,9 @@ import com.azure.resourcemanager.sql.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure SQL instance pool. */
+/**
+ * An Azure SQL instance pool.
+ */
 @Fluent
 public final class InstancePoolInner extends Resource {
     /*
@@ -26,13 +28,15 @@ public final class InstancePoolInner extends Resource {
     @JsonProperty(value = "properties")
     private InstancePoolProperties innerProperties;
 
-    /** Creates an instance of InstancePoolInner class. */
+    /**
+     * Creates an instance of InstancePoolInner class.
+     */
     public InstancePoolInner() {
     }
 
     /**
      * Get the sku property: The name and tier of the SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -41,7 +45,7 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Set the sku property: The name and tier of the SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the InstancePoolInner object itself.
      */
@@ -52,21 +56,25 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private InstancePoolProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InstancePoolInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InstancePoolInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,7 +83,7 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Get the subnetId property: Resource ID of the subnet to place this instance pool in.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -84,7 +92,7 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Set the subnetId property: Resource ID of the subnet to place this instance pool in.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the InstancePoolInner object itself.
      */
@@ -98,7 +106,7 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Get the vCores property: Count of vCores belonging to this instance pool.
-     *
+     * 
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -107,7 +115,7 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Set the vCores property: Count of vCores belonging to this instance pool.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the InstancePoolInner object itself.
      */
@@ -122,7 +130,7 @@ public final class InstancePoolInner extends Resource {
     /**
      * Get the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
      * included) and 'BasePrice' (without SQL license price).
-     *
+     * 
      * @return the licenseType value.
      */
     public InstancePoolLicenseType licenseType() {
@@ -132,7 +140,7 @@ public final class InstancePoolInner extends Resource {
     /**
      * Set the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
      * included) and 'BasePrice' (without SQL license price).
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the InstancePoolInner object itself.
      */
@@ -145,8 +153,42 @@ public final class InstancePoolInner extends Resource {
     }
 
     /**
+     * Get the dnsZone property: The Dns Zone that the managed instance pool is in.
+     * 
+     * @return the dnsZone value.
+     */
+    public String dnsZone() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsZone();
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the InstancePoolInner object itself.
+     */
+    public InstancePoolInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstancePoolProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

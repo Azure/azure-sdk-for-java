@@ -14,12 +14,13 @@ import com.azure.resourcemanager.sql.models.RecommendedActionMetricInfo;
 import com.azure.resourcemanager.sql.models.RecommendedActionStateInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Properties for a Database, Server or Elastic Pool Recommended Action. */
+/**
+ * Properties for a Database, Server or Elastic Pool Recommended Action.
+ */
 @Fluent
 public final class RecommendedActionProperties {
     /*
@@ -76,7 +77,7 @@ public final class RecommendedActionProperties {
      * Gets the time taken for applying this recommended action on user resource. e.g., time taken for index creation
      */
     @JsonProperty(value = "executeActionDuration", access = JsonProperty.Access.WRITE_ONLY)
-    private Duration executeActionDuration;
+    private String executeActionDuration;
 
     /*
      * Gets the time when system started reverting changes of this recommended action on user resource. e.g., time when
@@ -90,7 +91,7 @@ public final class RecommendedActionProperties {
      * dropping the created index.
      */
     @JsonProperty(value = "revertActionDuration", access = JsonProperty.Access.WRITE_ONLY)
-    private Duration revertActionDuration;
+    private String revertActionDuration;
 
     /*
      * Gets if approval for applying this recommended action was given by user/system.
@@ -166,13 +167,15 @@ public final class RecommendedActionProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> details;
 
-    /** Creates an instance of RecommendedActionProperties class. */
+    /**
+     * Creates an instance of RecommendedActionProperties class.
+     */
     public RecommendedActionProperties() {
     }
 
     /**
      * Get the recommendationReason property: Gets the reason for recommending this action. e.g., DuplicateIndex.
-     *
+     * 
      * @return the recommendationReason value.
      */
     public String recommendationReason() {
@@ -181,7 +184,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the validSince property: Gets the time since when this recommended action is valid.
-     *
+     * 
      * @return the validSince value.
      */
     public OffsetDateTime validSince() {
@@ -190,7 +193,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the lastRefresh property: Gets time when this recommended action was last refreshed.
-     *
+     * 
      * @return the lastRefresh value.
      */
     public OffsetDateTime lastRefresh() {
@@ -199,7 +202,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the state property: Gets the info of the current state the recommended action is in.
-     *
+     * 
      * @return the state value.
      */
     public RecommendedActionStateInfo state() {
@@ -208,7 +211,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Set the state property: Gets the info of the current state the recommended action is in.
-     *
+     * 
      * @param state the state value to set.
      * @return the RecommendedActionProperties object itself.
      */
@@ -219,7 +222,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the isExecutableAction property: Gets if this recommended action is actionable by user.
-     *
+     * 
      * @return the isExecutableAction value.
      */
     public Boolean isExecutableAction() {
@@ -228,7 +231,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the isRevertableAction property: Gets if changes applied by this recommended action can be reverted by user.
-     *
+     * 
      * @return the isRevertableAction value.
      */
     public Boolean isRevertableAction() {
@@ -238,7 +241,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the isArchivedAction property: Gets if this recommended action was suggested some time ago but user chose to
      * ignore this and system added a new recommended action again.
-     *
+     * 
      * @return the isArchivedAction value.
      */
     public Boolean isArchivedAction() {
@@ -248,7 +251,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the executeActionStartTime property: Gets the time when system started applying this recommended action on
      * the user resource. e.g., index creation start time.
-     *
+     * 
      * @return the executeActionStartTime value.
      */
     public OffsetDateTime executeActionStartTime() {
@@ -258,17 +261,17 @@ public final class RecommendedActionProperties {
     /**
      * Get the executeActionDuration property: Gets the time taken for applying this recommended action on user
      * resource. e.g., time taken for index creation.
-     *
+     * 
      * @return the executeActionDuration value.
      */
-    public Duration executeActionDuration() {
+    public String executeActionDuration() {
         return this.executeActionDuration;
     }
 
     /**
      * Get the revertActionStartTime property: Gets the time when system started reverting changes of this recommended
      * action on user resource. e.g., time when index drop is executed.
-     *
+     * 
      * @return the revertActionStartTime value.
      */
     public OffsetDateTime revertActionStartTime() {
@@ -278,17 +281,17 @@ public final class RecommendedActionProperties {
     /**
      * Get the revertActionDuration property: Gets the time taken for reverting changes of this recommended action on
      * user resource. e.g., time taken for dropping the created index.
-     *
+     * 
      * @return the revertActionDuration value.
      */
-    public Duration revertActionDuration() {
+    public String revertActionDuration() {
         return this.revertActionDuration;
     }
 
     /**
      * Get the executeActionInitiatedBy property: Gets if approval for applying this recommended action was given by
      * user/system.
-     *
+     * 
      * @return the executeActionInitiatedBy value.
      */
     public RecommendedActionInitiatedBy executeActionInitiatedBy() {
@@ -298,7 +301,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the executeActionInitiatedTime property: Gets the time when this recommended action was approved for
      * execution.
-     *
+     * 
      * @return the executeActionInitiatedTime value.
      */
     public OffsetDateTime executeActionInitiatedTime() {
@@ -308,7 +311,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the revertActionInitiatedBy property: Gets if approval for reverting this recommended action was given by
      * user/system.
-     *
+     * 
      * @return the revertActionInitiatedBy value.
      */
     public RecommendedActionInitiatedBy revertActionInitiatedBy() {
@@ -317,7 +320,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the revertActionInitiatedTime property: Gets the time when this recommended action was approved for revert.
-     *
+     * 
      * @return the revertActionInitiatedTime value.
      */
     public OffsetDateTime revertActionInitiatedTime() {
@@ -327,7 +330,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the score property: Gets the impact of this recommended action. Possible values are 1 - Low impact, 2 -
      * Medium Impact and 3 - High Impact.
-     *
+     * 
      * @return the score value.
      */
     public Integer score() {
@@ -337,7 +340,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the implementationDetails property: Gets the implementation details of this recommended action for user to
      * apply it manually.
-     *
+     * 
      * @return the implementationDetails value.
      */
     public RecommendedActionImplementationInfo implementationDetails() {
@@ -346,7 +349,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the errorDetails property: Gets the error details if and why this recommended action is put to error state.
-     *
+     * 
      * @return the errorDetails value.
      */
     public RecommendedActionErrorInfo errorDetails() {
@@ -356,7 +359,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the estimatedImpact property: Gets the estimated impact info for this recommended action e.g., Estimated CPU
      * gain, Estimated Disk Space change.
-     *
+     * 
      * @return the estimatedImpact value.
      */
     public List<RecommendedActionImpactRecord> estimatedImpact() {
@@ -366,7 +369,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the observedImpact property: Gets the observed/actual impact info for this recommended action e.g., Actual
      * CPU gain, Actual Disk Space change.
-     *
+     * 
      * @return the observedImpact value.
      */
     public List<RecommendedActionImpactRecord> observedImpact() {
@@ -376,7 +379,7 @@ public final class RecommendedActionProperties {
     /**
      * Get the timeSeries property: Gets the time series info of metrics for this recommended action e.g., CPU
      * consumption time series.
-     *
+     * 
      * @return the timeSeries value.
      */
     public List<RecommendedActionMetricInfo> timeSeries() {
@@ -385,7 +388,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the linkedObjects property: Gets the linked objects, if any.
-     *
+     * 
      * @return the linkedObjects value.
      */
     public List<String> linkedObjects() {
@@ -394,7 +397,7 @@ public final class RecommendedActionProperties {
 
     /**
      * Get the details property: Gets additional details specific to this recommended action.
-     *
+     * 
      * @return the details value.
      */
     public Map<String, Object> details() {
@@ -403,15 +406,14 @@ public final class RecommendedActionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model RecommendedActionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model RecommendedActionProperties"));
         } else {
             state().validate();
         }

@@ -4,59 +4,57 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.ManagedDatabaseUpdate;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ManagedDatabases Update. */
+/**
+ * Samples for ManagedDatabases Update.
+ */
 public final class ManagedDatabasesUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseUpdateMax.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedDatabaseUpdateMax.
+     * json
      */
     /**
      * Sample code: Updates a managed database with maximal properties.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updatesAManagedDatabaseWithMaximalProperties(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        updatesAManagedDatabaseWithMaximalProperties(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedDatabases()
-            .update(
-                "Default-SQL-SouthEastAsia",
-                "managedInstance",
-                "testdb",
-                new ManagedDatabaseUpdate().withTags(mapOf("tagKey1", "TagValue1")),
-                Context.NONE);
+            .update("Default-SQL-SouthEastAsia", "managedInstance", "testdb",
+                new ManagedDatabaseUpdate().withTags(mapOf("tagKey1", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseUpdateMin.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ManagedDatabaseUpdateMin.
+     * json
      */
     /**
      * Sample code: Updates a managed database with minimal properties.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updatesAManagedDatabaseWithMinimalProperties(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        updatesAManagedDatabaseWithMinimalProperties(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedDatabases()
-            .update(
-                "Default-SQL-SouthEastAsia",
-                "managedInstance",
-                "testdb",
-                new ManagedDatabaseUpdate().withTags(mapOf("tagKey1", "TagValue1")),
-                Context.NONE);
+            .update("Default-SQL-SouthEastAsia", "managedInstance", "testdb",
+                new ManagedDatabaseUpdate().withTags(mapOf("tagKey1", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

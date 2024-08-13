@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of replication links. */
+/**
+ * A list of replication links.
+ */
 @Immutable
 public final class ReplicationLinkListResult {
     /*
@@ -24,13 +26,15 @@ public final class ReplicationLinkListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ReplicationLinkListResult class. */
+    /**
+     * Creates an instance of ReplicationLinkListResult class.
+     */
     public ReplicationLinkListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ReplicationLinkInner> value() {
@@ -39,7 +43,7 @@ public final class ReplicationLinkListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ReplicationLinkListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

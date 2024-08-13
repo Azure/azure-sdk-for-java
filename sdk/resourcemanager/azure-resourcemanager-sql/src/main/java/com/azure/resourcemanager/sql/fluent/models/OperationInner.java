@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** SQL REST API operation definition. */
+/**
+ * SQL REST API operation definition.
+ */
 @Immutable
 public final class OperationInner {
     /*
@@ -39,13 +41,15 @@ public final class OperationInner {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> properties;
 
-    /** Creates an instance of OperationInner class. */
+    /**
+     * Creates an instance of OperationInner class.
+     */
     public OperationInner() {
     }
 
     /**
      * Get the name property: The name of the operation being performed on this particular object.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -54,7 +58,7 @@ public final class OperationInner {
 
     /**
      * Get the display property: The localized display information for this particular operation / action.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -63,7 +67,7 @@ public final class OperationInner {
 
     /**
      * Get the origin property: The intended executor of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public OperationOrigin origin() {
@@ -72,7 +76,7 @@ public final class OperationInner {
 
     /**
      * Get the properties property: Additional descriptions for the operation.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, Object> properties() {
@@ -81,7 +85,7 @@ public final class OperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

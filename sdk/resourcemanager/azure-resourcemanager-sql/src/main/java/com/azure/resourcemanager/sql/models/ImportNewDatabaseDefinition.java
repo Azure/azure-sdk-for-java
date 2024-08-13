@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the information necessary to perform import operation for new database. */
+/**
+ * Contains the information necessary to perform import operation for new database.
+ */
 @Fluent
 public final class ImportNewDatabaseDefinition {
     /*
@@ -62,7 +64,7 @@ public final class ImportNewDatabaseDefinition {
     /*
      * Administrator login password.
      */
-    @JsonProperty(value = "administratorLoginPassword", required = true)
+    @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
 
     /*
@@ -77,13 +79,15 @@ public final class ImportNewDatabaseDefinition {
     @JsonProperty(value = "networkIsolation")
     private NetworkIsolationSettings networkIsolation;
 
-    /** Creates an instance of ImportNewDatabaseDefinition class. */
+    /**
+     * Creates an instance of ImportNewDatabaseDefinition class.
+     */
     public ImportNewDatabaseDefinition() {
     }
 
     /**
      * Get the databaseName property: Name of the import database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -92,7 +96,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Set the databaseName property: Name of the import database.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the ImportNewDatabaseDefinition object itself.
      */
@@ -103,7 +107,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Get the edition property: Edition of the import database.
-     *
+     * 
      * @return the edition value.
      */
     public String edition() {
@@ -112,7 +116,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Set the edition property: Edition of the import database.
-     *
+     * 
      * @param edition the edition value to set.
      * @return the ImportNewDatabaseDefinition object itself.
      */
@@ -123,7 +127,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Get the serviceObjectiveName property: Service level objective name of the import database.
-     *
+     * 
      * @return the serviceObjectiveName value.
      */
     public String serviceObjectiveName() {
@@ -132,7 +136,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Set the serviceObjectiveName property: Service level objective name of the import database.
-     *
+     * 
      * @param serviceObjectiveName the serviceObjectiveName value to set.
      * @return the ImportNewDatabaseDefinition object itself.
      */
@@ -143,7 +147,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Get the maxSizeBytes property: Max size in bytes for the import database.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public String maxSizeBytes() {
@@ -152,7 +156,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Set the maxSizeBytes property: Max size in bytes for the import database.
-     *
+     * 
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the ImportNewDatabaseDefinition object itself.
      */
@@ -163,7 +167,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Get the storageKeyType property: Storage key type.
-     *
+     * 
      * @return the storageKeyType value.
      */
     public StorageKeyType storageKeyType() {
@@ -172,7 +176,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Set the storageKeyType property: Storage key type.
-     *
+     * 
      * @param storageKeyType the storageKeyType value to set.
      * @return the ImportNewDatabaseDefinition object itself.
      */
@@ -183,7 +187,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Get the storageKey property: Storage key.
-     *
+     * 
      * @return the storageKey value.
      */
     public String storageKey() {
@@ -192,7 +196,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Set the storageKey property: Storage key.
-     *
+     * 
      * @param storageKey the storageKey value to set.
      * @return the ImportNewDatabaseDefinition object itself.
      */
@@ -203,7 +207,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Get the storageUri property: Storage Uri.
-     *
+     * 
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -212,7 +216,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Set the storageUri property: Storage Uri.
-     *
+     * 
      * @param storageUri the storageUri value to set.
      * @return the ImportNewDatabaseDefinition object itself.
      */
@@ -223,7 +227,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Get the administratorLogin property: Administrator login name.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -232,7 +236,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Set the administratorLogin property: Administrator login name.
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ImportNewDatabaseDefinition object itself.
      */
@@ -243,7 +247,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Get the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -252,7 +256,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Set the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ImportNewDatabaseDefinition object itself.
      */
@@ -263,7 +267,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Get the authenticationType property: Authentication type.
-     *
+     * 
      * @return the authenticationType value.
      */
     public String authenticationType() {
@@ -272,7 +276,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Set the authenticationType property: Authentication type.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the ImportNewDatabaseDefinition object itself.
      */
@@ -283,7 +287,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Get the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @return the networkIsolation value.
      */
     public NetworkIsolationSettings networkIsolation() {
@@ -292,7 +296,7 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Set the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @param networkIsolation the networkIsolation value to set.
      * @return the ImportNewDatabaseDefinition object itself.
      */
@@ -303,39 +307,34 @@ public final class ImportNewDatabaseDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageKeyType in model ImportNewDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageKeyType in model ImportNewDatabaseDefinition"));
         }
         if (storageKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageKey in model ImportNewDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageKey in model ImportNewDatabaseDefinition"));
         }
         if (storageUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageUri in model ImportNewDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageUri in model ImportNewDatabaseDefinition"));
         }
         if (administratorLogin() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorLogin in model ImportNewDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorLogin in model ImportNewDatabaseDefinition"));
         }
         if (administratorLoginPassword() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorLoginPassword in model ImportNewDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorLoginPassword in model ImportNewDatabaseDefinition"));
         }
         if (networkIsolation() != null) {
             networkIsolation().validate();

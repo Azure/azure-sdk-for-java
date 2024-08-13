@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workload classifier definition. For more information look at sys.workload_management_workload_classifiers (DMV). */
+/**
+ * Workload classifier definition. For more information look at sys.workload_management_workload_classifiers (DMV).
+ */
 @Fluent
 public final class WorkloadClassifierProperties {
     /*
@@ -47,13 +49,15 @@ public final class WorkloadClassifierProperties {
     @JsonProperty(value = "importance")
     private String importance;
 
-    /** Creates an instance of WorkloadClassifierProperties class. */
+    /**
+     * Creates an instance of WorkloadClassifierProperties class.
+     */
     public WorkloadClassifierProperties() {
     }
 
     /**
      * Get the memberName property: The workload classifier member name.
-     *
+     * 
      * @return the memberName value.
      */
     public String memberName() {
@@ -62,7 +66,7 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Set the memberName property: The workload classifier member name.
-     *
+     * 
      * @param memberName the memberName value to set.
      * @return the WorkloadClassifierProperties object itself.
      */
@@ -73,7 +77,7 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Get the label property: The workload classifier label.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -82,7 +86,7 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Set the label property: The workload classifier label.
-     *
+     * 
      * @param label the label value to set.
      * @return the WorkloadClassifierProperties object itself.
      */
@@ -93,7 +97,7 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Get the context property: The workload classifier context.
-     *
+     * 
      * @return the context value.
      */
     public String context() {
@@ -102,7 +106,7 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Set the context property: The workload classifier context.
-     *
+     * 
      * @param context the context value to set.
      * @return the WorkloadClassifierProperties object itself.
      */
@@ -113,7 +117,7 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Get the startTime property: The workload classifier start time for classification.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -122,7 +126,7 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Set the startTime property: The workload classifier start time for classification.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the WorkloadClassifierProperties object itself.
      */
@@ -133,7 +137,7 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Get the endTime property: The workload classifier end time for classification.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -142,7 +146,7 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Set the endTime property: The workload classifier end time for classification.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the WorkloadClassifierProperties object itself.
      */
@@ -153,7 +157,7 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Get the importance property: The workload classifier importance.
-     *
+     * 
      * @return the importance value.
      */
     public String importance() {
@@ -162,7 +166,7 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Set the importance property: The workload classifier importance.
-     *
+     * 
      * @param importance the importance value to set.
      * @return the WorkloadClassifierProperties object itself.
      */
@@ -173,15 +177,14 @@ public final class WorkloadClassifierProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (memberName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property memberName in model WorkloadClassifierProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property memberName in model WorkloadClassifierProperties"));
         }
     }
 

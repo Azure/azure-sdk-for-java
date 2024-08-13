@@ -4,66 +4,57 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ExtendedServerBlobAuditingPolicyInner;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
 import java.util.Arrays;
 import java.util.UUID;
 
-/** Samples for ExtendedServerBlobAuditingPolicies CreateOrUpdate. */
+/**
+ * Samples for ExtendedServerBlobAuditingPolicies CreateOrUpdate.
+ */
 public final class ExtendedServerBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedServerBlobAuditingCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/
+     * ExtendedServerBlobAuditingCreateMin.json
      */
     /**
      * Sample code: Update a server's extended blob auditing policy with minimal parameters.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAServerSExtendedBlobAuditingPolicyWithMinimalParameters(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getExtendedServerBlobAuditingPolicies()
-            .createOrUpdate(
-                "blobauditingtest-4799",
-                "blobauditingtest-6440",
-                new ExtendedServerBlobAuditingPolicyInner()
-                    .withState(BlobAuditingPolicyState.ENABLED)
+            .createOrUpdate("blobauditingtest-4799", "blobauditingtest-6440",
+                new ExtendedServerBlobAuditingPolicyInner().withState(BlobAuditingPolicyState.ENABLED)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
                     .withStorageAccountAccessKey("fakeTokenPlaceholder"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedServerBlobAuditingCreateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/
+     * ExtendedServerBlobAuditingCreateMax.json
      */
     /**
      * Sample code: Update a server's extended blob auditing policy with all parameters.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAServerSExtendedBlobAuditingPolicyWithAllParameters(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getExtendedServerBlobAuditingPolicies()
-            .createOrUpdate(
-                "blobauditingtest-4799",
-                "blobauditingtest-6440",
-                new ExtendedServerBlobAuditingPolicyInner()
-                    .withPredicateExpression("object_name = 'SensitiveData'")
+            .createOrUpdate("blobauditingtest-4799", "blobauditingtest-6440",
+                new ExtendedServerBlobAuditingPolicyInner().withPredicateExpression("object_name = 'SensitiveData'")
                     .withRetentionDays(6)
-                    .withAuditActionsAndGroups(
-                        Arrays
-                            .asList(
-                                "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
-                                "FAILED_DATABASE_AUTHENTICATION_GROUP",
-                                "BATCH_COMPLETED_GROUP"))
+                    .withAuditActionsAndGroups(Arrays.asList("SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                        "FAILED_DATABASE_AUTHENTICATION_GROUP", "BATCH_COMPLETED_GROUP"))
                     .withIsStorageSecondaryKeyInUse(false)
                     .withIsAzureMonitorTargetEnabled(true)
                     .withQueueDelayMs(4000)
@@ -71,6 +62,6 @@ public final class ExtendedServerBlobAuditingPoliciesCreateOrUpdateSamples {
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
                     .withStorageAccountAccessKey("fakeTokenPlaceholder")
                     .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the sync database id. */
+/**
+ * Properties of the sync database id.
+ */
 @Immutable
 public final class SyncDatabaseIdPropertiesInner {
     /*
@@ -16,13 +18,15 @@ public final class SyncDatabaseIdPropertiesInner {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of SyncDatabaseIdPropertiesInner class. */
+    /**
+     * Creates an instance of SyncDatabaseIdPropertiesInner class.
+     */
     public SyncDatabaseIdPropertiesInner() {
     }
 
     /**
      * Get the id property: ARM resource id of sync database.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class SyncDatabaseIdPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

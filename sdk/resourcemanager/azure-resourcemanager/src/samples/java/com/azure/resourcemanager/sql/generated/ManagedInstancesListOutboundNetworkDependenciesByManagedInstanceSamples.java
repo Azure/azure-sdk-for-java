@@ -4,25 +4,26 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagedInstances ListOutboundNetworkDependenciesByManagedInstance. */
+/**
+ * Samples for ManagedInstances ListOutboundNetworkDependenciesByManagedInstance.
+ */
 public final class ManagedInstancesListOutboundNetworkDependenciesByManagedInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListOutboundNetworkDependenciesByManagedInstance.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/
+     * ListOutboundNetworkDependenciesByManagedInstance.json
      */
     /**
      * Sample code: Gets the collection of outbound network dependencies for the given managed instance.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsTheCollectionOfOutboundNetworkDependenciesForTheGivenManagedInstance(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedInstances()
-            .listOutboundNetworkDependenciesByManagedInstance("sqlcrudtest-7398", "testinstance", Context.NONE);
+            .listOutboundNetworkDependenciesByManagedInstance("sqlcrudtest-7398", "testinstance",
+                com.azure.core.util.Context.NONE);
     }
 }

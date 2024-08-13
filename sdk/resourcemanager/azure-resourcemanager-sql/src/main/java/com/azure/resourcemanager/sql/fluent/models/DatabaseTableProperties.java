@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.TableTemporalType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Database table properties. */
+/**
+ * Database table properties.
+ */
 @Fluent
 public final class DatabaseTableProperties {
     /*
@@ -23,13 +25,15 @@ public final class DatabaseTableProperties {
     @JsonProperty(value = "memoryOptimized")
     private Boolean memoryOptimized;
 
-    /** Creates an instance of DatabaseTableProperties class. */
+    /**
+     * Creates an instance of DatabaseTableProperties class.
+     */
     public DatabaseTableProperties() {
     }
 
     /**
      * Get the temporalType property: The table temporal type.
-     *
+     * 
      * @return the temporalType value.
      */
     public TableTemporalType temporalType() {
@@ -38,7 +42,7 @@ public final class DatabaseTableProperties {
 
     /**
      * Set the temporalType property: The table temporal type.
-     *
+     * 
      * @param temporalType the temporalType value to set.
      * @return the DatabaseTableProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class DatabaseTableProperties {
 
     /**
      * Get the memoryOptimized property: Whether or not the table is memory optimized.
-     *
+     * 
      * @return the memoryOptimized value.
      */
     public Boolean memoryOptimized() {
@@ -58,7 +62,7 @@ public final class DatabaseTableProperties {
 
     /**
      * Set the memoryOptimized property: Whether or not the table is memory optimized.
-     *
+     * 
      * @param memoryOptimized the memoryOptimized value to set.
      * @return the DatabaseTableProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class DatabaseTableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

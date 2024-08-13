@@ -11,7 +11,9 @@ import com.azure.resourcemanager.sql.models.ManagedDatabaseStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The managed database's properties. */
+/**
+ * The managed database's properties.
+ */
 @Fluent
 public final class ManagedDatabaseProperties {
     /*
@@ -83,14 +85,35 @@ public final class ManagedDatabaseProperties {
     private String sourceDatabaseId;
 
     /*
+     * The resource identifier of the cross-subscription source database associated with create operation of this
+     * database.
+     */
+    @JsonProperty(value = "crossSubscriptionSourceDatabaseId")
+    private String crossSubscriptionSourceDatabaseId;
+
+    /*
      * The restorable dropped database resource id to restore when creating this database.
      */
     @JsonProperty(value = "restorableDroppedDatabaseId")
     private String restorableDroppedDatabaseId;
 
     /*
-     * Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas
-     * token.
+     * The restorable cross-subscription dropped database resource id to restore when creating this database.
+     */
+    @JsonProperty(value = "crossSubscriptionRestorableDroppedDatabaseId")
+    private String crossSubscriptionRestorableDroppedDatabaseId;
+
+    /*
+     * Conditional. If createMode is RestoreExternalBackup, this value is used. Specifies the identity used for storage
+     * container authentication. Can be 'SharedAccessSignature' or 'ManagedIdentity'; if not specified
+     * 'SharedAccessSignature' is assumed.
+     */
+    @JsonProperty(value = "storageContainerIdentity")
+    private String storageContainerIdentity;
+
+    /*
+     * Conditional. If createMode is RestoreExternalBackup and storageContainerIdentity is not ManagedIdentity, this
+     * value is required. Specifies the storage container sas token.
      */
     @JsonProperty(value = "storageContainerSasToken")
     private String storageContainerSasToken;
@@ -125,13 +148,28 @@ public final class ManagedDatabaseProperties {
     @JsonProperty(value = "lastBackupName")
     private String lastBackupName;
 
-    /** Creates an instance of ManagedDatabaseProperties class. */
+    /*
+     * Target managed instance id used in cross-subscription restore.
+     */
+    @JsonProperty(value = "crossSubscriptionTargetManagedInstanceId")
+    private String crossSubscriptionTargetManagedInstanceId;
+
+    /*
+     * Whether or not this database is a ledger database, which means all tables in the database are ledger tables.
+     * Note: the value of this property cannot be changed after the database has been created.
+     */
+    @JsonProperty(value = "isLedgerOn")
+    private Boolean isLedgerOn;
+
+    /**
+     * Creates an instance of ManagedDatabaseProperties class.
+     */
     public ManagedDatabaseProperties() {
     }
 
     /**
      * Get the collation property: Collation of the managed database.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -140,7 +178,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Set the collation property: Collation of the managed database.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -151,7 +189,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the status property: Status of the database.
-     *
+     * 
      * @return the status value.
      */
     public ManagedDatabaseStatus status() {
@@ -160,7 +198,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the creationDate property: Creation date of the database.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -169,7 +207,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the earliestRestorePoint property: Earliest restore point in time for point in time restore.
-     *
+     * 
      * @return the earliestRestorePoint value.
      */
     public OffsetDateTime earliestRestorePoint() {
@@ -180,7 +218,7 @@ public final class ManagedDatabaseProperties {
      * Get the restorePointInTime property: Conditional. If createMode is PointInTimeRestore, this value is required.
      * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
      * database.
-     *
+     * 
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
@@ -191,7 +229,7 @@ public final class ManagedDatabaseProperties {
      * Set the restorePointInTime property: Conditional. If createMode is PointInTimeRestore, this value is required.
      * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
      * database.
-     *
+     * 
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -202,7 +240,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the defaultSecondaryLocation property: Geo paired region.
-     *
+     * 
      * @return the defaultSecondaryLocation value.
      */
     public String defaultSecondaryLocation() {
@@ -211,7 +249,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the catalogCollation property: Collation of the metadata catalog.
-     *
+     * 
      * @return the catalogCollation value.
      */
     public CatalogCollationType catalogCollation() {
@@ -220,7 +258,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Set the catalogCollation property: Collation of the metadata catalog.
-     *
+     * 
      * @param catalogCollation the catalogCollation value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -237,7 +275,7 @@ public final class ManagedDatabaseProperties {
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
      * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
      * (longTermRetentionBackupResourceId required).
-     *
+     * 
      * @return the createMode value.
      */
     public ManagedDatabaseCreateMode createMode() {
@@ -252,7 +290,7 @@ public final class ManagedDatabaseProperties {
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
      * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
      * (longTermRetentionBackupResourceId required).
-     *
+     * 
      * @param createMode the createMode value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -264,7 +302,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the storageContainerUri property: Conditional. If createMode is RestoreExternalBackup, this value is
      * required. Specifies the uri of the storage container where backups for this restore are stored.
-     *
+     * 
      * @return the storageContainerUri value.
      */
     public String storageContainerUri() {
@@ -274,7 +312,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Set the storageContainerUri property: Conditional. If createMode is RestoreExternalBackup, this value is
      * required. Specifies the uri of the storage container where backups for this restore are stored.
-     *
+     * 
      * @param storageContainerUri the storageContainerUri value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -286,7 +324,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the sourceDatabaseId property: The resource identifier of the source database associated with create
      * operation of this database.
-     *
+     * 
      * @return the sourceDatabaseId value.
      */
     public String sourceDatabaseId() {
@@ -296,7 +334,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Set the sourceDatabaseId property: The resource identifier of the source database associated with create
      * operation of this database.
-     *
+     * 
      * @param sourceDatabaseId the sourceDatabaseId value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -306,9 +344,31 @@ public final class ManagedDatabaseProperties {
     }
 
     /**
+     * Get the crossSubscriptionSourceDatabaseId property: The resource identifier of the cross-subscription source
+     * database associated with create operation of this database.
+     * 
+     * @return the crossSubscriptionSourceDatabaseId value.
+     */
+    public String crossSubscriptionSourceDatabaseId() {
+        return this.crossSubscriptionSourceDatabaseId;
+    }
+
+    /**
+     * Set the crossSubscriptionSourceDatabaseId property: The resource identifier of the cross-subscription source
+     * database associated with create operation of this database.
+     * 
+     * @param crossSubscriptionSourceDatabaseId the crossSubscriptionSourceDatabaseId value to set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties withCrossSubscriptionSourceDatabaseId(String crossSubscriptionSourceDatabaseId) {
+        this.crossSubscriptionSourceDatabaseId = crossSubscriptionSourceDatabaseId;
+        return this;
+    }
+
+    /**
      * Get the restorableDroppedDatabaseId property: The restorable dropped database resource id to restore when
      * creating this database.
-     *
+     * 
      * @return the restorableDroppedDatabaseId value.
      */
     public String restorableDroppedDatabaseId() {
@@ -318,7 +378,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Set the restorableDroppedDatabaseId property: The restorable dropped database resource id to restore when
      * creating this database.
-     *
+     * 
      * @param restorableDroppedDatabaseId the restorableDroppedDatabaseId value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -328,9 +388,58 @@ public final class ManagedDatabaseProperties {
     }
 
     /**
-     * Get the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the storage container sas token.
-     *
+     * Get the crossSubscriptionRestorableDroppedDatabaseId property: The restorable cross-subscription dropped database
+     * resource id to restore when creating this database.
+     * 
+     * @return the crossSubscriptionRestorableDroppedDatabaseId value.
+     */
+    public String crossSubscriptionRestorableDroppedDatabaseId() {
+        return this.crossSubscriptionRestorableDroppedDatabaseId;
+    }
+
+    /**
+     * Set the crossSubscriptionRestorableDroppedDatabaseId property: The restorable cross-subscription dropped database
+     * resource id to restore when creating this database.
+     * 
+     * @param crossSubscriptionRestorableDroppedDatabaseId the crossSubscriptionRestorableDroppedDatabaseId value to
+     * set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties
+        withCrossSubscriptionRestorableDroppedDatabaseId(String crossSubscriptionRestorableDroppedDatabaseId) {
+        this.crossSubscriptionRestorableDroppedDatabaseId = crossSubscriptionRestorableDroppedDatabaseId;
+        return this;
+    }
+
+    /**
+     * Get the storageContainerIdentity property: Conditional. If createMode is RestoreExternalBackup, this value is
+     * used. Specifies the identity used for storage container authentication. Can be 'SharedAccessSignature' or
+     * 'ManagedIdentity'; if not specified 'SharedAccessSignature' is assumed.
+     * 
+     * @return the storageContainerIdentity value.
+     */
+    public String storageContainerIdentity() {
+        return this.storageContainerIdentity;
+    }
+
+    /**
+     * Set the storageContainerIdentity property: Conditional. If createMode is RestoreExternalBackup, this value is
+     * used. Specifies the identity used for storage container authentication. Can be 'SharedAccessSignature' or
+     * 'ManagedIdentity'; if not specified 'SharedAccessSignature' is assumed.
+     * 
+     * @param storageContainerIdentity the storageContainerIdentity value to set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties withStorageContainerIdentity(String storageContainerIdentity) {
+        this.storageContainerIdentity = storageContainerIdentity;
+        return this;
+    }
+
+    /**
+     * Get the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup and
+     * storageContainerIdentity is not ManagedIdentity, this value is required. Specifies the storage container sas
+     * token.
+     * 
      * @return the storageContainerSasToken value.
      */
     public String storageContainerSasToken() {
@@ -338,9 +447,10 @@ public final class ManagedDatabaseProperties {
     }
 
     /**
-     * Set the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the storage container sas token.
-     *
+     * Set the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup and
+     * storageContainerIdentity is not ManagedIdentity, this value is required. Specifies the storage container sas
+     * token.
+     * 
      * @param storageContainerSasToken the storageContainerSasToken value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -352,7 +462,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the failoverGroupId property: Instance Failover Group resource identifier that this managed database belongs
      * to.
-     *
+     * 
      * @return the failoverGroupId value.
      */
     public String failoverGroupId() {
@@ -362,7 +472,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
      * create operation of this database.
-     *
+     * 
      * @return the recoverableDatabaseId value.
      */
     public String recoverableDatabaseId() {
@@ -372,7 +482,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Set the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
      * create operation of this database.
-     *
+     * 
      * @param recoverableDatabaseId the recoverableDatabaseId value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -384,7 +494,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the longTermRetentionBackupResourceId property: The name of the Long Term Retention backup to be used for
      * restore of this managed database.
-     *
+     * 
      * @return the longTermRetentionBackupResourceId value.
      */
     public String longTermRetentionBackupResourceId() {
@@ -394,7 +504,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Set the longTermRetentionBackupResourceId property: The name of the Long Term Retention backup to be used for
      * restore of this managed database.
-     *
+     * 
      * @param longTermRetentionBackupResourceId the longTermRetentionBackupResourceId value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -405,7 +515,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the autoCompleteRestore property: Whether to auto complete restore of this managed database.
-     *
+     * 
      * @return the autoCompleteRestore value.
      */
     public Boolean autoCompleteRestore() {
@@ -414,7 +524,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Set the autoCompleteRestore property: Whether to auto complete restore of this managed database.
-     *
+     * 
      * @param autoCompleteRestore the autoCompleteRestore value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -425,7 +535,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the lastBackupName property: Last backup file name for restore of this managed database.
-     *
+     * 
      * @return the lastBackupName value.
      */
     public String lastBackupName() {
@@ -434,7 +544,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Set the lastBackupName property: Last backup file name for restore of this managed database.
-     *
+     * 
      * @param lastBackupName the lastBackupName value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -444,8 +554,55 @@ public final class ManagedDatabaseProperties {
     }
 
     /**
+     * Get the crossSubscriptionTargetManagedInstanceId property: Target managed instance id used in cross-subscription
+     * restore.
+     * 
+     * @return the crossSubscriptionTargetManagedInstanceId value.
+     */
+    public String crossSubscriptionTargetManagedInstanceId() {
+        return this.crossSubscriptionTargetManagedInstanceId;
+    }
+
+    /**
+     * Set the crossSubscriptionTargetManagedInstanceId property: Target managed instance id used in cross-subscription
+     * restore.
+     * 
+     * @param crossSubscriptionTargetManagedInstanceId the crossSubscriptionTargetManagedInstanceId value to set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties
+        withCrossSubscriptionTargetManagedInstanceId(String crossSubscriptionTargetManagedInstanceId) {
+        this.crossSubscriptionTargetManagedInstanceId = crossSubscriptionTargetManagedInstanceId;
+        return this;
+    }
+
+    /**
+     * Get the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     * 
+     * @return the isLedgerOn value.
+     */
+    public Boolean isLedgerOn() {
+        return this.isLedgerOn;
+    }
+
+    /**
+     * Set the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     * 
+     * @param isLedgerOn the isLedgerOn value to set.
+     * @return the ManagedDatabaseProperties object itself.
+     */
+    public ManagedDatabaseProperties withIsLedgerOn(Boolean isLedgerOn) {
+        this.isLedgerOn = isLedgerOn;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

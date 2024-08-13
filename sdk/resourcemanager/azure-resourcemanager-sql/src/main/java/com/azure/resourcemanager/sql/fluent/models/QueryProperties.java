@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a database query. */
+/**
+ * Properties of a database query.
+ */
 @Fluent
 public final class QueryProperties {
     /*
@@ -16,13 +18,15 @@ public final class QueryProperties {
     @JsonProperty(value = "queryText")
     private String queryText;
 
-    /** Creates an instance of QueryProperties class. */
+    /**
+     * Creates an instance of QueryProperties class.
+     */
     public QueryProperties() {
     }
 
     /**
      * Get the queryText property: Query text.
-     *
+     * 
      * @return the queryText value.
      */
     public String queryText() {
@@ -31,7 +35,7 @@ public final class QueryProperties {
 
     /**
      * Set the queryText property: Query text.
-     *
+     * 
      * @param queryText the queryText value to set.
      * @return the QueryProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class QueryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

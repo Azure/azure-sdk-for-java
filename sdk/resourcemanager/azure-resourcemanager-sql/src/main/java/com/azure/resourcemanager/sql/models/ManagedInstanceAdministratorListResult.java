@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceAdministratorI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of managed instance administrators. */
+/**
+ * A list of managed instance administrators.
+ */
 @Immutable
 public final class ManagedInstanceAdministratorListResult {
     /*
@@ -24,13 +26,15 @@ public final class ManagedInstanceAdministratorListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedInstanceAdministratorListResult class. */
+    /**
+     * Creates an instance of ManagedInstanceAdministratorListResult class.
+     */
     public ManagedInstanceAdministratorListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedInstanceAdministratorInner> value() {
@@ -39,7 +43,7 @@ public final class ManagedInstanceAdministratorListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ManagedInstanceAdministratorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

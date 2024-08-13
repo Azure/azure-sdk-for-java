@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an outbound firewall rule. */
+/**
+ * The properties of an outbound firewall rule.
+ */
 @Immutable
 public final class OutboundFirewallRuleProperties {
     /*
@@ -16,13 +18,15 @@ public final class OutboundFirewallRuleProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /** Creates an instance of OutboundFirewallRuleProperties class. */
+    /**
+     * Creates an instance of OutboundFirewallRuleProperties class.
+     */
     public OutboundFirewallRuleProperties() {
     }
 
     /**
      * Get the provisioningState property: The state of the outbound rule.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -31,7 +35,7 @@ public final class OutboundFirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

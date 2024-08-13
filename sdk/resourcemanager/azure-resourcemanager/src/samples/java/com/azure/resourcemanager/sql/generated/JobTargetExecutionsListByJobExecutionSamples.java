@@ -4,38 +4,28 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Samples for JobTargetExecutions ListByJobExecution. */
+/**
+ * Samples for JobTargetExecutions ListByJobExecution.
+ */
 public final class JobTargetExecutionsListByJobExecutionSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListJobExecutionTargetsByExecution.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ListJobExecutionTargetsByExecution.json
      */
     /**
      * Sample code: List job step target executions.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listJobStepTargetExecutions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getJobTargetExecutions()
-            .listByJobExecution(
-                "group1",
-                "server1",
-                "agent1",
-                "job1",
-                UUID.fromString("5A86BF65-43AC-F258-2524-9E92992F97CA"),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                Context.NONE);
+            .listByJobExecution("group1", "server1", "agent1", "job1",
+                UUID.fromString("5A86BF65-43AC-F258-2524-9E92992F97CA"), null, null, null, null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the information necessary to perform export database operation. */
+/**
+ * Contains the information necessary to perform export database operation.
+ */
 @Fluent
 public final class ExportDatabaseDefinition {
     /*
@@ -38,7 +40,7 @@ public final class ExportDatabaseDefinition {
     /*
      * Administrator login password.
      */
-    @JsonProperty(value = "administratorLoginPassword", required = true)
+    @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
 
     /*
@@ -53,13 +55,15 @@ public final class ExportDatabaseDefinition {
     @JsonProperty(value = "networkIsolation")
     private NetworkIsolationSettings networkIsolation;
 
-    /** Creates an instance of ExportDatabaseDefinition class. */
+    /**
+     * Creates an instance of ExportDatabaseDefinition class.
+     */
     public ExportDatabaseDefinition() {
     }
 
     /**
      * Get the storageKeyType property: Storage key type.
-     *
+     * 
      * @return the storageKeyType value.
      */
     public StorageKeyType storageKeyType() {
@@ -68,7 +72,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Set the storageKeyType property: Storage key type.
-     *
+     * 
      * @param storageKeyType the storageKeyType value to set.
      * @return the ExportDatabaseDefinition object itself.
      */
@@ -79,7 +83,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Get the storageKey property: Storage key.
-     *
+     * 
      * @return the storageKey value.
      */
     public String storageKey() {
@@ -88,7 +92,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Set the storageKey property: Storage key.
-     *
+     * 
      * @param storageKey the storageKey value to set.
      * @return the ExportDatabaseDefinition object itself.
      */
@@ -99,7 +103,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Get the storageUri property: Storage Uri.
-     *
+     * 
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -108,7 +112,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Set the storageUri property: Storage Uri.
-     *
+     * 
      * @param storageUri the storageUri value to set.
      * @return the ExportDatabaseDefinition object itself.
      */
@@ -119,7 +123,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Get the administratorLogin property: Administrator login name.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -128,7 +132,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Set the administratorLogin property: Administrator login name.
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ExportDatabaseDefinition object itself.
      */
@@ -139,7 +143,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Get the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -148,7 +152,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Set the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ExportDatabaseDefinition object itself.
      */
@@ -159,7 +163,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Get the authenticationType property: Authentication type.
-     *
+     * 
      * @return the authenticationType value.
      */
     public String authenticationType() {
@@ -168,7 +172,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Set the authenticationType property: Authentication type.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the ExportDatabaseDefinition object itself.
      */
@@ -179,7 +183,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Get the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @return the networkIsolation value.
      */
     public NetworkIsolationSettings networkIsolation() {
@@ -188,7 +192,7 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Set the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @param networkIsolation the networkIsolation value to set.
      * @return the ExportDatabaseDefinition object itself.
      */
@@ -199,39 +203,34 @@ public final class ExportDatabaseDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageKeyType in model ExportDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageKeyType in model ExportDatabaseDefinition"));
         }
         if (storageKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageKey in model ExportDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageKey in model ExportDatabaseDefinition"));
         }
         if (storageUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageUri in model ExportDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageUri in model ExportDatabaseDefinition"));
         }
         if (administratorLogin() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorLogin in model ExportDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorLogin in model ExportDatabaseDefinition"));
         }
         if (administratorLoginPassword() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorLoginPassword in model ExportDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorLoginPassword in model ExportDatabaseDefinition"));
         }
         if (networkIsolation() != null) {
             networkIsolation().validate();

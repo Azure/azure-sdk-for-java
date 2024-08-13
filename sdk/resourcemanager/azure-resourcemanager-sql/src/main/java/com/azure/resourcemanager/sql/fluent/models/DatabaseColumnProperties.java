@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.models.ColumnDataType;
 import com.azure.resourcemanager.sql.models.TableTemporalType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Database column properties. */
+/**
+ * Database column properties.
+ */
 @Fluent
 public final class DatabaseColumnProperties {
     /*
@@ -36,13 +38,15 @@ public final class DatabaseColumnProperties {
     @JsonProperty(value = "isComputed")
     private Boolean isComputed;
 
-    /** Creates an instance of DatabaseColumnProperties class. */
+    /**
+     * Creates an instance of DatabaseColumnProperties class.
+     */
     public DatabaseColumnProperties() {
     }
 
     /**
      * Get the columnType property: The column data type.
-     *
+     * 
      * @return the columnType value.
      */
     public ColumnDataType columnType() {
@@ -51,7 +55,7 @@ public final class DatabaseColumnProperties {
 
     /**
      * Set the columnType property: The column data type.
-     *
+     * 
      * @param columnType the columnType value to set.
      * @return the DatabaseColumnProperties object itself.
      */
@@ -62,7 +66,7 @@ public final class DatabaseColumnProperties {
 
     /**
      * Get the temporalType property: The table temporal type.
-     *
+     * 
      * @return the temporalType value.
      */
     public TableTemporalType temporalType() {
@@ -71,7 +75,7 @@ public final class DatabaseColumnProperties {
 
     /**
      * Set the temporalType property: The table temporal type.
-     *
+     * 
      * @param temporalType the temporalType value to set.
      * @return the DatabaseColumnProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class DatabaseColumnProperties {
 
     /**
      * Get the memoryOptimized property: Whether or not the column belongs to a memory optimized table.
-     *
+     * 
      * @return the memoryOptimized value.
      */
     public Boolean memoryOptimized() {
@@ -91,7 +95,7 @@ public final class DatabaseColumnProperties {
 
     /**
      * Set the memoryOptimized property: Whether or not the column belongs to a memory optimized table.
-     *
+     * 
      * @param memoryOptimized the memoryOptimized value to set.
      * @return the DatabaseColumnProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class DatabaseColumnProperties {
 
     /**
      * Get the isComputed property: Whether or not the column is computed.
-     *
+     * 
      * @return the isComputed value.
      */
     public Boolean isComputed() {
@@ -111,7 +115,7 @@ public final class DatabaseColumnProperties {
 
     /**
      * Set the isComputed property: Whether or not the column is computed.
-     *
+     * 
      * @param isComputed the isComputed value to set.
      * @return the DatabaseColumnProperties object itself.
      */
@@ -122,7 +126,7 @@ public final class DatabaseColumnProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,20 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the elastic pool. */
+/**
+ * The state of the elastic pool.
+ */
 public final class ElasticPoolState extends ExpandableStringEnum<ElasticPoolState> {
-    /** Static value Creating for ElasticPoolState. */
+    /**
+     * Static value Creating for ElasticPoolState.
+     */
     public static final ElasticPoolState CREATING = fromString("Creating");
 
-    /** Static value Ready for ElasticPoolState. */
+    /**
+     * Static value Ready for ElasticPoolState.
+     */
     public static final ElasticPoolState READY = fromString("Ready");
 
-    /** Static value Disabled for ElasticPoolState. */
+    /**
+     * Static value Disabled for ElasticPoolState.
+     */
     public static final ElasticPoolState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of ElasticPoolState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ElasticPoolState() {
+    }
+
+    /**
      * Creates or finds a ElasticPoolState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ElasticPoolState.
      */
@@ -32,7 +49,7 @@ public final class ElasticPoolState extends ExpandableStringEnum<ElasticPoolStat
 
     /**
      * Gets known ElasticPoolState values.
-     *
+     * 
      * @return known ElasticPoolState values.
      */
     public static Collection<ElasticPoolState> values() {

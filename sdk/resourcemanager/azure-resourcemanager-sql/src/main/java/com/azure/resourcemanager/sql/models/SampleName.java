@@ -8,20 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The name of the sample schema to apply when creating this database. */
+/**
+ * The name of the sample schema to apply when creating this database.
+ */
 public final class SampleName extends ExpandableStringEnum<SampleName> {
-    /** Static value AdventureWorksLT for SampleName. */
+    /**
+     * Static value AdventureWorksLT for SampleName.
+     */
     public static final SampleName ADVENTURE_WORKS_LT = fromString("AdventureWorksLT");
 
-    /** Static value WideWorldImportersStd for SampleName. */
+    /**
+     * Static value WideWorldImportersStd for SampleName.
+     */
     public static final SampleName WIDE_WORLD_IMPORTERS_STD = fromString("WideWorldImportersStd");
 
-    /** Static value WideWorldImportersFull for SampleName. */
+    /**
+     * Static value WideWorldImportersFull for SampleName.
+     */
     public static final SampleName WIDE_WORLD_IMPORTERS_FULL = fromString("WideWorldImportersFull");
 
     /**
+     * Creates a new instance of SampleName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SampleName() {
+    }
+
+    /**
      * Creates or finds a SampleName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SampleName.
      */
@@ -32,7 +49,7 @@ public final class SampleName extends ExpandableStringEnum<SampleName> {
 
     /**
      * Gets known SampleName values.
-     *
+     * 
      * @return known SampleName values.
      */
     public static Collection<SampleName> values() {

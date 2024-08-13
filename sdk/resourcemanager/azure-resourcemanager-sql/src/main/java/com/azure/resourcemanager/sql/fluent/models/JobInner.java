@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.JobSchedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A job. */
+/**
+ * A job.
+ */
 @Fluent
 public final class JobInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class JobInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private JobProperties innerProperties;
 
-    /** Creates an instance of JobInner class. */
+    /**
+     * Creates an instance of JobInner class.
+     */
     public JobInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the description property: User-defined description of the job.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -42,7 +46,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the description property: User-defined description of the job.
-     *
+     * 
      * @param description the description value to set.
      * @return the JobInner object itself.
      */
@@ -56,7 +60,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the version property: The job version number.
-     *
+     * 
      * @return the version value.
      */
     public Integer version() {
@@ -65,7 +69,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the schedule property: Schedule properties of the job.
-     *
+     * 
      * @return the schedule value.
      */
     public JobSchedule schedule() {
@@ -74,7 +78,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the schedule property: Schedule properties of the job.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the JobInner object itself.
      */
@@ -88,7 +92,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

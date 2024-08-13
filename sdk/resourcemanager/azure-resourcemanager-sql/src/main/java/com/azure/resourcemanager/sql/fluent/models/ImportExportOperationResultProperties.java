@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** Contains the operation result properties for import/export operation. */
+/**
+ * Contains the operation result properties for import/export operation.
+ */
 @Immutable
 public final class ImportExportOperationResultProperties {
     /*
@@ -73,13 +75,15 @@ public final class ImportExportOperationResultProperties {
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionRequestStatus> privateEndpointConnections;
 
-    /** Creates an instance of ImportExportOperationResultProperties class. */
+    /**
+     * Creates an instance of ImportExportOperationResultProperties class.
+     */
     public ImportExportOperationResultProperties() {
     }
 
     /**
      * Get the requestId property: Request Id.
-     *
+     * 
      * @return the requestId value.
      */
     public UUID requestId() {
@@ -88,7 +92,7 @@ public final class ImportExportOperationResultProperties {
 
     /**
      * Get the requestType property: Request type.
-     *
+     * 
      * @return the requestType value.
      */
     public String requestType() {
@@ -97,7 +101,7 @@ public final class ImportExportOperationResultProperties {
 
     /**
      * Get the queuedTime property: Queued time.
-     *
+     * 
      * @return the queuedTime value.
      */
     public String queuedTime() {
@@ -106,7 +110,7 @@ public final class ImportExportOperationResultProperties {
 
     /**
      * Get the lastModifiedTime property: Last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public String lastModifiedTime() {
@@ -115,7 +119,7 @@ public final class ImportExportOperationResultProperties {
 
     /**
      * Get the blobUri property: Blob Uri.
-     *
+     * 
      * @return the blobUri value.
      */
     public String blobUri() {
@@ -124,7 +128,7 @@ public final class ImportExportOperationResultProperties {
 
     /**
      * Get the serverName property: Server name.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -133,7 +137,7 @@ public final class ImportExportOperationResultProperties {
 
     /**
      * Get the databaseName property: Database name.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -142,7 +146,7 @@ public final class ImportExportOperationResultProperties {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -151,7 +155,7 @@ public final class ImportExportOperationResultProperties {
 
     /**
      * Get the errorMessage property: Error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -160,7 +164,7 @@ public final class ImportExportOperationResultProperties {
 
     /**
      * Get the privateEndpointConnections property: Gets the status of private endpoints associated with this request.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionRequestStatus> privateEndpointConnections() {
@@ -169,7 +173,7 @@ public final class ImportExportOperationResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

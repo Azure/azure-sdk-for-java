@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the ARM resources for which to create private endpoint connection. */
+/**
+ * Contains the ARM resources for which to create private endpoint connection.
+ */
 @Fluent
 public final class NetworkIsolationSettings {
     /*
@@ -24,7 +26,9 @@ public final class NetworkIsolationSettings {
     @JsonProperty(value = "sqlServerResourceId")
     private String sqlServerResourceId;
 
-    /** Creates an instance of NetworkIsolationSettings class. */
+    /**
+     * Creates an instance of NetworkIsolationSettings class.
+     */
     public NetworkIsolationSettings() {
     }
 
@@ -32,7 +36,7 @@ public final class NetworkIsolationSettings {
      * Get the storageAccountResourceId property: The resource id for the storage account used to store BACPAC file. If
      * set, private endpoint connection will be created for the storage account. Must match storage account used for
      * StorageUri parameter.
-     *
+     * 
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -43,7 +47,7 @@ public final class NetworkIsolationSettings {
      * Set the storageAccountResourceId property: The resource id for the storage account used to store BACPAC file. If
      * set, private endpoint connection will be created for the storage account. Must match storage account used for
      * StorageUri parameter.
-     *
+     * 
      * @param storageAccountResourceId the storageAccountResourceId value to set.
      * @return the NetworkIsolationSettings object itself.
      */
@@ -56,7 +60,7 @@ public final class NetworkIsolationSettings {
      * Get the sqlServerResourceId property: The resource id for the SQL server which is the target of this request. If
      * set, private endpoint connection will be created for the SQL server. Must match server which is target of the
      * operation.
-     *
+     * 
      * @return the sqlServerResourceId value.
      */
     public String sqlServerResourceId() {
@@ -67,7 +71,7 @@ public final class NetworkIsolationSettings {
      * Set the sqlServerResourceId property: The resource id for the SQL server which is the target of this request. If
      * set, private endpoint connection will be created for the SQL server. Must match server which is target of the
      * operation.
-     *
+     * 
      * @param sqlServerResourceId the sqlServerResourceId value to set.
      * @return the NetworkIsolationSettings object itself.
      */
@@ -78,7 +82,7 @@ public final class NetworkIsolationSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

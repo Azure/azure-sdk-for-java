@@ -32,23 +32,28 @@ import com.azure.resourcemanager.sql.models.ManagedInstanceQueryStatistics;
 import com.azure.resourcemanager.sql.models.QueryTimeGrainType;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedDatabaseQueriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedDatabaseQueriesClient.
+ */
 public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQueriesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagedDatabaseQueriesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedDatabaseQueriesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagedDatabaseQueriesClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ManagedDatabaseQueriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ManagedDatabaseQueriesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,59 +64,43 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
     public interface ManagedDatabaseQueriesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/queries/{queryId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/queries/{queryId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceQueryInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagedInstanceQueryInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("queryId") String queryId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("databaseName") String databaseName, @PathParam("queryId") String queryId,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/queries/{queryId}/statistics")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/queries/{queryId}/statistics")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceQueryStatistics>> listByQuery(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagedInstanceQueryStatistics>> listByQuery(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("queryId") String queryId,
-            @QueryParam("startTime") String startTime,
-            @QueryParam("endTime") String endTime,
-            @QueryParam("interval") QueryTimeGrainType interval,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("databaseName") String databaseName, @PathParam("queryId") String queryId,
+            @QueryParam("startTime") String startTime, @QueryParam("endTime") String endTime,
+            @QueryParam("interval") QueryTimeGrainType interval, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceQueryStatistics>> listByQueryNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get query by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -121,13 +110,11 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @return query by query id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedInstanceQueryInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId) {
+    public Mono<Response<ManagedInstanceQueryInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, String queryId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -144,34 +131,22 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             return Mono.error(new IllegalArgumentException("Parameter queryId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            databaseName,
-                            queryId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                databaseName, queryId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get query by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -182,13 +157,11 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @return query by query id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedInstanceQueryInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId, Context context) {
+    private Mono<Response<ManagedInstanceQueryInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, String queryId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -205,31 +178,21 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             return Mono.error(new IllegalArgumentException("Parameter queryId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                databaseName,
-                queryId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName, queryId,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Get query by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -239,17 +202,17 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @return query by query id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceQueryInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId) {
+    public Mono<ManagedInstanceQueryInner> getAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, queryId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get query by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -260,16 +223,16 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @return query by query id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedInstanceQueryInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId, Context context) {
+    public Response<ManagedInstanceQueryInner> getWithResponse(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, queryId, context).block();
     }
 
     /**
      * Get query by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -279,16 +242,16 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @return query by query id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceQueryInner get(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId) {
+    public ManagedInstanceQueryInner get(String resourceGroupName, String managedInstanceName, String databaseName,
+        String queryId) {
         return getWithResponse(resourceGroupName, managedInstanceName, databaseName, queryId, Context.NONE).getValue();
     }
 
     /**
      * Get query execution statistics by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -299,22 +262,15 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return query execution statistics by query id along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QueryStatisticsInner>> listByQuerySinglePageAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String queryId,
-        String startTime,
-        String endTime,
+    private Mono<PagedResponse<QueryStatisticsInner>> listByQuerySinglePageAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, String queryId, String startTime, String endTime,
         QueryTimeGrainType interval) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -331,46 +287,25 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             return Mono.error(new IllegalArgumentException("Parameter queryId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByQuery(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            databaseName,
-                            queryId,
-                            startTime,
-                            endTime,
-                            interval,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<QueryStatisticsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByQuery(this.client.getEndpoint(), resourceGroupName,
+                managedInstanceName, databaseName, queryId, startTime, endTime, interval,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<QueryStatisticsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get query execution statistics by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -382,23 +317,15 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return query execution statistics by query id along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QueryStatisticsInner>> listByQuerySinglePageAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String queryId,
-        String startTime,
-        String endTime,
-        QueryTimeGrainType interval,
-        Context context) {
+    private Mono<PagedResponse<QueryStatisticsInner>> listByQuerySinglePageAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, String queryId, String startTime, String endTime,
+        QueryTimeGrainType interval, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -415,43 +342,24 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             return Mono.error(new IllegalArgumentException("Parameter queryId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByQuery(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                databaseName,
-                queryId,
-                startTime,
-                endTime,
-                interval,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByQuery(this.client.getEndpoint(), resourceGroupName, managedInstanceName, databaseName, queryId,
+                startTime, endTime, interval, this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get query execution statistics by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -464,26 +372,17 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @return query execution statistics by query id as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<QueryStatisticsInner> listByQueryAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String queryId,
-        String startTime,
-        String endTime,
-        QueryTimeGrainType interval) {
-        return new PagedFlux<>(
-            () ->
-                listByQuerySinglePageAsync(
-                    resourceGroupName, managedInstanceName, databaseName, queryId, startTime, endTime, interval),
-            nextLink -> listByQueryNextSinglePageAsync(nextLink));
+    public PagedFlux<QueryStatisticsInner> listByQueryAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId, String startTime, String endTime, QueryTimeGrainType interval) {
+        return new PagedFlux<>(() -> listByQuerySinglePageAsync(resourceGroupName, managedInstanceName, databaseName,
+            queryId, startTime, endTime, interval), nextLink -> listByQueryNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get query execution statistics by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -493,23 +392,20 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @return query execution statistics by query id as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<QueryStatisticsInner> listByQueryAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId) {
+    public PagedFlux<QueryStatisticsInner> listByQueryAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId) {
         final String startTime = null;
         final String endTime = null;
         final QueryTimeGrainType interval = null;
-        return new PagedFlux<>(
-            () ->
-                listByQuerySinglePageAsync(
-                    resourceGroupName, managedInstanceName, databaseName, queryId, startTime, endTime, interval),
-            nextLink -> listByQueryNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByQuerySinglePageAsync(resourceGroupName, managedInstanceName, databaseName,
+            queryId, startTime, endTime, interval), nextLink -> listByQueryNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get query execution statistics by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -523,34 +419,19 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @return query execution statistics by query id as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QueryStatisticsInner> listByQueryAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String queryId,
-        String startTime,
-        String endTime,
-        QueryTimeGrainType interval,
+    private PagedFlux<QueryStatisticsInner> listByQueryAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId, String startTime, String endTime, QueryTimeGrainType interval,
         Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByQuerySinglePageAsync(
-                    resourceGroupName,
-                    managedInstanceName,
-                    databaseName,
-                    queryId,
-                    startTime,
-                    endTime,
-                    interval,
-                    context),
+        return new PagedFlux<>(() -> listByQuerySinglePageAsync(resourceGroupName, managedInstanceName, databaseName,
+            queryId, startTime, endTime, interval, context),
             nextLink -> listByQueryNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get query execution statistics by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -560,21 +441,20 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @return query execution statistics by query id as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QueryStatisticsInner> listByQuery(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId) {
+    public PagedIterable<QueryStatisticsInner> listByQuery(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId) {
         final String startTime = null;
         final String endTime = null;
         final QueryTimeGrainType interval = null;
-        return new PagedIterable<>(
-            listByQueryAsync(
-                resourceGroupName, managedInstanceName, databaseName, queryId, startTime, endTime, interval));
+        return new PagedIterable<>(listByQueryAsync(resourceGroupName, managedInstanceName, databaseName, queryId,
+            startTime, endTime, interval));
     }
 
     /**
      * Get query execution statistics by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -588,30 +468,22 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
      * @return query execution statistics by query id as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QueryStatisticsInner> listByQuery(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String queryId,
-        String startTime,
-        String endTime,
-        QueryTimeGrainType interval,
+    public PagedIterable<QueryStatisticsInner> listByQuery(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId, String startTime, String endTime, QueryTimeGrainType interval,
         Context context) {
-        return new PagedIterable<>(
-            listByQueryAsync(
-                resourceGroupName, managedInstanceName, databaseName, queryId, startTime, endTime, interval, context));
+        return new PagedIterable<>(listByQueryAsync(resourceGroupName, managedInstanceName, databaseName, queryId,
+            startTime, endTime, interval, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return execution statistics for one particular query along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryStatisticsInner>> listByQueryNextSinglePageAsync(String nextLink) {
@@ -619,37 +491,27 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByQueryNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<QueryStatisticsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<QueryStatisticsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return execution statistics for one particular query along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryStatisticsInner>> listByQueryNextSinglePageAsync(String nextLink, Context context) {
@@ -657,23 +519,13 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByQueryNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByQueryNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

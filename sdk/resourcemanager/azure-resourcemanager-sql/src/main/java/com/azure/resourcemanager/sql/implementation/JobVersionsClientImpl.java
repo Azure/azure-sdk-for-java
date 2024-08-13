@@ -30,22 +30,28 @@ import com.azure.resourcemanager.sql.fluent.models.JobVersionInner;
 import com.azure.resourcemanager.sql.models.JobVersionListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobVersionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobVersionsClient.
+ */
 public final class JobVersionsClientImpl implements JobVersionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JobVersionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of JobVersionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JobVersionsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(JobVersionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(JobVersionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,57 +62,40 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
     public interface JobVersionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobVersionListResult>> listByJob(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<JobVersionListResult>> listByJob(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @PathParam("jobName") String jobName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobVersionInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("jobVersion") int jobVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<JobVersionInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @PathParam("jobName") String jobName,
+            @PathParam("jobVersion") int jobVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobVersionListResult>> listByJobNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all versions of a job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -116,13 +105,11 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @return all versions of a job along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobVersionInner>> listByJobSinglePageAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
+    private Mono<PagedResponse<JobVersionInner>> listByJobSinglePageAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -138,43 +125,24 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByJob(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<JobVersionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByJob(this.client.getEndpoint(), resourceGroupName, serverName,
+                jobAgentName, jobName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<JobVersionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all versions of a job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -185,13 +153,11 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @return all versions of a job along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobVersionInner>> listByJobSinglePageAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
+    private Mono<PagedResponse<JobVersionInner>> listByJobSinglePageAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -207,40 +173,24 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByJob(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByJob(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, jobName,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all versions of a job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -250,18 +200,17 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @return all versions of a job as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobVersionInner> listByJobAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        return new PagedFlux<>(
-            () -> listByJobSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName),
+    public PagedFlux<JobVersionInner> listByJobAsync(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName) {
+        return new PagedFlux<>(() -> listByJobSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName),
             nextLink -> listByJobNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all versions of a job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -272,8 +221,8 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @return all versions of a job as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobVersionInner> listByJobAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
+    private PagedFlux<JobVersionInner> listByJobAsync(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, Context context) {
         return new PagedFlux<>(
             () -> listByJobSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName, context),
             nextLink -> listByJobNextSinglePageAsync(nextLink, context));
@@ -281,9 +230,9 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
 
     /**
      * Gets all versions of a job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -293,16 +242,16 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @return all versions of a job as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobVersionInner> listByJob(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
+    public PagedIterable<JobVersionInner> listByJob(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName) {
         return new PagedIterable<>(listByJobAsync(resourceGroupName, serverName, jobAgentName, jobName));
     }
 
     /**
      * Gets all versions of a job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -313,16 +262,16 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @return all versions of a job as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobVersionInner> listByJob(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
+    public PagedIterable<JobVersionInner> listByJob(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, Context context) {
         return new PagedIterable<>(listByJobAsync(resourceGroupName, serverName, jobAgentName, jobName, context));
     }
 
     /**
      * Gets a job version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -333,13 +282,11 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @return a job version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobVersionInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, int jobVersion) {
+    public Mono<Response<JobVersionInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, int jobVersion) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -355,35 +302,22 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            jobVersion,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName,
+                jobName, jobVersion, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a job version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -395,18 +329,11 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @return a job version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobVersionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        int jobVersion,
-        Context context) {
+    private Mono<Response<JobVersionInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, int jobVersion, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -422,32 +349,21 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                jobVersion,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, jobName, jobVersion,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Gets a job version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -458,17 +374,17 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @return a job version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobVersionInner> getAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, int jobVersion) {
+    public Mono<JobVersionInner> getAsync(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, int jobVersion) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a job version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -480,21 +396,16 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @return a job version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobVersionInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        int jobVersion,
-        Context context) {
+    public Response<JobVersionInner> getWithResponse(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, int jobVersion, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion, context).block();
     }
 
     /**
      * Gets a job version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -505,17 +416,16 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
      * @return a job version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobVersionInner get(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, int jobVersion) {
+    public JobVersionInner get(String resourceGroupName, String serverName, String jobAgentName, String jobName,
+        int jobVersion) {
         return getWithResponse(resourceGroupName, serverName, jobAgentName, jobName, jobVersion, Context.NONE)
             .getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -527,31 +437,21 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByJobNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JobVersionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<JobVersionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -564,23 +464,13 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByJobNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByJobNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

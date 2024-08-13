@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/** An update request for an Azure SQL Database server. */
+/**
+ * An update request for an Azure SQL Database server.
+ */
 @Fluent
 public final class ServerUpdate {
     /*
@@ -34,13 +36,15 @@ public final class ServerUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ServerUpdate class. */
+    /**
+     * Creates an instance of ServerUpdate class.
+     */
     public ServerUpdate() {
     }
 
     /**
      * Get the identity property: Server identity.
-     *
+     * 
      * @return the identity value.
      */
     public ResourceIdentity identity() {
@@ -49,7 +53,7 @@ public final class ServerUpdate {
 
     /**
      * Set the identity property: Server identity.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ServerUpdate object itself.
      */
@@ -60,7 +64,7 @@ public final class ServerUpdate {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerProperties innerProperties() {
@@ -69,7 +73,7 @@ public final class ServerUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -78,7 +82,7 @@ public final class ServerUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ServerUpdate object itself.
      */
@@ -89,7 +93,7 @@ public final class ServerUpdate {
 
     /**
      * Get the administratorLogin property: Administrator username for the server. Once created it cannot be changed.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -98,7 +102,7 @@ public final class ServerUpdate {
 
     /**
      * Set the administratorLogin property: Administrator username for the server. Once created it cannot be changed.
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ServerUpdate object itself.
      */
@@ -112,7 +116,7 @@ public final class ServerUpdate {
 
     /**
      * Get the administratorLoginPassword property: The administrator login password (required for server creation).
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -121,7 +125,7 @@ public final class ServerUpdate {
 
     /**
      * Set the administratorLoginPassword property: The administrator login password (required for server creation).
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerUpdate object itself.
      */
@@ -135,7 +139,7 @@ public final class ServerUpdate {
 
     /**
      * Get the version property: The version of the server.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -144,7 +148,7 @@ public final class ServerUpdate {
 
     /**
      * Set the version property: The version of the server.
-     *
+     * 
      * @param version the version value to set.
      * @return the ServerUpdate object itself.
      */
@@ -158,7 +162,7 @@ public final class ServerUpdate {
 
     /**
      * Get the state property: The state of the server.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -167,7 +171,7 @@ public final class ServerUpdate {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of the server.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -176,7 +180,7 @@ public final class ServerUpdate {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections on a server.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
@@ -184,21 +188,21 @@ public final class ServerUpdate {
     }
 
     /**
-     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
-     *
+     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'.
+     * 
      * @return the minimalTlsVersion value.
      */
-    public String minimalTlsVersion() {
+    public MinimalTlsVersion minimalTlsVersion() {
         return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
     }
 
     /**
-     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
-     *
+     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'.
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerUpdate object itself.
      */
-    public ServerUpdate withMinimalTlsVersion(String minimalTlsVersion) {
+    public ServerUpdate withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }
@@ -208,8 +212,8 @@ public final class ServerUpdate {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
+     * 
      * @return the publicNetworkAccess value.
      */
     public ServerNetworkAccessFlag publicNetworkAccess() {
@@ -218,8 +222,8 @@ public final class ServerUpdate {
 
     /**
      * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerUpdate object itself.
      */
@@ -234,7 +238,7 @@ public final class ServerUpdate {
     /**
      * Get the workspaceFeature property: Whether or not existing server has a workspace created and if it allows
      * connection from workspace.
-     *
+     * 
      * @return the workspaceFeature value.
      */
     public ServerWorkspaceFeature workspaceFeature() {
@@ -244,7 +248,7 @@ public final class ServerUpdate {
     /**
      * Get the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
      * default.
-     *
+     * 
      * @return the primaryUserAssignedIdentityId value.
      */
     public String primaryUserAssignedIdentityId() {
@@ -254,7 +258,7 @@ public final class ServerUpdate {
     /**
      * Set the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
      * default.
-     *
+     * 
      * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
      * @return the ServerUpdate object itself.
      */
@@ -268,7 +272,7 @@ public final class ServerUpdate {
 
     /**
      * Get the federatedClientId property: The Client id used for cross tenant CMK scenario.
-     *
+     * 
      * @return the federatedClientId value.
      */
     public UUID federatedClientId() {
@@ -277,7 +281,7 @@ public final class ServerUpdate {
 
     /**
      * Set the federatedClientId property: The Client id used for cross tenant CMK scenario.
-     *
+     * 
      * @param federatedClientId the federatedClientId value to set.
      * @return the ServerUpdate object itself.
      */
@@ -291,7 +295,7 @@ public final class ServerUpdate {
 
     /**
      * Get the keyId property: A CMK URI of the key to use for encryption.
-     *
+     * 
      * @return the keyId value.
      */
     public String keyId() {
@@ -300,7 +304,7 @@ public final class ServerUpdate {
 
     /**
      * Set the keyId property: A CMK URI of the key to use for encryption.
-     *
+     * 
      * @param keyId the keyId value to set.
      * @return the ServerUpdate object itself.
      */
@@ -313,8 +317,10 @@ public final class ServerUpdate {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
-     *
+     * Get the administrators property: The Azure Active Directory administrator of the server. This can only be used at
+     * server create time. If used for server update, it will be ignored or it will result in an error. For updates
+     * individual APIs will need to be used.
+     * 
      * @return the administrators value.
      */
     public ServerExternalAdministrator administrators() {
@@ -322,8 +328,10 @@ public final class ServerUpdate {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
-     *
+     * Set the administrators property: The Azure Active Directory administrator of the server. This can only be used at
+     * server create time. If used for server update, it will be ignored or it will result in an error. For updates
+     * individual APIs will need to be used.
+     * 
      * @param administrators the administrators value to set.
      * @return the ServerUpdate object itself.
      */
@@ -338,7 +346,7 @@ public final class ServerUpdate {
     /**
      * Get the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access for this
      * server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the restrictOutboundNetworkAccess value.
      */
     public ServerNetworkAccessFlag restrictOutboundNetworkAccess() {
@@ -348,7 +356,7 @@ public final class ServerUpdate {
     /**
      * Set the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access for this
      * server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
      * @return the ServerUpdate object itself.
      */
@@ -361,8 +369,42 @@ public final class ServerUpdate {
     }
 
     /**
+     * Get the isIPv6Enabled property: Whether or not to enable IPv6 support for this server. Value is optional but if
+     * passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @return the isIPv6Enabled value.
+     */
+    public ServerNetworkAccessFlag isIPv6Enabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isIPv6Enabled();
+    }
+
+    /**
+     * Set the isIPv6Enabled property: Whether or not to enable IPv6 support for this server. Value is optional but if
+     * passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @param isIPv6Enabled the isIPv6Enabled value to set.
+     * @return the ServerUpdate object itself.
+     */
+    public ServerUpdate withIsIPv6Enabled(ServerNetworkAccessFlag isIPv6Enabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withIsIPv6Enabled(isIPv6Enabled);
+        return this;
+    }
+
+    /**
+     * Get the externalGovernanceStatus property: Status of external governance.
+     * 
+     * @return the externalGovernanceStatus value.
+     */
+    public ExternalGovernanceStatus externalGovernanceStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalGovernanceStatus();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

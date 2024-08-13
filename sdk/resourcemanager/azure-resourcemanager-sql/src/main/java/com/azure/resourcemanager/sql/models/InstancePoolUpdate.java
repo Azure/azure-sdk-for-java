@@ -5,13 +5,28 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.fluent.models.InstancePoolProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An update to an Instance pool. */
+/**
+ * An update to an Instance pool.
+ */
 @Fluent
 public final class InstancePoolUpdate {
+    /*
+     * The name and tier of the SKU.
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
+
+    /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private InstancePoolProperties innerProperties;
+
     /*
      * Resource tags.
      */
@@ -19,13 +34,44 @@ public final class InstancePoolUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of InstancePoolUpdate class. */
+    /**
+     * Creates an instance of InstancePoolUpdate class.
+     */
     public InstancePoolUpdate() {
     }
 
     /**
+     * Get the sku property: The name and tier of the SKU.
+     * 
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The name and tier of the SKU.
+     * 
+     * @param sku the sku value to set.
+     * @return the InstancePoolUpdate object itself.
+     */
+    public InstancePoolUpdate withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     * 
+     * @return the innerProperties value.
+     */
+    private InstancePoolProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +80,7 @@ public final class InstancePoolUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the InstancePoolUpdate object itself.
      */
@@ -44,10 +90,121 @@ public final class InstancePoolUpdate {
     }
 
     /**
+     * Get the subnetId property: Resource ID of the subnet to place this instance pool in.
+     * 
+     * @return the subnetId value.
+     */
+    public String subnetId() {
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
+    }
+
+    /**
+     * Set the subnetId property: Resource ID of the subnet to place this instance pool in.
+     * 
+     * @param subnetId the subnetId value to set.
+     * @return the InstancePoolUpdate object itself.
+     */
+    public InstancePoolUpdate withSubnetId(String subnetId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstancePoolProperties();
+        }
+        this.innerProperties().withSubnetId(subnetId);
+        return this;
+    }
+
+    /**
+     * Get the vCores property: Count of vCores belonging to this instance pool.
+     * 
+     * @return the vCores value.
+     */
+    public Integer vCores() {
+        return this.innerProperties() == null ? null : this.innerProperties().vCores();
+    }
+
+    /**
+     * Set the vCores property: Count of vCores belonging to this instance pool.
+     * 
+     * @param vCores the vCores value to set.
+     * @return the InstancePoolUpdate object itself.
+     */
+    public InstancePoolUpdate withVCores(Integer vCores) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstancePoolProperties();
+        }
+        this.innerProperties().withVCores(vCores);
+        return this;
+    }
+
+    /**
+     * Get the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
+     * included) and 'BasePrice' (without SQL license price).
+     * 
+     * @return the licenseType value.
+     */
+    public InstancePoolLicenseType licenseType() {
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
+    }
+
+    /**
+     * Set the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
+     * included) and 'BasePrice' (without SQL license price).
+     * 
+     * @param licenseType the licenseType value to set.
+     * @return the InstancePoolUpdate object itself.
+     */
+    public InstancePoolUpdate withLicenseType(InstancePoolLicenseType licenseType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstancePoolProperties();
+        }
+        this.innerProperties().withLicenseType(licenseType);
+        return this;
+    }
+
+    /**
+     * Get the dnsZone property: The Dns Zone that the managed instance pool is in.
+     * 
+     * @return the dnsZone value.
+     */
+    public String dnsZone() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsZone();
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the InstancePoolUpdate object itself.
+     */
+    public InstancePoolUpdate withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstancePoolProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Pairs of Managed Instances in the failover group. */
+/**
+ * Pairs of Managed Instances in the failover group.
+ */
 @Fluent
 public final class ManagedInstancePairInfo {
     /*
@@ -22,13 +24,15 @@ public final class ManagedInstancePairInfo {
     @JsonProperty(value = "partnerManagedInstanceId")
     private String partnerManagedInstanceId;
 
-    /** Creates an instance of ManagedInstancePairInfo class. */
+    /**
+     * Creates an instance of ManagedInstancePairInfo class.
+     */
     public ManagedInstancePairInfo() {
     }
 
     /**
      * Get the primaryManagedInstanceId property: Id of Primary Managed Instance in pair.
-     *
+     * 
      * @return the primaryManagedInstanceId value.
      */
     public String primaryManagedInstanceId() {
@@ -37,7 +41,7 @@ public final class ManagedInstancePairInfo {
 
     /**
      * Set the primaryManagedInstanceId property: Id of Primary Managed Instance in pair.
-     *
+     * 
      * @param primaryManagedInstanceId the primaryManagedInstanceId value to set.
      * @return the ManagedInstancePairInfo object itself.
      */
@@ -48,7 +52,7 @@ public final class ManagedInstancePairInfo {
 
     /**
      * Get the partnerManagedInstanceId property: Id of Partner Managed Instance in pair.
-     *
+     * 
      * @return the partnerManagedInstanceId value.
      */
     public String partnerManagedInstanceId() {
@@ -57,7 +61,7 @@ public final class ManagedInstancePairInfo {
 
     /**
      * Set the partnerManagedInstanceId property: Id of Partner Managed Instance in pair.
-     *
+     * 
      * @param partnerManagedInstanceId the partnerManagedInstanceId value to set.
      * @return the ManagedInstancePairInfo object itself.
      */
@@ -68,7 +72,7 @@ public final class ManagedInstancePairInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

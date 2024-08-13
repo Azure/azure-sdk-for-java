@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a private link resource. */
+/**
+ * Properties of a private link resource.
+ */
 @Immutable
 public final class PrivateLinkResourceProperties {
     /*
@@ -29,13 +31,15 @@ public final class PrivateLinkResourceProperties {
     @JsonProperty(value = "requiredZoneNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredZoneNames;
 
-    /** Creates an instance of PrivateLinkResourceProperties class. */
+    /**
+     * Creates an instance of PrivateLinkResourceProperties class.
+     */
     public PrivateLinkResourceProperties() {
     }
 
     /**
      * Get the groupId property: The private link resource group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -44,7 +48,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -53,7 +57,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the requiredZoneNames property: The private link resource required zone names.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -62,7 +66,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

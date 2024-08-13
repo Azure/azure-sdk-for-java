@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DeletedServers ListByLocation. */
+/**
+ * Samples for DeletedServers ListByLocation.
+ */
 public final class DeletedServersListByLocationSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeletedServerList.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DeletedServerList.json
      */
     /**
      * Sample code: List deleted servers.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listDeletedServers(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.sqlServers().manager().serviceClient().getDeletedServers().listByLocation("japaneast", Context.NONE);
+        azure.sqlServers()
+            .manager()
+            .serviceClient()
+            .getDeletedServers()
+            .listByLocation("japaneast", com.azure.core.util.Context.NONE);
     }
 }
