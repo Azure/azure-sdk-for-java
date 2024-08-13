@@ -123,6 +123,7 @@ public class AzureVectorStoreSyncTests extends VectorStoreTestBase {
         VectorStoreFile vectorStoreFile = client.createVectorStoreFile(vectorStore.getId(), fileIds.get(0),
             new VectorStoreAutoChunkingStrategyRequest());
         assertVectorStoreFile(vectorStoreFile);
+        assertStaticChunkingStrategy(vectorStoreFile, 800, 400);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

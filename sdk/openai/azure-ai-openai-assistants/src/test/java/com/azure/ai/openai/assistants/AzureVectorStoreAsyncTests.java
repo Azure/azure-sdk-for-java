@@ -132,7 +132,10 @@ public class AzureVectorStoreAsyncTests extends VectorStoreTestBase {
         beforeTest(httpClient, serviceVersion);
         StepVerifier.create(client.createVectorStoreFile(vectorStore.getId(), fileIds.get(0),
                 new VectorStoreAutoChunkingStrategyRequest()))
-            .assertNext(this::assertVectorStoreFile)
+            .assertNext(vectorStoreFile -> {
+                assertVectorStoreFile(vectorStoreFile);
+                assertStaticChunkingStrategy(vectorStoreFile, 800, 400);
+            })
             .verifyComplete();
     }
 
