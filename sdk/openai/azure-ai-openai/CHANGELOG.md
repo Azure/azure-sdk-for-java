@@ -3,6 +3,7 @@
 ## 1.0.0-beta.11 (Unreleased)
 
 ### Features Added
+
 - Added a new overload `getImageGenerationsWithResponse` that takes `RequestOptions` to provide the flexibility to
   modify the HTTP request.
 

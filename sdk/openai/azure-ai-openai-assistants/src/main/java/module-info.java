@@ -4,7 +4,7 @@
 
 module com.azure.ai.openai.assistants {
     requires transitive com.azure.core;
-    requires transitive com.azure.json;
+    requires com.azure.json;
     exports com.azure.ai.openai.assistants;
     exports com.azure.ai.openai.assistants.models;
     opens com.azure.ai.openai.assistants.models to com.azure.core;
