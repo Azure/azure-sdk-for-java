@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.ai.inference;
 
-import com.azure.ai.inference.models.CompleteOptions;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatRequestMessage;
 import com.azure.ai.inference.models.ChatRequestUserMessage;
@@ -44,7 +44,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         getChatCompletionsRunner((prompt) -> {
             List<ChatRequestMessage> chatMessages = new ArrayList<>();
             chatMessages.add(ChatRequestUserMessage.fromString(prompt));
-            IterableStream<ChatCompletions> resultCompletions = client.completeStreaming(new CompleteOptions(chatMessages));
+            IterableStream<ChatCompletions> resultCompletions = client.completeStreaming(new ChatCompletionsOptions(chatMessages));
             assertTrue(resultCompletions.stream().toArray().length > 1);
             resultCompletions.forEach(ChatCompletionsClientTestBase::assertCompletionsStream);
         });

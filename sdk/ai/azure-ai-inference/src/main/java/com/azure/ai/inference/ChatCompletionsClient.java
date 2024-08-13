@@ -6,7 +6,7 @@ package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ChatCompletionsClientImpl;
 import com.azure.ai.inference.implementation.InferenceServerSentEvents;
-import com.azure.ai.inference.models.CompleteOptions;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.implementation.models.ExtraParameters;
 import com.azure.ai.inference.implementation.ChatCompletionsUtils;
@@ -186,7 +186,7 @@ public final class ChatCompletionsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ChatCompletions complete(CompleteOptions options) {
+    ChatCompletions complete(ChatCompletionsOptions options) {
         // Generated convenience method for completeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CompleteRequest completeRequestObj
@@ -236,8 +236,8 @@ public final class ChatCompletionsClient {
      * <strong>Code Samples</strong>
      * </p>
      * <!-- @formatter:off -->
-     * <!-- src_embed com.azure.ai.inference.ChatCompletionsClient.completeStreaming#CompleteOptions -->
-     * <!-- end com.azure.ai.inference.ChatCompletionsClient.completeStreaming#CompleteOptions -->
+     * <!-- src_embed com.azure.ai.inference.ChatCompletionsClient.completeStreaming#ChatCompletionsOptions -->
+     * <!-- end com.azure.ai.inference.ChatCompletionsClient.completeStreaming#ChatCompletionsOptions -->
      * <!-- @formatter:on -->
      *
      * @param options The configuration information for a chat completions request. Completions support a
@@ -252,7 +252,7 @@ public final class ChatCompletionsClient {
      * generate text that continues from or "completes" provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<ChatCompletions> completeStreaming(CompleteOptions options) {
+    public IterableStream<ChatCompletions> completeStreaming(ChatCompletionsOptions options) {
         options.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         CompleteRequest completeRequestObj

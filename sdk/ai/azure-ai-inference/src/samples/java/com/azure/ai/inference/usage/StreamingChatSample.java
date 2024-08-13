@@ -6,7 +6,7 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.models.CompleteOptions;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
@@ -35,7 +35,7 @@ public final class StreamingChatSample {
         chatMessages.add(ChatRequestUserMessage.fromString("What's the best way to train a parrot?"));
 
         IterableStream<ChatCompletions> chatCompletionsStream = client.completeStreaming(
-            new CompleteOptions(chatMessages));
+            new ChatCompletionsOptions(chatMessages));
 
         // The delta is the message content for a streaming response.
         // Subsequence of streaming delta will be like:

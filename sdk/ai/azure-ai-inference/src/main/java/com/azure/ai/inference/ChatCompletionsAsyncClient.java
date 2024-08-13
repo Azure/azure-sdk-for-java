@@ -7,7 +7,7 @@ package com.azure.ai.inference;
 import com.azure.ai.inference.implementation.ChatCompletionsClientImpl;
 import com.azure.ai.inference.implementation.InferenceServerSentEvents;
 import com.azure.ai.inference.implementation.ChatCompletionsUtils;
-import com.azure.ai.inference.models.CompleteOptions;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.implementation.models.ExtraParameters;
 import com.azure.ai.inference.models.ChatCompletions;
@@ -185,7 +185,7 @@ public final class ChatCompletionsAsyncClient {
      * generate text that continues from or "completes" provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<ChatCompletions> completeStreaming(CompleteOptions options) {
+    public Flux<ChatCompletions> completeStreaming(ChatCompletionsOptions options) {
         options.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream
@@ -234,7 +234,7 @@ public final class ChatCompletionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatCompletions> complete(CompleteOptions options) {
+    public Mono<ChatCompletions> complete(ChatCompletionsOptions options) {
         // Generated convenience method for completeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CompleteRequest completeRequestObj

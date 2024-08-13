@@ -14,7 +14,7 @@ import java.util.List;
  * Options for complete API.
  */
 @Fluent
-public final class CompleteOptions {
+public final class ChatCompletionsOptions {
     /*
      * The collection of context messages associated with this chat completions request.
      * Typical usage begins with a chat message for the System role that provides instructions for
@@ -127,12 +127,12 @@ public final class CompleteOptions {
     private ExtraParameters extraParams;
 
     /**
-     * Creates an instance of CompleteOptions class.
+     * Creates an instance of ChatCompletionsOptions class.
      *
      * @param messages the messages value to set.
      */
     @Generated
-    public CompleteOptions(List<ChatRequestMessage> messages) {
+    public ChatCompletionsOptions(List<ChatRequestMessage> messages) {
         this.messages = messages;
     }
 
@@ -173,10 +173,10 @@ public final class CompleteOptions {
      * Supported range is [-2, 2].
      *
      * @param frequencyPenalty the frequencyPenalty value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setFrequencyPenalty(Double frequencyPenalty) {
+    public ChatCompletionsOptions setFrequencyPenalty(Double frequencyPenalty) {
         this.frequencyPenalty = frequencyPenalty;
         return this;
     }
@@ -195,10 +195,10 @@ public final class CompleteOptions {
      * Set the stream property: A value indicating whether chat completions should be streamed for this request.
      *
      * @param stream the stream value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setStream(Boolean stream) {
+    public ChatCompletionsOptions setStream(Boolean stream) {
         this.stream = stream;
         return this;
     }
@@ -227,10 +227,10 @@ public final class CompleteOptions {
      * Supported range is [-2, 2].
      *
      * @param presencePenalty the presencePenalty value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setPresencePenalty(Double presencePenalty) {
+    public ChatCompletionsOptions setPresencePenalty(Double presencePenalty) {
         this.presencePenalty = presencePenalty;
         return this;
     }
@@ -261,10 +261,10 @@ public final class CompleteOptions {
      * Supported range is [0, 1].
      *
      * @param temperature the temperature value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setTemperature(Double temperature) {
+    public ChatCompletionsOptions setTemperature(Double temperature) {
         this.temperature = temperature;
         return this;
     }
@@ -295,10 +295,10 @@ public final class CompleteOptions {
      * Supported range is [0, 1].
      *
      * @param topP the topP value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setTopP(Double topP) {
+    public ChatCompletionsOptions setTopP(Double topP) {
         this.topP = topP;
         return this;
     }
@@ -317,10 +317,10 @@ public final class CompleteOptions {
      * Set the maxTokens property: The maximum number of tokens to generate.
      *
      * @param maxTokens the maxTokens value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setMaxTokens(Integer maxTokens) {
+    public ChatCompletionsOptions setMaxTokens(Integer maxTokens) {
         this.maxTokens = maxTokens;
         return this;
     }
@@ -345,10 +345,10 @@ public final class CompleteOptions {
      * via a system or user message.
      *
      * @param responseFormat the responseFormat value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setResponseFormat(ChatCompletionsResponseFormat responseFormat) {
+    public ChatCompletionsOptions setResponseFormat(ChatCompletionsResponseFormat responseFormat) {
         this.responseFormat = responseFormat;
         return this;
     }
@@ -367,10 +367,10 @@ public final class CompleteOptions {
      * Set the stop property: A collection of textual sequences that will end completions generation.
      *
      * @param stop the stop value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setStop(List<String> stop) {
+    public ChatCompletionsOptions setStop(List<String> stop) {
         this.stop = stop;
         return this;
     }
@@ -391,10 +391,10 @@ public final class CompleteOptions {
      * caller-defined functions.
      *
      * @param tools the tools value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setTools(List<ChatCompletionsToolDefinition> tools) {
+    public ChatCompletionsOptions setTools(List<ChatCompletionsToolDefinition> tools) {
         this.tools = tools;
         return this;
     }
@@ -415,10 +415,10 @@ public final class CompleteOptions {
      * the chat completions response.
      *
      * @param toolChoice the toolChoice value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setToolChoice(BinaryData toolChoice) {
+    public ChatCompletionsOptions setToolChoice(BinaryData toolChoice) {
         this.toolChoice = toolChoice;
         return this;
     }
@@ -441,10 +441,10 @@ public final class CompleteOptions {
      * same seed and parameters should return the same result. Determinism is not guaranteed.
      *
      * @param seed the seed value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setSeed(Long seed) {
+    public ChatCompletionsOptions setSeed(Long seed) {
         this.seed = seed;
         return this;
     }
@@ -463,10 +463,10 @@ public final class CompleteOptions {
      * Set the model property: ID of the specific AI model to use, if more than one model is available on the endpoint.
      *
      * @param model the model value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setModel(String model) {
+    public ChatCompletionsOptions setModel(String model) {
         this.model = model;
         return this;
     }
@@ -489,10 +489,10 @@ public final class CompleteOptions {
      * This sets the HTTP request header `extra-parameters`.
      *
      * @param extraParams the extraParams value to set.
-     * @return the CompleteOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
     @Generated
-    public CompleteOptions setExtraParams(ExtraParameters extraParams) {
+    public ChatCompletionsOptions setExtraParams(ExtraParameters extraParams) {
         this.extraParams = extraParams;
         return this;
     }

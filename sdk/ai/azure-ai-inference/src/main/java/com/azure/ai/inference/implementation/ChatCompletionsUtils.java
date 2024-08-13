@@ -3,7 +3,7 @@
 
 package com.azure.ai.inference.implementation;
 
-import com.azure.ai.inference.models.CompleteOptions;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.models.ChatRequestMessage;
 
 import com.azure.ai.inference.models.ChatRequestUserMessage;
@@ -20,14 +20,14 @@ public final class ChatCompletionsUtils {
     }
 
     /**
-     * Convenience method for minimal initialization for the CompleteOptions class
+     * Convenience method for minimal initialization for the ChatCompletionsOptions class
      * @param prompt from which ChatCompletions will be generated
-     * @return A CompleteOptions object
+     * @return A ChatCompletionsOptions object
      * */
-    public static CompleteOptions defaultCompleteOptions(String prompt) {
+    public static ChatCompletionsOptions defaultCompleteOptions(String prompt) {
         List<ChatRequestMessage> messages = new ArrayList<>();
         messages.add(ChatRequestUserMessage.fromString(prompt));
-        return new CompleteOptions(messages);
+        return new ChatCompletionsOptions(messages);
     }
 
 }
