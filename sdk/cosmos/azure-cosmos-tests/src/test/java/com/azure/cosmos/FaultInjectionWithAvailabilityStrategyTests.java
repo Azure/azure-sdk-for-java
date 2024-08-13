@@ -208,6 +208,15 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "multi-master" })
     public void beforeClass() {
+
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
+
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -229,7 +238,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             Map<String, String> writeRegionMap = this.getRegionMap(databaseAccount, true);
 
-            this.writeableRegions = new ArrayList<>(writeRegionMap.keySet());
+            this.writeableRegions = new ArrayList<>(Arrays.asList("East US", "South Central US", "West US 2"));
             assertThat(this.writeableRegions).isNotNull();
             assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
 
@@ -323,7 +332,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // When the container does not exist yet, you would see 401 for example for point reads etc.
             // So, adding this delay after container creation to minimize risk of hitting these errors
             try {
-                Thread.sleep(3000);
+                Thread.sleep(10_000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -334,6 +343,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     }
     @AfterClass(groups = { "multi-master" })
     public void afterClass() {
+
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -5086,7 +5098,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     // When the container does not exist yet, you would see 401 for example for point reads etc.
                     // So, adding this delay after container creation to minimize risk of hitting these errors
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(10_000);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }

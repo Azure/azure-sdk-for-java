@@ -54,6 +54,7 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -1428,6 +1429,14 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
     @BeforeClass(groups = {"multi-region", "multi-master"})
     public void beforeClass() {
 
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
+
         try (CosmosAsyncClient tempClient = getClientBuilder().buildAsyncClient()) {
 
             RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(tempClient);
@@ -1442,6 +1451,11 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @AfterClass(groups = {"multi-region", "multi-master"})
+    public void afterClass() {
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "readYouWriteWithNoExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)

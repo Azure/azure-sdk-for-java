@@ -55,6 +55,13 @@ public class ExcludeRegionTests extends TestSuiteBase {
     public void beforeClass() {
         System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS", "1000");
         System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS", "500");
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
 
         CosmosAsyncClient dummyClient = null;
         try {
