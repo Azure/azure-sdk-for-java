@@ -106,6 +106,7 @@ public class AzureAppConfigDataLocationResolver
         ReplicaLookUp replicaLookup = null;
         try {
             replicaLookup = new ReplicaLookUp(properties);
+            context.getBootstrapContext().registerIfAbsent(ReplicaLookUp.class, InstanceSupplier.of(replicaLookup));
         } catch (NamingException e) {
             // TODO Auto-generated catch block
         }

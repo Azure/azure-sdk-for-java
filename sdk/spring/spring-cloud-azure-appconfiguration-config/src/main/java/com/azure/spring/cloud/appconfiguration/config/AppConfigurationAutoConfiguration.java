@@ -53,7 +53,8 @@ public class AppConfigurationAutoConfiguration {
         @ConditionalOnBean(AppConfigurationReplicaClientFactory.class)
         AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
             AppConfigurationProviderProperties appProperties, BootstrapContext context) {
-            AppConfigurationReplicaClientFactory clientFactory = context.get(AppConfigurationReplicaClientFactory.class);
+            AppConfigurationReplicaClientFactory clientFactory = context
+                .get(AppConfigurationReplicaClientFactory.class);
             ReplicaLookUp replicaLookUp = context.get(ReplicaLookUp.class);
             
             return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
