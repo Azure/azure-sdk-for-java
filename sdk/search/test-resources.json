@@ -58,6 +58,15 @@
   },
   "resources": [
     {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2019-04-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('searchIndexDataContributorRoleId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('searchIndexDataContributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
       "name": "[variables('searchServiceName')]",
       "type": "Microsoft.Search/searchServices",
       "apiVersion": "[variables('searchApiVersion')]",
@@ -81,16 +90,6 @@
             "aadAuthFailureMode": "http401WithBearerChallenge"
           }
         }
-      }
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2018-09-01-preview",
-      "name": "[guid(resourceGroup().id)]",
-      "properties": {
-        "roleDefinitionId": "[variables('searchIndexDataContributorRoleId')]",
-        "principalId": "[parameters('testApplicationOid')]",
-        "scope": "[resourceGroup().id]"
       }
     },
     {
