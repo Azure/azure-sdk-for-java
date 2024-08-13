@@ -84,6 +84,9 @@
         "name": "S1"
       },
       "kind": "TextTranslation",
+      "identity": {
+          "type": "SystemAssigned"
+      },
       "properties": {
         "customSubDomainName": "[variables('uniqueSubDomainName')]"
       }
@@ -110,10 +113,26 @@
       "properties": {
         "networkAcls": "[variables('networkAcls')]",
         "supportsHttpsTrafficOnly": true,
+        "allowSharedKeyAccess": false,
         "encryption": "[variables('encryption')]",
-        "accessTier": "Cool",
+        "accessTier": "Hot",
         "minimumTlsVersion": "TLS1_2"
       }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "[variables('authorizationApiVersion')]",
+      "name": "[guid(concat('dataContributorRoleId', resourceGroup().id))]",
+      "scope": "[variables('storageAccountResourceId')]",
+      "properties": {
+        "roleDefinitionId": "[variables('blobDataContributorRoleId')]",
+        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts', variables('uniqueSubDomainName')), '2017-04-18', 'full').identity.principalId]",
+        "principalType": "ServicePrincipal"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('uniqueSubDomainName'))]",
+        "[variables('storageAccountResourceId')]"
+      ]
     },
     {
       "type": "Microsoft.CognitiveServices/accounts",
@@ -141,10 +160,6 @@
     "DOCUMENT_TRANSLATION_STORAGE_NAME": {
       "type": "string",
       "value": "[variables('storageAccountName')]"
-    },
-    "DOCUMENT_TRANSLATION_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-04-01').keys[0].value,';EndpointSuffix=core.windows.net')]"
     },
     "TEXT_TRANSLATION_API_KEY": {
       "type": "string",

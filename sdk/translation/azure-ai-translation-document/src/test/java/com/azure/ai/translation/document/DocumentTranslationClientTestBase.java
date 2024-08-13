@@ -14,6 +14,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -107,16 +108,12 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_STORAGE_NAME");
     }
 
-    private String getConnectionString() {
-        return interceptorManager.isPlaybackMode()
-            ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
-            : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_CONNECTION_STRING");
-    }
-
     BlobContainerClient getBlobContainerClient(String containerName) {
+        String endpoint = String.format("https://%s.blob.core.windows.net", getStorageName());
         BlobContainerClientBuilder blobContainerClientBuilder = new BlobContainerClientBuilder()
+            .endpoint(endpoint)
             .containerName(containerName)
-            .connectionString(getConnectionString());
+            .credential(new DefaultAzureCredentialBuilder().build());
 
         if (interceptorManager.isPlaybackMode()) {
             blobContainerClientBuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -157,59 +154,26 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
     String createSourceContainer(List<TestDocument> documents) {
         String containerName = testResourceNamer.randomName("source", 10);
-        BlobContainerClient blobContainerClient = createContainer(containerName, documents);
-        OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
-
-        BlobContainerSasPermission containerSasPermission = new BlobContainerSasPermission()
-            .setReadPermission(true)
-            .setListPermission(true);
-
-        BlobServiceSasSignatureValues serviceSasValues
-            = new BlobServiceSasSignatureValues(expiresOn, containerSasPermission);
-
-        String sasToken = blobContainerClient.generateSas(serviceSasValues);
+        BlobContainerClient blobContainerClient = createContainer(containerName, documents);        
         String containerUrl = blobContainerClient.getBlobContainerUrl();
-        String sasUri = containerUrl + "?" + sasToken;
-        return sasUri;
+        return containerUrl;
     }
 
     String createTargetContainer(List<TestDocument> documents) {
         String containerName = testResourceNamer.randomName("target", 10);
-        BlobContainerClient blobContainerClient = createContainer(containerName, documents);
-        OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
-
-        BlobContainerSasPermission containerSasPermission = new BlobContainerSasPermission()
-            .setWritePermission(true)
-            .setListPermission(true);
-
-        BlobServiceSasSignatureValues serviceSasValues
-            = new BlobServiceSasSignatureValues(expiresOn, containerSasPermission);
-
-        String sasToken = blobContainerClient.generateSas(serviceSasValues);
+        BlobContainerClient blobContainerClient = createContainer(containerName, documents);        
         String containerUrl = blobContainerClient.getBlobContainerUrl();
-        String sasUri = containerUrl + "?" + sasToken;
-        return sasUri;
+        return containerUrl;
     }
 
     Map<String, String> createTargetContainerWithClient(List<TestDocument> documents) {
 
         String containerName = testResourceNamer.randomName("target", 10);
-        BlobContainerClient blobContainerClient = createContainer(containerName, documents);
-        OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
-
-        BlobContainerSasPermission containerSasPermission = new BlobContainerSasPermission()
-            .setWritePermission(true)
-            .setListPermission(true);
-
-        BlobServiceSasSignatureValues serviceSasValues
-            = new BlobServiceSasSignatureValues(expiresOn, containerSasPermission);
-
-        String sasToken = blobContainerClient.generateSas(serviceSasValues);
+        BlobContainerClient blobContainerClient = createContainer(containerName, documents);        
         String containerUrl = blobContainerClient.getBlobContainerUrl();
-        String sasUri = containerUrl + "?" + sasToken;
 
         Map<String, String> containerValues = new HashMap<>();
-        containerValues.put("sasUri", sasUri);
+        containerValues.put("containerUrl", containerUrl);
         containerValues.put("containerName", containerName);
 
         return containerValues;
@@ -220,18 +184,8 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         List<TestDocument> documents = new ArrayList<>();
         documents.add(document);
         BlobContainerClient blobContainerClient = createContainer(containerName, documents);
-        OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
-
-        BlobContainerSasPermission containerSasPermission = new BlobContainerSasPermission()
-            .setReadPermission(true)
-            .setListPermission(true);
-
-        BlobServiceSasSignatureValues serviceSasValues
-            = new BlobServiceSasSignatureValues(expiresOn, containerSasPermission);
-
-        String sasToken = blobContainerClient.generateSas(serviceSasValues);
         String containerUrl = blobContainerClient.getBlobContainerUrl();
-        String sasUri = containerUrl + "/" + document.getName() + "?" + sasToken;
+        String sasUri = containerUrl + "/" + document.getName();
         return sasUri;
     }
 
@@ -258,9 +212,11 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
     }
 
     String downloadDocumentStream(String targetContainerName, String blobName) {
+        String endpoint = String.format("https://%s.blob.core.windows.net", getStorageName());
         BlobClientBuilder blobClientBuilder = new BlobClientBuilder()
+            .endpoint(endpoint)
             .containerName(targetContainerName)
-            .connectionString(getConnectionString())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .blobName(blobName);
 
         if (interceptorManager.isPlaybackMode()) {
