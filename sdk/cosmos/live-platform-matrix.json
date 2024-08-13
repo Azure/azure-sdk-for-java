@@ -1,18 +1,10 @@
 {
   "displayNames": {
-    "-Pe2e": "E2E",
-    "-Pcfp-split": "ChangeFeedSplit",
-    "-Pquery": "Query",
-    "-Psplit": "Split",
-    "-Pfast": "Fast",
-    "-Pdirect": "Direct",
     "-Pmulti-master": "MultiMaster",
     "-Pflaky-multi-master": "FlakyMultiMaster",
     "-Pcircuit-breaker-misc-direct": "CircuitBreakerMiscDirect",
     "-Pcircuit-breaker-misc-gateway": "CircuitBreakerMiscGateway",
     "-Pcircuit-breaker-read-all-read-many": "CircuitBreakerReadAllAndReadMany",
-    "-Pmulti-region": "MultiRegion",
-    "-Plong": "Long",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
