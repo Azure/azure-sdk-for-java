@@ -51,7 +51,7 @@
   },
   "variables": {
     "searchServiceName": "[concat('azs-java-', parameters('baseName'))]",
-    "searchApiVersion": "2024-03-01-Preview",
+    "searchApiVersion": "2020-03-13",
     "storageAccountName": "[concat('search', parameters('baseName'))]",
     "storageApiVersion": "2022-05-01",
     "searchIndexDataContributorRoleId": "8ebe5a00-799e-43f5-93ac-243d3dce84a7"
