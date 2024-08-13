@@ -21,31 +21,26 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
     /*
      * Operation status. notStarted, running, succeeded, or failed
      */
-    @Generated
     private final OperationStatus status;
 
     /*
      * Date and time (UTC) when the analyze operation was submitted.
      */
-    @Generated
     private final OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
-    @Generated
     private final OffsetDateTime lastUpdatedDateTime;
 
     /*
      * Encountered error during document analysis.
      */
-    @Generated
     private Error error;
 
     /*
      * Document analysis result.
      */
-    @Generated
     private AnalyzeResult analyzeResult;
 
     private String operationId;
@@ -56,7 +51,6 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
      * @param createdDateTime the createdDateTime value to set.
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      */
-    @Generated
     private AnalyzeResultOperation(OperationStatus status, OffsetDateTime createdDateTime,
         OffsetDateTime lastUpdatedDateTime) {
         this.status = status;
@@ -69,7 +63,6 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
      *
      * @return the status value.
      */
-    @Generated
     public OperationStatus getStatus() {
         return this.status;
     }
@@ -79,7 +72,6 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
      *
      * @return the createdDateTime value.
      */
-    @Generated
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
@@ -89,7 +81,6 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
      *
      * @return the lastUpdatedDateTime value.
      */
-    @Generated
     public OffsetDateTime getLastUpdatedDateTime() {
         return this.lastUpdatedDateTime;
     }
@@ -99,7 +90,6 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
      *
      * @return the error value.
      */
-    @Generated
     public Error getError() {
         return this.error;
     }
@@ -109,7 +99,6 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
      *
      * @return the analyzeResult value.
      */
-    @Generated
     public AnalyzeResult getAnalyzeResult() {
         return this.analyzeResult;
     }
@@ -133,7 +122,6 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -158,7 +146,6 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeResultOperation.
      */
-    @Generated
     public static AnalyzeResultOperation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OperationStatus status = null;
