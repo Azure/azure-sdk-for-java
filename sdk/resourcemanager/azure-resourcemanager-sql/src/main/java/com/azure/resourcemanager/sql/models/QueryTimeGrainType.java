@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Interval type (length). */
+/**
+ * Interval type (length).
+ */
 public final class QueryTimeGrainType extends ExpandableStringEnum<QueryTimeGrainType> {
-    /** Static value PT1H for QueryTimeGrainType. */
+    /**
+     * Static value PT1H for QueryTimeGrainType.
+     */
     public static final QueryTimeGrainType PT1H = fromString("PT1H");
 
-    /** Static value P1D for QueryTimeGrainType. */
+    /**
+     * Static value P1D for QueryTimeGrainType.
+     */
     public static final QueryTimeGrainType P1D = fromString("P1D");
 
     /**
+     * Creates a new instance of QueryTimeGrainType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryTimeGrainType() {
+    }
+
+    /**
      * Creates or finds a QueryTimeGrainType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QueryTimeGrainType.
      */
-    @JsonCreator
     public static QueryTimeGrainType fromString(String name) {
         return fromString(name, QueryTimeGrainType.class);
     }
 
     /**
      * Gets known QueryTimeGrainType values.
-     *
+     * 
      * @return known QueryTimeGrainType values.
      */
     public static Collection<QueryTimeGrainType> values() {

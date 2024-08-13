@@ -9,7 +9,8 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesDeleteSqlRoleAssignmentSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlRoleAssignmentDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * CosmosDBSqlRoleAssignmentDelete.json
      */
     /**
      * Sample code: CosmosDBSqlRoleAssignmentDelete.

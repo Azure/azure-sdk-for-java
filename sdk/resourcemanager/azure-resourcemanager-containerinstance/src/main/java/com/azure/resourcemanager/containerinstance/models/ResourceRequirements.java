@@ -6,30 +6,36 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The resource requirements. */
+/**
+ * The resource requirements.
+ */
 @Fluent
-public final class ResourceRequirements {
+public final class ResourceRequirements implements JsonSerializable<ResourceRequirements> {
     /*
      * The resource requests of this container instance.
      */
-    @JsonProperty(value = "requests", required = true)
     private ResourceRequests requests;
 
     /*
      * The resource limits of this container instance.
      */
-    @JsonProperty(value = "limits")
     private ResourceLimits limits;
 
-    /** Creates an instance of ResourceRequirements class. */
+    /**
+     * Creates an instance of ResourceRequirements class.
+     */
     public ResourceRequirements() {
     }
 
     /**
      * Get the requests property: The resource requests of this container instance.
-     *
+     * 
      * @return the requests value.
      */
     public ResourceRequests requests() {
@@ -38,7 +44,7 @@ public final class ResourceRequirements {
 
     /**
      * Set the requests property: The resource requests of this container instance.
-     *
+     * 
      * @param requests the requests value to set.
      * @return the ResourceRequirements object itself.
      */
@@ -49,7 +55,7 @@ public final class ResourceRequirements {
 
     /**
      * Get the limits property: The resource limits of this container instance.
-     *
+     * 
      * @return the limits value.
      */
     public ResourceLimits limits() {
@@ -58,7 +64,7 @@ public final class ResourceRequirements {
 
     /**
      * Set the limits property: The resource limits of this container instance.
-     *
+     * 
      * @param limits the limits value to set.
      * @return the ResourceRequirements object itself.
      */
@@ -69,14 +75,13 @@ public final class ResourceRequirements {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (requests() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property requests in model ResourceRequirements"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property requests in model ResourceRequirements"));
         } else {
             requests().validate();
         }
@@ -86,4 +91,44 @@ public final class ResourceRequirements {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceRequirements.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("requests", this.requests);
+        jsonWriter.writeJsonField("limits", this.limits);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceRequirements from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceRequirements if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceRequirements.
+     */
+    public static ResourceRequirements fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceRequirements deserializedResourceRequirements = new ResourceRequirements();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requests".equals(fieldName)) {
+                    deserializedResourceRequirements.requests = ResourceRequests.fromJson(reader);
+                } else if ("limits".equals(fieldName)) {
+                    deserializedResourceRequirements.limits = ResourceLimits.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceRequirements;
+        });
+    }
 }

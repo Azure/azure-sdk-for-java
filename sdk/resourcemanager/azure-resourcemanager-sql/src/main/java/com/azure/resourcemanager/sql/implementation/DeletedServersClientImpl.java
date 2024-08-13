@@ -36,22 +36,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeletedServersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeletedServersClient.
+ */
 public final class DeletedServersClientImpl implements DeletedServersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DeletedServersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of DeletedServersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DeletedServersClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DeletedServersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DeletedServersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,172 +68,115 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
     public interface DeletedServersService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/deletedServers")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeletedServerListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeletedServerListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeletedServerListResult>> listByLocation(
-            @HostParam("$host") String endpoint,
-            @PathParam("locationName") String locationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeletedServerListResult>> listByLocation(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers"
-                + "/{deletedServerName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers/{deletedServerName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeletedServerInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("locationName") String locationName,
-            @PathParam("deletedServerName") String deletedServerName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeletedServerInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName, @PathParam("deletedServerName") String deletedServerName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers"
-                + "/{deletedServerName}/recover")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers/{deletedServerName}/recover")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> recover(
-            @HostParam("$host") String endpoint,
-            @PathParam("locationName") String locationName,
-            @PathParam("deletedServerName") String deletedServerName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> recover(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName, @PathParam("deletedServerName") String deletedServerName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeletedServerListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeletedServerListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeletedServerListResult>> listByLocationNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of all deleted servers in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all deleted servers in a subscription along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedServerInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DeletedServerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DeletedServerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of all deleted servers in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all deleted servers in a subscription along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedServerInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of all deleted servers in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all deleted servers in a subscription as paginated response with {@link PagedFlux}.
@@ -239,7 +188,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
     /**
      * Gets a list of all deleted servers in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -248,13 +197,13 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeletedServerInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of all deleted servers in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all deleted servers in a subscription as paginated response with {@link PagedIterable}.
@@ -266,7 +215,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
     /**
      * Gets a list of all deleted servers in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -280,108 +229,73 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
     /**
      * Gets a list of deleted servers for a location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of deleted servers for a location along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedServerInner>> listByLocationSinglePageAsync(String locationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByLocation(
-                            this.client.getEndpoint(),
-                            locationName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DeletedServerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByLocation(this.client.getEndpoint(), locationName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DeletedServerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of deleted servers for a location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of deleted servers for a location along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeletedServerInner>> listByLocationSinglePageAsync(
-        String locationName, Context context) {
+    private Mono<PagedResponse<DeletedServerInner>> listByLocationSinglePageAsync(String locationName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByLocation(
-                this.client.getEndpoint(),
-                locationName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByLocation(this.client.getEndpoint(), locationName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of deleted servers for a location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -390,13 +304,13 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedServerInner> listByLocationAsync(String locationName) {
-        return new PagedFlux<>(
-            () -> listByLocationSinglePageAsync(locationName), nextLink -> listByLocationNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByLocationSinglePageAsync(locationName),
+            nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of deleted servers for a location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -406,14 +320,13 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeletedServerInner> listByLocationAsync(String locationName, Context context) {
-        return new PagedFlux<>(
-            () -> listByLocationSinglePageAsync(locationName, context),
+        return new PagedFlux<>(() -> listByLocationSinglePageAsync(locationName, context),
             nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of deleted servers for a location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -427,7 +340,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
     /**
      * Gets a list of deleted servers for a location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -442,7 +355,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
     /**
      * Gets a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,10 +366,8 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedServerInner>> getWithResponseAsync(String locationName, String deletedServerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -466,30 +377,19 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
                 .error(new IllegalArgumentException("Parameter deletedServerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            locationName,
-                            deletedServerName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), locationName, deletedServerName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @param context The context to associate with this operation.
@@ -499,13 +399,11 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      * @return a deleted server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeletedServerInner>> getWithResponseAsync(
-        String locationName, String deletedServerName, Context context) {
+    private Mono<Response<DeletedServerInner>> getWithResponseAsync(String locationName, String deletedServerName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -515,27 +413,18 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
                 .error(new IllegalArgumentException("Parameter deletedServerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                locationName,
-                deletedServerName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), locationName, deletedServerName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -550,7 +439,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
     /**
      * Gets a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @param context The context to associate with this operation.
@@ -560,14 +449,14 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      * @return a deleted server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedServerInner> getWithResponse(
-        String locationName, String deletedServerName, Context context) {
+    public Response<DeletedServerInner> getWithResponse(String locationName, String deletedServerName,
+        Context context) {
         return getWithResponseAsync(locationName, deletedServerName, context).block();
     }
 
     /**
      * Gets a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -582,7 +471,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -593,10 +482,8 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> recoverWithResponseAsync(String locationName, String deletedServerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -606,30 +493,19 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
                 .error(new IllegalArgumentException("Parameter deletedServerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .recover(
-                            this.client.getEndpoint(),
-                            locationName,
-                            deletedServerName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.recover(this.client.getEndpoint(), locationName, deletedServerName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @param context The context to associate with this operation.
@@ -639,13 +515,11 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      * @return a deleted server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> recoverWithResponseAsync(
-        String locationName, String deletedServerName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> recoverWithResponseAsync(String locationName, String deletedServerName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -655,27 +529,18 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
                 .error(new IllegalArgumentException("Parameter deletedServerName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .recover(
-                this.client.getEndpoint(),
-                locationName,
-                deletedServerName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.recover(this.client.getEndpoint(), locationName, deletedServerName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -684,22 +549,16 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      * @return the {@link PollerFlux} for polling of a deleted server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<DeletedServerInner>, DeletedServerInner> beginRecoverAsync(
-        String locationName, String deletedServerName) {
+    public PollerFlux<PollResult<DeletedServerInner>, DeletedServerInner> beginRecoverAsync(String locationName,
+        String deletedServerName) {
         Mono<Response<Flux<ByteBuffer>>> mono = recoverWithResponseAsync(locationName, deletedServerName);
-        return this
-            .client
-            .<DeletedServerInner, DeletedServerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DeletedServerInner.class,
-                DeletedServerInner.class,
-                this.client.getContext());
+        return this.client.<DeletedServerInner, DeletedServerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeletedServerInner.class, DeletedServerInner.class, this.client.getContext());
     }
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @param context The context to associate with this operation.
@@ -709,19 +568,17 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      * @return the {@link PollerFlux} for polling of a deleted server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DeletedServerInner>, DeletedServerInner> beginRecoverAsync(
-        String locationName, String deletedServerName, Context context) {
+    private PollerFlux<PollResult<DeletedServerInner>, DeletedServerInner> beginRecoverAsync(String locationName,
+        String deletedServerName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = recoverWithResponseAsync(locationName, deletedServerName, context);
-        return this
-            .client
-            .<DeletedServerInner, DeletedServerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DeletedServerInner.class, DeletedServerInner.class, context);
+        return this.client.<DeletedServerInner, DeletedServerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeletedServerInner.class, DeletedServerInner.class, context);
     }
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -730,14 +587,14 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      * @return the {@link SyncPoller} for polling of a deleted server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeletedServerInner>, DeletedServerInner> beginRecover(
-        String locationName, String deletedServerName) {
-        return beginRecoverAsync(locationName, deletedServerName).getSyncPoller();
+    public SyncPoller<PollResult<DeletedServerInner>, DeletedServerInner> beginRecover(String locationName,
+        String deletedServerName) {
+        return this.beginRecoverAsync(locationName, deletedServerName).getSyncPoller();
     }
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @param context The context to associate with this operation.
@@ -747,14 +604,14 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      * @return the {@link SyncPoller} for polling of a deleted server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeletedServerInner>, DeletedServerInner> beginRecover(
-        String locationName, String deletedServerName, Context context) {
-        return beginRecoverAsync(locationName, deletedServerName, context).getSyncPoller();
+    public SyncPoller<PollResult<DeletedServerInner>, DeletedServerInner> beginRecover(String locationName,
+        String deletedServerName, Context context) {
+        return this.beginRecoverAsync(locationName, deletedServerName, context).getSyncPoller();
     }
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -769,7 +626,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @param context The context to associate with this operation.
@@ -780,14 +637,13 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeletedServerInner> recoverAsync(String locationName, String deletedServerName, Context context) {
-        return beginRecoverAsync(locationName, deletedServerName, context)
-            .last()
+        return beginRecoverAsync(locationName, deletedServerName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -802,7 +658,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @param context The context to associate with this operation.
@@ -818,9 +674,8 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -832,31 +687,20 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeletedServerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DeletedServerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -869,31 +713,20 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -905,31 +738,21 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocationNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeletedServerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DeletedServerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -937,29 +760,19 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
      * @return a list of deleted servers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeletedServerInner>> listByLocationNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DeletedServerInner>> listByLocationNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByLocationNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByLocationNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

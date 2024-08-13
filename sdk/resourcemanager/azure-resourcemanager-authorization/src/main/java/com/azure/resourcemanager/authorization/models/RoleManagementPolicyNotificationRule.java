@@ -5,53 +5,67 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The role management policy notification rule. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
-@JsonTypeName("RoleManagementPolicyNotificationRule")
+/**
+ * The role management policy notification rule.
+ */
 @Fluent
 public final class RoleManagementPolicyNotificationRule extends RoleManagementPolicyRule {
     /*
+     * The type of rule
+     */
+    private RoleManagementPolicyRuleType ruleType
+        = RoleManagementPolicyRuleType.ROLE_MANAGEMENT_POLICY_NOTIFICATION_RULE;
+
+    /*
      * The type of notification.
      */
-    @JsonProperty(value = "notificationType")
     private NotificationDeliveryMechanism notificationType;
 
     /*
      * The notification level.
      */
-    @JsonProperty(value = "notificationLevel")
     private NotificationLevel notificationLevel;
 
     /*
      * The recipient type.
      */
-    @JsonProperty(value = "recipientType")
     private RecipientType recipientType;
 
     /*
      * The list of notification recipients.
      */
-    @JsonProperty(value = "notificationRecipients")
     private List<String> notificationRecipients;
 
     /*
      * Determines if the notification will be sent to the recipient type specified in the policy rule.
      */
-    @JsonProperty(value = "isDefaultRecipientsEnabled")
     private Boolean isDefaultRecipientsEnabled;
 
-    /** Creates an instance of RoleManagementPolicyNotificationRule class. */
+    /**
+     * Creates an instance of RoleManagementPolicyNotificationRule class.
+     */
     public RoleManagementPolicyNotificationRule() {
     }
 
     /**
+     * Get the ruleType property: The type of rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public RoleManagementPolicyRuleType ruleType() {
+        return this.ruleType;
+    }
+
+    /**
      * Get the notificationType property: The type of notification.
-     *
+     * 
      * @return the notificationType value.
      */
     public NotificationDeliveryMechanism notificationType() {
@@ -60,7 +74,7 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
 
     /**
      * Set the notificationType property: The type of notification.
-     *
+     * 
      * @param notificationType the notificationType value to set.
      * @return the RoleManagementPolicyNotificationRule object itself.
      */
@@ -71,7 +85,7 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
 
     /**
      * Get the notificationLevel property: The notification level.
-     *
+     * 
      * @return the notificationLevel value.
      */
     public NotificationLevel notificationLevel() {
@@ -80,7 +94,7 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
 
     /**
      * Set the notificationLevel property: The notification level.
-     *
+     * 
      * @param notificationLevel the notificationLevel value to set.
      * @return the RoleManagementPolicyNotificationRule object itself.
      */
@@ -91,7 +105,7 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
 
     /**
      * Get the recipientType property: The recipient type.
-     *
+     * 
      * @return the recipientType value.
      */
     public RecipientType recipientType() {
@@ -100,7 +114,7 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
 
     /**
      * Set the recipientType property: The recipient type.
-     *
+     * 
      * @param recipientType the recipientType value to set.
      * @return the RoleManagementPolicyNotificationRule object itself.
      */
@@ -111,7 +125,7 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
 
     /**
      * Get the notificationRecipients property: The list of notification recipients.
-     *
+     * 
      * @return the notificationRecipients value.
      */
     public List<String> notificationRecipients() {
@@ -120,7 +134,7 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
 
     /**
      * Set the notificationRecipients property: The list of notification recipients.
-     *
+     * 
      * @param notificationRecipients the notificationRecipients value to set.
      * @return the RoleManagementPolicyNotificationRule object itself.
      */
@@ -132,7 +146,7 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
     /**
      * Get the isDefaultRecipientsEnabled property: Determines if the notification will be sent to the recipient type
      * specified in the policy rule.
-     *
+     * 
      * @return the isDefaultRecipientsEnabled value.
      */
     public Boolean isDefaultRecipientsEnabled() {
@@ -142,7 +156,7 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
     /**
      * Set the isDefaultRecipientsEnabled property: Determines if the notification will be sent to the recipient type
      * specified in the policy rule.
-     *
+     * 
      * @param isDefaultRecipientsEnabled the isDefaultRecipientsEnabled value to set.
      * @return the RoleManagementPolicyNotificationRule object itself.
      */
@@ -151,14 +165,18 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoleManagementPolicyNotificationRule withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoleManagementPolicyNotificationRule withTarget(RoleManagementPolicyRuleTarget target) {
         super.withTarget(target);
@@ -167,11 +185,79 @@ public final class RoleManagementPolicyNotificationRule extends RoleManagementPo
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("target", target());
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeStringField("notificationType",
+            this.notificationType == null ? null : this.notificationType.toString());
+        jsonWriter.writeStringField("notificationLevel",
+            this.notificationLevel == null ? null : this.notificationLevel.toString());
+        jsonWriter.writeStringField("recipientType", this.recipientType == null ? null : this.recipientType.toString());
+        jsonWriter.writeArrayField("notificationRecipients", this.notificationRecipients,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isDefaultRecipientsEnabled", this.isDefaultRecipientsEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleManagementPolicyNotificationRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleManagementPolicyNotificationRule if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleManagementPolicyNotificationRule.
+     */
+    public static RoleManagementPolicyNotificationRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleManagementPolicyNotificationRule deserializedRoleManagementPolicyNotificationRule
+                = new RoleManagementPolicyNotificationRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleManagementPolicyNotificationRule.withId(reader.getString());
+                } else if ("target".equals(fieldName)) {
+                    deserializedRoleManagementPolicyNotificationRule
+                        .withTarget(RoleManagementPolicyRuleTarget.fromJson(reader));
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedRoleManagementPolicyNotificationRule.ruleType
+                        = RoleManagementPolicyRuleType.fromString(reader.getString());
+                } else if ("notificationType".equals(fieldName)) {
+                    deserializedRoleManagementPolicyNotificationRule.notificationType
+                        = NotificationDeliveryMechanism.fromString(reader.getString());
+                } else if ("notificationLevel".equals(fieldName)) {
+                    deserializedRoleManagementPolicyNotificationRule.notificationLevel
+                        = NotificationLevel.fromString(reader.getString());
+                } else if ("recipientType".equals(fieldName)) {
+                    deserializedRoleManagementPolicyNotificationRule.recipientType
+                        = RecipientType.fromString(reader.getString());
+                } else if ("notificationRecipients".equals(fieldName)) {
+                    List<String> notificationRecipients = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoleManagementPolicyNotificationRule.notificationRecipients = notificationRecipients;
+                } else if ("isDefaultRecipientsEnabled".equals(fieldName)) {
+                    deserializedRoleManagementPolicyNotificationRule.isDefaultRecipientsEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleManagementPolicyNotificationRule;
+        });
     }
 }

@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Predefined accelerator properties payload.
  */
 @Fluent
-public final class PredefinedAcceleratorProperties {
+public final class PredefinedAcceleratorProperties implements JsonSerializable<PredefinedAcceleratorProperties> {
     /*
      * Provisioning state of the predefined accelerator.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PredefinedAcceleratorProvisioningState provisioningState;
 
     /*
      * The displayName property.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The description property.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The iconUrl property.
      */
-    @JsonProperty(value = "iconUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String iconUrl;
 
     /*
      * The acceleratorTags property.
      */
-    @JsonProperty(value = "acceleratorTags", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> acceleratorTags;
 
     /*
      * State of the predefined accelerator.
      */
-    @JsonProperty(value = "state")
     private PredefinedAcceleratorState state;
 
     /**
@@ -126,5 +124,55 @@ public final class PredefinedAcceleratorProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredefinedAcceleratorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredefinedAcceleratorProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PredefinedAcceleratorProperties.
+     */
+    public static PredefinedAcceleratorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredefinedAcceleratorProperties deserializedPredefinedAcceleratorProperties
+                = new PredefinedAcceleratorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedPredefinedAcceleratorProperties.provisioningState
+                        = PredefinedAcceleratorProvisioningState.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPredefinedAcceleratorProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedPredefinedAcceleratorProperties.description = reader.getString();
+                } else if ("iconUrl".equals(fieldName)) {
+                    deserializedPredefinedAcceleratorProperties.iconUrl = reader.getString();
+                } else if ("acceleratorTags".equals(fieldName)) {
+                    List<String> acceleratorTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPredefinedAcceleratorProperties.acceleratorTags = acceleratorTags;
+                } else if ("state".equals(fieldName)) {
+                    deserializedPredefinedAcceleratorProperties.state
+                        = PredefinedAcceleratorState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredefinedAcceleratorProperties;
+        });
     }
 }

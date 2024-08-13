@@ -6,17 +6,20 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Log file URL payload.
  */
 @Fluent
-public final class LogFileUrlResponseInner {
+public final class LogFileUrlResponseInner implements JsonSerializable<LogFileUrlResponseInner> {
     /*
      * URL of the log file
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
     /**
@@ -52,10 +55,47 @@ public final class LogFileUrlResponseInner {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model LogFileUrlResponseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model LogFileUrlResponseInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LogFileUrlResponseInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogFileUrlResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogFileUrlResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogFileUrlResponseInner.
+     */
+    public static LogFileUrlResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogFileUrlResponseInner deserializedLogFileUrlResponseInner = new LogFileUrlResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedLogFileUrlResponseInner.url = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogFileUrlResponseInner;
+        });
+    }
 }

@@ -5,64 +5,62 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Describes the basic gallery artifact publishing profile.
  */
 @Fluent
-public class GalleryArtifactPublishingProfileBase {
+public class GalleryArtifactPublishingProfileBase implements JsonSerializable<GalleryArtifactPublishingProfileBase> {
     /*
      * The target regions where the Image Version is going to be replicated to. This property is updatable.
      */
-    @JsonProperty(value = "targetRegions")
     private List<TargetRegion> targetRegions;
 
     /*
      * The number of replicas of the Image Version to be created per region. This property would take effect for a
      * region when regionalReplicaCount is not specified. This property is updatable.
      */
-    @JsonProperty(value = "replicaCount")
     private Integer replicaCount;
 
     /*
      * If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image
      * Version.
      */
-    @JsonProperty(value = "excludeFromLatest")
     private Boolean excludeFromLatest;
 
     /*
      * The timestamp for when the gallery image version is published.
      */
-    @JsonProperty(value = "publishedDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime publishedDate;
 
     /*
      * The end of life date of the gallery image version. This property can be used for decommissioning purposes. This
      * property is updatable.
      */
-    @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
      * Specifies the storage account type to be used to store the image. This property is not updatable.
      */
-    @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
 
     /*
      * Optional parameter which specifies the mode to be used for replication. This property is not updatable.
      */
-    @JsonProperty(value = "replicationMode")
     private ReplicationMode replicationMode;
 
     /*
      * The target extended locations where the Image Version is going to be replicated to. This property is updatable.
      */
-    @JsonProperty(value = "targetExtendedLocations")
     private List<GalleryTargetExtendedLocation> targetExtendedLocations;
 
     /**
@@ -144,6 +142,17 @@ public class GalleryArtifactPublishingProfileBase {
      */
     public OffsetDateTime publishedDate() {
         return this.publishedDate;
+    }
+
+    /**
+     * Set the publishedDate property: The timestamp for when the gallery image version is published.
+     * 
+     * @param publishedDate the publishedDate value to set.
+     * @return the GalleryArtifactPublishingProfileBase object itself.
+     */
+    GalleryArtifactPublishingProfileBase withPublishedDate(OffsetDateTime publishedDate) {
+        this.publishedDate = publishedDate;
+        return this;
     }
 
     /**
@@ -247,5 +256,75 @@ public class GalleryArtifactPublishingProfileBase {
         if (targetExtendedLocations() != null) {
             targetExtendedLocations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("targetRegions", this.targetRegions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("replicaCount", this.replicaCount);
+        jsonWriter.writeBooleanField("excludeFromLatest", this.excludeFromLatest);
+        jsonWriter.writeStringField("endOfLifeDate",
+            this.endOfLifeDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endOfLifeDate));
+        jsonWriter.writeStringField("storageAccountType",
+            this.storageAccountType == null ? null : this.storageAccountType.toString());
+        jsonWriter.writeStringField("replicationMode",
+            this.replicationMode == null ? null : this.replicationMode.toString());
+        jsonWriter.writeArrayField("targetExtendedLocations", this.targetExtendedLocations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryArtifactPublishingProfileBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryArtifactPublishingProfileBase if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryArtifactPublishingProfileBase.
+     */
+    public static GalleryArtifactPublishingProfileBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryArtifactPublishingProfileBase deserializedGalleryArtifactPublishingProfileBase
+                = new GalleryArtifactPublishingProfileBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetRegions".equals(fieldName)) {
+                    List<TargetRegion> targetRegions = reader.readArray(reader1 -> TargetRegion.fromJson(reader1));
+                    deserializedGalleryArtifactPublishingProfileBase.targetRegions = targetRegions;
+                } else if ("replicaCount".equals(fieldName)) {
+                    deserializedGalleryArtifactPublishingProfileBase.replicaCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("excludeFromLatest".equals(fieldName)) {
+                    deserializedGalleryArtifactPublishingProfileBase.excludeFromLatest
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publishedDate".equals(fieldName)) {
+                    deserializedGalleryArtifactPublishingProfileBase.publishedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endOfLifeDate".equals(fieldName)) {
+                    deserializedGalleryArtifactPublishingProfileBase.endOfLifeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("storageAccountType".equals(fieldName)) {
+                    deserializedGalleryArtifactPublishingProfileBase.storageAccountType
+                        = StorageAccountType.fromString(reader.getString());
+                } else if ("replicationMode".equals(fieldName)) {
+                    deserializedGalleryArtifactPublishingProfileBase.replicationMode
+                        = ReplicationMode.fromString(reader.getString());
+                } else if ("targetExtendedLocations".equals(fieldName)) {
+                    List<GalleryTargetExtendedLocation> targetExtendedLocations
+                        = reader.readArray(reader1 -> GalleryTargetExtendedLocation.fromJson(reader1));
+                    deserializedGalleryArtifactPublishingProfileBase.targetExtendedLocations = targetExtendedLocations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryArtifactPublishingProfileBase;
+        });
     }
 }

@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines all possible authentication profiles for the OpenShift cluster.
  */
 @Fluent
-public final class OpenShiftManagedClusterAuthProfile {
+public final class OpenShiftManagedClusterAuthProfile implements JsonSerializable<OpenShiftManagedClusterAuthProfile> {
     /*
      * Type of authentication profile to use.
      */
-    @JsonProperty(value = "identityProviders")
     private List<OpenShiftManagedClusterIdentityProvider> identityProviders;
 
     /**
@@ -55,5 +58,45 @@ public final class OpenShiftManagedClusterAuthProfile {
         if (identityProviders() != null) {
             identityProviders().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("identityProviders", this.identityProviders,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OpenShiftManagedClusterAuthProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OpenShiftManagedClusterAuthProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OpenShiftManagedClusterAuthProfile.
+     */
+    public static OpenShiftManagedClusterAuthProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OpenShiftManagedClusterAuthProfile deserializedOpenShiftManagedClusterAuthProfile
+                = new OpenShiftManagedClusterAuthProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identityProviders".equals(fieldName)) {
+                    List<OpenShiftManagedClusterIdentityProvider> identityProviders
+                        = reader.readArray(reader1 -> OpenShiftManagedClusterIdentityProvider.fromJson(reader1));
+                    deserializedOpenShiftManagedClusterAuthProfile.identityProviders = identityProviders;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOpenShiftManagedClusterAuthProfile;
+        });
     }
 }

@@ -5,16 +5,35 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * This is the OS disk image.
  */
 @Fluent
 public final class GalleryOSDiskImage extends GalleryDiskImage {
+    /*
+     * This property indicates the size of the VHD to be created.
+     */
+    private Integer sizeInGB;
+
     /**
      * Creates an instance of GalleryOSDiskImage class.
      */
     public GalleryOSDiskImage() {
+    }
+
+    /**
+     * Get the sizeInGB property: This property indicates the size of the VHD to be created.
+     * 
+     * @return the sizeInGB value.
+     */
+    @Override
+    public Integer sizeInGB() {
+        return this.sizeInGB;
     }
 
     /**
@@ -43,5 +62,46 @@ public final class GalleryOSDiskImage extends GalleryDiskImage {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostCaching", hostCaching() == null ? null : hostCaching().toString());
+        jsonWriter.writeJsonField("source", source());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryOSDiskImage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryOSDiskImage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryOSDiskImage.
+     */
+    public static GalleryOSDiskImage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryOSDiskImage deserializedGalleryOSDiskImage = new GalleryOSDiskImage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sizeInGB".equals(fieldName)) {
+                    deserializedGalleryOSDiskImage.sizeInGB = reader.getNullable(JsonReader::getInt);
+                } else if ("hostCaching".equals(fieldName)) {
+                    deserializedGalleryOSDiskImage.withHostCaching(HostCaching.fromString(reader.getString()));
+                } else if ("source".equals(fieldName)) {
+                    deserializedGalleryOSDiskImage.withSource(GalleryDiskImageSource.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryOSDiskImage;
+        });
     }
 }

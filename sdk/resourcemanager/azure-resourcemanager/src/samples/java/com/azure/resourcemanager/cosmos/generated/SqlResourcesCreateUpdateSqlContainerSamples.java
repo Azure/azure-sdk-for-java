@@ -13,16 +13,15 @@ import com.azure.resourcemanager.cosmos.models.ContainerPartitionKey;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.DataType;
 import com.azure.resourcemanager.cosmos.models.IncludedPath;
-import com.azure.resourcemanager.cosmos.models.IndexKind;
 import com.azure.resourcemanager.cosmos.models.Indexes;
 import com.azure.resourcemanager.cosmos.models.IndexingMode;
 import com.azure.resourcemanager.cosmos.models.IndexingPolicy;
+import com.azure.resourcemanager.cosmos.models.IndexKind;
 import com.azure.resourcemanager.cosmos.models.PartitionKind;
 import com.azure.resourcemanager.cosmos.models.SqlContainerCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlContainerResource;
 import com.azure.resourcemanager.cosmos.models.UniqueKey;
 import com.azure.resourcemanager.cosmos.models.UniqueKeyPolicy;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,11 +31,12 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * CosmosDBSqlContainerCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlContainerCreateUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlContainerCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {

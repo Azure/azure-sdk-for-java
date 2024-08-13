@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** contentTypeOrder. */
+/**
+ * contentTypeOrder.
+ */
 @Fluent
-public final class MicrosoftGraphContentTypeOrder {
+public final class MicrosoftGraphContentTypeOrder implements JsonSerializable<MicrosoftGraphContentTypeOrder> {
     /*
      * Whether this is the default Content Type
      */
-    @JsonProperty(value = "default")
     private Boolean defaultProperty;
 
     /*
      * Specifies the position in which the Content Type appears in the selection UI.
      */
-    @JsonProperty(value = "position")
     private Integer position;
 
     /*
      * contentTypeOrder
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphContentTypeOrder class. */
+    /**
+     * Creates an instance of MicrosoftGraphContentTypeOrder class.
+     */
     public MicrosoftGraphContentTypeOrder() {
     }
 
     /**
      * Get the defaultProperty property: Whether this is the default Content Type.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Boolean defaultProperty() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphContentTypeOrder {
 
     /**
      * Set the defaultProperty property: Whether this is the default Content Type.
-     *
+     * 
      * @param defaultProperty the defaultProperty value to set.
      * @return the MicrosoftGraphContentTypeOrder object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphContentTypeOrder {
 
     /**
      * Get the position property: Specifies the position in which the Content Type appears in the selection UI.
-     *
+     * 
      * @return the position value.
      */
     public Integer position() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphContentTypeOrder {
 
     /**
      * Set the position property: Specifies the position in which the Content Type appears in the selection UI.
-     *
+     * 
      * @param position the position value to set.
      * @return the MicrosoftGraphContentTypeOrder object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphContentTypeOrder {
 
     /**
      * Get the additionalProperties property: contentTypeOrder.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: contentTypeOrder.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphContentTypeOrder object itself.
      */
@@ -97,19 +99,63 @@ public final class MicrosoftGraphContentTypeOrder {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("default", this.defaultProperty);
+        jsonWriter.writeNumberField("position", this.position);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphContentTypeOrder from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphContentTypeOrder if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphContentTypeOrder.
+     */
+    public static MicrosoftGraphContentTypeOrder fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphContentTypeOrder deserializedMicrosoftGraphContentTypeOrder
+                = new MicrosoftGraphContentTypeOrder();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("default".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentTypeOrder.defaultProperty
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("position".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentTypeOrder.position = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphContentTypeOrder.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphContentTypeOrder;
+        });
     }
 }

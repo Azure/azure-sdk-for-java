@@ -6,39 +6,50 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Auth setting for basic auth.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType")
-@JsonTypeName("BasicAuth")
 @Fluent
 public final class AcceleratorBasicAuthSetting extends AcceleratorAuthSetting {
     /*
+     * The type of the auth setting.
+     */
+    private String authType = "BasicAuth";
+
+    /*
      * Resource Id of CA certificate for https URL of Git repository.
      */
-    @JsonProperty(value = "caCertResourceId")
     private String caCertResourceId;
 
     /*
      * Username of git repository basic auth.
      */
-    @JsonProperty(value = "username", required = true)
     private String username;
 
     /*
      * Password of git repository basic auth.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /**
      * Creates an instance of AcceleratorBasicAuthSetting class.
      */
     public AcceleratorBasicAuthSetting() {
+    }
+
+    /**
+     * Get the authType property: The type of the auth setting.
+     * 
+     * @return the authType value.
+     */
+    @Override
+    public String authType() {
+        return this.authType;
     }
 
     /**
@@ -110,10 +121,57 @@ public final class AcceleratorBasicAuthSetting extends AcceleratorAuthSetting {
     public void validate() {
         super.validate();
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property username in model AcceleratorBasicAuthSetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model AcceleratorBasicAuthSetting"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AcceleratorBasicAuthSetting.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("authType", this.authType);
+        jsonWriter.writeStringField("caCertResourceId", this.caCertResourceId);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcceleratorBasicAuthSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcceleratorBasicAuthSetting if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AcceleratorBasicAuthSetting.
+     */
+    public static AcceleratorBasicAuthSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcceleratorBasicAuthSetting deserializedAcceleratorBasicAuthSetting = new AcceleratorBasicAuthSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedAcceleratorBasicAuthSetting.username = reader.getString();
+                } else if ("authType".equals(fieldName)) {
+                    deserializedAcceleratorBasicAuthSetting.authType = reader.getString();
+                } else if ("caCertResourceId".equals(fieldName)) {
+                    deserializedAcceleratorBasicAuthSetting.caCertResourceId = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedAcceleratorBasicAuthSetting.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcceleratorBasicAuthSetting;
+        });
+    }
 }

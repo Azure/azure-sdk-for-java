@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleAssignmentResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Parameters to create and update an Azure Cosmos DB SQL Role Assignment.
  */
 @Fluent
-public final class SqlRoleAssignmentCreateUpdateParameters {
+public final class SqlRoleAssignmentCreateUpdateParameters
+    implements JsonSerializable<SqlRoleAssignmentCreateUpdateParameters> {
     /*
      * Properties to create and update an Azure Cosmos DB SQL Role Assignment.
      */
-    @JsonProperty(value = "properties")
     private SqlRoleAssignmentResource innerProperties;
 
     /**
@@ -118,5 +122,43 @@ public final class SqlRoleAssignmentCreateUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlRoleAssignmentCreateUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlRoleAssignmentCreateUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlRoleAssignmentCreateUpdateParameters.
+     */
+    public static SqlRoleAssignmentCreateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlRoleAssignmentCreateUpdateParameters deserializedSqlRoleAssignmentCreateUpdateParameters
+                = new SqlRoleAssignmentCreateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSqlRoleAssignmentCreateUpdateParameters.innerProperties
+                        = SqlRoleAssignmentResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlRoleAssignmentCreateUpdateParameters;
+        });
     }
 }

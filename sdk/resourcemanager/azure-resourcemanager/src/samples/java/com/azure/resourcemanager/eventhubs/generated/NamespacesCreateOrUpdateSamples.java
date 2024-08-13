@@ -12,7 +12,6 @@ import com.azure.resourcemanager.eventhubs.models.KeyVaultProperties;
 import com.azure.resourcemanager.eventhubs.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity;
 import com.azure.resourcemanager.eventhubs.models.UserAssignedIdentityProperties;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +27,7 @@ public final class NamespacesCreateOrUpdateSamples {
      */
     /**
      * Sample code: NamespaceCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void namespaceCreate(com.azure.resourcemanager.AzureResourceManager azure) {

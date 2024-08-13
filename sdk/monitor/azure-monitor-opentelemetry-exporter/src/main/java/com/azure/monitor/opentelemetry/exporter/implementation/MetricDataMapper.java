@@ -48,7 +48,8 @@ public class MetricDataMapper {
     private static final Set<String> OTEL_UNSTABLE_METRICS_TO_EXCLUDE = new HashSet<>();
     private static final String OTEL_INSTRUMENTATION_NAME_PREFIX = "io.opentelemetry";
     private static final Set<String> OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES = new HashSet<>(4);
-    public static final AttributeKey<String> APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME = AttributeKey.stringKey("applicationinsights.internal.metric_name");
+    public static final AttributeKey<String> APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME
+        = AttributeKey.stringKey("applicationinsights.internal.metric_name");
 
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
@@ -65,8 +66,7 @@ public class MetricDataMapper {
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.server.duration");
     }
 
-    public MetricDataMapper(
-        BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
+    public MetricDataMapper(BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
         boolean captureHttpServer4xxAsError) {
         this.telemetryInitializer = telemetryInitializer;
         this.captureHttpServer4xxAsError = captureHttpServer4xxAsError;
@@ -74,16 +74,12 @@ public class MetricDataMapper {
 
     public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
         MetricDataType type = metricData.getType();
-        if (type == DOUBLE_SUM
-            || type == DOUBLE_GAUGE
-            || type == LONG_SUM
-            || type == LONG_GAUGE
-            || type == HISTOGRAM) {
-            boolean isPreAggregatedStandardMetric =
-                OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
+        if (type == DOUBLE_SUM || type == DOUBLE_GAUGE || type == LONG_SUM || type == LONG_GAUGE || type == HISTOGRAM) {
+            boolean isPreAggregatedStandardMetric
+                = OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
             if (isPreAggregatedStandardMetric) {
-                List<TelemetryItem> preAggregatedStandardMetrics =
-                    convertOtelMetricToAzureMonitorMetric(metricData, true);
+                List<TelemetryItem> preAggregatedStandardMetrics
+                    = convertOtelMetricToAzureMonitorMetric(metricData, true);
                 preAggregatedStandardMetrics.forEach(consumer::accept);
             }
 
@@ -100,8 +96,8 @@ public class MetricDataMapper {
         }
     }
 
-    private List<TelemetryItem> convertOtelMetricToAzureMonitorMetric(
-        MetricData metricData, boolean isPreAggregatedStandardMetric) {
+    private List<TelemetryItem> convertOtelMetricToAzureMonitorMetric(MetricData metricData,
+        boolean isPreAggregatedStandardMetric) {
         List<TelemetryItem> telemetryItems = new ArrayList<>();
 
         for (PointData pointData : metricData.getData().getPoints()) {
@@ -109,11 +105,7 @@ public class MetricDataMapper {
             telemetryInitializer.accept(builder, metricData.getResource());
 
             builder.setTime(FormattedTime.offSetDateTimeFromEpochNanos(pointData.getEpochNanos()));
-            updateMetricPointBuilder(
-                builder,
-                metricData,
-                pointData,
-                captureHttpServer4xxAsError,
+            updateMetricPointBuilder(builder, metricData, pointData, captureHttpServer4xxAsError,
                 isPreAggregatedStandardMetric);
 
             telemetryItems.add(builder.build());
@@ -122,12 +114,8 @@ public class MetricDataMapper {
     }
 
     // visible for testing
-    public static void updateMetricPointBuilder(
-        MetricTelemetryBuilder metricTelemetryBuilder,
-        MetricData metricData,
-        PointData pointData,
-        boolean captureHttpServer4xxAsError,
-        boolean isPreAggregatedStandardMetric) {
+    public static void updateMetricPointBuilder(MetricTelemetryBuilder metricTelemetryBuilder, MetricData metricData,
+        PointData pointData, boolean captureHttpServer4xxAsError, boolean isPreAggregatedStandardMetric) {
         checkArgument(metricData != null, "MetricData cannot be null.");
 
         MetricPointBuilder pointBuilder = new MetricPointBuilder();
@@ -138,10 +126,12 @@ public class MetricDataMapper {
             case LONG_GAUGE:
                 pointDataValue = (double) ((LongPointData) pointData).getValue();
                 break;
+
             case DOUBLE_SUM:
             case DOUBLE_GAUGE:
                 pointDataValue = ((DoublePointData) pointData).getValue();
                 break;
+
             case HISTOGRAM:
                 long histogramCount = ((HistogramPointData) pointData).getCount();
                 if (histogramCount <= Integer.MAX_VALUE && histogramCount >= Integer.MIN_VALUE) {
@@ -158,6 +148,7 @@ public class MetricDataMapper {
                 pointBuilder.setMin(min);
                 pointBuilder.setMax(max);
                 break;
+
             case SUMMARY: // not supported yet in OpenTelemetry SDK
             case EXPONENTIAL_HISTOGRAM: // not supported yet in OpenTelemetry SDK
             default:
@@ -185,14 +176,13 @@ public class MetricDataMapper {
 
         Attributes attributes = pointData.getAttributes();
         if (isPreAggregatedStandardMetric) {
-            Long statusCode = getStableOrOldAttribute(attributes, SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
+            Long statusCode = getStableOrOldAttribute(attributes, SemanticAttributes.HTTP_RESPONSE_STATUS_CODE,
+                SemanticAttributes.HTTP_STATUS_CODE);
             boolean success = isSuccess(metricData.getName(), statusCode, captureHttpServer4xxAsError);
             Boolean isSynthetic = attributes.get(IS_SYNTHETIC);
 
             attributes.forEach(
-                (key, value) ->
-                    applyConnectionStringAndRoleNameOverrides(
-                        metricTelemetryBuilder, value, key.getKey()));
+                (key, value) -> applyConnectionStringAndRoleNameOverrides(metricTelemetryBuilder, value, key.getKey()));
 
             if (isServer(metricData.getName())) {
                 RequestExtractor.extract(metricTelemetryBuilder, statusCode, success, isSynthetic);
@@ -201,7 +191,8 @@ public class MetricDataMapper {
                 int defaultPort;
                 if (metricData.getName().startsWith("http")) {
                     dependencyType = "Http";
-                    defaultPort = getDefaultPortForHttpScheme(getStableOrOldAttribute(attributes, SemanticAttributes.URL_SCHEME, SemanticAttributes.HTTP_SCHEME));
+                    defaultPort = getDefaultPortForHttpScheme(getStableOrOldAttribute(attributes,
+                        SemanticAttributes.URL_SCHEME, SemanticAttributes.HTTP_SCHEME));
                 } else {
                     dependencyType = attributes.get(SemanticAttributes.RPC_SYSTEM);
                     if (dependencyType == null) {
@@ -211,8 +202,8 @@ public class MetricDataMapper {
                     defaultPort = Integer.MAX_VALUE; // no default port for rpc
                 }
                 String target = SpanDataMapper.getTargetOrDefault(attributes, defaultPort, dependencyType);
-                DependencyExtractor.extract(
-                    metricTelemetryBuilder, statusCode, success, dependencyType, target, isSynthetic);
+                DependencyExtractor.extract(metricTelemetryBuilder, statusCode, success, dependencyType, target,
+                    isSynthetic);
             }
         } else {
             MappingsBuilder mappingsBuilder = new MappingsBuilder(METRIC);
@@ -221,13 +212,13 @@ public class MetricDataMapper {
     }
 
     private static boolean shouldConvertToMilliseconds(String metricName, boolean isPreAggregatedStandardMetric) {
-        return isPreAggregatedStandardMetric && (metricName.equals("http.server.request.duration") || metricName.equals("http.client.request.duration"));
+        return isPreAggregatedStandardMetric
+            && (metricName.equals("http.server.request.duration") || metricName.equals("http.client.request.duration"));
     }
 
-    private static boolean applyConnectionStringAndRoleNameOverrides(
-        AbstractTelemetryBuilder telemetryBuilder, Object value, String key) {
-        if (key.equals(AiSemanticAttributes.INTERNAL_CONNECTION_STRING.getKey())
-            && value instanceof String) {
+    private static boolean applyConnectionStringAndRoleNameOverrides(AbstractTelemetryBuilder telemetryBuilder,
+        Object value, String key) {
+        if (key.equals(AiSemanticAttributes.INTERNAL_CONNECTION_STRING.getKey()) && value instanceof String) {
             // intentionally letting exceptions from parse bubble up
             telemetryBuilder.setConnectionString(ConnectionString.parse((String) value));
             return true;
@@ -273,10 +264,10 @@ public class MetricDataMapper {
     }
 
     private static boolean isClient(String metricName) {
-       return metricName.contains(".client.");
+        return metricName.contains(".client.");
     }
 
     private static boolean isServer(String metricName) {
-       return metricName.contains(".server.");
+        return metricName.contains(".server.");
     }
 }

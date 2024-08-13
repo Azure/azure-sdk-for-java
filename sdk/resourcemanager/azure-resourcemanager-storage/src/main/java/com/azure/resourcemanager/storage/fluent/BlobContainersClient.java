@@ -613,9 +613,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @param parameters The ImmutabilityPolicy Properties that will be created or updated to a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -660,9 +660,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @param parameters The ImmutabilityPolicy Properties that will be created or updated to a blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -705,9 +705,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -748,9 +748,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -791,9 +791,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -816,9 +816,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -841,9 +841,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -866,9 +866,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -889,9 +889,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -913,9 +913,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -937,9 +937,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -961,9 +961,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -984,9 +984,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @param parameters The ImmutabilityPolicy Properties that will be extended for a blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1010,9 +1010,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1034,9 +1034,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @param parameters The ImmutabilityPolicy Properties that will be extended for a blob container.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1059,9 +1059,9 @@ public interface BlobContainersClient {
      * @param containerName The name of the blob container within the specified storage account. Blob container names
      * must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash
      * (-) character must be immediately preceded and followed by a letter or number.
-     * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
-     * to apply the operation only if the immutability policy already exists. If omitted, this operation will always be
-     * applied.
+     * @param ifMatch The entity state (ETag) version of the immutability policy to update must be returned to the
+     * server for all update operations. The ETag value must include the leading and trailing double quotes as returned
+     * by the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -21,6 +21,9 @@ public class ShareCreateOptions {
     private ShareProtocols protocols;
     private ShareRootSquash rootSquash;
     private Boolean enableSnapshotVirtualDirectoryAccess;
+    private Boolean enablePaidBursting;
+    private Long paidBurstingMaxIops;
+    private Long paidBurstingMaxBandwidthMibps;
 
     /**
      * Creates a new instance of {@link ShareCreateOptions}.
@@ -151,6 +154,76 @@ public class ShareCreateOptions {
     public ShareCreateOptions setSnapshotVirtualDirectoryAccessEnabled(
         Boolean snapshotVirtualDirectoryAccessEnabled) {
         this.enableSnapshotVirtualDirectoryAccess = snapshotVirtualDirectoryAccessEnabled;
+        return this;
+    }
+
+    /**
+     * Get the enablePaidBursting property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * This property enables paid bursting on premium file storage accounts.
+     * @return the enablePaidBursting value.
+     */
+    public Boolean isPaidBurstingEnabled() {
+        return enablePaidBursting;
+    }
+
+    /**
+     * Set the enablePaidBursting property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * This property enables paid bursting on premium file storage accounts.
+     * @param enablePaidBursting the enablePaidBursting value to set.
+     * @return the ShareCreateOptions object itself.
+     */
+    public ShareCreateOptions setPaidBurstingEnabled(Boolean enablePaidBursting) {
+        this.enablePaidBursting = enablePaidBursting;
+        return this;
+    }
+
+    /**
+     * Get the paidBurstingMaxIops property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum IOPS the file share can support.
+     * Current maximum for a file share is 102,400 IOPS.
+     * @return the paidBurstingMaxIops value.
+     */
+    public Long getPaidBurstingMaxIops() {
+        return paidBurstingMaxIops;
+    }
+
+    /**
+     * Set the paidBurstingMaxIops property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum IOPS the file share can support.
+     * Current maximum for a file share is 102,400 IOPS.
+     * @param paidBurstingMaxIops the paidBurstingMaxIops value to set.
+     * @return the ShareCreateOptions object itself.
+     */
+    public ShareCreateOptions setPaidBurstingMaxIops(Long paidBurstingMaxIops) {
+        this.paidBurstingMaxIops = paidBurstingMaxIops;
+        return this;
+    }
+
+    /**
+     * Get the paidBurstingMaxBandwidthMibps property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum throughput the file share can support.
+     * Current maximum for a file share is 10,340 MiB/sec.
+     * @return the paidBurstingMaxBandwidthMibps value.
+     */
+    public Long getPaidBurstingMaxBandwidthMibps() {
+        return paidBurstingMaxBandwidthMibps;
+    }
+
+    /**
+     * Set the paidBurstingMaxBandwidthMibps property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum throughput the file share can support.
+     * Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxBandwidthMibps the paidBurstingMaxBandwidthMibps value to set.
+     * @return the ShareCreateOptions object itself.
+     */
+    public ShareCreateOptions setPaidBurstingMaxBandwidthMibps(Long paidBurstingMaxBandwidthMibps) {
+        this.paidBurstingMaxBandwidthMibps = paidBurstingMaxBandwidthMibps;
         return this;
     }
 }

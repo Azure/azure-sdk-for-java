@@ -32,11 +32,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.resourcemanager.network.fluent.VirtualHubBgpConnectionsClient;
 import com.azure.resourcemanager.network.fluent.models.BgpConnectionInner;
 import com.azure.resourcemanager.network.models.ListVirtualHubBgpConnectionResults;
 import com.azure.resourcemanager.network.models.PeerRoute;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
@@ -991,8 +991,8 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             = listLearnedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName);
         return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), this.client.getContext());
+            }.getJavaType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     /**
@@ -1015,8 +1015,8 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             = listLearnedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName, context);
         return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), context);
+            }.getJavaType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getJavaType(), context);
     }
 
     /**
@@ -1226,8 +1226,8 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             = listAdvertisedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName);
         return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), this.client.getContext());
+            }.getJavaType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     /**
@@ -1251,8 +1251,8 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             = listAdvertisedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName, context);
         return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), context);
+            }.getJavaType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getJavaType(), context);
     }
 
     /**

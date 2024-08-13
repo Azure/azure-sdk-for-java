@@ -23,6 +23,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.HostKeysInner;
@@ -53,7 +57,6 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -867,9 +870,35 @@ class FunctionAppImpl
             @BodyParam("application/json") Object payload);
     }
 
-    private static class FunctionKeyListResult {
-        @JsonProperty("keys")
+    private static class FunctionKeyListResult implements JsonSerializable<FunctionKeyListResult> {
         private List<NameValuePair> keys;
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter
+                .writeStartObject()
+                .writeArrayField("keys", keys, JsonWriter::writeJson)
+                .writeEndObject();
+        }
+
+        public static FunctionKeyListResult fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                FunctionKeyListResult result = new FunctionKeyListResult();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("keys".equals(fieldName)) {
+                        List<NameValuePair> keys = reader.readArray(reader1 ->
+                            reader1.readObject(NameValuePair::fromJson));
+                        result.keys = keys;
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return result;
+            });
+        }
     }
 
     private String getStorageAccountName() {

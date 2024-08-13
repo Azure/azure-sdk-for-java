@@ -1,5 +1,5 @@
 ARG REGISTRY="azsdkengsys.azurecr.io"
-FROM ${REGISTRY}/java/jdk-mariner-mvn:jdk11-latest as builder
+FROM ${REGISTRY}/java/jdk-mariner-mvn:jdk11-latest AS builder
 
 RUN yum -y update
 

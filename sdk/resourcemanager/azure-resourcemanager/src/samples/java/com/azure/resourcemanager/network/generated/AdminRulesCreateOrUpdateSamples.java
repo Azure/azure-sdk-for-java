@@ -11,7 +11,6 @@ import com.azure.resourcemanager.network.models.DefaultAdminRule;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleProtocol;
-
 import java.util.Arrays;
 
 /**
@@ -25,7 +24,7 @@ public final class AdminRulesCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create an admin rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAnAdminRule(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -55,7 +54,7 @@ public final class AdminRulesCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create a default admin rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADefaultAdminRule(com.azure.resourcemanager.AzureResourceManager azure) {

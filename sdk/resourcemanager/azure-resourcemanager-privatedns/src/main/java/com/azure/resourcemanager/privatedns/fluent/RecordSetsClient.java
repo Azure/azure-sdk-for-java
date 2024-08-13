@@ -14,142 +14,120 @@ import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.RecordType;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RecordSetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecordSetsClient.
+ */
 public interface RecordSetsClient {
     /**
      * Creates or updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not
-     *     created (they are created when the Private DNS zone is created).
+     * created (they are created when the Private DNS zone is created).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the record set. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     *     set. Other values will be ignored.
+     * set. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone along with {@link Response} on successful completion of {@link Mono}.
+     * zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RecordSetInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters,
-        String ifMatch,
+    Mono<Response<RecordSetInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, RecordSetInner parameters, String ifMatch,
         String ifNoneMatch);
 
     /**
      * Creates or updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not
-     *     created (they are created when the Private DNS zone is created).
+     * created (they are created when the Private DNS zone is created).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone on successful completion of {@link Mono}.
+     * zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RecordSetInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters);
+    Mono<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName, RecordSetInner parameters);
 
     /**
      * Creates or updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not
-     *     created (they are created when the Private DNS zone is created).
+     * created (they are created when the Private DNS zone is created).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the record set. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     *     set. Other values will be ignored.
+     * set. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone along with {@link Response}.
+     * zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecordSetInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    Response<RecordSetInner> createOrUpdateWithResponse(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, RecordSetInner parameters, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Creates or updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not
-     *     created (they are created when the Private DNS zone is created).
+     * created (they are created when the Private DNS zone is created).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     * zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecordSetInner createOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters);
+    RecordSetInner createOrUpdate(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName, RecordSetInner parameters);
 
     /**
      * Updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the record set. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone along with {@link Response} on successful completion of {@link Mono}.
+     * zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RecordSetInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters,
-        String ifMatch);
+    Mono<Response<RecordSetInner>> updateWithResponseAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, RecordSetInner parameters, String ifMatch);
 
     /**
      * Updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -159,46 +137,36 @@ public interface RecordSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone on successful completion of {@link Mono}.
+     * zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RecordSetInner> updateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters);
+    Mono<RecordSetInner> updateAsync(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName, RecordSetInner parameters);
 
     /**
      * Updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the record set. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone along with {@link Response}.
+     * zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecordSetInner> updateWithResponse(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters,
-        String ifMatch,
-        Context context);
+    Response<RecordSetInner> updateWithResponse(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName, RecordSetInner parameters, String ifMatch, Context context);
 
     /**
      * Updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -208,46 +176,38 @@ public interface RecordSetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     * zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecordSetInner update(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters);
+    RecordSetInner update(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName, RecordSetInner parameters);
 
     /**
      * Deletes a record set from a Private DNS zone. This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
-     *     deleted when the Private DNS zone is deleted).
+     * deleted when the Private DNS zone is deleted).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param ifMatch The ETag of the record set. Omit this value to always delete the current record set. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        String ifMatch);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, String ifMatch);
 
     /**
      * Deletes a record set from a Private DNS zone. This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
-     *     deleted when the Private DNS zone is deleted).
+     * deleted when the Private DNS zone is deleted).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -255,19 +215,19 @@ public interface RecordSetsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(
-        String resourceGroupName, String privateZoneName, RecordType recordType, String relativeRecordSetName);
+    Mono<Void> deleteAsync(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName);
 
     /**
      * Deletes a record set from a Private DNS zone. This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
-     *     deleted when the Private DNS zone is deleted).
+     * deleted when the Private DNS zone is deleted).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param ifMatch The ETag of the record set. Omit this value to always delete the current record set. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -275,21 +235,16 @@ public interface RecordSetsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName, String ifMatch, Context context);
 
     /**
      * Deletes a record set from a Private DNS zone. This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
-     *     deleted when the Private DNS zone is deleted).
+     * deleted when the Private DNS zone is deleted).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -300,7 +255,7 @@ public interface RecordSetsClient {
 
     /**
      * Gets a record set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -311,12 +266,12 @@ public interface RecordSetsClient {
      * @return a record set along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RecordSetInner>> getWithResponseAsync(
-        String resourceGroupName, String privateZoneName, RecordType recordType, String relativeRecordSetName);
+    Mono<Response<RecordSetInner>> getWithResponseAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName);
 
     /**
      * Gets a record set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -327,12 +282,12 @@ public interface RecordSetsClient {
      * @return a record set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RecordSetInner> getAsync(
-        String resourceGroupName, String privateZoneName, RecordType recordType, String relativeRecordSetName);
+    Mono<RecordSetInner> getAsync(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName);
 
     /**
      * Gets a record set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -344,16 +299,12 @@ public interface RecordSetsClient {
      * @return a record set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecordSetInner> getWithResponse(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        Context context);
+    Response<RecordSetInner> getWithResponse(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName, Context context);
 
     /**
      * Gets a record set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -364,35 +315,31 @@ public interface RecordSetsClient {
      * @return a record set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecordSetInner get(
-        String resourceGroupName, String privateZoneName, RecordType recordType, String relativeRecordSetName);
+    RecordSetInner get(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName);
 
     /**
      * Lists the record sets of a specified type in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RecordSetInner> listByTypeAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        Integer top,
-        String recordsetnamesuffix);
+    PagedFlux<RecordSetInner> listByTypeAsync(String resourceGroupName, String privateZoneName, RecordType recordType,
+        Integer top, String recordsetnamesuffix);
 
     /**
      * Lists the record sets of a specified type in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
@@ -406,7 +353,7 @@ public interface RecordSetsClient {
 
     /**
      * Lists the record sets of a specified type in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
@@ -420,14 +367,14 @@ public interface RecordSetsClient {
 
     /**
      * Lists the record sets of a specified type in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -435,35 +382,30 @@ public interface RecordSetsClient {
      * @return the response to a record set list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecordSetInner> listByType(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        Integer top,
-        String recordsetnamesuffix,
-        Context context);
+    PagedIterable<RecordSetInner> listByType(String resourceGroupName, String privateZoneName, RecordType recordType,
+        Integer top, String recordsetnamesuffix, Context context);
 
     /**
      * Lists all record sets in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RecordSetInner> listAsync(
-        String resourceGroupName, String privateZoneName, Integer top, String recordsetnamesuffix);
+    PagedFlux<RecordSetInner> listAsync(String resourceGroupName, String privateZoneName, Integer top,
+        String recordsetnamesuffix);
 
     /**
      * Lists all record sets in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -476,7 +418,7 @@ public interface RecordSetsClient {
 
     /**
      * Lists all record sets in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -489,13 +431,13 @@ public interface RecordSetsClient {
 
     /**
      * Lists all record sets in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -503,6 +445,6 @@ public interface RecordSetsClient {
      * @return the response to a record set list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecordSetInner> list(
-        String resourceGroupName, String privateZoneName, Integer top, String recordsetnamesuffix, Context context);
+    PagedIterable<RecordSetInner> list(String resourceGroupName, String privateZoneName, Integer top,
+        String recordsetnamesuffix, Context context);
 }

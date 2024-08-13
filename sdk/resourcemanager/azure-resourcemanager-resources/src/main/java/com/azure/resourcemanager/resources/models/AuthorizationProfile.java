@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Authorization Profile.
  */
 @Immutable
-public final class AuthorizationProfile {
+public final class AuthorizationProfile implements JsonSerializable<AuthorizationProfile> {
     /*
      * The requested time
      */
-    @JsonProperty(value = "requestedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime requestedTime;
 
     /*
      * The requester
      */
-    @JsonProperty(value = "requester", access = JsonProperty.Access.WRITE_ONLY)
     private String requester;
 
     /*
      * The requester object id
      */
-    @JsonProperty(value = "requesterObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private String requesterObjectId;
 
     /*
      * The approved time
      */
-    @JsonProperty(value = "approvedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime approvedTime;
 
     /*
      * The approver
      */
-    @JsonProperty(value = "approver", access = JsonProperty.Access.WRITE_ONLY)
     private String approver;
 
     /**
@@ -100,5 +100,50 @@ public final class AuthorizationProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthorizationProfile.
+     */
+    public static AuthorizationProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationProfile deserializedAuthorizationProfile = new AuthorizationProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requestedTime".equals(fieldName)) {
+                    deserializedAuthorizationProfile.requestedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("requester".equals(fieldName)) {
+                    deserializedAuthorizationProfile.requester = reader.getString();
+                } else if ("requesterObjectId".equals(fieldName)) {
+                    deserializedAuthorizationProfile.requesterObjectId = reader.getString();
+                } else if ("approvedTime".equals(fieldName)) {
+                    deserializedAuthorizationProfile.approvedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("approver".equals(fieldName)) {
+                    deserializedAuthorizationProfile.approver = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationProfile;
+        });
     }
 }

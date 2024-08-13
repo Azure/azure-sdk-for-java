@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Container group diagnostic information. */
+/**
+ * Container group diagnostic information.
+ */
 @Fluent
-public final class ContainerGroupDiagnostics {
+public final class ContainerGroupDiagnostics implements JsonSerializable<ContainerGroupDiagnostics> {
     /*
      * Container group log analytics information.
      */
-    @JsonProperty(value = "logAnalytics")
     private LogAnalytics logAnalytics;
 
-    /** Creates an instance of ContainerGroupDiagnostics class. */
+    /**
+     * Creates an instance of ContainerGroupDiagnostics class.
+     */
     public ContainerGroupDiagnostics() {
     }
 
     /**
      * Get the logAnalytics property: Container group log analytics information.
-     *
+     * 
      * @return the logAnalytics value.
      */
     public LogAnalytics logAnalytics() {
@@ -31,7 +38,7 @@ public final class ContainerGroupDiagnostics {
 
     /**
      * Set the logAnalytics property: Container group log analytics information.
-     *
+     * 
      * @param logAnalytics the logAnalytics value to set.
      * @return the ContainerGroupDiagnostics object itself.
      */
@@ -42,12 +49,48 @@ public final class ContainerGroupDiagnostics {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (logAnalytics() != null) {
             logAnalytics().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("logAnalytics", this.logAnalytics);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerGroupDiagnostics from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerGroupDiagnostics if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerGroupDiagnostics.
+     */
+    public static ContainerGroupDiagnostics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerGroupDiagnostics deserializedContainerGroupDiagnostics = new ContainerGroupDiagnostics();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logAnalytics".equals(fieldName)) {
+                    deserializedContainerGroupDiagnostics.logAnalytics = LogAnalytics.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerGroupDiagnostics;
+        });
     }
 }

@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountConnectionString;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The connection strings for the given database account.
  */
 @Fluent
-public final class DatabaseAccountListConnectionStringsResultInner {
+public final class DatabaseAccountListConnectionStringsResultInner
+    implements JsonSerializable<DatabaseAccountListConnectionStringsResultInner> {
     /*
      * An array that contains the connection strings for the Cosmos DB account.
      */
-    @JsonProperty(value = "connectionStrings")
     private List<DatabaseAccountConnectionString> connectionStrings;
 
     /**
@@ -56,5 +60,45 @@ public final class DatabaseAccountListConnectionStringsResultInner {
         if (connectionStrings() != null) {
             connectionStrings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("connectionStrings", this.connectionStrings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseAccountListConnectionStringsResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseAccountListConnectionStringsResultInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseAccountListConnectionStringsResultInner.
+     */
+    public static DatabaseAccountListConnectionStringsResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseAccountListConnectionStringsResultInner deserializedDatabaseAccountListConnectionStringsResultInner
+                = new DatabaseAccountListConnectionStringsResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionStrings".equals(fieldName)) {
+                    List<DatabaseAccountConnectionString> connectionStrings
+                        = reader.readArray(reader1 -> DatabaseAccountConnectionString.fromJson(reader1));
+                    deserializedDatabaseAccountListConnectionStringsResultInner.connectionStrings = connectionStrings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseAccountListConnectionStringsResultInner;
+        });
     }
 }

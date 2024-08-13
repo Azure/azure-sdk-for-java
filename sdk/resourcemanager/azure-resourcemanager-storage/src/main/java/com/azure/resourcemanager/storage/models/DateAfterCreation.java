@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Object to define snapshot and version action conditions.
  */
 @Fluent
-public final class DateAfterCreation {
+public final class DateAfterCreation implements JsonSerializable<DateAfterCreation> {
     /*
      * Value indicating the age in days after creation
      */
-    @JsonProperty(value = "daysAfterCreationGreaterThan", required = true)
     private float daysAfterCreationGreaterThan;
 
     /*
@@ -23,7 +26,6 @@ public final class DateAfterCreation {
      * tierToArchive actions and requires daysAfterCreationGreaterThan to be set for snapshots and blob version based
      * actions. The blob will be archived if both the conditions are satisfied.
      */
-    @JsonProperty(value = "daysAfterLastTierChangeGreaterThan")
     private Float daysAfterLastTierChangeGreaterThan;
 
     /**
@@ -82,5 +84,46 @@ public final class DateAfterCreation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeFloatField("daysAfterCreationGreaterThan", this.daysAfterCreationGreaterThan);
+        jsonWriter.writeNumberField("daysAfterLastTierChangeGreaterThan", this.daysAfterLastTierChangeGreaterThan);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DateAfterCreation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DateAfterCreation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DateAfterCreation.
+     */
+    public static DateAfterCreation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DateAfterCreation deserializedDateAfterCreation = new DateAfterCreation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("daysAfterCreationGreaterThan".equals(fieldName)) {
+                    deserializedDateAfterCreation.daysAfterCreationGreaterThan = reader.getFloat();
+                } else if ("daysAfterLastTierChangeGreaterThan".equals(fieldName)) {
+                    deserializedDateAfterCreation.daysAfterLastTierChangeGreaterThan
+                        = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDateAfterCreation;
+        });
     }
 }

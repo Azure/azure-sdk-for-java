@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** chatMessagePolicyViolationPolicyTip. */
+/**
+ * chatMessagePolicyViolationPolicyTip.
+ */
 @Fluent
-public final class MicrosoftGraphChatMessagePolicyViolationPolicyTip {
+public final class MicrosoftGraphChatMessagePolicyViolationPolicyTip
+    implements JsonSerializable<MicrosoftGraphChatMessagePolicyViolationPolicyTip> {
     /*
      * The URL a user can visit to read about the data loss prevention policies for the organization. (ie, policies
      * about what users shouldn't say in chats)
      */
-    @JsonProperty(value = "complianceUrl")
     private String complianceUrl;
 
     /*
      * Explanatory text shown to the sender of the message.
      */
-    @JsonProperty(value = "generalText")
     private String generalText;
 
     /*
      * The list of improper data in the message that was detected by the data loss prevention app. Each DLP app defines
      * its own conditions, examples include 'Credit Card Number' and 'Social Security Number'.
      */
-    @JsonProperty(value = "matchedConditionDescriptions")
     private List<String> matchedConditionDescriptions;
 
     /*
      * chatMessagePolicyViolationPolicyTip
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphChatMessagePolicyViolationPolicyTip class. */
+    /**
+     * Creates an instance of MicrosoftGraphChatMessagePolicyViolationPolicyTip class.
+     */
     public MicrosoftGraphChatMessagePolicyViolationPolicyTip() {
     }
 
     /**
      * Get the complianceUrl property: The URL a user can visit to read about the data loss prevention policies for the
      * organization. (ie, policies about what users shouldn't say in chats).
-     *
+     * 
      * @return the complianceUrl value.
      */
     public String complianceUrl() {
@@ -58,7 +61,7 @@ public final class MicrosoftGraphChatMessagePolicyViolationPolicyTip {
     /**
      * Set the complianceUrl property: The URL a user can visit to read about the data loss prevention policies for the
      * organization. (ie, policies about what users shouldn't say in chats).
-     *
+     * 
      * @param complianceUrl the complianceUrl value to set.
      * @return the MicrosoftGraphChatMessagePolicyViolationPolicyTip object itself.
      */
@@ -69,7 +72,7 @@ public final class MicrosoftGraphChatMessagePolicyViolationPolicyTip {
 
     /**
      * Get the generalText property: Explanatory text shown to the sender of the message.
-     *
+     * 
      * @return the generalText value.
      */
     public String generalText() {
@@ -78,7 +81,7 @@ public final class MicrosoftGraphChatMessagePolicyViolationPolicyTip {
 
     /**
      * Set the generalText property: Explanatory text shown to the sender of the message.
-     *
+     * 
      * @param generalText the generalText value to set.
      * @return the MicrosoftGraphChatMessagePolicyViolationPolicyTip object itself.
      */
@@ -91,7 +94,7 @@ public final class MicrosoftGraphChatMessagePolicyViolationPolicyTip {
      * Get the matchedConditionDescriptions property: The list of improper data in the message that was detected by the
      * data loss prevention app. Each DLP app defines its own conditions, examples include 'Credit Card Number' and
      * 'Social Security Number'.
-     *
+     * 
      * @return the matchedConditionDescriptions value.
      */
     public List<String> matchedConditionDescriptions() {
@@ -102,51 +105,99 @@ public final class MicrosoftGraphChatMessagePolicyViolationPolicyTip {
      * Set the matchedConditionDescriptions property: The list of improper data in the message that was detected by the
      * data loss prevention app. Each DLP app defines its own conditions, examples include 'Credit Card Number' and
      * 'Social Security Number'.
-     *
+     * 
      * @param matchedConditionDescriptions the matchedConditionDescriptions value to set.
      * @return the MicrosoftGraphChatMessagePolicyViolationPolicyTip object itself.
      */
-    public MicrosoftGraphChatMessagePolicyViolationPolicyTip withMatchedConditionDescriptions(
-        List<String> matchedConditionDescriptions) {
+    public MicrosoftGraphChatMessagePolicyViolationPolicyTip
+        withMatchedConditionDescriptions(List<String> matchedConditionDescriptions) {
         this.matchedConditionDescriptions = matchedConditionDescriptions;
         return this;
     }
 
     /**
      * Get the additionalProperties property: chatMessagePolicyViolationPolicyTip.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: chatMessagePolicyViolationPolicyTip.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphChatMessagePolicyViolationPolicyTip object itself.
      */
-    public MicrosoftGraphChatMessagePolicyViolationPolicyTip withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphChatMessagePolicyViolationPolicyTip
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("complianceUrl", this.complianceUrl);
+        jsonWriter.writeStringField("generalText", this.generalText);
+        jsonWriter.writeArrayField("matchedConditionDescriptions", this.matchedConditionDescriptions,
+            (writer, element) -> writer.writeString(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphChatMessagePolicyViolationPolicyTip from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphChatMessagePolicyViolationPolicyTip if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphChatMessagePolicyViolationPolicyTip.
+     */
+    public static MicrosoftGraphChatMessagePolicyViolationPolicyTip fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphChatMessagePolicyViolationPolicyTip deserializedMicrosoftGraphChatMessagePolicyViolationPolicyTip
+                = new MicrosoftGraphChatMessagePolicyViolationPolicyTip();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("complianceUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessagePolicyViolationPolicyTip.complianceUrl = reader.getString();
+                } else if ("generalText".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessagePolicyViolationPolicyTip.generalText = reader.getString();
+                } else if ("matchedConditionDescriptions".equals(fieldName)) {
+                    List<String> matchedConditionDescriptions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphChatMessagePolicyViolationPolicyTip.matchedConditionDescriptions
+                        = matchedConditionDescriptions;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphChatMessagePolicyViolationPolicyTip.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphChatMessagePolicyViolationPolicyTip;
+        });
     }
 }

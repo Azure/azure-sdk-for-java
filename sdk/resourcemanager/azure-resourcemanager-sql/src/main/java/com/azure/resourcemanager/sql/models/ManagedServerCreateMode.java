@@ -5,38 +5,49 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * Specifies the mode of database creation.
- *
- * <p>Default: Regular instance creation.
- *
- * <p>Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
+ * 
+ * Default: Regular instance creation.
+ * 
+ * Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
  * SourceManagedInstanceId must be specified.
  */
 public final class ManagedServerCreateMode extends ExpandableStringEnum<ManagedServerCreateMode> {
-    /** Static value Default for ManagedServerCreateMode. */
+    /**
+     * Static value Default for ManagedServerCreateMode.
+     */
     public static final ManagedServerCreateMode DEFAULT = fromString("Default");
 
-    /** Static value PointInTimeRestore for ManagedServerCreateMode. */
+    /**
+     * Static value PointInTimeRestore for ManagedServerCreateMode.
+     */
     public static final ManagedServerCreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
     /**
+     * Creates a new instance of ManagedServerCreateMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedServerCreateMode() {
+    }
+
+    /**
      * Creates or finds a ManagedServerCreateMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedServerCreateMode.
      */
-    @JsonCreator
     public static ManagedServerCreateMode fromString(String name) {
         return fromString(name, ManagedServerCreateMode.class);
     }
 
     /**
      * Gets known ManagedServerCreateMode values.
-     *
+     * 
      * @return known ManagedServerCreateMode values.
      */
     public static Collection<ManagedServerCreateMode> values() {

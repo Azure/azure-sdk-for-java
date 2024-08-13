@@ -27,7 +27,7 @@ public final class JobsStopExecutionMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.jobs().stopExecution("jvlirk", "ucosawrdt", "agzlgpyai", com.azure.core.util.Context.NONE);
+        manager.jobs().stopExecution("aekqsykvwj", "qpkevmyltjc", "spxklu", com.azure.core.util.Context.NONE);
 
     }
 }

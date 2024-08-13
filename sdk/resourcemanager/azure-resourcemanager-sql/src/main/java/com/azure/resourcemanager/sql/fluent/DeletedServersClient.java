@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeletedServersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeletedServersClient.
+ */
 public interface DeletedServersClient {
     /**
      * Gets a list of all deleted servers in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all deleted servers in a subscription as paginated response with {@link PagedFlux}.
@@ -32,7 +34,7 @@ public interface DeletedServersClient {
 
     /**
      * Gets a list of all deleted servers in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all deleted servers in a subscription as paginated response with {@link PagedIterable}.
@@ -42,7 +44,7 @@ public interface DeletedServersClient {
 
     /**
      * Gets a list of all deleted servers in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +56,7 @@ public interface DeletedServersClient {
 
     /**
      * Gets a list of deleted servers for a location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,7 +68,7 @@ public interface DeletedServersClient {
 
     /**
      * Gets a list of deleted servers for a location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,7 +80,7 @@ public interface DeletedServersClient {
 
     /**
      * Gets a list of deleted servers for a location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,7 +93,7 @@ public interface DeletedServersClient {
 
     /**
      * Gets a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +106,7 @@ public interface DeletedServersClient {
 
     /**
      * Gets a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,7 +119,7 @@ public interface DeletedServersClient {
 
     /**
      * Gets a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @param context The context to associate with this operation.
@@ -131,7 +133,7 @@ public interface DeletedServersClient {
 
     /**
      * Gets a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,7 +146,7 @@ public interface DeletedServersClient {
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,7 +159,7 @@ public interface DeletedServersClient {
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,12 +168,12 @@ public interface DeletedServersClient {
      * @return the {@link PollerFlux} for polling of a deleted server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DeletedServerInner>, DeletedServerInner> beginRecoverAsync(
-        String locationName, String deletedServerName);
+    PollerFlux<PollResult<DeletedServerInner>, DeletedServerInner> beginRecoverAsync(String locationName,
+        String deletedServerName);
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,12 +182,12 @@ public interface DeletedServersClient {
      * @return the {@link SyncPoller} for polling of a deleted server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeletedServerInner>, DeletedServerInner> beginRecover(
-        String locationName, String deletedServerName);
+    SyncPoller<PollResult<DeletedServerInner>, DeletedServerInner> beginRecover(String locationName,
+        String deletedServerName);
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @param context The context to associate with this operation.
@@ -195,12 +197,12 @@ public interface DeletedServersClient {
      * @return the {@link SyncPoller} for polling of a deleted server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeletedServerInner>, DeletedServerInner> beginRecover(
-        String locationName, String deletedServerName, Context context);
+    SyncPoller<PollResult<DeletedServerInner>, DeletedServerInner> beginRecover(String locationName,
+        String deletedServerName, Context context);
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,7 +215,7 @@ public interface DeletedServersClient {
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,7 +228,7 @@ public interface DeletedServersClient {
 
     /**
      * Recovers a deleted server.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param deletedServerName The name of the deleted server.
      * @param context The context to associate with this operation.

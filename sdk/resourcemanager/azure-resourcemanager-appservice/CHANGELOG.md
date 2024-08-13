@@ -2,13 +2,15 @@
 
 ## 2.42.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+- Type changed from `Float` to `Integer`, on `maximumInstanceCount` and `instanceMemoryMB` property in `FunctionsScaleAndConcurrency` class. 
+- Type changed from `Float` to `Integer`, on `instanceCount` property in `FunctionsAlwaysReadyConfig` class.
+- Type changed from `Float` to `Integer`, on `perInstanceConcurrency` property in `FunctionsScaleAndConcurrencyTriggersHttp` class.
 
 ### Other Changes
+
+- Replaced `Jackson` with `azure-json` for serialization/deserialization.
 
 ## 2.41.0 (2024-07-25)
 

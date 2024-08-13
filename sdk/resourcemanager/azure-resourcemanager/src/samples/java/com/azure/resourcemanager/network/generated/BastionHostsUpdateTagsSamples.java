@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.models.TagsObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +18,7 @@ public final class BastionHostsUpdateTagsSamples {
      */
     /**
      * Sample code: Patch Bastion Host.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void patchBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {

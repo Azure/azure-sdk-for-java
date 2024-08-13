@@ -6,23 +6,25 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to unwrap the encryptionKey.
  */
 @Fluent
-public final class KeyVaultAndKeyReference {
+public final class KeyVaultAndKeyReference implements JsonSerializable<KeyVaultAndKeyReference> {
     /*
      * Resource id of the KeyVault containing the key or secret
      */
-    @JsonProperty(value = "sourceVault", required = true)
     private SourceVault sourceVault;
 
     /*
      * Url pointing to a key or secret in KeyVault
      */
-    @JsonProperty(value = "keyUrl", required = true)
     private String keyUrl;
 
     /**
@@ -91,4 +93,44 @@ public final class KeyVaultAndKeyReference {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAndKeyReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceVault", this.sourceVault);
+        jsonWriter.writeStringField("keyUrl", this.keyUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultAndKeyReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultAndKeyReference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyVaultAndKeyReference.
+     */
+    public static KeyVaultAndKeyReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultAndKeyReference deserializedKeyVaultAndKeyReference = new KeyVaultAndKeyReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceVault".equals(fieldName)) {
+                    deserializedKeyVaultAndKeyReference.sourceVault = SourceVault.fromJson(reader);
+                } else if ("keyUrl".equals(fieldName)) {
+                    deserializedKeyVaultAndKeyReference.keyUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultAndKeyReference;
+        });
+    }
 }

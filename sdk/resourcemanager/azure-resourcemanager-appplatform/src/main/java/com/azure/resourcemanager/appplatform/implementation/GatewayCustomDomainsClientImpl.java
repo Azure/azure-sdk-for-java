@@ -445,8 +445,10 @@ public final class GatewayCustomDomainsClientImpl implements GatewayCustomDomain
     public SyncPoller<PollResult<GatewayCustomDomainResourceInner>, GatewayCustomDomainResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serviceName, String gatewayName, String domainName,
             GatewayCustomDomainResourceInner gatewayCustomDomainResource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, gatewayName, domainName,
-            gatewayCustomDomainResource).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, gatewayName, domainName,
+                gatewayCustomDomainResource)
+            .getSyncPoller();
     }
 
     /**
@@ -468,8 +470,10 @@ public final class GatewayCustomDomainsClientImpl implements GatewayCustomDomain
     public SyncPoller<PollResult<GatewayCustomDomainResourceInner>, GatewayCustomDomainResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serviceName, String gatewayName, String domainName,
             GatewayCustomDomainResourceInner gatewayCustomDomainResource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, gatewayName, domainName,
-            gatewayCustomDomainResource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, gatewayName, domainName,
+                gatewayCustomDomainResource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -978,9 +982,7 @@ public final class GatewayCustomDomainsClientImpl implements GatewayCustomDomain
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1006,9 +1008,7 @@ public final class GatewayCustomDomainsClientImpl implements GatewayCustomDomain
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
