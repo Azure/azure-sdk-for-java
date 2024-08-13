@@ -62,7 +62,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Gets The Document Intelligence service endpoint.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -76,7 +76,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public DocumentIntelligenceServiceVersion getServiceVersion() {
@@ -90,7 +90,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -104,7 +104,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -113,7 +113,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     * 
+     *
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
@@ -124,7 +124,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
@@ -136,7 +136,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The Document Intelligence service endpoint.
@@ -294,14 +294,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -348,14 +348,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -402,14 +402,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -457,14 +457,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -512,14 +512,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -542,7 +542,14 @@ public final class DocumentIntelligenceClientImpl {
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "analyzeResult"),
             TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalyzeResult.class))
+            .map(pollResponse -> {
+                AnalyzeResultOperation operation = pollResponse.getValue();
+                if (operation != null) {
+                    operation.setOperationId(pollResponse.getOperationId());
+                }
+                return pollResponse;
+            });
     }
 
     /**
@@ -569,14 +576,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -626,7 +633,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     azureBlobSource (Optional): {
@@ -642,7 +649,7 @@ public final class DocumentIntelligenceClientImpl {
      *     overwriteExisting: Boolean (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -689,7 +696,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     azureBlobSource (Optional): {
@@ -705,7 +712,7 @@ public final class DocumentIntelligenceClientImpl {
      *     overwriteExisting: Boolean (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -752,7 +759,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     azureBlobSource (Optional): {
@@ -768,7 +775,7 @@ public final class DocumentIntelligenceClientImpl {
      *     overwriteExisting: Boolean (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -817,7 +824,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     azureBlobSource (Optional): {
@@ -833,7 +840,7 @@ public final class DocumentIntelligenceClientImpl {
      *     overwriteExisting: Boolean (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -882,7 +889,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     azureBlobSource (Optional): {
@@ -898,7 +905,7 @@ public final class DocumentIntelligenceClientImpl {
      *     overwriteExisting: Boolean (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -948,7 +955,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     azureBlobSource (Optional): {
@@ -964,7 +971,7 @@ public final class DocumentIntelligenceClientImpl {
      *     overwriteExisting: Boolean (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -993,11 +1000,11 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * BinaryData
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1019,11 +1026,11 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * BinaryData
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1044,11 +1051,11 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * BinaryData
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param figureId Figure ID.
@@ -1071,11 +1078,11 @@ public final class DocumentIntelligenceClientImpl {
     /**
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * BinaryData
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param figureId Figure ID.
@@ -1109,14 +1116,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1151,14 +1158,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1192,14 +1199,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1240,14 +1247,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1288,14 +1295,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1337,14 +1344,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

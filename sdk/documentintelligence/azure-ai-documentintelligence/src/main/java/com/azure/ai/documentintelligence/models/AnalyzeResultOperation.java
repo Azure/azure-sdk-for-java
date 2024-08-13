@@ -50,9 +50,10 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
     @Generated
     private AnalyzeResult analyzeResult;
 
+    private String operationId;
     /**
      * Creates an instance of AnalyzeResultOperation class.
-     * 
+     *
      * @param status the status value to set.
      * @param createdDateTime the createdDateTime value to set.
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
@@ -67,7 +68,7 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
 
     /**
      * Get the status property: Operation status. notStarted, running, succeeded, or failed.
-     * 
+     *
      * @return the status value.
      */
     @Generated
@@ -77,7 +78,7 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
 
     /**
      * Get the createdDateTime property: Date and time (UTC) when the analyze operation was submitted.
-     * 
+     *
      * @return the createdDateTime value.
      */
     @Generated
@@ -87,7 +88,7 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
 
     /**
      * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
-     * 
+     *
      * @return the lastUpdatedDateTime value.
      */
     @Generated
@@ -97,7 +98,7 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
 
     /**
      * Get the error property: Encountered error during document analysis.
-     * 
+     *
      * @return the error value.
      */
     @Generated
@@ -107,12 +108,16 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
 
     /**
      * Get the analyzeResult property: Document analysis result.
-     * 
+     *
      * @return the analyzeResult value.
      */
     @Generated
     public AnalyzeResult getAnalyzeResult() {
         return this.analyzeResult;
+    }
+
+    public String getOperationId() { // Add getter method
+        return this.operationId;
     }
 
     /**
@@ -131,12 +136,13 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeJsonField("analyzeResult", this.analyzeResult);
+        jsonWriter.writeStringField("operationId", this.operationId);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of AnalyzeResultOperation from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzeResultOperation if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -178,5 +184,9 @@ public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeRes
 
             return deserializedAnalyzeResultOperation;
         });
+    }
+
+    public void setOperationId(String operationId) {
+        this.operationId = operationId;
     }
 }

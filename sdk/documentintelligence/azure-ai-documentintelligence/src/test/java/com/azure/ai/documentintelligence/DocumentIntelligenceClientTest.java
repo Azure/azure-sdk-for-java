@@ -4,6 +4,7 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeOutputOption;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -428,5 +430,34 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
                 Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
             }, IRS_1040);
         }
+    }
+
+    @RecordWithoutRequestBody
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    public void getAnalyzePdf(HttpClient httpClient,
+                                    DocumentIntelligenceServiceVersion serviceVersion) {
+        client = getDocumentAnalysisClient(httpClient, serviceVersion);
+        DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<AnalyzeResultOperation, AnalyzeResult>
+                syncPoller
+                = client.beginAnalyzeDocument("prebuilt-read", null, null, null, null, null, null, Arrays.asList(AnalyzeOutputOption.PDF), new AnalyzeDocumentRequest().setBase64Source(data))
+                .setPollInterval(durationTestMode);
+            String resultId = syncPoller.getFinalResult().getResultId();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult);
+            // TODO: (service bug) Document count should be 3
+            Assertions.assertEquals(1, analyzeResult.getDocuments().size());
+            Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
+        }, IRS_1040);
+    }
+
+    @RecordWithoutRequestBody
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    public void getAnalyzeFigures(HttpClient httpClient,
+                              DocumentIntelligenceServiceVersion serviceVersion) {
+
     }
 }
