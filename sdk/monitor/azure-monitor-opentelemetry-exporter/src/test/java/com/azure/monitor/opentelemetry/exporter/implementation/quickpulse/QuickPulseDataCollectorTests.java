@@ -5,11 +5,20 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.OTelMetric;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMetrics;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.sdk.resources.Resource;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.QuickPulseTestBase.createRemoteDependencyTelemetry;
 import static com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.QuickPulseTestBase.createRequestTelemetry;
@@ -23,30 +32,33 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void initialStateIsDisabled() {
-        assertThat(new QuickPulseDataCollector(true).peek()).isNull();
+        assertThat(new QuickPulseDataCollector(true, new QuickPulseConfiguration()).peek()).isNull();
     }
 
     @Test
     void emptyCountsAndDurationsAfterEnable() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
         assertCountersReset(counters);
+        ArrayList<QuickPulseMetrics> storedMetrics = collector.retrieveOtelMetrics();
+        assertThat(storedMetrics).isEmpty();
     }
 
     @Test
     void nullCountersAfterDisable() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         collector.disable();
         assertThat(collector.peek()).isNull();
+        assertThat(collector.retrieveOtelMetrics()).isEmpty();
     }
 
     @Test
     void requestTelemetryIsCounted_DurationIsSum() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -88,7 +100,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void dependencyTelemetryIsCounted_DurationIsSum() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -130,7 +142,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void exceptionTelemetryIsCounted() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -148,6 +160,44 @@ class QuickPulseDataCollectorTests {
         assertThat(counters.exceptions).isEqualTo(2);
 
         assertCountersReset(collector.peek());
+    }
+
+    @Test
+    void openTelemetryMetricsAreCounted() {
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
+
+        collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
+        collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
+
+        TelemetryItem telemetry = new TelemetryItem();
+        telemetry.setConnectionString(FAKE_CONNECTION_STRING);
+        MonitorBase data = new MonitorBase();
+        MetricDataPoint point = new MetricDataPoint();
+        point.setName("TestMetric");
+        point.setValue(123.456);
+        ArrayList<MetricDataPoint> metricsList = new ArrayList<>();
+        metricsList.add(point);
+        data.setBaseData(new MetricsData().setMetrics(metricsList));
+        telemetry.setData(data);
+        Attributes attributes = Attributes.builder().put("telemetry.sdk.name", "opentelemetry").build();
+        Resource resource = Resource.create(attributes);
+        telemetry.setResource(resource);
+        collector.addOtelMetric(telemetry);
+        ConcurrentHashMap<String, OTelMetric> storedMetrics = collector.getOtelMetrics();
+        assertThat(storedMetrics.size()).isEqualTo(1);
+        assertThat(storedMetrics.containsKey("TestMetric")).isTrue();
+        assertThat(storedMetrics.get("TestMetric").getDataValues().get(0)).isEqualTo(123.456);
+
+        point.setName("TestMetric2");
+        point.setValue(789.012);
+        collector.addOtelMetric(telemetry);
+        storedMetrics = collector.getOtelMetrics();
+        assertThat(storedMetrics.size()).isEqualTo(2);
+        assertThat(storedMetrics.containsKey("TestMetric2")).isTrue();
+        assertThat(storedMetrics.get("TestMetric2").getDataValues().get(0)).isEqualTo(789.012);
+
+        collector.flushOtelMetrics();
+        assertThat(collector.getOtelMetrics().size()).isEqualTo(0);
     }
 
     @Test
@@ -204,7 +254,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void checkDocumentsListSize() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(true, new QuickPulseConfiguration());
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);

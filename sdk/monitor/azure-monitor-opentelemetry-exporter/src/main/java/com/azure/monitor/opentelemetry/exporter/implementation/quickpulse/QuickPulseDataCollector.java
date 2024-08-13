@@ -20,8 +20,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 final class QuickPulseDataCollector {
 
@@ -30,12 +28,13 @@ final class QuickPulseDataCollector {
     private static final OperatingSystemMXBean operatingSystemMxBean = ManagementFactory.getOperatingSystemMXBean();
 
     private final AtomicReference<Counters> counters = new AtomicReference<>(null);
+
     private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator
         = getCpuPerformanceCounterCalculator();
 
     private QuickPulseConfiguration quickPulseConfiguration;
 
-    private OpenTelMetricsStorage metricsStorage = new OpenTelMetricsStorage();
+    private OtelMetricsStorage metricsStorage = new OtelMetricsStorage();
 
     private final boolean useNormalizedValueForNonNormalizedCpuPercentage;
 
@@ -43,7 +42,8 @@ final class QuickPulseDataCollector {
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage, QuickPulseConfiguration quickPulseConfiguration) {
+    QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage,
+        QuickPulseConfiguration quickPulseConfiguration) {
         this.useNormalizedValueForNonNormalizedCpuPercentage = useNormalizedValueForNonNormalizedCpuPercentage;
         this.quickPulseConfiguration = quickPulseConfiguration;
     }
@@ -54,6 +54,7 @@ final class QuickPulseDataCollector {
 
     synchronized void disable() {
         counters.set(null);
+        metricsStorage.clearMetrics();
         quickPulseStatus = QuickPulseStatus.QP_IS_OFF;
     }
 
@@ -106,14 +107,13 @@ final class QuickPulseDataCollector {
             // sampleRate should never be zero (how could it be captured if sampling set to zero percent?)
             return;
         }
-        int itemCount = sampleRate == null ? 1 : Math.round(100 / sampleRate);
 
         if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")),
             "opentelemetry")) {
-            MonitorDomain data2 = telemetryItem.getData().getBaseData();
-            MetricsData metricsData = (MetricsData) data2;
+            MonitorDomain data = telemetryItem.getData().getBaseData();
+            MetricsData metricsData = (MetricsData) data;
             MetricDataPoint point = metricsData.getMetrics().get(0);
-            this.metricsStorage.addMetric(point.getName(), point.getValue());
+            this.metricsStorage.addMetric(point.getName(), point.getValue(), metricsData.getProperties());
         }
 
     }
@@ -334,11 +334,17 @@ final class QuickPulseDataCollector {
         return x;
     }
 
-    public ArrayList<QuickPulseMetrics> retrieveOpenTelMetrics() {
+    public ArrayList<QuickPulseMetrics> retrieveOtelMetrics() {
         return metricsStorage.processMetrics();
     }
 
-    public ConcurrentHashMap<String, OpenTelMetric>
+    public ConcurrentHashMap<String, OTelMetric> getOtelMetrics() {
+        return metricsStorage.getMetrics();
+    }
+
+    public void flushOtelMetrics() {
+        metricsStorage.clearMetrics();
+    }
 
     class FinalCounters {
 
@@ -441,49 +447,46 @@ final class QuickPulseDataCollector {
         }
     }
 
-    class OpenTelMetricsStorage {
-        private ConcurrentHashMap<String, OpenTelMetric> metrics = new ConcurrentHashMap<String, OpenTelMetric>();
+    class OtelMetricsStorage {
+        private volatile ConcurrentHashMap<String, OTelMetric> metrics = new ConcurrentHashMap<>();
+        // setting most amount of OTel metrics a user can stream to this. will review if users surpass threshold.
+        private final int maxMetricsLimit = 50;
 
-        public void addMetric(String metricName, double value) {
-            OpenTelMetric metric = metrics.get(metricName);
+        public void addMetric(String metricName, double value, Map<String, String> dimensions) {
+            OTelMetric metric = metrics.get(metricName);
             if (metric == null) {
-                metric = new OpenTelMetric(metricName);
-                metric.addDataPoint(value);
-                metrics.putIfAbsent(metricName, metric);
+                // create new metric and add to metrics map
+                // (if we have reached the limit, we will block the metric from being created
+                if (metrics.size() <= maxMetricsLimit) {
+                    metric = new OTelMetric(metricName);
+                    metric.addDataPoint(value, dimensions == null ? new HashMap<>() : new HashMap<>(dimensions));
+                    metrics.putIfAbsent(metricName, metric);
+                }
             } else {
-                metric.addDataPoint(value);
+                metric.addDataPoint(value, dimensions == null ? new HashMap<>() : new HashMap<>(dimensions));
             }
         }
 
         public ArrayList<QuickPulseMetrics> processMetrics() {
-            ConcurrentHashMap<String, QuickPulseConfiguration.DerivedMetricInfo> requestedMetrics
-                = quickPulseConfiguration.getMetrics();
+            ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> requestedMetrics
+                = quickPulseConfiguration.getDerivedMetrics();
             ArrayList<QuickPulseMetrics> processedMetrics = new ArrayList<>();
 
-            Iterator<Map.Entry<String, OpenTelMetric>> iterator = this.metrics.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<String, OpenTelMetric> entry = iterator.next();
-                String key = entry.getKey();
-                OpenTelMetric value = entry.getValue();
-
-                if (requestedMetrics.containsKey(key)) {
-                    QuickPulseMetrics processedMetric = processMetric(value, requestedMetrics.get(key));
-                    processedMetrics.add(processedMetric);
+            if (requestedMetrics.get("Metric") != null) {
+                for (QuickPulseConfiguration.DerivedMetricInfo metricInfo : requestedMetrics.get("Metric")) {
+                    if (this.getMetrics().get(metricInfo.getProjection()) != null) {
+                        QuickPulseMetrics processedMetric
+                            = processMetric(this.getMetrics().get(metricInfo.getProjection()), metricInfo);
+                        processedMetrics.add(processedMetric);
+                    }
                 }
-
-                if (ChronoUnit.SECONDS.between(value.getLastTimestamp(), LocalDateTime.now()) > 5) {
-                    iterator.remove();
-
-                } else {
-                    value.clearDataPoints();
-                }
-
             }
-            return processedMetrics;
 
+            this.clearMetrics();
+            return processedMetrics;
         }
 
-        public QuickPulseMetrics processMetric(OpenTelMetric metric,
+        public QuickPulseMetrics processMetric(OTelMetric metric,
             QuickPulseConfiguration.DerivedMetricInfo metricInfo) {
 
             if (metric.getDataPoints().isEmpty()) {
@@ -491,29 +494,56 @@ final class QuickPulseDataCollector {
             }
 
             String aggregation = metricInfo.getAggregation();
-            ArrayList<Double> dataValues = metric.getDataValues();
+            ArrayList<Double> filteredValues = new ArrayList<>();
+            for (OTelDataPoint dataPoint : metric.getDataPoints()) {
+                boolean passedFilter = true;
+                for (QuickPulseConfiguration.FilterGroup filterGroup : metricInfo.getFilterGroups()) {
+                    String fieldName = filterGroup.getFieldName();
+                    String operator = filterGroup.getOperator();
+                    String comparand = filterGroup.getComparand();
+                    if (Objects.equals(operator, "Equal")) {
+                        String fieldValue = dataPoint.getDimensions().get(fieldName);
+                        if (fieldValue == null || !fieldValue.equals(comparand)) {
+                            passedFilter = false;
+                            break;
+                            // Handle the case where the value is null or does not equal the operator
+                        }
+                    }
+                }
+                if (passedFilter) {
+                    filteredValues.add(dataPoint.getValue());
+                }
+            }
 
             switch (aggregation) {
                 case "Sum":
-                    double sum = dataValues.stream().mapToDouble(Double::doubleValue).sum();
+                    double sum = filteredValues.stream().mapToDouble(Double::doubleValue).sum();
                     return new QuickPulseMetrics(metricInfo.getId(), sum, 1);
 
                 case "Avg":
-                    double avg = dataValues.stream().mapToDouble(Double::doubleValue).average().orElse(0);
-                    return new QuickPulseMetrics(metricInfo.getId(), avg, dataValues.size());
+                    double avg = filteredValues.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+                    return new QuickPulseMetrics(metricInfo.getId(), avg, filteredValues.size());
 
                 case "Min":
-                    double min = dataValues.stream().mapToDouble(Double::doubleValue).min().orElse(0);
+                    double min = filteredValues.stream().mapToDouble(Double::doubleValue).min().orElse(0);
                     return new QuickPulseMetrics(metricInfo.getId(), min, 1);
 
                 case "Max":
-                    double max = dataValues.stream().mapToDouble(Double::doubleValue).max().orElse(0);
+                    double max = filteredValues.stream().mapToDouble(Double::doubleValue).max().orElse(0);
                     return new QuickPulseMetrics(metricInfo.getId(), max, 1);
 
                 default:
                     throw new IllegalArgumentException("Aggregation type not supported: " + aggregation);
             }
+        }
 
+        public void clearMetrics() {
+            this.metrics.clear();
+        }
+
+        //for testing
+        public ConcurrentHashMap<String, OTelMetric> getMetrics() {
+            return metrics;
         }
 
     }

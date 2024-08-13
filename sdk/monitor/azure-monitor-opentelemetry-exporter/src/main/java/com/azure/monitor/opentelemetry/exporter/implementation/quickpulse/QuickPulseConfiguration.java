@@ -31,7 +31,8 @@ public class QuickPulseConfiguration {
         this.derivedMetrics = metrics;
     }
 
-    public synchronized void updateConfig(String etagValue, ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> otelMetrics) {
+    public synchronized void updateConfig(String etagValue,
+        ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> otelMetrics) {
         if (!Objects.equals(this.getEtag(), etagValue)) {
             this.setEtag(etagValue);
             this.setDerivedMetrics(otelMetrics);
@@ -39,14 +40,15 @@ public class QuickPulseConfiguration {
 
     }
 
-    public ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> parseDerivedMetrics(HttpResponse response) throws IOException {
+    public ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> parseDerivedMetrics(HttpResponse response)
+        throws IOException {
 
         ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> requestedMetrics = new ConcurrentHashMap<>();
         try {
 
             String responseBody = response.getBodyAsString().block();
             if (responseBody == null || responseBody.isEmpty()) {
-                return new ConcurrentHashMap<String,  ArrayList<DerivedMetricInfo>>();
+                return new ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>>();
             }
 
             try (JsonReader jsonReader = JsonProviders.createReader(responseBody)) {
@@ -67,21 +69,86 @@ public class QuickPulseConfiguration {
                                     case "Id":
                                         metric.setId(jsonReader.getString());
                                         break;
+
                                     case "Aggregation":
                                         metric.setAggregation(jsonReader.getString());
                                         break;
+
                                     case "TelemetryType":
                                         metric.setTelemetryType(jsonReader.getString());
                                         break;
+
                                     case "Projection":
                                         metric.setProjection(jsonReader.getString());
                                         break;
+
+                                    case "FilterGroups":
+                                        // Handle "FilterGroups" field
+                                        if (jsonReader.currentToken() == JsonToken.START_ARRAY) {
+                                            while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
+                                                if (jsonReader.currentToken() == JsonToken.START_OBJECT) {
+                                                    while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                                                        if (jsonReader.currentToken() == JsonToken.FIELD_NAME
+                                                            && jsonReader.getFieldName().equals("Filters")) {
+                                                            jsonReader.nextToken();
+                                                            if (jsonReader.currentToken() == JsonToken.START_ARRAY) {
+                                                                while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
+                                                                    if (jsonReader.currentToken()
+                                                                        == JsonToken.START_OBJECT) {
+                                                                        String innerFieldName = "";
+                                                                        String predicate = "";
+                                                                        String comparand = "";
+
+                                                                        while (jsonReader.nextToken()
+                                                                            != JsonToken.END_OBJECT) {
+                                                                            String filterFieldName
+                                                                                = jsonReader.getFieldName();
+                                                                            jsonReader.nextToken();
+
+                                                                            switch (filterFieldName) {
+                                                                                case "FieldName":
+                                                                                    innerFieldName
+                                                                                        = jsonReader.getString();
+                                                                                    if (innerFieldName.contains(".")) {
+                                                                                        innerFieldName = innerFieldName
+                                                                                            .split("\\.")[1];
+                                                                                    }
+                                                                                    break;
+
+                                                                                case "Predicate":
+                                                                                    predicate = jsonReader.getString();
+                                                                                    break;
+
+                                                                                case "Comparand":
+                                                                                    comparand = jsonReader.getString();
+                                                                                    break;
+                                                                            }
+                                                                        }
+
+                                                                        if (!innerFieldName.isEmpty()
+                                                                            && !innerFieldName.equals("undefined")
+                                                                            && !predicate.isEmpty()
+                                                                            && !comparand.isEmpty()) {
+                                                                            metric.addFilterGroup(innerFieldName,
+                                                                                predicate, comparand);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        break;
+
                                     default:
                                         jsonReader.skipChildren();
                                         break;
                                 }
                             }
-                            requestedMetrics.computeIfAbsent(metric.getTelemetryType(), k -> new ArrayList<>()).add(metric);
+                            requestedMetrics.computeIfAbsent(metric.getTelemetryType(), k -> new ArrayList<>())
+                                .add(metric);
                         }
                     } else {
                         jsonReader.skipChildren();
@@ -89,16 +156,11 @@ public class QuickPulseConfiguration {
                     }
                 }
             }
+            return requestedMetrics;
         } catch (Exception e) {
             logger.verbose("Failed to parse metrics from response: %s", e.getMessage());
         }
-
-        return requestedMetrics;
-    }
-
-    public synchronized void reset() {
-        this.setEtag(null);
-        this.derivedMetrics.clear();
+        return new ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>>();
     }
 
     public class DerivedMetricInfo {
@@ -106,6 +168,7 @@ public class QuickPulseConfiguration {
         private String projection;
         private String telemetryType;
         private String aggregation;
+        private ArrayList<FilterGroup> filterGroups = new ArrayList<FilterGroup>();
 
         public String getId() {
             return this.id;
@@ -138,5 +201,50 @@ public class QuickPulseConfiguration {
         public void setAggregation(String aggregation) {
             this.aggregation = aggregation;
         }
+
+        public ArrayList<FilterGroup> getFilterGroups() {
+            return this.filterGroups;
+        }
+
+        public void addFilterGroup(String fieldName, String predicate, String comparand) {
+            this.filterGroups.add(new FilterGroup(fieldName, predicate, comparand));
+        }
     }
+
+    class FilterGroup {
+        private String fieldName;
+        private String operator;
+        private String comparand;
+
+        public FilterGroup(String fieldName, String predicate, String comparand) {
+            this.setFieldName(fieldName);
+            this.setOperator(predicate);
+            this.setComparand(comparand);
+        }
+
+        public String getFieldName() {
+            return this.fieldName;
+        }
+
+        private void setFieldName(String fieldName) {
+            this.fieldName = fieldName;
+        }
+
+        public String getOperator() {
+            return this.operator;
+        }
+
+        private void setOperator(String operator) {
+            this.operator = operator;
+        }
+
+        public String getComparand() {
+            return this.comparand;
+        }
+
+        public void setComparand(String comparand) {
+            this.comparand = comparand;
+        }
+    }
+
 }

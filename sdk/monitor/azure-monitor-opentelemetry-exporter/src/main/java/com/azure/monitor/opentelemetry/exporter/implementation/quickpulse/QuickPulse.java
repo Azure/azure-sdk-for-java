@@ -5,18 +5,14 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
+import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolUtils;
-import io.opentelemetry.api.common.AttributeKey;
 import reactor.util.annotation.Nullable;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -33,7 +29,7 @@ public class QuickPulse {
     public static QuickPulse create(HttpPipeline httpPipeline, Supplier<URL> endpointUrl,
         Supplier<String> instrumentationKey, @Nullable String roleName, @Nullable String roleInstance,
         boolean useNormalizedValueForNonNormalizedCpuPercentage, QuickPulseMetricReader quickPulseMetricReader,
-        String sdkVersion) {
+        MetricDataMapper metricDataMapper, String sdkVersion) {
 
         QuickPulse quickPulse = new QuickPulse();
 
@@ -48,7 +44,7 @@ public class QuickPulse {
                 Thread.currentThread().interrupt();
             }
             quickPulse.initialize(httpPipeline, endpointUrl, instrumentationKey, roleName, roleInstance,
-                useNormalizedValueForNonNormalizedCpuPercentage, quickPulseMetricReader, sdkVersion);
+                useNormalizedValueForNonNormalizedCpuPercentage, quickPulseMetricReader, metricDataMapper, sdkVersion);
         });
         // the condition below will always be false, but by referencing the executor it ensures the
         // executor can't become unreachable in the middle of the execute() method execution above
@@ -74,13 +70,14 @@ public class QuickPulse {
     private void initialize(HttpPipeline httpPipeline, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey,
         @Nullable String roleName, @Nullable String roleInstance,
         boolean useNormalizedValueForNonNormalizedCpuPercentage, QuickPulseMetricReader quickPulseMetricReader,
-        String sdkVersion) {
+        MetricDataMapper metricDataMapper, String sdkVersion) {
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
         ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
         QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
 
-        QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(httpPipeline, sendQueue);
+        QuickPulseDataSender quickPulseDataSender
+            = new QuickPulseDataSender(httpPipeline, sendQueue, quickPulseConfiguration);
 
         String instanceName = roleInstance;
         String machineName = HostName.get();
@@ -108,6 +105,14 @@ public class QuickPulse {
                 .build();
 
         QuickPulseCoordinator coordinator = new QuickPulseCoordinator(coordinatorInitData);
+
+        QuickPulseMetricReceiver quickPulseMetricReceiver
+            = new QuickPulseMetricReceiver(quickPulseMetricReader, metricDataMapper, collector);
+
+        Thread metricReceiverThread
+            = new Thread(quickPulseMetricReceiver, QuickPulseMetricReceiver.class.getSimpleName());
+        metricReceiverThread.setDaemon(true);
+        metricReceiverThread.start();
 
         Thread senderThread = new Thread(quickPulseDataSender, QuickPulseDataSender.class.getSimpleName());
         senderThread.setDaemon(true);
