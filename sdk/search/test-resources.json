@@ -75,7 +75,7 @@
         "name": "[parameters('searchSku')]"
       },
       "properties": {
-        "replicaCount": 1,
+        "replicaCount": 3,
         "partitionCount": 1,
         "hostingMode": "Default",
         "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('searchIndexDataContributorRoleId'))]",
