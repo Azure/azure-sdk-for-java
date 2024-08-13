@@ -103,7 +103,7 @@ public class ValidationsTest {
 
         final List<ValidationTestCase> testCases = readTestcasesFromFile(testsFile);
         for (ValidationTestCase testCase : testCases) {
-            if (hasException(testCase)) {   // todo how to get exception?
+            if (hasException(testCase)) {   // TODO. Currently we didn't throw the exception when parameter is invalid
                 assertNull(managementProperties.getOnOff().get(testCase.getFeatureFlagName()));
             } else {
                 if (hasInput(testCase)) { // Set inputs
@@ -128,7 +128,7 @@ public class ValidationsTest {
             throw new IllegalArgumentException("The sample files and tests files should have same count.");
         }
         for (int i = 0; i < sampleFiles.length; i++) {
-            if (sampleFiles[i].getName().equals("TargetingFilter.sample.json")) { // todo little endian fix
+            if (sampleFiles[i].getName().equals("TargetingFilter.sample.json")) { // TODO. Not run the test case until we release the little endian fix
                 continue;
             }
             runTestcases(sampleFiles[i], testsFiles[i]);
