@@ -5,19 +5,22 @@ import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullS
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
+import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -93,37 +96,36 @@ public class AvroReaderSyncTests {
     @MethodSource("parseSupplier")
     public void parse(int testCase, int blockOffset, Consumer<Object> consumer) throws IOException, URISyntaxException {
         try (FileChannel fileChannel = openChannel(testCase)) {
-            // Move the file pointer to the block offset before reading
-            fileChannel.position(blockOffset);
-            ByteBuffer buffer = ByteBuffer.allocate((int) (fileChannel.size() - blockOffset));
-            fileChannel.read(buffer);
-            buffer.flip();  // Prepare the buffer for reading
+            // Read the entire file into a buffer
+            ByteBuffer fullBuffer = ByteBuffer.allocate((int) fileChannel.size());
+            fileChannel.read(fullBuffer);
+            fullBuffer.flip(); // Prepare it for reading
 
-            /* Normal use case. */
-            Iterable<AvroObject> result = new AvroReaderSyncFactory().getAvroReader(buffer).read();
+            // Create sub-buffers for header and body
+            ByteBuffer headerBuffer = fullBuffer.duplicate();
+            headerBuffer.limit(blockOffset); // Limit to header size
 
-            // Process results as before
-            List<Object> results = StreamSupport.stream(result.spliterator(), false)
-                .map(AvroObject::getObject)
-                .collect(Collectors.toList());
+            ByteBuffer bodyBuffer = fullBuffer.duplicate();
+            bodyBuffer.position(blockOffset); // Start from block offset
+            bodyBuffer.limit(fullBuffer.limit()); // Limit to the end of the file
 
-            assertNextMatches(results, consumer, 10);
+            // Normal use case: process full data without separating header and body
+            Iterable<AvroObject> fullResult = new AvroReaderSyncFactory().getAvroReader(fullBuffer).read();
+            validateResults(fullResult, consumer, 10);
 
-//            fileChannel.position(0); // Reset position for header reading if needed
-//            ByteBuffer headerBuffer = ByteBuffer.allocate(blockOffset); // Size for header
-//            fileChannel.read(headerBuffer);
-//            headerBuffer.flip();
-            buffer.rewind();
-
-            /* Special use case for Changefeed - parse header and block separate. */
-            Iterable<AvroObject> secondResult = new AvroReaderSyncFactory().getAvroReader(buffer, blockOffset, -1).read();
-            // Process results as before
-            List<Object> secondResults = StreamSupport.stream(secondResult.spliterator(), false)
-                .map(AvroObject::getObject)
-                .collect(Collectors.toList());
-
-            assertNextMatches(secondResults, consumer, 10);
+            // Special use case for Changefeed - parse header and block separate
+            AvroReaderSyncFactory factory = new AvroReaderSyncFactory();
+            Iterable<AvroObject> bodyResult = factory.getAvroReader(headerBuffer, bodyBuffer, blockOffset, -1).read();
+            validateResults(bodyResult, consumer, 10);
         }
+    }
+
+    private void validateResults(Iterable<AvroObject> results, Consumer<Object> consumer, int count) {
+        List<Object> objects = StreamSupport.stream(results.spliterator(), false)
+            .map(AvroObject::getObject)
+            .collect(Collectors.toList());
+
+        assertNextMatches(objects, consumer, count);
     }
 
     private static Stream<Arguments> parseSupplier() {
@@ -137,20 +139,20 @@ public class AvroReaderSyncTests {
         record.put("f", 5L);
 
         return Stream.of(
-            Arguments.of(0, 57, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o)))
-//            Arguments.of(1, 60, createConsumer(o -> assertTrue((boolean) o))),
-//            Arguments.of(2, 59, createConsumer(o -> assertEquals("adsfasdf09809dsf-=adsf", o))),
-//            Arguments.of(3, 58, createConsumer(o -> bytesEqual(o, "12345abcd".getBytes(StandardCharsets.UTF_8)))),
-//            Arguments.of(4, 56, createConsumer(o -> assertEquals(1234, o))),
-//            Arguments.of(5, 57, createConsumer(o -> assertEquals(1234L, o))),
-//            Arguments.of(6, 58, createConsumer(o -> assertEquals(1234F, o))),
-//            Arguments.of(7, 59, createConsumer(o -> assertEquals(1234D, o))),
-//            Arguments.of(8, 95, createConsumer(o -> bytesEqual(o, "B".getBytes(StandardCharsets.UTF_8)))),
-//            Arguments.of(9, 106, createConsumer(o -> assertEquals("B", o))),
-//            Arguments.of(10, 85, createConsumer(o -> assertEquals(Arrays.asList(1L, 3L, 2L), o))),
-//            Arguments.of(11, 84, createConsumer(o -> assertEquals(map, o))),
-//            Arguments.of(12, 77, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
-//            Arguments.of(13, 129, createConsumer(o -> assertEquals(record, o)))
+            Arguments.of(0, 57, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
+            Arguments.of(1, 60, createConsumer(o -> assertTrue((boolean) o))),
+            Arguments.of(2, 59, createConsumer(o -> assertEquals("adsfasdf09809dsf-=adsf", o))),
+            Arguments.of(3, 58, createConsumer(o -> bytesEqual(o, "12345abcd".getBytes(StandardCharsets.UTF_8)))),
+            Arguments.of(4, 56, createConsumer(o -> assertEquals(1234, o))),
+            Arguments.of(5, 57, createConsumer(o -> assertEquals(1234L, o))),
+            Arguments.of(6, 58, createConsumer(o -> assertEquals(1234F, o))),
+            Arguments.of(7, 59, createConsumer(o -> assertEquals(1234D, o))),
+            Arguments.of(8, 95, createConsumer(o -> bytesEqual(o, "B".getBytes(StandardCharsets.UTF_8)))),
+            Arguments.of(9, 106, createConsumer(o -> assertEquals("B", o))),
+            Arguments.of(10, 85, createConsumer(o -> assertEquals(Arrays.asList(1L, 3L, 2L), o))),
+            Arguments.of(11, 84, createConsumer(o -> assertEquals(map, o))),
+            Arguments.of(12, 77, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
+            Arguments.of(13, 129, createConsumer(o -> assertEquals(record, o)))
             /* TODO (gapra) : Not necessary for QQ or CF but case 14 tests the ability to reference named types as a type in a record. */
         );
     }
@@ -169,6 +171,276 @@ public class AvroReaderSyncTests {
         }
 
         assertArraysEqual(expected, actualBytes);
+    }
+
+    /* This test checks that different chunk sizes still result in validly parsed files. */
+    @ParameterizedTest
+    @ValueSource(ints = {1, 36, 78, 157})
+    public void parseChunkSize(int chunkSize) throws IOException, URISyntaxException {
+        try (FileChannel fileChannel = openChannel(13)) {
+            Map<String, Object> expectedRecord = new HashMap<>();
+            expectedRecord.put("$record", "Test");
+            expectedRecord.put("f", 5L);
+
+            Consumer<Object> validationConsumer = object -> {
+                assertTrue(object instanceof Map);
+                Map<?, ?> actualRecord = (Map<?, ?>) object;
+                expectedRecord.forEach((key, value) ->
+                    assertEquals(value, actualRecord.get(key), "Mismatch for key: " + key));
+            };
+
+            long fileSize = fileChannel.size();
+            System.out.println("File size: " + fileSize);
+            long position = 0;  // Start from the beginning of the file.
+
+            while (position < fileSize) {
+                int remaining = (int)(fileSize - position);
+                System.out.println("Remaining: " + remaining);
+                int currentChunkSize = Math.min(chunkSize, remaining);
+                ByteBuffer buffer = ByteBuffer.allocateDirect(currentChunkSize);  // Allocate buffer based on the smaller of chunkSize or remaining bytes.
+                fileChannel.read(buffer);
+                buffer.flip(); // Prepare the buffer for reading.
+
+                AvroReaderSyncFactory factory = new AvroReaderSyncFactory();
+                Iterable<AvroObject> results = factory.getAvroReader(buffer).read();
+
+                // Process and validate results immediately.
+                StreamSupport.stream(results.spliterator(), false)
+                    .map(AvroObject::getObject)
+                    .forEach(validationConsumer);
+
+                position += currentChunkSize;  // Update position after processing current chunk.
+                buffer.clear();  // Clear the buffer for potential reuse.
+            }
+        }
+    }
+
+
+    @Test
+    public void parseCfLarge() throws IOException, URISyntaxException {
+        /* Normal use case. */
+        try (FileChannel fileChannel = openChannel("changefeed_large.avro")) {
+            // Prepare to read the entire file into memory, adjust as needed for very large files
+            ByteBuffer buffer = ByteBuffer.allocate((int) fileChannel.size());
+            fileChannel.read(buffer);
+            buffer.flip();  // Prepare the buffer for reading
+
+            // Setup for parsing
+            AvroReaderSyncFactory factory = new AvroReaderSyncFactory();
+            Iterable<AvroObject> results = factory.getAvroReader(buffer).read();
+
+            // Process results
+            int index = 0;
+            for (AvroObject result : results) {
+                Map<String, Object> record = (Map<String, Object>) result.getObject();
+                String subject = (String) record.get("subject");
+
+                // Assert each subject matches the expected path with its index
+                String expectedPath = LARGE_AVRO_PATH + index;
+                assertEquals(expectedPath, subject, "Mismatch at index " + index);
+
+                if (++index >= 1000) {  // Only process up to 1000 records
+                    break;
+                }
+            }
+
+            // Ensure that exactly 1000 records were processed
+            assertEquals(1000, index, "Expected 1000 records to be processed");
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1953,1000", "67686,881", "133529,762", "199372,643", "265215,524", "331058,405", "396901,286",
+        "462744,167", "528587,48", "555167,0"})
+    public void parseCfLargeBlockOffset(int blockOffset, int numObjects) throws IOException, URISyntaxException {
+        try (FileChannel fileChannel = openChannel("changefeed_large.avro")) {
+            /* Special use case for Changefeed - parse header and block separate. */
+
+            ByteBuffer fullBuffer = ByteBuffer.allocate((int) fileChannel.size());
+            fileChannel.read(fullBuffer);
+            fullBuffer.flip(); // Prepare it for reading
+
+            // Create sub-buffers for header and body
+            int headerSize = 5 * 1024;
+            ByteBuffer headerBuffer = fullBuffer.duplicate();
+            headerBuffer.limit(headerSize); // Limit to header size
+
+            ByteBuffer bodyBuffer = fullBuffer.duplicate();
+            bodyBuffer.position(blockOffset); // Start from block offset
+            bodyBuffer.limit(fullBuffer.limit()); // Limit to the end of the file
+
+            // Set up synchronous Avro parsing
+            AvroReaderSyncFactory factory = new AvroReaderSyncFactory();
+            Iterable<AvroObject> results = factory.getAvroReader(headerBuffer, bodyBuffer, blockOffset, -1).read();
+
+            // Process results
+            int index = 0;
+            for (AvroObject result : results) {
+                if (index >= numObjects) break; // Process only the specified number of objects
+                Map<String, Object> record = (Map<String, Object>) result.getObject();
+                String subject = (String) record.get("subject");
+                int adjustedIndex = 1000 - numObjects + index; // Adjust index based on the test input
+
+                // Validate the subject path
+                assertEquals(LARGE_AVRO_PATH + adjustedIndex, subject);
+                index++;
+            }
+
+            // Ensure that exactly the expected number of records were processed
+            assertEquals(numObjects, index);
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1953,1,999", "67686,35,846", "133529,57,705", "199372,0,643", "265215,51,473", "331058,0,405",
+        "396901,11,275", "462744,68,99", "528587,41,7", "555167,0,0"})
+    public void parseCfLargeFilterIndex(int blockOffset, int filterIndex, int numObjects) throws IOException, URISyntaxException {
+        try (FileChannel fileChannel = openChannel("changefeed_large.avro")) {
+            /* Special use case for Changefeed - parse header and block separate. */
+            ByteBuffer fullBuffer = ByteBuffer.allocate((int) fileChannel.size());
+            fileChannel.read(fullBuffer);
+            fullBuffer.flip(); // Prepare it for reading
+
+            // Create sub-buffers for header and body
+            int headerSize = 5 * 1024;
+            ByteBuffer headerBuffer = fullBuffer.duplicate();
+            headerBuffer.limit(headerSize); // Limit to header size
+
+            ByteBuffer bodyBuffer = fullBuffer.duplicate();
+            bodyBuffer.position(blockOffset); // Start from block offset
+            bodyBuffer.limit(fullBuffer.limit()); // Limit to the end of the file
+
+            // Set up synchronous Avro parsing
+            AvroReaderSyncFactory factory = new AvroReaderSyncFactory();
+            Iterable<AvroObject> results = factory.getAvroReader(headerBuffer, bodyBuffer, blockOffset, filterIndex).read();
+
+            // Process results
+            int index = 0;
+            int adjustedIndex = 1000 - numObjects; // Start index adjustment based on the number of objects
+            for (AvroObject result : results) {
+                if (index >= numObjects) break; // Process only the specified number of objects
+                Map<String, Object> record = (Map<String, Object>) result.getObject();
+                String subject = (String) record.get("subject");
+
+                // Validate the subject path, adjusting the index to align with expected results
+                assertEquals(LARGE_AVRO_PATH + (adjustedIndex + index), subject);
+                index++;
+            }
+
+            // Ensure that exactly the expected number of records were processed
+            assertEquals(numObjects, index);
+        }
+    }
+
+    @Test
+    public void parseCfSmall() throws IOException {
+        Path path = new File(getClass().getClassLoader().getResource("changefeed_small.avro").getFile()).toPath();
+
+        /* Normal use case. */
+        try (FileChannel fileChannel = FileChannel.open(path, StandardOpenOption.READ)) {
+            ByteBuffer buffer = ByteBuffer.allocate((int) fileChannel.size());
+            fileChannel.read(buffer);
+            buffer.flip(); // Prepare the buffer for reading
+
+            AvroReaderSyncFactory factory = new AvroReaderSyncFactory();
+            Iterable<AvroObject> results = factory.getAvroReader(buffer).read();
+
+            AvroObject avroObject = results.iterator().next();
+            verifyChangefeedEvent(avroObject.getObject());
+        }
+    }
+
+    static void verifyChangefeedEvent(Object record) {
+        assertInstanceOf(Map.class, record);
+        Map<?, ?> r = (Map<?, ?>) record;
+
+        assertEquals("BlobChangeEvent", r.get("$record"));
+        assertEquals(3, Integer.valueOf(String.valueOf(r.get("schemaVersion"))));
+        assertEquals("/subscriptions/ba45b233-e2ef-4169-8808-49eb0d8eba0d/resourceGroups/XClient/providers/"
+            + "Microsoft.Storage/storageAccounts/seanchangefeedstage", r.get("topic"));
+        assertEquals("/blobServices/default/containers/myblobscontainer9/blobs/myblob", r.get("subject"));
+        assertEquals("BlobCreated", r.get("eventType"));
+        assertEquals("2020-03-28T05:05:46.6636036Z", r.get("eventTime"));
+        assertEquals("ecc8f58e-301e-0022-18be-045724067dce", r.get("id"));
+        verifyChangefeedData(r.get("data"));
+    }
+
+    static void verifyChangefeedData(Object record) {
+        assertInstanceOf(Map.class, record);
+        Map<?, ?> r = (Map<?, ?>) record;
+
+        assertEquals("BlobChangeEventData", r.get("$record"));
+        assertEquals("PutBlob", r.get("api"));
+        assertEquals("c8a34806-70b1-11ea-a4b0-001a7dda7113", r.get("clientRequestId"));
+        assertEquals("ecc8f58e-301e-0022-18be-045724000000", r.get("requestId"));
+        assertEquals("0x8D7D2D5ACE2CC31", r.get("etag"));
+        assertEquals("application/octet-stream", r.get("contentType"));
+        assertEquals(55, Integer.valueOf(String.valueOf(r.get("contentLength"))));
+        assertEquals("BlockBlob", r.get("blobType"));
+        assertEquals("", r.get("url"));
+        assertEquals("00000000000000000000000000001839000000000001a9dc", r.get("sequencer"));
+        assertInstanceOf(AvroNullSchema.Null.class, r.get("previousInfo"));
+        assertInstanceOf(AvroNullSchema.Null.class, r.get("snapshot"));
+        assertInstanceOf(AvroNullSchema.Null.class, r.get("blobPropertiesUpdated"));
+
+        assertInstanceOf(Map.class, r.get("storageDiagnostics"));
+        Map<?, ?> sd = (Map<?, ?>) r.get("storageDiagnostics");
+
+        assertEquals("6148d063-2006-0001-00be-04cde7000000", sd.get("bid"));
+        assertEquals("5083feab-0027-eed2-bf03-0d533fee5677", sd.get("sid"));
+        assertEquals("(6201,22103,109020,108961)", sd.get("seq"));
+    }
+
+    @Test
+    public void parseQqSmall() throws IOException {
+        Path path = new File(getClass().getClassLoader().getResource("query_small.avro").getFile()).toPath();
+
+        try (FileChannel fileChannel = FileChannel.open(path, StandardOpenOption.READ)) {
+            ByteBuffer buffer = ByteBuffer.allocate((int) fileChannel.size());
+            fileChannel.read(buffer);
+            buffer.flip(); // Prepare the buffer for reading
+
+            AvroReaderSyncFactory factory = new AvroReaderSyncFactory();
+            Iterable<AvroObject> results = factory.getAvroReader(buffer).read();
+
+            // Assuming we can iterate through the results which represent different steps
+            Iterator<AvroObject> iterator = results.iterator();
+            if (iterator.hasNext()) {
+                containsConsumer(iterator.next().getObject());  // Check first object
+            }
+            if (iterator.hasNext()) {
+                progressMatchesConsumer(iterator.next().getObject(), 1024, 1024);  // Check progress
+            }
+            if (iterator.hasNext()) {
+                endMatchesConsumer(iterator.next().getObject(), 1024);  // Check end conditions
+            }
+        }
+    }
+
+    @Test
+    public void parseQqLarge() throws IOException {
+        Path path = new File(getClass().getClassLoader().getResource("query_large.avro").getFile()).toPath();
+
+        try (FileChannel fileChannel = FileChannel.open(path, StandardOpenOption.READ)) {
+            ByteBuffer buffer = ByteBuffer.allocate((int) fileChannel.size());
+            fileChannel.read(buffer);
+            buffer.flip(); // Prepare the buffer for reading
+
+            AvroReaderSyncFactory factory = new AvroReaderSyncFactory();
+            Iterable<AvroObject> results = factory.getAvroReader(buffer).read();
+
+            // Iterate through results and apply validation
+            Iterator<AvroObject> iterator = results.iterator();
+            if (iterator.hasNext()) containsConsumer(iterator.next().getObject());  // Initial consumer check
+            if (iterator.hasNext()) progressMatchesConsumer(iterator.next().getObject(), 4194304, 16384000);
+            if (iterator.hasNext()) containsConsumer(iterator.next().getObject());  // Repeating checks per progress state
+            if (iterator.hasNext()) progressMatchesConsumer(iterator.next().getObject(), 8388608, 16384000);
+            if (iterator.hasNext()) containsConsumer(iterator.next().getObject());
+            if (iterator.hasNext()) progressMatchesConsumer(iterator.next().getObject(), 12582912, 16384000);
+            if (iterator.hasNext()) containsConsumer(iterator.next().getObject());
+            if (iterator.hasNext()) progressMatchesConsumer(iterator.next().getObject(), 16384000, 16384000);
+            if (iterator.hasNext()) endMatchesConsumer(iterator.next().getObject(), 16384000);  // Final state check
+        }
     }
 
     private static void containsConsumer(Object o) {

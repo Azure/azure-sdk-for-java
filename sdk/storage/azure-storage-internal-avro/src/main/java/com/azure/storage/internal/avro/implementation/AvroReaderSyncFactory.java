@@ -3,6 +3,8 @@
 
 package com.azure.storage.internal.avro.implementation;
 
+import reactor.core.publisher.Flux;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -13,28 +15,30 @@ public class AvroReaderSyncFactory {
     /**
      * Gets a new instance of {@link AvroSyncReader} with support for offset and thresholdIndex.
      *
-     * @param data The ByteBuffer that contains the Avro data.
+     * @param avroHeader The ByteBuffer containing the Avro header.
+     * @param avroBody The ByteBuffer that starts at the offset and represents the start of a block.
      * @param offset The position in the ByteBuffer from where to start parsing.
      * @param thresholdIndex The minimum index of the objects to be returned.
      * @return An AvroSyncReader.
      */
-    public AvroSyncReader getAvroReader(ByteBuffer data, int offset, long thresholdIndex) {
+    public AvroSyncReader getAvroReader(ByteBuffer avroHeader, ByteBuffer avroBody, long offset, long thresholdIndex) {
         return new AvroSyncReader() {
             private final AvroSyncParser parser = new AvroSyncParser(true); // assuming true means handling partial reads
 
             @Override
             public Iterable<AvroObject> read() {
-                // Set the position of the buffer to the offset
-                data.position(offset);
-
                 // Parse the header
-                parser.parse(data);
+                avroHeader.position(0); // Ensure the header buffer is at the start
+                parser.parse(avroHeader);
 
-                // Prepare parser to read the body at an offset
+                // Prepare parser to read the body at an offset, only if necessary
                 parser.prepareParserToReadBody(offset, thresholdIndex);
 
-                // Return iterable of parsed objects
-                return parser.parse(data);
+                // Set the position of the body buffer to the offset
+                avroBody.position((int) offset);
+
+                // Return iterable of parsed objects from the body
+                return parser.parse(avroBody);
             }
         };
     }
@@ -54,6 +58,4 @@ public class AvroReaderSyncFactory {
             }
         };
     }
-
-
 }

@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -136,6 +137,8 @@ public class AvroParser {
         ByteBuffer allocatedBuffer = ByteBuffer.allocate(buffer.remaining());
         allocatedBuffer.put(buffer);
         allocatedBuffer.position(0);
+        System.out.println(Arrays.toString(allocatedBuffer.array()));
+        System.out.println(allocatedBuffer.position() + " " + allocatedBuffer.limit() + " " + allocatedBuffer.capacity());
 
         this.state.write(allocatedBuffer);
 

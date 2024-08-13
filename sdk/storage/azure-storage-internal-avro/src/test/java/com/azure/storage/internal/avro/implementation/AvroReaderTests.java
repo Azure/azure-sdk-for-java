@@ -121,20 +121,20 @@ public class AvroReaderTests {
         record.put("f", 5L);
 
         return Stream.of(
-            Arguments.of(0, 57, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o)))
-//            Arguments.of(1, 60, createConsumer(o -> assertTrue((boolean) o))),
-//            Arguments.of(2, 59, createConsumer(o -> assertEquals("adsfasdf09809dsf-=adsf", o))),
-//            Arguments.of(3, 58, createConsumer(o -> bytesEqual(o, "12345abcd".getBytes(StandardCharsets.UTF_8)))),
-//            Arguments.of(4, 56, createConsumer(o -> assertEquals(1234, o))),
-//            Arguments.of(5, 57, createConsumer(o -> assertEquals(1234L, o))),
-//            Arguments.of(6, 58, createConsumer(o -> assertEquals(1234F, o))),
-//            Arguments.of(7, 59, createConsumer(o -> assertEquals(1234D, o))),
-//            Arguments.of(8, 95, createConsumer(o -> bytesEqual(o, "B".getBytes(StandardCharsets.UTF_8)))),
-//            Arguments.of(9, 106, createConsumer(o -> assertEquals("B", o))),
-//            Arguments.of(10, 85, createConsumer(o -> assertEquals(Arrays.asList(1L, 3L, 2L), o))),
-//            Arguments.of(11, 84, createConsumer(o -> assertEquals(map, o))),
-//            Arguments.of(12, 77, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
-//            Arguments.of(13, 129, createConsumer(o -> assertEquals(record, o)))
+            Arguments.of(0, 57, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
+            Arguments.of(1, 60, createConsumer(o -> assertTrue((boolean) o))),
+            Arguments.of(2, 59, createConsumer(o -> assertEquals("adsfasdf09809dsf-=adsf", o))),
+            Arguments.of(3, 58, createConsumer(o -> bytesEqual(o, "12345abcd".getBytes(StandardCharsets.UTF_8)))),
+            Arguments.of(4, 56, createConsumer(o -> assertEquals(1234, o))),
+            Arguments.of(5, 57, createConsumer(o -> assertEquals(1234L, o))),
+            Arguments.of(6, 58, createConsumer(o -> assertEquals(1234F, o))),
+            Arguments.of(7, 59, createConsumer(o -> assertEquals(1234D, o))),
+            Arguments.of(8, 95, createConsumer(o -> bytesEqual(o, "B".getBytes(StandardCharsets.UTF_8)))),
+            Arguments.of(9, 106, createConsumer(o -> assertEquals("B", o))),
+            Arguments.of(10, 85, createConsumer(o -> assertEquals(Arrays.asList(1L, 3L, 2L), o))),
+            Arguments.of(11, 84, createConsumer(o -> assertEquals(map, o))),
+            Arguments.of(12, 77, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
+            Arguments.of(13, 129, createConsumer(o -> assertEquals(record, o)))
             /* TODO (gapra) : Not necessary for QQ or CF but case 14 tests the ability to reference named types as a type in a record. */
         );
     }
