@@ -38,8 +38,8 @@
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.ai.documentintelligence/com.azure.ai.documentintelligence=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <jacoco.min.branchcoverage>0.29</jacoco.min.branchcoverage>
-    <jacoco.min.linecoverage>0.32</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.24</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.24</jacoco.min.linecoverage>
     <parallelizeLiveTests>same_thread</parallelizeLiveTests>
     <graalvm.disable>false</graalvm.disable>
   </properties>

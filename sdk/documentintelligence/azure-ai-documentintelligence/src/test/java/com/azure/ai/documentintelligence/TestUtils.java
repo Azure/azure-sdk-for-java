@@ -99,9 +99,6 @@ public final class TestUtils {
     public static void getSelectionMarkTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getSelectionMarkTrainingSasUri(isPlaybackMode));
     }
-    static void getTestingContainerHelper(Consumer<String> testRunner, String fileName, boolean isPlaybackMode) {
-        testRunner.accept(getStorageTestingFileUrl(fileName, isPlaybackMode));
-    }
     public static void getClassifierTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getClassifierTrainingFilesContainerUrl(isPlaybackMode));
     }
@@ -114,20 +111,6 @@ public final class TestUtils {
      */
     private static String getTestingSasUri(boolean isPlaybackMode) {
         return isPlaybackMode ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
-    }
-
-    /**
-     * Prepare the file url from the testing data set SAS Url value.
-     *
-     * @return the testing data specific file Url
-     */
-    private static String getStorageTestingFileUrl(String fileName, boolean isPlaybackMode) {
-        if (isPlaybackMode) {
-            return "https://isPlaybackmode";
-        } else {
-            final String[] urlParts = getTestingSasUri(isPlaybackMode).split("\\?");
-            return urlParts[0] + "/" + fileName + "?" + urlParts[1];
-        }
     }
 
     /**
