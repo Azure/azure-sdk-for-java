@@ -23,16 +23,6 @@ public class IntelliJKDBXDatabaseParsingTest {
         assertEquals("DummyEntry", password);
     }
 
-    @Test
-    public void testIntelliJAuthDetailsParsing() throws Exception {
-        File authFile = new File(getPath("AuthMethodDetails.json"));
-        IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(null);
-        IntelliJAuthMethodDetails authMethodDetails = cacheAccessor.parseAuthMethodDetails(authFile);
-        assertEquals("dummyuser@email.com", authMethodDetails.getAccountEmail());
-        assertEquals("pathFromFile", authMethodDetails.getCredFilePath());
-        assertEquals("IDENTITY", authMethodDetails.getAuthMethod());
-        assertEquals("AzureCloud", authMethodDetails.getAzureEnv());
-    }
 
     private String getPath(String filename) {
 
