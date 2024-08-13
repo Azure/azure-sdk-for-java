@@ -27,6 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,7 +45,7 @@ public class ValidationsTest {
 
     private final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
-    private final String TEST_CAE_FOLDER_PATH = "src/test/resources/validations-tests";
+    private final String TEST_CAE_FOLDER_PATH = "validations-tests";
     private final String INPUTS_USER = "user";
     private final String INPUTS_GROUPS = "groups";
     private final String SAMPLE_FILE_NAME_FILTER = "sample";
@@ -72,9 +73,10 @@ public class ValidationsTest {
         return inputsMap != null && !inputsMap.isEmpty();
     }
 
-    private File[] getFileList(String directoryPath, String fileNameFilter) {
-        final File folder = new File(directoryPath);
-        return folder.listFiles(pathname -> pathname.getName().toLowerCase().contains(fileNameFilter));
+    private File[] getFileList(String folderPath, String fileNameFilter) {
+        final URL folderUrl = Thread.currentThread().getContextClassLoader().getResource(folderPath);
+        final File folderFile = new File(folderUrl.getFile());
+        return folderFile.listFiles(pathname -> pathname.getName().toLowerCase().contains(fileNameFilter));
     }
 
     private List<ValidationTestCase> readTestcasesFromFile(File testFile) throws IOException {
