@@ -6,32 +6,38 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerinstance.fluent.models.InitContainerPropertiesDefinition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The init container definition. */
+/**
+ * The init container definition.
+ */
 @Fluent
-public final class InitContainerDefinition {
+public final class InitContainerDefinition implements JsonSerializable<InitContainerDefinition> {
     /*
      * The name for the init container.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The properties for the init container.
      */
-    @JsonProperty(value = "properties", required = true)
     private InitContainerPropertiesDefinition innerProperties = new InitContainerPropertiesDefinition();
 
-    /** Creates an instance of InitContainerDefinition class. */
+    /**
+     * Creates an instance of InitContainerDefinition class.
+     */
     public InitContainerDefinition() {
     }
 
     /**
      * Get the name property: The name for the init container.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +46,7 @@ public final class InitContainerDefinition {
 
     /**
      * Set the name property: The name for the init container.
-     *
+     * 
      * @param name the name value to set.
      * @return the InitContainerDefinition object itself.
      */
@@ -51,7 +57,7 @@ public final class InitContainerDefinition {
 
     /**
      * Get the innerProperties property: The properties for the init container.
-     *
+     * 
      * @return the innerProperties value.
      */
     private InitContainerPropertiesDefinition innerProperties() {
@@ -60,7 +66,7 @@ public final class InitContainerDefinition {
 
     /**
      * Get the image property: The image of the init container.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -69,7 +75,7 @@ public final class InitContainerDefinition {
 
     /**
      * Set the image property: The image of the init container.
-     *
+     * 
      * @param image the image value to set.
      * @return the InitContainerDefinition object itself.
      */
@@ -83,7 +89,7 @@ public final class InitContainerDefinition {
 
     /**
      * Get the command property: The command to execute within the init container in exec form.
-     *
+     * 
      * @return the command value.
      */
     public List<String> command() {
@@ -92,7 +98,7 @@ public final class InitContainerDefinition {
 
     /**
      * Set the command property: The command to execute within the init container in exec form.
-     *
+     * 
      * @param command the command value to set.
      * @return the InitContainerDefinition object itself.
      */
@@ -106,7 +112,7 @@ public final class InitContainerDefinition {
 
     /**
      * Get the environmentVariables property: The environment variables to set in the init container.
-     *
+     * 
      * @return the environmentVariables value.
      */
     public List<EnvironmentVariable> environmentVariables() {
@@ -115,7 +121,7 @@ public final class InitContainerDefinition {
 
     /**
      * Set the environmentVariables property: The environment variables to set in the init container.
-     *
+     * 
      * @param environmentVariables the environmentVariables value to set.
      * @return the InitContainerDefinition object itself.
      */
@@ -129,7 +135,7 @@ public final class InitContainerDefinition {
 
     /**
      * Get the instanceView property: The instance view of the init container. Only valid in response.
-     *
+     * 
      * @return the instanceView value.
      */
     public InitContainerPropertiesDefinitionInstanceView instanceView() {
@@ -138,7 +144,7 @@ public final class InitContainerDefinition {
 
     /**
      * Get the volumeMounts property: The volume mounts available to the init container.
-     *
+     * 
      * @return the volumeMounts value.
      */
     public List<VolumeMount> volumeMounts() {
@@ -147,7 +153,7 @@ public final class InitContainerDefinition {
 
     /**
      * Set the volumeMounts property: The volume mounts available to the init container.
-     *
+     * 
      * @param volumeMounts the volumeMounts value to set.
      * @return the InitContainerDefinition object itself.
      */
@@ -161,7 +167,7 @@ public final class InitContainerDefinition {
 
     /**
      * Get the securityContext property: The container security properties.
-     *
+     * 
      * @return the securityContext value.
      */
     public SecurityContextDefinition securityContext() {
@@ -170,7 +176,7 @@ public final class InitContainerDefinition {
 
     /**
      * Set the securityContext property: The container security properties.
-     *
+     * 
      * @param securityContext the securityContext value to set.
      * @return the InitContainerDefinition object itself.
      */
@@ -184,24 +190,63 @@ public final class InitContainerDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model InitContainerDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model InitContainerDefinition"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model InitContainerDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model InitContainerDefinition"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InitContainerDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InitContainerDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InitContainerDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InitContainerDefinition.
+     */
+    public static InitContainerDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InitContainerDefinition deserializedInitContainerDefinition = new InitContainerDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedInitContainerDefinition.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInitContainerDefinition.innerProperties
+                        = InitContainerPropertiesDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInitContainerDefinition;
+        });
+    }
 }

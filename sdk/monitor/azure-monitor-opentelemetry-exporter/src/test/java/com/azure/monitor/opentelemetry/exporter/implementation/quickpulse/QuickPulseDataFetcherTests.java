@@ -25,17 +25,9 @@ class QuickPulseDataFetcherTests {
     void testGetCurrentSdkVersion() {
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
         QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
-        QuickPulseDataFetcher dataFetcher =
-            new QuickPulseDataFetcher(
-                new QuickPulseDataCollector(true, quickPulseConfiguration),
-                null,
-                connectionString::getLiveEndpoint,
-                connectionString::getInstrumentationKey,
-                null,
-                null,
-                null,
-                null,
-                quickPulseConfiguration);
+        QuickPulseDataFetcher dataFetcher = new QuickPulseDataFetcher(
+            new QuickPulseDataCollector(true, quickPulseConfiguration), null, connectionString::getLiveEndpoint,
+            connectionString::getInstrumentationKey, null, null, null, null, quickPulseConfiguration);
         String sdkVersion = dataFetcher.getCurrentSdkVersion();
         assertThat(sdkVersion).isNotNull();
         assertThat(sdkVersion).isNotEqualTo("java:unknown");
@@ -45,48 +37,30 @@ class QuickPulseDataFetcherTests {
     void endpointIsFormattedCorrectlyWhenUsingConfig() throws URISyntaxException {
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
         QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
-        QuickPulseDataFetcher quickPulseDataFetcher =
-            new QuickPulseDataFetcher(
-                new QuickPulseDataCollector(true, quickPulseConfiguration),
-                null,
-                connectionString::getLiveEndpoint,
-                connectionString::getInstrumentationKey,
-                null,
-                null,
-                null,
-                null,
-                quickPulseConfiguration);
+        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(
+            new QuickPulseDataCollector(true, quickPulseConfiguration), null, connectionString::getLiveEndpoint,
+            connectionString::getInstrumentationKey, null, null, null, null, quickPulseConfiguration);
         String quickPulseEndpoint = quickPulseDataFetcher.getQuickPulseEndpoint();
         String endpointUrl = quickPulseDataFetcher.getEndpointUrl(quickPulseEndpoint);
         URI uri = new URI(endpointUrl);
         assertThat(uri).isNotNull();
         assertThat(endpointUrl)
-            .isEqualTo(
-                "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=testing-123");
+            .isEqualTo("https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=testing-123");
     }
 
     @Test
     void endpointIsFormattedCorrectlyWhenConfigIsNull() throws URISyntaxException {
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
         QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
-        QuickPulseDataFetcher quickPulseDataFetcher =
-            new QuickPulseDataFetcher(
-                new QuickPulseDataCollector(true, quickPulseConfiguration),
-                null,
-                connectionString::getLiveEndpoint,
-                connectionString::getInstrumentationKey,
-                null,
-                null,
-                null,
-                null,
-                quickPulseConfiguration);
+        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(
+            new QuickPulseDataCollector(true, quickPulseConfiguration), null, connectionString::getLiveEndpoint,
+            connectionString::getInstrumentationKey, null, null, null, null, quickPulseConfiguration);
         String quickPulseEndpoint = quickPulseDataFetcher.getQuickPulseEndpoint();
         String endpointUrl = quickPulseDataFetcher.getEndpointUrl(quickPulseEndpoint);
         URI uri = new URI(endpointUrl);
         assertThat(uri).isNotNull();
         assertThat(endpointUrl)
-            .isEqualTo(
-                "https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=testing-123");
+            .isEqualTo("https://rt.services.visualstudio.com/QuickPulseService.svc/post?ikey=testing-123");
     }
 
     @Test
@@ -99,27 +73,17 @@ class QuickPulseDataFetcherTests {
         HttpHeaders httpHeaders = new HttpHeaders(headers);
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
         QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
-        HttpPipeline httpPipeline =
-            new HttpPipelineBuilder()
-                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200, httpHeaders)))
-                .tracer(new NoopTracer())
-                .build();
-        QuickPulsePingSender quickPulsePingSender =
-            new QuickPulsePingSender(
-                httpPipeline,
-                connectionString::getLiveEndpoint,
-                connectionString::getInstrumentationKey,
-                null,
-                "instance1",
-                "machine1",
-                "qpid123",
-                "testSdkVersion",
-                quickPulseConfiguration);
+        HttpPipeline httpPipeline = new HttpPipelineBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200, httpHeaders)))
+            .tracer(new NoopTracer())
+            .build();
+        QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(httpPipeline,
+            connectionString::getLiveEndpoint, connectionString::getInstrumentationKey, null, "instance1", "machine1",
+            "qpid123", "testSdkVersion", quickPulseConfiguration);
         QuickPulseHeaderInfo quickPulseHeaderInfo = quickPulsePingSender.ping(null);
         assertThat(QuickPulseStatus.QP_IS_ON).isEqualTo(quickPulseHeaderInfo.getQuickPulseStatus());
         assertThat(1000).isEqualTo(quickPulseHeaderInfo.getQpsServicePollingInterval());
-        assertThat("https://new.endpoint.com")
-            .isEqualTo(quickPulseHeaderInfo.getQpsServiceEndpointRedirect());
+        assertThat("https://new.endpoint.com").isEqualTo(quickPulseHeaderInfo.getQpsServiceEndpointRedirect());
         assertThat(quickPulseConfiguration.getEtag()).isEqualTo("");
     }
 }

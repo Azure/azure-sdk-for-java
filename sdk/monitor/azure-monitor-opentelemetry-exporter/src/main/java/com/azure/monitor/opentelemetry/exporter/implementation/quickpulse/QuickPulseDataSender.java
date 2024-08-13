@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -25,7 +26,8 @@ class QuickPulseDataSender implements Runnable {
 
     private final ArrayBlockingQueue<HttpRequest> sendQueue;
 
-    QuickPulseDataSender(HttpPipeline httpPipeline, ArrayBlockingQueue<HttpRequest> sendQueue, QuickPulseConfiguration quickPulseConfiguration) {
+    QuickPulseDataSender(HttpPipeline httpPipeline, ArrayBlockingQueue<HttpRequest> sendQueue,
+        QuickPulseConfiguration quickPulseConfiguration) {
         this.httpPipeline = httpPipeline;
         this.sendQueue = sendQueue;
         this.quickPulseConfiguration = quickPulseConfiguration;
@@ -43,21 +45,20 @@ class QuickPulseDataSender implements Runnable {
                 return;
             }
             if (quickPulseHeaderInfo.getQuickPulseStatus() != QuickPulseStatus.QP_IS_ON) {
-                logger.verbose("QuickPulseDataSender is not sending data because QP is " + quickPulseHeaderInfo.getQuickPulseStatus());
+                logger.verbose("QuickPulseDataSender is not sending data because QP is "
+                    + quickPulseHeaderInfo.getQuickPulseStatus());
                 continue;
             }
 
             long sendTime = System.nanoTime();
-            try (HttpResponse response = httpPipeline.send(post).block()) {
+            try (HttpResponse response = httpPipeline.sendSync(post, Context.NONE)) {
                 if (response == null) {
                     // this shouldn't happen, the mono should complete with a response or a failure
                     throw new AssertionError("http response mono returned empty");
                 }
 
                 if (networkHelper.isSuccess(response)) {
-                    QuickPulseHeaderInfo quickPulseHeaderInfo =
-                        networkHelper.getQuickPulseHeaderInfo(response);
-                    QuickPulseMetricReceiver.setQuickPulseHeaderInfo(quickPulseHeaderInfo);
+                    QuickPulseHeaderInfo quickPulseHeaderInfo = networkHelper.getQuickPulseHeaderInfo(response);
                     switch (quickPulseHeaderInfo.getQuickPulseStatus()) {
                         case QP_IS_OFF:
                         case QP_IS_ON:
@@ -65,7 +66,8 @@ class QuickPulseDataSender implements Runnable {
                             this.quickPulseHeaderInfo = quickPulseHeaderInfo;
                             String etagValue = networkHelper.getEtagHeaderValue(response);
                             if (!Objects.equals(etagValue, quickPulseConfiguration.getEtag())) {
-                                ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> otelMetrics = quickPulseConfiguration.parseDerivedMetrics(response);
+                                ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> otelMetrics
+                                    = quickPulseConfiguration.parseDerivedMetrics(response);
                                 quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
                             }
                             break;
@@ -75,6 +77,7 @@ class QuickPulseDataSender implements Runnable {
                             break;
                     }
                 }
+
             } catch (Throwable t) {
                 logger.error("QuickPulseDataSender failed to send a request", t);
             }

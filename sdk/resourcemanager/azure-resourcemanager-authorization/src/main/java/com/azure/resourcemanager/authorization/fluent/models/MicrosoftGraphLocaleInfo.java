@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** localeInfo. */
+/**
+ * localeInfo.
+ */
 @Fluent
-public final class MicrosoftGraphLocaleInfo {
+public final class MicrosoftGraphLocaleInfo implements JsonSerializable<MicrosoftGraphLocaleInfo> {
     /*
      * A name representing the user's locale in natural language, for example, 'English (United States)'.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
@@ -26,22 +28,23 @@ public final class MicrosoftGraphLocaleInfo {
      * example, 'en-us'. The language component follows 2-letter codes as defined in ISO 639-1, and the country
      * component follows 2-letter codes as defined in ISO 3166-1 alpha-2.
      */
-    @JsonProperty(value = "locale")
     private String locale;
 
     /*
      * localeInfo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphLocaleInfo class. */
+    /**
+     * Creates an instance of MicrosoftGraphLocaleInfo class.
+     */
     public MicrosoftGraphLocaleInfo() {
     }
 
     /**
      * Get the displayName property: A name representing the user's locale in natural language, for example, 'English
      * (United States)'.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -51,7 +54,7 @@ public final class MicrosoftGraphLocaleInfo {
     /**
      * Set the displayName property: A name representing the user's locale in natural language, for example, 'English
      * (United States)'.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphLocaleInfo object itself.
      */
@@ -64,7 +67,7 @@ public final class MicrosoftGraphLocaleInfo {
      * Get the locale property: A locale representation for the user, which includes the user's preferred language and
      * country/region. For example, 'en-us'. The language component follows 2-letter codes as defined in ISO 639-1, and
      * the country component follows 2-letter codes as defined in ISO 3166-1 alpha-2.
-     *
+     * 
      * @return the locale value.
      */
     public String locale() {
@@ -75,7 +78,7 @@ public final class MicrosoftGraphLocaleInfo {
      * Set the locale property: A locale representation for the user, which includes the user's preferred language and
      * country/region. For example, 'en-us'. The language component follows 2-letter codes as defined in ISO 639-1, and
      * the country component follows 2-letter codes as defined in ISO 3166-1 alpha-2.
-     *
+     * 
      * @param locale the locale value to set.
      * @return the MicrosoftGraphLocaleInfo object itself.
      */
@@ -86,17 +89,16 @@ public final class MicrosoftGraphLocaleInfo {
 
     /**
      * Get the additionalProperties property: localeInfo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: localeInfo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphLocaleInfo object itself.
      */
@@ -105,19 +107,61 @@ public final class MicrosoftGraphLocaleInfo {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("locale", this.locale);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphLocaleInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphLocaleInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphLocaleInfo.
+     */
+    public static MicrosoftGraphLocaleInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphLocaleInfo deserializedMicrosoftGraphLocaleInfo = new MicrosoftGraphLocaleInfo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphLocaleInfo.displayName = reader.getString();
+                } else if ("locale".equals(fieldName)) {
+                    deserializedMicrosoftGraphLocaleInfo.locale = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphLocaleInfo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphLocaleInfo;
+        });
     }
 }

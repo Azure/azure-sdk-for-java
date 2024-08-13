@@ -14,6 +14,7 @@ import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceContainersConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicOffset;
@@ -52,6 +53,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.kafka.connect.implementation.CosmosContainerUtils.validateContainers;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateCosmosAccountAuthConfig;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
 
@@ -76,6 +78,9 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         this.config = new CosmosSourceConfig(props);
         this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
         this.cosmosClient = CosmosClientStore.getCosmosClient(this.config.getAccountConfig(), connectorName);
+        CosmosSourceContainersConfig containersConfig = this.config.getContainersConfig();
+        validateContainers(containersConfig.getIncludedContainers(),
+            this.cosmosClient, containersConfig.getDatabaseName());
 
         // IMPORTANT: sequence matters
         this.kafkaOffsetStorageReader = new MetadataKafkaStorageManager(this.context().offsetStorageReader());
@@ -247,6 +252,9 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
 
     private Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> getAllTaskUnits() {
         List<CosmosContainerProperties> allContainers = this.monitorThread.getAllContainers().block();
+        if (allContainers.isEmpty()) {
+            throw new ConnectException("Some of the containers specified in the config were not found in the database.");
+        }
         Map<String, String> containerTopicMap = this.getContainersTopicMap(allContainers);
         List<FeedRangeTaskUnit> allFeedRangeTaskUnits = new ArrayList<>();
         Map<String, List<FeedRange>> updatedContainerToFeedRangesMap = new ConcurrentHashMap<>();
@@ -462,7 +470,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
 
         Map<String, String> effectiveContainersTopicMap = new HashMap<>();
         allContainers.forEach(containerProperties -> {
-            // by default, we are using container id as the topic name as well unless customer override through containers.topicMap 
+            // by default, we are using container id as the topic name as well unless customer override through containers.topicMap
             if (topicMapFromConfig.containsKey(containerProperties.getId())) {
                 effectiveContainersTopicMap.put(
                     containerProperties.getId(),
@@ -473,7 +481,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                     containerProperties.getId());
             }
         });
-        
+
         return effectiveContainersTopicMap;
     }
 

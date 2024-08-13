@@ -1,6 +1,18 @@
 # Release History
 
-## 2.41.0-beta.1 (Unreleased)
+## 2.42.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+- Replaced `Jackson` with `azure-json` for serialization/deserialization.
+
+## 2.41.0 (2024-07-25)
 
 ### Other Changes
 

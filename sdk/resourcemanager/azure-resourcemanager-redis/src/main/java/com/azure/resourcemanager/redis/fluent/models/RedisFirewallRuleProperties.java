@@ -6,23 +6,25 @@ package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies a range of IP addresses permitted to connect to the cache.
  */
 @Fluent
-public final class RedisFirewallRuleProperties {
+public final class RedisFirewallRuleProperties implements JsonSerializable<RedisFirewallRuleProperties> {
     /*
      * lowest IP address included in the range
      */
-    @JsonProperty(value = "startIP", required = true)
     private String startIp;
 
     /*
      * highest IP address included in the range
      */
-    @JsonProperty(value = "endIP", required = true)
     private String endIp;
 
     /**
@@ -90,4 +92,44 @@ public final class RedisFirewallRuleProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RedisFirewallRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startIP", this.startIp);
+        jsonWriter.writeStringField("endIP", this.endIp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisFirewallRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisFirewallRuleProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisFirewallRuleProperties.
+     */
+    public static RedisFirewallRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisFirewallRuleProperties deserializedRedisFirewallRuleProperties = new RedisFirewallRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startIP".equals(fieldName)) {
+                    deserializedRedisFirewallRuleProperties.startIp = reader.getString();
+                } else if ("endIP".equals(fieldName)) {
+                    deserializedRedisFirewallRuleProperties.endIp = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisFirewallRuleProperties;
+        });
+    }
 }

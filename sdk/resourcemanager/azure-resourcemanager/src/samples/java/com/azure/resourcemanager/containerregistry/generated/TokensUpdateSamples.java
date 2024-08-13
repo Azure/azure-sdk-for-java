@@ -25,11 +25,15 @@ public final class TokensUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tokenUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTokens()
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTokens()
             .update("myResourceGroup", "myRegistry", "myToken", new TokenUpdateParameters().withScopeMapId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/myNewScopeMap")
-                .withCredentials(new TokenCredentialsProperties().withCertificates(Arrays.asList(new TokenCertificate()
-                    .withName(TokenCertificateName.CERTIFICATE1).withEncodedPemCertificate("fakeTokenPlaceholder")))),
+                .withCredentials(new TokenCredentialsProperties()
+                    .withCertificates(Arrays.asList(new TokenCertificate().withName(TokenCertificateName.CERTIFICATE1)
+                        .withEncodedPemCertificate("fakeTokenPlaceholder")))),
                 com.azure.core.util.Context.NONE);
     }
 }

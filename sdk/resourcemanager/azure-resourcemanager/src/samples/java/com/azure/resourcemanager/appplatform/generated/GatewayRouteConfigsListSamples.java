@@ -18,7 +18,10 @@ public final class GatewayRouteConfigsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gatewayRouteConfigsList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getGatewayRouteConfigs().list("myResourceGroup", "myservice",
-            "default", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getGatewayRouteConfigs()
+            .list("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

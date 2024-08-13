@@ -26,4 +26,5 @@ public class OTelDataPoint {
     public void setDimensions(HashMap<String, String> dimensions) {
         this.dimensions = dimensions;
     }
+
 }

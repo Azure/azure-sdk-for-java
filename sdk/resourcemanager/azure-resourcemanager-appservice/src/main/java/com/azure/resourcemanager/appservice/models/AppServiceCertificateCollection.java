@@ -6,26 +6,27 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Collection of certificate order certificates.
  */
 @Fluent
-public final class AppServiceCertificateCollection {
+public final class AppServiceCertificateCollection implements JsonSerializable<AppServiceCertificateCollection> {
     /*
      * Collection of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<AppServiceCertificateResourceInner> value;
 
     /*
      * Link to next page of resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -36,7 +37,7 @@ public final class AppServiceCertificateCollection {
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<AppServiceCertificateResourceInner> value() {
@@ -45,7 +46,7 @@ public final class AppServiceCertificateCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the AppServiceCertificateCollection object itself.
      */
@@ -56,7 +57,7 @@ public final class AppServiceCertificateCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +66,7 @@ public final class AppServiceCertificateCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,4 +80,46 @@ public final class AppServiceCertificateCollection {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AppServiceCertificateCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServiceCertificateCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServiceCertificateCollection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppServiceCertificateCollection.
+     */
+    public static AppServiceCertificateCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServiceCertificateCollection deserializedAppServiceCertificateCollection
+                = new AppServiceCertificateCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AppServiceCertificateResourceInner> value
+                        = reader.readArray(reader1 -> AppServiceCertificateResourceInner.fromJson(reader1));
+                    deserializedAppServiceCertificateCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAppServiceCertificateCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServiceCertificateCollection;
+        });
+    }
 }

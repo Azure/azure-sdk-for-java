@@ -21,31 +21,30 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-
 final class QuickPulseDataCollector {
 
     private static final MemoryMXBean memory = ManagementFactory.getMemoryMXBean();
 
-    private static final OperatingSystemMXBean operatingSystemMxBean =
-        ManagementFactory.getOperatingSystemMXBean();
+    private static final OperatingSystemMXBean operatingSystemMxBean = ManagementFactory.getOperatingSystemMXBean();
 
     private final AtomicReference<Counters> counters = new AtomicReference<>(null);
 
+    private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator
+        = getCpuPerformanceCounterCalculator();
+
     private QuickPulseConfiguration quickPulseConfiguration;
 
-    private OTelMetricsStorage metricsStorage = new OTelMetricsStorage();
+    private OtelMetricsStorage metricsStorage = new OtelMetricsStorage();
 
-    private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator =
-        getCpuPerformanceCounterCalculator();
     private final boolean useNormalizedValueForNonNormalizedCpuPercentage;
 
     private volatile QuickPulseStatus quickPulseStatus = QuickPulseStatus.QP_IS_OFF;
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage, QuickPulseConfiguration quickPulseConfiguration) {
-        this.useNormalizedValueForNonNormalizedCpuPercentage =
-            useNormalizedValueForNonNormalizedCpuPercentage;
+    QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage,
+        QuickPulseConfiguration quickPulseConfiguration) {
+        this.useNormalizedValueForNonNormalizedCpuPercentage = useNormalizedValueForNonNormalizedCpuPercentage;
         this.quickPulseConfiguration = quickPulseConfiguration;
     }
 
@@ -93,8 +92,7 @@ final class QuickPulseDataCollector {
         return null;
     }
 
-
-    synchronized void addOtelMetric(TelemetryItem telemetryItem){
+    void addOtelMetric(TelemetryItem telemetryItem) {
         if (!isEnabled()) {
             // quick pulse is not enabled or quick pulse data sender is not enabled
             return;
@@ -110,13 +108,10 @@ final class QuickPulseDataCollector {
             return;
         }
 
-        if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")), "opentelemetry")) {
+        if (Objects.equals(telemetryItem.getResource().getAttribute(AttributeKey.stringKey("telemetry.sdk.name")),
+            "opentelemetry")) {
             MonitorDomain data = telemetryItem.getData().getBaseData();
             MetricsData metricsData = (MetricsData) data;
-            System.out.println("Properties: " + metricsData.getProperties());
-            if (metricsData.getProperties() != null && metricsData.getProperties().get("testing") != null) {
-                System.out.println("Type: " + metricsData.getProperties().get("testing").length());
-            }
             MetricDataPoint point = metricsData.getMetrics().get(0);
             this.metricsStorage.addMetric(point.getName(), point.getValue(), metricsData.getProperties());
         }
@@ -185,8 +180,8 @@ final class QuickPulseDataCollector {
         quickPulseDependencyDocument.setResultCode(telemetry.getResultCode());
         quickPulseDependencyDocument.setOperationName(telemetry.getId());
         quickPulseDependencyDocument.setDependencyTypeName(telemetry.getType());
-        quickPulseDependencyDocument.setProperties(
-            aggregateProperties(telemetry.getProperties(), telemetry.getMeasurements()));
+        quickPulseDependencyDocument
+            .setProperties(aggregateProperties(telemetry.getProperties(), telemetry.getMeasurements()));
         synchronized (counters.documentList) {
             if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
                 counters.documentList.add(quickPulseDependencyDocument);
@@ -237,8 +232,7 @@ final class QuickPulseDataCollector {
             return;
         }
         long durationMillis = parseDurationToMillis(requestTelemetry.getDuration());
-        counters.requestsAndDurations.addAndGet(
-            Counters.encodeCountAndDuration(itemCount, durationMillis));
+        counters.requestsAndDurations.addAndGet(Counters.encodeCountAndDuration(itemCount, durationMillis));
         if (!requestTelemetry.isSuccess()) {
             counters.unsuccessfulRequests.incrementAndGet();
         }
@@ -253,8 +247,8 @@ final class QuickPulseDataCollector {
         quickPulseRequestDocument.setOperationName(operationName);
         quickPulseRequestDocument.setName(requestTelemetry.getName());
         quickPulseRequestDocument.setUrl(requestTelemetry.getUrl());
-        quickPulseRequestDocument.setProperties(
-            aggregateProperties(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
+        quickPulseRequestDocument
+            .setProperties(aggregateProperties(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
         synchronized (counters.documentList) {
             if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
                 counters.documentList.add(quickPulseRequestDocument);
@@ -262,8 +256,8 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private static Map<String, String> aggregateProperties(
-        @Nullable Map<String, String> properties, @Nullable Map<String, Double> measurements) {
+    private static Map<String, String> aggregateProperties(@Nullable Map<String, String> properties,
+        @Nullable Map<String, Double> measurements) {
         Map<String, String> aggregatedProperties = new HashMap<>();
         if (measurements != null) {
             measurements.forEach((k, v) -> aggregatedProperties.put(k, String.valueOf(v)));
@@ -340,15 +334,15 @@ final class QuickPulseDataCollector {
         return x;
     }
 
-    public ArrayList<QuickPulseMetrics> retrieveOTelMetrics() {
+    public ArrayList<QuickPulseMetrics> retrieveOtelMetrics() {
         return metricsStorage.processMetrics();
     }
 
-    public ConcurrentHashMap<String, OTelMetric> getOTelMetrics() {
+    public ConcurrentHashMap<String, OTelMetric> getOtelMetrics() {
         return metricsStorage.getMetrics();
     }
 
-    public void flushOTelMetrics() {
+    public void flushOtelMetrics() {
         metricsStorage.clearMetrics();
     }
 
@@ -371,8 +365,8 @@ final class QuickPulseDataCollector {
             cpuUsage = getNonNormalizedCpuPercentage(cpuPerformanceCounterCalculator);
             exceptions = currentCounters.exceptions.get();
 
-            CountAndDuration countAndDuration =
-                Counters.decodeCountAndDuration(currentCounters.requestsAndDurations.get());
+            CountAndDuration countAndDuration
+                = Counters.decodeCountAndDuration(currentCounters.requestsAndDurations.get());
             requests = (int) countAndDuration.count;
             this.requestsDuration = countAndDuration.duration;
             this.unsuccessfulRequests = currentCounters.unsuccessfulRequests.get();
@@ -397,8 +391,8 @@ final class QuickPulseDataCollector {
             return heapMemoryUsage.getCommitted();
         }
 
-        private double getNonNormalizedCpuPercentage(
-            @Nullable CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator) {
+        private double
+            getNonNormalizedCpuPercentage(@Nullable CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator) {
             if (cpuPerformanceCounterCalculator == null) {
                 return -1;
             }
@@ -453,7 +447,7 @@ final class QuickPulseDataCollector {
         }
     }
 
-    class OTelMetricsStorage {
+    class OtelMetricsStorage {
         private volatile ConcurrentHashMap<String, OTelMetric> metrics = new ConcurrentHashMap<>();
         // setting most amount of OTel metrics a user can stream to this. will review if users surpass threshold.
         private final int maxMetricsLimit = 50;
@@ -474,13 +468,15 @@ final class QuickPulseDataCollector {
         }
 
         public ArrayList<QuickPulseMetrics> processMetrics() {
-            ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> requestedMetrics = quickPulseConfiguration.getDerivedMetrics();
+            ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> requestedMetrics
+                = quickPulseConfiguration.getDerivedMetrics();
             ArrayList<QuickPulseMetrics> processedMetrics = new ArrayList<>();
 
             if (requestedMetrics.get("Metric") != null) {
                 for (QuickPulseConfiguration.DerivedMetricInfo metricInfo : requestedMetrics.get("Metric")) {
                     if (this.getMetrics().get(metricInfo.getProjection()) != null) {
-                        QuickPulseMetrics processedMetric = processMetric(this.getMetrics().get(metricInfo.getProjection()), metricInfo);
+                        QuickPulseMetrics processedMetric
+                            = processMetric(this.getMetrics().get(metricInfo.getProjection()), metricInfo);
                         processedMetrics.add(processedMetric);
                     }
                 }
@@ -490,7 +486,8 @@ final class QuickPulseDataCollector {
             return processedMetrics;
         }
 
-        public QuickPulseMetrics processMetric(OTelMetric metric, QuickPulseConfiguration.DerivedMetricInfo metricInfo) {
+        public QuickPulseMetrics processMetric(OTelMetric metric,
+            QuickPulseConfiguration.DerivedMetricInfo metricInfo) {
 
             if (metric.getDataPoints().isEmpty()) {
                 return new QuickPulseMetrics(metricInfo.getId(), 0, 1);
@@ -522,15 +519,19 @@ final class QuickPulseDataCollector {
                 case "Sum":
                     double sum = filteredValues.stream().mapToDouble(Double::doubleValue).sum();
                     return new QuickPulseMetrics(metricInfo.getId(), sum, 1);
+
                 case "Avg":
                     double avg = filteredValues.stream().mapToDouble(Double::doubleValue).average().orElse(0);
                     return new QuickPulseMetrics(metricInfo.getId(), avg, filteredValues.size());
+
                 case "Min":
                     double min = filteredValues.stream().mapToDouble(Double::doubleValue).min().orElse(0);
                     return new QuickPulseMetrics(metricInfo.getId(), min, 1);
+
                 case "Max":
                     double max = filteredValues.stream().mapToDouble(Double::doubleValue).max().orElse(0);
                     return new QuickPulseMetrics(metricInfo.getId(), max, 1);
+
                 default:
                     throw new IllegalArgumentException("Aggregation type not supported: " + aggregation);
             }
@@ -544,5 +545,6 @@ final class QuickPulseDataCollector {
         public ConcurrentHashMap<String, OTelMetric> getMetrics() {
             return metrics;
         }
+
     }
 }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the vault. */
+/**
+ * Provisioning state of the vault.
+ */
 public final class VaultProvisioningState extends ExpandableStringEnum<VaultProvisioningState> {
-    /** Static value Succeeded for VaultProvisioningState. */
+    /**
+     * Static value Succeeded for VaultProvisioningState.
+     */
     public static final VaultProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value RegisteringDns for VaultProvisioningState. */
+    /**
+     * Static value RegisteringDns for VaultProvisioningState.
+     */
     public static final VaultProvisioningState REGISTERING_DNS = fromString("RegisteringDns");
 
     /**
      * Creates a new instance of VaultProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class VaultProvisioningState extends ExpandableStringEnum<VaultProv
 
     /**
      * Creates or finds a VaultProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VaultProvisioningState.
      */
-    @JsonCreator
     public static VaultProvisioningState fromString(String name) {
         return fromString(name, VaultProvisioningState.class);
     }
 
     /**
      * Gets known VaultProvisioningState values.
-     *
+     * 
      * @return known VaultProvisioningState values.
      */
     public static Collection<VaultProvisioningState> values() {

@@ -5,182 +5,164 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The DependentResource model.
  */
 @Immutable
-public final class DependentResource {
+public final class DependentResource implements JsonSerializable<DependentResource> {
 
     /*
      * The md5 property.
      */
     @Generated
-    @JsonProperty(value = "md5")
     private String md5;
 
     /*
      * The responseBodySize property.
      */
     @Generated
-    @JsonProperty(value = "responseBodySize")
     private Long responseBodySize;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The firstSeenCrawlGuid property.
      */
     @Generated
-    @JsonProperty(value = "firstSeenCrawlGuid")
     private String firstSeenCrawlGuid;
 
     /*
      * The firstSeenPageGuid property.
      */
     @Generated
-    @JsonProperty(value = "firstSeenPageGuid")
     private String firstSeenPageGuid;
 
     /*
      * The firstSeenResourceGuid property.
      */
     @Generated
-    @JsonProperty(value = "firstSeenResourceGuid")
     private String firstSeenResourceGuid;
 
     /*
      * The lastSeenCrawlGuid property.
      */
     @Generated
-    @JsonProperty(value = "lastSeenCrawlGuid")
     private String lastSeenCrawlGuid;
 
     /*
      * The lastSeenPageGuid property.
      */
     @Generated
-    @JsonProperty(value = "lastSeenPageGuid")
     private String lastSeenPageGuid;
 
     /*
      * The lastSeenResourceGuid property.
      */
     @Generated
-    @JsonProperty(value = "lastSeenResourceGuid")
     private String lastSeenResourceGuid;
 
     /*
      * The responseBodyMinhash property.
      */
     @Generated
-    @JsonProperty(value = "responseBodyMinhash")
     private List<Integer> responseBodyMinhash;
 
     /*
      * The contentType property.
      */
     @Generated
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * The sha256 property.
      */
     @Generated
-    @JsonProperty(value = "sha256")
     private String sha256;
 
     /*
      * The sha384 property.
      */
     @Generated
-    @JsonProperty(value = "sha384")
     private String sha384;
 
     /*
      * The sha512 property.
      */
     @Generated
-    @JsonProperty(value = "sha512")
     private String sha512;
 
     /*
      * The url property.
      */
     @Generated
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The cached property.
      */
     @Generated
-    @JsonProperty(value = "cached")
     private Boolean cached;
 
     /*
      * The sriChecks property.
      */
     @Generated
-    @JsonProperty(value = "sriChecks")
     private List<SubResourceIntegrityCheck> sriChecks;
 
     /*
      * The host property.
      */
     @Generated
-    @JsonProperty(value = "host")
     private String host;
 
     /*
      * The lastObservedViolation property.
      */
     @Generated
-    @JsonProperty(value = "lastObservedViolation")
     private OffsetDateTime lastObservedViolation;
 
     /*
      * The lastObservedValidation property.
      */
     @Generated
-    @JsonProperty(value = "lastObservedValidation")
     private OffsetDateTime lastObservedValidation;
 
     /*
      * The lastObservedActualSriHash property.
      */
     @Generated
-    @JsonProperty(value = "lastObservedActualSriHash")
     private String lastObservedActualSriHash;
 
     /*
      * The lastObservedExpectedSriHash property.
      */
     @Generated
-    @JsonProperty(value = "lastObservedExpectedSriHash")
     private String lastObservedExpectedSriHash;
 
     /**
@@ -428,5 +410,126 @@ public final class DependentResource {
     @Generated
     public String getLastObservedExpectedSriHash() {
         return this.lastObservedExpectedSriHash;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("md5", this.md5);
+        jsonWriter.writeNumberField("responseBodySize", this.responseBodySize);
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("firstSeenCrawlGuid", this.firstSeenCrawlGuid);
+        jsonWriter.writeStringField("firstSeenPageGuid", this.firstSeenPageGuid);
+        jsonWriter.writeStringField("firstSeenResourceGuid", this.firstSeenResourceGuid);
+        jsonWriter.writeStringField("lastSeenCrawlGuid", this.lastSeenCrawlGuid);
+        jsonWriter.writeStringField("lastSeenPageGuid", this.lastSeenPageGuid);
+        jsonWriter.writeStringField("lastSeenResourceGuid", this.lastSeenResourceGuid);
+        jsonWriter.writeArrayField("responseBodyMinhash", this.responseBodyMinhash,
+            (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeStringField("sha256", this.sha256);
+        jsonWriter.writeStringField("sha384", this.sha384);
+        jsonWriter.writeStringField("sha512", this.sha512);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeBooleanField("cached", this.cached);
+        jsonWriter.writeArrayField("sriChecks", this.sriChecks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("host", this.host);
+        jsonWriter.writeStringField("lastObservedViolation",
+            this.lastObservedViolation == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastObservedViolation));
+        jsonWriter.writeStringField("lastObservedValidation",
+            this.lastObservedValidation == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastObservedValidation));
+        jsonWriter.writeStringField("lastObservedActualSriHash", this.lastObservedActualSriHash);
+        jsonWriter.writeStringField("lastObservedExpectedSriHash", this.lastObservedExpectedSriHash);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DependentResource from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DependentResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DependentResource.
+     */
+    @Generated
+    public static DependentResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DependentResource deserializedDependentResource = new DependentResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("md5".equals(fieldName)) {
+                    deserializedDependentResource.md5 = reader.getString();
+                } else if ("responseBodySize".equals(fieldName)) {
+                    deserializedDependentResource.responseBodySize = reader.getNullable(JsonReader::getLong);
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedDependentResource.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedDependentResource.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedDependentResource.count = reader.getNullable(JsonReader::getLong);
+                } else if ("firstSeenCrawlGuid".equals(fieldName)) {
+                    deserializedDependentResource.firstSeenCrawlGuid = reader.getString();
+                } else if ("firstSeenPageGuid".equals(fieldName)) {
+                    deserializedDependentResource.firstSeenPageGuid = reader.getString();
+                } else if ("firstSeenResourceGuid".equals(fieldName)) {
+                    deserializedDependentResource.firstSeenResourceGuid = reader.getString();
+                } else if ("lastSeenCrawlGuid".equals(fieldName)) {
+                    deserializedDependentResource.lastSeenCrawlGuid = reader.getString();
+                } else if ("lastSeenPageGuid".equals(fieldName)) {
+                    deserializedDependentResource.lastSeenPageGuid = reader.getString();
+                } else if ("lastSeenResourceGuid".equals(fieldName)) {
+                    deserializedDependentResource.lastSeenResourceGuid = reader.getString();
+                } else if ("responseBodyMinhash".equals(fieldName)) {
+                    List<Integer> responseBodyMinhash = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedDependentResource.responseBodyMinhash = responseBodyMinhash;
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedDependentResource.contentType = reader.getString();
+                } else if ("sha256".equals(fieldName)) {
+                    deserializedDependentResource.sha256 = reader.getString();
+                } else if ("sha384".equals(fieldName)) {
+                    deserializedDependentResource.sha384 = reader.getString();
+                } else if ("sha512".equals(fieldName)) {
+                    deserializedDependentResource.sha512 = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedDependentResource.url = reader.getString();
+                } else if ("cached".equals(fieldName)) {
+                    deserializedDependentResource.cached = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sriChecks".equals(fieldName)) {
+                    List<SubResourceIntegrityCheck> sriChecks
+                        = reader.readArray(reader1 -> SubResourceIntegrityCheck.fromJson(reader1));
+                    deserializedDependentResource.sriChecks = sriChecks;
+                } else if ("host".equals(fieldName)) {
+                    deserializedDependentResource.host = reader.getString();
+                } else if ("lastObservedViolation".equals(fieldName)) {
+                    deserializedDependentResource.lastObservedViolation = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastObservedValidation".equals(fieldName)) {
+                    deserializedDependentResource.lastObservedValidation = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastObservedActualSriHash".equals(fieldName)) {
+                    deserializedDependentResource.lastObservedActualSriHash = reader.getString();
+                } else if ("lastObservedExpectedSriHash".equals(fieldName)) {
+                    deserializedDependentResource.lastObservedExpectedSriHash = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedDependentResource;
+        });
     }
 }

@@ -17,12 +17,14 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in UserAssignedIdentitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UserAssignedIdentitiesClient.
+ */
 public interface UserAssignedIdentitiesClient
     extends InnerSupportsGet<IdentityInner>, InnerSupportsListing<IdentityInner>, InnerSupportsDelete<Void> {
     /**
      * Lists all the userAssignedIdentities available under the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation as paginated response with {@link PagedFlux}.
@@ -32,7 +34,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Lists all the userAssignedIdentities available under the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
@@ -42,7 +44,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Lists all the userAssignedIdentities available under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +56,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Lists all the userAssignedIdentities available under the specified ResourceGroup.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,7 +68,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Lists all the userAssignedIdentities available under the specified ResourceGroup.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,7 +80,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Lists all the userAssignedIdentities available under the specified ResourceGroup.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,7 +93,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Create or update an identity in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param parameters Parameters to create or update the identity.
@@ -101,12 +103,12 @@ public interface UserAssignedIdentitiesClient
      * @return describes an identity resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<IdentityInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, IdentityInner parameters);
+    Mono<Response<IdentityInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName,
+        IdentityInner parameters);
 
     /**
      * Create or update an identity in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param parameters Parameters to create or update the identity.
@@ -120,7 +122,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Create or update an identity in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param parameters Parameters to create or update the identity.
@@ -131,12 +133,12 @@ public interface UserAssignedIdentitiesClient
      * @return describes an identity resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IdentityInner> createOrUpdateWithResponse(
-        String resourceGroupName, String resourceName, IdentityInner parameters, Context context);
+    Response<IdentityInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
+        IdentityInner parameters, Context context);
 
     /**
      * Create or update an identity in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param parameters Parameters to create or update the identity.
@@ -150,7 +152,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Update an identity in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param parameters Parameters to update the identity.
@@ -160,12 +162,12 @@ public interface UserAssignedIdentitiesClient
      * @return describes an identity resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<IdentityInner>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, IdentityUpdate parameters);
+    Mono<Response<IdentityInner>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        IdentityUpdate parameters);
 
     /**
      * Update an identity in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param parameters Parameters to update the identity.
@@ -179,7 +181,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Update an identity in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param parameters Parameters to update the identity.
@@ -190,12 +192,12 @@ public interface UserAssignedIdentitiesClient
      * @return describes an identity resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IdentityInner> updateWithResponse(
-        String resourceGroupName, String resourceName, IdentityUpdate parameters, Context context);
+    Response<IdentityInner> updateWithResponse(String resourceGroupName, String resourceName, IdentityUpdate parameters,
+        Context context);
 
     /**
      * Update an identity in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param parameters Parameters to update the identity.
@@ -209,7 +211,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Gets the identity.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +224,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Gets the identity.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -235,7 +237,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Gets the identity.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param context The context to associate with this operation.
@@ -245,12 +247,12 @@ public interface UserAssignedIdentitiesClient
      * @return the identity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IdentityInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<IdentityInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets the identity.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -263,7 +265,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Deletes the identity.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,7 +278,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Deletes the identity.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,7 +291,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Deletes the identity.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @param context The context to associate with this operation.
@@ -303,7 +305,7 @@ public interface UserAssignedIdentitiesClient
 
     /**
      * Deletes the identity.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

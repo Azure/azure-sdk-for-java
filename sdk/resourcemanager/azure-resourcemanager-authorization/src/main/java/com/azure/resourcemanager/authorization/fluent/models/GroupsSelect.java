@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GroupsSelect. */
+/**
+ * Defines values for GroupsSelect.
+ */
 public final class GroupsSelect extends ExpandableStringEnum<GroupsSelect> {
-    /** Static value id for GroupsSelect. */
+    /**
+     * Static value id for GroupsSelect.
+     */
     public static final GroupsSelect ID = fromString("id");
 
-    /** Static value deletedDateTime for GroupsSelect. */
+    /**
+     * Static value deletedDateTime for GroupsSelect.
+     */
     public static final GroupsSelect DELETED_DATE_TIME = fromString("deletedDateTime");
 
     /**
      * Creates a new instance of GroupsSelect value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class GroupsSelect extends ExpandableStringEnum<GroupsSelect> {
 
     /**
      * Creates or finds a GroupsSelect from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GroupsSelect.
      */
-    @JsonCreator
     public static GroupsSelect fromString(String name) {
         return fromString(name, GroupsSelect.class);
     }
 
     /**
      * Gets known GroupsSelect values.
-     *
+     * 
      * @return known GroupsSelect values.
      */
     public static Collection<GroupsSelect> values() {

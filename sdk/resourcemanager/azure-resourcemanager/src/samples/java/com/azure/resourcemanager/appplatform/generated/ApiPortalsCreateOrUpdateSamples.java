@@ -24,13 +24,16 @@ public final class ApiPortalsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void apiPortalsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApiPortals().createOrUpdate("myResourceGroup", "myservice",
-            "default",
-            new ApiPortalResourceInner().withProperties(new ApiPortalProperties().withPublicProperty(true)
-                .withGatewayIds(Arrays.asList(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/gateways/default"))
-                .withApiTryOutEnabledState(ApiPortalApiTryOutEnabledState.ENABLED)).withSku(
-                    new Sku().withName("E0").withTier("Enterprise").withCapacity(2)),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApiPortals()
+            .createOrUpdate("myResourceGroup", "myservice", "default", new ApiPortalResourceInner()
+                .withProperties(new ApiPortalProperties().withPublicProperty(true)
+                    .withGatewayIds(Arrays.asList(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/gateways/default"))
+                    .withApiTryOutEnabledState(ApiPortalApiTryOutEnabledState.ENABLED))
+                .withSku(new Sku().withName("E0").withTier("Enterprise").withCapacity(2)),
+                com.azure.core.util.Context.NONE);
     }
 }

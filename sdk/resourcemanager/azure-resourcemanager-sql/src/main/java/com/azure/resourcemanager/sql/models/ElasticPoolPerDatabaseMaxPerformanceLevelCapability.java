@@ -5,49 +5,53 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The max per-database performance level capability. */
+/**
+ * The max per-database performance level capability.
+ */
 @Fluent
-public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
+public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability
+    implements JsonSerializable<ElasticPoolPerDatabaseMaxPerformanceLevelCapability> {
     /*
      * The maximum performance level per database.
      */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Double limit;
 
     /*
      * Unit type used to measure performance level.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private PerformanceLevelUnit unit;
 
     /*
      * The list of supported min database performance levels.
      */
-    @JsonProperty(value = "supportedPerDatabaseMinPerformanceLevels", access = JsonProperty.Access.WRITE_ONLY)
     private List<ElasticPoolPerDatabaseMinPerformanceLevelCapability> supportedPerDatabaseMinPerformanceLevels;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ElasticPoolPerDatabaseMaxPerformanceLevelCapability class. */
+    /**
+     * Creates an instance of ElasticPoolPerDatabaseMaxPerformanceLevelCapability class.
+     */
     public ElasticPoolPerDatabaseMaxPerformanceLevelCapability() {
     }
 
     /**
      * Get the limit property: The maximum performance level per database.
-     *
+     * 
      * @return the limit value.
      */
     public Double limit() {
@@ -56,7 +60,7 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Get the unit property: Unit type used to measure performance level.
-     *
+     * 
      * @return the unit value.
      */
     public PerformanceLevelUnit unit() {
@@ -65,7 +69,7 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Get the supportedPerDatabaseMinPerformanceLevels property: The list of supported min database performance levels.
-     *
+     * 
      * @return the supportedPerDatabaseMinPerformanceLevels value.
      */
     public List<ElasticPoolPerDatabaseMinPerformanceLevelCapability> supportedPerDatabaseMinPerformanceLevels() {
@@ -74,7 +78,7 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -83,7 +87,7 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -92,7 +96,7 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ElasticPoolPerDatabaseMaxPerformanceLevelCapability object itself.
      */
@@ -103,12 +107,65 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (supportedPerDatabaseMinPerformanceLevels() != null) {
             supportedPerDatabaseMinPerformanceLevels().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticPoolPerDatabaseMaxPerformanceLevelCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticPoolPerDatabaseMaxPerformanceLevelCapability if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticPoolPerDatabaseMaxPerformanceLevelCapability.
+     */
+    public static ElasticPoolPerDatabaseMaxPerformanceLevelCapability fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticPoolPerDatabaseMaxPerformanceLevelCapability deserializedElasticPoolPerDatabaseMaxPerformanceLevelCapability
+                = new ElasticPoolPerDatabaseMaxPerformanceLevelCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limit".equals(fieldName)) {
+                    deserializedElasticPoolPerDatabaseMaxPerformanceLevelCapability.limit
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedElasticPoolPerDatabaseMaxPerformanceLevelCapability.unit
+                        = PerformanceLevelUnit.fromString(reader.getString());
+                } else if ("supportedPerDatabaseMinPerformanceLevels".equals(fieldName)) {
+                    List<ElasticPoolPerDatabaseMinPerformanceLevelCapability> supportedPerDatabaseMinPerformanceLevels
+                        = reader.readArray(
+                            reader1 -> ElasticPoolPerDatabaseMinPerformanceLevelCapability.fromJson(reader1));
+                    deserializedElasticPoolPerDatabaseMaxPerformanceLevelCapability.supportedPerDatabaseMinPerformanceLevels
+                        = supportedPerDatabaseMinPerformanceLevels;
+                } else if ("status".equals(fieldName)) {
+                    deserializedElasticPoolPerDatabaseMaxPerformanceLevelCapability.status
+                        = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedElasticPoolPerDatabaseMaxPerformanceLevelCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticPoolPerDatabaseMaxPerformanceLevelCapability;
+        });
     }
 }

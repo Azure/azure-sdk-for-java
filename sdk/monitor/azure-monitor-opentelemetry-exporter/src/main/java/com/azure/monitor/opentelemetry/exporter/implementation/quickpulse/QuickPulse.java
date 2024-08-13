@@ -21,48 +21,31 @@ import java.util.function.Supplier;
 
 public class QuickPulse {
 
-    //supports OTel metrics but not live filtering
+    // 6 represents filtering support for Otel metrics only is enabled
     static final int QP_INVARIANT_VERSION = 6;
-
 
     private volatile QuickPulseDataCollector collector;
 
-    public static QuickPulse create(
-        HttpPipeline httpPipeline,
-        Supplier<URL> endpointUrl,
-        Supplier<String> instrumentationKey,
-        @Nullable String roleName,
-        @Nullable String roleInstance,
-        boolean useNormalizedValueForNonNormalizedCpuPercentage,
-        QuickPulseMetricReader quickPulseMetricReader,
-        MetricDataMapper metricDataMapper,
-        String sdkVersion) {
+    public static QuickPulse create(HttpPipeline httpPipeline, Supplier<URL> endpointUrl,
+        Supplier<String> instrumentationKey, @Nullable String roleName, @Nullable String roleInstance,
+        boolean useNormalizedValueForNonNormalizedCpuPercentage, QuickPulseMetricReader quickPulseMetricReader,
+        MetricDataMapper metricDataMapper, String sdkVersion) {
 
         QuickPulse quickPulse = new QuickPulse();
 
         // initialization is delayed and performed in the background because initializing the random
         // seed via UUID.randomUUID() below can cause slowness during startup in some environments
-        ExecutorService executor =
-            Executors.newSingleThreadExecutor(
-                ThreadPoolUtils.createDaemonThreadFactory(QuickPulse.class));
-        executor.execute(
-            () -> {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-                quickPulse.initialize(
-                    httpPipeline,
-                    endpointUrl,
-                    instrumentationKey,
-                    roleName,
-                    roleInstance,
-                    useNormalizedValueForNonNormalizedCpuPercentage,
-                    quickPulseMetricReader,
-                    metricDataMapper,
-                    sdkVersion);
-            });
+        ExecutorService executor
+            = Executors.newSingleThreadExecutor(ThreadPoolUtils.createDaemonThreadFactory(QuickPulse.class));
+        executor.execute(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            quickPulse.initialize(httpPipeline, endpointUrl, instrumentationKey, roleName, roleInstance,
+                useNormalizedValueForNonNormalizedCpuPercentage, quickPulseMetricReader, metricDataMapper, sdkVersion);
+        });
         // the condition below will always be false, but by referencing the executor it ensures the
         // executor can't become unreachable in the middle of the execute() method execution above
         // (and prior to the task being registered), which can lead to the executor being terminated and
@@ -84,22 +67,17 @@ public class QuickPulse {
         }
     }
 
-    private void initialize(
-        HttpPipeline httpPipeline,
-        Supplier<URL> endpointUrl,
-        Supplier<String> instrumentationKey,
-        @Nullable String roleName,
-        @Nullable String roleInstance,
-        boolean useNormalizedValueForNonNormalizedCpuPercentage,
-        QuickPulseMetricReader quickPulseMetricReader,
-        MetricDataMapper metricDataMapper,
-        String sdkVersion) {
+    private void initialize(HttpPipeline httpPipeline, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey,
+        @Nullable String roleName, @Nullable String roleInstance,
+        boolean useNormalizedValueForNonNormalizedCpuPercentage, QuickPulseMetricReader quickPulseMetricReader,
+        MetricDataMapper metricDataMapper, String sdkVersion) {
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
         ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
         QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
 
-        QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(httpPipeline, sendQueue, quickPulseConfiguration);
+        QuickPulseDataSender quickPulseDataSender
+            = new QuickPulseDataSender(httpPipeline, sendQueue, quickPulseConfiguration);
 
         String instanceName = roleInstance;
         String machineName = HostName.get();
@@ -111,36 +89,16 @@ public class QuickPulse {
             instanceName = "Unknown host";
         }
 
-        QuickPulseDataCollector collector =
-            new QuickPulseDataCollector(useNormalizedValueForNonNormalizedCpuPercentage, quickPulseConfiguration);
+        QuickPulseDataCollector collector
+            = new QuickPulseDataCollector(useNormalizedValueForNonNormalizedCpuPercentage, quickPulseConfiguration);
 
-        QuickPulsePingSender quickPulsePingSender =
-            new QuickPulsePingSender(
-                httpPipeline,
-                endpointUrl,
-                instrumentationKey,
-                roleName,
-                instanceName,
-                machineName,
-                quickPulseId,
-                sdkVersion,
-                quickPulseConfiguration);
+        QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(httpPipeline, endpointUrl,
+            instrumentationKey, roleName, instanceName, machineName, quickPulseId, sdkVersion, quickPulseConfiguration);
+        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(collector, sendQueue, endpointUrl,
+            instrumentationKey, roleName, instanceName, machineName, quickPulseId, quickPulseConfiguration);
 
-        QuickPulseDataFetcher quickPulseDataFetcher =
-            new QuickPulseDataFetcher(
-                collector,
-                sendQueue,
-                endpointUrl,
-                instrumentationKey,
-                roleName,
-                instanceName,
-                machineName,
-                quickPulseId,
-                quickPulseConfiguration);
-
-        QuickPulseCoordinatorInitData coordinatorInitData =
-            new QuickPulseCoordinatorInitDataBuilder()
-                .withPingSender(quickPulsePingSender)
+        QuickPulseCoordinatorInitData coordinatorInitData
+            = new QuickPulseCoordinatorInitDataBuilder().withPingSender(quickPulsePingSender)
                 .withDataFetcher(quickPulseDataFetcher)
                 .withDataSender(quickPulseDataSender)
                 .withCollector(collector)
@@ -148,15 +106,15 @@ public class QuickPulse {
 
         QuickPulseCoordinator coordinator = new QuickPulseCoordinator(coordinatorInitData);
 
-        QuickPulseMetricReceiver quickPulseMetricReceiver = new QuickPulseMetricReceiver(quickPulseMetricReader, metricDataMapper, collector);
+        QuickPulseMetricReceiver quickPulseMetricReceiver
+            = new QuickPulseMetricReceiver(quickPulseMetricReader, metricDataMapper, collector);
 
-        Thread metricReceiverThread =
-            new Thread(quickPulseMetricReceiver, QuickPulseMetricReceiver.class.getSimpleName());
+        Thread metricReceiverThread
+            = new Thread(quickPulseMetricReceiver, QuickPulseMetricReceiver.class.getSimpleName());
         metricReceiverThread.setDaemon(true);
         metricReceiverThread.start();
 
-        Thread senderThread =
-            new Thread(quickPulseDataSender, QuickPulseDataSender.class.getSimpleName());
+        Thread senderThread = new Thread(quickPulseDataSender, QuickPulseDataSender.class.getSimpleName());
         senderThread.setDaemon(true);
         senderThread.start();
 

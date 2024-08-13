@@ -11,7 +11,7 @@ const verRegEx = /<version>(.+)<\/version>/g;
 const pkgRegEx = /Package\s+tag\s+(.+)\.\s+For/;
 const pkgRegEx2 = /Package\s+tag\s+(.+)\.</;
 const data = {};
-const servicesInvalidUrl = [];
+const servicesInvalidUrl = ["securitydevops"];
 const deprecatedArtifacts = [
     "azure-resourcemanager-batchai",
     "azure-resourcemanager-loadtestservice",

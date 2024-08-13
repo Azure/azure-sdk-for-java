@@ -1,21 +1,19 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
+
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.azure.json.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-
 public class QuickPulseConfiguration {
     private static final ClientLogger logger = new ClientLogger(QuickPulseDataFetcher.class);
-    private  AtomicReference<String> etag = new AtomicReference<>();
+    private AtomicReference<String> etag = new AtomicReference<>();
     private ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> derivedMetrics = new ConcurrentHashMap<>();
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public synchronized String getEtag() {
         return this.etag.get();
@@ -29,62 +27,132 @@ public class QuickPulseConfiguration {
         return this.derivedMetrics;
     }
 
-    public synchronized void setDerivedMetrics(ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> derivedMetrics) {
-        this.derivedMetrics = derivedMetrics;
+    public synchronized void setDerivedMetrics(ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> metrics) {
+        this.derivedMetrics = metrics;
     }
 
-    public synchronized void updateConfig(String etagValue, ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> otelMetrics) {
-        if (!Objects.equals(this.getEtag(), etagValue)){
+    public synchronized void updateConfig(String etagValue,
+        ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> otelMetrics) {
+        if (!Objects.equals(this.getEtag(), etagValue)) {
             this.setEtag(etagValue);
             this.setDerivedMetrics(otelMetrics);
         }
 
     }
 
-    public ConcurrentHashMap<String,  ArrayList<DerivedMetricInfo>> parseDerivedMetrics(HttpResponse response) {
+    public ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> parseDerivedMetrics(HttpResponse response)
+        throws IOException {
 
         ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> requestedMetrics = new ConcurrentHashMap<>();
         try {
 
             String responseBody = response.getBodyAsString().block();
             if (responseBody == null || responseBody.isEmpty()) {
-                return new ConcurrentHashMap<String,  ArrayList<DerivedMetricInfo>>();
+                return new ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>>();
             }
-            JsonNode rootNode = objectMapper.readTree(responseBody);
-            JsonNode metricsNode = rootNode.get("Metrics");
 
-            if (metricsNode instanceof ArrayNode) {
-                ArrayNode metricsArray = (ArrayNode) metricsNode;
+            try (JsonReader jsonReader = JsonProviders.createReader(responseBody)) {
+                jsonReader.nextToken();
+                while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                    if ("Metrics".equals(jsonReader.getFieldName())) {
+                        jsonReader.nextToken();
 
-                for (JsonNode metricNode : metricsArray) {
-                    DerivedMetricInfo metric = new DerivedMetricInfo();
-                    metric.setId(metricNode.get("Id").asText());
-                    metric.setAggregation(metricNode.get("Aggregation").asText());
-                    metric.setTelemetryType(metricNode.get("TelemetryType").asText());
-                    metric.setProjection(metricNode.get("Projection").asText());
-                    requestedMetrics.computeIfAbsent(metric.getTelemetryType(), k -> new ArrayList<>()).add(metric);
+                        while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
+                            DerivedMetricInfo metric = new DerivedMetricInfo();
 
+                            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
 
-                    JsonNode filterGroupsNode = metricNode.get("FilterGroups");
-                    if (filterGroupsNode instanceof ArrayNode) {
-                        ArrayNode filterGroupsArray = (ArrayNode) filterGroupsNode;
-                        for (JsonNode filterGroupNode : filterGroupsArray) {
-                            JsonNode filtersNode = filterGroupNode.get("Filters");
-                            if (filtersNode instanceof ArrayNode) {
-                                ArrayNode filtersArray = (ArrayNode) filtersNode;
-                                for (JsonNode filterNode : filtersArray) {
-                                    String fieldName = filterNode.get("FieldName").asText();
-                                    if (fieldName.contains(".")) {
-                                        fieldName = fieldName.split("\\.")[1];
-                                    }
-                                    String predicate = filterNode.get("Predicate").asText();
-                                    String comparand = filterNode.get("Comparand").asText();
-                                    if (!fieldName.isEmpty() && !fieldName.equals("undefined") && !predicate.isEmpty() && !comparand.isEmpty()) {
-                                        metric.addFilterGroup(fieldName, predicate, comparand);
-                                    }
+                                String fieldName = jsonReader.getFieldName();
+                                jsonReader.nextToken();
+
+                                switch (fieldName) {
+                                    case "Id":
+                                        metric.setId(jsonReader.getString());
+                                        break;
+
+                                    case "Aggregation":
+                                        metric.setAggregation(jsonReader.getString());
+                                        break;
+
+                                    case "TelemetryType":
+                                        metric.setTelemetryType(jsonReader.getString());
+                                        break;
+
+                                    case "Projection":
+                                        metric.setProjection(jsonReader.getString());
+                                        break;
+
+                                    case "FilterGroups":
+                                        // Handle "FilterGroups" field
+                                        if (jsonReader.currentToken() == JsonToken.START_ARRAY) {
+                                            while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
+                                                if (jsonReader.currentToken() == JsonToken.START_OBJECT) {
+                                                    while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                                                        if (jsonReader.currentToken() == JsonToken.FIELD_NAME
+                                                            && jsonReader.getFieldName().equals("Filters")) {
+                                                            jsonReader.nextToken();
+                                                            if (jsonReader.currentToken() == JsonToken.START_ARRAY) {
+                                                                while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
+                                                                    if (jsonReader.currentToken()
+                                                                        == JsonToken.START_OBJECT) {
+                                                                        String innerFieldName = "";
+                                                                        String predicate = "";
+                                                                        String comparand = "";
+
+                                                                        while (jsonReader.nextToken()
+                                                                            != JsonToken.END_OBJECT) {
+                                                                            String filterFieldName
+                                                                                = jsonReader.getFieldName();
+                                                                            jsonReader.nextToken();
+
+                                                                            switch (filterFieldName) {
+                                                                                case "FieldName":
+                                                                                    innerFieldName
+                                                                                        = jsonReader.getString();
+                                                                                    if (innerFieldName.contains(".")) {
+                                                                                        innerFieldName = innerFieldName
+                                                                                            .split("\\.")[1];
+                                                                                    }
+                                                                                    break;
+
+                                                                                case "Predicate":
+                                                                                    predicate = jsonReader.getString();
+                                                                                    break;
+
+                                                                                case "Comparand":
+                                                                                    comparand = jsonReader.getString();
+                                                                                    break;
+                                                                            }
+                                                                        }
+
+                                                                        if (!innerFieldName.isEmpty()
+                                                                            && !innerFieldName.equals("undefined")
+                                                                            && !predicate.isEmpty()
+                                                                            && !comparand.isEmpty()) {
+                                                                            metric.addFilterGroup(innerFieldName,
+                                                                                predicate, comparand);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        break;
+
+                                    default:
+                                        jsonReader.skipChildren();
+                                        break;
                                 }
                             }
+                            requestedMetrics.computeIfAbsent(metric.getTelemetryType(), k -> new ArrayList<>())
+                                .add(metric);
                         }
+                    } else {
+                        jsonReader.skipChildren();
+
                     }
                 }
             }
@@ -92,16 +160,15 @@ public class QuickPulseConfiguration {
         } catch (Exception e) {
             logger.verbose("Failed to parse metrics from response: %s", e.getMessage());
         }
-        return new ConcurrentHashMap<String,  ArrayList<DerivedMetricInfo>>();
-
+        return new ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>>();
     }
 
-    class DerivedMetricInfo {
+    public class DerivedMetricInfo {
         private String id;
         private String projection;
         private String telemetryType;
         private String aggregation;
-        private ArrayList<FilterGroup> filterGroups = new ArrayList<>();
+        private ArrayList<FilterGroup> filterGroups = new ArrayList<FilterGroup>();
 
         public String getId() {
             return this.id;
@@ -122,7 +189,6 @@ public class QuickPulseConfiguration {
         public String getTelemetryType() {
             return this.telemetryType;
         }
-
 
         public void setProjection(String projection) {
             this.projection = projection;
@@ -151,16 +217,16 @@ public class QuickPulseConfiguration {
         private String comparand;
 
         public FilterGroup(String fieldName, String predicate, String comparand) {
-            this.fieldName = fieldName;
-            this.operator = predicate;
-            this.comparand = comparand;
+            this.setFieldName(fieldName);
+            this.setOperator(predicate);
+            this.setComparand(comparand);
         }
 
         public String getFieldName() {
             return this.fieldName;
         }
 
-        public void setFieldName(String fieldName) {
+        private void setFieldName(String fieldName) {
             this.fieldName = fieldName;
         }
 
@@ -168,7 +234,7 @@ public class QuickPulseConfiguration {
             return this.operator;
         }
 
-        public void setOperator(String operator) {
+        private void setOperator(String operator) {
             this.operator = operator;
         }
 
@@ -180,6 +246,5 @@ public class QuickPulseConfiguration {
             this.comparand = comparand;
         }
     }
+
 }
-
-

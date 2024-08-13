@@ -5,16 +5,19 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.CertificateDetails;
 import com.azure.resourcemanager.appservice.models.CertificateOrderContact;
 import com.azure.resourcemanager.appservice.models.CertificateOrderStatus;
 import com.azure.resourcemanager.appservice.models.CertificateProductType;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.ResourceNotRenewableReason;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -23,126 +26,107 @@ import java.util.Map;
  * AppServiceCertificateOrder resource specific properties.
  */
 @Fluent
-public final class AppServiceCertificateOrderProperties {
+public final class AppServiceCertificateOrderProperties
+    implements JsonSerializable<AppServiceCertificateOrderProperties> {
     /*
      * State of the Key Vault secret.
      */
-    @JsonProperty(value = "certificates")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, AppServiceCertificateInner> certificates;
 
     /*
      * Certificate distinguished name.
      */
-    @JsonProperty(value = "distinguishedName")
     private String distinguishedName;
 
     /*
      * Domain verification token.
      */
-    @JsonProperty(value = "domainVerificationToken", access = JsonProperty.Access.WRITE_ONLY)
     private String domainVerificationToken;
 
     /*
      * Duration in years (must be 1).
      */
-    @JsonProperty(value = "validityInYears")
     private Integer validityInYears;
 
     /*
      * Certificate key size.
      */
-    @JsonProperty(value = "keySize")
     private Integer keySize;
 
     /*
      * Certificate product type.
      */
-    @JsonProperty(value = "productType", required = true)
     private CertificateProductType productType;
 
     /*
-     * <code>true</code> if the certificate should be automatically renewed when it expires; otherwise, <code>false</code>.
+     * <code>true</code> if the certificate should be automatically renewed when it expires; otherwise,
+     * <code>false</code>.
      */
-    @JsonProperty(value = "autoRenew")
     private Boolean autoRenew;
 
     /*
      * Status of certificate order.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Current order status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateOrderStatus status;
 
     /*
      * Signed certificate.
      */
-    @JsonProperty(value = "signedCertificate", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateDetails signedCertificate;
 
     /*
      * Last CSR that was created for this order.
      */
-    @JsonProperty(value = "csr")
     private String csr;
 
     /*
      * Intermediate certificate.
      */
-    @JsonProperty(value = "intermediate", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateDetails intermediate;
 
     /*
      * Root certificate.
      */
-    @JsonProperty(value = "root", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateDetails root;
 
     /*
      * Current serial number of the certificate.
      */
-    @JsonProperty(value = "serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /*
      * Certificate last issuance time.
      */
-    @JsonProperty(value = "lastCertificateIssuanceTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastCertificateIssuanceTime;
 
     /*
      * Certificate expiration time.
      */
-    @JsonProperty(value = "expirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationTime;
 
     /*
      * <code>true</code> if private key is external; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isPrivateKeyExternal", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPrivateKeyExternal;
 
     /*
      * Reasons why App Service Certificate is not renewable at the current moment.
      */
-    @JsonProperty(value = "appServiceCertificateNotRenewableReasons", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceNotRenewableReason> appServiceCertificateNotRenewableReasons;
 
     /*
      * Time stamp when the certificate would be auto renewed next
      */
-    @JsonProperty(value = "nextAutoRenewalTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextAutoRenewalTimestamp;
 
     /*
      * Contact info
      */
-    @JsonProperty(value = "contact", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateOrderContact contact;
 
     /**
@@ -153,7 +137,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the certificates property: State of the Key Vault secret.
-     *
+     * 
      * @return the certificates value.
      */
     public Map<String, AppServiceCertificateInner> certificates() {
@@ -162,7 +146,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Set the certificates property: State of the Key Vault secret.
-     *
+     * 
      * @param certificates the certificates value to set.
      * @return the AppServiceCertificateOrderProperties object itself.
      */
@@ -173,7 +157,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the distinguishedName property: Certificate distinguished name.
-     *
+     * 
      * @return the distinguishedName value.
      */
     public String distinguishedName() {
@@ -182,7 +166,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Set the distinguishedName property: Certificate distinguished name.
-     *
+     * 
      * @param distinguishedName the distinguishedName value to set.
      * @return the AppServiceCertificateOrderProperties object itself.
      */
@@ -193,7 +177,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the domainVerificationToken property: Domain verification token.
-     *
+     * 
      * @return the domainVerificationToken value.
      */
     public String domainVerificationToken() {
@@ -202,7 +186,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the validityInYears property: Duration in years (must be 1).
-     *
+     * 
      * @return the validityInYears value.
      */
     public Integer validityInYears() {
@@ -211,7 +195,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Set the validityInYears property: Duration in years (must be 1).
-     *
+     * 
      * @param validityInYears the validityInYears value to set.
      * @return the AppServiceCertificateOrderProperties object itself.
      */
@@ -222,7 +206,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the keySize property: Certificate key size.
-     *
+     * 
      * @return the keySize value.
      */
     public Integer keySize() {
@@ -231,7 +215,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Set the keySize property: Certificate key size.
-     *
+     * 
      * @param keySize the keySize value to set.
      * @return the AppServiceCertificateOrderProperties object itself.
      */
@@ -242,7 +226,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the productType property: Certificate product type.
-     *
+     * 
      * @return the productType value.
      */
     public CertificateProductType productType() {
@@ -251,7 +235,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Set the productType property: Certificate product type.
-     *
+     * 
      * @param productType the productType value to set.
      * @return the AppServiceCertificateOrderProperties object itself.
      */
@@ -263,7 +247,7 @@ public final class AppServiceCertificateOrderProperties {
     /**
      * Get the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when
      * it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the autoRenew value.
      */
     public Boolean autoRenew() {
@@ -273,7 +257,7 @@ public final class AppServiceCertificateOrderProperties {
     /**
      * Set the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when
      * it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param autoRenew the autoRenew value to set.
      * @return the AppServiceCertificateOrderProperties object itself.
      */
@@ -284,7 +268,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the provisioningState property: Status of certificate order.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -293,7 +277,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the status property: Current order status.
-     *
+     * 
      * @return the status value.
      */
     public CertificateOrderStatus status() {
@@ -302,7 +286,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the signedCertificate property: Signed certificate.
-     *
+     * 
      * @return the signedCertificate value.
      */
     public CertificateDetails signedCertificate() {
@@ -311,7 +295,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the csr property: Last CSR that was created for this order.
-     *
+     * 
      * @return the csr value.
      */
     public String csr() {
@@ -320,7 +304,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Set the csr property: Last CSR that was created for this order.
-     *
+     * 
      * @param csr the csr value to set.
      * @return the AppServiceCertificateOrderProperties object itself.
      */
@@ -331,7 +315,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the intermediate property: Intermediate certificate.
-     *
+     * 
      * @return the intermediate value.
      */
     public CertificateDetails intermediate() {
@@ -340,7 +324,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the root property: Root certificate.
-     *
+     * 
      * @return the root value.
      */
     public CertificateDetails root() {
@@ -349,7 +333,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the serialNumber property: Current serial number of the certificate.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -358,7 +342,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the lastCertificateIssuanceTime property: Certificate last issuance time.
-     *
+     * 
      * @return the lastCertificateIssuanceTime value.
      */
     public OffsetDateTime lastCertificateIssuanceTime() {
@@ -367,7 +351,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the expirationTime property: Certificate expiration time.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -377,7 +361,7 @@ public final class AppServiceCertificateOrderProperties {
     /**
      * Get the isPrivateKeyExternal property: &lt;code&gt;true&lt;/code&gt; if private key is external; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isPrivateKeyExternal value.
      */
     public Boolean isPrivateKeyExternal() {
@@ -387,7 +371,7 @@ public final class AppServiceCertificateOrderProperties {
     /**
      * Get the appServiceCertificateNotRenewableReasons property: Reasons why App Service Certificate is not renewable
      * at the current moment.
-     *
+     * 
      * @return the appServiceCertificateNotRenewableReasons value.
      */
     public List<ResourceNotRenewableReason> appServiceCertificateNotRenewableReasons() {
@@ -396,7 +380,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the nextAutoRenewalTimestamp property: Time stamp when the certificate would be auto renewed next.
-     *
+     * 
      * @return the nextAutoRenewalTimestamp value.
      */
     public OffsetDateTime nextAutoRenewalTimestamp() {
@@ -405,7 +389,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Get the contact property: Contact info.
-     *
+     * 
      * @return the contact value.
      */
     public CertificateOrderContact contact() {
@@ -414,7 +398,7 @@ public final class AppServiceCertificateOrderProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -445,4 +429,101 @@ public final class AppServiceCertificateOrderProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AppServiceCertificateOrderProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("productType", this.productType == null ? null : this.productType.toString());
+        jsonWriter.writeMapField("certificates", this.certificates, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("distinguishedName", this.distinguishedName);
+        jsonWriter.writeNumberField("validityInYears", this.validityInYears);
+        jsonWriter.writeNumberField("keySize", this.keySize);
+        jsonWriter.writeBooleanField("autoRenew", this.autoRenew);
+        jsonWriter.writeStringField("csr", this.csr);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServiceCertificateOrderProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServiceCertificateOrderProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppServiceCertificateOrderProperties.
+     */
+    public static AppServiceCertificateOrderProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServiceCertificateOrderProperties deserializedAppServiceCertificateOrderProperties
+                = new AppServiceCertificateOrderProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("productType".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.productType
+                        = CertificateProductType.fromString(reader.getString());
+                } else if ("certificates".equals(fieldName)) {
+                    Map<String, AppServiceCertificateInner> certificates
+                        = reader.readMap(reader1 -> AppServiceCertificateInner.fromJson(reader1));
+                    deserializedAppServiceCertificateOrderProperties.certificates = certificates;
+                } else if ("distinguishedName".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.distinguishedName = reader.getString();
+                } else if ("domainVerificationToken".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.domainVerificationToken = reader.getString();
+                } else if ("validityInYears".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.validityInYears
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("keySize".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.keySize = reader.getNullable(JsonReader::getInt);
+                } else if ("autoRenew".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.autoRenew
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.status
+                        = CertificateOrderStatus.fromString(reader.getString());
+                } else if ("signedCertificate".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.signedCertificate
+                        = CertificateDetails.fromJson(reader);
+                } else if ("csr".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.csr = reader.getString();
+                } else if ("intermediate".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.intermediate = CertificateDetails.fromJson(reader);
+                } else if ("root".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.root = CertificateDetails.fromJson(reader);
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.serialNumber = reader.getString();
+                } else if ("lastCertificateIssuanceTime".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.lastCertificateIssuanceTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationTime".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.expirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isPrivateKeyExternal".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.isPrivateKeyExternal
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appServiceCertificateNotRenewableReasons".equals(fieldName)) {
+                    List<ResourceNotRenewableReason> appServiceCertificateNotRenewableReasons
+                        = reader.readArray(reader1 -> ResourceNotRenewableReason.fromString(reader1.getString()));
+                    deserializedAppServiceCertificateOrderProperties.appServiceCertificateNotRenewableReasons
+                        = appServiceCertificateNotRenewableReasons;
+                } else if ("nextAutoRenewalTimeStamp".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.nextAutoRenewalTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("contact".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderProperties.contact = CertificateOrderContact.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServiceCertificateOrderProperties;
+        });
+    }
 }

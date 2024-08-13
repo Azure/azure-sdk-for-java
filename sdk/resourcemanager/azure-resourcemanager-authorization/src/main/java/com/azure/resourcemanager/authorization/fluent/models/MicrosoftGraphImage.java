@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** image. */
+/**
+ * image.
+ */
 @Fluent
-public final class MicrosoftGraphImage {
+public final class MicrosoftGraphImage implements JsonSerializable<MicrosoftGraphImage> {
     /*
      * Optional. Height of the image, in pixels. Read-only.
      */
-    @JsonProperty(value = "height")
     private Integer height;
 
     /*
      * Optional. Width of the image, in pixels. Read-only.
      */
-    @JsonProperty(value = "width")
     private Integer width;
 
     /*
      * image
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphImage class. */
+    /**
+     * Creates an instance of MicrosoftGraphImage class.
+     */
     public MicrosoftGraphImage() {
     }
 
     /**
      * Get the height property: Optional. Height of the image, in pixels. Read-only.
-     *
+     * 
      * @return the height value.
      */
     public Integer height() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphImage {
 
     /**
      * Set the height property: Optional. Height of the image, in pixels. Read-only.
-     *
+     * 
      * @param height the height value to set.
      * @return the MicrosoftGraphImage object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphImage {
 
     /**
      * Get the width property: Optional. Width of the image, in pixels. Read-only.
-     *
+     * 
      * @return the width value.
      */
     public Integer width() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphImage {
 
     /**
      * Set the width property: Optional. Width of the image, in pixels. Read-only.
-     *
+     * 
      * @param width the width value to set.
      * @return the MicrosoftGraphImage object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphImage {
 
     /**
      * Get the additionalProperties property: image.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: image.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphImage object itself.
      */
@@ -97,19 +99,61 @@ public final class MicrosoftGraphImage {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("height", this.height);
+        jsonWriter.writeNumberField("width", this.width);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphImage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphImage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphImage.
+     */
+    public static MicrosoftGraphImage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphImage deserializedMicrosoftGraphImage = new MicrosoftGraphImage();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("height".equals(fieldName)) {
+                    deserializedMicrosoftGraphImage.height = reader.getNullable(JsonReader::getInt);
+                } else if ("width".equals(fieldName)) {
+                    deserializedMicrosoftGraphImage.width = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphImage.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphImage;
+        });
     }
 }

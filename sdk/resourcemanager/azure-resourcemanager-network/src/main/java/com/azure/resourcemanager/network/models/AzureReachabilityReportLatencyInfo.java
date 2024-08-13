@@ -5,24 +5,28 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Details on latency for a time series.
  */
 @Fluent
-public final class AzureReachabilityReportLatencyInfo {
+public final class AzureReachabilityReportLatencyInfo implements JsonSerializable<AzureReachabilityReportLatencyInfo> {
     /*
      * The time stamp.
      */
-    @JsonProperty(value = "timeStamp")
     private OffsetDateTime timestamp;
 
     /*
      * The relative latency score between 1 and 100, higher values indicating a faster connection.
      */
-    @JsonProperty(value = "score")
     private Integer score;
 
     /**
@@ -79,5 +83,47 @@ public final class AzureReachabilityReportLatencyInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeStamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeNumberField("score", this.score);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureReachabilityReportLatencyInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureReachabilityReportLatencyInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureReachabilityReportLatencyInfo.
+     */
+    public static AzureReachabilityReportLatencyInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureReachabilityReportLatencyInfo deserializedAzureReachabilityReportLatencyInfo
+                = new AzureReachabilityReportLatencyInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeStamp".equals(fieldName)) {
+                    deserializedAzureReachabilityReportLatencyInfo.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("score".equals(fieldName)) {
+                    deserializedAzureReachabilityReportLatencyInfo.score = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureReachabilityReportLatencyInfo;
+        });
     }
 }

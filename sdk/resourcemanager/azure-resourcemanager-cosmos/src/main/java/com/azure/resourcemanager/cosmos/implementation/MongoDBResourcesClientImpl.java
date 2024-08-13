@@ -49,10 +49,9 @@ import com.azure.resourcemanager.cosmos.models.MongoRoleDefinitionListResult;
 import com.azure.resourcemanager.cosmos.models.MongoUserDefinitionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.MongoUserDefinitionListResult;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in MongoDBResourcesClient.
@@ -70,7 +69,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Initializes an instance of MongoDBResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MongoDBResourcesClientImpl(CosmosDBManagementClientImpl client) {
@@ -348,7 +347,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -387,7 +386,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -426,7 +425,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -443,7 +442,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -461,7 +460,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -478,7 +477,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -496,7 +495,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -537,7 +536,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -577,7 +576,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -596,7 +595,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -615,7 +614,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -632,7 +631,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -680,7 +679,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -728,7 +727,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -751,7 +750,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -776,7 +775,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -798,7 +797,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -821,7 +820,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -841,7 +840,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -862,7 +861,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -881,7 +880,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -902,7 +901,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -941,7 +940,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -979,7 +978,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -999,7 +998,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1021,7 +1020,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1038,7 +1037,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1057,7 +1056,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1074,7 +1073,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1093,7 +1092,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1108,7 +1107,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1126,7 +1125,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     /**
      * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1168,7 +1167,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     /**
      * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1209,7 +1208,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     /**
      * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1229,7 +1228,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     /**
      * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1250,7 +1249,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     /**
      * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1269,7 +1268,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1318,7 +1317,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1368,7 +1367,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1392,7 +1391,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1418,7 +1417,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1441,7 +1440,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1465,7 +1464,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1485,7 +1484,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1507,7 +1506,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1527,7 +1526,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1549,7 +1548,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1590,7 +1589,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1630,7 +1629,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1651,7 +1650,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1675,7 +1674,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1693,7 +1692,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1713,7 +1712,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1731,7 +1730,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1750,7 +1749,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1767,7 +1766,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1785,7 +1784,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1826,7 +1825,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1867,7 +1866,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1889,7 +1888,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1913,7 +1912,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1932,7 +1931,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1953,7 +1952,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1971,7 +1970,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1991,7 +1990,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2008,7 +2007,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2027,7 +2026,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2070,7 +2069,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2113,7 +2112,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2132,7 +2131,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2152,7 +2151,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2170,7 +2169,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2189,7 +2188,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2234,7 +2233,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2278,7 +2277,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2298,7 +2297,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2318,7 +2317,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2337,7 +2336,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2390,7 +2389,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2443,7 +2442,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2467,7 +2466,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2494,7 +2493,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2517,7 +2516,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2542,7 +2541,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2563,7 +2562,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2585,7 +2584,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2606,7 +2605,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2628,7 +2627,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2671,7 +2670,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2713,7 +2712,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2734,7 +2733,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2757,7 +2756,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2776,7 +2775,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2797,7 +2796,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2816,7 +2815,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2837,7 +2836,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2854,7 +2853,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2873,7 +2872,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2919,7 +2918,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2964,7 +2963,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2985,7 +2984,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3007,7 +3006,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3027,7 +3026,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3081,7 +3080,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3135,7 +3134,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3160,7 +3159,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3187,7 +3186,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3211,7 +3210,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3236,7 +3235,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3258,7 +3257,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3281,7 +3280,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3303,7 +3302,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3326,7 +3325,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3371,7 +3370,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3415,7 +3414,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3438,7 +3437,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3463,7 +3462,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3484,7 +3483,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3507,7 +3506,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3526,7 +3525,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3546,7 +3545,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3565,7 +3564,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3585,7 +3584,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3630,7 +3629,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3675,7 +3674,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3698,7 +3697,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3723,7 +3722,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3745,7 +3744,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3768,7 +3767,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3787,7 +3786,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3807,7 +3806,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3826,7 +3825,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3846,7 +3845,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3888,7 +3887,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3930,7 +3929,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3948,7 +3947,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3967,7 +3966,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3985,7 +3984,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4035,7 +4034,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4085,7 +4084,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4108,7 +4107,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4134,7 +4133,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4156,7 +4155,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4179,7 +4178,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4199,7 +4198,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4220,7 +4219,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4240,7 +4239,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4261,7 +4260,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4302,7 +4301,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4343,7 +4342,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4363,7 +4362,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4385,7 +4384,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4403,7 +4402,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4422,7 +4421,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4440,7 +4439,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4460,7 +4459,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4475,7 +4474,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4492,7 +4491,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4531,7 +4530,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -4570,7 +4569,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4586,7 +4585,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -4603,7 +4602,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4619,7 +4618,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -4636,7 +4635,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4677,7 +4676,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4718,7 +4717,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4736,7 +4735,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4755,7 +4754,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4773,7 +4772,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4822,7 +4821,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4871,7 +4870,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4894,7 +4893,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4920,7 +4919,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4942,7 +4941,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4965,7 +4964,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -4985,7 +4984,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5006,7 +5005,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5026,7 +5025,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5047,7 +5046,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5088,7 +5087,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5129,7 +5128,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5149,7 +5148,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5171,7 +5170,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5189,7 +5188,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5208,7 +5207,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5226,7 +5225,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5246,7 +5245,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5261,7 +5260,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -5278,7 +5277,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5316,7 +5315,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -5354,7 +5353,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5370,7 +5369,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -5387,7 +5386,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5403,7 +5402,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves the list of all Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -5420,7 +5419,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves continuous backup information for a Mongodb collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5471,7 +5470,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves continuous backup information for a Mongodb collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5522,7 +5521,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves continuous backup information for a Mongodb collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5546,7 +5545,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves continuous backup information for a Mongodb collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5571,7 +5570,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves continuous backup information for a Mongodb collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5594,7 +5593,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves continuous backup information for a Mongodb collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5618,7 +5617,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves continuous backup information for a Mongodb collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5638,7 +5637,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves continuous backup information for a Mongodb collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5660,7 +5659,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves continuous backup information for a Mongodb collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5680,7 +5679,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
 
     /**
      * Retrieves continuous backup information for a Mongodb collection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.

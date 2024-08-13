@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Office365 breakout policy.
  */
 @Fluent
-public final class O365PolicyProperties {
+public final class O365PolicyProperties implements JsonSerializable<O365PolicyProperties> {
     /*
      * Office365 breakout categories.
      */
-    @JsonProperty(value = "breakOutCategories")
     private O365BreakOutCategoryPolicies breakOutCategories;
 
     /**
@@ -53,5 +56,41 @@ public final class O365PolicyProperties {
         if (breakOutCategories() != null) {
             breakOutCategories().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("breakOutCategories", this.breakOutCategories);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of O365PolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of O365PolicyProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the O365PolicyProperties.
+     */
+    public static O365PolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            O365PolicyProperties deserializedO365PolicyProperties = new O365PolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("breakOutCategories".equals(fieldName)) {
+                    deserializedO365PolicyProperties.breakOutCategories = O365BreakOutCategoryPolicies.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedO365PolicyProperties;
+        });
     }
 }

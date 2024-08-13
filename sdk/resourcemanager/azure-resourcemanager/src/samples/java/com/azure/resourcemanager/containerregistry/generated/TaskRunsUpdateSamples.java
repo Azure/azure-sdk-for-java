@@ -27,10 +27,14 @@ public final class TaskRunsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void taskRunsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTaskRuns()
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTaskRuns()
             .update("myResourceGroup", "myRegistry", "myRun",
                 new TaskRunUpdateParameters().withRunRequest(new EncodedTaskRunRequest().withIsArchiveEnabled(true)
-                    .withEncodedTaskContent("fakeTokenPlaceholder").withEncodedValuesContent("fakeTokenPlaceholder")
+                    .withEncodedTaskContent("fakeTokenPlaceholder")
+                    .withEncodedValuesContent("fakeTokenPlaceholder")
                     .withValues(Arrays.asList())
                     .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
                     .withCredentials(new Credentials())).withForceUpdateTag("test"),

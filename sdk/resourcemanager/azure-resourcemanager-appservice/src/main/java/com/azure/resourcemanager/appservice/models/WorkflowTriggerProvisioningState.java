@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -117,7 +116,6 @@ public final class WorkflowTriggerProvisioningState extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding WorkflowTriggerProvisioningState.
      */
-    @JsonCreator
     public static WorkflowTriggerProvisioningState fromString(String name) {
         return fromString(name, WorkflowTriggerProvisioningState.class);
     }

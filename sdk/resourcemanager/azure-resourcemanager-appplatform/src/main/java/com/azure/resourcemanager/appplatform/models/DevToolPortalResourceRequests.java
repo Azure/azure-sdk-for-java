@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resource quantity for required CPU and Memory of Dev Tool Portal.
  */
 @Immutable
-public final class DevToolPortalResourceRequests {
+public final class DevToolPortalResourceRequests implements JsonSerializable<DevToolPortalResourceRequests> {
     /*
      * Cpu quantity allocated to each Dev Tool Portal instance. 1 core can be represented by 1 or 1000m
      */
-    @JsonProperty(value = "cpu", access = JsonProperty.Access.WRITE_ONLY)
     private String cpu;
 
     /*
      * Memory quantity allocated to each Dev Tool Portal instance. 1 GB can be represented by 1Gi or 1024Mi.
      */
-    @JsonProperty(value = "memory", access = JsonProperty.Access.WRITE_ONLY)
     private String memory;
 
     /*
      * Desired instance count of Dev Tool Portal.
      */
-    @JsonProperty(value = "instanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer instanceCount;
 
     /**
@@ -71,5 +72,45 @@ public final class DevToolPortalResourceRequests {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevToolPortalResourceRequests from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevToolPortalResourceRequests if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevToolPortalResourceRequests.
+     */
+    public static DevToolPortalResourceRequests fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevToolPortalResourceRequests deserializedDevToolPortalResourceRequests
+                = new DevToolPortalResourceRequests();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cpu".equals(fieldName)) {
+                    deserializedDevToolPortalResourceRequests.cpu = reader.getString();
+                } else if ("memory".equals(fieldName)) {
+                    deserializedDevToolPortalResourceRequests.memory = reader.getString();
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedDevToolPortalResourceRequests.instanceCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevToolPortalResourceRequests;
+        });
     }
 }

@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Supported stack resource properties.
  */
 @Fluent
-public final class SupportedStackResourceProperties {
+public final class SupportedStackResourceProperties implements JsonSerializable<SupportedStackResourceProperties> {
     /*
      * The id of supported stack
      */
-    @JsonProperty(value = "stackId")
     private String stackId;
 
     /*
      * The version of supported stack
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /**
@@ -76,5 +78,45 @@ public final class SupportedStackResourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("stackId", this.stackId);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedStackResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedStackResourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedStackResourceProperties.
+     */
+    public static SupportedStackResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedStackResourceProperties deserializedSupportedStackResourceProperties
+                = new SupportedStackResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("stackId".equals(fieldName)) {
+                    deserializedSupportedStackResourceProperties.stackId = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSupportedStackResourceProperties.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedStackResourceProperties;
+        });
     }
 }

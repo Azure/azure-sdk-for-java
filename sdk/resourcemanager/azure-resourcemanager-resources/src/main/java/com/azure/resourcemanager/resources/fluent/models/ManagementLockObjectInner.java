@@ -7,9 +7,12 @@ package com.azure.resourcemanager.resources.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.LockLevel;
 import com.azure.resourcemanager.resources.models.ManagementLockOwner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,8 +23,22 @@ public final class ManagementLockObjectInner extends ProxyResource {
     /*
      * The properties of the lock.
      */
-    @JsonProperty(value = "properties", required = true)
     private ManagementLockProperties innerProperties = new ManagementLockProperties();
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of ManagementLockObjectInner class.
@@ -36,6 +53,36 @@ public final class ManagementLockObjectInner extends ProxyResource {
      */
     private ManagementLockProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -127,4 +174,47 @@ public final class ManagementLockObjectInner extends ProxyResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagementLockObjectInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementLockObjectInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementLockObjectInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagementLockObjectInner.
+     */
+    public static ManagementLockObjectInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementLockObjectInner deserializedManagementLockObjectInner = new ManagementLockObjectInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagementLockObjectInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagementLockObjectInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagementLockObjectInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagementLockObjectInner.innerProperties = ManagementLockProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementLockObjectInner;
+        });
+    }
 }

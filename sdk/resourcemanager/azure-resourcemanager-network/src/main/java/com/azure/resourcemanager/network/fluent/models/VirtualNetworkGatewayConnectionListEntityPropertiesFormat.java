@@ -7,6 +7,10 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -17,151 +21,129 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionM
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * VirtualNetworkGatewayConnection properties.
  */
 @Fluent
-public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
+public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat
+    implements JsonSerializable<VirtualNetworkGatewayConnectionListEntityPropertiesFormat> {
     /*
      * The authorizationKey.
      */
-    @JsonProperty(value = "authorizationKey")
     private String authorizationKey;
 
     /*
      * The reference to virtual network gateway resource.
      */
-    @JsonProperty(value = "virtualNetworkGateway1", required = true)
     private VirtualNetworkConnectionGatewayReference virtualNetworkGateway1;
 
     /*
      * The reference to virtual network gateway resource.
      */
-    @JsonProperty(value = "virtualNetworkGateway2")
     private VirtualNetworkConnectionGatewayReference virtualNetworkGateway2;
 
     /*
      * The reference to local network gateway resource.
      */
-    @JsonProperty(value = "localNetworkGateway2")
     private VirtualNetworkConnectionGatewayReference localNetworkGateway2;
 
     /*
      * Gateway connection type.
      */
-    @JsonProperty(value = "connectionType", required = true)
     private VirtualNetworkGatewayConnectionType connectionType;
 
     /*
      * Connection protocol used for this connection.
      */
-    @JsonProperty(value = "connectionProtocol")
     private VirtualNetworkGatewayConnectionProtocol connectionProtocol;
 
     /*
      * The routing weight.
      */
-    @JsonProperty(value = "routingWeight")
     private Integer routingWeight;
 
     /*
      * The connection mode for this connection.
      */
-    @JsonProperty(value = "connectionMode")
     private VirtualNetworkGatewayConnectionMode connectionMode;
 
     /*
      * The IPSec shared key.
      */
-    @JsonProperty(value = "sharedKey")
     private String sharedKey;
 
     /*
      * Virtual Network Gateway connection status.
      */
-    @JsonProperty(value = "connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkGatewayConnectionStatus connectionStatus;
 
     /*
      * Collection of all tunnels' connection health status.
      */
-    @JsonProperty(value = "tunnelConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private List<TunnelConnectionHealth> tunnelConnectionStatus;
 
     /*
      * The egress bytes transferred in this connection.
      */
-    @JsonProperty(value = "egressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long egressBytesTransferred;
 
     /*
      * The ingress bytes transferred in this connection.
      */
-    @JsonProperty(value = "ingressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long ingressBytesTransferred;
 
     /*
      * The reference to peerings resource.
      */
-    @JsonProperty(value = "peer")
     private SubResource peer;
 
     /*
      * EnableBgp flag.
      */
-    @JsonProperty(value = "enableBgp")
     private Boolean enableBgp;
 
     /*
      * GatewayCustomBgpIpAddresses to be used for virtual network gateway Connection.
      */
-    @JsonProperty(value = "gatewayCustomBgpIpAddresses")
     private List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses;
 
     /*
      * Enable policy-based traffic selectors.
      */
-    @JsonProperty(value = "usePolicyBasedTrafficSelectors")
     private Boolean usePolicyBasedTrafficSelectors;
 
     /*
      * The IPSec Policies to be considered by this connection.
      */
-    @JsonProperty(value = "ipsecPolicies")
     private List<IpsecPolicy> ipsecPolicies;
 
     /*
      * The Traffic Selector Policies to be considered by this connection.
      */
-    @JsonProperty(value = "trafficSelectorPolicies")
     private List<TrafficSelectorPolicy> trafficSelectorPolicies;
 
     /*
      * The resource GUID property of the virtual network gateway connection resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * The provisioning state of the virtual network gateway connection resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Bypass ExpressRoute Gateway for data forwarding.
      */
-    @JsonProperty(value = "expressRouteGatewayBypass")
     private Boolean expressRouteGatewayBypass;
 
     /*
      * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass)
      * must be enabled.
      */
-    @JsonProperty(value = "enablePrivateLinkFastPath")
     private Boolean enablePrivateLinkFastPath;
 
     /**
@@ -620,4 +602,138 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
 
     private static final ClientLogger LOGGER
         = new ClientLogger(VirtualNetworkGatewayConnectionListEntityPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("virtualNetworkGateway1", this.virtualNetworkGateway1);
+        jsonWriter.writeStringField("connectionType",
+            this.connectionType == null ? null : this.connectionType.toString());
+        jsonWriter.writeStringField("authorizationKey", this.authorizationKey);
+        jsonWriter.writeJsonField("virtualNetworkGateway2", this.virtualNetworkGateway2);
+        jsonWriter.writeJsonField("localNetworkGateway2", this.localNetworkGateway2);
+        jsonWriter.writeStringField("connectionProtocol",
+            this.connectionProtocol == null ? null : this.connectionProtocol.toString());
+        jsonWriter.writeNumberField("routingWeight", this.routingWeight);
+        jsonWriter.writeStringField("connectionMode",
+            this.connectionMode == null ? null : this.connectionMode.toString());
+        jsonWriter.writeStringField("sharedKey", this.sharedKey);
+        jsonWriter.writeJsonField("peer", this.peer);
+        jsonWriter.writeBooleanField("enableBgp", this.enableBgp);
+        jsonWriter.writeArrayField("gatewayCustomBgpIpAddresses", this.gatewayCustomBgpIpAddresses,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("usePolicyBasedTrafficSelectors", this.usePolicyBasedTrafficSelectors);
+        jsonWriter.writeArrayField("ipsecPolicies", this.ipsecPolicies, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("trafficSelectorPolicies", this.trafficSelectorPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("expressRouteGatewayBypass", this.expressRouteGatewayBypass);
+        jsonWriter.writeBooleanField("enablePrivateLinkFastPath", this.enablePrivateLinkFastPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkGatewayConnectionListEntityPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkGatewayConnectionListEntityPropertiesFormat if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the
+     * VirtualNetworkGatewayConnectionListEntityPropertiesFormat.
+     */
+    public static VirtualNetworkGatewayConnectionListEntityPropertiesFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkGatewayConnectionListEntityPropertiesFormat deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat
+                = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualNetworkGateway1".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.virtualNetworkGateway1
+                        = VirtualNetworkConnectionGatewayReference.fromJson(reader);
+                } else if ("connectionType".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.connectionType
+                        = VirtualNetworkGatewayConnectionType.fromString(reader.getString());
+                } else if ("authorizationKey".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.authorizationKey
+                        = reader.getString();
+                } else if ("virtualNetworkGateway2".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.virtualNetworkGateway2
+                        = VirtualNetworkConnectionGatewayReference.fromJson(reader);
+                } else if ("localNetworkGateway2".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.localNetworkGateway2
+                        = VirtualNetworkConnectionGatewayReference.fromJson(reader);
+                } else if ("connectionProtocol".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.connectionProtocol
+                        = VirtualNetworkGatewayConnectionProtocol.fromString(reader.getString());
+                } else if ("routingWeight".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.routingWeight
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("connectionMode".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.connectionMode
+                        = VirtualNetworkGatewayConnectionMode.fromString(reader.getString());
+                } else if ("sharedKey".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.sharedKey
+                        = reader.getString();
+                } else if ("connectionStatus".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.connectionStatus
+                        = VirtualNetworkGatewayConnectionStatus.fromString(reader.getString());
+                } else if ("tunnelConnectionStatus".equals(fieldName)) {
+                    List<TunnelConnectionHealth> tunnelConnectionStatus
+                        = reader.readArray(reader1 -> TunnelConnectionHealth.fromJson(reader1));
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.tunnelConnectionStatus
+                        = tunnelConnectionStatus;
+                } else if ("egressBytesTransferred".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.egressBytesTransferred
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("ingressBytesTransferred".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.ingressBytesTransferred
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("peer".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.peer
+                        = SubResource.fromJson(reader);
+                } else if ("enableBgp".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.enableBgp
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("gatewayCustomBgpIpAddresses".equals(fieldName)) {
+                    List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses
+                        = reader.readArray(reader1 -> GatewayCustomBgpIpAddressIpConfiguration.fromJson(reader1));
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.gatewayCustomBgpIpAddresses
+                        = gatewayCustomBgpIpAddresses;
+                } else if ("usePolicyBasedTrafficSelectors".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.usePolicyBasedTrafficSelectors
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ipsecPolicies".equals(fieldName)) {
+                    List<IpsecPolicy> ipsecPolicies = reader.readArray(reader1 -> IpsecPolicy.fromJson(reader1));
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.ipsecPolicies = ipsecPolicies;
+                } else if ("trafficSelectorPolicies".equals(fieldName)) {
+                    List<TrafficSelectorPolicy> trafficSelectorPolicies
+                        = reader.readArray(reader1 -> TrafficSelectorPolicy.fromJson(reader1));
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.trafficSelectorPolicies
+                        = trafficSelectorPolicies;
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.resourceGuid
+                        = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("expressRouteGatewayBypass".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.expressRouteGatewayBypass
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enablePrivateLinkFastPath".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.enablePrivateLinkFastPath
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat;
+        });
+    }
 }

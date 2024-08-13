@@ -5,55 +5,60 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The UpsertManagedServerOperationStepWithEstimatesAndDuration model. */
+/**
+ * The UpsertManagedServerOperationStepWithEstimatesAndDuration model.
+ */
 @Fluent
-public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
+public final class UpsertManagedServerOperationStepWithEstimatesAndDuration
+    implements JsonSerializable<UpsertManagedServerOperationStepWithEstimatesAndDuration> {
     /*
      * The stepStartTime property.
      */
-    @JsonProperty(value = "stepStartTime")
     private OffsetDateTime stepStartTime;
 
     /*
      * The stepEndTime property.
      */
-    @JsonProperty(value = "stepEndTime")
     private OffsetDateTime stepEndTime;
 
     /*
      * The timeElapsed property.
      */
-    @JsonProperty(value = "timeElapsed")
     private String timeElapsed;
 
     /*
      * The order property.
      */
-    @JsonProperty(value = "order")
     private Integer order;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The status property.
      */
-    @JsonProperty(value = "status")
     private Status status;
 
-    /** Creates an instance of UpsertManagedServerOperationStepWithEstimatesAndDuration class. */
+    /**
+     * Creates an instance of UpsertManagedServerOperationStepWithEstimatesAndDuration class.
+     */
     public UpsertManagedServerOperationStepWithEstimatesAndDuration() {
     }
 
     /**
      * Get the stepStartTime property: The stepStartTime property.
-     *
+     * 
      * @return the stepStartTime value.
      */
     public OffsetDateTime stepStartTime() {
@@ -62,7 +67,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the stepStartTime property: The stepStartTime property.
-     *
+     * 
      * @param stepStartTime the stepStartTime value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -73,7 +78,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Get the stepEndTime property: The stepEndTime property.
-     *
+     * 
      * @return the stepEndTime value.
      */
     public OffsetDateTime stepEndTime() {
@@ -82,7 +87,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the stepEndTime property: The stepEndTime property.
-     *
+     * 
      * @param stepEndTime the stepEndTime value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -93,7 +98,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Get the timeElapsed property: The timeElapsed property.
-     *
+     * 
      * @return the timeElapsed value.
      */
     public String timeElapsed() {
@@ -102,7 +107,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the timeElapsed property: The timeElapsed property.
-     *
+     * 
      * @param timeElapsed the timeElapsed value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -113,7 +118,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Get the order property: The order property.
-     *
+     * 
      * @return the order value.
      */
     public Integer order() {
@@ -122,7 +127,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the order property: The order property.
-     *
+     * 
      * @param order the order value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -133,7 +138,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -142,7 +147,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -153,7 +158,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Get the status property: The status property.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -162,7 +167,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the status property: The status property.
-     *
+     * 
      * @param status the status value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -173,9 +178,70 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("stepStartTime",
+            this.stepStartTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.stepStartTime));
+        jsonWriter.writeStringField("stepEndTime",
+            this.stepEndTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.stepEndTime));
+        jsonWriter.writeStringField("timeElapsed", this.timeElapsed);
+        jsonWriter.writeNumberField("order", this.order);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpsertManagedServerOperationStepWithEstimatesAndDuration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpsertManagedServerOperationStepWithEstimatesAndDuration if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * UpsertManagedServerOperationStepWithEstimatesAndDuration.
+     */
+    public static UpsertManagedServerOperationStepWithEstimatesAndDuration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpsertManagedServerOperationStepWithEstimatesAndDuration deserializedUpsertManagedServerOperationStepWithEstimatesAndDuration
+                = new UpsertManagedServerOperationStepWithEstimatesAndDuration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("stepStartTime".equals(fieldName)) {
+                    deserializedUpsertManagedServerOperationStepWithEstimatesAndDuration.stepStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("stepEndTime".equals(fieldName)) {
+                    deserializedUpsertManagedServerOperationStepWithEstimatesAndDuration.stepEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeElapsed".equals(fieldName)) {
+                    deserializedUpsertManagedServerOperationStepWithEstimatesAndDuration.timeElapsed
+                        = reader.getString();
+                } else if ("order".equals(fieldName)) {
+                    deserializedUpsertManagedServerOperationStepWithEstimatesAndDuration.order
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("name".equals(fieldName)) {
+                    deserializedUpsertManagedServerOperationStepWithEstimatesAndDuration.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedUpsertManagedServerOperationStepWithEstimatesAndDuration.status
+                        = Status.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpsertManagedServerOperationStepWithEstimatesAndDuration;
+        });
     }
 }

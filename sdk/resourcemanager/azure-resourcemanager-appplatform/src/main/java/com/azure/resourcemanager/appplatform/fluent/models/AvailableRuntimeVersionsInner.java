@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.models.SupportedRuntimeVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The AvailableRuntimeVersions model.
  */
 @Immutable
-public final class AvailableRuntimeVersionsInner {
+public final class AvailableRuntimeVersionsInner implements JsonSerializable<AvailableRuntimeVersionsInner> {
     /*
      * A list of all supported runtime versions.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SupportedRuntimeVersion> value;
 
     /**
@@ -44,5 +47,43 @@ public final class AvailableRuntimeVersionsInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableRuntimeVersionsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableRuntimeVersionsInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableRuntimeVersionsInner.
+     */
+    public static AvailableRuntimeVersionsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableRuntimeVersionsInner deserializedAvailableRuntimeVersionsInner
+                = new AvailableRuntimeVersionsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SupportedRuntimeVersion> value
+                        = reader.readArray(reader1 -> SupportedRuntimeVersion.fromJson(reader1));
+                    deserializedAvailableRuntimeVersionsInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableRuntimeVersionsInner;
+        });
     }
 }

@@ -5,26 +5,27 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Identity for the virtual machine.
  */
 @Fluent
-public final class VirtualMachineIdentity {
+public final class VirtualMachineIdentity implements JsonSerializable<VirtualMachineIdentity> {
     /*
      * The principal id of virtual machine identity. This property will only be provided for a system assigned identity.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The tenant id associated with the virtual machine. This property will only be provided for a system assigned
      * identity.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
@@ -32,7 +33,6 @@ public final class VirtualMachineIdentity {
      * implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities
      * from the virtual machine.
      */
-    @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /*
@@ -41,8 +41,6 @@ public final class VirtualMachineIdentity {
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
      * userAssignedIdentities/{identityName}'.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**
@@ -133,5 +131,51 @@ public final class VirtualMachineIdentity {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineIdentity.
+     */
+    public static VirtualMachineIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineIdentity deserializedVirtualMachineIdentity = new VirtualMachineIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedVirtualMachineIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedVirtualMachineIdentity.tenantId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineIdentity.type = ResourceIdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities
+                        = reader.readMap(reader1 -> VirtualMachineIdentityUserAssignedIdentities.fromJson(reader1));
+                    deserializedVirtualMachineIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineIdentity;
+        });
     }
 }

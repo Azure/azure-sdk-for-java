@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class NotebookWorkspaceName extends ExpandableStringEnum<NotebookWo
      * @param name a name to look for.
      * @return the corresponding NotebookWorkspaceName.
      */
-    @JsonCreator
     public static NotebookWorkspaceName fromString(String name) {
         return fromString(name, NotebookWorkspaceName.class);
     }

@@ -96,7 +96,10 @@ public interface IDocumentQueryClient {
 
     Mono<RxDocumentServiceRequest> populateFeedRangeHeader(RxDocumentServiceRequest request);
 
-    Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions);
+    Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(
+        RxDocumentServiceRequest request,
+        CosmosQueryRequestOptions queryRequestOptions,
+        DocumentClientRetryPolicy clientRetryPolicy);
 
     GlobalEndpointManager getGlobalEndpointManager();
 

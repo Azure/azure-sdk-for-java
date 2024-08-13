@@ -5,22 +5,25 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-/** apiApplication. */
+/**
+ * apiApplication.
+ */
 @Fluent
-public final class MicrosoftGraphApiApplication {
+public final class MicrosoftGraphApiApplication implements JsonSerializable<MicrosoftGraphApiApplication> {
     /*
      * When true, allows an application to use claims mapping without specifying a custom signing key.
      */
-    @JsonProperty(value = "acceptMappedClaims")
     private Boolean acceptMappedClaims;
 
     /*
@@ -30,7 +33,6 @@ public final class MicrosoftGraphApiApplication {
      * service principals for both APIs at the same time. Both the client and the web API app must be registered in the
      * same tenant.
      */
-    @JsonProperty(value = "knownClientApplications")
     private List<UUID> knownClientApplications;
 
     /*
@@ -38,7 +40,6 @@ public final class MicrosoftGraphApiApplication {
      * These delegated permissions may be requested by a client application, and may be granted by users or
      * administrators during consent. Delegated permissions are sometimes referred to as OAuth 2.0 scopes.
      */
-    @JsonProperty(value = "oauth2PermissionScopes")
     private List<MicrosoftGraphPermissionScope> oauth2PermissionScopes;
 
     /*
@@ -47,34 +48,34 @@ public final class MicrosoftGraphApiApplication {
      * specified). However, any additional permissions not listed in preAuthorizedApplications (requested through
      * incremental consent for example) will require user consent.
      */
-    @JsonProperty(value = "preAuthorizedApplications")
     private List<MicrosoftGraphPreAuthorizedApplication> preAuthorizedApplications;
 
     /*
      * Specifies the access token version expected by this resource. This changes the version and format of the JWT
-     * produced independent of the endpoint or client used to request the access token.  The endpoint used, v1.0 or
-     * v2.0, is chosen by the client and only impacts the version of id_tokens. Resources need to explicitly configure
-     * requestedAccessTokenVersion to indicate the supported access token format.  Possible values for
-     * requestedAccessTokenVersion are 1, 2, or null. If the value is null, this defaults to 1, which corresponds to
-     * the v1.0 endpoint.  If signInAudience on the application is configured as AzureADandPersonalMicrosoftAccount,
-     * the value for this property must be 2
+     * produced independent of the endpoint or client used to request the access token. The endpoint used, v1.0 or v2.0,
+     * is chosen by the client and only impacts the version of id_tokens. Resources need to explicitly configure
+     * requestedAccessTokenVersion to indicate the supported access token format. Possible values for
+     * requestedAccessTokenVersion are 1, 2, or null. If the value is null, this defaults to 1, which corresponds to the
+     * v1.0 endpoint. If signInAudience on the application is configured as AzureADandPersonalMicrosoftAccount, the
+     * value for this property must be 2
      */
-    @JsonProperty(value = "requestedAccessTokenVersion")
     private Integer requestedAccessTokenVersion;
 
     /*
      * apiApplication
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphApiApplication class. */
+    /**
+     * Creates an instance of MicrosoftGraphApiApplication class.
+     */
     public MicrosoftGraphApiApplication() {
     }
 
     /**
      * Get the acceptMappedClaims property: When true, allows an application to use claims mapping without specifying a
      * custom signing key.
-     *
+     * 
      * @return the acceptMappedClaims value.
      */
     public Boolean acceptMappedClaims() {
@@ -84,7 +85,7 @@ public final class MicrosoftGraphApiApplication {
     /**
      * Set the acceptMappedClaims property: When true, allows an application to use claims mapping without specifying a
      * custom signing key.
-     *
+     * 
      * @param acceptMappedClaims the acceptMappedClaims value to set.
      * @return the MicrosoftGraphApiApplication object itself.
      */
@@ -99,7 +100,7 @@ public final class MicrosoftGraphApiApplication {
      * consents once to the client app. Azure AD knows that consenting to the client means implicitly consenting to the
      * web API and automatically provisions service principals for both APIs at the same time. Both the client and the
      * web API app must be registered in the same tenant.
-     *
+     * 
      * @return the knownClientApplications value.
      */
     public List<UUID> knownClientApplications() {
@@ -112,7 +113,7 @@ public final class MicrosoftGraphApiApplication {
      * consents once to the client app. Azure AD knows that consenting to the client means implicitly consenting to the
      * web API and automatically provisions service principals for both APIs at the same time. Both the client and the
      * web API app must be registered in the same tenant.
-     *
+     * 
      * @param knownClientApplications the knownClientApplications value to set.
      * @return the MicrosoftGraphApiApplication object itself.
      */
@@ -126,7 +127,7 @@ public final class MicrosoftGraphApiApplication {
      * represented by this application registration. These delegated permissions may be requested by a client
      * application, and may be granted by users or administrators during consent. Delegated permissions are sometimes
      * referred to as OAuth 2.0 scopes.
-     *
+     * 
      * @return the oauth2PermissionScopes value.
      */
     public List<MicrosoftGraphPermissionScope> oauth2PermissionScopes() {
@@ -138,12 +139,12 @@ public final class MicrosoftGraphApiApplication {
      * represented by this application registration. These delegated permissions may be requested by a client
      * application, and may be granted by users or administrators during consent. Delegated permissions are sometimes
      * referred to as OAuth 2.0 scopes.
-     *
+     * 
      * @param oauth2PermissionScopes the oauth2PermissionScopes value to set.
      * @return the MicrosoftGraphApiApplication object itself.
      */
-    public MicrosoftGraphApiApplication withOauth2PermissionScopes(
-        List<MicrosoftGraphPermissionScope> oauth2PermissionScopes) {
+    public MicrosoftGraphApiApplication
+        withOauth2PermissionScopes(List<MicrosoftGraphPermissionScope> oauth2PermissionScopes) {
         this.oauth2PermissionScopes = oauth2PermissionScopes;
         return this;
     }
@@ -153,7 +154,7 @@ public final class MicrosoftGraphApiApplication {
      * specified delegated permissions to access this application's APIs. Users are not required to consent to any
      * pre-authorized application (for the permissions specified). However, any additional permissions not listed in
      * preAuthorizedApplications (requested through incremental consent for example) will require user consent.
-     *
+     * 
      * @return the preAuthorizedApplications value.
      */
     public List<MicrosoftGraphPreAuthorizedApplication> preAuthorizedApplications() {
@@ -165,12 +166,12 @@ public final class MicrosoftGraphApiApplication {
      * specified delegated permissions to access this application's APIs. Users are not required to consent to any
      * pre-authorized application (for the permissions specified). However, any additional permissions not listed in
      * preAuthorizedApplications (requested through incremental consent for example) will require user consent.
-     *
+     * 
      * @param preAuthorizedApplications the preAuthorizedApplications value to set.
      * @return the MicrosoftGraphApiApplication object itself.
      */
-    public MicrosoftGraphApiApplication withPreAuthorizedApplications(
-        List<MicrosoftGraphPreAuthorizedApplication> preAuthorizedApplications) {
+    public MicrosoftGraphApiApplication
+        withPreAuthorizedApplications(List<MicrosoftGraphPreAuthorizedApplication> preAuthorizedApplications) {
         this.preAuthorizedApplications = preAuthorizedApplications;
         return this;
     }
@@ -183,7 +184,7 @@ public final class MicrosoftGraphApiApplication {
      * Possible values for requestedAccessTokenVersion are 1, 2, or null. If the value is null, this defaults to 1,
      * which corresponds to the v1.0 endpoint. If signInAudience on the application is configured as
      * AzureADandPersonalMicrosoftAccount, the value for this property must be 2.
-     *
+     * 
      * @return the requestedAccessTokenVersion value.
      */
     public Integer requestedAccessTokenVersion() {
@@ -198,7 +199,7 @@ public final class MicrosoftGraphApiApplication {
      * Possible values for requestedAccessTokenVersion are 1, 2, or null. If the value is null, this defaults to 1,
      * which corresponds to the v1.0 endpoint. If signInAudience on the application is configured as
      * AzureADandPersonalMicrosoftAccount, the value for this property must be 2.
-     *
+     * 
      * @param requestedAccessTokenVersion the requestedAccessTokenVersion value to set.
      * @return the MicrosoftGraphApiApplication object itself.
      */
@@ -209,17 +210,16 @@ public final class MicrosoftGraphApiApplication {
 
     /**
      * Get the additionalProperties property: apiApplication.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: apiApplication.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphApiApplication object itself.
      */
@@ -228,17 +228,9 @@ public final class MicrosoftGraphApiApplication {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -248,5 +240,75 @@ public final class MicrosoftGraphApiApplication {
         if (preAuthorizedApplications() != null) {
             preAuthorizedApplications().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("acceptMappedClaims", this.acceptMappedClaims);
+        jsonWriter.writeArrayField("knownClientApplications", this.knownClientApplications,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("oauth2PermissionScopes", this.oauth2PermissionScopes,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("preAuthorizedApplications", this.preAuthorizedApplications,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("requestedAccessTokenVersion", this.requestedAccessTokenVersion);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphApiApplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphApiApplication if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphApiApplication.
+     */
+    public static MicrosoftGraphApiApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphApiApplication deserializedMicrosoftGraphApiApplication = new MicrosoftGraphApiApplication();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("acceptMappedClaims".equals(fieldName)) {
+                    deserializedMicrosoftGraphApiApplication.acceptMappedClaims
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("knownClientApplications".equals(fieldName)) {
+                    List<UUID> knownClientApplications = reader.readArray(
+                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedMicrosoftGraphApiApplication.knownClientApplications = knownClientApplications;
+                } else if ("oauth2PermissionScopes".equals(fieldName)) {
+                    List<MicrosoftGraphPermissionScope> oauth2PermissionScopes
+                        = reader.readArray(reader1 -> MicrosoftGraphPermissionScope.fromJson(reader1));
+                    deserializedMicrosoftGraphApiApplication.oauth2PermissionScopes = oauth2PermissionScopes;
+                } else if ("preAuthorizedApplications".equals(fieldName)) {
+                    List<MicrosoftGraphPreAuthorizedApplication> preAuthorizedApplications
+                        = reader.readArray(reader1 -> MicrosoftGraphPreAuthorizedApplication.fromJson(reader1));
+                    deserializedMicrosoftGraphApiApplication.preAuthorizedApplications = preAuthorizedApplications;
+                } else if ("requestedAccessTokenVersion".equals(fieldName)) {
+                    deserializedMicrosoftGraphApiApplication.requestedAccessTokenVersion
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphApiApplication.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphApiApplication;
+        });
     }
 }

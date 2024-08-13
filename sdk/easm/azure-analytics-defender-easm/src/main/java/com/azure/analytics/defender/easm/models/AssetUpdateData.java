@@ -5,41 +5,41 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * A request body used to update an asset.
  */
 @Fluent
-public final class AssetUpdateData {
+public final class AssetUpdateData implements JsonSerializable<AssetUpdateData> {
 
     /*
      * The state to update the asset to.
      */
     @Generated
-    @JsonProperty(value = "state")
     private AssetUpdateState state;
 
     /*
      * A string which can be used to identify the asset in external systems.
      */
     @Generated
-    @JsonProperty(value = "externalId")
     private String externalId;
 
     /*
      * Any Labels to update the asset with.
      */
     @Generated
-    @JsonProperty(value = "labels")
     private Map<String, Boolean> labels;
 
     /*
      * A list of asset types to cascade the updates to.
      */
     @Generated
-    @JsonProperty(value = "transfers")
     private AssetUpdateTransfers transfers;
 
     /**
@@ -135,5 +135,51 @@ public final class AssetUpdateData {
     public AssetUpdateData setTransfers(AssetUpdateTransfers transfers) {
         this.transfers = transfers;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("externalId", this.externalId);
+        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeBoolean(element));
+        jsonWriter.writeStringField("transfers", this.transfers == null ? null : this.transfers.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssetUpdateData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssetUpdateData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AssetUpdateData.
+     */
+    @Generated
+    public static AssetUpdateData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssetUpdateData deserializedAssetUpdateData = new AssetUpdateData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("state".equals(fieldName)) {
+                    deserializedAssetUpdateData.state = AssetUpdateState.fromString(reader.getString());
+                } else if ("externalId".equals(fieldName)) {
+                    deserializedAssetUpdateData.externalId = reader.getString();
+                } else if ("labels".equals(fieldName)) {
+                    Map<String, Boolean> labels = reader.readMap(reader1 -> reader1.getBoolean());
+                    deserializedAssetUpdateData.labels = labels;
+                } else if ("transfers".equals(fieldName)) {
+                    deserializedAssetUpdateData.transfers = AssetUpdateTransfers.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAssetUpdateData;
+        });
     }
 }

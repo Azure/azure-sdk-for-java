@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2024-03-01-preview/
      * StandbyVirtualMachinePools_CreateOrUpdate.json
      */
     /**
@@ -31,10 +31,11 @@ public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
             .withExistingResourceGroup("rgstandbypool")
             .withTags(mapOf())
             .withProperties(new StandbyVirtualMachinePoolResourceProperties()
-                .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L))
+                .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L)
+                    .withMinReadyCapacity(300L))
                 .withVirtualMachineState(VirtualMachineState.RUNNING)
                 .withAttachedVirtualMachineScaleSetId(
-                    "/subscriptions/8CC31D61-82D7-4B2B-B9DC-6B924DE7D229/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))
+                    "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))
             .create();
     }
 
