@@ -26,6 +26,7 @@ import com.azure.resourcemanager.network.implementation.PublicIpPrefixesImpl;
 import com.azure.resourcemanager.network.implementation.RouteFiltersImpl;
 import com.azure.resourcemanager.network.implementation.RouteTablesImpl;
 import com.azure.resourcemanager.network.implementation.VirtualNetworkGatewaysImpl;
+import com.azure.resourcemanager.network.implementation.VpnSitesImpl;
 import com.azure.resourcemanager.network.implementation.WebApplicationFirewallPoliciesImpl;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroups;
@@ -46,6 +47,7 @@ import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
+import com.azure.resourcemanager.network.models.VpnSites;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicies;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
@@ -78,6 +80,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
     private PrivateEndpoints privateEndpoints;
     private NetworkProfiles networkProfiles;
     private WebApplicationFirewallPolicies webApplicationFirewallPolicies;
+    private VpnSites vpnSites;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager} with optional configuration.
@@ -303,5 +306,13 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
             this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesImpl(this);
         }
         return this.webApplicationFirewallPolicies;
+    }
+
+    /** @return entry point to VPN management */
+    public VpnSites vpnSites() {
+        if (this.vpnSites == null) {
+            this.vpnSites = new VpnSitesImpl(this);
+        }
+        return this.vpnSites;
     }
 }

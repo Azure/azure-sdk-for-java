@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Add `VpnSites` and `VpnSite` support in `NetworkManager`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
