@@ -49,6 +49,7 @@ import java.util.Map;
 public class IntelliJCacheAccessor {
     private static final ClientLogger LOGGER = new ClientLogger(IntelliJCacheAccessor.class);
     public static final String INTELLIJ_TOOLKIT_CACHE = "azure-toolkit.cache";
+    public static final String INTELLIJ_TOOLKIT_CACHE_NOCAE = "azure-toolkit.cache.nocae";
     private final String keePassDatabasePath;
     private static final byte[] CRYPTO_KEY = new byte[] {0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
         0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
@@ -122,7 +123,7 @@ public class IntelliJCacheAccessor {
                   "family_id": "family_id"
                 }
               },
-              so we need to step the parser through a couple times once we have found RefreshToken, as noted below.
+              so we need to step the parser to find RefreshToken, as noted below.
          */
         try {
             try (JsonReader jsonReader = JsonProviders.createReader(jsonString)) {
