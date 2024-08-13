@@ -4,6 +4,7 @@
 
 package com.azure.ai.documentintelligence.implementation;
 
+import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.rest.Response;
@@ -63,6 +64,22 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
         this.serializer = pollingStrategyOptions.getSerializer() != null
             ? pollingStrategyOptions.getSerializer()
             : JsonSerializerProviders.createInstance(true);
+    }
+
+    @Override
+    public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+        return super.poll(pollingContext, pollResponseType).map(pollResponse -> {
+            String operationLocationHeader = pollingContext.getData(PollingUtils.OPERATION_LOCATION_HEADER.getCaseSensitiveName());
+            String operationId = null;
+            if (operationLocationHeader != null) {
+                operationId = PollingUtils.parseOperationId(operationLocationHeader);
+            }
+            if (pollResponse.getValue() instanceof AnalyzeResultOperation) {
+                AnalyzeResultOperation operation = (AnalyzeResultOperation) pollResponse.getValue();
+                operation.setOperationId(operationId);
+            }
+            return pollResponse;
+        });
     }
 
     /**

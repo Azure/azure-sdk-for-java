@@ -23,11 +23,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // DO NOT modify this helper class
 
 final class PollingUtils {
-
     public static final TypeReference<Map<String, Object>> POST_POLL_RESULT_TYPE_REFERENCE
         = new TypeReference<Map<String, Object>>() {
         };
@@ -148,5 +149,26 @@ final class PollingUtils {
     private static Duration tryGetDelayMillis(String value) {
         long delayMillis = tryParseLong(value);
         return (delayMillis >= 0) ? Duration.ofMillis(delayMillis) : null;
+    }
+
+    /**
+     * Extracts the operation ID from the 'operation-location' URL. An example of 'operation-location' is
+     * https://[...]/language/analyze-text/jobs/36c9e042-77df-4cba-a87e-21ba2f50205a?api-version=2022-05-01
+     *
+     * @param operationLocation The URL specified in the 'Operation-Location' response header containing the
+     * operation ID used to track the progress and obtain the ID of the analyze operation.
+     *
+     * @return The operation ID that tracks the long running operation progress.
+     */
+    public static String parseOperationId(String operationLocation) {
+        if (!CoreUtils.isNullOrEmpty(operationLocation)) {
+            Pattern pattern = Pattern.compile("[^:]+://[^/]+/documentintelligence/.+/([^?/]+)");
+            Matcher matcher = pattern.matcher(operationLocation);
+
+            if (matcher.find() && matcher.group(1) != null) {
+                return matcher.group(1);
+            }
+        }
+        return null;
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.ai.documentintelligence.implementation;
 
+import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.rest.Response;
@@ -22,6 +23,8 @@ import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
+
+import static com.azure.ai.documentintelligence.implementation.PollingUtils.parseOperationId;
 
 // DO NOT modify this helper class
 
@@ -64,6 +67,21 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
         this.serializer = pollingStrategyOptions.getSerializer() != null
             ? pollingStrategyOptions.getSerializer()
             : JsonSerializerProviders.createInstance(true);
+    }
+
+    @Override
+    public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+        PollResponse<T> pollResponse = super.poll(pollingContext, pollResponseType);
+        String operationLocationHeader = pollingContext.getData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER));
+        String operationId = null;
+        if (operationLocationHeader != null) {
+            operationId = parseOperationId(operationLocationHeader);
+        }
+        if (pollResponse.getValue() instanceof AnalyzeResultOperation) {
+            AnalyzeResultOperation operation = (AnalyzeResultOperation) pollResponse.getValue();
+            operation.setOperationId(operationId);
+        }
+        return pollResponse;
     }
 
     /**
