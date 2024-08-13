@@ -238,7 +238,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             Map<String, String> writeRegionMap = this.getRegionMap(databaseAccount, true);
 
-            this.writeableRegions = new ArrayList<>(Arrays.asList("East US", "South Central US", "West US 2"));
+            this.writeableRegions = new ArrayList<>(writeRegionMap.keySet());
             assertThat(this.writeableRegions).isNotNull();
             assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
 
