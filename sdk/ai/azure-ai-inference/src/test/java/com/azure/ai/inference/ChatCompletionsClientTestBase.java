@@ -12,6 +12,8 @@ import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatRequestMessage;
 import com.azure.ai.inference.models.ChatRequestUserMessage;
+import com.azure.ai.inference.models.ChatRequestSystemMessage;
+import com.azure.ai.inference.models.ChatRequestAssistantMessage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
@@ -89,9 +91,7 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
     }
 
     void getStreamingChatCompletionsRunner(Consumer<List<ChatRequestMessage>> testRunner) {
-        List<ChatRequestMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(ChatRequestUserMessage.fromString("Say this is a test"));
-        testRunner.accept(chatMessages);
+        testRunner.accept(getChatMessages());
     }
 
     static void assertCompletionsStream(ChatCompletions chatCompletions) {
@@ -123,4 +123,12 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
         assertNotNull(actual.getFinishReason());
     }
 
+    private List<ChatRequestMessage> getChatMessages() {
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(ChatRequestUserMessage.fromString("Can you help me?"));
+        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(ChatRequestUserMessage.fromString("What's the best way to train a parrot?"));
+        return chatMessages;
+    }
 }

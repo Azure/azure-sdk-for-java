@@ -8,6 +8,11 @@ import com.azure.ai.inference.implementation.models.ExtraParameters;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -495,5 +500,104 @@ public final class ChatCompletionsOptions {
     public ChatCompletionsOptions setExtraParams(ExtraParameters extraParams) {
         this.extraParams = extraParams;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("messages", this.messages, JsonWriter::writeJson);
+        jsonWriter.writeNumberField("max_tokens", this.maxTokens);
+        jsonWriter.writeNumberField("temperature", this.temperature);
+        jsonWriter.writeNumberField("top_p", this.topP);
+        jsonWriter.writeArrayField("stop", this.stop, JsonWriter::writeString);
+        jsonWriter.writeNumberField("presence_penalty", this.presencePenalty);
+        jsonWriter.writeNumberField("frequency_penalty", this.frequencyPenalty);
+        jsonWriter.writeBooleanField("stream", this.stream);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeNumberField("seed", this.seed);
+        jsonWriter.writeJsonField("response_format", this.responseFormat);
+        jsonWriter.writeArrayField("tools", this.tools, JsonWriter::writeJson);
+        if (this.toolChoice != null) {
+            jsonWriter.writeRawField("tool_choice", this.toolChoice.toString());
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatCompletionsOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatCompletionsOptions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatCompletionsOptions.
+     */
+    @Generated
+    public static ChatCompletionsOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<ChatRequestMessage> messages = null;
+            Integer maxTokens = null;
+            Double temperature = null;
+            Double topP = null;
+            List<String> stop = null;
+            Double presencePenalty = null;
+            Double frequencyPenalty = null;
+            Boolean stream = null;
+            String model = null;
+            Long seed = null;
+            ChatCompletionsResponseFormat responseFormat = null;
+            List<ChatCompletionsToolDefinition> tools = null;
+            BinaryData toolChoice = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("messages".equals(fieldName)) {
+                    messages = reader.readArray(ChatRequestMessage::fromJson);
+                } else if ("max_tokens".equals(fieldName)) {
+                    maxTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("temperature".equals(fieldName)) {
+                    temperature = reader.getNullable(JsonReader::getDouble);
+                } else if ("top_p".equals(fieldName)) {
+                    topP = reader.getNullable(JsonReader::getDouble);
+                } else if ("stop".equals(fieldName)) {
+                    stop = reader.readArray(JsonReader::getString);
+                } else if ("presence_penalty".equals(fieldName)) {
+                    presencePenalty = reader.getNullable(JsonReader::getDouble);
+                } else if ("frequency_penalty".equals(fieldName)) {
+                    frequencyPenalty = reader.getNullable(JsonReader::getDouble);
+                } else if ("stream".equals(fieldName)) {
+                    stream = reader.getNullable(JsonReader::getBoolean);
+                } else if ("model".equals(fieldName)) {
+                    model = reader.getString();
+                } else if ("seed".equals(fieldName)) {
+                    seed = reader.getNullable(JsonReader::getLong);
+                } else if ("response_format".equals(fieldName)) {
+                    responseFormat = ChatCompletionsResponseFormat.fromJson(reader);
+                } else if ("tools".equals(fieldName)) {
+                    tools = reader.readArray(ChatCompletionsToolDefinition::fromJson);
+                } else if ("tool_choice".equals(fieldName)) {
+                    toolChoice
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ChatCompletionsOptions deserializedChatCompletionsOptions = new ChatCompletionsOptions(messages);
+            deserializedChatCompletionsOptions.maxTokens = maxTokens;
+            deserializedChatCompletionsOptions.temperature = temperature;
+            deserializedChatCompletionsOptions.topP = topP;
+            deserializedChatCompletionsOptions.stop = stop;
+            deserializedChatCompletionsOptions.presencePenalty = presencePenalty;
+            deserializedChatCompletionsOptions.frequencyPenalty = frequencyPenalty;
+            deserializedChatCompletionsOptions.stream = stream;
+            deserializedChatCompletionsOptions.model = model;
+            deserializedChatCompletionsOptions.seed = seed;
+            deserializedChatCompletionsOptions.responseFormat = responseFormat;
+            deserializedChatCompletionsOptions.tools = tools;
+            deserializedChatCompletionsOptions.toolChoice = toolChoice;
+            return deserializedChatCompletionsOptions;
+        });
     }
 }
