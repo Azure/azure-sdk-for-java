@@ -1207,9 +1207,6 @@ public final class OpenAIClientImpl {
      *     presence_penalty: Double (Optional)
      *     frequency_penalty: Double (Optional)
      *     stream: Boolean (Optional)
-     *     stream_options (Optional): {
-     *         include_usage: Boolean (Optional)
-     *     }
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
@@ -1461,9 +1458,6 @@ public final class OpenAIClientImpl {
      *     presence_penalty: Double (Optional)
      *     frequency_penalty: Double (Optional)
      *     stream: Boolean (Optional)
-     *     stream_options (Optional): {
-     *         include_usage: Boolean (Optional)
-     *     }
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){

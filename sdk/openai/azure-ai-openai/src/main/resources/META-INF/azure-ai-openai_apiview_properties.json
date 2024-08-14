@@ -122,7 +122,6 @@
     "com.azure.ai.openai.models.BatchStatus": "Azure.OpenAI.BatchStatus",
     "com.azure.ai.openai.models.ChatChoice": "Azure.OpenAI.ChatChoice",
     "com.azure.ai.openai.models.ChatChoiceLogProbabilityInfo": "Azure.OpenAI.ChatChoiceLogProbabilityInfo",
-    "com.azure.ai.openai.models.ChatCompletionStreamOptions": "Azure.OpenAI.ChatCompletionStreamOptions",
     "com.azure.ai.openai.models.ChatCompletions": "Azure.OpenAI.ChatCompletions",
     "com.azure.ai.openai.models.ChatCompletionsFunctionToolCall": "Azure.OpenAI.ChatCompletionsFunctionToolCall",
     "com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition": "Azure.OpenAI.ChatCompletionsFunctionToolDefinition",

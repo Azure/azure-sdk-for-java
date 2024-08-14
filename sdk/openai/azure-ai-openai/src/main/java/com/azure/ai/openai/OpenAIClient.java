@@ -5,7 +5,6 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
-import com.azure.ai.openai.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.implementation.models.CreateBatchRequest;
 import com.azure.ai.openai.implementation.models.FileListResponse;
 import com.azure.ai.openai.implementation.models.OpenAIPageableListOfBatch;
@@ -27,7 +26,6 @@ import com.azure.ai.openai.models.FilePurpose;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.ai.openai.models.OpenAIFile;
-import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -41,10 +39,11 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import com.azure.ai.openai.implementation.accesshelpers.PageableListAccessHelper;
+import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartDataHelper;
 import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
@@ -1069,7 +1068,7 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1126,7 +1125,7 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -1154,7 +1153,7 @@ public final class OpenAIClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1204,7 +1203,7 @@ public final class OpenAIClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -1533,7 +1532,7 @@ public final class OpenAIClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1568,7 +1567,7 @@ public final class OpenAIClient {
     /**
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1601,7 +1600,7 @@ public final class OpenAIClient {
     /**
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1627,7 +1626,7 @@ public final class OpenAIClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1658,7 +1657,7 @@ public final class OpenAIClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * byte[]
      * }</pre>
@@ -1689,7 +1688,7 @@ public final class OpenAIClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1757,7 +1756,7 @@ public final class OpenAIClient {
      * Response includes details of the enqueued job including job status.
      * The ID of the result file is added to the response once complete.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     endpoint: String (Required)
@@ -1768,9 +1767,9 @@ public final class OpenAIClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1829,7 +1828,7 @@ public final class OpenAIClient {
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1888,7 +1887,7 @@ public final class OpenAIClient {
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2126,8 +2125,10 @@ public final class OpenAIClient {
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
-        OpenAIPageableListOfBatch batchList = listBatchesWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfBatch.class);
-        return PageableListAccessHelper.create(batchList.getData(), batchList.getFirstId(), batchList.getLastId(), batchList.isHasMore());
+        OpenAIPageableListOfBatch batchList
+            = listBatchesWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfBatch.class);
+        return PageableListAccessHelper.create(batchList.getData(), batchList.getFirstId(), batchList.getLastId(),
+            batchList.isHasMore());
     }
 
     /**
@@ -2144,61 +2145,10 @@ public final class OpenAIClient {
     public PageableList<Batch> listBatches() {
         // Generated convenience method for listBatchesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfBatch batchList = listBatchesWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfBatch.class);
-        return PageableListAccessHelper.create(batchList.getData(), batchList.getFirstId(), batchList.getLastId(), batchList.isHasMore());
-    }
-
-    /**
-     * Creates and executes a batch from an uploaded file of requests.
-     * Response includes details of the enqueued job including job status.
-     * The ID of the result file is added to the response once complete.
-     *
-     * @param inputFileId The ID of the input file for the batch.
-     * @param completionWindow The time frame within which the batch should be processed.
-     * @param metadata A set of key-value pairs that can be attached to the batch. This can be useful for storing
-     * additional information about the batch in a structured format.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch object.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Batch createBatch(String inputFileId, String completionWindow, Map<String, String> metadata) {
-        // Generated convenience method for createBatchWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateBatchRequest createBatchRequestObj
-            = new CreateBatchRequest(inputFileId, completionWindow).setMetadata(metadata);
-        BinaryData createBatchRequest = BinaryData.fromObject(createBatchRequestObj);
-        return createBatchWithResponse(createBatchRequest, requestOptions).getValue().toObject(Batch.class);
-    }
-
-    /**
-     * Creates and executes a batch from an uploaded file of requests.
-     * Response includes details of the enqueued job including job status.
-     * The ID of the result file is added to the response once complete.
-     *
-     * @param inputFileId The ID of the input file for the batch.
-     * @param completionWindow The time frame within which the batch should be processed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch object.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Batch createBatch(String inputFileId, String completionWindow) {
-        // Generated convenience method for createBatchWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateBatchRequest createBatchRequestObj = new CreateBatchRequest(inputFileId, completionWindow);
-        BinaryData createBatchRequest = BinaryData.fromObject(createBatchRequestObj);
-        return createBatchWithResponse(createBatchRequest, requestOptions).getValue().toObject(Batch.class);
+        OpenAIPageableListOfBatch batchList
+            = listBatchesWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfBatch.class);
+        return PageableListAccessHelper.create(batchList.getData(), batchList.getFirstId(), batchList.getLastId(),
+            batchList.isHasMore());
     }
 
     /**
@@ -2239,5 +2189,61 @@ public final class OpenAIClient {
         // Generated convenience method for cancelBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelBatchWithResponse(batchId, requestOptions).getValue().toObject(Batch.class);
+    }
+
+    /**
+     * Creates and executes a batch from an uploaded file of requests.
+     * Response includes details of the enqueued job including job status.
+     * The ID of the result file is added to the response once complete.
+     *
+     * @param endpoint The API endpoint used by the batch.
+     * @param inputFileId The ID of the input file for the batch.
+     * @param completionWindow The time frame within which the batch should be processed.
+     * @param metadata A set of key-value pairs that can be attached to the batch. This can be useful for storing
+     * additional information about the batch in a structured format.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Batch object.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Batch createBatch(String endpoint, String inputFileId, String completionWindow,
+        Map<String, String> metadata) {
+        // Generated convenience method for createBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateBatchRequest createBatchRequestObj
+            = new CreateBatchRequest(endpoint, inputFileId, completionWindow).setMetadata(metadata);
+        BinaryData createBatchRequest = BinaryData.fromObject(createBatchRequestObj);
+        return createBatchWithResponse(createBatchRequest, requestOptions).getValue().toObject(Batch.class);
+    }
+
+    /**
+     * Creates and executes a batch from an uploaded file of requests.
+     * Response includes details of the enqueued job including job status.
+     * The ID of the result file is added to the response once complete.
+     *
+     * @param endpoint The API endpoint used by the batch.
+     * @param inputFileId The ID of the input file for the batch.
+     * @param completionWindow The time frame within which the batch should be processed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Batch object.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Batch createBatch(String endpoint, String inputFileId, String completionWindow) {
+        // Generated convenience method for createBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateBatchRequest createBatchRequestObj = new CreateBatchRequest(endpoint, inputFileId, completionWindow);
+        BinaryData createBatchRequest = BinaryData.fromObject(createBatchRequestObj);
+        return createBatchWithResponse(createBatchRequest, requestOptions).getValue().toObject(Batch.class);
     }
 }

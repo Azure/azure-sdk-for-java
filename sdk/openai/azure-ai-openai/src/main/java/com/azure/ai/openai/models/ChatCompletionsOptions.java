@@ -864,7 +864,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             Double presencePenalty = null;
             Double frequencyPenalty = null;
             Boolean stream = null;
-            ChatCompletionStreamOptions streamOptions = null;
             String model = null;
             List<AzureChatExtensionConfiguration> dataSources = null;
             AzureChatEnhancementConfiguration enhancements = null;
@@ -904,8 +903,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
                     frequencyPenalty = reader.getNullable(JsonReader::getDouble);
                 } else if ("stream".equals(fieldName)) {
                     stream = reader.getNullable(JsonReader::getBoolean);
-                } else if ("stream_options".equals(fieldName)) {
-                    streamOptions = ChatCompletionStreamOptions.fromJson(reader);
                 } else if ("model".equals(fieldName)) {
                     model = reader.getString();
                 } else if ("data_sources".equals(fieldName)) {
@@ -942,7 +939,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             deserializedChatCompletionsOptions.presencePenalty = presencePenalty;
             deserializedChatCompletionsOptions.frequencyPenalty = frequencyPenalty;
             deserializedChatCompletionsOptions.stream = stream;
-            deserializedChatCompletionsOptions.streamOptions = streamOptions;
             deserializedChatCompletionsOptions.model = model;
             deserializedChatCompletionsOptions.dataSources = dataSources;
             deserializedChatCompletionsOptions.enhancements = enhancements;
@@ -954,33 +950,5 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             deserializedChatCompletionsOptions.toolChoice = toolChoice;
             return deserializedChatCompletionsOptions;
         });
-    }
-
-    /*
-     * Options for streaming response. Only set this when you set `stream: true`.
-     */
-    @Generated
-    private ChatCompletionStreamOptions streamOptions;
-
-    /**
-     * Get the streamOptions property: Options for streaming response. Only set this when you set `stream: true`.
-     *
-     * @return the streamOptions value.
-     */
-    @Generated
-    public ChatCompletionStreamOptions getStreamOptions() {
-        return this.streamOptions;
-    }
-
-    /**
-     * Set the streamOptions property: Options for streaming response. Only set this when you set `stream: true`.
-     *
-     * @param streamOptions the streamOptions value to set.
-     * @return the ChatCompletionsOptions object itself.
-     */
-    @Generated
-    public ChatCompletionsOptions setStreamOptions(ChatCompletionStreamOptions streamOptions) {
-        this.streamOptions = streamOptions;
-        return this;
     }
 }

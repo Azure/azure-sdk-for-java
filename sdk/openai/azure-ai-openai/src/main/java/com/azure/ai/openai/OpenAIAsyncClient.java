@@ -2206,61 +2206,6 @@ public final class OpenAIAsyncClient {
     }
 
     /**
-     * Creates and executes a batch from an uploaded file of requests.
-     * Response includes details of the enqueued job including job status.
-     * The ID of the result file is added to the response once complete.
-     *
-     * @param inputFileId The ID of the input file for the batch.
-     * @param completionWindow The time frame within which the batch should be processed.
-     * @param metadata A set of key-value pairs that can be attached to the batch. This can be useful for storing
-     * additional information about the batch in a structured format.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch object on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Batch> createBatch(String inputFileId, String completionWindow, Map<String, String> metadata) {
-        // Generated convenience method for createBatchWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateBatchRequest createBatchRequestObj
-            = new CreateBatchRequest(inputFileId, completionWindow).setMetadata(metadata);
-        BinaryData createBatchRequest = BinaryData.fromObject(createBatchRequestObj);
-        return createBatchWithResponse(createBatchRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Batch.class));
-    }
-
-    /**
-     * Creates and executes a batch from an uploaded file of requests.
-     * Response includes details of the enqueued job including job status.
-     * The ID of the result file is added to the response once complete.
-     *
-     * @param inputFileId The ID of the input file for the batch.
-     * @param completionWindow The time frame within which the batch should be processed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch object on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Batch> createBatch(String inputFileId, String completionWindow) {
-        // Generated convenience method for createBatchWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateBatchRequest createBatchRequestObj = new CreateBatchRequest(inputFileId, completionWindow);
-        BinaryData createBatchRequest = BinaryData.fromObject(createBatchRequestObj);
-        return createBatchWithResponse(createBatchRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Batch.class));
-    }
-
-    /**
      * Gets details for a single batch specified by the given batchID.
      *
      * @param batchId The identifier of the batch.
@@ -2299,6 +2244,64 @@ public final class OpenAIAsyncClient {
         // Generated convenience method for cancelBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelBatchWithResponse(batchId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Batch.class));
+    }
+
+    /**
+     * Creates and executes a batch from an uploaded file of requests.
+     * Response includes details of the enqueued job including job status.
+     * The ID of the result file is added to the response once complete.
+     *
+     * @param endpoint The API endpoint used by the batch.
+     * @param inputFileId The ID of the input file for the batch.
+     * @param completionWindow The time frame within which the batch should be processed.
+     * @param metadata A set of key-value pairs that can be attached to the batch. This can be useful for storing
+     * additional information about the batch in a structured format.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Batch object on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Batch> createBatch(String endpoint, String inputFileId, String completionWindow,
+        Map<String, String> metadata) {
+        // Generated convenience method for createBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateBatchRequest createBatchRequestObj
+            = new CreateBatchRequest(endpoint, inputFileId, completionWindow).setMetadata(metadata);
+        BinaryData createBatchRequest = BinaryData.fromObject(createBatchRequestObj);
+        return createBatchWithResponse(createBatchRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Batch.class));
+    }
+
+    /**
+     * Creates and executes a batch from an uploaded file of requests.
+     * Response includes details of the enqueued job including job status.
+     * The ID of the result file is added to the response once complete.
+     *
+     * @param endpoint The API endpoint used by the batch.
+     * @param inputFileId The ID of the input file for the batch.
+     * @param completionWindow The time frame within which the batch should be processed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Batch object on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Batch> createBatch(String endpoint, String inputFileId, String completionWindow) {
+        // Generated convenience method for createBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateBatchRequest createBatchRequestObj = new CreateBatchRequest(endpoint, inputFileId, completionWindow);
+        BinaryData createBatchRequest = BinaryData.fromObject(createBatchRequestObj);
+        return createBatchWithResponse(createBatchRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Batch.class));
     }
 }
