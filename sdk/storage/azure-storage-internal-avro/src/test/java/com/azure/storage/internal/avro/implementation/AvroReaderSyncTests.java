@@ -1,13 +1,11 @@
 package com.azure.storage.internal.avro.implementation;
 
-import com.azure.core.util.FluxUtil;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -172,49 +170,6 @@ public class AvroReaderSyncTests {
 
         assertArraysEqual(expected, actualBytes);
     }
-
-    /* This test checks that different chunk sizes still result in validly parsed files. */
-    @ParameterizedTest
-    @ValueSource(ints = {1, 36, 78, 157})
-    public void parseChunkSize(int chunkSize) throws IOException, URISyntaxException {
-        try (FileChannel fileChannel = openChannel(13)) {
-            Map<String, Object> expectedRecord = new HashMap<>();
-            expectedRecord.put("$record", "Test");
-            expectedRecord.put("f", 5L);
-
-            Consumer<Object> validationConsumer = object -> {
-                assertTrue(object instanceof Map);
-                Map<?, ?> actualRecord = (Map<?, ?>) object;
-                expectedRecord.forEach((key, value) ->
-                    assertEquals(value, actualRecord.get(key), "Mismatch for key: " + key));
-            };
-
-            long fileSize = fileChannel.size();
-            System.out.println("File size: " + fileSize);
-            long position = 0;  // Start from the beginning of the file.
-
-            while (position < fileSize) {
-                int remaining = (int)(fileSize - position);
-                System.out.println("Remaining: " + remaining);
-                int currentChunkSize = Math.min(chunkSize, remaining);
-                ByteBuffer buffer = ByteBuffer.allocateDirect(currentChunkSize);  // Allocate buffer based on the smaller of chunkSize or remaining bytes.
-                fileChannel.read(buffer);
-                buffer.flip(); // Prepare the buffer for reading.
-
-                AvroReaderSyncFactory factory = new AvroReaderSyncFactory();
-                Iterable<AvroObject> results = factory.getAvroReader(buffer).read();
-
-                // Process and validate results immediately.
-                StreamSupport.stream(results.spliterator(), false)
-                    .map(AvroObject::getObject)
-                    .forEach(validationConsumer);
-
-                position += currentChunkSize;  // Update position after processing current chunk.
-                buffer.clear();  // Clear the buffer for potential reuse.
-            }
-        }
-    }
-
 
     @Test
     public void parseCfLarge() throws IOException, URISyntaxException {

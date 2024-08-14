@@ -10,16 +10,23 @@ import com.azure.storage.internal.avro.implementation.schema.AvroSimpleSchema;
 import com.azure.storage.internal.avro.implementation.schema.AvroType;
 import com.azure.storage.internal.avro.implementation.schema.file.AvroBlockSchema;
 import com.azure.storage.internal.avro.implementation.schema.file.AvroHeaderSchema;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A class that represents a push based AvroParser that can parse avro data from a stream.
+ * <p>
+ * The parser stores the {@link AvroParserState current state}, the sync marker (parsed from the header),
+ * the file type (parsed from the header metadata), and the list of records collected so far.
+ * <p>
+ * The {@link AvroParser#parse(ByteBuffer)} method accepts ByteBuffers from the stream.
+ * <p>
+ * Header Block Block Block ....
+ */
 public class AvroSyncParser {
 
     private static final ClientLogger LOGGER = new ClientLogger(AvroSyncParser.class);
@@ -84,8 +91,6 @@ public class AvroSyncParser {
         ByteBuffer allocatedBuffer = ByteBuffer.allocate(buffer.remaining());
         allocatedBuffer.put(buffer);
         allocatedBuffer.position(0);
-        System.out.println(Arrays.toString(allocatedBuffer.array()));
-        System.out.println(allocatedBuffer.position() + " " + allocatedBuffer.limit() + " " + allocatedBuffer.capacity());
 
         this.state.write(allocatedBuffer);
 

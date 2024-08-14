@@ -137,8 +137,6 @@ public class AvroParser {
         ByteBuffer allocatedBuffer = ByteBuffer.allocate(buffer.remaining());
         allocatedBuffer.put(buffer);
         allocatedBuffer.position(0);
-        System.out.println(Arrays.toString(allocatedBuffer.array()));
-        System.out.println(allocatedBuffer.position() + " " + allocatedBuffer.limit() + " " + allocatedBuffer.capacity());
 
         this.state.write(allocatedBuffer);
 

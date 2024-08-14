@@ -93,8 +93,6 @@ public class AvroHeaderSchema extends AvroCompositeSchema {
         checkType("magic", magic, List.class);
         /* Validate the magic bytes. */
         byte[] init = AvroSchema.getBytes((List<?>) magic);
-        System.out.println("Magic bytes: " + AvroConstants.MAGIC_BYTES);
-        System.out.println("Init bytes: " + Arrays.toString(init));
         for (int i = 0; i < AvroConstants.MAGIC_BYTES.size(); i++) {
             if (!AvroConstants.MAGIC_BYTES.get(i).equals(init[i])) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid Avro file."));
