@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.addTrailingSlashIfRequired;
 import static java.util.logging.Level.FINER;
 import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.WARNING;
 
 /**
  * The REST client specific to getting an access token for Azure REST APIs.
@@ -143,7 +144,11 @@ public final class AccessTokenUtil {
             HttpUtil.post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
 
         if (body != null) {
-            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
+            try {
+                result = (AccessToken) JsonConverterUtil.fromJson(AccessToken.class, body);
+            } catch (Throwable t) {
+                LOGGER.log(WARNING, "Failed to parse access token response");
+            }
         }
 
         LOGGER.log(FINER, "Access token: {0}", result);
@@ -183,7 +188,11 @@ public final class AccessTokenUtil {
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
-            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
+            try {
+                result = (AccessToken) JsonConverterUtil.fromJson(AccessToken.class, body);
+            } catch (Throwable t) {
+                LOGGER.log(WARNING, "Failed to parse access token response");
+            }
         }
 
         LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnAppService", result);
@@ -224,7 +233,11 @@ public final class AccessTokenUtil {
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
-            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
+            try {
+                result = (AccessToken) JsonConverterUtil.fromJson(AccessToken.class, body);
+            } catch (Throwable t) {
+                LOGGER.log(WARNING, "Failed to parse access token response");
+            }
         }
 
         LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnOthers", result);

@@ -226,8 +226,12 @@ public class KeyVaultClient {
             CertificateListResult certificateListResult = null;
 
             if (response != null) {
-                certificateListResult =
-                    (CertificateListResult) JsonConverterUtil.fromJson(response, CertificateListResult.class);
+                try {
+                    certificateListResult =
+                        (CertificateListResult) JsonConverterUtil.fromJson(CertificateListResult.class, response);
+                } catch (Throwable t) {
+                    LOGGER.log(WARNING, "Failed to parse certificate list response");
+                }
             }
 
             if (certificateListResult != null) {
@@ -263,7 +267,11 @@ public class KeyVaultClient {
         String response = HttpUtil.get(uri, headers);
 
         if (response != null) {
-            result = (CertificateBundle) JsonConverterUtil.fromJson(response, CertificateBundle.class);
+            try {
+                result = (CertificateBundle) JsonConverterUtil.fromJson(CertificateBundle.class, response);
+            } catch (Throwable t) {
+                LOGGER.log(WARNING, "Failed to parse certificate bundle response");
+            }
         }
 
         return result;
@@ -362,8 +370,15 @@ public class KeyVaultClient {
         // If the certificate is exportable the private key is available, so we'll store the private key for
         // authentication instead of obtaining a digital signature through the API (without keyless).
         Key key = null;
-        SecretBundle secretBundle = (SecretBundle) JsonConverterUtil.fromJson(body, SecretBundle.class);
-        String contentType = secretBundle.getContentType();
+        SecretBundle secretBundle = null;
+        String contentType = null;
+
+        try {
+            secretBundle = (SecretBundle) JsonConverterUtil.fromJson(SecretBundle.class, body);
+            contentType = secretBundle.getContentType();
+        } catch (Throwable t) {
+            LOGGER.log(WARNING, "Failed to parse secret bundle response");
+        }
 
         if ("application/x-pkcs12".equals(contentType)) {
             try {
@@ -387,9 +402,8 @@ public class KeyVaultClient {
             }
         }
 
-        // If the private key is not available the certificate cannot be
-        // used for server side certificates or mTLS. Then we do not know
-        // the intent of the usage at this stage we skip this key.
+        // If the private key is not available the certificate cannot be used for server side certificates or mTLS.
+        // Then we do not know the intent of the usage at this stage we skip this key.
         LOGGER.exiting("KeyVaultClient", "getKey", key);
 
         return key;
@@ -415,7 +429,11 @@ public class KeyVaultClient {
         String response = HttpUtil.post(uri, headers, bodyString, "application/json");
 
         if (response != null) {
-            result = (SignResult) JsonConverterUtil.fromJson(response, SignResult.class);
+            try {
+                result = (SignResult) JsonConverterUtil.fromJson(SignResult.class, response);
+            } catch (Throwable t) {
+                LOGGER.log(WARNING, "Failed to parse sign result response");
+            }
         }
 
         if (result != null) {
