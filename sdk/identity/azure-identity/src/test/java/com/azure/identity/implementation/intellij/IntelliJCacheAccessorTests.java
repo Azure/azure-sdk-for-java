@@ -24,7 +24,7 @@ public class IntelliJCacheAccessorTests {
             throw new RuntimeException(e);
         }
 
-        IntelliJCacheAccessor accessor = new IntelliJCacheAccessor(null);
+        IntelliJCacheAccessor accessor = new IntelliJCacheAccessor();
 
 
         String secret = accessor.parseRefreshTokenFromJson(json);

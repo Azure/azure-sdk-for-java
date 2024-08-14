@@ -233,7 +233,7 @@ public class IdentityClient extends IdentityClientBase {
 
     public Mono<MsalToken> authenticateWithIntelliJ(TokenRequestContext request) {
         try {
-            IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
+            IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor();
             // Look for cached credential in msal cache first.
             String cachedRefreshToken = cacheAccessor.getIntelliJCredentialsFromIdentityMsalCache();
             if (!CoreUtils.isNullOrEmpty(cachedRefreshToken)) {
@@ -250,88 +250,13 @@ public class IdentityClient extends IdentityClientBase {
                         .map(MsalToken::new));
             }
 
-            IntelliJAuthMethodDetails authDetails;
-            try {
-                authDetails = cacheAccessor.getAuthDetailsIfAvailable();
-            } catch (CredentialUnavailableException e) {
-                return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                    new CredentialUnavailableException("IntelliJ Authentication not available.", e)));
-            }
-            if (authDetails == null) {
-                return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                    new CredentialUnavailableException("IntelliJ Authentication not available."
-                        + " Please log in with Azure Tools for IntelliJ plugin in the IDE."
-                        + " Fore more details refer to the troubleshooting guidelines here at"
-                        + " https://aka.ms/azsdk/java/identity/intellijcredential/troubleshoot")));
-            }
-            String authType = authDetails.getAuthMethod();
-            if ("SP".equalsIgnoreCase(authType)) {
-                Map<String, String> spDetails = cacheAccessor
-                    .getIntellijServicePrincipalDetails(authDetails.getCredFilePath());
-                String authorityUrl = spDetails.get("authURL") + spDetails.get("tenant");
-                try {
-                    ConfidentialClientApplication.Builder applicationBuilder =
-                        ConfidentialClientApplication.builder(spDetails.get("client"),
-                            ClientCredentialFactory.createFromSecret(spDetails.get("key")))
-                            .authority(authorityUrl)
-                            .instanceDiscovery(options.isInstanceDiscoveryEnabled());
+            String exception = "IntelliJ authentication not available. Please login with the Azure Toolkit for IntelliJ."
+                + " You may also need to upgrade to a newer version of the Azure Toolkit for IntelliJ. This authentication"
+                + " is supported on version 3.53 and higher. Please see https://aka.ms/azsdk/java/identity/intellijcredential/troubleshoot for more information.";
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                new CredentialUnavailableException(exception)));
 
-                    // If http pipeline is available, then it should override the proxy options if any configured.
-                    if (httpPipelineAdapter != null) {
-                        applicationBuilder.httpClient(httpPipelineAdapter);
-                    } else if (options.getProxyOptions() != null) {
-                        applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-                    }
-
-                    if (options.getExecutorService() != null) {
-                        applicationBuilder.executorService(options.getExecutorService());
-                    }
-
-                    ConfidentialClientApplication application = applicationBuilder.build();
-                    return Mono.fromFuture(application.acquireToken(
-                        ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                            .build())).map(MsalToken::new);
-                } catch (MalformedURLException e) {
-                    return Mono.error(e);
-                }
-            } else if ("DC".equalsIgnoreCase(authType)) {
-                LOGGER.verbose("IntelliJ Authentication => Device Code Authentication scheme detected in Azure Tools"
-                    + " for IntelliJ Plugin.");
-                if (isADFSTenant()) {
-                    LOGGER.verbose("IntelliJ Authentication => The input tenant is detected to be ADFS and"
-                        + " the ADFS tenants are not supported via IntelliJ Authentication currently.");
-                    return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                        new CredentialUnavailableException("IntelliJCredential  "
-                                         + "authentication unavailable. ADFS tenant/authorities are not supported.")));
-                }
-                try {
-                    String refreshToken = cacheAccessor.getDeviceCodeCredentials();
-
-                    RefreshTokenParameters.RefreshTokenParametersBuilder refreshTokenParametersBuilder =
-                        RefreshTokenParameters.builder(new HashSet<>(request.getScopes()), refreshToken);
-
-                    if (request.getClaims() != null) {
-                        ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-                        refreshTokenParametersBuilder.claims(customClaimRequest);
-                    }
-
-                    return publicClientApplicationAccessor.getValue()
-                        .flatMap(pc -> Mono.fromFuture(pc.acquireToken(refreshTokenParametersBuilder.build()))
-                            .map(MsalToken::new));
-                }  catch (CredentialUnavailableException e) {
-                    return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options, e));
-                }
-
-            } else {
-                LOGGER.verbose("IntelliJ Authentication = > Only Service Principal and Device Code Authentication"
-                    + " schemes are currently supported via IntelliJ Credential currently. Please ensure you used one"
-                    + " of those schemes from Azure Tools for IntelliJ plugin.");
-
-                return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                    new CredentialUnavailableException("IntelliJ Authentication not available."
-                    + " Please login with Azure Tools for IntelliJ plugin in the IDE.")));
-            }
-        } catch (IOException e) {
+        } catch (RuntimeException e) {
             return Mono.error(e);
         }
     }

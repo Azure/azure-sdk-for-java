@@ -84,22 +84,6 @@ public class IntelliJCredential implements TokenCredential {
         IdentityClientOptions options =
                 identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions;
 
-        IntelliJCacheAccessor accessor =
-                new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
-
-        IntelliJAuthMethodDetails authMethodDetails;
-        try {
-            authMethodDetails = accessor.getAuthDetailsIfAvailable();
-        } catch (Exception e) {
-            authMethodDetails = null;
-        }
-
-        if (CoreUtils.isNullOrEmpty(options.getAuthorityHost())) {
-            String azureEnv = authMethodDetails != null ? authMethodDetails.getAzureEnv() : "";
-            String cloudInstance = accessor.getAzureAuthHost(azureEnv);
-            options.setAuthorityHost(cloudInstance);
-        }
-
         String tenant = tenantId;
 
         if (tenant == null) {
