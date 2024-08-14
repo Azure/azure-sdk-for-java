@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class GlobalPartitionEndpointManagerForCircuitBreaker {
+public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
@@ -49,6 +49,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
     private final ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker;
     private final AtomicReference<GlobalAddressResolver> globalAddressResolverSnapshot;
     private final ConcurrentHashMap<URI, String> locationToRegion;
+    private final AtomicBoolean isClosed = new AtomicBoolean(false);
 
     public GlobalPartitionEndpointManagerForCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
         this.partitionKeyRangeToLocationSpecificUnavailabilityInfo = new ConcurrentHashMap<>();
@@ -85,8 +86,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
         AtomicBoolean isFailoverPossible = new AtomicBoolean(true);
         AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
-
-        String collectionLink = getCollectionLink(request);
 
         this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapperAsKey, partitionLevelLocationUnavailabilityInfoAsVal) -> {
 
@@ -199,7 +198,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
     private Flux<?> updateStaleLocationInfo() {
         return Mono.just(1)
             .delayElement(Duration.ofSeconds(Configs.getStalePartitionUnavailabilityRefreshIntervalInSeconds()))
-            .repeat()
+            .repeat(() -> !this.isClosed.get())
             .flatMap(ignore -> Flux.fromIterable(this.partitionKeyRangesWithPossibleUnavailableRegions.entrySet()))
             .publishOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE)
             .flatMap(partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair -> {
@@ -346,6 +345,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
     public void setGlobalAddressResolver(GlobalAddressResolver globalAddressResolver) {
         this.globalAddressResolverSnapshot.set(globalAddressResolver);
+    }
+
+    @Override
+    public void close() {
+        this.isClosed.set(true);
     }
 
     private class PartitionLevelLocationUnavailabilityInfo {
