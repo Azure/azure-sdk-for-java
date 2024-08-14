@@ -12,5 +12,6 @@
   <modules>
     <module>azure-ai-openai</module>
     <module>azure-ai-openai-assistants</module>
+    <module>openai-azure-tests</module>
   </modules>
 </project>
