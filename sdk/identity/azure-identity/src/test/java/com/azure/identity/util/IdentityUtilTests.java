@@ -53,19 +53,23 @@ public class IdentityUtilTests {
             + "    \"string\": \"string_value\",\n"
             + "    \"boolean\": true,\n"
             + "    \"number\": 1,\n"
-            + "    \"array\": [\"an\", \"array\"],\n"
+            + "    \"array\": [\"an\",\"array\"],\n"
             + "    \"object\": {\n"
             + "        \"a\": \"nested\",\n"
             + "        \"b\": \"object\"\n"
             + "    }\n"
             + "}";
         Map<String,String> map = IdentityUtil.parseJsonIntoMap(json);
-        assertTrue(map.containsKey("first"));
-        assertTrue(map.containsKey("second"));
-        assertTrue(map.containsKey("third"));
-        assertEquals("first_value", map.get("first"));
-        assertEquals("second_value", map.get("second"));
-        assertEquals("third_value", map.get("third"));
+        assertTrue(map.containsKey("string"));
+        assertTrue(map.containsKey("boolean"));
+        assertTrue(map.containsKey("number"));
+        assertTrue(map.containsKey("array"));
+        assertTrue(map.containsKey("object"));
+        assertEquals("string_value", map.get("string"));
+        assertEquals("true", map.get("boolean"));
+        assertEquals("1", map.get("number"));
+        assertEquals("[\"an\",\"array\"]", map.get("array"));
+        assertEquals("{\"a\":\"nested\",\"b\":\"object\"}", map.get("object"));
     }
 
     @Test
