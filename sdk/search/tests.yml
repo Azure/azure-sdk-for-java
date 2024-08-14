@@ -6,8 +6,8 @@ extends:
     UseFederatedAuth: true
     ServiceDirectory: search
     # TODO: change 'Preview' cloud back to public after search RP fixes deletion metadata issue
-    Clouds: 'Preview'
-    SupportedClouds: 'Preview,UsGov,China'
+    Clouds: 'Public'
+    SupportedClouds: 'Public,UsGov,China'
     TimeoutInMinutes: 60
     CloudConfig:
       Preview:
