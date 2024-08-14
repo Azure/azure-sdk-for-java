@@ -20,7 +20,11 @@ public final class PrivateEndpointConnectionsDeleteSamples {
      */
     public static void
         deletesAPrivateEndpointConnectionWithAGivenName(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateEndpointConnections().delete("MyResourceGroup",
-            "MyPrivateLinkScope", "private-endpoint-connection-name", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpointConnections()
+            .delete("MyResourceGroup", "MyPrivateLinkScope", "private-endpoint-connection-name",
+                com.azure.core.util.Context.NONE);
     }
 }

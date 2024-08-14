@@ -18,7 +18,10 @@ public final class AutoscaleSettingsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAutoscaleSettingsBySubs(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getAutoscaleSettings()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getAutoscaleSettings()
             .list(com.azure.core.util.Context.NONE);
     }
 }

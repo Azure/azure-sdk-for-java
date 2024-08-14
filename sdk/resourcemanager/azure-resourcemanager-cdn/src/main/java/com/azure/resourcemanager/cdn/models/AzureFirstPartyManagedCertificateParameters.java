@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure FirstParty Managed Certificate provided by other first party resource providers to enable HTTPS.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureFirstPartyManagedCertificate")
 @Fluent
 public final class AzureFirstPartyManagedCertificateParameters extends SecretParameters {
+    /*
+     * The type of the secret resource.
+     */
+    private SecretType type = SecretType.AZURE_FIRST_PARTY_MANAGED_CERTIFICATE;
+
     /*
      * Resource reference to the Azure Key Vault certificate. Expected to be in format of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}
@@ -24,37 +28,31 @@ public final class AzureFirstPartyManagedCertificateParameters extends SecretPar
      * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}
      * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
-    @JsonProperty(value = "secretSource", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceReference secretSource;
 
     /*
      * Subject name in the certificate.
      */
-    @JsonProperty(value = "subject", access = JsonProperty.Access.WRITE_ONLY)
     private String subject;
 
     /*
      * Certificate expiration date.
      */
-    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String expirationDate;
 
     /*
      * Certificate issuing authority.
      */
-    @JsonProperty(value = "certificateAuthority", access = JsonProperty.Access.WRITE_ONLY)
     private String certificateAuthority;
 
     /*
      * The list of SANs.
      */
-    @JsonProperty(value = "subjectAlternativeNames")
     private List<String> subjectAlternativeNames;
 
     /*
      * Certificate thumbprint.
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /**
@@ -64,8 +62,17 @@ public final class AzureFirstPartyManagedCertificateParameters extends SecretPar
     }
 
     /**
-     * Get the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format
-     * of
+     * Get the type property: The type of the secret resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public SecretType type() {
+        return this.type;
+    }
+
+    /**
+     * Get the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
      * 
      * @return the secretSource value.
@@ -142,5 +149,60 @@ public final class AzureFirstPartyManagedCertificateParameters extends SecretPar
         if (secretSource() != null) {
             secretSource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("subjectAlternativeNames", this.subjectAlternativeNames,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFirstPartyManagedCertificateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFirstPartyManagedCertificateParameters if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFirstPartyManagedCertificateParameters.
+     */
+    public static AzureFirstPartyManagedCertificateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFirstPartyManagedCertificateParameters deserializedAzureFirstPartyManagedCertificateParameters
+                = new AzureFirstPartyManagedCertificateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureFirstPartyManagedCertificateParameters.type
+                        = SecretType.fromString(reader.getString());
+                } else if ("secretSource".equals(fieldName)) {
+                    deserializedAzureFirstPartyManagedCertificateParameters.secretSource
+                        = ResourceReference.fromJson(reader);
+                } else if ("subject".equals(fieldName)) {
+                    deserializedAzureFirstPartyManagedCertificateParameters.subject = reader.getString();
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedAzureFirstPartyManagedCertificateParameters.expirationDate = reader.getString();
+                } else if ("certificateAuthority".equals(fieldName)) {
+                    deserializedAzureFirstPartyManagedCertificateParameters.certificateAuthority = reader.getString();
+                } else if ("subjectAlternativeNames".equals(fieldName)) {
+                    List<String> subjectAlternativeNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirstPartyManagedCertificateParameters.subjectAlternativeNames
+                        = subjectAlternativeNames;
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedAzureFirstPartyManagedCertificateParameters.thumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFirstPartyManagedCertificateParameters;
+        });
     }
 }

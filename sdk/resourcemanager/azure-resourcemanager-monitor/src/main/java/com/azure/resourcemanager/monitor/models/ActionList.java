@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A list of Activity Log Alert rule actions.
  */
 @Fluent
-public final class ActionList {
+public final class ActionList implements JsonSerializable<ActionList> {
     /*
      * The list of the Action Groups.
      */
-    @JsonProperty(value = "actionGroups")
     private List<ActivityLogAlertActionGroup> actionGroups;
 
     /**
@@ -54,5 +57,43 @@ public final class ActionList {
         if (actionGroups() != null) {
             actionGroups().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("actionGroups", this.actionGroups, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ActionList.
+     */
+    public static ActionList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionList deserializedActionList = new ActionList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionGroups".equals(fieldName)) {
+                    List<ActivityLogAlertActionGroup> actionGroups
+                        = reader.readArray(reader1 -> ActivityLogAlertActionGroup.fromJson(reader1));
+                    deserializedActionList.actionGroups = actionGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionList;
+        });
     }
 }
