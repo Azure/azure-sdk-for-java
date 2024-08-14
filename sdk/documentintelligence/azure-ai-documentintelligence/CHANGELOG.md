@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (2024-08-14)
+## 1.0.0-beta.4 (2024-08-15)
 
 ### Features Added
 - Added support for the Analyze Batch Documents API with the LRO method `beginAnalyzeBatchDocuments` to `DocumentIntelligenceClient` and `DocumentIntelligenceAsyncClient`.

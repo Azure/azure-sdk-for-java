@@ -28,12 +28,12 @@ It includes the following main features:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-documentintelligence</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-> Note: This version of the client library defaults to the `"2024-02-29-preview"` version of the service.
+> Note: This version of the client library defaults to the `"2024-07-31-preview"` version of the service.
 
 This table shows the relationship between SDK versions and supported API versions of the service:
 
@@ -42,15 +42,16 @@ This table shows the relationship between SDK versions and supported API version
 | 1.0.0-beta.1 | 2023-10-31-preview               |
 | 1.0.0-beta.2 | 2024-02-29-preview               |
 | 1.0.0-beta.3 | 2024-02-29-preview               |
+| 1.0.0-beta.3 | 2024-07-31-preview               |
 
 > Note: Please rely on the older `azure-ai-formrecognizer` library through the older service API versions for retired
 > models, such as `"prebuilt-businessCard"` and `"prebuilt-document"`. For more information, see [Changelog][changelog].
 > The below table describes the relationship of each client and its supported API version(s):
 
-| API version                            | Supported clients                                                                             |
-|----------------------------------------|-----------------------------------------------------------------------------------------------|
-| 2023-10-31-preview, 2024-02-29-preview | DocumentIntelligenceClient and DocumentIntelligenceAsyncClient                                |
-| 2023-07-31                             | DocumentAnalysisClient and DocumentModelAdministrationClient in `azure-ai-formrecognizer` SDK |
+| API version                                                | Supported clients                                                                             |
+|------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| 2023-10-31-preview, 2024-02-29-preview, 2024-07-31-preview | DocumentIntelligenceClient and DocumentIntelligenceAsyncClient                                |
+| 2023-07-31                                                 | DocumentAnalysisClient and DocumentModelAdministrationClient in `azure-ai-formrecognizer` SDK |
 
 Please see the [Migration Guide][migration_guide] for more information about migrating from `azure-ai-formrecognizer` to `azure-ai-documentintelligence`.
 
@@ -92,7 +93,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.13.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
