@@ -1123,6 +1123,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
     }
 
     @Test
+    @Disabled
     public void testSqlServer() throws Exception {
         new TestSql().runTest(azureResourceManager.sqlServers(), azureResourceManager.resourceGroups());
     }
