@@ -49,8 +49,9 @@ public final class TestUtils {
     static final String LICENSE_PNG = "license.png";
     static final String W2_JPG = "w2-single.png";
     static final String IRS_1040 = "IRS-1040_3.pdf";
+    static final String LAYOUT_SAMPLE = "layout-pageobject.pdf";
+
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
-    public static final String INVALID_KEY = "invalid key";
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
         + "main/sdk/documentintelligence/azure-ai-documentintelligence/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
@@ -72,6 +73,7 @@ public final class TestUtils {
     public static final String DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
         GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL");
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+    public static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     private TestUtils() {
     }
 

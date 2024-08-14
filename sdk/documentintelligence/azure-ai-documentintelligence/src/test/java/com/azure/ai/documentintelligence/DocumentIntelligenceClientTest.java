@@ -4,6 +4,7 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeOutputOption;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
@@ -19,12 +20,14 @@ import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -35,6 +38,7 @@ import static com.azure.ai.documentintelligence.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.documentintelligence.TestUtils.INVOICE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.IRS_1040;
+import static com.azure.ai.documentintelligence.TestUtils.LAYOUT_SAMPLE;
 import static com.azure.ai.documentintelligence.TestUtils.LICENSE_PNG;
 import static com.azure.ai.documentintelligence.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
@@ -428,5 +432,58 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
                 Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
             }, IRS_1040);
         }
+    }
+
+    @RecordWithoutRequestBody
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    public void getAnalyzePdf(HttpClient httpClient,
+                                    DocumentIntelligenceServiceVersion serviceVersion) {
+        client = getDocumentAnalysisClient(httpClient, serviceVersion);
+        String modelID = "prebuilt-read";
+        dataRunner((data, dataLength) -> {
+            SyncPoller<AnalyzeResultOperation, AnalyzeResult>
+                syncPoller
+                = client.beginAnalyzeDocument(modelID, null, null, null, null, null, null, Collections.singletonList(AnalyzeOutputOption.PDF), new AnalyzeDocumentRequest().setBase64Source(data))
+                .setPollInterval(durationTestMode);
+            String resultId = syncPoller.poll().getValue().getOperationId();
+            syncPoller.waitForCompletion();
+
+            BinaryData pdf = client.getAnalyzeResultPdf(modelID, resultId);
+            byte[] pdfBytes = pdf.toBytes();
+            byte[] pdfHeader = { pdfBytes[0], pdfBytes[1], pdfBytes[2], pdfBytes[3], pdfBytes[4] };
+
+            // A PDF's header is expected to be: %PDF-
+            Assertions.assertArrayEquals(new byte[] { 0x25, 0x50, 0x44, 0x46, 0x2D }, pdfHeader);
+        }, LAYOUT_SAMPLE);
+    }
+
+    @RecordWithoutRequestBody
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("The parameter Output is invalid: parameter not supported.")
+    public void getAnalyzeFigures(HttpClient httpClient,
+                              DocumentIntelligenceServiceVersion serviceVersion) {
+        client = getDocumentAnalysisClient(httpClient, serviceVersion);
+        String modelID = "prebuilt-read";
+        dataRunner((data, dataLength) -> {
+            SyncPoller<AnalyzeResultOperation, AnalyzeResult>
+                syncPoller
+                = client.beginAnalyzeDocument(modelID, null, null, null, null, null, null, Collections.singletonList(AnalyzeOutputOption.FIGURES), new AnalyzeDocumentRequest().setBase64Source(data))
+                .setPollInterval(durationTestMode);
+            String resultId = syncPoller.poll().getValue().getOperationId();
+            syncPoller.waitForCompletion();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult);
+            Assertions.assertFalse(analyzeResult.getFigures().isEmpty());
+            String figureId = analyzeResult.getFigures().get(0).getId();
+            BinaryData figures = client.getAnalyzeResultFigure(modelID, resultId, figureId);
+            byte[] figuresBytes = figures.toBytes();
+            byte[] figuresHeader = { figuresBytes[0], figuresBytes[1], figuresBytes[2], figuresBytes[3], figuresBytes[4] };
+
+            // A PNG's header is expected to start with: ‰PNG
+            Assertions.assertArrayEquals(new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47 }, figuresHeader);
+        }, LAYOUT_SAMPLE);
+
     }
 }
