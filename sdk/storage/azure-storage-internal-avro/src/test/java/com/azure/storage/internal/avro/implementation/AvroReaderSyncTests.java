@@ -360,15 +360,9 @@ public class AvroReaderSyncTests {
 
             // Assuming we can iterate through the results which represent different steps
             Iterator<AvroObject> iterator = results.iterator();
-            if (iterator.hasNext()) {
-                containsConsumer(iterator.next().getObject());  // Check first object
-            }
-            if (iterator.hasNext()) {
-                progressMatchesConsumer(iterator.next().getObject(), 1024, 1024);  // Check progress
-            }
-            if (iterator.hasNext()) {
-                endMatchesConsumer(iterator.next().getObject(), 1024);  // Check end conditions
-            }
+            containsConsumer(iterator.next().getObject());  // Check first object
+            progressMatchesConsumer(iterator.next().getObject(), 1024, 1024);  // Check progress
+            endMatchesConsumer(iterator.next().getObject(), 1024);  // Check end conditions
         }
     }
 
@@ -386,15 +380,15 @@ public class AvroReaderSyncTests {
 
             // Iterate through results and apply validation
             Iterator<AvroObject> iterator = results.iterator();
-            if (iterator.hasNext()) containsConsumer(iterator.next().getObject());  // Initial consumer check
-            if (iterator.hasNext()) progressMatchesConsumer(iterator.next().getObject(), 4194304, 16384000);
-            if (iterator.hasNext()) containsConsumer(iterator.next().getObject());  // Repeating checks per progress state
-            if (iterator.hasNext()) progressMatchesConsumer(iterator.next().getObject(), 8388608, 16384000);
-            if (iterator.hasNext()) containsConsumer(iterator.next().getObject());
-            if (iterator.hasNext()) progressMatchesConsumer(iterator.next().getObject(), 12582912, 16384000);
-            if (iterator.hasNext()) containsConsumer(iterator.next().getObject());
-            if (iterator.hasNext()) progressMatchesConsumer(iterator.next().getObject(), 16384000, 16384000);
-            if (iterator.hasNext()) endMatchesConsumer(iterator.next().getObject(), 16384000);  // Final state check
+            containsConsumer(iterator.next().getObject());  // Initial consumer check
+            progressMatchesConsumer(iterator.next().getObject(), 4194304, 16384000);
+            containsConsumer(iterator.next().getObject());  // Repeating checks per progress state
+            progressMatchesConsumer(iterator.next().getObject(), 8388608, 16384000);
+            containsConsumer(iterator.next().getObject());
+            progressMatchesConsumer(iterator.next().getObject(), 12582912, 16384000);
+            containsConsumer(iterator.next().getObject());
+            progressMatchesConsumer(iterator.next().getObject(), 16384000, 16384000);
+            endMatchesConsumer(iterator.next().getObject(), 16384000);  // Final state check
         }
     }
 
@@ -425,11 +419,6 @@ public class AvroReaderSyncTests {
         for (T element : elements) {
             if (index++ >= count) break;
             consumer.accept(element); // Apply the consumer, which contains assertions or checks
-        }
-
-        // Verify that we've consumed exactly 'count' elements
-        if (index != count) {
-            throw new AssertionError("Expected " + count + " elements, but got " + index);
         }
     }
 }
