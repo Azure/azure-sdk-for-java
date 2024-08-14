@@ -56,7 +56,7 @@
       "defaultValue": {
         "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('batchTrainingDataContainer'))]",
         "signedExpiry": "[dateTimeAdd(utcNow('u'), 'P2M')]",
-        "signedPermission": "rl",
+        "signedPermission": "rwl",
         "signedResource": "c"
       }
     },
