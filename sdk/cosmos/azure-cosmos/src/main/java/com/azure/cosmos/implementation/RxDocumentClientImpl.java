@@ -5756,6 +5756,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (!closed.getAndSet(true)) {
             activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
+
+            if (this.globalPartitionEndpointManagerForCircuitBreaker != null) {
+                logger.info("Closing globalPartitionEndpointManagerForCircuitBreaker...");
+                LifeCycleUtils.closeQuietly(this.globalPartitionEndpointManagerForCircuitBreaker);
+            }
+
             logger.info("Closing Global Endpoint Manager ...");
             LifeCycleUtils.closeQuietly(this.globalEndpointManager);
             logger.info("Closing StoreClientFactory ...");
@@ -5768,11 +5774,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (this.throughputControlEnabled.get()) {
                 logger.info("Closing ThroughputControlStore ...");
                 this.throughputControlStore.close();
-            }
-
-            if (this.globalPartitionEndpointManagerForCircuitBreaker != null) {
-                logger.info("Closing globalPartitionEndpointManagerForCircuitBreaker...");
-                LifeCycleUtils.closeQuietly(this.globalPartitionEndpointManagerForCircuitBreaker);
             }
 
             logger.info("Shutting down completed.");
