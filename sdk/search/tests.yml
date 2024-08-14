@@ -5,8 +5,7 @@ extends:
   parameters:
     ServiceDirectory: search
     # TODO: change 'Preview' cloud back to public after search RP fixes deletion metadata issue
-    Clouds: 'Preview'
-    SupportedClouds: 'Preview,UsGov,China'
+    SupportedClouds: 'Public,UsGov,China'
     TimeoutInMinutes: 60
     CloudConfig:
       Preview:
