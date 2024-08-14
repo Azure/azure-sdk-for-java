@@ -41,6 +41,13 @@ public class JedisJavaDocCodeSamples {
             .eventHubName("<YOUR_EVENT_HUB_NAME>")
             .credential(credential)
             .consumerGroup("<YOUR_CONSUMER_GROUP_NAME>")
+            .processEvent(eventContext -> {
+                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+            })
+            .processError(context -> {
+                System.out.println("Error occurred while processing events " + context.getThrowable().getMessage());
+            })
             .buildEventProcessorClient();
         // END: com.azure.messaging.eventhubs.jedischeckpointstore.instantiation
     }
