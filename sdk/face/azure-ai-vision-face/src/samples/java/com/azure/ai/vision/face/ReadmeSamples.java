@@ -6,6 +6,7 @@ package com.azure.ai.vision.face;
 
 import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
+import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionJsonContent;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult;
 import com.azure.ai.vision.face.models.FaceAttributeType;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
@@ -124,7 +125,7 @@ public final class ReadmeSamples {
             .buildClient();
 
         String deviceCorrelationId = UUID.randomUUID().toString();
-        CreateLivenessSessionContent parameters = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
+        CreateLivenessWithVerifySessionJsonContent parameters = new CreateLivenessWithVerifySessionJsonContent(LivenessOperationMode.PASSIVE)
             .setDeviceCorrelationId(deviceCorrelationId)
             .setSendResultsToClient(false);
         Path path = Paths.get(imagePathString);

@@ -42,26 +42,10 @@ public class ComposeDocumentModel {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        // Build custom document analysis model
-        String model1TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_1}";
-        // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> model1Poller =
-            client.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
-                .setAzureBlobSource(new AzureBlobContentSource(model1TrainingFiles)));
-
-        // Build custom document analysis model
-        String model2TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_2}";
-        // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> model2Poller =
-            client.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
-                .setAzureBlobSource(new AzureBlobContentSource(model2TrainingFiles)));
-
-        String labeledModelId1 = model1Poller.getFinalResult().getModelId();
-        String labeledModelId2 = model2Poller.getFinalResult().getModelId();
         String composedModelId = "my-composed-model";
         final DocumentModelDetails documentModelDetails =
             client.beginComposeModel(
-                new ComposeDocumentModelRequest(composedModelId, Arrays.asList(new ComponentDocumentModelDetails(labeledModelId1), new ComponentDocumentModelDetails(labeledModelId2)))
+                new ComposeDocumentModelRequest(composedModelId, "classifierId", null)
                     .setDescription("my composed model description"))
                 .setPollInterval(Duration.ofSeconds(5))
                 .getFinalResult();

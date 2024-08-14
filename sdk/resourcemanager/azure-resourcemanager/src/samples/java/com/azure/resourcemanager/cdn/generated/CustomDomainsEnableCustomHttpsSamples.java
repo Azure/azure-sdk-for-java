@@ -19,8 +19,12 @@ public final class CustomDomainsEnableCustomHttpsSamples {
      */
     public static void
         customDomainsEnableCustomHttpsUsingCDNManagedCertificate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getCustomDomains().enableCustomHttps("RG", "profile1",
-            "endpoint1", "www-someDomain-net", null, com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getCustomDomains()
+            .enableCustomHttps("RG", "profile1", "endpoint1", "www-someDomain-net", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +38,11 @@ public final class CustomDomainsEnableCustomHttpsSamples {
      */
     public static void
         customDomainsEnableCustomHttpsUsingYourOwnCertificate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getCustomDomains().enableCustomHttps("RG", "profile1",
-            "endpoint1", "www-someDomain-net", null, com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getCustomDomains()
+            .enableCustomHttps("RG", "profile1", "endpoint1", "www-someDomain-net", null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class UpdateRule extends ExpandableStringEnum<UpdateRule> {
      * @param name a name to look for.
      * @return the corresponding UpdateRule.
      */
-    @JsonCreator
     public static UpdateRule fromString(String name) {
         return fromString(name, UpdateRule.class);
     }
