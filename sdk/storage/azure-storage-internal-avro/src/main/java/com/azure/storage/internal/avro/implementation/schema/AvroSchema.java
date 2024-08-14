@@ -3,7 +3,6 @@
 
 package com.azure.storage.internal.avro.implementation.schema;
 
-import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.AvroParser;
 import com.azure.storage.internal.avro.implementation.AvroParserState;
 import com.azure.storage.internal.avro.implementation.schema.complex.AvroArraySchema;
@@ -65,11 +64,6 @@ public abstract class AvroSchema {
         this.state = state;
         this.onResult = onResult;
     }
-
-//    public abstract boolean canProgress();
-        // Example for a simple boolean schema
-        //return state.sizeGreaterThan(AvroConstants.BOOLEAN_SIZE);
-   // }
 
     /**
      * Adds a schema to the state's stack.
@@ -199,15 +193,5 @@ public abstract class AvroSchema {
 
         return ret;
     }
-
-//    public void progress() {
-//        if (this instanceof AvroBooleanSchema) {
-//            ByteBuffer buffer = state.read(AvroConstants.BOOLEAN_SIZE);
-//            this.result = (buffer.get() != 0);
-//            this.done = true;
-//        } else {
-//            // Handle other types similarly, pulling data from the state and parsing accordingly
-//        }
-//    }
 
 }
