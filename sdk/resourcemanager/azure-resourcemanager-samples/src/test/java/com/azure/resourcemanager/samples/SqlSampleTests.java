@@ -25,31 +25,37 @@ import java.sql.SQLException;
 public class SqlSampleTests extends SamplesTestBase {
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageSqlDatabase() {
         Assertions.assertTrue(ManageSqlDatabase.runSample(azureResourceManager));
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageSqlDatabaseInElasticPool() {
         Assertions.assertTrue(ManageSqlDatabaseInElasticPool.runSample(azureResourceManager));
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageSqlDatabasesAcrossDifferentDataCenters() {
         Assertions.assertTrue(ManageSqlDatabasesAcrossDifferentDataCenters.runSample(azureResourceManager));
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageSqlFirewallRules() {
         Assertions.assertTrue(ManageSqlFirewallRules.runSample(azureResourceManager));
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageSqlServerSecurityAlertPolicy() {
         Assertions.assertTrue(ManageSqlServerSecurityAlertPolicy.runSample(azureResourceManager));
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageSqlVirtualNetworkRules() {
         Assertions.assertTrue(ManageSqlVirtualNetworkRules.runSample(azureResourceManager));
     }
@@ -69,6 +75,7 @@ public class SqlSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageSqlFailoverGroups() {
         Assertions.assertTrue(ManageSqlFailoverGroups.runSample(azureResourceManager));
     }
