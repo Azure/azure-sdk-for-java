@@ -59,7 +59,7 @@ public class IdentityUtilTests {
             + "        \"b\": \"object\"\n"
             + "    }\n"
             + "}";
-        Map<String,String> map = IdentityUtil.parseJsonIntoMap(json);
+        Map<String, String> map = IdentityUtil.parseJsonIntoMap(json);
         assertTrue(map.containsKey("string"));
         assertTrue(map.containsKey("boolean"));
         assertTrue(map.containsKey("number"));

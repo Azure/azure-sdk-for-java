@@ -61,10 +61,10 @@ public class VisualStudioCacheAccessor {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        try(JsonReader jsonReader = JsonProviders.createReader(json)) {
+        try (JsonReader jsonReader = JsonProviders.createReader(json)) {
             details = jsonReader.readObject(reader -> {
                 Map<String, String> result = new HashMap<>();
-                while(reader.nextToken() != JsonToken.END_OBJECT) {
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
                     String fieldName = reader.getFieldName();
                     reader.nextToken();
                     if ("azure.cloud".equals(fieldName)) {

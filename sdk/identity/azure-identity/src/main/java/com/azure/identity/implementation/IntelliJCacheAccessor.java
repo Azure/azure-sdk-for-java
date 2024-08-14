@@ -91,7 +91,7 @@ public class IntelliJCacheAccessor {
                         if ("RefreshToken".equals(fieldName)) {
                             reader.nextToken(); // read past the START_OBJECT
                             reader.nextToken(); // read past the FIELD_NAME for the root sub-object
-                            while(reader.nextToken() != JsonToken.END_OBJECT) { // now read through the RefreshToken
+                            while (reader.nextToken() != JsonToken.END_OBJECT) { // now read through the RefreshToken
                                 String secretFieldName = reader.getFieldName();
                                 reader.nextToken();
                                 if ("secret".equals(secretFieldName)) {

@@ -126,7 +126,7 @@ public final class IdentityUtil {
     public static String getAccessToken(String json) throws IOException {
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
             return jsonReader.readObject(reader -> {
-                while(reader.nextToken() != com.azure.json.JsonToken.END_OBJECT) {
+                while (reader.nextToken() != com.azure.json.JsonToken.END_OBJECT) {
                     String fieldName = reader.getFieldName();
                     reader.nextToken();
                     if ("access_token".equals(fieldName)) {
