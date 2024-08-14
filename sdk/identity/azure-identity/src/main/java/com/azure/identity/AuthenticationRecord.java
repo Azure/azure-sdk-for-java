@@ -52,11 +52,11 @@ public final class AuthenticationRecord {
             clientId);
     }
 
-    AuthenticationRecord(String authority, String homeAccountId, String tenantId, String username, String clientId) {
+    AuthenticationRecord(String authority, String homeAccountId, String userName, String tenantId, String clientId) {
         this.authority = authority;
         this.homeAccountId = homeAccountId;
         this.tenantId = tenantId;
-        this.username = username;
+        this.username = userName;
         this.clientId = clientId;
     }
 
@@ -174,7 +174,7 @@ public final class AuthenticationRecord {
                                 reader.skipChildren();
                             }
                         }
-                        return new AuthenticationRecord(authority, homeAccountId, tenantId, username, clientId);
+                        return new AuthenticationRecord(authority, homeAccountId, username, tenantId, clientId);
                     }));
                 }
             } catch (IOException e) {
