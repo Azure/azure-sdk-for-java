@@ -8,7 +8,7 @@ extends:
     SupportedClouds: 'Public,UsGov,China'
     TimeoutInMinutes: 60
     CloudConfig:
-      Preview:
+      Public:
         SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
         Location: 'westus2'
       UsGov:
