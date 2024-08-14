@@ -1426,16 +1426,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = {"multi-region", "multi-master"})
+    @BeforeClass(groups = {"multi-region", "multi-master", "multi-master-circuit-breaker"})
     public void beforeClass() {
-
-        System.setProperty(
-            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
-            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
-                + "}");
 
         try (CosmosAsyncClient tempClient = getClientBuilder().buildAsyncClient()) {
 
@@ -1453,10 +1445,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"multi-region", "multi-master"})
-    public void afterClass() {
-        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
-    }
+    @AfterClass(groups = {"multi-region", "multi-master", "multi-master-circuit-breaker"})
+    public void afterClass() {}
 
     @Test(groups = {"multi-region"}, dataProvider = "readYouWriteWithNoExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
     public void readYouWriteWithNoExplicitRegionSwitching(
@@ -1528,7 +1518,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "readYouWriteWithExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
+    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readYouWriteWithExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
     public void readYouWriteWithExplicitRegionSwitching(
         Function<CosmosAsyncContainer, Set<String>> func,
         String testId,
@@ -1650,7 +1640,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "readManyWithExplicitRegionSwitchingTestContext", timeOut = 10 * TIMEOUT)
+    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readManyWithExplicitRegionSwitchingTestContext", timeOut = 10 * TIMEOUT)
     public void readManyWithExplicitRegionSwitching(
         Function<CosmosAsyncContainer, Set<String>> func,
         String testId,

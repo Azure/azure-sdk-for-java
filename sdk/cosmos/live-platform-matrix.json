@@ -12,6 +12,7 @@
     "-Pcircuit-breaker-misc-gateway": "CircuitBreakerMiscGateway",
     "-Pcircuit-breaker-read-all-read-many": "CircuitBreakerReadAllAndReadMany",
     "-Pmulti-region": "MultiRegion",
+    "-Pmulti-master-circuit-breaker": "MultiMasterCircuitBreaker",
     "-Plong": "Long",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
@@ -105,6 +106,24 @@
       },
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pmulti-master", "-Pflaky-multi-master", "-Pcircuit-breaker-misc-direct", "-Pcircuit-breaker-misc-gateway", "-Pcircuit-breaker-read-all-read-many", "-Pfast", "-Pdirect" ],
+      "Agent": {
+        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "ArmConfig": {
+        "MultiMaster_MultiRegion": {
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
+          "PREFERRED_LOCATIONS": "[\"East US 2\"]"
+        }
+      },
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pmulti-master-circuit-breaker" ],
+      "AdditionalArgs": [
+        "-DargLine=\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG=\"{\\\"isPartitionLevelCircuitBreakerEnabled\\\": true,\"\n+ \"\\\"circuitBreakerType\\\": \\\"CONSECUTIVE_EXCEPTION_COUNT_BASED\\\",\"\n+\"\\\"consecutiveExceptionCountToleratedForReads\\\": 10,\"\n+\"\\\"consecutiveExceptionCountToleratedForWrites\\\": 5,\"\n+ \"}\"\""
+      ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }

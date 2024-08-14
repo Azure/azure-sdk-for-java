@@ -69,7 +69,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         random = new Random();
     }
 
-    @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT * 100)
+    @BeforeClass(groups = {"multi-master", "multi-master-circuit-breaker"}, timeOut = SETUP_TIMEOUT * 100)
     public void beforeClass() throws Exception {
         System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS", "1000");
         System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS", "500");
@@ -93,7 +93,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "faultInjectionArgProvider", timeOut = TIMEOUT*100)
+    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "faultInjectionArgProvider", timeOut = TIMEOUT*100)
     public void testThresholdAvailabilityStrategy(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType) throws InterruptedException {
         if (this.preferredRegionList.size() <= 1) {
             throw new SkipException("excludeRegionTest_SkipFirstPreferredRegion can only be tested for multi-master with multi-regions");
@@ -206,7 +206,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         return documentInserted;
     }
 
-    @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-master", "multi-master-circuit-breaker"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.clientWithPreferredRegions);
         System.clearProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS");

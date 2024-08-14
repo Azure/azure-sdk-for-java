@@ -51,17 +51,10 @@ public class ExcludeRegionTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"multi-master", "multi-master-circuit-breaker"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS", "1000");
         System.setProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS", "500");
-        System.setProperty(
-            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
-            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
-                + "}");
 
         CosmosAsyncClient dummyClient = null;
         try {
@@ -81,7 +74,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-master", "multi-master-circuit-breaker"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.clientWithPreferredRegions);
         System.clearProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS");
@@ -112,7 +105,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "operationTypeArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "operationTypeArgProvider", timeOut = TIMEOUT)
     public void excludeRegionTest_SkipFirstPreferredRegion(OperationType operationType) {
 
         if (this.preferredRegionList.size() <= 1) {
@@ -138,7 +131,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
         assertThat(cosmosDiagnostics.getContactedRegionNames()).containsAll(this.preferredRegionList.subList(1, 2));
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "faultInjectionArgProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "faultInjectionArgProvider", timeOut = TIMEOUT)
     public void excludeRegionTest_readSessionNotAvailable(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType) {

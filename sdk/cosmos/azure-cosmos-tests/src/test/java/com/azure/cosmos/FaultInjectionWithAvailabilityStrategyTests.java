@@ -206,16 +206,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         return (String)row[0];
     }
 
-    @BeforeClass(groups = { "multi-master" })
+    @BeforeClass(groups = { "multi-master", "multi-master-circuit-breaker" })
     public void beforeClass() {
-
-        System.setProperty(
-            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
-            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
-                + "}");
 
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -341,10 +333,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             safeClose(dummyClient);
         }
     }
-    @AfterClass(groups = { "multi-master" })
+    @AfterClass(groups = { "multi-master", "multi-master-circuit-breaker" })
     public void afterClass() {
-
-        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
 
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -839,7 +829,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAfterCreation")
+    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "testConfigs_readAfterCreation")
     public void readAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
@@ -2257,7 +2247,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_writeAfterCreation")
+    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "testConfigs_writeAfterCreation")
     public void writeAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
@@ -3416,7 +3406,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_queryAfterCreation")
+    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "testConfigs_queryAfterCreation")
     public void queryAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
@@ -3988,7 +3978,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readManyAfterCreation")
+    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "testConfigs_readManyAfterCreation")
     public void readManyAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
@@ -4766,7 +4756,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAllAfterCreation")
+    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "testConfigs_readAllAfterCreation")
     public void readAllAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,

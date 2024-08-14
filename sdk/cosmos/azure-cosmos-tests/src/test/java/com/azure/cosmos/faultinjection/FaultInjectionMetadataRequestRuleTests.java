@@ -88,7 +88,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         };
     }
 
-    @BeforeClass(groups = { "multi-region", "multi-master" }, timeOut = TIMEOUT)
+    @BeforeClass(groups = { "multi-region", "multi-master", "multi-master-circuit-breaker" }, timeOut = TIMEOUT)
     public void beforeClass() {
         this.client = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
@@ -215,7 +215,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         }
     }
 
-    @Test(groups = { "multi-master" }, dataProvider = "operationTypeProvider", timeOut = 4 * TIMEOUT)
+    @Test(groups = { "multi-master", "multi-master-circuit-breaker" }, dataProvider = "operationTypeProvider", timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_ResponseDelay(
         FaultInjectionOperationType faultInjectionOperationType,
         OperationType operationType) throws JsonProcessingException {
@@ -481,7 +481,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         }
     }
 
-    @Test(groups = { "multi-master" }, dataProvider = "partitionKeyRangesArgProvider", timeOut = 40 * TIMEOUT)
+    @Test(groups = { "multi-master", "multi-master-circuit-breaker" }, dataProvider = "partitionKeyRangesArgProvider", timeOut = 40 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_PartitionKeyRanges_DelayError(
         FaultInjectionServerErrorType faultInjectionServerErrorType,
         Duration delay,
@@ -591,7 +591,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         }
     }
 
-    @Test(groups = { "multi-master" }, timeOut = 40 * TIMEOUT)
+    @Test(groups = { "multi-master", "multi-master-circuit-breaker" }, timeOut = 40 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_CollectionRead_ConnectionDelay() throws JsonProcessingException {
 
         // We need to create a new client because client may have marked region unavailable in other tests
