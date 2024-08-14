@@ -4,9 +4,8 @@
 
 module com.azure.ai.inference {
     requires transitive com.azure.core;
-    requires com.fasterxml.jackson.databind;
     exports com.azure.ai.inference;
     exports com.azure.ai.inference.models;
-    opens com.azure.ai.inference.models;
+    opens com.azure.ai.inference.models to com.azure.core;
     opens com.azure.ai.inference.implementation.models to com.azure.core;
 }

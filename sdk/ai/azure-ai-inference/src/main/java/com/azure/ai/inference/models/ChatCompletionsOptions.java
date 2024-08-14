@@ -9,6 +9,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * Options for complete API.
  */
 @Fluent
-public final class ChatCompletionsOptions {
+public final class ChatCompletionsOptions implements JsonSerializable<ChatCompletionsOptions> {
     /*
      * The collection of context messages associated with this chat completions request.
      * Typical usage begins with a chat message for the System role that provides instructions for
