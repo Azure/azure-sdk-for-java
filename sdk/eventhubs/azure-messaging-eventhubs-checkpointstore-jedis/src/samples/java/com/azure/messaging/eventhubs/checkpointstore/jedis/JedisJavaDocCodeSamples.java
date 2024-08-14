@@ -42,8 +42,7 @@ public class JedisJavaDocCodeSamples {
             .credential(credential)
             .consumerGroup("<YOUR_CONSUMER_GROUP_NAME>")
             .processEvent(eventContext -> {
-                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and " + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(context -> {
                 System.out.println("Error occurred while processing events " + context.getThrowable().getMessage());
