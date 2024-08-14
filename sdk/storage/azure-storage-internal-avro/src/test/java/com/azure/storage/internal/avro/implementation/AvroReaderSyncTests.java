@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.internal.avro.implementation;
 
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
@@ -231,7 +234,9 @@ public class AvroReaderSyncTests {
             // Process results
             int index = 0;
             for (AvroObject result : results) {
-                if (index >= numObjects) break; // Process only the specified number of objects
+                if (index >= numObjects) {
+                    break; // Process only the specified number of objects
+                }
                 Map<String, Object> record = (Map<String, Object>) result.getObject();
                 String subject = (String) record.get("subject");
                 int adjustedIndex = 1000 - numObjects + index; // Adjust index based on the test input
@@ -273,7 +278,9 @@ public class AvroReaderSyncTests {
             int index = 0;
             int adjustedIndex = 1000 - numObjects; // Start index adjustment based on the number of objects
             for (AvroObject result : results) {
-                if (index >= numObjects) break; // Process only the specified number of objects
+                if (index >= numObjects) {
+                    break; // Process only the specified number of objects
+                }
                 Map<String, Object> record = (Map<String, Object>) result.getObject();
                 String subject = (String) record.get("subject");
 
@@ -417,7 +424,9 @@ public class AvroReaderSyncTests {
     public static <T> void assertNextMatches(Iterable<T> elements, Consumer<T> consumer, int count) {
         int index = 0;
         for (T element : elements) {
-            if (index++ >= count) break;
+            if (index++ >= count) {
+                break;
+            }
             consumer.accept(element); // Apply the consumer, which contains assertions or checks
         }
     }

@@ -51,8 +51,10 @@ public class AvroSyncParser {
 
     /**
      * Constructs a new Avro Parser object.
+     *
+     * @param partialRead Whether the Avro Parser will read the Header and Block off different streams.
      */
-    public AvroSyncParser(boolean partialRead) {
+    AvroSyncParser(boolean partialRead) {
         this.state = new AvroParserState();
         this.objects = new ArrayList<>();
         this.partialRead = partialRead;
