@@ -546,8 +546,8 @@ public abstract class IdentityClientBase {
                     .resolveTenantId(tenantId, request, options));
 
         if (request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            parametersBuilder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            parametersBuilder.claims(claimsRequest);
         }
         return parametersBuilder;
     }
@@ -558,8 +558,8 @@ public abstract class IdentityClientBase {
             .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            builder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(claimsRequest);
         }
         return builder.build();
     }
@@ -573,8 +573,8 @@ public abstract class IdentityClientBase {
                     .resolveTenantId(tenantId, request, options));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            builder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(claimsRequest);
         }
 
         BrowserCustomizationOptions browserCustomizationOptions = options.getBrowserCustomizationOptions();
@@ -612,9 +612,9 @@ public abstract class IdentityClientBase {
                 username, password.toCharArray());
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest
+            ClaimsRequest claimsRequest = ClaimsRequest
                 .formatAsClaimsRequest(request.getClaims());
-            userNamePasswordParametersBuilder.claims(customClaimRequest);
+            userNamePasswordParametersBuilder.claims(claimsRequest);
         }
         userNamePasswordParametersBuilder.tenant(
             IdentityUtil.resolveTenantId(tenantId, request, options));

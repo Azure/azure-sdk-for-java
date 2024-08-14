@@ -241,8 +241,8 @@ public class IdentityClient extends IdentityClientBase {
                     RefreshTokenParameters.builder(new HashSet<>(request.getScopes()), cachedRefreshToken);
 
                 if (request.getClaims() != null) {
-                    ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-                    refreshTokenParametersBuilder.claims(customClaimRequest);
+                    ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+                    refreshTokenParametersBuilder.claims(claimsRequest);
                 }
 
                 return publicClientApplicationAccessor.getValue()
@@ -517,8 +517,8 @@ public class IdentityClient extends IdentityClientBase {
         }
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            builder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(claimsRequest);
         }
         return builder;
     }
@@ -627,8 +627,8 @@ public class IdentityClient extends IdentityClientBase {
             parametersBuilder.forceRefresh(true);
         }
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            parametersBuilder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            parametersBuilder.claims(claimsRequest);
             parametersBuilder.forceRefresh(true);
         }
         if (account != null) {
@@ -734,8 +734,8 @@ public class IdentityClient extends IdentityClientBase {
                                                 .builder(new HashSet<>(request.getScopes()), credential);
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            parametersBuilder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            parametersBuilder.claims(claimsRequest);
         }
 
         return getPublicClientInstance(request).getValue()
@@ -770,8 +770,8 @@ public class IdentityClient extends IdentityClientBase {
                 .resolveTenantId(tenantId, request, options));
 
         if (request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            parametersBuilder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            parametersBuilder.claims(claimsRequest);
         }
 
         Mono<IAuthenticationResult> acquireToken;
