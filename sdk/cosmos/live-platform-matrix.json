@@ -121,9 +121,7 @@
       },
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pmulti-master-circuit-breaker" ],
-      "AdditionalArgs": [
-        "-DargLine=\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG=\"{\\\"isPartitionLevelCircuitBreakerEnabled\\\": true,\"\n+ \"\\\"circuitBreakerType\\\": \\\"CONSECUTIVE_EXCEPTION_COUNT_BASED\\\",\"\n+\"\\\"consecutiveExceptionCountToleratedForReads\\\": 10,\"\n+\"\\\"consecutiveExceptionCountToleratedForWrites\\\": 5,\"\n+ \"}\"\""
-      ],
+      "AdditionalArgs": "-DargLine=\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=true\"",
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
