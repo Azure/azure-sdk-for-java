@@ -663,7 +663,9 @@ public class Configs {
 
     public static boolean shouldOptInDefaultCircuitBreakerConfig() {
 
-        logger.info("Circuit breaker opt-in {}",             System.getProperty(
+        logger.info("Circuit breaker opt-in (sys property) {}",             System.getProperty(
+            PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN));
+        logger.info("Circuit breaker opt-in (env variable) {}", System.getenv().get(
             PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN));
 
         String shouldOptInDefaultPartitionLevelCircuitBreakerConfig =
