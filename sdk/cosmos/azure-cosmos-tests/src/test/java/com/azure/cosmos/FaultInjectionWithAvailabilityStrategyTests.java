@@ -229,7 +229,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             Map<String, String> writeRegionMap = this.getRegionMap(databaseAccount, true);
 
-            this.writeableRegions = new ArrayList<>(Arrays.asList("East US", "South Central US"));
+            this.writeableRegions = new ArrayList<>(writeRegionMap.keySet());
             assertThat(this.writeableRegions).isNotNull();
             assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
 
@@ -323,7 +323,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // When the container does not exist yet, you would see 401 for example for point reads etc.
             // So, adding this delay after container creation to minimize risk of hitting these errors
             try {
-                Thread.sleep(10_000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -5086,7 +5086,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     // When the container does not exist yet, you would see 401 for example for point reads etc.
                     // So, adding this delay after container creation to minimize risk of hitting these errors
                     try {
-                        Thread.sleep(10_000);
+                        Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
