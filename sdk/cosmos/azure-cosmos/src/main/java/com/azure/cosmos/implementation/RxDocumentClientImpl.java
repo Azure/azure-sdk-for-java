@@ -557,14 +557,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
 
-//            System.setProperty(
-//                "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
-//                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-//                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-//                    + "\"consecutiveExceptionCountToleratedForReads\": 50,"
-//                    + "\"consecutiveExceptionCountToleratedForWrites\": 25,"
-//                    + "}");
-
             this.globalPartitionEndpointManagerForCircuitBreaker = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManager);
 
             this.globalPartitionEndpointManagerForCircuitBreaker.init();
