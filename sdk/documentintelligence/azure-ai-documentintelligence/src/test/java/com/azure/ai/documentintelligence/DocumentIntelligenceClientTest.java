@@ -3,6 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
+import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
 import com.azure.ai.documentintelligence.models.AnalyzeOutputOption;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
@@ -33,6 +36,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.ai.documentintelligence.TestUtils.BATCH_SAMPLE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -43,6 +47,7 @@ import static com.azure.ai.documentintelligence.TestUtils.LICENSE_PNG;
 import static com.azure.ai.documentintelligence.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.urlRunner;
+import static com.azure.ai.documentintelligence.models.AnalyzeOutputOption.PDF;
 
 public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTestBase {
     private DocumentIntelligenceClient client;
@@ -216,7 +221,6 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void analyzeCustomDocumentUrl(HttpClient httpClient,
                                          DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
@@ -444,7 +448,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
         dataRunner((data, dataLength) -> {
             SyncPoller<AnalyzeResultOperation, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocument(modelID, null, null, null, null, null, null, Collections.singletonList(AnalyzeOutputOption.PDF), new AnalyzeDocumentRequest().setBase64Source(data))
+                = client.beginAnalyzeDocument(modelID, null, null, null, null, null, null, Collections.singletonList(PDF), new AnalyzeDocumentRequest().setBase64Source(data))
                 .setPollInterval(durationTestMode);
             String resultId = syncPoller.poll().getValue().getOperationId();
             syncPoller.waitForCompletion();
@@ -461,11 +465,10 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("The parameter Output is invalid: parameter not supported.")
     public void getAnalyzeFigures(HttpClient httpClient,
                               DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        String modelID = "prebuilt-read";
+        String modelID = "prebuilt-layout";
         dataRunner((data, dataLength) -> {
             SyncPoller<AnalyzeResultOperation, AnalyzeResult>
                 syncPoller
@@ -482,8 +485,35 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
             byte[] figuresHeader = { figuresBytes[0], figuresBytes[1], figuresBytes[2], figuresBytes[3], figuresBytes[4] };
 
             // A PNG's header is expected to start with: ‰PNG
-            Assertions.assertArrayEquals(new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47 }, figuresHeader);
+            Assertions.assertArrayEquals(new byte[] { (byte) -119, 80, 78, 71, 13 }, figuresHeader);
         }, LAYOUT_SAMPLE);
 
+    }
+
+    @RecordWithoutRequestBody
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("Disabled until file available on main")
+    public void analyzeBatchDocuments(HttpClient httpClient,
+                                      DocumentIntelligenceServiceVersion serviceVersion) {
+        client = getDocumentAnalysisClient(httpClient, serviceVersion);
+        DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
+        buildBatchModelRunner((trainingFilesUrl) -> {
+            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller =
+                adminClient
+                    .beginBuildDocumentModel(new BuildDocumentModelRequest("modelID" + UUID.randomUUID(), DocumentBuildMode.GENERATIVE).setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
+                    .setPollInterval(durationTestMode);
+            buildModelPoller.waitForCompletion();
+
+            String modelId = buildModelPoller.getFinalResult().getModelId();
+
+            urlRunner((sourceUrl) -> {
+                SyncPoller<AnalyzeBatchResultOperation, AnalyzeBatchResult>
+                    syncPoller
+                    = client.beginAnalyzeBatchDocuments(modelId, null, null, null, null, null, null, Collections.singletonList(PDF), new AnalyzeBatchDocumentsRequest(trainingFilesUrl).setResultPrefix("trainingDocsResult/").setAzureBlobSource(new AzureBlobContentSource(sourceUrl)))
+                    .setPollInterval(durationTestMode);
+                syncPoller.waitForCompletion();
+            }, BATCH_SAMPLE_PDF);
+        });
     }
 }

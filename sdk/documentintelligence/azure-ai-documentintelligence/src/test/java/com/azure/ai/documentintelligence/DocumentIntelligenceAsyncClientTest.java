@@ -3,16 +3,23 @@
 
 package com.azure.ai.documentintelligence;
 
+import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchResultOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
 import com.azure.ai.documentintelligence.models.AnalyzeOutputOption;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
+import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
+import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
+import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
@@ -30,6 +37,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.ai.documentintelligence.TestUtils.BATCH_SAMPLE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.DEFAULT_TIMEOUT;
@@ -42,6 +50,7 @@ import static com.azure.ai.documentintelligence.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.W2_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.urlRunner;
+import static com.azure.ai.documentintelligence.models.AnalyzeOutputOption.PDF;
 
 public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceClientTestBase {
 
@@ -366,11 +375,10 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("The parameter Output is invalid: parameter not supported.")
     public void getAnalyzeFigures(HttpClient httpClient,
                                   DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        String modelID = "prebuilt-read";
+        String modelID = "prebuilt-layout";
         dataRunner((data, dataLength) -> {
             PollerFlux<AnalyzeResultOperation, AnalyzeResult>
                 resultPollerFlux
@@ -388,12 +396,37 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
                     byte[] figuresHeader = { figuresBytes[0], figuresBytes[1], figuresBytes[2], figuresBytes[3], figuresBytes[4] };
 
                     // A PNG's header is expected to start with: ‰PNG
-                    Assertions.assertArrayEquals(new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47 }, figuresHeader);
+                    Assertions.assertArrayEquals(new byte[] { (byte) -119, 80, 78, 71, 13 }, figuresHeader);
                 })
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
         }, LAYOUT_SAMPLE);
     }
 
+    @RecordWithoutRequestBody
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("Disabled until file available on main")
+    public void analyzeBatchDocuments(HttpClient httpClient,
+                                      DocumentIntelligenceServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        DocumentIntelligenceAdministrationAsyncClient adminClient = getDocumentAdminAsyncClient(httpClient, serviceVersion);
+        buildBatchModelRunner((trainingFilesUrl) -> {
+            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller =
+                adminClient
+                    .beginBuildDocumentModel(new BuildDocumentModelRequest("modelID" + UUID.randomUUID(), DocumentBuildMode.GENERATIVE).setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
+                    .setPollInterval(durationTestMode)
+                    .getSyncPoller();
 
+            String modelId = buildModelPoller.getFinalResult().getModelId();
+
+            urlRunner((sourceUrl) -> {
+                SyncPoller<AnalyzeBatchResultOperation, AnalyzeBatchResult>
+                    syncPoller
+                    = client.beginAnalyzeBatchDocuments(modelId, null, null, null, null, null, null, Collections.singletonList(PDF), new AnalyzeBatchDocumentsRequest(trainingFilesUrl).setResultPrefix("trainingDocsResult/").setAzureBlobSource(new AzureBlobContentSource(sourceUrl)))
+                    .setPollInterval(durationTestMode)
+                    .getSyncPoller();
+            }, BATCH_SAMPLE_PDF);
+        });
+    }
 }
