@@ -1179,6 +1179,8 @@ public class CosmosClientBuilder implements
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
 
+        logger.info("Circuit breaker default opt-in result : {}", Configs.shouldOptInDefaultCircuitBreakerConfig());
+
         if (Configs.shouldOptInDefaultCircuitBreakerConfig()) {
             System.setProperty(
                 "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
@@ -1224,6 +1226,8 @@ public class CosmosClientBuilder implements
     public CosmosClient buildClient() {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
+
+        logger.info("Circuit breaker default opt-in result : {}", Configs.shouldOptInDefaultCircuitBreakerConfig());
 
         if (Configs.shouldOptInDefaultCircuitBreakerConfig()) {
             System.setProperty(
