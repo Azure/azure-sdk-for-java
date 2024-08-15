@@ -35,7 +35,7 @@
       },
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pmulti-master-circuit-breaker" ],
-      "AdditionalArgs": "-DargLine=\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=\"TRUE\"\"",
+      "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=\"TRUE\"\"",
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
