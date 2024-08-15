@@ -6,7 +6,6 @@ package com.azure.ai.vision.face;
 import com.azure.ai.vision.face.implementation.FaceSessionClientImpl;
 import com.azure.ai.vision.face.implementation.MultipartFormDataHelper;
 import com.azure.ai.vision.face.implementation.models.CreateLivenessWithVerifySessionMultipartContent;
-import com.azure.ai.vision.face.implementation.models.VerifyImageFileDetails;
 import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionJsonContent;
@@ -28,6 +27,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
+import java.util.Objects;
+import com.azure.ai.vision.face.implementation.models.VerifyImageFileDetails;
 
 /**
  * Initializes a new instance of the synchronous FaceSessionClient type.
@@ -66,7 +67,7 @@ public final class FaceSessionClient {
      * retrieve a result, use the Get Liveness Session. To audit the individual requests that a client has made to your
      * resource, use the List Liveness Session Audit Entries.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
@@ -78,9 +79,9 @@ public final class FaceSessionClient {
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     sessionId: String (Required)
@@ -128,7 +129,7 @@ public final class FaceSessionClient {
     /**
      * Get session result of detectLiveness/singleModal call.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -219,7 +220,7 @@ public final class FaceSessionClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -259,7 +260,7 @@ public final class FaceSessionClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -354,7 +355,7 @@ public final class FaceSessionClient {
      * &gt; [!NOTE]
      * &gt; Extra measures should be taken to validate that the client is sending the expected VerifyImage.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
@@ -368,9 +369,9 @@ public final class FaceSessionClient {
      *     verifyConfidenceThreshold: Double (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     sessionId: String (Required)
@@ -425,7 +426,7 @@ public final class FaceSessionClient {
      *
      * Recommended Option: VerifyImage is provided during session creation.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     sessionId: String (Required)
@@ -485,7 +486,7 @@ public final class FaceSessionClient {
     /**
      * Get session result of detectLivenessWithVerify/singleModal call.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -577,7 +578,7 @@ public final class FaceSessionClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -617,7 +618,7 @@ public final class FaceSessionClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1075,8 +1076,7 @@ public final class FaceSessionClient {
         RequestOptions requestOptions = new RequestOptions();
         return createLivenessWithVerifySessionWithVerifyImageWithResponse(
             new MultipartFormDataHelper(requestOptions).serializeJsonField("Parameters", body.getParameters())
-                .serializeFileField("VerifyImage", body.getVerifyImage().getContent(),
-                    body.getVerifyImage().getContentType(), body.getVerifyImage().getFilename())
+                .serializeTextField("VerifyImage", Objects.toString(body.getVerifyImage()))
                 .end()
                 .getRequestBody(),
             requestOptions).getValue().toObject(CreateLivenessWithVerifySessionResult.class);

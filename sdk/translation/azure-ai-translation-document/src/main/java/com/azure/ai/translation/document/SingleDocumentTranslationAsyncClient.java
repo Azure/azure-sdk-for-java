@@ -6,7 +6,6 @@ package com.azure.ai.translation.document;
 import com.azure.ai.translation.document.implementation.MultipartFormDataHelper;
 import com.azure.ai.translation.document.implementation.SingleDocumentTranslationClientImpl;
 import com.azure.ai.translation.document.models.DocumentTranslateContent;
-import com.azure.ai.translation.document.models.GlossaryFileDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -19,7 +18,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import java.util.stream.Collectors;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
 
 /**
@@ -132,28 +131,8 @@ public final class SingleDocumentTranslationAsyncClient {
         }
         return documentTranslateWithResponse(targetLanguage,
             new MultipartFormDataHelper(requestOptions)
-                .serializeFileField("document", documentTranslateContent.getDocument().getContent(),
-                    documentTranslateContent.getDocument().getContentType(),
-                    documentTranslateContent.getDocument().getFilename())
-                .serializeFileFields("glossary",
-                    documentTranslateContent.getGlossary() == null
-                        ? null
-                        : documentTranslateContent.getGlossary()
-                            .stream()
-                            .map(GlossaryFileDetails::getContent)
-                            .collect(Collectors.toList()),
-                    documentTranslateContent.getGlossary() == null
-                        ? null
-                        : documentTranslateContent.getGlossary()
-                            .stream()
-                            .map(GlossaryFileDetails::getContentType)
-                            .collect(Collectors.toList()),
-                    documentTranslateContent.getGlossary() == null
-                        ? null
-                        : documentTranslateContent.getGlossary()
-                            .stream()
-                            .map(GlossaryFileDetails::getFilename)
-                            .collect(Collectors.toList()))
+                .serializeTextField("document", Objects.toString(documentTranslateContent.getDocument()))
+                .serializeJsonField("glossary", documentTranslateContent.getGlossary())
                 .end()
                 .getRequestBody(),
             requestOptions).flatMap(FluxUtil::toMono);
@@ -184,28 +163,8 @@ public final class SingleDocumentTranslationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return documentTranslateWithResponse(targetLanguage,
             new MultipartFormDataHelper(requestOptions)
-                .serializeFileField("document", documentTranslateContent.getDocument().getContent(),
-                    documentTranslateContent.getDocument().getContentType(),
-                    documentTranslateContent.getDocument().getFilename())
-                .serializeFileFields("glossary",
-                    documentTranslateContent.getGlossary() == null
-                        ? null
-                        : documentTranslateContent.getGlossary()
-                            .stream()
-                            .map(GlossaryFileDetails::getContent)
-                            .collect(Collectors.toList()),
-                    documentTranslateContent.getGlossary() == null
-                        ? null
-                        : documentTranslateContent.getGlossary()
-                            .stream()
-                            .map(GlossaryFileDetails::getContentType)
-                            .collect(Collectors.toList()),
-                    documentTranslateContent.getGlossary() == null
-                        ? null
-                        : documentTranslateContent.getGlossary()
-                            .stream()
-                            .map(GlossaryFileDetails::getFilename)
-                            .collect(Collectors.toList()))
+                .serializeTextField("document", Objects.toString(documentTranslateContent.getDocument()))
+                .serializeJsonField("glossary", documentTranslateContent.getGlossary())
                 .end()
                 .getRequestBody(),
             requestOptions).flatMap(FluxUtil::toMono);
