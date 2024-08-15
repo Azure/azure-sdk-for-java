@@ -51,7 +51,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
     private GlobalEndpointManager globalEndpointManagerMock;
 
-    @BeforeClass(groups = {"multi-master-circuit-breaker"})
+    @BeforeClass(groups = {"unit"})
     public void beforeClass() {
         this.globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
 
@@ -76,12 +76,31 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @DataProvider(name = "partitionLevelCircuitBreakerConfigs")
-    public Object[] partitionLevelCircuitBreakerConfigs() {
-        return new Object[]{READ_OPERATION_TRUE, !READ_OPERATION_TRUE};
+    public Object[][] partitionLevelCircuitBreakerConfigs() {
+        return new Object[][]{
+            new Object[]{
+                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                    + "}",
+                READ_OPERATION_TRUE
+            },
+            new Object[]{
+                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                    + "}",
+                !READ_OPERATION_TRUE
+            }
+        };
     }
 
-    @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyStatus(boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+    @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
+    public void recordHealthyStatus(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+
+        System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -131,10 +150,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isTrue();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isFalse();
+
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
-    @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyToHealthyWithFailuresStatusTransition(boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+    @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
+    public void recordHealthyToHealthyWithFailuresStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+
+        System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -195,10 +218,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isTrue();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isFalse();
+
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
-    @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyWithFailuresToUnavailableStatusTransition(boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+    @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
+    public void recordHealthyWithFailuresToUnavailableStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+
+        System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -264,10 +291,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
+
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
-    @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordUnavailableToHealthyTentativeStatusTransition(boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+    @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
+    public void recordUnavailableToHealthyTentativeStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+
+        System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -346,10 +377,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isTrue();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isFalse();
+
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
-    @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyTentativeToHealthyStatusTransition(boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+    @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
+    public void recordHealthyTentativeToHealthyStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+
+        System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -435,10 +470,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isTrue();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isFalse();
+
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
-    @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyTentativeToUnavailableTransition(boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+    @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
+    public void recordHealthyTentativeToUnavailableTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+
+        System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -524,10 +563,13 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
+
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
-    @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void allRegionsUnavailableHandling(boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+    @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
+    public void allRegionsUnavailableHandling(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+        System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -594,10 +636,13 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
         assertThat(partitionAndLocationSpecificUnavailabilityInfo).isNull();
+
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
-    @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void multiContainerBothWithSinglePartitionHealthyToUnavailableHandling(boolean readOperationTrue) throws NoSuchFieldException, IllegalAccessException {
+    @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
+    public void multiContainerBothWithSinglePartitionHealthyToUnavailableHandling(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchFieldException, IllegalAccessException {
+        System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -690,10 +735,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         assertThat(locationSpecificHealthContext2.isRegionAvailableToProcessRequests()).isTrue();
         assertThat(locationSpecificHealthContext2.isExceptionThresholdBreached()).isFalse();
+
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
-    @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void allRegionsUnavailableHandlingWithMultiThreading(boolean readOperationTrue) {
+    @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
+    public void allRegionsUnavailableHandlingWithMultiThreading(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) {
+
+        System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
         int threadPoolSizeForExecutors = 4;
 
@@ -824,6 +873,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         executorForEastUs.shutdown();
         executorForCentralUs.shutdown();
         executorForEastUs2.shutdown();
+
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
     private static void validateAllRegionsAreNotUnavailableAfterExceptionInLocation(

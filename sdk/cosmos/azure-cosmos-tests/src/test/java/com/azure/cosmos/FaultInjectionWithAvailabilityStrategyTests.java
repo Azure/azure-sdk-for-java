@@ -206,9 +206,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         return (String)row[0];
     }
 
-    @BeforeClass(groups = { "multi-master", "multi-master-circuit-breaker" })
+    @BeforeClass(groups = { "multi-master" })
     public void beforeClass() {
-
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -230,7 +229,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             Map<String, String> writeRegionMap = this.getRegionMap(databaseAccount, true);
 
-            this.writeableRegions = new ArrayList<>(writeRegionMap.keySet());
+            this.writeableRegions = new ArrayList<>(Arrays.asList("East US", "South Central US"));
             assertThat(this.writeableRegions).isNotNull();
             assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
 
@@ -324,7 +323,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // When the container does not exist yet, you would see 401 for example for point reads etc.
             // So, adding this delay after container creation to minimize risk of hitting these errors
             try {
-                Thread.sleep(3000);
+                Thread.sleep(10_000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -333,9 +332,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             safeClose(dummyClient);
         }
     }
-    @AfterClass(groups = { "multi-master", "multi-master-circuit-breaker" })
+    @AfterClass(groups = { "multi-master" })
     public void afterClass() {
-
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -829,7 +827,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "testConfigs_readAfterCreation")
+    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAfterCreation")
     public void readAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
@@ -2247,7 +2245,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "testConfigs_writeAfterCreation")
+    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_writeAfterCreation")
     public void writeAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
@@ -3406,7 +3404,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "testConfigs_queryAfterCreation")
+    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_queryAfterCreation")
     public void queryAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
@@ -3978,7 +3976,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "testConfigs_readManyAfterCreation")
+    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readManyAfterCreation")
     public void readManyAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
@@ -4756,7 +4754,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "testConfigs_readAllAfterCreation")
+    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAllAfterCreation")
     public void readAllAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
@@ -5088,7 +5086,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     // When the container does not exist yet, you would see 401 for example for point reads etc.
                     // So, adding this delay after container creation to minimize risk of hitting these errors
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(10_000);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }

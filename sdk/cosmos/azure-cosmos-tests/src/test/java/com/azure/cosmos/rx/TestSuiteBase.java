@@ -203,7 +203,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-master-circuit-breaker"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -226,7 +226,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 //        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
     }
 
-    @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-master-circuit-breaker"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuite() {
 
         logger.info("afterSuite Started");

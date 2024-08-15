@@ -54,7 +54,6 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -1426,7 +1425,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = {"multi-region", "multi-master", "multi-master-circuit-breaker"})
+    @BeforeClass(groups = {"multi-region", "multi-master"})
     public void beforeClass() {
 
         try (CosmosAsyncClient tempClient = getClientBuilder().buildAsyncClient()) {
@@ -1444,9 +1443,6 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             throw new RuntimeException(e);
         }
     }
-
-    @AfterClass(groups = {"multi-region", "multi-master", "multi-master-circuit-breaker"})
-    public void afterClass() {}
 
     @Test(groups = {"multi-region"}, dataProvider = "readYouWriteWithNoExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
     public void readYouWriteWithNoExplicitRegionSwitching(
@@ -1518,7 +1514,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readYouWriteWithExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
+    @Test(groups = {"multi-master"}, dataProvider = "readYouWriteWithExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
     public void readYouWriteWithExplicitRegionSwitching(
         Function<CosmosAsyncContainer, Set<String>> func,
         String testId,
@@ -1640,7 +1636,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readManyWithExplicitRegionSwitchingTestContext", timeOut = 10 * TIMEOUT)
+    @Test(groups = {"multi-master"}, dataProvider = "readManyWithExplicitRegionSwitchingTestContext", timeOut = 10 * TIMEOUT)
     public void readManyWithExplicitRegionSwitching(
         Function<CosmosAsyncContainer, Set<String>> func,
         String testId,

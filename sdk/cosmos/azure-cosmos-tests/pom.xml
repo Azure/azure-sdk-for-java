@@ -342,132 +342,132 @@ Licensed under the MIT License.
         </plugins>
       </build>
     </profile>
-<!--    <profile>-->
-<!--      &lt;!&ndash; integration tests, requires Cosmos DB endpoint &ndash;&gt;-->
-<!--      <id>fast</id>-->
-<!--      <properties>-->
-<!--        <test.groups>simple</test.groups>-->
-<!--      </properties>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--            <version>3.2.5</version> &lt;!&ndash; {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} &ndash;&gt;-->
-<!--            <configuration>-->
-<!--              <suiteXmlFiles>-->
-<!--                <suiteXmlFile>src/test/resources/fast-testng.xml</suiteXmlFile>-->
-<!--              </suiteXmlFiles>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
-<!--    <profile>-->
-<!--      &lt;!&ndash; integration tests, requires Cosmos DB endpoint &ndash;&gt;-->
-<!--      <id>split</id>-->
-<!--      <properties>-->
-<!--        <test.groups>split</test.groups>-->
-<!--      </properties>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--            <version>3.2.5</version> &lt;!&ndash; {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} &ndash;&gt;-->
-<!--            <configuration>-->
-<!--              <suiteXmlFiles>-->
-<!--                <suiteXmlFile>src/test/resources/split-testng.xml</suiteXmlFile>-->
-<!--              </suiteXmlFiles>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
-<!--    <profile>-->
-<!--      &lt;!&ndash; integration tests, requires Cosmos DB endpoint &ndash;&gt;-->
-<!--      <id>cfp-split</id>-->
-<!--      <properties>-->
-<!--        <test.groups>cfp-split</test.groups>-->
-<!--      </properties>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--            <version>3.2.5</version> &lt;!&ndash; {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} &ndash;&gt;-->
-<!--            <configuration>-->
-<!--              <suiteXmlFiles>-->
-<!--                <suiteXmlFile>src/test/resources/cfp-split-testng.xml</suiteXmlFile>-->
-<!--              </suiteXmlFiles>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
-<!--    <profile>-->
-<!--      &lt;!&ndash; integration tests, requires Cosmos DB endpoint &ndash;&gt;-->
-<!--      <id>query</id>-->
-<!--      <properties>-->
-<!--        <test.groups>query</test.groups>-->
-<!--      </properties>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--            <version>3.2.5</version> &lt;!&ndash; {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} &ndash;&gt;-->
-<!--            <configuration>-->
-<!--              <suiteXmlFiles>-->
-<!--                <suiteXmlFile>src/test/resources/query-testng.xml</suiteXmlFile>-->
-<!--              </suiteXmlFiles>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
-<!--    <profile>-->
-<!--      &lt;!&ndash; integration tests, requires Cosmos DB endpoint &ndash;&gt;-->
-<!--      <id>long</id>-->
-<!--      <properties>-->
-<!--        <test.groups>long</test.groups>-->
-<!--      </properties>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--            <version>3.2.5</version> &lt;!&ndash; {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} &ndash;&gt;-->
-<!--            <configuration>-->
-<!--              <suiteXmlFiles>-->
-<!--                <suiteXmlFile>src/test/resources/long-testng.xml</suiteXmlFile>-->
-<!--              </suiteXmlFiles>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
-<!--    <profile>-->
-<!--      &lt;!&ndash; integration tests, requires Cosmos DB endpoint &ndash;&gt;-->
-<!--      <id>direct</id>-->
-<!--      <properties>-->
-<!--        <test.groups>direct</test.groups>-->
-<!--      </properties>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--            <version>3.2.5</version> &lt;!&ndash; {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} &ndash;&gt;-->
-<!--            <configuration>-->
-<!--              <suiteXmlFiles>-->
-<!--                <suiteXmlFile>src/test/resources/direct-testng.xml</suiteXmlFile>-->
-<!--              </suiteXmlFiles>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint -->
+      <id>fast</id>
+      <properties>
+        <test.groups>simple</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/fast-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint -->
+      <id>split</id>
+      <properties>
+        <test.groups>split</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/split-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint -->
+      <id>cfp-split</id>
+      <properties>
+        <test.groups>cfp-split</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/cfp-split-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint -->
+      <id>query</id>
+      <properties>
+        <test.groups>query</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/query-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint -->
+      <id>long</id>
+      <properties>
+        <test.groups>long</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/long-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint -->
+      <id>direct</id>
+      <properties>
+        <test.groups>direct</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/direct-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB endpoint with multi master support -->
       <id>multi-master</id>
@@ -483,27 +483,6 @@ Licensed under the MIT License.
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/multi-master-testng.xml</suiteXmlFile>
-              </suiteXmlFiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <!-- integration tests, requires Cosmos DB endpoint with multi master support -->
-      <id>multi-master-circuit-breaker</id>
-      <properties>
-        <test.groups>multi-master-circuit-breaker</test.groups>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/multi-master-circuit-breaker-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
           </plugin>
@@ -594,27 +573,27 @@ Licensed under the MIT License.
         </plugins>
       </build>
     </profile>
-<!--    <profile>-->
-<!--      &lt;!&ndash; integration tests, requires Cosmos DB endpoint with multi region support &ndash;&gt;-->
-<!--      <id>multi-region</id>-->
-<!--      <properties>-->
-<!--        <test.groups>multi-region</test.groups>-->
-<!--      </properties>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--            <version>3.2.5</version> &lt;!&ndash; {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} &ndash;&gt;-->
-<!--            <configuration>-->
-<!--              <suiteXmlFiles>-->
-<!--                <suiteXmlFile>src/test/resources/multi-region-testng.xml</suiteXmlFile>-->
-<!--              </suiteXmlFiles>-->
-<!--            </configuration>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--    </profile>-->
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint with multi region support -->
+      <id>multi-region</id>
+      <properties>
+        <test.groups>multi-region</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/multi-region-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB endpoint -->
       <id>examples</id>

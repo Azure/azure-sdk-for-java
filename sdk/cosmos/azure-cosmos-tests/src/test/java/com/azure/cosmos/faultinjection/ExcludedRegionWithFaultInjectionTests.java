@@ -129,7 +129,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
     //    13. bulkExecutionOptions: a CosmosBulkExecutionOptions instance configured to set on the data plane operation after mutation is done
     //    14. batchRequestOptions: a CosmosBatchRequestOptions instance configured to set on the data plane operation after mutation is done
     //    15. perRegionDuplicateCount: no. of times to duplicate a particular region in excludedRegions
-    @BeforeClass(groups = {"multi-master", "multi-master-circuit-breaker"})
+    @BeforeClass(groups = {"multi-master"})
     public void beforeClass() {
         this.cosmosAsyncClient = getClientBuilder().buildAsyncClient();
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.cosmosAsyncClient);
@@ -2257,31 +2257,31 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         return null;
     }
 
-    @Test(groups = { "multi-master", "multi-master-circuit-breaker" }, dataProvider = "regionExclusionReadAfterCreateTestConfigs")
+    @Test(groups = { "multi-master" }, dataProvider = "regionExclusionReadAfterCreateTestConfigs")
     public void regionExclusionMutationOnClient_readAfterCreate_test(String testTitle, MutationTestConfig mutationTestConfig) throws InterruptedException {
         logger.info("Test started with title : {}", testTitle);
         execute(mutationTestConfig);
     }
 
-    @Test(groups = { "multi-master", "multi-master-circuit-breaker" }, dataProvider = "regionExclusionQueryAfterCreateTestConfigs")
+    @Test(groups = { "multi-master" }, dataProvider = "regionExclusionQueryAfterCreateTestConfigs")
     public void regionExclusionMutationOnClient_queryAfterCreate_test(String testTitle, MutationTestConfig mutationTestConfig) throws InterruptedException {
         logger.info("Test started with title : {}", testTitle);
         execute(mutationTestConfig);
     }
 
-    @Test(groups = { "multi-master", "multi-master-circuit-breaker" }, dataProvider = "regionExclusionWriteAfterCreateTestConfigs")
+    @Test(groups = { "multi-master" }, dataProvider = "regionExclusionWriteAfterCreateTestConfigs")
     public void regionExclusionMutationOnClient_writeAfterCreate_test(String testTitle, MutationTestConfig mutationTestConfig) throws InterruptedException {
         logger.info("Test started with title : {}", testTitle);
         execute(mutationTestConfig);
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "regionExclusionBatchTestConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "regionExclusionBatchTestConfigs")
     public void regionExclusionMutationOnClient_batch_test(String testTitle, MutationTestConfig mutationTestConfig) throws InterruptedException {
         logger.info("Test started with title : {}", testTitle);
         execute(mutationTestConfig);
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "regionExclusionBulkTestConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "regionExclusionBulkTestConfigs")
     public void regionExclusionMutationOnClient_bulk_test(String testTitle, MutationTestConfig mutationTestConfig) throws InterruptedException {
         logger.info("Test started with title : {}", testTitle);
         execute(mutationTestConfig);
@@ -2392,7 +2392,7 @@ public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBas
         }
     }
 
-    @AfterClass(groups = {"multi-master", "multi-master-circuit-breaker"})
+    @AfterClass(groups = {"multi-master"})
     public void afterClass() {
         safeCloseAsync(this.cosmosAsyncClient);
     }

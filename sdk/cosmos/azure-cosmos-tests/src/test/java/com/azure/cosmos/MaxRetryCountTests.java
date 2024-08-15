@@ -181,7 +181,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         return (String)row[0];
     }
 
-    @BeforeClass(groups = { "multi-master", "multi-master-circuit-breaker" })
+    @BeforeClass(groups = { "multi-master" })
     public void beforeClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -256,7 +256,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             safeClose(dummyClient);
         }
     }
-    @AfterClass(groups = { "multi-master", "multi-master-circuit-breaker" })
+    @AfterClass(groups = { "multi-master" })
     public void afterClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -1301,7 +1301,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readMaxRetryCount_readSessionNotAvailable")
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_readSessionNotAvailable")
     public void readMaxRetryCount_readSessionNotAvailable(
         String testCaseId,
         Duration endToEndTimeout,
@@ -1422,7 +1422,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readMaxRetryCount_retryWith")
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_retryWith")
     public void readMaxRetryCount_retryWith(
         String testCaseId,
         Duration endToEndTimeout,
@@ -1499,7 +1499,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             defaultThrottlingRetryOptions);
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readMaxRetryCount_serverGone")
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverGone")
     public void readMaxRetryCount_serverGone(
         String testCaseId,
         Duration endToEndTimeout,
@@ -1587,7 +1587,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             defaultThrottlingRetryOptions);
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readMaxRetryCount_transitTimeout")
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_transitTimeout")
     public void readMaxRetryCount_transitTimeout(
         String testCaseId,
         Duration endToEndTimeout,
@@ -1676,7 +1676,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             defaultThrottlingRetryOptions);
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readMaxRetryCount_serverTimeout")
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverTimeout")
     public void readMaxRetryCount_serverTimeout(
         String testCaseId,
         Duration endToEndTimeout,
@@ -1766,7 +1766,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             defaultThrottlingRetryOptions);
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readMaxRetryCount_serverServiceUnavailable")
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverServiceUnavailable")
     public void readMaxRetryCount_serverServiceUnavailable(
         String testCaseId,
         Duration endToEndTimeout,
@@ -1854,7 +1854,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             defaultThrottlingRetryOptions);
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readMaxRetryCount_serverInternalServerError")
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverInternalServerError")
     public void readMaxRetryCount_serverInternalServerError(
         String testCaseId,
         Duration endToEndTimeout,
@@ -1933,7 +1933,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             defaultThrottlingRetryOptions);
     }
 
-    @Test(groups = {"multi-master", "multi-master-circuit-breaker"}, dataProvider = "readMaxRetryCount_serverRequestRateTooLarge")
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverRequestRateTooLarge")
     public void readMaxRetryCount_serverRequestRateTooLarge(
         String testCaseId,
         Duration endToEndTimeout,
