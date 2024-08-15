@@ -8,7 +8,7 @@
 - Removed support in `IntelliJCredential` for legacy Azure Toolkit for IntelliJ versions. Please upgrade to latest if you are using 3.52 or below.
 
 ### Bugs Fixed
-Fixed issue in `IntelliJCredential` blocking signin [#39799](https://github.com/Azure/azure-sdk-for-java/issues/39799)
+Fixed issue in `IntelliJCredential` blocking sign in [#39799](https://github.com/Azure/azure-sdk-for-java/issues/39799)
 
 ### Other Changes
 
