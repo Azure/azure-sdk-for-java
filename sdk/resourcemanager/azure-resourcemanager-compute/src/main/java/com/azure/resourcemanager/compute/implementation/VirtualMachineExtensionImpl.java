@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
@@ -12,6 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -26,9 +31,10 @@ class VirtualMachineExtensionImpl
         VirtualMachineExtension.Definition<VirtualMachine.DefinitionStages.WithCreate>,
         VirtualMachineExtension.UpdateDefinition<VirtualMachine.Update>,
         VirtualMachineExtension.Update {
+    private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionImpl.class);
     private final VirtualMachineExtensionsClient client;
-    private HashMap<String, Object> publicSettings;
-    private HashMap<String, Object> protectedSettings;
+    private Map<String, Object> publicSettings;
+    private Map<String, Object> protectedSettings;
 
     VirtualMachineExtensionImpl(
         String name,
@@ -80,7 +86,12 @@ class VirtualMachineExtensionImpl
 
     @Override
     public String publicSettingsAsJsonString() {
-        return null;
+        try {
+            return ((ComputeManagementClientImpl) parent().manager().serviceClient())
+                .getSerializerAdapter().serialize(this.publicSettings, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     @Override
@@ -297,20 +308,36 @@ class VirtualMachineExtensionImpl
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void initializeSettings() {
         if (this.innerModel().settings() == null) {
             this.publicSettings = new LinkedHashMap<>();
             this.innerModel().withSettings(this.publicSettings);
         } else {
-            this.publicSettings = (LinkedHashMap<String, Object>) this.innerModel().settings();
+            this.publicSettings = loadSettings(this.innerModel().settings());
         }
 
         if (this.innerModel().protectedSettings() == null) {
             this.protectedSettings = new LinkedHashMap<>();
             this.innerModel().withProtectedSettings(this.protectedSettings);
         } else {
-            this.protectedSettings = (LinkedHashMap<String, Object>) this.innerModel().protectedSettings();
+            this.protectedSettings = loadSettings(this.innerModel().protectedSettings());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> loadSettings(Object settings) {
+        if (settings instanceof String) {
+            try (JsonReader jsonReader = JsonProviders.createReader((String) settings)) {
+                return jsonReader.readMap(JsonReader::readUntyped);
+            } catch (IOException e) {
+                logger.atWarning().log("[VirtualMachineExtensionImpl] invalid String setting: {}", settings);
+                return new LinkedHashMap<>();
+            }
+        } else if (settings instanceof Map) {
+            return (Map<String, Object>) settings;
+        } else {
+            logger.atWarning().log("[VirtualMachineExtensionImpl] unrecognized setting type: {}, value: {}", settings.getClass(), settings);
+            return new LinkedHashMap<>();
         }
     }
 }
