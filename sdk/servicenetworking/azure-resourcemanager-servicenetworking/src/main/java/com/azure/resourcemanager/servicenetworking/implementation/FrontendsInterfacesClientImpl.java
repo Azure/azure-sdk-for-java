@@ -116,7 +116,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -422,7 +422,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of
+     * @return frontend Sub Resource of Traffic Controller along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -471,7 +471,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of
+     * @return frontend Sub Resource of Traffic Controller along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -518,7 +518,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of frontend Subresource of Traffic Controller.
+     * @return the {@link PollerFlux} for polling of frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdateAsync(String resourceGroupName,
@@ -540,7 +540,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of frontend Subresource of Traffic Controller.
+     * @return the {@link PollerFlux} for polling of frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdateAsync(String resourceGroupName,
@@ -562,7 +562,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of frontend Subresource of Traffic Controller.
+     * @return the {@link SyncPoller} for polling of frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
@@ -582,7 +582,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of frontend Subresource of Traffic Controller.
+     * @return the {@link SyncPoller} for polling of frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
@@ -601,7 +601,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller on successful completion of {@link Mono}.
+     * @return frontend Sub Resource of Traffic Controller on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FrontendInner> createOrUpdateAsync(String resourceGroupName, String trafficControllerName,
@@ -621,13 +621,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller on successful completion of {@link Mono}.
+     * @return frontend Sub Resource of Traffic Controller on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FrontendInner> createOrUpdateAsync(String resourceGroupName, String trafficControllerName,
         String frontendName, FrontendInner resource, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -640,7 +641,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller.
+     * @return frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
@@ -659,7 +660,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller.
+     * @return frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
@@ -677,7 +678,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of
+     * @return frontend Sub Resource of Traffic Controller along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -726,7 +727,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of
+     * @return frontend Sub Resource of Traffic Controller along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -772,7 +773,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller on successful completion of {@link Mono}.
+     * @return frontend Sub Resource of Traffic Controller on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FrontendInner> updateAsync(String resourceGroupName, String trafficControllerName, String frontendName,
@@ -792,7 +793,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller along with {@link Response}.
+     * @return frontend Sub Resource of Traffic Controller along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FrontendInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
@@ -811,7 +812,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller.
+     * @return frontend Sub Resource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendInner update(String resourceGroupName, String trafficControllerName, String frontendName,
@@ -1046,9 +1047,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1076,9 +1075,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

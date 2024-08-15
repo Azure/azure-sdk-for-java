@@ -10,7 +10,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
 public final class TrafficControllerInterfaceGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
      * TrafficControllerGet.json
      */
     /**
@@ -20,7 +20,7 @@ public final class TrafficControllerInterfaceGetByResourceGroupSamples {
      */
     public static void
         getTrafficController(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.trafficControllerInterfaces().getByResourceGroupWithResponse("rg1", "tc1",
-            com.azure.core.util.Context.NONE);
+        manager.trafficControllerInterfaces()
+            .getByResourceGroupWithResponse("rg1", "tc1", com.azure.core.util.Context.NONE);
     }
 }

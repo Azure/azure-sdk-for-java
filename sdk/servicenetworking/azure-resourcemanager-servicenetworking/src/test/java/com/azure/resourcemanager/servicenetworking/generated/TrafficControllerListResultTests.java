@@ -6,8 +6,10 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.TrafficControllerInner;
+import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyConfigurations;
 import com.azure.resourcemanager.servicenetworking.models.TrafficControllerListResult;
 import com.azure.resourcemanager.servicenetworking.models.TrafficControllerProperties;
+import com.azure.resourcemanager.servicenetworking.models.WafSecurityPolicy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,23 +19,31 @@ public final class TrafficControllerListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficControllerListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"th\",\"qhabifpikxwcz\",\"yscnpqxu\"],\"frontends\":[{\"id\":\"y\"}],\"associations\":[{\"id\":\"wby\"},{\"id\":\"rkxvdum\"},{\"id\":\"grtfwvu\"},{\"id\":\"xgaudccs\"}],\"provisioningState\":\"Updating\"},\"location\":\"cnyejhkryhtnapcz\",\"tags\":{\"ni\":\"kjyemkk\",\"ilzyd\":\"joxzjnchgejspodm\"},\"id\":\"h\",\"name\":\"jwyahuxinpmqnja\",\"type\":\"wixjsprozvcp\"}],\"nextLink\":\"eg\"}")
+            "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"th\",\"qhabifpikxwcz\",\"yscnpqxu\"],\"frontends\":[{\"id\":\"y\"}],\"associations\":[{\"id\":\"wby\"},{\"id\":\"rkxvdum\"},{\"id\":\"grtfwvu\"},{\"id\":\"xgaudccs\"}],\"securityPolicies\":[{\"id\":\"jcny\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"kryhtnapczwlokj\"}},\"provisioningState\":\"Accepted\"},\"location\":\"kvnipjoxz\",\"tags\":{\"lzydehojwyahux\":\"hgejspodma\",\"vcputegj\":\"npmqnjaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\"},\"id\":\"odjpslwejd\",\"name\":\"vwryoqpso\",\"type\":\"cctazakljlahbc\"}],\"nextLink\":\"ffdfdosygexpa\"}")
             .toObject(TrafficControllerListResult.class);
-        Assertions.assertEquals("cnyejhkryhtnapcz", model.value().get(0).location());
-        Assertions.assertEquals("kjyemkk", model.value().get(0).tags().get("ni"));
-        Assertions.assertEquals("eg", model.nextLink());
+        Assertions.assertEquals("kvnipjoxz", model.value().get(0).location());
+        Assertions.assertEquals("hgejspodma", model.value().get(0).tags().get("lzydehojwyahux"));
+        Assertions.assertEquals("kryhtnapczwlokj",
+            model.value().get(0).properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("ffdfdosygexpa", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficControllerListResult model
-            = new TrafficControllerListResult().withValue(Arrays.asList(new TrafficControllerInner()
-                .withLocation("cnyejhkryhtnapcz").withTags(mapOf("ni", "kjyemkk", "ilzyd", "joxzjnchgejspodm"))
-                .withProperties(new TrafficControllerProperties()))).withNextLink("eg");
+        TrafficControllerListResult model = new TrafficControllerListResult()
+            .withValue(Arrays.asList(new TrafficControllerInner().withLocation("kvnipjoxz")
+                .withTags(mapOf("lzydehojwyahux", "hgejspodma", "vcputegj", "npmqnjaqwixjspro", "uuvmkjozkrwfnd",
+                    "wmfdatscmdvpjhul"))
+                .withProperties(new TrafficControllerProperties()
+                    .withSecurityPolicyConfigurations(new SecurityPolicyConfigurations()
+                        .withWafSecurityPolicy(new WafSecurityPolicy().withId("kryhtnapczwlokj"))))))
+            .withNextLink("ffdfdosygexpa");
         model = BinaryData.fromObject(model).toObject(TrafficControllerListResult.class);
-        Assertions.assertEquals("cnyejhkryhtnapcz", model.value().get(0).location());
-        Assertions.assertEquals("kjyemkk", model.value().get(0).tags().get("ni"));
-        Assertions.assertEquals("eg", model.nextLink());
+        Assertions.assertEquals("kvnipjoxz", model.value().get(0).location());
+        Assertions.assertEquals("hgejspodma", model.value().get(0).tags().get("lzydehojwyahux"));
+        Assertions.assertEquals("kryhtnapczwlokj",
+            model.value().get(0).properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("ffdfdosygexpa", model.nextLink());
     }
 
     // Use "Map.of" if available

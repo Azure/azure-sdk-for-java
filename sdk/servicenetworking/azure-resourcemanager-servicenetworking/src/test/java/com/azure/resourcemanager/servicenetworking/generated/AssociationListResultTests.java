@@ -19,30 +19,33 @@ public final class AssociationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssociationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"aozwyiftyhxhu\"},\"provisioningState\":\"Provisioning\"},\"location\":\"tyxolniwpwc\",\"tags\":{\"ryplwckbasyypn\":\"fkgiawxk\",\"phejkotynqgoulz\":\"dhsgcba\",\"gakeqsr\":\"dlikwyqkgfgibma\"},\"id\":\"yb\",\"name\":\"qqedqytbciqfou\",\"type\":\"lmmnkzsmodmglo\"}],\"nextLink\":\"pbkwtmu\"}")
+            "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"fgibmadgakeq\"},\"provisioningState\":\"Provisioning\"},\"location\":\"bzqqedqytbciq\",\"tags\":{\"smodmgloug\":\"flmmnk\",\"wtmutduq\":\"b\"},\"id\":\"ta\",\"name\":\"spwgcuertumkdosv\",\"type\":\"whbmd\"},{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"f\"},\"provisioningState\":\"Failed\"},\"location\":\"bmbexppbhtqqro\",\"tags\":{\"igjyjg\":\"fpsalgbqu\"},\"id\":\"jaoyfhrtx\",\"name\":\"lnerkujysvleju\",\"type\":\"fqawrlyxw\"}],\"nextLink\":\"cpr\"}")
             .toObject(AssociationListResult.class);
-        Assertions.assertEquals("tyxolniwpwc", model.value().get(0).location());
-        Assertions.assertEquals("fkgiawxk", model.value().get(0).tags().get("ryplwckbasyypn"));
+        Assertions.assertEquals("bzqqedqytbciq", model.value().get(0).location());
+        Assertions.assertEquals("flmmnk", model.value().get(0).tags().get("smodmgloug"));
         Assertions.assertEquals(AssociationType.SUBNETS, model.value().get(0).properties().associationType());
-        Assertions.assertEquals("aozwyiftyhxhu", model.value().get(0).properties().subnet().id());
-        Assertions.assertEquals("pbkwtmu", model.nextLink());
+        Assertions.assertEquals("fgibmadgakeq", model.value().get(0).properties().subnet().id());
+        Assertions.assertEquals("cpr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssociationListResult model
-            = new AssociationListResult().withValue(Arrays.asList(new AssociationInner().withLocation("tyxolniwpwc")
-                .withTags(
-                    mapOf("ryplwckbasyypn", "fkgiawxk", "phejkotynqgoulz", "dhsgcba", "gakeqsr", "dlikwyqkgfgibma"))
+        AssociationListResult model = new AssociationListResult().withValue(Arrays.asList(
+            new AssociationInner().withLocation("bzqqedqytbciq")
+                .withTags(mapOf("smodmgloug", "flmmnk", "wtmutduq", "b"))
                 .withProperties(new AssociationProperties().withAssociationType(AssociationType.SUBNETS)
-                    .withSubnet(new AssociationSubnet().withId("aozwyiftyhxhu")))))
-                .withNextLink("pbkwtmu");
+                    .withSubnet(new AssociationSubnet().withId("fgibmadgakeq"))),
+            new AssociationInner().withLocation("bmbexppbhtqqro")
+                .withTags(mapOf("igjyjg", "fpsalgbqu"))
+                .withProperties(new AssociationProperties().withAssociationType(AssociationType.SUBNETS)
+                    .withSubnet(new AssociationSubnet().withId("f")))))
+            .withNextLink("cpr");
         model = BinaryData.fromObject(model).toObject(AssociationListResult.class);
-        Assertions.assertEquals("tyxolniwpwc", model.value().get(0).location());
-        Assertions.assertEquals("fkgiawxk", model.value().get(0).tags().get("ryplwckbasyypn"));
+        Assertions.assertEquals("bzqqedqytbciq", model.value().get(0).location());
+        Assertions.assertEquals("flmmnk", model.value().get(0).tags().get("smodmgloug"));
         Assertions.assertEquals(AssociationType.SUBNETS, model.value().get(0).properties().associationType());
-        Assertions.assertEquals("aozwyiftyhxhu", model.value().get(0).properties().subnet().id());
-        Assertions.assertEquals("pbkwtmu", model.nextLink());
+        Assertions.assertEquals("fgibmadgakeq", model.value().get(0).properties().subnet().id());
+        Assertions.assertEquals("cpr", model.nextLink());
     }
 
     // Use "Map.of" if available

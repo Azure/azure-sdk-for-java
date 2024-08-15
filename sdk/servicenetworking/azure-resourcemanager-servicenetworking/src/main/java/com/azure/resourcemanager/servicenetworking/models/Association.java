@@ -240,9 +240,9 @@ public interface Association {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: The updatable properties of the Association..
+             * Specifies the properties property: The resource-specific properties for this resource..
              * 
-             * @param properties The updatable properties of the Association.
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
             Update withProperties(AssociationUpdateProperties properties);

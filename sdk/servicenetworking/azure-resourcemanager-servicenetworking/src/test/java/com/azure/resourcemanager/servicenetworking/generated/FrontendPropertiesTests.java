@@ -10,8 +10,9 @@ import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 public final class FrontendPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FrontendProperties model = BinaryData.fromString("{\"fqdn\":\"nbdxk\",\"provisioningState\":\"Provisioning\"}")
-            .toObject(FrontendProperties.class);
+        FrontendProperties model
+            = BinaryData.fromString("{\"fqdn\":\"khixuigdtopbo\",\"provisioningState\":\"Failed\"}")
+                .toObject(FrontendProperties.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -6,29 +6,30 @@ package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Association Properties.
  */
 @Fluent
-public final class AssociationProperties {
+public final class AssociationProperties implements JsonSerializable<AssociationProperties> {
     /*
      * Association Type
      */
-    @JsonProperty(value = "associationType", required = true)
     private AssociationType associationType;
 
     /*
      * Association Subnet
      */
-    @JsonProperty(value = "subnet")
     private AssociationSubnet subnet;
 
     /*
      * Provisioning State of Traffic Controller Association Resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -93,8 +94,9 @@ public final class AssociationProperties {
      */
     public void validate() {
         if (associationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property associationType in model AssociationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property associationType in model AssociationProperties"));
         }
         if (subnet() != null) {
             subnet().validate();
@@ -102,4 +104,48 @@ public final class AssociationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AssociationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("associationType",
+            this.associationType == null ? null : this.associationType.toString());
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssociationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssociationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AssociationProperties.
+     */
+    public static AssociationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssociationProperties deserializedAssociationProperties = new AssociationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("associationType".equals(fieldName)) {
+                    deserializedAssociationProperties.associationType = AssociationType.fromString(reader.getString());
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedAssociationProperties.subnet = AssociationSubnet.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAssociationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAssociationProperties;
+        });
+    }
 }

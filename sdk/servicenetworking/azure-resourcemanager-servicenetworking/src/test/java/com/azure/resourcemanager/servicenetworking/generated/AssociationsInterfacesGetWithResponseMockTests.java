@@ -6,55 +6,38 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Association;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AssociationsInterfacesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"zrnkcqvyxlwh\"},\"provisioningState\":\"Accepted\"},\"location\":\"cohoq\",\"tags\":{\"gyxzk\":\"vlryavwhheunmmq\"},\"id\":\"noc\",\"name\":\"koklya\",\"type\":\"uconuqszfkbey\"}";
+            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"eoveilovnotyf\"},\"provisioningState\":\"Updating\"},\"location\":\"jbkcnxdhbttkph\",\"tags\":{\"t\":\"nv\",\"crpab\":\"qnermclfplphoxu\",\"sbj\":\"ye\",\"wfqkquj\":\"azqugxywpmueefj\"},\"id\":\"dsuyonobgla\",\"name\":\"cq\",\"type\":\"tcc\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        TrafficControllerManager manager = TrafficControllerManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        TrafficControllerManager manager = TrafficControllerManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Association response = manager.associationsInterfaces()
-            .getWithResponse("kix", "bin", "eputtmrywnuzoqf", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("svlxotogtwrup", "sx", "nmic", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("cohoq", response.location());
-        Assertions.assertEquals("vlryavwhheunmmq", response.tags().get("gyxzk"));
+        Assertions.assertEquals("jbkcnxdhbttkph", response.location());
+        Assertions.assertEquals("nv", response.tags().get("t"));
         Assertions.assertEquals(AssociationType.SUBNETS, response.properties().associationType());
-        Assertions.assertEquals("zrnkcqvyxlwh", response.properties().subnet().id());
+        Assertions.assertEquals("eoveilovnotyf", response.properties().subnet().id());
     }
 }

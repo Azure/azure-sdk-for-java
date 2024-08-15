@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for AssociationType.
+ * Association Type Enum.
  */
 public final class AssociationType extends ExpandableStringEnum<AssociationType> {
     /**
@@ -32,7 +31,6 @@ public final class AssociationType extends ExpandableStringEnum<AssociationType>
      * @param name a name to look for.
      * @return the corresponding AssociationType.
      */
-    @JsonCreator
     public static AssociationType fromString(String name) {
         return fromString(name, AssociationType.class);
     }
