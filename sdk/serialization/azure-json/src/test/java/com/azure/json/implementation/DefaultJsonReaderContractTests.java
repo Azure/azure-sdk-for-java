@@ -5,12 +5,13 @@ package com.azure.json.implementation;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
 import com.azure.json.contract.JsonReaderContractTests;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Tests {@link DefaultJsonReader} against the contract required by {@link JsonReader}.
@@ -33,16 +34,12 @@ public class DefaultJsonReaderContractTests extends JsonReaderContractTests {
 
     @Test
     public void readJsonc() throws IOException {
-        String json = "{    // single line comment\n"
-            + "    \"single-line\": \"comment\",\n"
-            + "    /*\n"
-            + "    multi-line comment\n"
-            + "    */\n"
-            + "    \"multi-line\": \"comment\"}";
+        String json = "{    // single line comment\n" + "    \"single-line\": \"comment\",\n" + "    /*\n"
+            + "    multi-line comment\n" + "    */\n" + "    \"multi-line\": \"comment\"}";
         try (JsonReader jsonReader = getJsonReader(json)) {
-            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-                // all we want to do is validate that the json can be iterated without throwing.
-            }
+            jsonReader.nextToken();
+            String outputJson = jsonReader.readChildren();
+            assertNotNull(outputJson);
         }
     }
 }
