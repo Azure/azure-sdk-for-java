@@ -45,24 +45,24 @@ import reactor.core.publisher.Mono;
  */
 public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
     implements ManagedInstanceAzureADOnlyAuthenticationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagedInstanceAzureADOnlyAuthenticationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedInstanceAzureADOnlyAuthenticationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagedInstanceAzureADOnlyAuthenticationsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ManagedInstanceAzureADOnlyAuthenticationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ManagedInstanceAzureADOnlyAuthenticationsService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -73,297 +73,78 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
     public interface ManagedInstanceAzureADOnlyAuthenticationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/azureADOnlyAuthentications")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceAzureADOnlyAuthListResult>> listByInstance(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceAzureADOnlyAuthenticationInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagedInstanceAzureADOnlyAuthenticationInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("authenticationName") AuthenticationName authenticationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("authenticationName") AuthenticationName authenticationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ManagedInstanceAzureADOnlyAuthenticationInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("authenticationName") AuthenticationName authenticationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/azureADOnlyAuthentications")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ManagedInstanceAzureADOnlyAuthListResult>> listByInstance(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceAzureADOnlyAuthListResult>> listByInstanceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceAzureADOnlyAuthenticationInner>> listByInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByInstance(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ManagedInstanceAzureADOnlyAuthenticationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceAzureADOnlyAuthenticationInner>> listByInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByInstance(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstanceAsync(
-        String resourceGroupName, String managedInstanceName) {
-        return new PagedFlux<>(
-            () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
-            nextLink -> listByInstanceNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstanceAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
-            nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstance(
-        String resourceGroupName, String managedInstanceName) {
-        return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
-    }
-
-    /**
-     * Gets a list of server Azure Active Directory only authentications.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstance(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, context));
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a specific Azure Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Azure Active Directory only authentication property along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedInstanceAzureADOnlyAuthenticationInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName) {
+    public Mono<Response<ManagedInstanceAzureADOnlyAuthenticationInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -378,33 +159,22 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
                 .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            authenticationName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                authenticationName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a specific Azure Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param context The context to associate with this operation.
@@ -412,16 +182,14 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Azure Active Directory only authentication property along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedInstanceAzureADOnlyAuthenticationInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName, Context context) {
+    private Mono<Response<ManagedInstanceAzureADOnlyAuthenticationInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -436,30 +204,21 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
                 .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                authenticationName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, authenticationName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Gets a specific Azure Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -468,17 +227,17 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return a specific Azure Active Directory only authentication property on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceAzureADOnlyAuthenticationInner> getAsync(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName) {
+    public Mono<ManagedInstanceAzureADOnlyAuthenticationInner> getAsync(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, authenticationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a specific Azure Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param context The context to associate with this operation.
@@ -488,16 +247,16 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return a specific Azure Active Directory only authentication property along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedInstanceAzureADOnlyAuthenticationInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName, Context context) {
+    public Response<ManagedInstanceAzureADOnlyAuthenticationInner> getWithResponse(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, authenticationName, context).block();
     }
 
     /**
      * Gets a specific Azure Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -506,38 +265,34 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return a specific Azure Active Directory only authentication property.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceAzureADOnlyAuthenticationInner get(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName) {
+    public ManagedInstanceAzureADOnlyAuthenticationInner get(String resourceGroupName, String managedInstanceName,
+        AuthenticationName authenticationName) {
         return getWithResponse(resourceGroupName, managedInstanceName, authenticationName, Context.NONE).getValue();
     }
 
     /**
      * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
      * authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     *     property.
+     * property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory only authentication along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return azure Active Directory only authentication along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        AuthenticationName authenticationName,
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName,
         ManagedInstanceAzureADOnlyAuthenticationInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -552,63 +307,47 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
                 .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            authenticationName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                    authenticationName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
      * authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     *     property.
+     * property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory only authentication along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return azure Active Directory only authentication along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        AuthenticationName authenticationName,
-        ManagedInstanceAzureADOnlyAuthenticationInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName,
+        ManagedInstanceAzureADOnlyAuthenticationInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -623,76 +362,59 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
                 .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                authenticationName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+            authenticationName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
      * authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     *     property.
+     * property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of azure Active Directory only authentication.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<
-            PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String managedInstanceName,
-            AuthenticationName authenticationName,
-            ManagedInstanceAzureADOnlyAuthenticationInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, authenticationName, parameters);
-        return this
-            .client
+    public
+        PollerFlux<PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+            AuthenticationName authenticationName, ManagedInstanceAzureADOnlyAuthenticationInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, authenticationName, parameters);
+        return this.client
             .<ManagedInstanceAzureADOnlyAuthenticationInner, ManagedInstanceAzureADOnlyAuthenticationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedInstanceAzureADOnlyAuthenticationInner.class,
-                ManagedInstanceAzureADOnlyAuthenticationInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), ManagedInstanceAzureADOnlyAuthenticationInner.class,
+                ManagedInstanceAzureADOnlyAuthenticationInner.class, this.client.getContext());
     }
 
     /**
      * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
      * authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     *     property.
+     * property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -700,65 +422,54 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return the {@link PollerFlux} for polling of azure Active Directory only authentication.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String managedInstanceName,
-            AuthenticationName authenticationName,
-            ManagedInstanceAzureADOnlyAuthenticationInner parameters,
+    private
+        PollerFlux<PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+            AuthenticationName authenticationName, ManagedInstanceAzureADOnlyAuthenticationInner parameters,
             Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, managedInstanceName, authenticationName, parameters, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
+            authenticationName, parameters, context);
+        return this.client
             .<ManagedInstanceAzureADOnlyAuthenticationInner, ManagedInstanceAzureADOnlyAuthenticationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedInstanceAzureADOnlyAuthenticationInner.class,
-                ManagedInstanceAzureADOnlyAuthenticationInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), ManagedInstanceAzureADOnlyAuthenticationInner.class,
+                ManagedInstanceAzureADOnlyAuthenticationInner.class, context);
     }
 
     /**
      * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
      * authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     *     property.
+     * property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of azure Active Directory only authentication.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String managedInstanceName,
-            AuthenticationName authenticationName,
+    public
+        SyncPoller<PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName,
             ManagedInstanceAzureADOnlyAuthenticationInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
      * authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     *     property.
+     * property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -766,54 +477,48 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return the {@link SyncPoller} for polling of azure Active Directory only authentication.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String managedInstanceName,
-            AuthenticationName authenticationName,
-            ManagedInstanceAzureADOnlyAuthenticationInner parameters,
-            Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters, context)
+    public
+        SyncPoller<PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName,
+            ManagedInstanceAzureADOnlyAuthenticationInner parameters, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
      * authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     *     property.
+     * property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Active Directory only authentication on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceAzureADOnlyAuthenticationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        AuthenticationName authenticationName,
+    public Mono<ManagedInstanceAzureADOnlyAuthenticationInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName,
         ManagedInstanceAzureADOnlyAuthenticationInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
      * authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     *     property.
+     * property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -821,12 +526,9 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return azure Active Directory only authentication on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedInstanceAzureADOnlyAuthenticationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        AuthenticationName authenticationName,
-        ManagedInstanceAzureADOnlyAuthenticationInner parameters,
-        Context context) {
+    private Mono<ManagedInstanceAzureADOnlyAuthenticationInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName,
+        ManagedInstanceAzureADOnlyAuthenticationInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -835,23 +537,21 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
     /**
      * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
      * authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     *     property.
+     * property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Active Directory only authentication.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceAzureADOnlyAuthenticationInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        AuthenticationName authenticationName,
+    public ManagedInstanceAzureADOnlyAuthenticationInner createOrUpdate(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName,
         ManagedInstanceAzureADOnlyAuthenticationInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters).block();
     }
@@ -859,13 +559,13 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
     /**
      * Sets Server Active Directory only authentication property or updates an existing server Active Directory only
      * authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
-     *     property.
+     * property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -873,21 +573,18 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return azure Active Directory only authentication.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceAzureADOnlyAuthenticationInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        AuthenticationName authenticationName,
-        ManagedInstanceAzureADOnlyAuthenticationInner parameters,
-        Context context) {
+    public ManagedInstanceAzureADOnlyAuthenticationInner createOrUpdate(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName,
+        ManagedInstanceAzureADOnlyAuthenticationInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters, context)
             .block();
     }
 
     /**
      * Deletes an existing server Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -896,13 +593,11 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -917,31 +612,21 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
                 .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            authenticationName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                authenticationName, this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing server Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param context The context to associate with this operation.
@@ -951,13 +636,11 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, AuthenticationName authenticationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -972,28 +655,20 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
                 .error(new IllegalArgumentException("Parameter authenticationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                authenticationName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, managedInstanceName, authenticationName,
+            this.client.getSubscriptionId(), apiVersion, context);
     }
 
     /**
      * Deletes an existing server Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1002,21 +677,19 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, managedInstanceName, authenticationName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName,
+        AuthenticationName authenticationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, managedInstanceName, authenticationName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an existing server Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param context The context to associate with this operation.
@@ -1026,21 +699,20 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName,
+        AuthenticationName authenticationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, managedInstanceName, authenticationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, managedInstanceName, authenticationName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an existing server Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1049,16 +721,16 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
+        AuthenticationName authenticationName) {
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName).getSyncPoller();
     }
 
     /**
      * Deletes an existing server Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param context The context to associate with this operation.
@@ -1068,16 +740,17 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
+        AuthenticationName authenticationName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName, context)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing server Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1086,18 +759,17 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName)
-            .last()
+    public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName,
+        AuthenticationName authenticationName) {
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing server Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param context The context to associate with this operation.
@@ -1107,18 +779,17 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName,
+        AuthenticationName authenticationName, Context context) {
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing server Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1132,9 +803,9 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
 
     /**
      * Deletes an existing server Active Directory only authentication property.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param authenticationName The name of server azure active directory only authentication.
      * @param context The context to associate with this operation.
@@ -1143,85 +814,225 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName, Context context) {
+    public void delete(String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName,
+        Context context) {
         deleteAsync(resourceGroupName, managedInstanceName, authenticationName, context).block();
     }
 
     /**
+     * Gets a list of server Azure Active Directory only authentications.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceAzureADOnlyAuthenticationInner>>
+        listByInstanceSinglePageAsync(String resourceGroupName, String managedInstanceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByInstance(this.client.getEndpoint(), resourceGroupName,
+                managedInstanceName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<ManagedInstanceAzureADOnlyAuthenticationInner>>map(
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ManagedInstanceAzureADOnlyAuthenticationInner>>
+        listByInstanceSinglePageAsync(String resourceGroupName, String managedInstanceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-11-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByInstance(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstanceAsync(String resourceGroupName,
+        String managedInstanceName) {
+        return new PagedFlux<>(() -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
+            nextLink -> listByInstanceNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstanceAsync(String resourceGroupName,
+        String managedInstanceName, Context context) {
+        return new PagedFlux<>(() -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
+            nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstance(String resourceGroupName,
+        String managedInstanceName) {
+        return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
+    }
+
+    /**
+     * Gets a list of server Azure Active Directory only authentications.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server Azure Active Directory only authentications as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManagedInstanceAzureADOnlyAuthenticationInner> listByInstance(String resourceGroupName,
+        String managedInstanceName, Context context) {
+        return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, context));
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of active directory only authentications along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceAzureADOnlyAuthenticationInner>> listByInstanceNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<ManagedInstanceAzureADOnlyAuthenticationInner>>
+        listByInstanceNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ManagedInstanceAzureADOnlyAuthenticationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of active directory only authentications along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceAzureADOnlyAuthenticationInner>> listByInstanceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ManagedInstanceAzureADOnlyAuthenticationInner>>
+        listByInstanceNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Server info for the server trust group. */
+/**
+ * Server info for the server trust group.
+ */
 @Fluent
 public final class ServerInfo {
     /*
@@ -17,13 +19,15 @@ public final class ServerInfo {
     @JsonProperty(value = "serverId", required = true)
     private String serverId;
 
-    /** Creates an instance of ServerInfo class. */
+    /**
+     * Creates an instance of ServerInfo class.
+     */
     public ServerInfo() {
     }
 
     /**
      * Get the serverId property: Server Id.
-     *
+     * 
      * @return the serverId value.
      */
     public String serverId() {
@@ -32,7 +36,7 @@ public final class ServerInfo {
 
     /**
      * Set the serverId property: Server Id.
-     *
+     * 
      * @param serverId the serverId value to set.
      * @return the ServerInfo object itself.
      */
@@ -43,14 +47,13 @@ public final class ServerInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serverId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property serverId in model ServerInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property serverId in model ServerInfo"));
         }
     }
 

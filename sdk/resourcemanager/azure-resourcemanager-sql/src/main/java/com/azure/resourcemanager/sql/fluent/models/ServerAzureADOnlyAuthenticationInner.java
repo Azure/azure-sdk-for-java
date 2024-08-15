@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Active Directory only authentication. */
+/**
+ * Azure Active Directory only authentication.
+ */
 @Fluent
 public final class ServerAzureADOnlyAuthenticationInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class ServerAzureADOnlyAuthenticationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AzureADOnlyAuthProperties innerProperties;
 
-    /** Creates an instance of ServerAzureADOnlyAuthenticationInner class. */
+    /**
+     * Creates an instance of ServerAzureADOnlyAuthenticationInner class.
+     */
     public ServerAzureADOnlyAuthenticationInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AzureADOnlyAuthProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class ServerAzureADOnlyAuthenticationInner extends ProxyResource {
 
     /**
      * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @return the azureADOnlyAuthentication value.
      */
     public Boolean azureADOnlyAuthentication() {
@@ -41,7 +45,7 @@ public final class ServerAzureADOnlyAuthenticationInner extends ProxyResource {
 
     /**
      * Set the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
      * @return the ServerAzureADOnlyAuthenticationInner object itself.
      */
@@ -55,7 +59,7 @@ public final class ServerAzureADOnlyAuthenticationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

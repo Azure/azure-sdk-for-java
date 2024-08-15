@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityReason;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The result of a name availability check. */
+/**
+ * The result of a name availability check.
+ */
 @Immutable
 public final class CheckNameAvailabilityResponseInner {
     /*
@@ -35,13 +37,15 @@ public final class CheckNameAvailabilityResponseInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of CheckNameAvailabilityResponseInner class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityResponseInner class.
+     */
     public CheckNameAvailabilityResponseInner() {
     }
 
     /**
      * Get the name property: The name whose availability was checked.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class CheckNameAvailabilityResponseInner {
 
     /**
      * Get the available property: True if the name is available, otherwise false.
-     *
+     * 
      * @return the available value.
      */
     public Boolean available() {
@@ -60,7 +64,7 @@ public final class CheckNameAvailabilityResponseInner {
     /**
      * Get the reason property: The reason code explaining why the name is unavailable. Will be undefined if the name is
      * available.
-     *
+     * 
      * @return the reason value.
      */
     public CheckNameAvailabilityReason reason() {
@@ -70,7 +74,7 @@ public final class CheckNameAvailabilityResponseInner {
     /**
      * Get the message property: A message explaining why the name is unavailable. Will be undefined if the name is
      * available.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -79,7 +83,7 @@ public final class CheckNameAvailabilityResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

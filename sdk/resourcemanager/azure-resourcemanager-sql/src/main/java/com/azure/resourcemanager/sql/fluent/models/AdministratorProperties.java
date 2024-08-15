@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** Properties of a active directory administrator. */
+/**
+ * Properties of a active directory administrator.
+ */
 @Fluent
 public final class AdministratorProperties {
     /*
@@ -43,13 +45,15 @@ public final class AdministratorProperties {
     @JsonProperty(value = "azureADOnlyAuthentication", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean azureADOnlyAuthentication;
 
-    /** Creates an instance of AdministratorProperties class. */
+    /**
+     * Creates an instance of AdministratorProperties class.
+     */
     public AdministratorProperties() {
     }
 
     /**
      * Get the administratorType property: Type of the sever administrator.
-     *
+     * 
      * @return the administratorType value.
      */
     public AdministratorType administratorType() {
@@ -58,7 +62,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the administratorType property: Type of the sever administrator.
-     *
+     * 
      * @param administratorType the administratorType value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class AdministratorProperties {
 
     /**
      * Get the login property: Login name of the server administrator.
-     *
+     * 
      * @return the login value.
      */
     public String login() {
@@ -78,7 +82,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the login property: Login name of the server administrator.
-     *
+     * 
      * @param login the login value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class AdministratorProperties {
 
     /**
      * Get the sid property: SID (object ID) of the server administrator.
-     *
+     * 
      * @return the sid value.
      */
     public UUID sid() {
@@ -98,7 +102,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the sid property: SID (object ID) of the server administrator.
-     *
+     * 
      * @param sid the sid value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -109,7 +113,7 @@ public final class AdministratorProperties {
 
     /**
      * Get the tenantId property: Tenant ID of the administrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -118,7 +122,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the tenantId property: Tenant ID of the administrator.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -129,7 +133,7 @@ public final class AdministratorProperties {
 
     /**
      * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @return the azureADOnlyAuthentication value.
      */
     public Boolean azureADOnlyAuthentication() {
@@ -138,25 +142,22 @@ public final class AdministratorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (administratorType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorType in model AdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorType in model AdministratorProperties"));
         }
         if (login() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property login in model AdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property login in model AdministratorProperties"));
         }
         if (sid() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sid in model AdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sid in model AdministratorProperties"));
         }
     }
 

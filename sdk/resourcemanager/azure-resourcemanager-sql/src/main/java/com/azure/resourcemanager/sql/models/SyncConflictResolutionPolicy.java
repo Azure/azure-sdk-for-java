@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Conflict resolution policy of the sync group. */
+/**
+ * Conflict resolution policy of the sync group.
+ */
 public final class SyncConflictResolutionPolicy extends ExpandableStringEnum<SyncConflictResolutionPolicy> {
-    /** Static value HubWin for SyncConflictResolutionPolicy. */
+    /**
+     * Static value HubWin for SyncConflictResolutionPolicy.
+     */
     public static final SyncConflictResolutionPolicy HUB_WIN = fromString("HubWin");
 
-    /** Static value MemberWin for SyncConflictResolutionPolicy. */
+    /**
+     * Static value MemberWin for SyncConflictResolutionPolicy.
+     */
     public static final SyncConflictResolutionPolicy MEMBER_WIN = fromString("MemberWin");
 
     /**
+     * Creates a new instance of SyncConflictResolutionPolicy value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncConflictResolutionPolicy() {
+    }
+
+    /**
      * Creates or finds a SyncConflictResolutionPolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SyncConflictResolutionPolicy.
      */
@@ -29,7 +44,7 @@ public final class SyncConflictResolutionPolicy extends ExpandableStringEnum<Syn
 
     /**
      * Gets known SyncConflictResolutionPolicy values.
-     *
+     * 
      * @return known SyncConflictResolutionPolicy values.
      */
     public static Collection<SyncConflictResolutionPolicy> values() {

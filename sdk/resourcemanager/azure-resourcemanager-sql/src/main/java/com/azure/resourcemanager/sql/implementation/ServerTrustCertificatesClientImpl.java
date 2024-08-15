@@ -38,23 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServerTrustCertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerTrustCertificatesClient.
+ */
 public final class ServerTrustCertificatesClientImpl implements ServerTrustCertificatesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServerTrustCertificatesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ServerTrustCertificatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServerTrustCertificatesClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ServerTrustCertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ServerTrustCertificatesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,100 +70,75 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     public interface ServerTrustCertificatesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/serverTrustCertificates")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustCertificates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerTrustCertificatesListResult>> listByInstance(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ServerTrustCertificatesListResult>> listByInstance(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerTrustCertificateInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ServerTrustCertificateInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("certificateName") String certificateName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("certificateName") String certificateName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("certificateName") String certificateName,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("certificateName") String certificateName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ServerTrustCertificateInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ServerTrustCertificateInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("certificateName") String certificateName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+            @PathParam("certificateName") String certificateName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerTrustCertificatesListResult>> listByInstanceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of server trust certificates that were uploaded from box to the given Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server trust certificates that were uploaded from box to the given Sql Managed Instance along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerTrustCertificateInner>> listByInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName) {
+    private Mono<PagedResponse<ServerTrustCertificateInner>> listByInstanceSinglePageAsync(String resourceGroupName,
+        String managedInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -169,57 +149,38 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByInstance(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ServerTrustCertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByInstance(this.client.getEndpoint(), resourceGroupName,
+                managedInstanceName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<ServerTrustCertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of server trust certificates that were uploaded from box to the given Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server trust certificates that were uploaded from box to the given Sql Managed Instance along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerTrustCertificateInner>> listByInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    private Mono<PagedResponse<ServerTrustCertificateInner>> listByInstanceSinglePageAsync(String resourceGroupName,
+        String managedInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -230,132 +191,114 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByInstance(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByInstance(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of server trust certificates that were uploaded from box to the given Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server trust certificates that were uploaded from box to the given Sql Managed Instance as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServerTrustCertificateInner> listByInstanceAsync(
-        String resourceGroupName, String managedInstanceName) {
-        return new PagedFlux<>(
-            () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
+    public PagedFlux<ServerTrustCertificateInner> listByInstanceAsync(String resourceGroupName,
+        String managedInstanceName) {
+        return new PagedFlux<>(() -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
             nextLink -> listByInstanceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of server trust certificates that were uploaded from box to the given Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server trust certificates that were uploaded from box to the given Sql Managed Instance as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerTrustCertificateInner> listByInstanceAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
+    private PagedFlux<ServerTrustCertificateInner> listByInstanceAsync(String resourceGroupName,
+        String managedInstanceName, Context context) {
+        return new PagedFlux<>(() -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of server trust certificates that were uploaded from box to the given Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server trust certificates that were uploaded from box to the given Sql Managed Instance as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerTrustCertificateInner> listByInstance(
-        String resourceGroupName, String managedInstanceName) {
+    public PagedIterable<ServerTrustCertificateInner> listByInstance(String resourceGroupName,
+        String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
     /**
      * Gets a list of server trust certificates that were uploaded from box to the given Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server trust certificates that were uploaded from box to the given Sql Managed Instance as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerTrustCertificateInner> listByInstance(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    public PagedIterable<ServerTrustCertificateInner> listByInstance(String resourceGroupName,
+        String managedInstanceName, Context context) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, context));
     }
 
     /**
      * Gets a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server trust certificate that was uploaded from box to Sql Managed Instance along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServerTrustCertificateInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String certificateName) {
+    public Mono<Response<ServerTrustCertificateInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -370,33 +313,22 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            certificateName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                certificateName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to get.
      * @param context The context to associate with this operation.
@@ -404,16 +336,14 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server trust certificate that was uploaded from box to Sql Managed Instance along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerTrustCertificateInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String certificateName, Context context) {
+    private Mono<Response<ServerTrustCertificateInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -428,70 +358,61 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                certificateName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, certificateName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Gets a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server trust certificate that was uploaded from box to Sql Managed Instance on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerTrustCertificateInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String certificateName) {
+    public Mono<ServerTrustCertificateInner> getAsync(String resourceGroupName, String managedInstanceName,
+        String certificateName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, certificateName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server trust certificate that was uploaded from box to Sql Managed Instance along with {@link
-     *     Response}.
+     * @return a server trust certificate that was uploaded from box to Sql Managed Instance along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServerTrustCertificateInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, String certificateName, Context context) {
+    public Response<ServerTrustCertificateInner> getWithResponse(String resourceGroupName, String managedInstanceName,
+        String certificateName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, certificateName, context).block();
     }
 
     /**
      * Gets a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -500,16 +421,16 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @return a server trust certificate that was uploaded from box to Sql Managed Instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerTrustCertificateInner get(
-        String resourceGroupName, String managedInstanceName, String certificateName) {
+    public ServerTrustCertificateInner get(String resourceGroupName, String managedInstanceName,
+        String certificateName) {
         return getWithResponse(resourceGroupName, managedInstanceName, certificateName, Context.NONE).getValue();
     }
 
     /**
      * Uploads a server trust certificate from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to upload.
      * @param parameters The server trust certificate info.
@@ -517,19 +438,14 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server trust certificate imported from box to enable connection between box and Sql Managed Instance
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String certificateName,
-        ServerTrustCertificateInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String certificateName, ServerTrustCertificateInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -544,39 +460,28 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            certificateName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                    certificateName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Uploads a server trust certificate from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to upload.
      * @param parameters The server trust certificate info.
@@ -585,20 +490,14 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server trust certificate imported from box to enable connection between box and Sql Managed Instance
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String certificateName,
-        ServerTrustCertificateInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String certificateName, ServerTrustCertificateInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -613,36 +512,26 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                certificateName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+            certificateName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Uploads a server trust certificate from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to upload.
      * @param parameters The server trust certificate info.
@@ -650,31 +539,24 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of server trust certificate imported from box to enable connection
-     *     between box and Sql Managed Instance.
+     * between box and Sql Managed Instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerTrustCertificateInner>, ServerTrustCertificateInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String certificateName,
+        String resourceGroupName, String managedInstanceName, String certificateName,
         ServerTrustCertificateInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, certificateName, parameters);
-        return this
-            .client
-            .<ServerTrustCertificateInner, ServerTrustCertificateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerTrustCertificateInner.class,
-                ServerTrustCertificateInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, certificateName, parameters);
+        return this.client.<ServerTrustCertificateInner, ServerTrustCertificateInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServerTrustCertificateInner.class, ServerTrustCertificateInner.class,
+            this.client.getContext());
     }
 
     /**
      * Uploads a server trust certificate from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to upload.
      * @param parameters The server trust certificate info.
@@ -683,84 +565,71 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of server trust certificate imported from box to enable connection
-     *     between box and Sql Managed Instance.
+     * between box and Sql Managed Instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerTrustCertificateInner>, ServerTrustCertificateInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String certificateName,
-        ServerTrustCertificateInner parameters,
-        Context context) {
+        String resourceGroupName, String managedInstanceName, String certificateName,
+        ServerTrustCertificateInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, managedInstanceName, certificateName, parameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
+            certificateName, parameters, context);
+        return this.client.<ServerTrustCertificateInner, ServerTrustCertificateInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServerTrustCertificateInner.class, ServerTrustCertificateInner.class,
+            context);
+    }
+
+    /**
+     * Uploads a server trust certificate from box to Sql Managed Instance.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param certificateName Name of of the certificate to upload.
+     * @param parameters The server trust certificate info.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of server trust certificate imported from box to enable connection
+     * between box and Sql Managed Instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ServerTrustCertificateInner>, ServerTrustCertificateInner> beginCreateOrUpdate(
+        String resourceGroupName, String managedInstanceName, String certificateName,
+        ServerTrustCertificateInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Uploads a server trust certificate from box to Sql Managed Instance.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param certificateName Name of of the certificate to upload.
+     * @param parameters The server trust certificate info.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of server trust certificate imported from box to enable connection
+     * between box and Sql Managed Instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ServerTrustCertificateInner>, ServerTrustCertificateInner> beginCreateOrUpdate(
+        String resourceGroupName, String managedInstanceName, String certificateName,
+        ServerTrustCertificateInner parameters, Context context) {
         return this
-            .client
-            .<ServerTrustCertificateInner, ServerTrustCertificateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerTrustCertificateInner.class,
-                ServerTrustCertificateInner.class,
-                context);
-    }
-
-    /**
-     * Uploads a server trust certificate from box to Sql Managed Instance.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param certificateName Name of of the certificate to upload.
-     * @param parameters The server trust certificate info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of server trust certificate imported from box to enable connection
-     *     between box and Sql Managed Instance.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServerTrustCertificateInner>, ServerTrustCertificateInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String certificateName,
-        ServerTrustCertificateInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters)
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Uploads a server trust certificate from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param certificateName Name of of the certificate to upload.
-     * @param parameters The server trust certificate info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of server trust certificate imported from box to enable connection
-     *     between box and Sql Managed Instance.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServerTrustCertificateInner>, ServerTrustCertificateInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String certificateName,
-        ServerTrustCertificateInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Uploads a server trust certificate from box to Sql Managed Instance.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to upload.
      * @param parameters The server trust certificate info.
@@ -768,24 +637,20 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server trust certificate imported from box to enable connection between box and Sql Managed Instance on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerTrustCertificateInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String certificateName,
-        ServerTrustCertificateInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters)
-            .last()
+    public Mono<ServerTrustCertificateInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+        String certificateName, ServerTrustCertificateInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Uploads a server trust certificate from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to upload.
      * @param parameters The server trust certificate info.
@@ -794,15 +659,11 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server trust certificate imported from box to enable connection between box and Sql Managed Instance on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerTrustCertificateInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String certificateName,
-        ServerTrustCertificateInner parameters,
-        Context context) {
+    private Mono<ServerTrustCertificateInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+        String certificateName, ServerTrustCertificateInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -810,9 +671,9 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
 
     /**
      * Uploads a server trust certificate from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to upload.
      * @param parameters The server trust certificate info.
@@ -822,19 +683,16 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @return server trust certificate imported from box to enable connection between box and Sql Managed Instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerTrustCertificateInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String certificateName,
-        ServerTrustCertificateInner parameters) {
+    public ServerTrustCertificateInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String certificateName, ServerTrustCertificateInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters).block();
     }
 
     /**
      * Uploads a server trust certificate from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to upload.
      * @param parameters The server trust certificate info.
@@ -845,21 +703,17 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @return server trust certificate imported from box to enable connection between box and Sql Managed Instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerTrustCertificateInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String certificateName,
-        ServerTrustCertificateInner parameters,
-        Context context) {
+    public ServerTrustCertificateInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String certificateName, ServerTrustCertificateInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters, context)
             .block();
     }
 
     /**
      * Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -868,13 +722,11 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String certificateName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -889,31 +741,21 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            certificateName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                certificateName, this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to delete.
      * @param context The context to associate with this operation.
@@ -923,13 +765,11 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String certificateName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -944,28 +784,20 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                certificateName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, managedInstanceName, certificateName,
+            this.client.getSubscriptionId(), apiVersion, context);
     }
 
     /**
      * Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -974,21 +806,19 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String managedInstanceName, String certificateName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, managedInstanceName, certificateName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName,
+        String certificateName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, managedInstanceName, certificateName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to delete.
      * @param context The context to associate with this operation.
@@ -998,21 +828,20 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String managedInstanceName, String certificateName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName,
+        String certificateName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, managedInstanceName, certificateName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, managedInstanceName, certificateName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1021,16 +850,16 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String managedInstanceName, String certificateName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
+        String certificateName) {
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName).getSyncPoller();
     }
 
     /**
      * Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to delete.
      * @param context The context to associate with this operation.
@@ -1040,16 +869,16 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String managedInstanceName, String certificateName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
+        String certificateName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName, context).getSyncPoller();
     }
 
     /**
      * Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1059,16 +888,15 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName, String certificateName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to delete.
      * @param context The context to associate with this operation.
@@ -1078,18 +906,17 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String managedInstanceName, String certificateName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName, String certificateName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1103,9 +930,9 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
 
     /**
      * Deletes a server trust certificate that was uploaded from box to Sql Managed Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param certificateName Name of of the certificate to delete.
      * @param context The context to associate with this operation.
@@ -1120,14 +947,13 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server trust certificates in instance along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerTrustCertificateInner>> listByInstanceNextSinglePageAsync(String nextLink) {
@@ -1135,62 +961,42 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServerTrustCertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ServerTrustCertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server trust certificates in instance along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerTrustCertificateInner>> listByInstanceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ServerTrustCertificateInner>> listByInstanceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

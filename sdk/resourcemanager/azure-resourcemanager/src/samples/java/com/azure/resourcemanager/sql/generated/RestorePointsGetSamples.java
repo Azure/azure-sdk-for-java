@@ -4,43 +4,44 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for RestorePoints Get. */
+/**
+ * Samples for RestorePoints Get.
+ */
 public final class RestorePointsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseRestorePointsGet.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseRestorePointsGet.
+     * json
      */
     /**
      * Sample code: Gets a database restore point.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsADatabaseRestorePoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getRestorePoints()
-            .getWithResponse(
-                "Default-SQL-SouthEastAsia", "testserver", "testDatabase", "131546477590000000", Context.NONE);
+            .getWithResponse("Default-SQL-SouthEastAsia", "testserver", "testDatabase", "131546477590000000",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataWarehouseRestorePointsGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * DataWarehouseRestorePointsGet.json
      */
     /**
      * Sample code: Gets a datawarehouse database restore point.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsADatawarehouseDatabaseRestorePoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getRestorePoints()
-            .getWithResponse(
-                "Default-SQL-SouthEastAsia", "testserver", "testDatabase", "131546477590000000", Context.NONE);
+            .getWithResponse("Default-SQL-SouthEastAsia", "testserver", "testDatabase", "131546477590000000",
+                com.azure.core.util.Context.NONE);
     }
 }

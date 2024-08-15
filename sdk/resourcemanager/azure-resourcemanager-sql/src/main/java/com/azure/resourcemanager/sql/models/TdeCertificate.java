@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.fluent.models.TdeCertificateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A TDE certificate that can be uploaded into a server. */
+/**
+ * A TDE certificate that can be uploaded into a server.
+ */
 @Fluent
 public final class TdeCertificate extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class TdeCertificate extends ProxyResource {
     @JsonProperty(value = "properties")
     private TdeCertificateProperties innerProperties;
 
-    /** Creates an instance of TdeCertificate class. */
+    /**
+     * Creates an instance of TdeCertificate class.
+     */
     public TdeCertificate() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TdeCertificateProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class TdeCertificate extends ProxyResource {
 
     /**
      * Get the privateBlob property: The base64 encoded certificate private blob.
-     *
+     * 
      * @return the privateBlob value.
      */
     public String privateBlob() {
@@ -42,7 +46,7 @@ public final class TdeCertificate extends ProxyResource {
 
     /**
      * Set the privateBlob property: The base64 encoded certificate private blob.
-     *
+     * 
      * @param privateBlob the privateBlob value to set.
      * @return the TdeCertificate object itself.
      */
@@ -56,7 +60,7 @@ public final class TdeCertificate extends ProxyResource {
 
     /**
      * Get the certPassword property: The certificate password.
-     *
+     * 
      * @return the certPassword value.
      */
     public String certPassword() {
@@ -65,7 +69,7 @@ public final class TdeCertificate extends ProxyResource {
 
     /**
      * Set the certPassword property: The certificate password.
-     *
+     * 
      * @param certPassword the certPassword value to set.
      * @return the TdeCertificate object itself.
      */
@@ -79,7 +83,7 @@ public final class TdeCertificate extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagedDatabaseColumns ListByTable. */
+/**
+ * Samples for ManagedDatabaseColumns ListByTable.
+ */
 public final class ManagedDatabaseColumnsListByTableSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseColumnListByTable.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ManagedDatabaseColumnListByTable.json
      */
     /**
      * Sample code: List managed database columns.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listManagedDatabaseColumns(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedDatabaseColumns()
-            .listByTable("myRG", "myManagedInstanceName", "myDatabase", "dbo", "table1", null, Context.NONE);
+            .listByTable("myRG", "myManagedInstanceName", "myDatabase", "dbo", "table1", null,
+                com.azure.core.util.Context.NONE);
     }
 }

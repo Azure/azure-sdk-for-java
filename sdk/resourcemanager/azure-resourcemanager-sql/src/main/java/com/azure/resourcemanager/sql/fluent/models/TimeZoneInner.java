@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Time Zone property. */
+/**
+ * Time Zone.
+ */
 @Immutable
 public final class TimeZoneInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class TimeZoneInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private TimeZoneProperties innerProperties;
 
-    /** Creates an instance of TimeZoneInner class. */
+    /**
+     * Creates an instance of TimeZoneInner class.
+     */
     public TimeZoneInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TimeZoneProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class TimeZoneInner extends ProxyResource {
 
     /**
      * Get the timeZoneId property: The time zone id.
-     *
+     * 
      * @return the timeZoneId value.
      */
     public String timeZoneId() {
@@ -41,7 +45,7 @@ public final class TimeZoneInner extends ProxyResource {
 
     /**
      * Get the displayName property: The time zone display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -50,7 +54,7 @@ public final class TimeZoneInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

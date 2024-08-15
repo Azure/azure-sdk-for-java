@@ -7,15 +7,23 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RecommendedSensitivityLabelUpdateKind. */
+/**
+ * Defines values for RecommendedSensitivityLabelUpdateKind.
+ */
 public enum RecommendedSensitivityLabelUpdateKind {
-    /** Enum value enable. */
+    /**
+     * Enum value enable.
+     */
     ENABLE("enable"),
 
-    /** Enum value disable. */
+    /**
+     * Enum value disable.
+     */
     DISABLE("disable");
 
-    /** The actual serialized value for a RecommendedSensitivityLabelUpdateKind instance. */
+    /**
+     * The actual serialized value for a RecommendedSensitivityLabelUpdateKind instance.
+     */
     private final String value;
 
     RecommendedSensitivityLabelUpdateKind(String value) {
@@ -24,7 +32,7 @@ public enum RecommendedSensitivityLabelUpdateKind {
 
     /**
      * Parses a serialized value to a RecommendedSensitivityLabelUpdateKind instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RecommendedSensitivityLabelUpdateKind object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum RecommendedSensitivityLabelUpdateKind {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

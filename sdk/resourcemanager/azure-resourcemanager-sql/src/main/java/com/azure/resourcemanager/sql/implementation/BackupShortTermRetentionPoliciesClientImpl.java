@@ -43,24 +43,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in BackupShortTermRetentionPoliciesClient.
  */
 public final class BackupShortTermRetentionPoliciesClientImpl implements BackupShortTermRetentionPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BackupShortTermRetentionPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of BackupShortTermRetentionPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BackupShortTermRetentionPoliciesClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    BackupShortTermRetentionPoliciesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(BackupShortTermRetentionPoliciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,312 +71,79 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientB")
     public interface BackupShortTermRetentionPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupShortTermRetentionPolicyListResult>> listByDatabase(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupShortTermRetentionPolicyInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<BackupShortTermRetentionPolicyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("policyName") ShortTermRetentionPolicyName policyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("policyName") ShortTermRetentionPolicyName policyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") BackupShortTermRetentionPolicyInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("policyName") ShortTermRetentionPolicyName policyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") BackupShortTermRetentionPolicyInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BackupShortTermRetentionPolicyListResult>> listByDatabase(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupShortTermRetentionPolicyListResult>> listByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupShortTermRetentionPolicyInner>> listByDatabaseSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDatabase(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<BackupShortTermRetentionPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupShortTermRetentionPolicyInner>> listByDatabaseSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByDatabase(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets a database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BackupShortTermRetentionPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        return new PagedFlux<>(
-            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets a database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BackupShortTermRetentionPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return new PagedFlux<>(
-            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, context),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets a database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName) {
-        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
-    }
-
-    /**
-     * Gets a database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, context));
-    }
-
-    /**
-     * Gets a database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a database's short term retention policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BackupShortTermRetentionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName) {
+    public Mono<Response<BackupShortTermRetentionPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, ShortTermRetentionPolicyName policyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -392,34 +159,22 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            policyName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+                policyName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -427,21 +182,15 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's short term retention policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a database's short term retention policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupShortTermRetentionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        Context context) {
+    private Mono<Response<BackupShortTermRetentionPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, ShortTermRetentionPolicyName policyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -457,31 +206,21 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                policyName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, policyName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -491,17 +230,17 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a database's short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupShortTermRetentionPolicyInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName) {
+    public Mono<BackupShortTermRetentionPolicyInner> getAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, policyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -512,20 +251,16 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a database's short term retention policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupShortTermRetentionPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        Context context) {
+    public Response<BackupShortTermRetentionPolicyInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, context).block();
     }
 
     /**
      * Gets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -535,16 +270,16 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a database's short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupShortTermRetentionPolicyInner get(
-        String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName) {
+    public BackupShortTermRetentionPolicyInner get(String resourceGroupName, String serverName, String databaseName,
+        ShortTermRetentionPolicyName policyName) {
         return getWithResponse(resourceGroupName, serverName, databaseName, policyName, Context.NONE).getValue();
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -555,17 +290,11 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -581,40 +310,27 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            policyName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, policyName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -626,18 +342,12 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, ShortTermRetentionPolicyName policyName,
+        BackupShortTermRetentionPolicyInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -653,37 +363,26 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                policyName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+            policyName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -695,29 +394,20 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            String databaseName,
-            ShortTermRetentionPolicyName policyName,
-            BackupShortTermRetentionPolicyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, parameters);
-        return this
-            .client
-            .<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BackupShortTermRetentionPolicyInner.class,
-                BackupShortTermRetentionPolicyInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
+            ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, parameters);
+        return this.client.<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BackupShortTermRetentionPolicyInner.class,
+            BackupShortTermRetentionPolicyInner.class, this.client.getContext());
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -730,32 +420,21 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            String databaseName,
-            ShortTermRetentionPolicyName policyName,
-            BackupShortTermRetentionPolicyInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
+            ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, databaseName, policyName, parameters, context);
-        return this
-            .client
-            .<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BackupShortTermRetentionPolicyInner.class,
-                BackupShortTermRetentionPolicyInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
+            databaseName, policyName, parameters, context);
+        return this.client.<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BackupShortTermRetentionPolicyInner.class,
+            BackupShortTermRetentionPolicyInner.class, context);
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -767,21 +446,17 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            String databaseName,
-            ShortTermRetentionPolicyName policyName,
-            BackupShortTermRetentionPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
+        beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName,
+            ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -794,22 +469,18 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            String databaseName,
-            ShortTermRetentionPolicyName policyName,
-            BackupShortTermRetentionPolicyInner parameters,
-            Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
+        beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName,
+            ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -820,22 +491,17 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupShortTermRetentionPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
-            .last()
+    public Mono<BackupShortTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -847,12 +513,8 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupShortTermRetentionPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters,
+    private Mono<BackupShortTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters,
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
             .last()
@@ -861,9 +523,9 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -874,20 +536,16 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupShortTermRetentionPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters) {
+    public BackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).block();
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -899,12 +557,8 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupShortTermRetentionPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters,
+    public BackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
             .block();
@@ -912,9 +566,9 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -925,17 +579,11 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -951,40 +599,27 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            policyName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, policyName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -996,18 +631,12 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1023,37 +652,26 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                policyName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, policyName,
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -1065,29 +683,20 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            String databaseName,
-            ShortTermRetentionPolicyName policyName,
-            BackupShortTermRetentionPolicyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, parameters);
-        return this
-            .client
-            .<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BackupShortTermRetentionPolicyInner.class,
-                BackupShortTermRetentionPolicyInner.class,
-                this.client.getContext());
+        beginUpdateAsync(String resourceGroupName, String serverName, String databaseName,
+            ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, parameters);
+        return this.client.<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BackupShortTermRetentionPolicyInner.class,
+            BackupShortTermRetentionPolicyInner.class, this.client.getContext());
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -1100,31 +709,21 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            String databaseName,
-            ShortTermRetentionPolicyName policyName,
-            BackupShortTermRetentionPolicyInner parameters,
-            Context context) {
+        beginUpdateAsync(String resourceGroupName, String serverName, String databaseName,
+            ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context);
-        return this
-            .client
-            .<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BackupShortTermRetentionPolicyInner.class,
-                BackupShortTermRetentionPolicyInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context);
+        return this.client.<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BackupShortTermRetentionPolicyInner.class,
+            BackupShortTermRetentionPolicyInner.class, context);
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -1136,46 +735,40 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
+        String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName,
         BackupShortTermRetentionPolicyInner parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Updates a database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be "default".
-     * @param parameters The short term retention policy info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
+        return this.beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be "default".
+     * @param parameters The short term retention policy info.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a short term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BackupShortTermRetentionPolicyInner>, BackupShortTermRetentionPolicyInner> beginUpdate(
+        String resourceGroupName, String serverName, String databaseName, ShortTermRetentionPolicyName policyName,
+        BackupShortTermRetentionPolicyInner parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates a database's short term retention policy.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -1186,22 +779,17 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupShortTermRetentionPolicyInner> updateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
-            .last()
+    public Mono<BackupShortTermRetentionPolicyInner> updateAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
+        return beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -1213,23 +801,18 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupShortTermRetentionPolicyInner> updateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters,
+    private Mono<BackupShortTermRetentionPolicyInner> updateAsync(String resourceGroupName, String serverName,
+        String databaseName, ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
-            .last()
+        return beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -1240,20 +823,16 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupShortTermRetentionPolicyInner update(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters) {
+    public BackupShortTermRetentionPolicyInner update(String resourceGroupName, String serverName, String databaseName,
+        ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters) {
         return updateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).block();
     }
 
     /**
      * Updates a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
@@ -1265,90 +844,230 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupShortTermRetentionPolicyInner update(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ShortTermRetentionPolicyName policyName,
-        BackupShortTermRetentionPolicyInner parameters,
-        Context context) {
+    public BackupShortTermRetentionPolicyInner update(String resourceGroupName, String serverName, String databaseName,
+        ShortTermRetentionPolicyName policyName, BackupShortTermRetentionPolicyInner parameters, Context context) {
         return updateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context).block();
     }
 
     /**
+     * Gets a database's short term retention policy.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BackupShortTermRetentionPolicyInner>>
+        listByDatabaseSinglePageAsync(String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-02-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<BackupShortTermRetentionPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a database's short term retention policy.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BackupShortTermRetentionPolicyInner>> listByDatabaseSinglePageAsync(
+        String resourceGroupName, String serverName, String databaseName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-02-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Gets a database's short term retention policy.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BackupShortTermRetentionPolicyInner> listByDatabaseAsync(String resourceGroupName,
+        String serverName, String databaseName) {
+        return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName),
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a database's short term retention policy.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<BackupShortTermRetentionPolicyInner> listByDatabaseAsync(String resourceGroupName,
+        String serverName, String databaseName, Context context) {
+        return new PagedFlux<>(
+            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, context),
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets a database's short term retention policy.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(String resourceGroupName,
+        String serverName, String databaseName) {
+        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
+    }
+
+    /**
+     * Gets a database's short term retention policy.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(String resourceGroupName,
+        String serverName, String databaseName, Context context) {
+        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, context));
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of short term retention policies along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupShortTermRetentionPolicyInner>> listByDatabaseNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<BackupShortTermRetentionPolicyInner>>
+        listByDatabaseNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BackupShortTermRetentionPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<BackupShortTermRetentionPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of short term retention policies along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupShortTermRetentionPolicyInner>> listByDatabaseNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<BackupShortTermRetentionPolicyInner>> listByDatabaseNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

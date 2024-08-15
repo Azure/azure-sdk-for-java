@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.JobCredentialInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of job credentials. */
+/**
+ * A list of job credentials.
+ */
 @Immutable
 public final class JobCredentialListResult {
     /*
@@ -24,13 +26,15 @@ public final class JobCredentialListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of JobCredentialListResult class. */
+    /**
+     * Creates an instance of JobCredentialListResult class.
+     */
     public JobCredentialListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<JobCredentialInner> value() {
@@ -39,7 +43,7 @@ public final class JobCredentialListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class JobCredentialListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

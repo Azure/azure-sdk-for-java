@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworkRules Get. */
+/**
+ * Samples for VirtualNetworkRules Get.
+ */
 public final class VirtualNetworkRulesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/VirtualNetworkRulesGet.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/VirtualNetworkRulesGet.json
      */
     /**
      * Sample code: Gets a virtual network rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsAVirtualNetworkRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getVirtualNetworkRules()
-            .getWithResponse("Default", "vnet-test-svr", "vnet-firewall-rule", Context.NONE);
+            .getWithResponse("Default", "vnet-test-svr", "vnet-firewall-rule", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ReplicationLinks Get. */
+/**
+ * Samples for ReplicationLinks Get.
+ */
 public final class ReplicationLinksGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ReplicationLinkGet.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/ReplicationLinkGet.json
      */
     /**
      * Sample code: Gets the replication link.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsTheReplicationLink(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getReplicationLinks()
-            .getWithResponse("Default", "sourcesvr", "gamma-db", "4891ca10-ebd0-47d7-9182-c722651780fb", Context.NONE);
+            .getWithResponse("Default", "sourcesvr", "gamma-db", "4891ca10-ebd0-47d7-9182-c722651780fb",
+                com.azure.core.util.Context.NONE);
     }
 }

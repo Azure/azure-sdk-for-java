@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Database query. */
+/**
+ * Database query.
+ */
 @Fluent
 public final class ManagedInstanceQueryInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class ManagedInstanceQueryInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private QueryProperties innerProperties;
 
-    /** Creates an instance of ManagedInstanceQueryInner class. */
+    /**
+     * Creates an instance of ManagedInstanceQueryInner class.
+     */
     public ManagedInstanceQueryInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private QueryProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class ManagedInstanceQueryInner extends ProxyResource {
 
     /**
      * Get the queryText property: Query text.
-     *
+     * 
      * @return the queryText value.
      */
     public String queryText() {
@@ -41,7 +45,7 @@ public final class ManagedInstanceQueryInner extends ProxyResource {
 
     /**
      * Set the queryText property: Query text.
-     *
+     * 
      * @param queryText the queryText value to set.
      * @return the ManagedInstanceQueryInner object itself.
      */
@@ -55,7 +59,7 @@ public final class ManagedInstanceQueryInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

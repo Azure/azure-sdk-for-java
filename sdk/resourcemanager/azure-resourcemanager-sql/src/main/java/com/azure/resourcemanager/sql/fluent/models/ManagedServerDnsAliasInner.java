@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A managed server DNS alias. */
+/**
+ * A managed server DNS alias.
+ */
 @Immutable
 public final class ManagedServerDnsAliasInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class ManagedServerDnsAliasInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ManagedServerDnsAliasProperties innerProperties;
 
-    /** Creates an instance of ManagedServerDnsAliasInner class. */
+    /**
+     * Creates an instance of ManagedServerDnsAliasInner class.
+     */
     public ManagedServerDnsAliasInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedServerDnsAliasProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class ManagedServerDnsAliasInner extends ProxyResource {
 
     /**
      * Get the azureDnsRecord property: The fully qualified DNS record for managed server alias.
-     *
+     * 
      * @return the azureDnsRecord value.
      */
     public String azureDnsRecord() {
@@ -41,7 +45,7 @@ public final class ManagedServerDnsAliasInner extends ProxyResource {
 
     /**
      * Get the publicAzureDnsRecord property: The fully qualified public DNS record for managed server alias.
-     *
+     * 
      * @return the publicAzureDnsRecord value.
      */
     public String publicAzureDnsRecord() {
@@ -50,7 +54,7 @@ public final class ManagedServerDnsAliasInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

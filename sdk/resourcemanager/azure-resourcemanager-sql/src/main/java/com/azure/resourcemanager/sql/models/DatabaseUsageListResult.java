@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.DatabaseUsageInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of database usage metrics. */
+/**
+ * A list of database usage metrics.
+ */
 @Immutable
 public final class DatabaseUsageListResult {
     /*
@@ -24,13 +26,15 @@ public final class DatabaseUsageListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DatabaseUsageListResult class. */
+    /**
+     * Creates an instance of DatabaseUsageListResult class.
+     */
     public DatabaseUsageListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<DatabaseUsageInner> value() {
@@ -39,7 +43,7 @@ public final class DatabaseUsageListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class DatabaseUsageListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

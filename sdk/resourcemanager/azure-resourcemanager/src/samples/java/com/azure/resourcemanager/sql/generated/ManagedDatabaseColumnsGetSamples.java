@@ -4,24 +4,26 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagedDatabaseColumns Get. */
+/**
+ * Samples for ManagedDatabaseColumns Get.
+ */
 public final class ManagedDatabaseColumnsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseColumnGet.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseColumnGet.
+     * json
      */
     /**
      * Sample code: Get managed database column.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getManagedDatabaseColumn(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedDatabaseColumns()
-            .getWithResponse("myRG", "myManagedInstanceName", "myDatabase", "dbo", "table1", "column1", Context.NONE);
+            .getWithResponse("myRG", "myManagedInstanceName", "myDatabase", "dbo", "table1", "column1",
+                com.azure.core.util.Context.NONE);
     }
 }

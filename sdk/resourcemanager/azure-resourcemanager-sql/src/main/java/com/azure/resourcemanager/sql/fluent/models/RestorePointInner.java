@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.RestorePointType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Database restore points. */
+/**
+ * Database restore points.
+ */
 @Immutable
 public final class RestorePointInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class RestorePointInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RestorePointProperties innerProperties;
 
-    /** Creates an instance of RestorePointInner class. */
+    /**
+     * Creates an instance of RestorePointInner class.
+     */
     public RestorePointInner() {
     }
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -40,7 +44,7 @@ public final class RestorePointInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestorePointProperties innerProperties() {
@@ -49,7 +53,7 @@ public final class RestorePointInner extends ProxyResource {
 
     /**
      * Get the restorePointType property: The type of restore point.
-     *
+     * 
      * @return the restorePointType value.
      */
     public RestorePointType restorePointType() {
@@ -58,7 +62,7 @@ public final class RestorePointInner extends ProxyResource {
 
     /**
      * Get the earliestRestoreDate property: The earliest time to which this database can be restored.
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -67,7 +71,7 @@ public final class RestorePointInner extends ProxyResource {
 
     /**
      * Get the restorePointCreationDate property: The time the backup was taken.
-     *
+     * 
      * @return the restorePointCreationDate value.
      */
     public OffsetDateTime restorePointCreationDate() {
@@ -76,7 +80,7 @@ public final class RestorePointInner extends ProxyResource {
 
     /**
      * Get the restorePointLabel property: The label of restore point for backup request by user.
-     *
+     * 
      * @return the restorePointLabel value.
      */
     public String restorePointLabel() {
@@ -85,7 +89,7 @@ public final class RestorePointInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

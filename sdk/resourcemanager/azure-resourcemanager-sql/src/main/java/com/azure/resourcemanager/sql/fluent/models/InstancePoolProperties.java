@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.InstancePoolLicenseType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an instance pool. */
+/**
+ * Properties of an instance pool.
+ */
 @Fluent
 public final class InstancePoolProperties {
     /*
@@ -31,13 +33,27 @@ public final class InstancePoolProperties {
     @JsonProperty(value = "licenseType", required = true)
     private InstancePoolLicenseType licenseType;
 
-    /** Creates an instance of InstancePoolProperties class. */
+    /*
+     * The Dns Zone that the managed instance pool is in.
+     */
+    @JsonProperty(value = "dnsZone", access = JsonProperty.Access.WRITE_ONLY)
+    private String dnsZone;
+
+    /*
+     * Specifies maintenance configuration id to apply to this managed instance.
+     */
+    @JsonProperty(value = "maintenanceConfigurationId")
+    private String maintenanceConfigurationId;
+
+    /**
+     * Creates an instance of InstancePoolProperties class.
+     */
     public InstancePoolProperties() {
     }
 
     /**
      * Get the subnetId property: Resource ID of the subnet to place this instance pool in.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -46,7 +62,7 @@ public final class InstancePoolProperties {
 
     /**
      * Set the subnetId property: Resource ID of the subnet to place this instance pool in.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the InstancePoolProperties object itself.
      */
@@ -57,7 +73,7 @@ public final class InstancePoolProperties {
 
     /**
      * Get the vCores property: Count of vCores belonging to this instance pool.
-     *
+     * 
      * @return the vCores value.
      */
     public int vCores() {
@@ -66,7 +82,7 @@ public final class InstancePoolProperties {
 
     /**
      * Set the vCores property: Count of vCores belonging to this instance pool.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the InstancePoolProperties object itself.
      */
@@ -78,7 +94,7 @@ public final class InstancePoolProperties {
     /**
      * Get the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
      * included) and 'BasePrice' (without SQL license price).
-     *
+     * 
      * @return the licenseType value.
      */
     public InstancePoolLicenseType licenseType() {
@@ -88,7 +104,7 @@ public final class InstancePoolProperties {
     /**
      * Set the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
      * included) and 'BasePrice' (without SQL license price).
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the InstancePoolProperties object itself.
      */
@@ -98,21 +114,51 @@ public final class InstancePoolProperties {
     }
 
     /**
+     * Get the dnsZone property: The Dns Zone that the managed instance pool is in.
+     * 
+     * @return the dnsZone value.
+     */
+    public String dnsZone() {
+        return this.dnsZone;
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.maintenanceConfigurationId;
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the InstancePoolProperties object itself.
+     */
+    public InstancePoolProperties withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        this.maintenanceConfigurationId = maintenanceConfigurationId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property subnetId in model InstancePoolProperties"));
         }
         if (licenseType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property licenseType in model InstancePoolProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property licenseType in model InstancePoolProperties"));
         }
     }
 

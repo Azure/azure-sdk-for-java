@@ -4,25 +4,26 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualClusters UpdateDnsServers. */
+/**
+ * Samples for VirtualClusters UpdateDnsServers.
+ */
 public final class VirtualClustersUpdateDnsServersSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/UpdateManagedInstanceDnsServers.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/
+     * UpdateVirtualClusterDnsServers.json
      */
     /**
-     * Sample code: Synchronizes the DNS server settings used by the managed instances inside the given virtual cluster.
-     *
+     * Sample code: Performs update of dns servers on managed instance.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void synchronizesTheDNSServerSettingsUsedByTheManagedInstancesInsideTheGivenVirtualCluster(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        performsUpdateOfDnsServersOnManagedInstance(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getVirtualClusters()
-            .updateDnsServersWithResponse("sqlcrudtest-7398", "sqlcrudtest-4645", Context.NONE);
+            .updateDnsServers("sqlcrudtest-7398", "VirtualCluster2b9a846b-2e37-43ef-a8e9-f2c6d645c1d7",
+                com.azure.core.util.Context.NONE);
     }
 }

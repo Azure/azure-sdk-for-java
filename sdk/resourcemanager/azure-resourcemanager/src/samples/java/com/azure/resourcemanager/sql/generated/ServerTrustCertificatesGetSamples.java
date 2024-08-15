@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ServerTrustCertificates Get. */
+/**
+ * Samples for ServerTrustCertificates Get.
+ */
 public final class ServerTrustCertificatesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerTrustCertificatesGet.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ServerTrustCertificatesGet.
+     * json
      */
     /**
      * Sample code: Gets server trust certificate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsServerTrustCertificate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getServerTrustCertificates()
-            .getWithResponse("testrg", "testcl", "customerCertificateName", Context.NONE);
+            .getWithResponse("testrg", "testcl", "customerCertificateName", com.azure.core.util.Context.NONE);
     }
 }

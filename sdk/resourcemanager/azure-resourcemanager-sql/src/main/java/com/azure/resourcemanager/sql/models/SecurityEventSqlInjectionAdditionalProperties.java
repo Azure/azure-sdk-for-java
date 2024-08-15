@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a security event sql injection additional properties. */
+/**
+ * The properties of a security event sql injection additional properties.
+ */
 @Immutable
 public final class SecurityEventSqlInjectionAdditionalProperties {
     /*
@@ -52,13 +54,15 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /** Creates an instance of SecurityEventSqlInjectionAdditionalProperties class. */
+    /**
+     * Creates an instance of SecurityEventSqlInjectionAdditionalProperties class.
+     */
     public SecurityEventSqlInjectionAdditionalProperties() {
     }
 
     /**
      * Get the threatId property: The threat ID.
-     *
+     * 
      * @return the threatId value.
      */
     public String threatId() {
@@ -67,7 +71,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the statement property: The statement.
-     *
+     * 
      * @return the statement value.
      */
     public String statement() {
@@ -76,7 +80,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the statementHighlightOffset property: The statement highlight offset.
-     *
+     * 
      * @return the statementHighlightOffset value.
      */
     public Integer statementHighlightOffset() {
@@ -85,7 +89,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the statementHighlightLength property: The statement highlight length.
-     *
+     * 
      * @return the statementHighlightLength value.
      */
     public Integer statementHighlightLength() {
@@ -94,7 +98,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the errorCode property: The sql error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -103,7 +107,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the errorSeverity property: The sql error severity.
-     *
+     * 
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
@@ -112,7 +116,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the errorMessage property: The sql error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -121,7 +125,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

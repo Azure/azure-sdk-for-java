@@ -7,15 +7,23 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Specifies the state of ledger digest upload. */
+/**
+ * Specifies the state of ledger digest upload.
+ */
 public enum LedgerDigestUploadsState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a LedgerDigestUploadsState instance. */
+    /**
+     * The actual serialized value for a LedgerDigestUploadsState instance.
+     */
     private final String value;
 
     LedgerDigestUploadsState(String value) {
@@ -24,7 +32,7 @@ public enum LedgerDigestUploadsState {
 
     /**
      * Parses a serialized value to a LedgerDigestUploadsState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed LedgerDigestUploadsState object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum LedgerDigestUploadsState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

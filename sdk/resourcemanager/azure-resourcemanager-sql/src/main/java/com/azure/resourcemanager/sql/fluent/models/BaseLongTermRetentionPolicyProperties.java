@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a long term retention policy. */
+/**
+ * Properties of a long term retention policy.
+ */
 @Fluent
 public final class BaseLongTermRetentionPolicyProperties {
     /*
@@ -34,13 +36,15 @@ public final class BaseLongTermRetentionPolicyProperties {
     @JsonProperty(value = "weekOfYear")
     private Integer weekOfYear;
 
-    /** Creates an instance of BaseLongTermRetentionPolicyProperties class. */
+    /**
+     * Creates an instance of BaseLongTermRetentionPolicyProperties class.
+     */
     public BaseLongTermRetentionPolicyProperties() {
     }
 
     /**
      * Get the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @return the weeklyRetention value.
      */
     public String weeklyRetention() {
@@ -49,7 +53,7 @@ public final class BaseLongTermRetentionPolicyProperties {
 
     /**
      * Set the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @param weeklyRetention the weeklyRetention value to set.
      * @return the BaseLongTermRetentionPolicyProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class BaseLongTermRetentionPolicyProperties {
 
     /**
      * Get the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @return the monthlyRetention value.
      */
     public String monthlyRetention() {
@@ -69,7 +73,7 @@ public final class BaseLongTermRetentionPolicyProperties {
 
     /**
      * Set the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @param monthlyRetention the monthlyRetention value to set.
      * @return the BaseLongTermRetentionPolicyProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class BaseLongTermRetentionPolicyProperties {
 
     /**
      * Get the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @return the yearlyRetention value.
      */
     public String yearlyRetention() {
@@ -89,7 +93,7 @@ public final class BaseLongTermRetentionPolicyProperties {
 
     /**
      * Set the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @param yearlyRetention the yearlyRetention value to set.
      * @return the BaseLongTermRetentionPolicyProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class BaseLongTermRetentionPolicyProperties {
 
     /**
      * Get the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
-     *
+     * 
      * @return the weekOfYear value.
      */
     public Integer weekOfYear() {
@@ -109,7 +113,7 @@ public final class BaseLongTermRetentionPolicyProperties {
 
     /**
      * Set the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
-     *
+     * 
      * @param weekOfYear the weekOfYear value to set.
      * @return the BaseLongTermRetentionPolicyProperties object itself.
      */
@@ -120,7 +124,7 @@ public final class BaseLongTermRetentionPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

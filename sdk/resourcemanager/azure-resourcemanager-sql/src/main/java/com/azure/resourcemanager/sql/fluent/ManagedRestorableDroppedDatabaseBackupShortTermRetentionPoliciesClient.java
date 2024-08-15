@@ -25,59 +25,10 @@ import reactor.core.publisher.Mono;
  */
 public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient {
     /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabaseAsync(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId);
-
-    /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId);
-
-    /**
-     * Gets a dropped database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context);
-
-    /**
      * Gets a dropped database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name.
@@ -85,20 +36,17 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dropped database's short term retention policy along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName);
+    Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName);
 
     /**
      * Gets a dropped database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name.
@@ -108,17 +56,14 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a dropped database's short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedBackupShortTermRetentionPolicyInner> getAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName);
+    Mono<ManagedBackupShortTermRetentionPolicyInner> getAsync(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName);
 
     /**
      * Gets a dropped database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name.
@@ -129,18 +74,15 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a dropped database's short term retention policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedBackupShortTermRetentionPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName,
+    Response<ManagedBackupShortTermRetentionPolicyInner> getWithResponse(String resourceGroupName,
+        String managedInstanceName, String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
         Context context);
 
     /**
      * Gets a dropped database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name.
@@ -150,17 +92,14 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a dropped database's short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedBackupShortTermRetentionPolicyInner get(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName);
+    ManagedBackupShortTermRetentionPolicyInner get(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -171,18 +110,15 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName,
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
         ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -194,18 +130,15 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String managedInstanceName,
-            String restorableDroppedDatabaseId,
-            ManagedShortTermRetentionPolicyName policyName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+            String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -217,18 +150,14 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String managedInstanceName,
-            String restorableDroppedDatabaseId,
-            ManagedShortTermRetentionPolicyName policyName,
-            ManagedBackupShortTermRetentionPolicyInner parameters);
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -241,19 +170,15 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String managedInstanceName,
-            String restorableDroppedDatabaseId,
-            ManagedShortTermRetentionPolicyName policyName,
-            ManagedBackupShortTermRetentionPolicyInner parameters,
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters,
             Context context);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -264,18 +189,15 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedBackupShortTermRetentionPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName,
+    Mono<ManagedBackupShortTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
         ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -286,18 +208,15 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedBackupShortTermRetentionPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName,
+    ManagedBackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
         ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -309,19 +228,15 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedBackupShortTermRetentionPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName,
-        ManagedBackupShortTermRetentionPolicyInner parameters,
-        Context context);
+    ManagedBackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
+        ManagedBackupShortTermRetentionPolicyInner parameters, Context context);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -332,18 +247,15 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName,
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
         ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -355,18 +267,14 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String managedInstanceName,
-            String restorableDroppedDatabaseId,
-            ManagedShortTermRetentionPolicyName policyName,
-            ManagedBackupShortTermRetentionPolicyInner parameters);
+        beginUpdateAsync(String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -378,18 +286,14 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
-        beginUpdate(
-            String resourceGroupName,
-            String managedInstanceName,
-            String restorableDroppedDatabaseId,
-            ManagedShortTermRetentionPolicyName policyName,
-            ManagedBackupShortTermRetentionPolicyInner parameters);
+        beginUpdate(String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -402,19 +306,15 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
-        beginUpdate(
-            String resourceGroupName,
-            String managedInstanceName,
-            String restorableDroppedDatabaseId,
-            ManagedShortTermRetentionPolicyName policyName,
-            ManagedBackupShortTermRetentionPolicyInner parameters,
+        beginUpdate(String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName, ManagedBackupShortTermRetentionPolicyInner parameters,
             Context context);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -425,18 +325,15 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedBackupShortTermRetentionPolicyInner> updateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName,
+    Mono<ManagedBackupShortTermRetentionPolicyInner> updateAsync(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
         ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -447,18 +344,15 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedBackupShortTermRetentionPolicyInner update(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName,
+    ManagedBackupShortTermRetentionPolicyInner update(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
         ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Sets a database's short term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param policyName The policy name. Should always be "default".
@@ -470,11 +364,56 @@ public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicie
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedBackupShortTermRetentionPolicyInner update(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        ManagedShortTermRetentionPolicyName policyName,
-        ManagedBackupShortTermRetentionPolicyInner parameters,
-        Context context);
+    ManagedBackupShortTermRetentionPolicyInner update(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId, ManagedShortTermRetentionPolicyName policyName,
+        ManagedBackupShortTermRetentionPolicyInner parameters, Context context);
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabaseAsync(String resourceGroupName,
+        String managedInstanceName, String restorableDroppedDatabaseId);
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(String resourceGroupName,
+        String managedInstanceName, String restorableDroppedDatabaseId);
+
+    /**
+     * Gets a dropped database's short term retention policy list.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dropped database's short term retention policy list as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByRestorableDroppedDatabase(String resourceGroupName,
+        String managedInstanceName, String restorableDroppedDatabaseId, Context context);
 }

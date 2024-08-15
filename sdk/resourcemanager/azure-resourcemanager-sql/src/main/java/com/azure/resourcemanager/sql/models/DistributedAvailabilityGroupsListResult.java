@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.DistributedAvailabilityGroupI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of distributed availability groups in instance. */
+/**
+ * A list of distributed availability groups in instance.
+ */
 @Immutable
 public final class DistributedAvailabilityGroupsListResult {
     /*
@@ -24,13 +26,15 @@ public final class DistributedAvailabilityGroupsListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DistributedAvailabilityGroupsListResult class. */
+    /**
+     * Creates an instance of DistributedAvailabilityGroupsListResult class.
+     */
     public DistributedAvailabilityGroupsListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<DistributedAvailabilityGroupInner> value() {
@@ -39,7 +43,7 @@ public final class DistributedAvailabilityGroupsListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class DistributedAvailabilityGroupsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

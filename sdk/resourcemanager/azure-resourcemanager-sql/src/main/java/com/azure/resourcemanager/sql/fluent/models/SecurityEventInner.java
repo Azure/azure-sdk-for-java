@@ -11,7 +11,9 @@ import com.azure.resourcemanager.sql.models.SecurityEventType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A security event. */
+/**
+ * A security event.
+ */
 @Immutable
 public final class SecurityEventInner extends ProxyResource {
     /*
@@ -20,13 +22,15 @@ public final class SecurityEventInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecurityEventProperties innerProperties;
 
-    /** Creates an instance of SecurityEventInner class. */
+    /**
+     * Creates an instance of SecurityEventInner class.
+     */
     public SecurityEventInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityEventProperties innerProperties() {
@@ -35,7 +39,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the eventTime property: The time when the security event occurred.
-     *
+     * 
      * @return the eventTime value.
      */
     public OffsetDateTime eventTime() {
@@ -44,7 +48,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the securityEventType property: The type of the security event.
-     *
+     * 
      * @return the securityEventType value.
      */
     public SecurityEventType securityEventType() {
@@ -53,7 +57,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the subscription property: The subscription name.
-     *
+     * 
      * @return the subscription value.
      */
     public String subscription() {
@@ -62,7 +66,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the server property: The server name.
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -71,7 +75,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the database property: The database name.
-     *
+     * 
      * @return the database value.
      */
     public String database() {
@@ -80,7 +84,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the clientIp property: The IP address of the client who executed the statement.
-     *
+     * 
      * @return the clientIp value.
      */
     public String clientIp() {
@@ -89,7 +93,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the applicationName property: The application used to execute the statement.
-     *
+     * 
      * @return the applicationName value.
      */
     public String applicationName() {
@@ -98,7 +102,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Get the principalName property: The principal user who executed the statement.
-     *
+     * 
      * @return the principalName value.
      */
     public String principalName() {
@@ -108,7 +112,7 @@ public final class SecurityEventInner extends ProxyResource {
     /**
      * Get the securityEventSqlInjectionAdditionalProperties property: The sql injection additional properties,
      * populated only if the type of the security event is sql injection.
-     *
+     * 
      * @return the securityEventSqlInjectionAdditionalProperties value.
      */
     public SecurityEventSqlInjectionAdditionalProperties securityEventSqlInjectionAdditionalProperties() {
@@ -119,7 +123,7 @@ public final class SecurityEventInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

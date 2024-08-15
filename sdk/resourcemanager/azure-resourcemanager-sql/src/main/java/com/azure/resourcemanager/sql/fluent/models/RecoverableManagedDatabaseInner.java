@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A recoverable managed database resource. */
+/**
+ * A recoverable managed database resource.
+ */
 @Immutable
 public final class RecoverableManagedDatabaseInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class RecoverableManagedDatabaseInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RecoverableManagedDatabaseProperties innerProperties;
 
-    /** Creates an instance of RecoverableManagedDatabaseInner class. */
+    /**
+     * Creates an instance of RecoverableManagedDatabaseInner class.
+     */
     public RecoverableManagedDatabaseInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RecoverableManagedDatabaseProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class RecoverableManagedDatabaseInner extends ProxyResource {
 
     /**
      * Get the lastAvailableBackupDate property: The last available backup date.
-     *
+     * 
      * @return the lastAvailableBackupDate value.
      */
     public String lastAvailableBackupDate() {
@@ -41,7 +45,7 @@ public final class RecoverableManagedDatabaseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

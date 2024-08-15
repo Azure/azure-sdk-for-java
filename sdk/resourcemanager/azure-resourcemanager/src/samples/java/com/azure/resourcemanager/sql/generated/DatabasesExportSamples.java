@@ -4,73 +4,64 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.ExportDatabaseDefinition;
 import com.azure.resourcemanager.sql.models.NetworkIsolationSettings;
 import com.azure.resourcemanager.sql.models.StorageKeyType;
 
-/** Samples for Databases Export. */
+/**
+ * Samples for Databases Export.
+ */
 public final class DatabasesExportSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExportDatabase.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ExportDatabase.json
      */
     /**
      * Sample code: Exports a database.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void exportsADatabase(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .export(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdb",
-                new ExportDatabaseDefinition()
-                    .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
+            .export("Default-SQL-SouthEastAsia", "testsvr", "testdb",
+                new ExportDatabaseDefinition().withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
                     .withStorageKey("fakeTokenPlaceholder")
                     .withStorageUri("https://test.blob.core.windows.net/test.bacpac")
                     .withAdministratorLogin("login")
                     .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withAuthenticationType("Sql"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExportDatabaseWithNetworkIsolation.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/
+     * ExportDatabaseWithNetworkIsolation.json
      */
     /**
      * Sample code: Exports a database, using private link to communicate with SQL server and storage account.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void exportsADatabaseUsingPrivateLinkToCommunicateWithSQLServerAndStorageAccount(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .export(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdb",
-                new ExportDatabaseDefinition()
-                    .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
-                    .withStorageKey("fakeTokenPlaceholder")
-                    .withStorageUri("https://test.blob.core.windows.net/test.bacpac")
-                    .withAdministratorLogin("login")
-                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
-                    .withAuthenticationType("Sql")
-                    .withNetworkIsolation(
-                        new NetworkIsolationSettings()
-                            .withStorageAccountResourceId(
-                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Storage/storageAccounts/test-privatelink")
-                            .withSqlServerResourceId(
-                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr")),
-                Context.NONE);
+            .export("Default-SQL-SouthEastAsia", "testsvr", "testdb", new ExportDatabaseDefinition()
+                .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
+                .withStorageKey("fakeTokenPlaceholder")
+                .withStorageUri("https://test.blob.core.windows.net/test.bacpac")
+                .withAdministratorLogin("login")
+                .withAdministratorLoginPassword("fakeTokenPlaceholder")
+                .withAuthenticationType("Sql")
+                .withNetworkIsolation(new NetworkIsolationSettings().withStorageAccountResourceId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Storage/storageAccounts/test-privatelink")
+                    .withSqlServerResourceId(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr")),
+                com.azure.core.util.Context.NONE);
     }
 }

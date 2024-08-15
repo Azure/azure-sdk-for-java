@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** Properties for an Azure SQL Database Elastic job execution. */
+/**
+ * Properties for an Azure SQL Database Elastic job execution.
+ */
 @Fluent
 public final class JobExecutionProperties {
     /*
@@ -93,13 +95,15 @@ public final class JobExecutionProperties {
     @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private JobExecutionTarget target;
 
-    /** Creates an instance of JobExecutionProperties class. */
+    /**
+     * Creates an instance of JobExecutionProperties class.
+     */
     public JobExecutionProperties() {
     }
 
     /**
      * Get the jobVersion property: The job version number.
-     *
+     * 
      * @return the jobVersion value.
      */
     public Integer jobVersion() {
@@ -108,7 +112,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the stepName property: The job step name.
-     *
+     * 
      * @return the stepName value.
      */
     public String stepName() {
@@ -117,7 +121,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the stepId property: The job step id.
-     *
+     * 
      * @return the stepId value.
      */
     public Integer stepId() {
@@ -126,7 +130,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the jobExecutionId property: The unique identifier of the job execution.
-     *
+     * 
      * @return the jobExecutionId value.
      */
     public UUID jobExecutionId() {
@@ -135,7 +139,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the lifecycle property: The detailed state of the job execution.
-     *
+     * 
      * @return the lifecycle value.
      */
     public JobExecutionLifecycle lifecycle() {
@@ -144,7 +148,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the provisioningState property: The ARM provisioning state of the job execution.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -153,7 +157,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the createTime property: The time that the job execution was created.
-     *
+     * 
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
@@ -162,7 +166,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the startTime property: The time that the job execution started.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -171,7 +175,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the endTime property: The time that the job execution completed.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -180,7 +184,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the currentAttempts property: Number of times the job execution has been attempted.
-     *
+     * 
      * @return the currentAttempts value.
      */
     public Integer currentAttempts() {
@@ -189,7 +193,7 @@ public final class JobExecutionProperties {
 
     /**
      * Set the currentAttempts property: Number of times the job execution has been attempted.
-     *
+     * 
      * @param currentAttempts the currentAttempts value to set.
      * @return the JobExecutionProperties object itself.
      */
@@ -200,7 +204,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the currentAttemptStartTime property: Start time of the current attempt.
-     *
+     * 
      * @return the currentAttemptStartTime value.
      */
     public OffsetDateTime currentAttemptStartTime() {
@@ -209,7 +213,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the lastMessage property: The last status or error message.
-     *
+     * 
      * @return the lastMessage value.
      */
     public String lastMessage() {
@@ -218,7 +222,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the target property: The target that this execution is executed on.
-     *
+     * 
      * @return the target value.
      */
     public JobExecutionTarget target() {
@@ -227,7 +231,7 @@ public final class JobExecutionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

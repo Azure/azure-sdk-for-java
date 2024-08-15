@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for WorkloadGroups Get. */
+/**
+ * Samples for WorkloadGroups Get.
+ */
 public final class WorkloadGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetWorkloadGroup.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetWorkloadGroup.json
      */
     /**
      * Sample code: Gets a workload group for a data warehouse.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsAWorkloadGroupForADataWarehouse(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getWorkloadGroups()
-            .getWithResponse("Default-SQL-SouthEastAsia", "testsvr", "testdb", "smallrc", Context.NONE);
+            .getWithResponse("Default-SQL-SouthEastAsia", "testsvr", "testdb", "smallrc",
+                com.azure.core.util.Context.NONE);
     }
 }

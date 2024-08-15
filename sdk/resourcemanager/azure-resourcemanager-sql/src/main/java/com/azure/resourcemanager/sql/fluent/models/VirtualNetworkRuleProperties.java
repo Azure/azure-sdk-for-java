@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.VirtualNetworkRuleState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a virtual network rule. */
+/**
+ * Properties of a virtual network rule.
+ */
 @Fluent
 public final class VirtualNetworkRuleProperties {
     /*
@@ -30,13 +32,15 @@ public final class VirtualNetworkRuleProperties {
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkRuleState state;
 
-    /** Creates an instance of VirtualNetworkRuleProperties class. */
+    /**
+     * Creates an instance of VirtualNetworkRuleProperties class.
+     */
     public VirtualNetworkRuleProperties() {
     }
 
     /**
      * Get the virtualNetworkSubnetId property: The ARM resource id of the virtual network subnet.
-     *
+     * 
      * @return the virtualNetworkSubnetId value.
      */
     public String virtualNetworkSubnetId() {
@@ -45,7 +49,7 @@ public final class VirtualNetworkRuleProperties {
 
     /**
      * Set the virtualNetworkSubnetId property: The ARM resource id of the virtual network subnet.
-     *
+     * 
      * @param virtualNetworkSubnetId the virtualNetworkSubnetId value to set.
      * @return the VirtualNetworkRuleProperties object itself.
      */
@@ -57,7 +61,7 @@ public final class VirtualNetworkRuleProperties {
     /**
      * Get the ignoreMissingVnetServiceEndpoint property: Create firewall rule before the virtual network has vnet
      * service endpoint enabled.
-     *
+     * 
      * @return the ignoreMissingVnetServiceEndpoint value.
      */
     public Boolean ignoreMissingVnetServiceEndpoint() {
@@ -67,7 +71,7 @@ public final class VirtualNetworkRuleProperties {
     /**
      * Set the ignoreMissingVnetServiceEndpoint property: Create firewall rule before the virtual network has vnet
      * service endpoint enabled.
-     *
+     * 
      * @param ignoreMissingVnetServiceEndpoint the ignoreMissingVnetServiceEndpoint value to set.
      * @return the VirtualNetworkRuleProperties object itself.
      */
@@ -78,7 +82,7 @@ public final class VirtualNetworkRuleProperties {
 
     /**
      * Get the state property: Virtual Network Rule State.
-     *
+     * 
      * @return the state value.
      */
     public VirtualNetworkRuleState state() {
@@ -87,15 +91,14 @@ public final class VirtualNetworkRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (virtualNetworkSubnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualNetworkSubnetId in model VirtualNetworkRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualNetworkSubnetId in model VirtualNetworkRuleProperties"));
         }
     }
 

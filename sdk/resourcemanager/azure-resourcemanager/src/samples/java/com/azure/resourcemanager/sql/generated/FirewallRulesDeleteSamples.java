@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for FirewallRules Delete. */
+/**
+ * Samples for FirewallRules Delete.
+ */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleDelete.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/FirewallRuleDelete.json
      */
     /**
      * Sample code: Delete a firewall rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAFirewallRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getFirewallRules()
-            .deleteWithResponse(
-                "firewallrulecrudtest-9886", "firewallrulecrudtest-2368", "firewallrulecrudtest-7011", Context.NONE);
+            .deleteWithResponse("firewallrulecrudtest-9886", "firewallrulecrudtest-2368", "firewallrulecrudtest-7011",
+                com.azure.core.util.Context.NONE);
     }
 }

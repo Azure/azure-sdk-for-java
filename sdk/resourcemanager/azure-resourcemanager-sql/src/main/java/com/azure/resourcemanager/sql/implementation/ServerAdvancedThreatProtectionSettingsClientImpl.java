@@ -44,24 +44,24 @@ import reactor.core.publisher.Mono;
  */
 public final class ServerAdvancedThreatProtectionSettingsClientImpl
     implements ServerAdvancedThreatProtectionSettingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServerAdvancedThreatProtectionSettingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ServerAdvancedThreatProtectionSettingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServerAdvancedThreatProtectionSettingsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ServerAdvancedThreatProtectionSettingsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ServerAdvancedThreatProtectionSettingsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,85 +72,63 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     public interface ServerAdvancedThreatProtectionSettingsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/advancedThreatProtectionSettings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advancedThreatProtectionSettings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogicalServerAdvancedThreatProtectionListResult>> listByServer(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerAdvancedThreatProtectionInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<ServerAdvancedThreatProtectionInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("advancedThreatProtectionName") AdvancedThreatProtectionName advancedThreatProtectionName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("advancedThreatProtectionName") AdvancedThreatProtectionName advancedThreatProtectionName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ServerAdvancedThreatProtectionInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogicalServerAdvancedThreatProtectionListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a list of the server's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's Advanced Threat Protection states along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerAdvancedThreatProtectionInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
+    private Mono<PagedResponse<ServerAdvancedThreatProtectionInner>>
+        listByServerSinglePageAsync(String resourceGroupName, String serverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -160,57 +138,38 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ServerAdvancedThreatProtectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), resourceGroupName, serverName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<ServerAdvancedThreatProtectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a list of the server's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's Advanced Threat Protection states along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerAdvancedThreatProtectionInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
+    private Mono<PagedResponse<ServerAdvancedThreatProtectionInner>>
+        listByServerSinglePageAsync(String resourceGroupName, String serverName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -220,38 +179,24 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServer(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByServer(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get a list of the server's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -259,18 +204,17 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @return a list of the server's Advanced Threat Protection states as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServerAdvancedThreatProtectionInner> listByServerAsync(
-        String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
+    public PagedFlux<ServerAdvancedThreatProtectionInner> listByServerAsync(String resourceGroupName,
+        String serverName) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get a list of the server's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,71 +223,68 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @return a list of the server's Advanced Threat Protection states as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerAdvancedThreatProtectionInner> listByServerAsync(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+    private PagedFlux<ServerAdvancedThreatProtectionInner> listByServerAsync(String resourceGroupName,
+        String serverName, Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of the server's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the server's Advanced Threat Protection states as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of the server's Advanced Threat Protection states as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerAdvancedThreatProtectionInner> listByServer(
-        String resourceGroupName, String serverName) {
+    public PagedIterable<ServerAdvancedThreatProtectionInner> listByServer(String resourceGroupName,
+        String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
     /**
      * Get a list of the server's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the server's Advanced Threat Protection states as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of the server's Advanced Threat Protection states as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerAdvancedThreatProtectionInner> listByServer(
-        String resourceGroupName, String serverName, Context context) {
+    public PagedIterable<ServerAdvancedThreatProtectionInner> listByServer(String resourceGroupName, String serverName,
+        Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
     /**
      * Get a server's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server's Advanced Threat Protection state along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServerAdvancedThreatProtectionInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, AdvancedThreatProtectionName advancedThreatProtectionName) {
+    public Mono<Response<ServerAdvancedThreatProtectionInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, AdvancedThreatProtectionName advancedThreatProtectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -353,39 +294,26 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (advancedThreatProtectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter advancedThreatProtectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter advancedThreatProtectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            advancedThreatProtectionName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName,
+                advancedThreatProtectionName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a server's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param context The context to associate with this operation.
@@ -393,19 +321,14 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server's Advanced Threat Protection state along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerAdvancedThreatProtectionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        Context context) {
+    private Mono<Response<ServerAdvancedThreatProtectionInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, AdvancedThreatProtectionName advancedThreatProtectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -415,36 +338,25 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (advancedThreatProtectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter advancedThreatProtectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter advancedThreatProtectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                advancedThreatProtectionName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, advancedThreatProtectionName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Get a server's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,17 +365,17 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @return a server's Advanced Threat Protection state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerAdvancedThreatProtectionInner> getAsync(
-        String resourceGroupName, String serverName, AdvancedThreatProtectionName advancedThreatProtectionName) {
+    public Mono<ServerAdvancedThreatProtectionInner> getAsync(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName) {
         return getWithResponseAsync(resourceGroupName, serverName, advancedThreatProtectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a server's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param context The context to associate with this operation.
@@ -473,19 +385,16 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @return a server's Advanced Threat Protection state along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServerAdvancedThreatProtectionInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        Context context) {
+    public Response<ServerAdvancedThreatProtectionInner> getWithResponse(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, advancedThreatProtectionName, context).block();
     }
 
     /**
      * Get a server's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -494,16 +403,16 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @return a server's Advanced Threat Protection state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerAdvancedThreatProtectionInner get(
-        String resourceGroupName, String serverName, AdvancedThreatProtectionName advancedThreatProtectionName) {
+    public ServerAdvancedThreatProtectionInner get(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName) {
         return getWithResponse(resourceGroupName, serverName, advancedThreatProtectionName, Context.NONE).getValue();
     }
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -513,16 +422,11 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @return a server Advanced Threat Protection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        ServerAdvancedThreatProtectionInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -532,45 +436,31 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (advancedThreatProtectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter advancedThreatProtectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter advancedThreatProtectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            advancedThreatProtectionName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+                advancedThreatProtectionName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -581,17 +471,12 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @return a server Advanced Threat Protection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        ServerAdvancedThreatProtectionInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, AdvancedThreatProtectionName advancedThreatProtectionName,
+        ServerAdvancedThreatProtectionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -601,42 +486,30 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (advancedThreatProtectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter advancedThreatProtectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter advancedThreatProtectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                advancedThreatProtectionName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+            advancedThreatProtectionName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -647,28 +520,20 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerAdvancedThreatProtectionInner>, ServerAdvancedThreatProtectionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            AdvancedThreatProtectionName advancedThreatProtectionName,
-            ServerAdvancedThreatProtectionInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters);
-        return this
-            .client
-            .<ServerAdvancedThreatProtectionInner, ServerAdvancedThreatProtectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerAdvancedThreatProtectionInner.class,
-                ServerAdvancedThreatProtectionInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
+            AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters);
+        return this.client.<ServerAdvancedThreatProtectionInner, ServerAdvancedThreatProtectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServerAdvancedThreatProtectionInner.class,
+            ServerAdvancedThreatProtectionInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -680,31 +545,22 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerAdvancedThreatProtectionInner>, ServerAdvancedThreatProtectionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            AdvancedThreatProtectionName advancedThreatProtectionName,
-            ServerAdvancedThreatProtectionInner parameters,
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
+            AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters,
             Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, advancedThreatProtectionName, parameters, context);
-        return this
-            .client
-            .<ServerAdvancedThreatProtectionInner, ServerAdvancedThreatProtectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerAdvancedThreatProtectionInner.class,
-                ServerAdvancedThreatProtectionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
+            advancedThreatProtectionName, parameters, context);
+        return this.client.<ServerAdvancedThreatProtectionInner, ServerAdvancedThreatProtectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServerAdvancedThreatProtectionInner.class,
+            ServerAdvancedThreatProtectionInner.class, context);
     }
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -715,20 +571,17 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerAdvancedThreatProtectionInner>, ServerAdvancedThreatProtectionInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            AdvancedThreatProtectionName advancedThreatProtectionName,
-            ServerAdvancedThreatProtectionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters)
+        beginCreateOrUpdate(String resourceGroupName, String serverName,
+            AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -740,22 +593,19 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerAdvancedThreatProtectionInner>, ServerAdvancedThreatProtectionInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            AdvancedThreatProtectionName advancedThreatProtectionName,
-            ServerAdvancedThreatProtectionInner parameters,
+        beginCreateOrUpdate(String resourceGroupName, String serverName,
+            AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serverName, advancedThreatProtectionName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -765,21 +615,17 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @return a server Advanced Threat Protection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerAdvancedThreatProtectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        ServerAdvancedThreatProtectionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters)
-            .last()
+    public Mono<ServerAdvancedThreatProtectionInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -790,23 +636,18 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @return a server Advanced Threat Protection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerAdvancedThreatProtectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        ServerAdvancedThreatProtectionInner parameters,
+    private Mono<ServerAdvancedThreatProtectionInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serverName, advancedThreatProtectionName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -816,19 +657,16 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @return a server Advanced Threat Protection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerAdvancedThreatProtectionInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        ServerAdvancedThreatProtectionInner parameters) {
+    public ServerAdvancedThreatProtectionInner createOrUpdate(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters).block();
     }
 
     /**
      * Creates or updates an Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
      * @param parameters The server Advanced Threat Protection state.
@@ -839,11 +677,8 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
      * @return a server Advanced Threat Protection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerAdvancedThreatProtectionInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        ServerAdvancedThreatProtectionInner parameters,
+    public ServerAdvancedThreatProtectionInner createOrUpdate(String resourceGroupName, String serverName,
+        AdvancedThreatProtectionName advancedThreatProtectionName, ServerAdvancedThreatProtectionInner parameters,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters, context)
             .block();
@@ -851,14 +686,13 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's Advanced Threat Protection configurations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerAdvancedThreatProtectionInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -866,62 +700,42 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServerAdvancedThreatProtectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ServerAdvancedThreatProtectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's Advanced Threat Protection configurations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerAdvancedThreatProtectionInner>> listByServerNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ServerAdvancedThreatProtectionInner>> listByServerNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

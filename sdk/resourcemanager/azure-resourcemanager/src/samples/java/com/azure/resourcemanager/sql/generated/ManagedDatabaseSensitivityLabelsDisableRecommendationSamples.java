@@ -4,26 +4,26 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagedDatabaseSensitivityLabels DisableRecommendation. */
+/**
+ * Samples for ManagedDatabaseSensitivityLabels DisableRecommendation.
+ */
 public final class ManagedDatabaseSensitivityLabelsDisableRecommendationSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseRecommendedColumnSensitivityLabelDisable.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ManagedDatabaseRecommendedColumnSensitivityLabelDisable.json
      */
     /**
      * Sample code: Disables the sensitivity recommendations on a given column.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void disablesTheSensitivityRecommendationsOnAGivenColumn(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        disablesTheSensitivityRecommendationsOnAGivenColumn(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedDatabaseSensitivityLabels()
-            .disableRecommendationWithResponse(
-                "myRG", "myManagedInstanceName", "myDatabase", "dbo", "myTable", "myColumn", Context.NONE);
+            .disableRecommendationWithResponse("myRG", "myManagedInstanceName", "myDatabase", "dbo", "myTable",
+                "myColumn", com.azure.core.util.Context.NONE);
     }
 }

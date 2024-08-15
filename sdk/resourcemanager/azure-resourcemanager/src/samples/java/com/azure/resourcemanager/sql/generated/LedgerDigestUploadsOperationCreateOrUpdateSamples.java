@@ -4,33 +4,31 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.LedgerDigestUploadsInner;
 import com.azure.resourcemanager.sql.models.LedgerDigestUploadsName;
 
-/** Samples for LedgerDigestUploadsOperation CreateOrUpdate. */
+/**
+ * Samples for LedgerDigestUploadsOperation CreateOrUpdate.
+ */
 public final class LedgerDigestUploadsOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LedgerDigestUploadsEnable.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/LedgerDigestUploadsEnable.
+     * json
      */
     /**
      * Sample code: Enables ledger digest upload configuration for a database.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void enablesLedgerDigestUploadConfigurationForADatabase(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        enablesLedgerDigestUploadConfigurationForADatabase(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getLedgerDigestUploadsOperations()
-            .createOrUpdate(
-                "ledgertestrg",
-                "ledgertestserver",
-                "testdb",
-                LedgerDigestUploadsName.CURRENT,
+            .createOrUpdate("ledgertestrg", "ledgertestserver", "testdb", LedgerDigestUploadsName.CURRENT,
                 new LedgerDigestUploadsInner().withDigestStorageEndpoint("https://MyAccount.blob.core.windows.net"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

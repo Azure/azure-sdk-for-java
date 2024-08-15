@@ -4,66 +4,60 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import java.util.Arrays;
 
-/** Samples for DatabaseSecurityAlertPolicies CreateOrUpdate. */
+/**
+ * Samples for DatabaseSecurityAlertPolicies CreateOrUpdate.
+ */
 public final class DatabaseSecurityAlertPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseSecurityAlertCreateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * DatabaseSecurityAlertCreateMax.json
      */
     /**
      * Sample code: Update a database's threat detection policy with all parameters.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updateADatabaseSThreatDetectionPolicyWithAllParameters(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        updateADatabaseSThreatDetectionPolicyWithAllParameters(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabaseSecurityAlertPolicies()
-            .createOrUpdateWithResponse(
-                "securityalert-4799",
-                "securityalert-6440",
-                "testdb",
+            .createOrUpdateWithResponse("securityalert-4799", "securityalert-6440", "testdb",
                 SecurityAlertPolicyName.DEFAULT,
-                new DatabaseSecurityAlertPolicyInner()
-                    .withState(SecurityAlertPolicyState.ENABLED)
+                new DatabaseSecurityAlertPolicyInner().withState(SecurityAlertPolicyState.ENABLED)
                     .withDisabledAlerts(Arrays.asList("Sql_Injection", "Usage_Anomaly"))
                     .withEmailAddresses(Arrays.asList("test@microsoft.com", "user@microsoft.com"))
                     .withEmailAccountAdmins(true)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
                     .withStorageAccountAccessKey("fakeTokenPlaceholder")
                     .withRetentionDays(6),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseSecurityAlertCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * DatabaseSecurityAlertCreateMin.json
      */
     /**
      * Sample code: Update a database's threat detection policy with minimal parameters.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateADatabaseSThreatDetectionPolicyWithMinimalParameters(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabaseSecurityAlertPolicies()
-            .createOrUpdateWithResponse(
-                "securityalert-4799",
-                "securityalert-6440",
-                "testdb",
+            .createOrUpdateWithResponse("securityalert-4799", "securityalert-6440", "testdb",
                 SecurityAlertPolicyName.DEFAULT,
                 new DatabaseSecurityAlertPolicyInner().withState(SecurityAlertPolicyState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

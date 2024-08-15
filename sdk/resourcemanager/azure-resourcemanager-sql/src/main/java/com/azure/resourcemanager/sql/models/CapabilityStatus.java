@@ -7,21 +7,33 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The status of the capability. */
+/**
+ * The status of the capability.
+ */
 public enum CapabilityStatus {
-    /** Enum value Visible. */
+    /**
+     * Enum value Visible.
+     */
     VISIBLE("Visible"),
 
-    /** Enum value Available. */
+    /**
+     * Enum value Available.
+     */
     AVAILABLE("Available"),
 
-    /** Enum value Default. */
+    /**
+     * Enum value Default.
+     */
     DEFAULT("Default"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a CapabilityStatus instance. */
+    /**
+     * The actual serialized value for a CapabilityStatus instance.
+     */
     private final String value;
 
     CapabilityStatus(String value) {
@@ -30,7 +42,7 @@ public enum CapabilityStatus {
 
     /**
      * Parses a serialized value to a CapabilityStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CapabilityStatus object, or null if unable to parse.
      */
@@ -48,7 +60,9 @@ public enum CapabilityStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

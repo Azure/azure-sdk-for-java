@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A logical database transparent data encryption state. */
+/**
+ * A logical database transparent data encryption state.
+ */
 @Fluent
 public final class LogicalDatabaseTransparentDataEncryptionInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class LogicalDatabaseTransparentDataEncryptionInner extends ProxyRe
     @JsonProperty(value = "properties")
     private TransparentDataEncryptionProperties innerProperties;
 
-    /** Creates an instance of LogicalDatabaseTransparentDataEncryptionInner class. */
+    /**
+     * Creates an instance of LogicalDatabaseTransparentDataEncryptionInner class.
+     */
     public LogicalDatabaseTransparentDataEncryptionInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TransparentDataEncryptionProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class LogicalDatabaseTransparentDataEncryptionInner extends ProxyRe
 
     /**
      * Get the state property: Specifies the state of the transparent data encryption.
-     *
+     * 
      * @return the state value.
      */
     public TransparentDataEncryptionState state() {
@@ -42,7 +46,7 @@ public final class LogicalDatabaseTransparentDataEncryptionInner extends ProxyRe
 
     /**
      * Set the state property: Specifies the state of the transparent data encryption.
-     *
+     * 
      * @param state the state value to set.
      * @return the LogicalDatabaseTransparentDataEncryptionInner object itself.
      */
@@ -56,7 +60,7 @@ public final class LogicalDatabaseTransparentDataEncryptionInner extends ProxyRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

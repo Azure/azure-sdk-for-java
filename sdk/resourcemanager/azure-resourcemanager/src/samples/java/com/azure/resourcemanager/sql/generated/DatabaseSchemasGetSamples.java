@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DatabaseSchemas Get. */
+/**
+ * Samples for DatabaseSchemas Get.
+ */
 public final class DatabaseSchemasGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseSchemaGet.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/DatabaseSchemaGet.json
      */
     /**
      * Sample code: Get database schema.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDatabaseSchema(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabaseSchemas()
-            .getWithResponse("myRG", "serverName", "myDatabase", "dbo", Context.NONE);
+            .getWithResponse("myRG", "serverName", "myDatabase", "dbo", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.JobAgentState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a job agent. */
+/**
+ * Properties of a job agent.
+ */
 @Fluent
 public final class JobAgentProperties {
     /*
@@ -24,13 +26,15 @@ public final class JobAgentProperties {
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private JobAgentState state;
 
-    /** Creates an instance of JobAgentProperties class. */
+    /**
+     * Creates an instance of JobAgentProperties class.
+     */
     public JobAgentProperties() {
     }
 
     /**
      * Get the databaseId property: Resource ID of the database to store job metadata in.
-     *
+     * 
      * @return the databaseId value.
      */
     public String databaseId() {
@@ -39,7 +43,7 @@ public final class JobAgentProperties {
 
     /**
      * Set the databaseId property: Resource ID of the database to store job metadata in.
-     *
+     * 
      * @param databaseId the databaseId value to set.
      * @return the JobAgentProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class JobAgentProperties {
 
     /**
      * Get the state property: The state of the job agent.
-     *
+     * 
      * @return the state value.
      */
     public JobAgentState state() {
@@ -59,14 +63,13 @@ public final class JobAgentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (databaseId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property databaseId in model JobAgentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property databaseId in model JobAgentProperties"));
         }
     }
 

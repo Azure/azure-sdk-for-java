@@ -7,24 +7,38 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Local replication role. */
+/**
+ * Local replication role.
+ */
 public enum ReplicationRole {
-    /** Enum value Primary. */
+    /**
+     * Enum value Primary.
+     */
     PRIMARY("Primary"),
 
-    /** Enum value Secondary. */
+    /**
+     * Enum value Secondary.
+     */
     SECONDARY("Secondary"),
 
-    /** Enum value NonReadableSecondary. */
+    /**
+     * Enum value NonReadableSecondary.
+     */
     NON_READABLE_SECONDARY("NonReadableSecondary"),
 
-    /** Enum value Source. */
+    /**
+     * Enum value Source.
+     */
     SOURCE("Source"),
 
-    /** Enum value Copy. */
+    /**
+     * Enum value Copy.
+     */
     COPY("Copy");
 
-    /** The actual serialized value for a ReplicationRole instance. */
+    /**
+     * The actual serialized value for a ReplicationRole instance.
+     */
     private final String value;
 
     ReplicationRole(String value) {
@@ -33,7 +47,7 @@ public enum ReplicationRole {
 
     /**
      * Parses a serialized value to a ReplicationRole instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ReplicationRole object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum ReplicationRole {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

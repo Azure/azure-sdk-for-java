@@ -11,7 +11,9 @@ import com.azure.resourcemanager.sql.models.SyncGroupState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of a sync group. */
+/**
+ * Properties of a sync group.
+ */
 @Fluent
 public final class SyncGroupProperties {
     /*
@@ -86,13 +88,15 @@ public final class SyncGroupProperties {
     @JsonProperty(value = "privateEndpointName", access = JsonProperty.Access.WRITE_ONLY)
     private String privateEndpointName;
 
-    /** Creates an instance of SyncGroupProperties class. */
+    /**
+     * Creates an instance of SyncGroupProperties class.
+     */
     public SyncGroupProperties() {
     }
 
     /**
      * Get the interval property: Sync interval of the sync group.
-     *
+     * 
      * @return the interval value.
      */
     public Integer interval() {
@@ -101,7 +105,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the interval property: Sync interval of the sync group.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -112,7 +116,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the lastSyncTime property: Last sync time of the sync group.
-     *
+     * 
      * @return the lastSyncTime value.
      */
     public OffsetDateTime lastSyncTime() {
@@ -121,7 +125,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the conflictResolutionPolicy property: Conflict resolution policy of the sync group.
-     *
+     * 
      * @return the conflictResolutionPolicy value.
      */
     public SyncConflictResolutionPolicy conflictResolutionPolicy() {
@@ -130,7 +134,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the conflictResolutionPolicy property: Conflict resolution policy of the sync group.
-     *
+     * 
      * @param conflictResolutionPolicy the conflictResolutionPolicy value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -141,7 +145,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the syncDatabaseId property: ARM resource id of the sync database in the sync group.
-     *
+     * 
      * @return the syncDatabaseId value.
      */
     public String syncDatabaseId() {
@@ -150,7 +154,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the syncDatabaseId property: ARM resource id of the sync database in the sync group.
-     *
+     * 
      * @param syncDatabaseId the syncDatabaseId value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -161,7 +165,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the hubDatabaseUsername property: User name for the sync group hub database credential.
-     *
+     * 
      * @return the hubDatabaseUsername value.
      */
     public String hubDatabaseUsername() {
@@ -170,7 +174,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the hubDatabaseUsername property: User name for the sync group hub database credential.
-     *
+     * 
      * @param hubDatabaseUsername the hubDatabaseUsername value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -181,7 +185,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the hubDatabasePassword property: Password for the sync group hub database credential.
-     *
+     * 
      * @return the hubDatabasePassword value.
      */
     public String hubDatabasePassword() {
@@ -190,7 +194,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the hubDatabasePassword property: Password for the sync group hub database credential.
-     *
+     * 
      * @param hubDatabasePassword the hubDatabasePassword value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -201,7 +205,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the syncState property: Sync state of the sync group.
-     *
+     * 
      * @return the syncState value.
      */
     public SyncGroupState syncState() {
@@ -210,7 +214,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the schema property: Sync schema of the sync group.
-     *
+     * 
      * @return the schema value.
      */
     public SyncGroupSchema schema() {
@@ -219,7 +223,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the schema property: Sync schema of the sync group.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -230,7 +234,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the enableConflictLogging property: If conflict logging is enabled.
-     *
+     * 
      * @return the enableConflictLogging value.
      */
     public Boolean enableConflictLogging() {
@@ -239,7 +243,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the enableConflictLogging property: If conflict logging is enabled.
-     *
+     * 
      * @param enableConflictLogging the enableConflictLogging value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -250,7 +254,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the conflictLoggingRetentionInDays property: Conflict logging retention period.
-     *
+     * 
      * @return the conflictLoggingRetentionInDays value.
      */
     public Integer conflictLoggingRetentionInDays() {
@@ -259,7 +263,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the conflictLoggingRetentionInDays property: Conflict logging retention period.
-     *
+     * 
      * @param conflictLoggingRetentionInDays the conflictLoggingRetentionInDays value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -270,7 +274,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the usePrivateLinkConnection property: If use private link connection is enabled.
-     *
+     * 
      * @return the usePrivateLinkConnection value.
      */
     public Boolean usePrivateLinkConnection() {
@@ -279,7 +283,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the usePrivateLinkConnection property: If use private link connection is enabled.
-     *
+     * 
      * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -291,7 +295,7 @@ public final class SyncGroupProperties {
     /**
      * Get the privateEndpointName property: Private endpoint name of the sync group if use private link connection is
      * enabled.
-     *
+     * 
      * @return the privateEndpointName value.
      */
     public String privateEndpointName() {
@@ -300,7 +304,7 @@ public final class SyncGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

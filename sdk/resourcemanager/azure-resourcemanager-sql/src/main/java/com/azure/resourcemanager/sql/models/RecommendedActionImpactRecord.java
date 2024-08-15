@@ -43,14 +43,16 @@ public final class RecommendedActionImpactRecord {
     @JsonProperty(value = "changeValueRelative", access = JsonProperty.Access.WRITE_ONLY)
     private Double changeValueRelative;
 
-    /** Creates an instance of RecommendedActionImpactRecord class. */
+    /**
+     * Creates an instance of RecommendedActionImpactRecord class.
+     */
     public RecommendedActionImpactRecord() {
     }
 
     /**
      * Get the dimensionName property: Gets the name of the impact dimension. e.g., CPUChange, DiskSpaceChange,
      * NumberOfQueriesAffected.
-     *
+     * 
      * @return the dimensionName value.
      */
     public String dimensionName() {
@@ -60,7 +62,7 @@ public final class RecommendedActionImpactRecord {
     /**
      * Get the unit property: Gets the name of the impact dimension. e.g., CPUChange, DiskSpaceChange,
      * NumberOfQueriesAffected.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -70,7 +72,7 @@ public final class RecommendedActionImpactRecord {
     /**
      * Get the absoluteValue property: Gets the absolute value of this dimension if applicable. e.g., Number of Queries
      * affected.
-     *
+     * 
      * @return the absoluteValue value.
      */
     public Double absoluteValue() {
@@ -80,7 +82,7 @@ public final class RecommendedActionImpactRecord {
     /**
      * Get the changeValueAbsolute property: Gets the absolute change in the value of this dimension. e.g., Absolute
      * Disk space change in Megabytes.
-     *
+     * 
      * @return the changeValueAbsolute value.
      */
     public Double changeValueAbsolute() {
@@ -90,7 +92,7 @@ public final class RecommendedActionImpactRecord {
     /**
      * Get the changeValueRelative property: Gets the relative change in the value of this dimension. e.g., Relative
      * Disk space change in Percentage.
-     *
+     * 
      * @return the changeValueRelative value.
      */
     public Double changeValueRelative() {
@@ -99,7 +101,7 @@ public final class RecommendedActionImpactRecord {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

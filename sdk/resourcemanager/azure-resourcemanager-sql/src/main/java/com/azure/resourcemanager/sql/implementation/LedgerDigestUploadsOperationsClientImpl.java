@@ -39,26 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LedgerDigestUploadsOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LedgerDigestUploadsOperationsClient.
+ */
 public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDigestUploadsOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LedgerDigestUploadsOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of LedgerDigestUploadsOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LedgerDigestUploadsOperationsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    LedgerDigestUploadsOperationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(LedgerDigestUploadsOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,294 +71,63 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientL")
     public interface LedgerDigestUploadsOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/ledgerDigestUploads")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LedgerDigestUploadsListResult>> listByDatabase(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LedgerDigestUploadsInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<LedgerDigestUploadsInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("ledgerDigestUploads") LedgerDigestUploadsName ledgerDigestUploads,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("ledgerDigestUploads") LedgerDigestUploadsName ledgerDigestUploads,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") LedgerDigestUploadsInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") LedgerDigestUploadsInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}/disable")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/ledgerDigestUploads")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> disable(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<LedgerDigestUploadsListResult>> listByDatabase(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}/disable")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> disable(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("ledgerDigestUploads") LedgerDigestUploadsName ledgerDigestUploads,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LedgerDigestUploadsListResult>> listByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
-    }
-
-    /**
-     * Gets all ledger digest upload settings on a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LedgerDigestUploadsInner>> listByDatabaseSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDatabase(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<LedgerDigestUploadsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets all ledger digest upload settings on a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LedgerDigestUploadsInner>> listByDatabaseSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByDatabase(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets all ledger digest upload settings on a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LedgerDigestUploadsInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        return new PagedFlux<>(
-            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all ledger digest upload settings on a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LedgerDigestUploadsInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return new PagedFlux<>(
-            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, context),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all ledger digest upload settings on a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LedgerDigestUploadsInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName) {
-        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
-    }
-
-    /**
-     * Gets all ledger digest upload settings on a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ledger digest upload settings on a database as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LedgerDigestUploadsInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, context));
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the current ledger digest upload configuration for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -364,16 +135,14 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current ledger digest upload configuration for a database along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LedgerDigestUploadsInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
+    public Mono<Response<LedgerDigestUploadsInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -390,34 +159,22 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
                 .error(new IllegalArgumentException("Parameter ledgerDigestUploads is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            ledgerDigestUploads,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+                ledgerDigestUploads, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the current ledger digest upload configuration for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -426,20 +183,14 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current ledger digest upload configuration for a database along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LedgerDigestUploadsInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        Context context) {
+    private Mono<Response<LedgerDigestUploadsInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, LedgerDigestUploadsName ledgerDigestUploads, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -456,31 +207,21 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
                 .error(new IllegalArgumentException("Parameter ledgerDigestUploads is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                ledgerDigestUploads,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, ledgerDigestUploads,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Gets the current ledger digest upload configuration for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -490,17 +231,17 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @return the current ledger digest upload configuration for a database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LedgerDigestUploadsInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
+    public Mono<LedgerDigestUploadsInner> getAsync(String resourceGroupName, String serverName, String databaseName,
+        LedgerDigestUploadsName ledgerDigestUploads) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the current ledger digest upload configuration for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -511,20 +252,16 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @return the current ledger digest upload configuration for a database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LedgerDigestUploadsInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        Context context) {
+    public Response<LedgerDigestUploadsInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, LedgerDigestUploadsName ledgerDigestUploads, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, context).block();
     }
 
     /**
      * Gets the current ledger digest upload configuration for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -534,39 +271,33 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @return the current ledger digest upload configuration for a database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LedgerDigestUploadsInner get(
-        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
+    public LedgerDigestUploadsInner get(String resourceGroupName, String serverName, String databaseName,
+        LedgerDigestUploadsName ledgerDigestUploads) {
         return getWithResponse(resourceGroupName, serverName, databaseName, ledgerDigestUploads, Context.NONE)
             .getValue();
     }
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters Azure SQL Database ledger digest upload settings.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure SQL Database ledger digest upload settings along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        LedgerDigestUploadsInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, LedgerDigestUploadsName ledgerDigestUploads, LedgerDigestUploadsInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -583,64 +314,46 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
                 .error(new IllegalArgumentException("Parameter ledgerDigestUploads is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            ledgerDigestUploads,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, ledgerDigestUploads, this.client.getSubscriptionId(), apiVersion, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters Azure SQL Database ledger digest upload settings.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure SQL Database ledger digest upload settings along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        LedgerDigestUploadsInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads,
+        LedgerDigestUploadsInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -657,41 +370,30 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
                 .error(new IllegalArgumentException("Parameter ledgerDigestUploads is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                ledgerDigestUploads,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+            ledgerDigestUploads, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters Azure SQL Database ledger digest upload settings.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -699,33 +401,24 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
+        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads,
         LedgerDigestUploadsInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters);
-        return this
-            .client
-            .<LedgerDigestUploadsInner, LedgerDigestUploadsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LedgerDigestUploadsInner.class,
-                LedgerDigestUploadsInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
+            databaseName, ledgerDigestUploads, parameters);
+        return this.client.<LedgerDigestUploadsInner, LedgerDigestUploadsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LedgerDigestUploadsInner.class, LedgerDigestUploadsInner.class,
+            this.client.getContext());
     }
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters Azure SQL Database ledger digest upload settings.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -734,60 +427,47 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        LedgerDigestUploadsInner parameters,
-        Context context) {
+        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads,
+        LedgerDigestUploadsInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
+            databaseName, ledgerDigestUploads, parameters, context);
+        return this.client.<LedgerDigestUploadsInner, LedgerDigestUploadsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LedgerDigestUploadsInner.class, LedgerDigestUploadsInner.class, context);
+    }
+
+    /**
+     * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
+     * @param parameters The parameters parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads,
+        LedgerDigestUploadsInner parameters) {
         return this
-            .client
-            .<LedgerDigestUploadsInner, LedgerDigestUploadsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LedgerDigestUploadsInner.class,
-                LedgerDigestUploadsInner.class,
-                context);
-    }
-
-    /**
-     * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters Azure SQL Database ledger digest upload settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure SQL Database ledger digest upload settings.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        LedgerDigestUploadsInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters)
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters)
             .getSyncPoller();
     }
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters Azure SQL Database ledger digest upload settings.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -796,38 +476,31 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        LedgerDigestUploadsInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters, context)
+        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads,
+        LedgerDigestUploadsInner parameters, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters Azure SQL Database ledger digest upload settings.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure SQL Database ledger digest upload settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LedgerDigestUploadsInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        LedgerDigestUploadsInner parameters) {
+    public Mono<LedgerDigestUploadsInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, LedgerDigestUploadsName ledgerDigestUploads, LedgerDigestUploadsInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -835,13 +508,13 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters Azure SQL Database ledger digest upload settings.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -849,53 +522,43 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @return azure SQL Database ledger digest upload settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LedgerDigestUploadsInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        LedgerDigestUploadsInner parameters,
+    private Mono<LedgerDigestUploadsInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, LedgerDigestUploadsName ledgerDigestUploads, LedgerDigestUploadsInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters Azure SQL Database ledger digest upload settings.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LedgerDigestUploadsInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        LedgerDigestUploadsInner parameters) {
+    public LedgerDigestUploadsInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        LedgerDigestUploadsName ledgerDigestUploads, LedgerDigestUploadsInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters)
             .block();
     }
 
     /**
      * Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
-     * @param parameters Azure SQL Database ledger digest upload settings.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -903,23 +566,183 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @return azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LedgerDigestUploadsInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        LedgerDigestUploadsInner parameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters, context)
-            .block();
+    public LedgerDigestUploadsInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        LedgerDigestUploadsName ledgerDigestUploads, LedgerDigestUploadsInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters,
+            context).block();
+    }
+
+    /**
+     * Gets all ledger digest upload settings on a database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all ledger digest upload settings on a database along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<LedgerDigestUploadsInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
+        String serverName, String databaseName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-02-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<LedgerDigestUploadsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets all ledger digest upload settings on a database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all ledger digest upload settings on a database along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<LedgerDigestUploadsInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
+        String serverName, String databaseName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-02-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Gets all ledger digest upload settings on a database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all ledger digest upload settings on a database as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<LedgerDigestUploadsInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName) {
+        return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName),
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all ledger digest upload settings on a database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all ledger digest upload settings on a database as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<LedgerDigestUploadsInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName, Context context) {
+        return new PagedFlux<>(
+            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, context),
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets all ledger digest upload settings on a database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all ledger digest upload settings on a database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LedgerDigestUploadsInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName) {
+        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
+    }
+
+    /**
+     * Gets all ledger digest upload settings on a database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all ledger digest upload settings on a database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LedgerDigestUploadsInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName, Context context) {
+        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, context));
     }
 
     /**
      * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -927,16 +750,14 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure SQL Database ledger digest upload settings along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> disableWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
+    public Mono<Response<Flux<ByteBuffer>>> disableWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -953,34 +774,22 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
                 .error(new IllegalArgumentException("Parameter ledgerDigestUploads is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disable(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            ledgerDigestUploads,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.disable(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, ledgerDigestUploads, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -989,20 +798,14 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure SQL Database ledger digest upload settings along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> disableWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> disableWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, LedgerDigestUploadsName ledgerDigestUploads, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1019,31 +822,21 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
                 .error(new IllegalArgumentException("Parameter ledgerDigestUploads is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-02-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .disable(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                ledgerDigestUploads,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.disable(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+            ledgerDigestUploads, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -1055,23 +848,18 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginDisableAsync(
         String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disableWithResponseAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads);
-        return this
-            .client
-            .<LedgerDigestUploadsInner, LedgerDigestUploadsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LedgerDigestUploadsInner.class,
-                LedgerDigestUploadsInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = disableWithResponseAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads);
+        return this.client.<LedgerDigestUploadsInner, LedgerDigestUploadsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LedgerDigestUploadsInner.class, LedgerDigestUploadsInner.class,
+            this.client.getContext());
     }
 
     /**
      * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -1083,29 +871,20 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginDisableAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
+        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disableWithResponseAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, context);
-        return this
-            .client
-            .<LedgerDigestUploadsInner, LedgerDigestUploadsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LedgerDigestUploadsInner.class,
-                LedgerDigestUploadsInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = disableWithResponseAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, context);
+        return this.client.<LedgerDigestUploadsInner, LedgerDigestUploadsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LedgerDigestUploadsInner.class, LedgerDigestUploadsInner.class, context);
     }
 
     /**
      * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -1117,14 +896,14 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginDisable(
         String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
-        return beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads).getSyncPoller();
+        return this.beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads).getSyncPoller();
     }
 
     /**
      * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -1136,20 +915,17 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginDisable(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
+        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads,
         Context context) {
-        return beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, context)
+        return this.beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, context)
             .getSyncPoller();
     }
 
     /**
      * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -1159,18 +935,17 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @return azure SQL Database ledger digest upload settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LedgerDigestUploadsInner> disableAsync(
-        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
-        return beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads)
-            .last()
+    public Mono<LedgerDigestUploadsInner> disableAsync(String resourceGroupName, String serverName, String databaseName,
+        LedgerDigestUploadsName ledgerDigestUploads) {
+        return beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -1181,22 +956,17 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @return azure SQL Database ledger digest upload settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LedgerDigestUploadsInner> disableAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        Context context) {
-        return beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, context)
-            .last()
+    private Mono<LedgerDigestUploadsInner> disableAsync(String resourceGroupName, String serverName,
+        String databaseName, LedgerDigestUploadsName ledgerDigestUploads, Context context) {
+        return beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -1206,16 +976,16 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @return azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LedgerDigestUploadsInner disable(
-        String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
+    public LedgerDigestUploadsInner disable(String resourceGroupName, String serverName, String databaseName,
+        LedgerDigestUploadsName ledgerDigestUploads) {
         return disableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads).block();
     }
 
     /**
      * Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param ledgerDigestUploads The ledgerDigestUploads parameter.
@@ -1226,25 +996,20 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
      * @return azure SQL Database ledger digest upload settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LedgerDigestUploadsInner disable(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LedgerDigestUploadsName ledgerDigestUploads,
-        Context context) {
+    public LedgerDigestUploadsInner disable(String resourceGroupName, String serverName, String databaseName,
+        LedgerDigestUploadsName ledgerDigestUploads, Context context) {
         return disableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of ledger digest upload settings along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LedgerDigestUploadsInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
@@ -1252,62 +1017,42 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LedgerDigestUploadsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<LedgerDigestUploadsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of ledger digest upload settings along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LedgerDigestUploadsInner>> listByDatabaseNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<LedgerDigestUploadsInner>> listByDatabaseNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

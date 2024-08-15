@@ -1,5 +1,13 @@
 # Release History
 
+## 2.42.0-beta.1 (Unreleased)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of `FailoverGroup` and `ReplicationLink` to `2023-05-01-preview`.
+
 ## 2.41.0 (2024-07-25)
 
 ### Other Changes

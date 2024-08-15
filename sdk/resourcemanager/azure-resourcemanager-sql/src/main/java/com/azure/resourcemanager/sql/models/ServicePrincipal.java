@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The managed instance's service principal configuration for a resource. */
+/**
+ * The managed instance's service principal configuration for a resource.
+ */
 @Fluent
 public final class ServicePrincipal {
     /*
@@ -34,13 +36,15 @@ public final class ServicePrincipal {
     @JsonProperty(value = "type")
     private ServicePrincipalType type;
 
-    /** Creates an instance of ServicePrincipal class. */
+    /**
+     * Creates an instance of ServicePrincipal class.
+     */
     public ServicePrincipal() {
     }
 
     /**
      * Get the principalId property: The Azure Active Directory application object id.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -49,7 +53,7 @@ public final class ServicePrincipal {
 
     /**
      * Get the clientId property: The Azure Active Directory application client id.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -58,7 +62,7 @@ public final class ServicePrincipal {
 
     /**
      * Get the tenantId property: The Azure Active Directory tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -67,7 +71,7 @@ public final class ServicePrincipal {
 
     /**
      * Get the type property: Service principal type.
-     *
+     * 
      * @return the type value.
      */
     public ServicePrincipalType type() {
@@ -76,7 +80,7 @@ public final class ServicePrincipal {
 
     /**
      * Set the type property: Service principal type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ServicePrincipal object itself.
      */
@@ -87,7 +91,7 @@ public final class ServicePrincipal {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.MaintenanceWindowTimeRange;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Maintenance windows. */
+/**
+ * Maintenance windows.
+ */
 @Fluent
 public final class MaintenanceWindowsInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class MaintenanceWindowsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private MaintenanceWindowsProperties innerProperties;
 
-    /** Creates an instance of MaintenanceWindowsInner class. */
+    /**
+     * Creates an instance of MaintenanceWindowsInner class.
+     */
     public MaintenanceWindowsInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MaintenanceWindowsProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class MaintenanceWindowsInner extends ProxyResource {
 
     /**
      * Get the timeRanges property: The timeRanges property.
-     *
+     * 
      * @return the timeRanges value.
      */
     public List<MaintenanceWindowTimeRange> timeRanges() {
@@ -43,7 +47,7 @@ public final class MaintenanceWindowsInner extends ProxyResource {
 
     /**
      * Set the timeRanges property: The timeRanges property.
-     *
+     * 
      * @param timeRanges the timeRanges value to set.
      * @return the MaintenanceWindowsInner object itself.
      */
@@ -57,7 +61,7 @@ public final class MaintenanceWindowsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

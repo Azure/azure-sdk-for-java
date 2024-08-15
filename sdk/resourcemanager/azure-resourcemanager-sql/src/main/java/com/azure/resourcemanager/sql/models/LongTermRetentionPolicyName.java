@@ -8,14 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LongTermRetentionPolicyName. */
+/**
+ * Defines values for LongTermRetentionPolicyName.
+ */
 public final class LongTermRetentionPolicyName extends ExpandableStringEnum<LongTermRetentionPolicyName> {
-    /** Static value default for LongTermRetentionPolicyName. */
+    /**
+     * Static value default for LongTermRetentionPolicyName.
+     */
     public static final LongTermRetentionPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of LongTermRetentionPolicyName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LongTermRetentionPolicyName() {
+    }
+
+    /**
      * Creates or finds a LongTermRetentionPolicyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LongTermRetentionPolicyName.
      */
@@ -26,7 +39,7 @@ public final class LongTermRetentionPolicyName extends ExpandableStringEnum<Long
 
     /**
      * Gets known LongTermRetentionPolicyName values.
-     *
+     * 
      * @return known LongTermRetentionPolicyName values.
      */
     public static Collection<LongTermRetentionPolicyName> values() {

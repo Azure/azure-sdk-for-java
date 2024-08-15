@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.DatabaseColumnInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of database columns. */
+/**
+ * A list of database columns.
+ */
 @Immutable
 public final class DatabaseColumnListResult {
     /*
@@ -24,13 +26,15 @@ public final class DatabaseColumnListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DatabaseColumnListResult class. */
+    /**
+     * Creates an instance of DatabaseColumnListResult class.
+     */
     public DatabaseColumnListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<DatabaseColumnInner> value() {
@@ -39,7 +43,7 @@ public final class DatabaseColumnListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class DatabaseColumnListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

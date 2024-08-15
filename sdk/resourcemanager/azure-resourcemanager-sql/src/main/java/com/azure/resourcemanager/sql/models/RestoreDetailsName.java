@@ -8,14 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RestoreDetailsName. */
+/**
+ * Defines values for RestoreDetailsName.
+ */
 public final class RestoreDetailsName extends ExpandableStringEnum<RestoreDetailsName> {
-    /** Static value Default for RestoreDetailsName. */
+    /**
+     * Static value Default for RestoreDetailsName.
+     */
     public static final RestoreDetailsName DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of RestoreDetailsName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestoreDetailsName() {
+    }
+
+    /**
      * Creates or finds a RestoreDetailsName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RestoreDetailsName.
      */
@@ -26,7 +39,7 @@ public final class RestoreDetailsName extends ExpandableStringEnum<RestoreDetail
 
     /**
      * Gets known RestoreDetailsName values.
-     *
+     * 
      * @return known RestoreDetailsName values.
      */
     public static Collection<RestoreDetailsName> values() {

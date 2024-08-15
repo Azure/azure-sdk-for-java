@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.ServerAzureADAdministratorInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of active directory administrators. */
+/**
+ * A list of active directory administrators.
+ */
 @Immutable
 public final class AdministratorListResult {
     /*
@@ -24,13 +26,15 @@ public final class AdministratorListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AdministratorListResult class. */
+    /**
+     * Creates an instance of AdministratorListResult class.
+     */
     public AdministratorListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ServerAzureADAdministratorInner> value() {
@@ -39,7 +43,7 @@ public final class AdministratorListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class AdministratorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

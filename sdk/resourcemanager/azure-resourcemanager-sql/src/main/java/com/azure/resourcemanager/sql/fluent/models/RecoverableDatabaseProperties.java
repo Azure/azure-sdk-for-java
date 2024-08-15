@@ -4,12 +4,17 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.DatabaseKey;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** The recoverable database's properties. */
-@Immutable
+/**
+ * The recoverable database's properties.
+ */
+@Fluent
 public final class RecoverableDatabaseProperties {
     /*
      * The edition of the database.
@@ -35,13 +40,22 @@ public final class RecoverableDatabaseProperties {
     @JsonProperty(value = "lastAvailableBackupDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastAvailableBackupDate;
 
-    /** Creates an instance of RecoverableDatabaseProperties class. */
+    /*
+     * The resource ids of the user assigned identities to use
+     */
+    @JsonProperty(value = "keys")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, DatabaseKey> keys;
+
+    /**
+     * Creates an instance of RecoverableDatabaseProperties class.
+     */
     public RecoverableDatabaseProperties() {
     }
 
     /**
      * Get the edition property: The edition of the database.
-     *
+     * 
      * @return the edition value.
      */
     public String edition() {
@@ -50,7 +64,7 @@ public final class RecoverableDatabaseProperties {
 
     /**
      * Get the serviceLevelObjective property: The service level objective name of the database.
-     *
+     * 
      * @return the serviceLevelObjective value.
      */
     public String serviceLevelObjective() {
@@ -59,7 +73,7 @@ public final class RecoverableDatabaseProperties {
 
     /**
      * Get the elasticPoolName property: The elastic pool name of the database.
-     *
+     * 
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
@@ -68,7 +82,7 @@ public final class RecoverableDatabaseProperties {
 
     /**
      * Get the lastAvailableBackupDate property: The last available backup date.
-     *
+     * 
      * @return the lastAvailableBackupDate value.
      */
     public OffsetDateTime lastAvailableBackupDate() {
@@ -76,10 +90,37 @@ public final class RecoverableDatabaseProperties {
     }
 
     /**
+     * Get the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @return the keys value.
+     */
+    public Map<String, DatabaseKey> keys() {
+        return this.keys;
+    }
+
+    /**
+     * Set the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @param keys the keys value to set.
+     * @return the RecoverableDatabaseProperties object itself.
+     */
+    public RecoverableDatabaseProperties withKeys(Map<String, DatabaseKey> keys) {
+        this.keys = keys;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (keys() != null) {
+            keys().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
     }
 }

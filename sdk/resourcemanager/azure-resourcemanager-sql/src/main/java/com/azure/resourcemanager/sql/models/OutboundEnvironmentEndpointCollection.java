@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.OutboundEnvironmentEndpointIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A collection of endpoints that the managed instance service requires outbound network access to. */
+/**
+ * A collection of endpoints that the managed instance service requires outbound network access to.
+ */
 @Immutable
 public final class OutboundEnvironmentEndpointCollection {
     /*
@@ -24,13 +26,15 @@ public final class OutboundEnvironmentEndpointCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of OutboundEnvironmentEndpointCollection class. */
+    /**
+     * Creates an instance of OutboundEnvironmentEndpointCollection class.
+     */
     public OutboundEnvironmentEndpointCollection() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<OutboundEnvironmentEndpointInner> value() {
@@ -39,7 +43,7 @@ public final class OutboundEnvironmentEndpointCollection {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class OutboundEnvironmentEndpointCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

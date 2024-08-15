@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of a long term retention backup. */
+/**
+ * Properties of a long term retention backup.
+ */
 @Immutable
 public final class ManagedInstanceLongTermRetentionBackupProperties {
     /*
@@ -54,13 +56,15 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
     @JsonProperty(value = "backupStorageRedundancy", access = JsonProperty.Access.WRITE_ONLY)
     private BackupStorageRedundancy backupStorageRedundancy;
 
-    /** Creates an instance of ManagedInstanceLongTermRetentionBackupProperties class. */
+    /**
+     * Creates an instance of ManagedInstanceLongTermRetentionBackupProperties class.
+     */
     public ManagedInstanceLongTermRetentionBackupProperties() {
     }
 
     /**
      * Get the managedInstanceName property: The managed instance that the backup database belongs to.
-     *
+     * 
      * @return the managedInstanceName value.
      */
     public String managedInstanceName() {
@@ -69,7 +73,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the managedInstanceCreateTime property: The create time of the instance.
-     *
+     * 
      * @return the managedInstanceCreateTime value.
      */
     public OffsetDateTime managedInstanceCreateTime() {
@@ -78,7 +82,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the databaseName property: The name of the database the backup belong to.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -87,7 +91,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the databaseDeletionTime property: The delete time of the database.
-     *
+     * 
      * @return the databaseDeletionTime value.
      */
     public OffsetDateTime databaseDeletionTime() {
@@ -96,7 +100,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the backupTime property: The time the backup was taken.
-     *
+     * 
      * @return the backupTime value.
      */
     public OffsetDateTime backupTime() {
@@ -105,7 +109,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the backupExpirationTime property: The time the long term retention backup will expire.
-     *
+     * 
      * @return the backupExpirationTime value.
      */
     public OffsetDateTime backupExpirationTime() {
@@ -114,7 +118,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Get the backupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -123,7 +127,7 @@ public final class ManagedInstanceLongTermRetentionBackupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

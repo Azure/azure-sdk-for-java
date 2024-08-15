@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the information necessary to perform a resource move (rename). */
+/**
+ * Contains the information necessary to perform a resource move (rename).
+ */
 @Fluent
 public final class ResourceMoveDefinition {
     /*
@@ -17,13 +19,15 @@ public final class ResourceMoveDefinition {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of ResourceMoveDefinition class. */
+    /**
+     * Creates an instance of ResourceMoveDefinition class.
+     */
     public ResourceMoveDefinition() {
     }
 
     /**
      * Get the id property: The target ID for the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +36,7 @@ public final class ResourceMoveDefinition {
 
     /**
      * Set the id property: The target ID for the resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the ResourceMoveDefinition object itself.
      */
@@ -43,14 +47,13 @@ public final class ResourceMoveDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ResourceMoveDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model ResourceMoveDefinition"));
         }
     }
 

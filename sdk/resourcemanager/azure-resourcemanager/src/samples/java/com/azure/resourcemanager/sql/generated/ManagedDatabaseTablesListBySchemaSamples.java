@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagedDatabaseTables ListBySchema. */
+/**
+ * Samples for ManagedDatabaseTables ListBySchema.
+ */
 public final class ManagedDatabaseTablesListBySchemaSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseTableListBySchema.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/
+     * ManagedDatabaseTableListBySchema.json
      */
     /**
      * Sample code: List managed database tables.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listManagedDatabaseTables(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedDatabaseTables()
-            .listBySchema("myRG", "myManagedInstanceName", "myDatabase", "dbo", null, Context.NONE);
+            .listBySchema("myRG", "myManagedInstanceName", "myDatabase", "dbo", null, com.azure.core.util.Context.NONE);
     }
 }

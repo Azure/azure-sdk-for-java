@@ -4,25 +4,26 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SyncGroups RefreshHubSchema. */
+/**
+ * Samples for SyncGroups RefreshHubSchema.
+ */
 public final class SyncGroupsRefreshHubSchemaSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncGroupRefreshHubSchema.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncGroupRefreshHubSchema.
+     * json
      */
     /**
      * Sample code: Refresh a hub database schema.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void refreshAHubDatabaseSchema(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getSyncGroups()
-            .refreshHubSchema(
-                "syncgroupcrud-65440", "syncgroupcrud-8475", "syncgroupcrud-4328", "syncgroupcrud-3187", Context.NONE);
+            .refreshHubSchema("syncgroupcrud-65440", "syncgroupcrud-8475", "syncgroupcrud-4328", "syncgroupcrud-3187",
+                com.azure.core.util.Context.NONE);
     }
 }

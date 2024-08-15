@@ -8,26 +8,47 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Sync state of the sync group. */
+/**
+ * Sync state of the sync group.
+ */
 public final class SyncGroupState extends ExpandableStringEnum<SyncGroupState> {
-    /** Static value NotReady for SyncGroupState. */
+    /**
+     * Static value NotReady for SyncGroupState.
+     */
     public static final SyncGroupState NOT_READY = fromString("NotReady");
 
-    /** Static value Error for SyncGroupState. */
+    /**
+     * Static value Error for SyncGroupState.
+     */
     public static final SyncGroupState ERROR = fromString("Error");
 
-    /** Static value Warning for SyncGroupState. */
+    /**
+     * Static value Warning for SyncGroupState.
+     */
     public static final SyncGroupState WARNING = fromString("Warning");
 
-    /** Static value Progressing for SyncGroupState. */
+    /**
+     * Static value Progressing for SyncGroupState.
+     */
     public static final SyncGroupState PROGRESSING = fromString("Progressing");
 
-    /** Static value Good for SyncGroupState. */
+    /**
+     * Static value Good for SyncGroupState.
+     */
     public static final SyncGroupState GOOD = fromString("Good");
 
     /**
+     * Creates a new instance of SyncGroupState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncGroupState() {
+    }
+
+    /**
      * Creates or finds a SyncGroupState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SyncGroupState.
      */
@@ -38,7 +59,7 @@ public final class SyncGroupState extends ExpandableStringEnum<SyncGroupState> {
 
     /**
      * Gets known SyncGroupState values.
-     *
+     * 
      * @return known SyncGroupState values.
      */
     public static Collection<SyncGroupState> values() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the private endpoint connection requests status. */
+/**
+ * Contains the private endpoint connection requests status.
+ */
 @Immutable
 public final class PrivateEndpointConnectionRequestStatus {
     /*
@@ -28,13 +30,15 @@ public final class PrivateEndpointConnectionRequestStatus {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
-    /** Creates an instance of PrivateEndpointConnectionRequestStatus class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionRequestStatus class.
+     */
     public PrivateEndpointConnectionRequestStatus() {
     }
 
     /**
      * Get the privateLinkServiceId property: Resource id for which the private endpoint is created.
-     *
+     * 
      * @return the privateLinkServiceId value.
      */
     public String privateLinkServiceId() {
@@ -43,7 +47,7 @@ public final class PrivateEndpointConnectionRequestStatus {
 
     /**
      * Get the privateEndpointConnectionName property: The connection name for the private endpoint.
-     *
+     * 
      * @return the privateEndpointConnectionName value.
      */
     public String privateEndpointConnectionName() {
@@ -52,7 +56,7 @@ public final class PrivateEndpointConnectionRequestStatus {
 
     /**
      * Get the status property: Status of this private endpoint connection.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -61,7 +65,7 @@ public final class PrivateEndpointConnectionRequestStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

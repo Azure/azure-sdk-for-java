@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.DataMaskingState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a database data masking policy. */
+/**
+ * The properties of a database data masking policy.
+ */
 @Fluent
 public final class DataMaskingPolicyProperties {
     /*
@@ -38,13 +40,15 @@ public final class DataMaskingPolicyProperties {
     @JsonProperty(value = "maskingLevel", access = JsonProperty.Access.WRITE_ONLY)
     private String maskingLevel;
 
-    /** Creates an instance of DataMaskingPolicyProperties class. */
+    /**
+     * Creates an instance of DataMaskingPolicyProperties class.
+     */
     public DataMaskingPolicyProperties() {
     }
 
     /**
      * Get the dataMaskingState property: The state of the data masking policy.
-     *
+     * 
      * @return the dataMaskingState value.
      */
     public DataMaskingState dataMaskingState() {
@@ -53,7 +57,7 @@ public final class DataMaskingPolicyProperties {
 
     /**
      * Set the dataMaskingState property: The state of the data masking policy.
-     *
+     * 
      * @param dataMaskingState the dataMaskingState value to set.
      * @return the DataMaskingPolicyProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class DataMaskingPolicyProperties {
      * Get the exemptPrincipals property: The list of the exempt principals. Specifies the semicolon-separated list of
      * database users for which the data masking policy does not apply. The specified users receive data results without
      * masking for all of the database queries.
-     *
+     * 
      * @return the exemptPrincipals value.
      */
     public String exemptPrincipals() {
@@ -77,7 +81,7 @@ public final class DataMaskingPolicyProperties {
      * Set the exemptPrincipals property: The list of the exempt principals. Specifies the semicolon-separated list of
      * database users for which the data masking policy does not apply. The specified users receive data results without
      * masking for all of the database queries.
-     *
+     * 
      * @param exemptPrincipals the exemptPrincipals value to set.
      * @return the DataMaskingPolicyProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class DataMaskingPolicyProperties {
     /**
      * Get the applicationPrincipals property: The list of the application principals. This is a legacy parameter and is
      * no longer used.
-     *
+     * 
      * @return the applicationPrincipals value.
      */
     public String applicationPrincipals() {
@@ -98,7 +102,7 @@ public final class DataMaskingPolicyProperties {
 
     /**
      * Get the maskingLevel property: The masking level. This is a legacy parameter and is no longer used.
-     *
+     * 
      * @return the maskingLevel value.
      */
     public String maskingLevel() {
@@ -107,15 +111,14 @@ public final class DataMaskingPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataMaskingState() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataMaskingState in model DataMaskingPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataMaskingState in model DataMaskingPolicyProperties"));
         }
     }
 

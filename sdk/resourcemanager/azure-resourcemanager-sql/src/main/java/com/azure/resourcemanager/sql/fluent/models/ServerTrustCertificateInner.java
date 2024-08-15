@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Server trust certificate imported from box to enable connection between box and Sql Managed Instance. */
+/**
+ * Server trust certificate imported from box to enable connection between box and Sql Managed Instance.
+ */
 @Fluent
 public final class ServerTrustCertificateInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class ServerTrustCertificateInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ServerTrustCertificateProperties innerProperties;
 
-    /** Creates an instance of ServerTrustCertificateInner class. */
+    /**
+     * Creates an instance of ServerTrustCertificateInner class.
+     */
     public ServerTrustCertificateInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerTrustCertificateProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class ServerTrustCertificateInner extends ProxyResource {
 
     /**
      * Get the publicBlob property: The certificate public blob.
-     *
+     * 
      * @return the publicBlob value.
      */
     public String publicBlob() {
@@ -41,7 +45,7 @@ public final class ServerTrustCertificateInner extends ProxyResource {
 
     /**
      * Set the publicBlob property: The certificate public blob.
-     *
+     * 
      * @param publicBlob the publicBlob value to set.
      * @return the ServerTrustCertificateInner object itself.
      */
@@ -55,7 +59,7 @@ public final class ServerTrustCertificateInner extends ProxyResource {
 
     /**
      * Get the thumbprint property: The certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -64,7 +68,7 @@ public final class ServerTrustCertificateInner extends ProxyResource {
 
     /**
      * Get the certificateName property: The certificate name.
-     *
+     * 
      * @return the certificateName value.
      */
     public String certificateName() {
@@ -73,7 +77,7 @@ public final class ServerTrustCertificateInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

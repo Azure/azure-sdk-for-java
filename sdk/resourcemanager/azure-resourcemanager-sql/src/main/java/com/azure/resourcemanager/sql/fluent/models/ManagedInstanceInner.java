@@ -21,7 +21,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** An Azure SQL managed instance. */
+/**
+ * An Azure SQL managed instance.
+ */
 @Fluent
 public final class ManagedInstanceInner extends Resource {
     /*
@@ -42,13 +44,15 @@ public final class ManagedInstanceInner extends Resource {
     @JsonProperty(value = "properties")
     private ManagedInstanceProperties innerProperties;
 
-    /** Creates an instance of ManagedInstanceInner class. */
+    /**
+     * Creates an instance of ManagedInstanceInner class.
+     */
     public ManagedInstanceInner() {
     }
 
     /**
      * Get the identity property: The Azure Active Directory identity of the managed instance.
-     *
+     * 
      * @return the identity value.
      */
     public ResourceIdentity identity() {
@@ -57,7 +61,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the identity property: The Azure Active Directory identity of the managed instance.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -69,7 +73,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Get the sku property: Managed instance SKU. Allowed values for sku.name: GP_Gen5, GP_G8IM, GP_G8IH, BC_Gen5,
      * BC_G8IM, BC_G8IH.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -79,7 +83,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Set the sku property: Managed instance SKU. Allowed values for sku.name: GP_Gen5, GP_G8IM, GP_G8IH, BC_Gen5,
      * BC_G8IM, BC_G8IH.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -90,21 +94,25 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedInstanceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedInstanceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedInstanceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -113,7 +121,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ManagedInstancePropertiesProvisioningState provisioningState() {
@@ -122,12 +130,12 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the managedInstanceCreateMode property: Specifies the mode of database creation.
-     *
-     * <p>Default: Regular instance creation.
-     *
-     * <p>Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
+     * 
+     * Default: Regular instance creation.
+     * 
+     * Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
      * SourceManagedInstanceId must be specified.
-     *
+     * 
      * @return the managedInstanceCreateMode value.
      */
     public ManagedServerCreateMode managedInstanceCreateMode() {
@@ -136,12 +144,12 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the managedInstanceCreateMode property: Specifies the mode of database creation.
-     *
-     * <p>Default: Regular instance creation.
-     *
-     * <p>Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
+     * 
+     * Default: Regular instance creation.
+     * 
+     * Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
      * SourceManagedInstanceId must be specified.
-     *
+     * 
      * @param managedInstanceCreateMode the managedInstanceCreateMode value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -155,7 +163,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of the managed instance.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -165,7 +173,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Get the administratorLogin property: Administrator username for the managed instance. Can only be specified when
      * the managed instance is being created (and is required for creation).
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -175,7 +183,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Set the administratorLogin property: Administrator username for the managed instance. Can only be specified when
      * the managed instance is being created (and is required for creation).
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -190,7 +198,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Get the administratorLoginPassword property: The administrator login password (required for managed instance
      * creation).
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -200,7 +208,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Set the administratorLoginPassword property: The administrator login password (required for managed instance
      * creation).
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -214,7 +222,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the subnetId property: Subnet resource ID for the managed instance.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -223,7 +231,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the subnetId property: Subnet resource ID for the managed instance.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -237,7 +245,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the state property: The state of the managed instance.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -247,7 +255,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Get the licenseType property: The license type. Possible values are 'LicenseIncluded' (regular price inclusive of
      * a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
-     *
+     * 
      * @return the licenseType value.
      */
     public ManagedInstanceLicenseType licenseType() {
@@ -257,7 +265,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Set the licenseType property: The license type. Possible values are 'LicenseIncluded' (regular price inclusive of
      * a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -271,7 +279,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the vCores property: The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
-     *
+     * 
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -280,7 +288,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the vCores property: The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -295,7 +303,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Get the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
      * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
-     *
+     * 
      * @return the storageSizeInGB value.
      */
     public Integer storageSizeInGB() {
@@ -305,7 +313,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Set the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
      * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
-     *
+     * 
      * @param storageSizeInGB the storageSizeInGB value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -319,7 +327,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the collation property: Collation of the managed instance.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -328,7 +336,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the collation property: Collation of the managed instance.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -342,7 +350,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the dnsZone property: The Dns Zone that the managed instance is in.
-     *
+     * 
      * @return the dnsZone value.
      */
     public String dnsZone() {
@@ -352,7 +360,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Get the dnsZonePartner property: The resource id of another managed instance whose DNS zone this managed instance
      * will share after creation.
-     *
+     * 
      * @return the dnsZonePartner value.
      */
     public String dnsZonePartner() {
@@ -362,7 +370,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Set the dnsZonePartner property: The resource id of another managed instance whose DNS zone this managed instance
      * will share after creation.
-     *
+     * 
      * @param dnsZonePartner the dnsZonePartner value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -376,7 +384,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the publicDataEndpointEnabled property: Whether or not the public data endpoint is enabled.
-     *
+     * 
      * @return the publicDataEndpointEnabled value.
      */
     public Boolean publicDataEndpointEnabled() {
@@ -385,7 +393,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the publicDataEndpointEnabled property: Whether or not the public data endpoint is enabled.
-     *
+     * 
      * @param publicDataEndpointEnabled the publicDataEndpointEnabled value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -400,7 +408,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Get the sourceManagedInstanceId property: The resource identifier of the source managed instance associated with
      * create operation of this instance.
-     *
+     * 
      * @return the sourceManagedInstanceId value.
      */
     public String sourceManagedInstanceId() {
@@ -410,7 +418,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Set the sourceManagedInstanceId property: The resource identifier of the source managed instance associated with
      * create operation of this instance.
-     *
+     * 
      * @param sourceManagedInstanceId the sourceManagedInstanceId value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -425,7 +433,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Get the restorePointInTime property: Specifies the point in time (ISO8601 format) of the source database that
      * will be restored to create the new database.
-     *
+     * 
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
@@ -435,7 +443,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Set the restorePointInTime property: Specifies the point in time (ISO8601 format) of the source database that
      * will be restored to create the new database.
-     *
+     * 
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -449,7 +457,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the proxyOverride property: Connection type used for connecting to the instance.
-     *
+     * 
      * @return the proxyOverride value.
      */
     public ManagedInstanceProxyOverride proxyOverride() {
@@ -458,7 +466,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the proxyOverride property: Connection type used for connecting to the instance.
-     *
+     * 
      * @param proxyOverride the proxyOverride value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -471,13 +479,13 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Get the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows. Windows keeps
-     * details on supported timezones, including the id, in registry under KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows
-     * NT\CurrentVersion\Time Zones. You can get those registry values via SQL Server by querying SELECT name AS
-     * timezone_id FROM sys.time_zone_info. List of Ids can also be obtained by executing
-     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. An example of valid timezone id is "Pacific Standard
-     * Time" or "W. Europe Standard Time".
-     *
+     * Get the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows.
+     * Windows keeps details on supported timezones, including the id, in registry under
+     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
+     * You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
+     * List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
+     * 
      * @return the timezoneId value.
      */
     public String timezoneId() {
@@ -485,13 +493,13 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Set the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows. Windows keeps
-     * details on supported timezones, including the id, in registry under KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows
-     * NT\CurrentVersion\Time Zones. You can get those registry values via SQL Server by querying SELECT name AS
-     * timezone_id FROM sys.time_zone_info. List of Ids can also be obtained by executing
-     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. An example of valid timezone id is "Pacific Standard
-     * Time" or "W. Europe Standard Time".
-     *
+     * Set the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows.
+     * Windows keeps details on supported timezones, including the id, in registry under
+     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
+     * You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
+     * List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
+     * 
      * @param timezoneId the timezoneId value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -505,7 +513,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the instancePoolId property: The Id of the instance pool this managed server belongs to.
-     *
+     * 
      * @return the instancePoolId value.
      */
     public String instancePoolId() {
@@ -514,7 +522,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the instancePoolId property: The Id of the instance pool this managed server belongs to.
-     *
+     * 
      * @param instancePoolId the instancePoolId value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -529,7 +537,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
      * instance.
-     *
+     * 
      * @return the maintenanceConfigurationId value.
      */
     public String maintenanceConfigurationId() {
@@ -539,7 +547,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
      * instance.
-     *
+     * 
      * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -553,7 +561,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections on a managed instance.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<ManagedInstancePecProperty> privateEndpointConnections() {
@@ -562,7 +570,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
-     *
+     * 
      * @return the minimalTlsVersion value.
      */
     public String minimalTlsVersion() {
@@ -571,7 +579,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
-     *
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -587,7 +595,7 @@ public final class ManagedInstanceInner extends Resource {
      * Get the currentBackupStorageRedundancy property: The storage account type used to store backups for this
      * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
      * and GeoZone(GeoZoneRedundantStorage).
-     *
+     * 
      * @return the currentBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy currentBackupStorageRedundancy() {
@@ -598,7 +606,7 @@ public final class ManagedInstanceInner extends Resource {
      * Get the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
      * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
      * and GeoZone(GeoZoneRedundantStorage).
-     *
+     * 
      * @return the requestedBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy requestedBackupStorageRedundancy() {
@@ -609,12 +617,12 @@ public final class ManagedInstanceInner extends Resource {
      * Set the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
      * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
      * and GeoZone(GeoZoneRedundantStorage).
-     *
+     * 
      * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
      * @return the ManagedInstanceInner object itself.
      */
-    public ManagedInstanceInner withRequestedBackupStorageRedundancy(
-        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+    public ManagedInstanceInner
+        withRequestedBackupStorageRedundancy(BackupStorageRedundancy requestedBackupStorageRedundancy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedInstanceProperties();
         }
@@ -624,7 +632,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the zoneRedundant property: Whether or not the multi-az is enabled.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -633,7 +641,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the zoneRedundant property: Whether or not the multi-az is enabled.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -648,7 +656,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Get the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
      * default.
-     *
+     * 
      * @return the primaryUserAssignedIdentityId value.
      */
     public String primaryUserAssignedIdentityId() {
@@ -658,7 +666,7 @@ public final class ManagedInstanceInner extends Resource {
     /**
      * Set the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
      * default.
-     *
+     * 
      * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -672,7 +680,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the keyId property: A CMK URI of the key to use for encryption.
-     *
+     * 
      * @return the keyId value.
      */
     public String keyId() {
@@ -681,7 +689,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the keyId property: A CMK URI of the key to use for encryption.
-     *
+     * 
      * @param keyId the keyId value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -694,8 +702,10 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
-     *
+     * Get the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
+     * 
      * @return the administrators value.
      */
     public ManagedInstanceExternalAdministrator administrators() {
@@ -703,8 +713,10 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
-     *
+     * Set the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
+     * 
      * @param administrators the administrators value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -718,7 +730,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Get the servicePrincipal property: The managed instance's service principal.
-     *
+     * 
      * @return the servicePrincipal value.
      */
     public ServicePrincipal servicePrincipal() {
@@ -727,7 +739,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Set the servicePrincipal property: The managed instance's service principal.
-     *
+     * 
      * @param servicePrincipal the servicePrincipal value to set.
      * @return the ManagedInstanceInner object itself.
      */
@@ -741,7 +753,7 @@ public final class ManagedInstanceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

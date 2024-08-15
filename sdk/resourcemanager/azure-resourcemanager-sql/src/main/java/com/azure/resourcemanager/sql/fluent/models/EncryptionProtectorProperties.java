@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for an encryption protector execution. */
+/**
+ * Properties for an encryption protector execution.
+ */
 @Fluent
 public final class EncryptionProtectorProperties {
     /*
@@ -48,13 +50,15 @@ public final class EncryptionProtectorProperties {
     @JsonProperty(value = "autoRotationEnabled")
     private Boolean autoRotationEnabled;
 
-    /** Creates an instance of EncryptionProtectorProperties class. */
+    /**
+     * Creates an instance of EncryptionProtectorProperties class.
+     */
     public EncryptionProtectorProperties() {
     }
 
     /**
      * Get the subregion property: Subregion of the encryption protector.
-     *
+     * 
      * @return the subregion value.
      */
     public String subregion() {
@@ -63,7 +67,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Get the serverKeyName property: The name of the server key.
-     *
+     * 
      * @return the serverKeyName value.
      */
     public String serverKeyName() {
@@ -72,7 +76,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Set the serverKeyName property: The name of the server key.
-     *
+     * 
      * @param serverKeyName the serverKeyName value to set.
      * @return the EncryptionProtectorProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Get the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -92,7 +96,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Set the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the EncryptionProtectorProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Get the uri property: The URI of the server key.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -112,7 +116,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Get the thumbprint property: Thumbprint of the server key.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -121,7 +125,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @return the autoRotationEnabled value.
      */
     public Boolean autoRotationEnabled() {
@@ -130,7 +134,7 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Set the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @param autoRotationEnabled the autoRotationEnabled value to set.
      * @return the EncryptionProtectorProperties object itself.
      */
@@ -141,15 +145,14 @@ public final class EncryptionProtectorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serverKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverKeyType in model EncryptionProtectorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverKeyType in model EncryptionProtectorProperties"));
         }
     }
 

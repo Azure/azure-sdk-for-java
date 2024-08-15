@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceEncryptionProt
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of managed instance encryption protectors. */
+/**
+ * A list of managed instance encryption protectors.
+ */
 @Immutable
 public final class ManagedInstanceEncryptionProtectorListResult {
     /*
@@ -24,13 +26,15 @@ public final class ManagedInstanceEncryptionProtectorListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedInstanceEncryptionProtectorListResult class. */
+    /**
+     * Creates an instance of ManagedInstanceEncryptionProtectorListResult class.
+     */
     public ManagedInstanceEncryptionProtectorListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedInstanceEncryptionProtectorInner> value() {
@@ -39,7 +43,7 @@ public final class ManagedInstanceEncryptionProtectorListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ManagedInstanceEncryptionProtectorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

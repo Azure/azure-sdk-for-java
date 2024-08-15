@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.SensitivityLabelUpdateKind;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an operation executed on a sensitivity label. */
+/**
+ * Properties of an operation executed on a sensitivity label.
+ */
 @Fluent
 public final class SensitivityLabelUpdatePropertiesInner {
     /*
@@ -42,13 +44,15 @@ public final class SensitivityLabelUpdatePropertiesInner {
     @JsonProperty(value = "sensitivityLabel")
     private SensitivityLabelInner sensitivityLabel;
 
-    /** Creates an instance of SensitivityLabelUpdatePropertiesInner class. */
+    /**
+     * Creates an instance of SensitivityLabelUpdatePropertiesInner class.
+     */
     public SensitivityLabelUpdatePropertiesInner() {
     }
 
     /**
      * Get the op property: The op property.
-     *
+     * 
      * @return the op value.
      */
     public SensitivityLabelUpdateKind op() {
@@ -57,7 +61,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Set the op property: The op property.
-     *
+     * 
      * @param op the op value to set.
      * @return the SensitivityLabelUpdatePropertiesInner object itself.
      */
@@ -68,7 +72,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Get the schema property: Schema name of the column to update.
-     *
+     * 
      * @return the schema value.
      */
     public String schema() {
@@ -77,7 +81,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Set the schema property: Schema name of the column to update.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the SensitivityLabelUpdatePropertiesInner object itself.
      */
@@ -88,7 +92,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Get the table property: Table name of the column to update.
-     *
+     * 
      * @return the table value.
      */
     public String table() {
@@ -97,7 +101,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Set the table property: Table name of the column to update.
-     *
+     * 
      * @param table the table value to set.
      * @return the SensitivityLabelUpdatePropertiesInner object itself.
      */
@@ -108,7 +112,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Get the column property: Column name to update.
-     *
+     * 
      * @return the column value.
      */
     public String column() {
@@ -117,7 +121,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Set the column property: Column name to update.
-     *
+     * 
      * @param column the column value to set.
      * @return the SensitivityLabelUpdatePropertiesInner object itself.
      */
@@ -128,7 +132,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Get the sensitivityLabel property: The sensitivity label information to apply on a column.
-     *
+     * 
      * @return the sensitivityLabel value.
      */
     public SensitivityLabelInner sensitivityLabel() {
@@ -137,7 +141,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Set the sensitivityLabel property: The sensitivity label information to apply on a column.
-     *
+     * 
      * @param sensitivityLabel the sensitivityLabel value to set.
      * @return the SensitivityLabelUpdatePropertiesInner object itself.
      */
@@ -148,33 +152,29 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (op() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property op in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property op in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (schema() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schema in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schema in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (table() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property table in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property table in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (column() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property column in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property column in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (sensitivityLabel() != null) {
             sensitivityLabel().validate();

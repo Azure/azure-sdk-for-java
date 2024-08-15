@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The restorable dropped managed database's properties. */
+/**
+ * The restorable dropped managed database's properties.
+ */
 @Immutable
 public final class RestorableDroppedManagedDatabaseProperties {
     /*
@@ -35,13 +37,15 @@ public final class RestorableDroppedManagedDatabaseProperties {
     @JsonProperty(value = "earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreDate;
 
-    /** Creates an instance of RestorableDroppedManagedDatabaseProperties class. */
+    /**
+     * Creates an instance of RestorableDroppedManagedDatabaseProperties class.
+     */
     public RestorableDroppedManagedDatabaseProperties() {
     }
 
     /**
      * Get the databaseName property: The name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -50,7 +54,7 @@ public final class RestorableDroppedManagedDatabaseProperties {
 
     /**
      * Get the creationDate property: The creation date of the database (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -59,7 +63,7 @@ public final class RestorableDroppedManagedDatabaseProperties {
 
     /**
      * Get the deletionDate property: The deletion date of the database (ISO8601 format).
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -68,7 +72,7 @@ public final class RestorableDroppedManagedDatabaseProperties {
 
     /**
      * Get the earliestRestoreDate property: The earliest restore date of the database (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -77,7 +81,7 @@ public final class RestorableDroppedManagedDatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

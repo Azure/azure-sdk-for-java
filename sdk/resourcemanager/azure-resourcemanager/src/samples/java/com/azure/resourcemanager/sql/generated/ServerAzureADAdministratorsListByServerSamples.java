@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ServerAzureADAdministrators ListByServer. */
+/**
+ * Samples for ServerAzureADAdministrators ListByServer.
+ */
 public final class ServerAzureADAdministratorsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/AdministratorList.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/AdministratorList.json
      */
     /**
      * Sample code: Gets a list of Azure Active Directory administrator.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getsAListOfAzureActiveDirectoryAdministrator(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        getsAListOfAzureActiveDirectoryAdministrator(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getServerAzureADAdministrators()
-            .listByServer("sqlcrudtest-4799", "sqlcrudtest-6440", Context.NONE);
+            .listByServer("sqlcrudtest-4799", "sqlcrudtest-6440", com.azure.core.util.Context.NONE);
     }
 }

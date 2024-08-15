@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagedInstanceKeys ListByInstance. */
+/**
+ * Samples for ManagedInstanceKeys ListByInstance.
+ */
 public final class ManagedInstanceKeysListByInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceKeyList.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceKeyList.json
      */
     /**
      * Sample code: List the keys for a managed instance.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listTheKeysForAManagedInstance(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedInstanceKeys()
-            .listByInstance("sqlcrudtest-7398", "sqlcrudtest-4645", null, Context.NONE);
+            .listByInstance("sqlcrudtest-7398", "sqlcrudtest-4645", null, com.azure.core.util.Context.NONE);
     }
 }

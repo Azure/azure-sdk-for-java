@@ -8,20 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatabaseState. */
+/**
+ * Defines values for DatabaseState.
+ */
 public final class DatabaseState extends ExpandableStringEnum<DatabaseState> {
-    /** Static value All for DatabaseState. */
+    /**
+     * Static value All for DatabaseState.
+     */
     public static final DatabaseState ALL = fromString("All");
 
-    /** Static value Live for DatabaseState. */
+    /**
+     * Static value Live for DatabaseState.
+     */
     public static final DatabaseState LIVE = fromString("Live");
 
-    /** Static value Deleted for DatabaseState. */
+    /**
+     * Static value Deleted for DatabaseState.
+     */
     public static final DatabaseState DELETED = fromString("Deleted");
 
     /**
+     * Creates a new instance of DatabaseState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseState() {
+    }
+
+    /**
      * Creates or finds a DatabaseState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatabaseState.
      */
@@ -32,7 +49,7 @@ public final class DatabaseState extends ExpandableStringEnum<DatabaseState> {
 
     /**
      * Gets known DatabaseState values.
-     *
+     * 
      * @return known DatabaseState values.
      */
     public static Collection<DatabaseState> values() {

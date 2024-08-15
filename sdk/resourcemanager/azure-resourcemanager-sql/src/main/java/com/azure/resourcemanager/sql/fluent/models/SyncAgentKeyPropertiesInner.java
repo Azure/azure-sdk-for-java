@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an Azure SQL Database sync agent key. */
+/**
+ * Properties of an Azure SQL Database sync agent key.
+ */
 @Immutable
 public final class SyncAgentKeyPropertiesInner {
     /*
@@ -16,13 +18,15 @@ public final class SyncAgentKeyPropertiesInner {
     @JsonProperty(value = "syncAgentKey", access = JsonProperty.Access.WRITE_ONLY)
     private String syncAgentKey;
 
-    /** Creates an instance of SyncAgentKeyPropertiesInner class. */
+    /**
+     * Creates an instance of SyncAgentKeyPropertiesInner class.
+     */
     public SyncAgentKeyPropertiesInner() {
     }
 
     /**
      * Get the syncAgentKey property: Key of sync agent.
-     *
+     * 
      * @return the syncAgentKey value.
      */
     public String syncAgentKey() {
@@ -31,7 +35,7 @@ public final class SyncAgentKeyPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

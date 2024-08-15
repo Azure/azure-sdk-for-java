@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Database, Server or Elastic Pool Advisor. */
+/**
+ * Database, Server or Elastic Pool Advisor.
+ */
 @Fluent
 public final class AdvisorInner extends ProxyResource {
     /*
@@ -34,13 +36,15 @@ public final class AdvisorInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AdvisorProperties innerProperties;
 
-    /** Creates an instance of AdvisorInner class. */
+    /**
+     * Creates an instance of AdvisorInner class.
+     */
     public AdvisorInner() {
     }
 
     /**
      * Get the kind property: Resource kind.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -49,7 +53,7 @@ public final class AdvisorInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -58,7 +62,7 @@ public final class AdvisorInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AdvisorProperties innerProperties() {
@@ -68,7 +72,7 @@ public final class AdvisorInner extends ProxyResource {
     /**
      * Get the advisorStatus property: Gets the status of availability of this advisor to customers. Possible values are
      * 'GA', 'PublicPreview', 'LimitedPublicPreview' and 'PrivatePreview'.
-     *
+     * 
      * @return the advisorStatus value.
      */
     public AdvisorStatus advisorStatus() {
@@ -78,7 +82,7 @@ public final class AdvisorInner extends ProxyResource {
     /**
      * Get the autoExecuteStatus property: Gets the auto-execute status (whether to let the system execute the
      * recommendations) of this advisor. Possible values are 'Enabled' and 'Disabled'.
-     *
+     * 
      * @return the autoExecuteStatus value.
      */
     public AutoExecuteStatus autoExecuteStatus() {
@@ -88,7 +92,7 @@ public final class AdvisorInner extends ProxyResource {
     /**
      * Set the autoExecuteStatus property: Gets the auto-execute status (whether to let the system execute the
      * recommendations) of this advisor. Possible values are 'Enabled' and 'Disabled'.
-     *
+     * 
      * @param autoExecuteStatus the autoExecuteStatus value to set.
      * @return the AdvisorInner object itself.
      */
@@ -105,7 +109,7 @@ public final class AdvisorInner extends ProxyResource {
      * status is inherited. Auto-execute status can be set on (and inherited from) different levels in the resource
      * hierarchy. Possible values are 'Subscription', 'Server', 'ElasticPool', 'Database' and 'Default' (when status is
      * not explicitly set on any level).
-     *
+     * 
      * @return the autoExecuteStatusInheritedFrom value.
      */
     public AutoExecuteStatusInheritedFrom autoExecuteStatusInheritedFrom() {
@@ -116,7 +120,7 @@ public final class AdvisorInner extends ProxyResource {
      * Get the recommendationsStatus property: Gets that status of recommendations for this advisor and reason for not
      * having any recommendations. Possible values include, but are not limited to, 'Ok' (Recommendations
      * available),LowActivity (not enough workload to analyze), 'DbSeemsTuned' (Database is doing well), etc.
-     *
+     * 
      * @return the recommendationsStatus value.
      */
     public String recommendationsStatus() {
@@ -126,7 +130,7 @@ public final class AdvisorInner extends ProxyResource {
     /**
      * Get the lastChecked property: Gets the time when the current resource was analyzed for recommendations by this
      * advisor.
-     *
+     * 
      * @return the lastChecked value.
      */
     public OffsetDateTime lastChecked() {
@@ -135,7 +139,7 @@ public final class AdvisorInner extends ProxyResource {
 
     /**
      * Get the recommendedActions property: Gets the recommended actions for this advisor.
-     *
+     * 
      * @return the recommendedActions value.
      */
     public List<RecommendedActionInner> recommendedActions() {
@@ -144,7 +148,7 @@ public final class AdvisorInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

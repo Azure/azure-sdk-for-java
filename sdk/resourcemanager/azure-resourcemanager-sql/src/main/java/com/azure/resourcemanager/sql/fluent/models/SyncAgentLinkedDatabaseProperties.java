@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an Azure SQL Database sync agent linked database. */
+/**
+ * Properties of an Azure SQL Database sync agent linked database.
+ */
 @Immutable
 public final class SyncAgentLinkedDatabaseProperties {
     /*
@@ -47,13 +49,15 @@ public final class SyncAgentLinkedDatabaseProperties {
     @JsonProperty(value = "userName", access = JsonProperty.Access.WRITE_ONLY)
     private String username;
 
-    /** Creates an instance of SyncAgentLinkedDatabaseProperties class. */
+    /**
+     * Creates an instance of SyncAgentLinkedDatabaseProperties class.
+     */
     public SyncAgentLinkedDatabaseProperties() {
     }
 
     /**
      * Get the databaseType property: Type of the sync agent linked database.
-     *
+     * 
      * @return the databaseType value.
      */
     public SyncMemberDbType databaseType() {
@@ -62,7 +66,7 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Get the databaseId property: Id of the sync agent linked database.
-     *
+     * 
      * @return the databaseId value.
      */
     public String databaseId() {
@@ -71,7 +75,7 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Get the description property: Description of the sync agent linked database.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -80,7 +84,7 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Get the serverName property: Server name of the sync agent linked database.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -89,7 +93,7 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Get the databaseName property: Database name of the sync agent linked database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -98,7 +102,7 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Get the username property: User name of the sync agent linked database.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -107,7 +111,7 @@ public final class SyncAgentLinkedDatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
