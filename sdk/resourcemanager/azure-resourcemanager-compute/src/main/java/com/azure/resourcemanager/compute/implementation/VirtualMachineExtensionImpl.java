@@ -90,6 +90,7 @@ class VirtualMachineExtensionImpl
             return ((ComputeManagementClientImpl) parent().manager().serviceClient())
                 .getSerializerAdapter().serialize(this.publicSettings, SerializerEncoding.JSON);
         } catch (IOException e) {
+            logger.atWarning().log("Serialization failed for publicSettings.", e);
             return null;
         }
     }
