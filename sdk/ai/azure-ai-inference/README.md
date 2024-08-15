@@ -192,6 +192,23 @@ If there are significant differences, API calls may fail due to incompatibility.
 Always ensure that the chosen API version is fully supported and operational for your specific use case and that it aligns with the service's versioning policy.
 
 ## Troubleshooting
+### Enable client logging
+You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
+example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
+be found here: [log levels][logLevels].
+
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
+For more details, see [TROUBLESHOOTING][troubleshooting] guideline.
 
 ## Next steps
 
@@ -209,7 +226,20 @@ For details on contributing to this repository, see the [contributing guide](htt
 [product_documentation]: https://azure.microsoft.com/services/
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
+[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
+[sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java
+[microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
+[microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings
+[chat_completions_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
+[chat_completions_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
+[chat_completions_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java
+[logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/TROUBLESHOOTING.md
+[wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fai%2Fazure-ai-inference%2FREADME.png)
