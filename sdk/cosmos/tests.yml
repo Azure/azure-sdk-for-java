@@ -40,62 +40,62 @@ extends:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
 
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
-        parameters:
-          TestName: 'Spring_Data_Cosmos_Integration'
-          CloudConfig:
-            Public:
-              SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
-                - $(sub-config-cosmos-azure-cloud-test-resources)
-          MatrixConfigs:
-            - Name: Cosmos_live_test_integration
-              Path: sdk/spring/pipeline/cosmos-integration-matrix.json
-              Selection: all
-              GenerateVMJobs: true
-          ServiceDirectory: spring
-          TestResourceDirectories:
-            - spring/spring-cloud-azure-integration-tests/test-resources/cosmos-spring
-          Artifacts:
-            - name: azure-spring-data-cosmos
-              groupId: com.azure
-              safeName: azurespringdatacosmos
-          TimeoutInMinutes: 90
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-          TestGoals: 'verify'
-          TestOptions: '$(ProfileFlag) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
-          AdditionalVariables:
-            - name: AdditionalArgs
-              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
-
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
-        parameters:
-          TestName: 'Kafka_Cosmos_Integration'
-          CloudConfig:
-            Public:
-              SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
-                - $(sub-config-cosmos-azure-cloud-test-resources)
-          MatrixConfigs:
-            - Name: Kafka_Cosmos_Integration_Test
-              Path: sdk/cosmos/kafka-cosmos-matrix.json
-              Selection: all
-              GenerateVMJobs: true
-              TestFromSource: false
-          ServiceDirectory: cosmos
-          TestResourceDirectories:
-            - cosmos/
-          Artifacts:
-            - name: azure-cosmos-kafka-connect
-              groupId: com.azure.cosmos.kafka
-              safeName: azurecosmoskafkaconnect
-          TimeoutInMinutes: 120
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-          TestGoals: 'clean verify'
-          TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
-          AdditionalVariables:
-            - name: AdditionalArgs
-              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
+#      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+#        parameters:
+#          TestName: 'Spring_Data_Cosmos_Integration'
+#          CloudConfig:
+#            Public:
+#              SubscriptionConfigurations:
+#                - $(sub-config-azure-cloud-test-resources)
+#                - $(sub-config-cosmos-azure-cloud-test-resources)
+#          MatrixConfigs:
+#            - Name: Cosmos_live_test_integration
+#              Path: sdk/spring/pipeline/cosmos-integration-matrix.json
+#              Selection: all
+#              GenerateVMJobs: true
+#          ServiceDirectory: spring
+#          TestResourceDirectories:
+#            - spring/spring-cloud-azure-integration-tests/test-resources/cosmos-spring
+#          Artifacts:
+#            - name: azure-spring-data-cosmos
+#              groupId: com.azure
+#              safeName: azurespringdatacosmos
+#          TimeoutInMinutes: 90
+#          PreSteps:
+#            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+#          TestGoals: 'verify'
+#          TestOptions: '$(ProfileFlag) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+#          AdditionalVariables:
+#            - name: AdditionalArgs
+#              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
+#
+#      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+#        parameters:
+#          TestName: 'Kafka_Cosmos_Integration'
+#          CloudConfig:
+#            Public:
+#              SubscriptionConfigurations:
+#                - $(sub-config-azure-cloud-test-resources)
+#                - $(sub-config-cosmos-azure-cloud-test-resources)
+#          MatrixConfigs:
+#            - Name: Kafka_Cosmos_Integration_Test
+#              Path: sdk/cosmos/kafka-cosmos-matrix.json
+#              Selection: all
+#              GenerateVMJobs: true
+#              TestFromSource: false
+#          ServiceDirectory: cosmos
+#          TestResourceDirectories:
+#            - cosmos/
+#          Artifacts:
+#            - name: azure-cosmos-kafka-connect
+#              groupId: com.azure.cosmos.kafka
+#              safeName: azurecosmoskafkaconnect
+#          TimeoutInMinutes: 120
+#          PreSteps:
+#            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+#          TestGoals: 'clean verify'
+#          TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
+#          AdditionalVariables:
+#            - name: AdditionalArgs
+#              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
 

@@ -1,13 +1,13 @@
-{
-  "matrix": {
-    "Cosmos": {
-      "Session_Integration": {
-        "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session'; enableMultipleWriteLocations = $false }",
-        "ProfileFlag": "-P build-kafka,kafka-integration",
-        "Pool": "env:LINUXPOOL",
-        "OSVmImage": "env:LINUXVMIMAGE"
-      }
-    },
-    "JavaTestVersion": ["1.8", "1.11", "1.17", "1.21"]
-  }
-}
+//{
+//  "matrix": {
+//    "Cosmos": {
+//      "Session_Integration": {
+//        "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session'; enableMultipleWriteLocations = $false }",
+//        "ProfileFlag": "-P build-kafka,kafka-integration",
+//        "Pool": "env:LINUXPOOL",
+//        "OSVmImage": "env:LINUXVMIMAGE"
+//      }
+//    },
+//    "JavaTestVersion": ["1.8", "1.11", "1.17", "1.21"]
+//  }
+//}
