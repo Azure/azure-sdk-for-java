@@ -189,7 +189,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("Foo12")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_A1_v2"))
                 .defineNewExtension("CustomScriptForLinux")
                 .withPublisher("Microsoft.OSTCExtensions")
                 .withType("CustomScriptForLinux")
