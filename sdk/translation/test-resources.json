@@ -21,12 +21,6 @@
         "description": "The application client ID used to run tests."
       }
     },
-    "testApplicationSecret": {
-      "type": "string",
-      "metadata": {
-        "description": "The application client secret used to run tests."
-      }
-    },
     "testApplicationOid": {
       "type": "string",
       "metadata": {
@@ -58,7 +52,10 @@
     "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]",
     "uniqueSubDomainName": "[format('{0}-{1}', parameters('baseName'), parameters('endpointPrefix'))]",
     "endpointValue": "[format('https://{0}-{1}{2}', parameters('baseName'), parameters('endpointPrefix'), parameters('endpointSuffix'))]",
+    "authorizationApiVersion": "2018-09-01-preview",
+    "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
     "storageAccountName": "[concat(parameters('baseName'), 'prim')]",
+    "storageAccountResourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Storage/storageAccounts/',variables('storageAccountName'))]",
     "encryption": {
       "services": {
         "blob": {
