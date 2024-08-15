@@ -4,9 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported enabling ultra SSD in `VirtualMachine` class.
 
 ### Other Changes
 
