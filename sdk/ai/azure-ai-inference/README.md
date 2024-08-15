@@ -113,7 +113,7 @@ chatMessages.add(ChatRequestUserMessage.fromString("What's the best way to train
 
 ChatCompletions chatCompletions = client.complete(new ChatCompletionsOptions(chatMessages));
 
-System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
+System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreated());
 for (ChatChoice choice : chatCompletions.getChoices()) {
     ChatResponseMessage message = choice.getMessage();
     System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
@@ -139,7 +139,7 @@ client.completeStreaming(new ChatCompletionsOptions(chatMessages))
         if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
             return;
         }
-        ChatResponseMessage delta = chatCompletions.getChoices().getFirst().getDelta();
+        ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
         if (delta.getRole() != null) {
             System.out.println("Role = " + delta.getRole());
         }
@@ -156,25 +156,11 @@ To compute tokens in streaming chat completions, see sample [Streaming Chat Comp
 ### Text embeddings
 
 ```java readme-sample-getEmbedding
-EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(
-    Arrays.asList("Your text string goes here"));
-
-Embeddings embeddings = client.getEmbeddings(embeddingsOptions);
-
-for (EmbeddingItem item : embeddings.getData()) {
-    System.out.printf("Index: %d.%n", item.getPromptIndex());
-    for (Float embedding : item.getEmbedding()) {
-        System.out.printf("%f;", embedding);
-    }
-}
 ```
 For a complete sample example, see sample [Embedding][sample_get_embedding].
 
 Please refer to the service documentation for a conceptual discussion of [openAI embedding][microsoft_docs_openai_embedding].
 -->
-
-```java com.azure.ai.inference.readme
-```
 
 ### Service API versions
 

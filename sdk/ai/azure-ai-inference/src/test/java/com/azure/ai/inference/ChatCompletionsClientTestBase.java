@@ -99,7 +99,7 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
             assertNotNull(chatCompletions.getId());
             assertNotNull(chatCompletions.getChoices());
             assertFalse(chatCompletions.getChoices().isEmpty());
-            assertNotNull(chatCompletions.getChoices().getFirst().getDelta());
+            assertNotNull(chatCompletions.getChoices().get(0).getDelta());
         }
     }
 

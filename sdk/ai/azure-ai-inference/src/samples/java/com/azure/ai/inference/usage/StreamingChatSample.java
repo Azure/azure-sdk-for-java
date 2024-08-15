@@ -58,7 +58,7 @@ public final class StreamingChatSample {
                     return;
                 }
 
-                ChatResponseMessage delta = chatCompletions.getChoices().getFirst().getDelta();
+                ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
 
                 if (delta.getRole() != null) {
                     System.out.println("Role = " + delta.getRole());

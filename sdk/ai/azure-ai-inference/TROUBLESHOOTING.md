@@ -35,18 +35,18 @@ can be configured as shown below. If there is no SLF4J's `Logger` on the class p
 [AZURE_LOG_LEVEL][azure_log_level] in your machine to enable logging.
 
 ```java readme-sample-enablehttplogging
-ChatCompletionsClient openAIClient = new ChatCompletionsClientBuilder()
-        .endpoint("{endpoint}")
-        .credential(new AzureKeyCredential("{key}"))
-        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-        .buildClient();
+        ChatCompletionsClient chatCompletionsClient = new ChatCompletionsClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(new AzureKeyCredential("{key}"))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
 // or
-DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-ChatCompletionsClient configurationClientAad = new ChatCompletionsClientBuilder()
-        .credential(credential)
-        .endpoint("{endpoint}")
-        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-        .buildClient();
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        ChatCompletionsClient configurationClientAad = new ChatCompletionsClientBuilder()
+            .credential(credential)
+            .endpoint("{endpoint}")
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
 ```
 
 Alternatively, you can configure logging HTTP requests and responses for your entire application by setting the
@@ -82,16 +82,16 @@ Here's the example of how to catch it with synchronous client
 ```java readme-sample-troubleshootingExceptions
 List<ChatRequestMessage> chatMessages = new ArrayList<>();
 chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
-chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+chatMessages.add(ChatRequestUserMessage.fromString("Can you help me?"));
 chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
-chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
+chatMessages.add(ChatRequestUserMessage.fromString("What's the best way to train a parrot?"));
 
 try {
-    ChatCompletions chatCompletions = client.complete(new ChatCompletionsOptions(chatMessages));
-} catch (HttpResponseException e) {
-    System.out.println(e.getMessage());
-    // Do something with the exception
-}
+        ChatCompletions chatCompletions = client.complete(new ChatCompletionsOptions(chatMessages));
+    } catch (HttpResponseException e) {
+        System.out.println(e.getMessage());
+        // Do something with the exception
+    }
 ```
 
 With async clients, you can catch and handle exceptions in the error callbacks:
@@ -100,8 +100,8 @@ With async clients, you can catch and handle exceptions in the error callbacks:
 asyncClient.complete(new ChatCompletionsOptions(chatMessages))
         .doOnSuccess(ignored -> System.out.println("Success!"))
         .doOnError(
-                error -> error instanceof ResourceNotFoundException,
-                error -> System.out.println("Exception: 'getChatCompletions' could not be performed."));
+        error -> error instanceof ResourceNotFoundException,
+    error -> System.out.println("Exception: 'getChatCompletions' could not be performed."));
 ```
 
 ### Authentication errors

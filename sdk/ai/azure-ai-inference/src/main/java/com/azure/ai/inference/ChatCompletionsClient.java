@@ -232,13 +232,6 @@ public final class ChatCompletionsClient {
     /**
      * Gets chat completions for the provided chat messages in streaming mode. Chat completions support a wide variety
      * of tasks and generate text that continues from or "completes" provided prompt data.
-     * <p>
-     * <strong>Code Samples</strong>
-     * </p>
-     * <!-- @formatter:off -->
-     * <!-- src_embed com.azure.ai.inference.ChatCompletionsClient.completeStreaming#ChatCompletionsOptions -->
-     * <!-- end com.azure.ai.inference.ChatCompletionsClient.completeStreaming#ChatCompletionsOptions -->
-     * <!-- @formatter:on -->
      *
      * @param options The configuration information for a chat completions request. Completions support a
      * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
