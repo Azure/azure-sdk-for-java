@@ -1180,7 +1180,13 @@ public class CosmosClientBuilder implements
         stopwatch.start();
 
         if (Configs.shouldOptInDefaultCircuitBreakerConfig()) {
-            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", PartitionLevelCircuitBreakerConfig.DEFAULT.toJson());
+            System.setProperty(
+                "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                    + "}");
         }
 
         this.resetSessionCapturingType();
@@ -1220,7 +1226,13 @@ public class CosmosClientBuilder implements
         stopwatch.start();
 
         if (Configs.shouldOptInDefaultCircuitBreakerConfig()) {
-            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", PartitionLevelCircuitBreakerConfig.DEFAULT.toJson());
+            System.setProperty(
+                "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                    + "}");
         }
 
         this.resetSessionCapturingType();

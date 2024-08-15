@@ -267,7 +267,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordUnavailableToHealthyTentativeStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+    public void recordUnavailableToHealthyTentativeStatusTransition(boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -349,7 +349,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyTentativeToHealthyStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+    public void recordHealthyTentativeToHealthyStatusTransition(boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -438,7 +438,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyTentativeToUnavailableTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+    public void recordHealthyTentativeToUnavailableTransition(boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -527,7 +527,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void allRegionsUnavailableHandling(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
+    public void allRegionsUnavailableHandling(boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -597,8 +597,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void multiContainerBothWithSinglePartitionHealthyToUnavailableHandling(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchFieldException, IllegalAccessException {
-        System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
+    public void multiContainerBothWithSinglePartitionHealthyToUnavailableHandling(boolean readOperationTrue) throws NoSuchFieldException, IllegalAccessException {
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
             = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
@@ -694,7 +693,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"multi-master-circuit-breaker"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void allRegionsUnavailableHandlingWithMultiThreading(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) {
+    public void allRegionsUnavailableHandlingWithMultiThreading(boolean readOperationTrue) {
 
         int threadPoolSizeForExecutors = 4;
 
