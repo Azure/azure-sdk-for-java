@@ -26,17 +26,32 @@
   "include": [
     {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
-      "DESIRED_CONSISTENCIES": [ "[\"Strong\", \"Session\"]", "[\"BoundedStaleness\"]", "[\"ConsistentPrefix\"]" ],
       "ACCOUNT_CONSISTENCY": "Session",
       "ArmConfig": {
-        "MultiMaster_MultiRegion": {
+        "MultiMaster_MultiRegion_CircuitBreaker_True": {
           "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
           "PREFERRED_LOCATIONS": "[\"East US 2\"]"
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pmulti-master" ],
-      "AdditionalArgs": ["[\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=TRUE\", \"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=FALSE\"]"],
+      "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=TRUE\"",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "ArmConfig": {
+        "MultiMaster_MultiRegion_CircuitBreaker_False": {
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
+          "PREFERRED_LOCATIONS": "[\"East US 2\"]"
+        }
+      },
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pmulti-master" ],
+      "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=FALSE\"",
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
