@@ -150,24 +150,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
     @Test
     public void listContainersMarker() {
-        /*ListBlobContainersOptions options = new ListBlobContainersOptions().setMaxResultsPerPage(5);
-
-        Mono<List<PagedResponse<BlobContainerItem>>> response = Flux.range(0, 10)
-            .flatMap(r -> primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()))
-            .thenMany(primaryBlobServiceAsyncClient.listBlobContainers(options).byPage())
-            .collectList()
-            .flatMap(r -> {
-                PagedResponse<BlobContainerItem> firstPage = r.get(0);
-                String marker = firstPage.getContinuationToken();
-                return primaryBlobServiceAsyncClient.listBlobContainers().byPage(marker);
-            });
-
-        StepVerifier.create(response)
-            .assertNext(r -> {
-            })*/
-
-
-
         for (int i = 0; i < 10; i++) {
             primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
         }

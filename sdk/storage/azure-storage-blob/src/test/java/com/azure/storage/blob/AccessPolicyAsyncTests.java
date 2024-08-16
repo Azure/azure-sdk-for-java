@@ -20,6 +20,7 @@ import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -116,7 +117,7 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
         BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(identifier.getId());
         String sasWithId = ccAsync.generateSas(sasValues);
         BlobContainerAsyncClient client1 = getContainerAsyncClient(sasWithId, ccAsync.getBlobContainerUrl());
-        StepVerifier.create(setAccessPolicySleepAsync(ccAsync, null, List.of(identifier))
+        StepVerifier.create(setAccessPolicySleepAsync(ccAsync, null, Arrays.asList(identifier))
             .thenMany(client1.listBlobs()))
             .thenConsumeWhile(r -> true)
             .verifyComplete();
