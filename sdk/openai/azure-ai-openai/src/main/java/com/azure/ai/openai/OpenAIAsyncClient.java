@@ -2067,8 +2067,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<OpenAIFile>> listFiles() {
-        // Generated convenience method for listFilesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return listFiles(null);
     }
 

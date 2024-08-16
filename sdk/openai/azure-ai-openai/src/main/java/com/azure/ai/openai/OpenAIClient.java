@@ -2017,8 +2017,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public List<OpenAIFile> listFiles() {
-        // Generated convenience method for listFilesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return listFiles(null);
     }
 
