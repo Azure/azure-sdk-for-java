@@ -5998,7 +5998,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
             // help failover as well)
             // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
-            // so staleness is not an issue
+            // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
             request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
             List<String> unavailableRegionsForPartition
@@ -6052,7 +6052,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
         // help failover as well)
         // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
-        // so staleness is not an issue
+        // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
         request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
         if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
