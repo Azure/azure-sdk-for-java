@@ -2003,15 +2003,14 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of previously uploaded files.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileListResponse listFiles(FilePurpose purpose) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public List<OpenAIFile> listFiles(FilePurpose purpose) {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
-        return listFilesWithResponse(requestOptions).getValue().toObject(FileListResponse.class);
+        return listFilesWithResponse(requestOptions).getValue().toObject(FileListResponse.class).getData();
     }
 
     /**
@@ -2024,11 +2023,11 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of previously uploaded files.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public List<OpenAIFile> listFiles() {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listFilesWithResponse(requestOptions).getValue().toObject(FileListResponse.class).getData();
+        return listFiles(null);
     }
 
     /**
