@@ -2003,18 +2003,17 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of previously uploaded files on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<OpenAIFile> listFiles(FilePurpose purpose) {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
-        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .flatMapMany(response -> {
-                FileListResponse fileListResponse = response.toObject(FileListResponse.class);
-                return Flux.fromIterable(fileListResponse.getData());
-            });
+        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono).flatMapMany(response -> {
+            FileListResponse fileListResponse = response.toObject(FileListResponse.class);
+            return Flux.fromIterable(fileListResponse.getData());
+        });
     }
 
     /**
