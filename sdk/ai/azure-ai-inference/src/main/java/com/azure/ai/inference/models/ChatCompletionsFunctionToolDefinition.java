@@ -26,7 +26,7 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
      * The function definition details for the function tool.
      */
     @Generated
-    private final FunctionDefinition function;
+    private FunctionDefinition function;
 
     /**
      * Creates an instance of ChatCompletionsFunctionToolDefinition class.
@@ -35,7 +35,7 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
      */
     @Generated
     public ChatCompletionsFunctionToolDefinition(FunctionDefinition function) {
-        this.function = function;
+        super(function);
     }
 
     /**

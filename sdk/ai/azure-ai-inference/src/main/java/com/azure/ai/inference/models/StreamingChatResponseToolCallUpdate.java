@@ -7,45 +7,53 @@ package com.azure.ai.inference.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * A tool call to a function tool, issued by the model in evaluation of a configured function tool, that represents
- * a function invocation needed for a subsequent chat completions request to resolve.
+ * An update to the function tool call information requested by the AI model.
  */
 @Immutable
-public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCall {
+public final class StreamingChatResponseToolCallUpdate
+    implements JsonSerializable<StreamingChatResponseToolCallUpdate> {
     /*
-     * The object type.
+     * The ID of the tool call.
      */
     @Generated
-    private String type = "function";
+    private final String id;
 
     /*
-     * The details of the function invocation requested by the tool call.
+     * Updates to the function call requested by the AI model.
      */
     @Generated
-    private FunctionCall function;
-
-    public ChatCompletionsFunctionToolCall(String id, FunctionCall function) {
-        super(id, function);
-    }
+    private final FunctionCall function;
 
     /**
-     * Get the type property: The object type.
+     * Creates an instance of StreamingChatResponseToolCallUpdate class.
      * 
-     * @return the type value.
+     * @param id the id value to set.
+     * @param function the function value to set.
      */
     @Generated
-    @Override
-    public String getType() {
-        return this.type;
+    private StreamingChatResponseToolCallUpdate(String id, FunctionCall function) {
+        this.id = id;
+        this.function = function;
     }
 
     /**
-     * Get the function property: The details of the function invocation requested by the tool call.
+     * Get the id property: The ID of the tool call.
+     * 
+     * @return the id value.
+     */
+    @Generated
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * Get the function property: Updates to the function call requested by the AI model.
      * 
      * @return the function value.
      */
@@ -61,27 +69,25 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeJsonField("function", this.function);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ChatCompletionsFunctionToolCall from the JsonReader.
+     * Reads an instance of StreamingChatResponseToolCallUpdate from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatCompletionsFunctionToolCall if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of StreamingChatResponseToolCallUpdate if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ChatCompletionsFunctionToolCall.
+     * @throws IOException If an error occurs while reading the StreamingChatResponseToolCallUpdate.
      */
     @Generated
-    public static ChatCompletionsFunctionToolCall fromJson(JsonReader jsonReader) throws IOException {
+    public static StreamingChatResponseToolCallUpdate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             FunctionCall function = null;
-            String type = "function";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -90,17 +96,11 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
                     id = reader.getString();
                 } else if ("function".equals(fieldName)) {
                     function = FunctionCall.fromJson(reader);
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            ChatCompletionsFunctionToolCall deserializedChatCompletionsFunctionToolCall
-                = new ChatCompletionsFunctionToolCall(id, function);
-            deserializedChatCompletionsFunctionToolCall.type = type;
-
-            return deserializedChatCompletionsFunctionToolCall;
+            return new StreamingChatResponseToolCallUpdate(id, function);
         });
     }
 }

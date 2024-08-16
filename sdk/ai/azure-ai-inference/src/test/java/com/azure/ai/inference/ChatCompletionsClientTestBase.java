@@ -37,10 +37,74 @@ import static com.azure.ai.inference.TestUtils.FAKE_API_KEY;
 
 public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
     protected ChatCompletionsClient chatCompletionsClient;
+    protected EmbeddingsClient embeddingsClient;
+    protected ImageEmbeddingsClient imageEmbeddingsClient;
     private boolean sanitizersRemoved = false;
 
     ChatCompletionsClientBuilder getChatCompletionsClientBuilder(HttpClient httpClient) {
         ChatCompletionsClientBuilder builder = new ChatCompletionsClientBuilder()
+                .httpClient(httpClient);
+        TestMode testMode = getTestMode();
+        if (testMode != TestMode.LIVE) {
+            addTestRecordCustomSanitizers();
+            addCustomMatchers();
+            // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
+            if (!sanitizersRemoved) {
+                interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+                sanitizersRemoved = true;
+            }
+        }
+
+        if (testMode == TestMode.PLAYBACK) {
+            builder
+                    .endpoint("https://localhost:8080")
+                    .credential(new AzureKeyCredential(FAKE_API_KEY));
+        } else if (testMode == TestMode.RECORD) {
+            builder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
+        } else {
+            builder
+                    .endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
+        }
+        return builder;
+    }
+
+    EmbeddingsClientBuilder getEmbeddingsClientBuilder(HttpClient httpClient) {
+        EmbeddingsClientBuilder builder = new EmbeddingsClientBuilder()
+                .httpClient(httpClient);
+        TestMode testMode = getTestMode();
+        if (testMode != TestMode.LIVE) {
+            addTestRecordCustomSanitizers();
+            addCustomMatchers();
+            // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
+            if (!sanitizersRemoved) {
+                interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+                sanitizersRemoved = true;
+            }
+        }
+
+        if (testMode == TestMode.PLAYBACK) {
+            builder
+                    .endpoint("https://localhost:8080")
+                    .credential(new AzureKeyCredential(FAKE_API_KEY));
+        } else if (testMode == TestMode.RECORD) {
+            builder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
+        } else {
+            builder
+                    .endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
+        }
+        return builder;
+    }
+
+    ImageEmbeddingsClientBuilder getImageEmbeddingsClientBuilder(HttpClient httpClient) {
+        ImageEmbeddingsClientBuilder builder = new ImageEmbeddingsClientBuilder()
                 .httpClient(httpClient);
         TestMode testMode = getTestMode();
         if (testMode != TestMode.LIVE) {

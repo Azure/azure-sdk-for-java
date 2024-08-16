@@ -13,41 +13,38 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * An abstract representation of a tool call that must be resolved in a subsequent request to perform the requested
- * chat completion.
+ * A function tool call requested by the AI model.
  */
 @Immutable
 public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletionsToolCall> {
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "ChatCompletionsToolCall";
-
     /*
      * The ID of the tool call.
      */
     @Generated
     private final String id;
 
+    /*
+     * The type of tool call. Currently, only `function` is supported.
+     */
+    @Generated
+    private final String type = "function";
+
+    /*
+     * The details of the function call requested by the AI model.
+     */
+    @Generated
+    private final FunctionCall function;
+
     /**
      * Creates an instance of ChatCompletionsToolCall class.
      * 
      * @param id the id value to set.
+     * @param function the function value to set.
      */
     @Generated
-    public ChatCompletionsToolCall(String id) {
+    public ChatCompletionsToolCall(String id, FunctionCall function) {
         this.id = id;
-    }
-
-    /**
-     * Get the type property: The object type.
-     * 
-     * @return the type value.
-     */
-    @Generated
-    public String getType() {
-        return this.type;
+        this.function = function;
     }
 
     /**
@@ -61,6 +58,26 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
     }
 
     /**
+     * Get the type property: The type of tool call. Currently, only `function` is supported.
+     * 
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the function property: The details of the function call requested by the AI model.
+     * 
+     * @return the function value.
+     */
+    @Generated
+    public FunctionCall getFunction() {
+        return this.function;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -69,6 +86,7 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("function", this.function);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,50 +102,21 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
     @Generated
     public static ChatCompletionsToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("type".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("function".equals(discriminatorValue)) {
-                    return ChatCompletionsFunctionToolCall.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
-            }
-        });
-    }
-
-    @Generated
-    static ChatCompletionsToolCall fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
             String id = null;
-            String type = null;
+            FunctionCall function = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
+                } else if ("function".equals(fieldName)) {
+                    function = FunctionCall.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            ChatCompletionsToolCall deserializedChatCompletionsToolCall = new ChatCompletionsToolCall(id);
-            deserializedChatCompletionsToolCall.type = type;
-
-            return deserializedChatCompletionsToolCall;
+            return new ChatCompletionsToolCall(id, function);
         });
     }
 }

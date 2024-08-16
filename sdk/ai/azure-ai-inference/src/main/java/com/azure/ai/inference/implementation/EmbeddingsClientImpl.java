@@ -36,13 +36,13 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the ChatCompletionsClient type.
+ * Initializes a new instance of the EmbeddingsClient type.
  */
-public final class ChatCompletionsClientImpl {
+public final class EmbeddingsClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final ChatCompletionsClientService service;
+    private final EmbeddingsClientService service;
 
     /**
      * Server parameter.
@@ -101,71 +101,70 @@ public final class ChatCompletionsClientImpl {
     }
 
     /**
-     * Initializes an instance of ChatCompletionsClient client.
+     * Initializes an instance of EmbeddingsClient client.
      * 
      * @param endpoint Server parameter.
      * @param serviceVersion Service version.
      */
-    public ChatCompletionsClientImpl(String endpoint, ModelServiceVersion serviceVersion) {
+    public EmbeddingsClientImpl(String endpoint, ModelServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of ChatCompletionsClient client.
+     * Initializes an instance of EmbeddingsClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Server parameter.
      * @param serviceVersion Service version.
      */
-    public ChatCompletionsClientImpl(HttpPipeline httpPipeline, String endpoint, ModelServiceVersion serviceVersion) {
+    public EmbeddingsClientImpl(HttpPipeline httpPipeline, String endpoint, ModelServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of ChatCompletionsClient client.
+     * Initializes an instance of EmbeddingsClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Server parameter.
      * @param serviceVersion Service version.
      */
-    public ChatCompletionsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+    public EmbeddingsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
         ModelServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service
-            = RestProxy.create(ChatCompletionsClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service = RestProxy.create(EmbeddingsClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
-     * The interface defining all the services for ChatCompletionsClient to be used by the proxy service to perform REST
+     * The interface defining all the services for EmbeddingsClient to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ChatCompletionsClien")
-    public interface ChatCompletionsClientService {
-        @Post("/chat/completions")
+    @ServiceInterface(name = "EmbeddingsClient")
+    public interface EmbeddingsClientService {
+        @Post("/embeddings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> complete(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> embed(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData completeRequest, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData embedRequest, RequestOptions requestOptions, Context context);
 
-        @Post("/chat/completions")
+        @Post("/embeddings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> completeSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> embedSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData completeRequest, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData embedRequest, RequestOptions requestOptions, Context context);
 
         @Get("/info")
         @ExpectedResponses({ 200 })
@@ -189,10 +188,8 @@ public final class ChatCompletionsClientImpl {
     }
 
     /**
-     * Gets chat completions for the provided chat messages.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data. The method makes a REST API call to the `/chat/completions` route
-     * on the given endpoint.
+     * Return the embedding vectors for given text prompts.
+     * The method makes a REST API call to the `/embeddings` route on the given endpoint.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -207,37 +204,12 @@ public final class ChatCompletionsClientImpl {
      * 
      * <pre>{@code
      * {
-     *     messages (Required): [
-     *          (Required){
-     *             role: String(system/user/assistant/tool) (Required)
-     *         }
+     *     input (Required): [
+     *         String (Required)
      *     ]
-     *     frequency_penalty: Double (Optional)
-     *     stream: Boolean (Optional)
-     *     presence_penalty: Double (Optional)
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     max_tokens: Integer (Optional)
-     *     response_format (Optional): {
-     *         type: String (Required)
-     *     }
-     *     stop (Optional): [
-     *         String (Optional)
-     *     ]
-     *     tools (Optional): [
-     *          (Optional){
-     *             type: String (Required)
-     *             function (Required): {
-     *                 name: String (Required)
-     *                 description: String (Optional)
-     *                 parameters (Optional): {
-     *                     String: Object (Required)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     tool_choice: BinaryData (Optional)
-     *     seed: Long (Optional)
+     *     dimensions: Integer (Optional)
+     *     encoding_format: String(base64/binary/float/int8/ubinary/uint8) (Optional)
+     *     input_type: String(text/query/document) (Optional)
      *     model: String (Optional)
      *      (Optional): {
      *         String: Object (Required)
@@ -249,60 +221,41 @@ public final class ChatCompletionsClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
-     *     created: long (Required)
-     *     model: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             embedding: BinaryData (Required)
+     *             index: int (Required)
+     *         }
+     *     ]
      *     usage (Required): {
-     *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *     }
-     *     choices (Required): [
-     *          (Required){
-     *             index: int (Required)
-     *             finish_reason: String(stop/length/content_filter/tool_calls) (Required)
-     *             message (Required): {
-     *                 role: String(system/user/assistant/tool) (Required)
-     *                 content: String (Required)
-     *                 tool_calls (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         type: String (Required)
-     *                         function (Required): {
-     *                             name: String (Required)
-     *                             arguments: String (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *             }
-     *         }
-     *     ]
+     *     model: String (Required)
      * }
      * }</pre>
      * 
-     * @param completeRequest The completeRequest parameter.
+     * @param embedRequest The embedRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return chat completions for the provided chat messages.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data along with {@link Response} on successful completion of {@link Mono}.
+     * @return representation of the response data from an embeddings request.
+     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+     * recommendations, and other similar scenarios along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> completeWithResponseAsync(BinaryData completeRequest,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> embedWithResponseAsync(BinaryData embedRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.complete(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, completeRequest, requestOptions, context));
+        return FluxUtil.withContext(context -> service.embed(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            accept, embedRequest, requestOptions, context));
     }
 
     /**
-     * Gets chat completions for the provided chat messages.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data. The method makes a REST API call to the `/chat/completions` route
-     * on the given endpoint.
+     * Return the embedding vectors for given text prompts.
+     * The method makes a REST API call to the `/embeddings` route on the given endpoint.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -317,37 +270,12 @@ public final class ChatCompletionsClientImpl {
      * 
      * <pre>{@code
      * {
-     *     messages (Required): [
-     *          (Required){
-     *             role: String(system/user/assistant/tool) (Required)
-     *         }
+     *     input (Required): [
+     *         String (Required)
      *     ]
-     *     frequency_penalty: Double (Optional)
-     *     stream: Boolean (Optional)
-     *     presence_penalty: Double (Optional)
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     max_tokens: Integer (Optional)
-     *     response_format (Optional): {
-     *         type: String (Required)
-     *     }
-     *     stop (Optional): [
-     *         String (Optional)
-     *     ]
-     *     tools (Optional): [
-     *          (Optional){
-     *             type: String (Required)
-     *             function (Required): {
-     *                 name: String (Required)
-     *                 description: String (Optional)
-     *                 parameters (Optional): {
-     *                     String: Object (Required)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     tool_choice: BinaryData (Optional)
-     *     seed: Long (Optional)
+     *     dimensions: Integer (Optional)
+     *     encoding_format: String(base64/binary/float/int8/ubinary/uint8) (Optional)
+     *     input_type: String(text/query/document) (Optional)
      *     model: String (Optional)
      *      (Optional): {
      *         String: Object (Required)
@@ -359,51 +287,34 @@ public final class ChatCompletionsClientImpl {
      * 
      * <pre>{@code
      * {
-     *     id: String (Required)
-     *     created: long (Required)
-     *     model: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             embedding: BinaryData (Required)
+     *             index: int (Required)
+     *         }
+     *     ]
      *     usage (Required): {
-     *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *     }
-     *     choices (Required): [
-     *          (Required){
-     *             index: int (Required)
-     *             finish_reason: String(stop/length/content_filter/tool_calls) (Required)
-     *             message (Required): {
-     *                 role: String(system/user/assistant/tool) (Required)
-     *                 content: String (Required)
-     *                 tool_calls (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         type: String (Required)
-     *                         function (Required): {
-     *                             name: String (Required)
-     *                             arguments: String (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *             }
-     *         }
-     *     ]
+     *     model: String (Required)
      * }
      * }</pre>
      * 
-     * @param completeRequest The completeRequest parameter.
+     * @param embedRequest The embedRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return chat completions for the provided chat messages.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data along with {@link Response}.
+     * @return representation of the response data from an embeddings request.
+     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+     * recommendations, and other similar scenarios along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> completeWithResponse(BinaryData completeRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> embedWithResponse(BinaryData embedRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.completeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, completeRequest,
+        return service.embedSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, embedRequest,
             requestOptions, Context.NONE);
     }
 

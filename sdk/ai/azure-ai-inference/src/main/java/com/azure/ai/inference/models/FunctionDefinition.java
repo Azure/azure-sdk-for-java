@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The definition of a caller-specified function that chat completions may invoke in response to matching user input.
@@ -34,7 +35,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      * The parameters the function accepts, described as a JSON Schema object.
      */
     @Generated
-    private Object parameters;
+    private Map<String, Object> parameters;
 
     /**
      * Creates an instance of FunctionDefinition class.
@@ -88,7 +89,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      * @return the parameters value.
      */
     @Generated
-    public Object getParameters() {
+    public Map<String, Object> getParameters() {
         return this.parameters;
     }
 
@@ -99,7 +100,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      * @return the FunctionDefinition object itself.
      */
     @Generated
-    public FunctionDefinition setParameters(Object parameters) {
+    public FunctionDefinition setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -113,7 +114,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("parameters", this.parameters);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -131,7 +132,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
-            Object parameters = null;
+            Map<String, Object> parameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -141,7 +142,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("parameters".equals(fieldName)) {
-                    parameters = reader.readUntyped();
+                    parameters = reader.readMap(reader1 -> reader1.readUntyped());
                 } else {
                     reader.skipChildren();
                 }

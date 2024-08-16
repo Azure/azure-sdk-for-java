@@ -39,7 +39,7 @@ public final class ChatCompletionsClient {
 
     /**
      * Initializes an instance of ChatCompletionsClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -63,7 +63,7 @@ public final class ChatCompletionsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     messages (Required): [
@@ -86,16 +86,26 @@ public final class ChatCompletionsClient {
      *     tools (Optional): [
      *          (Optional){
      *             type: String (Required)
+     *             function (Required): {
+     *                 name: String (Required)
+     *                 description: String (Optional)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
      *     seed: Long (Optional)
      *     model: String (Optional)
+     *      (Optional): {
+     *         String: Object (Required)
+     *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -115,8 +125,12 @@ public final class ChatCompletionsClient {
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
-     *                         type: String (Required)
      *                         id: String (Required)
+     *                         type: String (Required)
+     *                         function (Required): {
+     *                             name: String (Required)
+     *                             arguments: String (Required)
+     *                         }
      *                     }
      *                 ]
      *             }
@@ -124,7 +138,7 @@ public final class ChatCompletionsClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param completeRequest The completeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -145,7 +159,7 @@ public final class ChatCompletionsClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     model_name: String (Required)
@@ -153,7 +167,7 @@ public final class ChatCompletionsClient {
      *     model_provider_name: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -172,7 +186,7 @@ public final class ChatCompletionsClient {
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data. The method makes a REST API call to the `/chat/completions` route
      * on the given endpoint.
-     *
+     * 
      * @param options Options for complete API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -354,7 +368,7 @@ public final class ChatCompletionsClient {
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.

@@ -26,7 +26,7 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
      * The function that should be called.
      */
     @Generated
-    private final ChatCompletionsFunctionToolSelection function;
+    private ChatCompletionsFunctionToolSelection function;
 
     /**
      * Creates an instance of ChatCompletionsNamedFunctionToolSelection class.
@@ -35,7 +35,7 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
      */
     @Generated
     public ChatCompletionsNamedFunctionToolSelection(ChatCompletionsFunctionToolSelection function) {
-        this.function = function;
+        super(function);
     }
 
     /**

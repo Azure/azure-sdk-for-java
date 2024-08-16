@@ -15,7 +15,9 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The CompleteRequest model.
@@ -101,7 +103,8 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
     private List<String> stop;
 
     /*
-     * The available tool definitions that the chat completions request can use, including caller-defined functions.
+     * A list of tools the model may request to call. Currently, only functions are supported as a tool. The model
+     * may response with a function call request and provide the input arguments in JSON format for that function.
      */
     @Generated
     private List<ChatCompletionsToolDefinition> tools;
@@ -124,6 +127,12 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
      */
     @Generated
     private String model;
+
+    /*
+     * Additional properties
+     */
+    @Generated
+    private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of CompleteRequest class.
@@ -375,8 +384,9 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
     }
 
     /**
-     * Get the tools property: The available tool definitions that the chat completions request can use, including
-     * caller-defined functions.
+     * Get the tools property: A list of tools the model may request to call. Currently, only functions are supported as
+     * a tool. The model
+     * may response with a function call request and provide the input arguments in JSON format for that function.
      * 
      * @return the tools value.
      */
@@ -386,8 +396,9 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
     }
 
     /**
-     * Set the tools property: The available tool definitions that the chat completions request can use, including
-     * caller-defined functions.
+     * Set the tools property: A list of tools the model may request to call. Currently, only functions are supported as
+     * a tool. The model
+     * may response with a function call request and provide the input arguments in JSON format for that function.
      * 
      * @param tools the tools value to set.
      * @return the CompleteRequest object itself.
@@ -471,6 +482,28 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
     }
 
     /**
+     * Get the additionalProperties property: Additional properties.
+     * 
+     * @return the additionalProperties value.
+     */
+    @Generated
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    /**
+     * Set the additionalProperties property: Additional properties.
+     * 
+     * @param additionalProperties the additionalProperties value to set.
+     * @return the CompleteRequest object itself.
+     */
+    @Generated
+    public CompleteRequest setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -492,6 +525,11 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
         }
         jsonWriter.writeNumberField("seed", this.seed);
         jsonWriter.writeStringField("model", this.model);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -520,6 +558,7 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
             BinaryData toolChoice = null;
             Long seed = null;
             String model = null;
+            Map<String, Object> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -552,7 +591,11 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
                 } else if ("model".equals(fieldName)) {
                     model = reader.getString();
                 } else {
-                    reader.skipChildren();
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
                 }
             }
             CompleteRequest deserializedCompleteRequest = new CompleteRequest(messages);
@@ -568,6 +611,7 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
             deserializedCompleteRequest.toolChoice = toolChoice;
             deserializedCompleteRequest.seed = seed;
             deserializedCompleteRequest.model = model;
+            deserializedCompleteRequest.additionalProperties = additionalProperties;
 
             return deserializedCompleteRequest;
         });
