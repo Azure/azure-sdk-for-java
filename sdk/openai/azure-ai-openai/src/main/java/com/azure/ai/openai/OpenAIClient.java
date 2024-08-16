@@ -856,14 +856,12 @@ public final class OpenAIClient {
         if (CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())) {
             audioTranscriptionOptions.setFilename(fileName);
         }
-
         RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
-
         FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranscriptionOptions.getFile()), fileName);
         // String.valueOf would return "null" for a null value, which is not null
-        String temperature = audioTranscriptionOptions.getTemperature() == null ? null
+        String temperature = audioTranscriptionOptions.getTemperature() == null
+            ? null
             : String.valueOf(audioTranscriptionOptions.getTemperature());
-
         BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
             .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
             .serializeTextField("response_format", audioTranscriptionOptions.getResponseFormat().toString())
@@ -871,11 +869,11 @@ public final class OpenAIClient {
             .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
             .serializeTextField("language", audioTranscriptionOptions.getLanguage())
             .serializeTextField("temperature", temperature)
-            .end().getRequestBody();
-
+            .end()
+            .getRequestBody();
         Response<BinaryData> response = openAIServiceClient != null
-            ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                multipartRequestOptions)
+            ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions)
             : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
                 multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(AudioTranscription.class));
@@ -934,14 +932,12 @@ public final class OpenAIClient {
         if (CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())) {
             audioTranscriptionOptions.setFilename(fileName);
         }
-
         RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
-
         FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranscriptionOptions.getFile()), fileName);
         // String.valueOf would return "null" for a null value, which is not null
-        String temperature = audioTranscriptionOptions.getTemperature() == null ? null
+        String temperature = audioTranscriptionOptions.getTemperature() == null
+            ? null
             : String.valueOf(audioTranscriptionOptions.getTemperature());
-
         BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
             .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
             .serializeTextField("response_format", audioTranscriptionOptions.getResponseFormat().toString())
@@ -949,11 +945,11 @@ public final class OpenAIClient {
             .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
             .serializeTextField("language", audioTranscriptionOptions.getLanguage())
             .serializeTextField("temperature", temperature)
-            .end().getRequestBody();
-
+            .end()
+            .getRequestBody();
         Response<BinaryData> response = openAIServiceClient != null
-            ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                multipartRequestOptions)
+            ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions)
             : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
                 multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toString());
@@ -1012,25 +1008,23 @@ public final class OpenAIClient {
         if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
             audioTranslationOptions.setFilename(fileName);
         }
-
         RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
-
         FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranslationOptions.getFile()), fileName);
         // String.valueOf would return "null" for a null value, which is not null
-        String temperature = audioTranslationOptions.getTemperature() == null ? null
+        String temperature = audioTranslationOptions.getTemperature() == null
+            ? null
             : String.valueOf(audioTranslationOptions.getTemperature());
-
         BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
             .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
             .serializeTextField("response_format", audioTranslationOptions.getResponseFormat().toString())
             .serializeTextField("model", audioTranslationOptions.getModel())
             .serializeTextField("prompt", audioTranslationOptions.getPrompt())
             .serializeTextField("temperature", temperature)
-            .end().getRequestBody();
-
+            .end()
+            .getRequestBody();
         Response<BinaryData> response = openAIServiceClient != null
-            ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                multipartRequestOptions)
+            ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions)
             : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
                 multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(AudioTranslation.class));
@@ -1088,25 +1082,23 @@ public final class OpenAIClient {
         if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
             audioTranslationOptions.setFilename(fileName);
         }
-
         RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
-
         FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranslationOptions.getFile()), fileName);
         // String.valueOf would return "null" for a null value, which is not null
-        String temperature = audioTranslationOptions.getTemperature() == null ? null
-                : String.valueOf(audioTranslationOptions.getTemperature());
-
+        String temperature = audioTranslationOptions.getTemperature() == null
+            ? null
+            : String.valueOf(audioTranslationOptions.getTemperature());
         BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
-                .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
-                .serializeTextField("response_format", audioTranslationOptions.getResponseFormat().toString())
-                .serializeTextField("model", audioTranslationOptions.getModel())
-                .serializeTextField("prompt", audioTranslationOptions.getPrompt())
-                .serializeTextField("temperature", temperature)
-                .end().getRequestBody();
-
+            .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
+            .serializeTextField("response_format", audioTranslationOptions.getResponseFormat().toString())
+            .serializeTextField("model", audioTranslationOptions.getModel())
+            .serializeTextField("prompt", audioTranslationOptions.getPrompt())
+            .serializeTextField("temperature", temperature)
+            .end()
+            .getRequestBody();
         Response<BinaryData> response = openAIServiceClient != null
-            ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                multipartRequestOptions)
+            ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions)
             : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
                 multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toString());
@@ -1116,7 +1108,7 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1173,7 +1165,7 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -1201,7 +1193,7 @@ public final class OpenAIClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1251,7 +1243,7 @@ public final class OpenAIClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -1580,7 +1572,7 @@ public final class OpenAIClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1615,7 +1607,7 @@ public final class OpenAIClient {
     /**
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1648,7 +1640,7 @@ public final class OpenAIClient {
     /**
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1674,7 +1666,7 @@ public final class OpenAIClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1705,7 +1697,7 @@ public final class OpenAIClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * byte[]
      * }</pre>
@@ -1736,7 +1728,7 @@ public final class OpenAIClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1804,7 +1796,7 @@ public final class OpenAIClient {
      * Response includes details of the enqueued job including job status.
      * The ID of the result file is added to the response once complete.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     endpoint: String (Required)
@@ -1815,9 +1807,9 @@ public final class OpenAIClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1876,7 +1868,7 @@ public final class OpenAIClient {
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1935,7 +1927,7 @@ public final class OpenAIClient {
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
