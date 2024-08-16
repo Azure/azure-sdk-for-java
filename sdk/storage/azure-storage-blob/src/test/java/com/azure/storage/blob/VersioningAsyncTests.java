@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
@@ -310,50 +309,40 @@ public class VersioningAsyncTests extends BlobTestBase {
 
     @Test
     public void listBlobsWithVersion() {
-        Mono<Tuple2<Tuple3<BlockBlobItem, BlockBlobItem, BlockBlobItem>, List<BlobItem>>> response =
-            Mono.zip(blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize()), blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize(), true), blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize(), true))
-            .flatMap(r -> Mono.zip(Mono.just(r), blobContainerClient.listBlobs(
-                new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)), null).collectList()));
+        Mono<Tuple4<BlockBlobItem, BlockBlobItem, BlockBlobItem, List<BlobItem>>> response =
+            blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .flatMap(blobItemV1 ->
+                blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+                .flatMap(blobItemV2 ->
+                    blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+                    .flatMap(blobItemV3 ->
+                        blobContainerClient.listBlobs(
+                            new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)),
+                            null)
+                            .collectList()
+                            .flatMap(list -> Mono.zip(Mono.just(blobItemV1), Mono.just(blobItemV2),
+                            Mono.just(blobItemV3), Mono.just(list)))
+                    )
+                )
+            );
 
         StepVerifier.create(response)
-            .assertNext(r -> {
-                assertEquals(r.getT1().getT1().getVersionId(), r.getT2().get(0).getVersionId());
-                assertNull(r.getT2().get(0).isCurrentVersion());
+            .assertNext(tuple -> {
+                BlockBlobItem blobItemV1 = tuple.getT1();
+                BlockBlobItem blobItemV2 = tuple.getT2();
+                BlockBlobItem blobItemV3 = tuple.getT3();
+                List<BlobItem> blobItems = tuple.getT4();
 
-                assertEquals(r.getT1().getT2().getVersionId(), r.getT2().get(1).getVersionId());
-                assertNull(r.getT2().get(1).isCurrentVersion());
+                assertEquals(blobItemV1.getVersionId(), blobItems.get(0).getVersionId());
+                assertNull(blobItems.get(0).isCurrentVersion());
 
-                assertEquals(r.getT1().getT3().getVersionId(), r.getT2().get(2).getVersionId());
-                assertNull(r.getT2().get(2).isCurrentVersion());
+                assertEquals(blobItemV2.getVersionId(), blobItems.get(1).getVersionId());
+                assertNull(blobItems.get(1).isCurrentVersion());
+
+                assertEquals(blobItemV3.getVersionId(), blobItems.get(2).getVersionId());
+                assertTrue(blobItems.get(2).isCurrentVersion());
             })
             .verifyComplete();
-
-        /*
-        BlockBlobItem blobItemV1 = blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize()).block();
-        BlockBlobItem blobItemV2 = blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize(), true).block();
-        BlockBlobItem blobItemV3 = blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize(), true).block();
-
-        StepVerifier.create(blobContainerClient.listBlobs(
-            new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)), null))
-            .assertNext(r -> {
-                assertEquals(blobItemV1.getVersionId(), r.getVersionId());
-                assertNull(r.isCurrentVersion());
-            })
-            .assertNext(r -> {
-                assertEquals(blobItemV2.getVersionId(), r.getVersionId());
-                assertNull(r.isCurrentVersion());
-            })
-            .assertNext(r -> {
-                assertEquals(blobItemV3.getVersionId(), r.getVersionId());
-                assertTrue(r.isCurrentVersion());
-            })
-            .verifyComplete();*/
     }
 
     @Test

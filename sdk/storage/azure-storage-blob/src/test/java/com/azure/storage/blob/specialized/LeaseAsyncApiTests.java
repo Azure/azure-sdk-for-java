@@ -10,9 +10,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.options.BlobAcquireLeaseOptions;
@@ -438,11 +436,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         Mono<Response<Integer>> response = bc.setTags(t)
             .then(Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_ETAG), setupBlobMatchConditionAsync(bc, match)))
             .flatMap(tuple -> {
-                String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
                 if ("null".equals(newMatch)) {
                     newMatch = null;
                 }

@@ -635,11 +635,12 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         String sas = vlwBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
 
-        destination.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(vlwBlob.getBlobUrl() + "?" + sas)
+        Mono<BlobProperties> response = destination.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(vlwBlob.getBlobUrl() + "?" + sas)
             .setImmutabilityPolicy(immutabilityPolicy)
-            .setLegalHold(true)).block();
+            .setLegalHold(true))
+            .then(destination.getProperties());
 
-        StepVerifier.create(destination.getProperties())
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
                 assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getImmutabilityPolicy().getPolicyMode());
@@ -663,9 +664,10 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             destination.beginCopy(new BlobBeginCopyOptions(vlwBlob.getBlobUrl())
                 .setImmutabilityPolicy(immutabilityPolicy)
                 .setLegalHold(true)));
-        poller.blockLast();
 
-        StepVerifier.create(destination.getProperties())
+        Mono<BlobProperties> response = poller.then(destination.getProperties());
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
                 assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getImmutabilityPolicy().getPolicyMode());

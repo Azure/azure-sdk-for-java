@@ -15,11 +15,11 @@ import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,8 +30,8 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
     @Test
     @PlaybackOnly
     public void setAccessPolicyMinAccess() {
-        setAccessPolicySleepAsync(ccAsync, PublicAccessType.CONTAINER, null);
-        StepVerifier.create(ccAsync.getProperties())
+        StepVerifier.create(setAccessPolicySleepAsync(ccAsync, PublicAccessType.CONTAINER, null)
+            .then(ccAsync.getProperties()))
             .assertNext(r -> assertEquals(PublicAccessType.CONTAINER, r.getBlobPublicAccess()))
             .verifyComplete();
     }
@@ -48,9 +48,7 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
 
         List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
 
-        setAccessPolicySleepAsync(ccAsync, null, ids);
-
-        StepVerifier.create(ccAsync.getAccessPolicy())
+        StepVerifier.create(setAccessPolicySleepAsync(ccAsync, null, ids).then(ccAsync.getAccessPolicy()))
             .assertNext(r -> assertEquals("0000", r.getIdentifiers().get(0).getId()))
             .verifyComplete();
     }
@@ -73,9 +71,9 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
                 .setExpiresOn(testResourceNamer.now().plusDays(1))
                 .setPermissions("r"));
         List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
-        setAccessPolicySleepAsync(ccAsync, PublicAccessType.BLOB, ids);
 
-        StepVerifier.create(ccAsync.getAccessPolicyWithResponse(null))
+        StepVerifier.create(setAccessPolicySleepAsync(ccAsync, PublicAccessType.BLOB, ids)
+            .then(ccAsync.getAccessPolicyWithResponse(null)))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
                 assertEquals(PublicAccessType.BLOB, r.getValue().getBlobAccessType());
@@ -96,7 +94,6 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
             .setId("0000")
             .setAccessPolicy(new BlobAccessPolicy().setPermissions("racwdl")
                 .setExpiresOn(testResourceNamer.now().plusDays(1)));
-        setAccessPolicySleepAsync(ccAsync, null, Arrays.asList(identifier));
 
         // Check containerSASPermissions
         BlobContainerSasPermission permissions = new BlobContainerSasPermission()
@@ -119,7 +116,8 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
         BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(identifier.getId());
         String sasWithId = ccAsync.generateSas(sasValues);
         BlobContainerAsyncClient client1 = getContainerAsyncClient(sasWithId, ccAsync.getBlobContainerUrl());
-        StepVerifier.create(client1.listBlobs())
+        StepVerifier.create(setAccessPolicySleepAsync(ccAsync, null, List.of(identifier))
+            .thenMany(client1.listBlobs()))
             .thenConsumeWhile(r -> true)
             .verifyComplete();
 
@@ -137,26 +135,31 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
     public void sasSanitization(boolean unsanitize) {
         String identifier = "id with spaces";
         String blobName = generateBlobName();
-        setAccessPolicySleepAsync(ccAsync, null, Collections.singletonList(new BlobSignedIdentifier()
+
+        List<BlobSignedIdentifier> ids = Collections.singletonList(new BlobSignedIdentifier()
             .setId(identifier)
             .setAccessPolicy(new BlobAccessPolicy()
                 .setPermissions("racwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1)))));
-        ccAsync.getBlobAsyncClient(blobName).upload(BinaryData.fromBytes("test".getBytes())).block();
+                .setExpiresOn(testResourceNamer.now().plusDays(1))));
+
         String sas = ccAsync.generateSas(new BlobServiceSasSignatureValues(identifier));
         if (unsanitize) {
             sas = sas.replace("%20", " ");
         }
 
-        // when: "Endpoint with SAS built in, works as expected"
         String finalSas = sas;
-        BlobContainerAsyncClient client1 = instrument(new BlobContainerClientBuilder()
-            .endpoint(ccAsync.getBlobContainerUrl() + "?" + finalSas))
-            .buildAsyncClient();
-        StepVerifier.create(client1.getBlobAsyncClient(blobName).downloadContent())
+        Mono<BinaryData> response = setAccessPolicySleepAsync(ccAsync, null, ids)
+            .then(ccAsync.getBlobAsyncClient(blobName).upload(BinaryData.fromBytes("test".getBytes())))
+            .flatMap(r -> {
+                BlobContainerAsyncClient client1 = instrument(new BlobContainerClientBuilder()
+                    .endpoint(ccAsync.getBlobContainerUrl() + "?" + finalSas))
+                    .buildAsyncClient();
+                return client1.getBlobAsyncClient(blobName).downloadContent();
+            });
+
+        StepVerifier.create(response)
             .expectNextCount(1)
             .verifyComplete();
-
 
         String connectionString = "AccountName=" + BlobUrlParts.parse(ccAsync.getAccountUrl()).getAccountName()
             + ";SharedAccessSignature=" + sas;

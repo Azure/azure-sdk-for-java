@@ -899,14 +899,8 @@ public class BlobTestBase extends TestProxyTestBase {
         sleepIfRunningAgainstService(30 * 1000);
     }
 
-    protected void setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
-                                        List<BlobSignedIdentifier> identifiers) {
-        cc.setAccessPolicy(access, identifiers).block();
-        sleepIfRunningAgainstService(30 * 1000);
-    }
-
-    protected Mono<?> setAccessPolicySleepAsync2(BlobContainerAsyncClient cc, PublicAccessType access,
-                                             List<BlobSignedIdentifier> identifiers) {
+    protected Mono<?> setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
+                                                List<BlobSignedIdentifier> identifiers) {
         Mono<?> setPolicyMono = cc.setAccessPolicy(access, identifiers);
         if (!interceptorManager.isPlaybackMode()) {
             setPolicyMono = setPolicyMono.then(Mono.delay(Duration.ofSeconds(30)));

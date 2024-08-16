@@ -5,7 +5,6 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpRange;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
@@ -1039,11 +1038,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("getPageRangesDiffSupplier")
     public void getPageRangesDiff(List<PageRange> rangesToUpdate, List<PageRange> rangesToClear,
                                   List<PageRange> expectedPageRanges, List<ClearRange> expectedClearRanges) {
-        //todo isbr
         bc.create(4 * Constants.MB, true).block();
 
         bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.MB - 1),
-            Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.KB)))).block();
+            Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.MB)))).block();
 
         String snapId = bc.createSnapshot().block().getSnapshotId();
 
