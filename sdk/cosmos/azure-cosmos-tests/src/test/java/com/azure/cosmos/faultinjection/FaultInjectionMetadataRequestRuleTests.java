@@ -71,6 +71,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             { FaultInjectionOperationType.READ_ITEM, OperationType.Read },
             { FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace },
             { FaultInjectionOperationType.CREATE_ITEM, OperationType.Create },
+            { FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert },
             { FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete },
             { FaultInjectionOperationType.QUERY_ITEM, OperationType.Query },
             { FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch }
@@ -90,6 +91,15 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
 
     @BeforeClass(groups = { "multi-region", "multi-master" }, timeOut = TIMEOUT)
     public void beforeClass() {
+
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
+
         this.client = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
         GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
@@ -215,7 +225,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         }
     }
 
-    @Test(groups = { "multi-master" }, dataProvider = "operationTypeProvider", timeOut = 4 * TIMEOUT)
+    @Test(groups = { "multi-master" }, dataProvider = "operationTypeProvider", timeOut = 4 * TIMEOUT, invocationCount = 3)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_ResponseDelay(
         FaultInjectionOperationType faultInjectionOperationType,
         OperationType operationType) throws JsonProcessingException {
