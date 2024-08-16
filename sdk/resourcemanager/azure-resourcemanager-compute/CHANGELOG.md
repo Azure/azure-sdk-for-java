@@ -6,6 +6,10 @@
 
 - Supported enabling ultra SSD in `VirtualMachine` class.
 
+### Bugs Fixed
+
+- Fixed a bug that `ClassCastException` occurs for some Virtual Machines with extensions.
+
 ### Other Changes
 
 - Replaced `Jackson` with `azure-json` for serialization/deserialization.
