@@ -33,16 +33,10 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     private DocumentModelDetails result;
 
     /*
-     * Operation progress (0-100).
+     * Encountered error.
      */
     @Generated
-    private Integer percentCompleted;
-
-    /*
-     * API version used to create this operation.
-     */
-    @Generated
-    private String apiVersion;
+    private Error error;
 
     /*
      * List of key-value tag attributes associated with the document model.
@@ -51,10 +45,16 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     private Map<String, String> tags;
 
     /*
-     * Encountered error.
+     * API version used to create this operation.
      */
     @Generated
-    private Error error;
+    private String apiVersion;
+
+    /*
+     * Operation progress (0-100).
+     */
+    @Generated
+    private Integer percentCompleted;
 
     /**
      * Creates an instance of DocumentModelComposeOperationDetails class.
@@ -92,25 +92,14 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     }
 
     /**
-     * Get the percentCompleted property: Operation progress (0-100).
+     * Get the error property: Encountered error.
      * 
-     * @return the percentCompleted value.
+     * @return the error value.
      */
     @Generated
     @Override
-    public Integer getPercentCompleted() {
-        return this.percentCompleted;
-    }
-
-    /**
-     * Get the apiVersion property: API version used to create this operation.
-     * 
-     * @return the apiVersion value.
-     */
-    @Generated
-    @Override
-    public String getApiVersion() {
-        return this.apiVersion;
+    public Error getError() {
+        return this.error;
     }
 
     /**
@@ -125,14 +114,25 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     }
 
     /**
-     * Get the error property: Encountered error.
+     * Get the apiVersion property: API version used to create this operation.
      * 
-     * @return the error value.
+     * @return the apiVersion value.
      */
     @Generated
     @Override
-    public Error getError() {
-        return this.error;
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
+     * Get the percentCompleted property: Operation progress (0-100).
+     * 
+     * @return the percentCompleted value.
+     */
+    @Generated
+    @Override
+    public Integer getPercentCompleted() {
+        return this.percentCompleted;
     }
 
     /**

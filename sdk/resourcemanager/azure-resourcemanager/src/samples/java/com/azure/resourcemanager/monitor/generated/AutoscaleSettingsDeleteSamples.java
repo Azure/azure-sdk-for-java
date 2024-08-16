@@ -18,7 +18,10 @@ public final class AutoscaleSettingsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAnAutoscaleSetting(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getAutoscaleSettings()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getAutoscaleSettings()
             .deleteWithResponse("TestingMetricsScaleSet", "MySetting", com.azure.core.util.Context.NONE);
     }
 }
