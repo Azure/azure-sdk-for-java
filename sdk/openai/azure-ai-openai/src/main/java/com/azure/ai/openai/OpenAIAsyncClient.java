@@ -2003,16 +2003,18 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of previously uploaded files on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileListResponse> listFiles(FilePurpose purpose) {
+    public Flux<OpenAIFile> listFiles(FilePurpose purpose) {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
         return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class));
+            .flatMapMany(response -> {
+                FileListResponse fileListResponse = response.toObject(FileListResponse.class);
+                return Flux.fromIterable(fileListResponse.getData());
+            });
     }
 
     /**
@@ -2025,13 +2027,9 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of previously uploaded files on successful completion of {@link Mono}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileListResponse> listFiles() {
-        // Generated convenience method for listFilesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<OpenAIFile> listFiles() {
+        return listFiles(null);
     }
 
     /**
