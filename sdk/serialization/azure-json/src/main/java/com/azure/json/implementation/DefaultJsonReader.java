@@ -26,6 +26,7 @@ public final class DefaultJsonReader extends JsonReader {
     private final String jsonString;
     private final boolean resetSupported;
     private final boolean nonNumericNumbersSupported;
+    private final boolean jsoncSupported;
 
     private JsonToken currentToken;
 
@@ -79,18 +80,19 @@ public final class DefaultJsonReader extends JsonReader {
 
     private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString,
         JsonOptions options) {
-        this(parser, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported());
+        this(parser, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported(), options.isJsoncSupported());
     }
 
     private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString,
-        boolean nonNumericNumbersSupported) {
+        boolean nonNumericNumbersSupported, boolean jsoncSupported) {
         this.parser = parser;
-        this.parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericNumbersSupported);
         this.resetSupported = resetSupported;
-        this.parser.enable(JsonParser.Feature.ALLOW_COMMENTS);
+        this.parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericNumbersSupported);
+        this.parser.configure(JsonParser.Feature.ALLOW_COMMENTS, jsoncSupported);
         this.jsonBytes = jsonBytes;
         this.jsonString = jsonString;
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
+        this.jsoncSupported = jsoncSupported;
     }
 
     @Override
@@ -158,7 +160,7 @@ public final class DefaultJsonReader extends JsonReader {
         JsonToken currentToken = currentToken();
         if (currentToken == JsonToken.START_OBJECT || currentToken == JsonToken.FIELD_NAME) {
             String json = readRemainingFieldsAsJsonObject();
-            return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, nonNumericNumbersSupported);
+            return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, nonNumericNumbersSupported, jsoncSupported);
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
                 + "starting location. Starting location: " + currentToken());
@@ -178,10 +180,10 @@ public final class DefaultJsonReader extends JsonReader {
 
         if (jsonBytes != null) {
             return new DefaultJsonReader(FACTORY.createParser(jsonBytes), true, jsonBytes, null,
-                nonNumericNumbersSupported);
+                nonNumericNumbersSupported, jsoncSupported);
         } else {
             return new DefaultJsonReader(FACTORY.createParser(jsonString), true, null, jsonString,
-                nonNumericNumbersSupported);
+                nonNumericNumbersSupported, jsoncSupported);
         }
     }
 
