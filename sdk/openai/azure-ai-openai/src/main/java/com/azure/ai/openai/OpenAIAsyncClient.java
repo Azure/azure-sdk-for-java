@@ -40,13 +40,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import com.azure.ai.openai.implementation.CompletionsUtils;
-import com.azure.ai.openai.implementation.MultipartDataHelper;
-import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.core.util.CoreUtils;
@@ -927,15 +926,26 @@ public final class OpenAIAsyncClient {
         if (CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())) {
             audioTranscriptionOptions.setFilename(fileName);
         }
-        final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions);
-        final BinaryData data = result.getData();
-        requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
+        RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranscriptionOptions.getFile()), fileName);
+        // String.valueOf would return "null" for a null value, which is not null
+        String temperature = audioTranscriptionOptions.getTemperature() == null
+            ? null
+            : String.valueOf(audioTranscriptionOptions.getTemperature());
+        BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
+            .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
+            .serializeTextField("response_format", audioTranscriptionOptions.getResponseFormat().toString())
+            .serializeTextField("model", audioTranscriptionOptions.getModel())
+            .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
+            .serializeTextField("language", audioTranscriptionOptions.getLanguage())
+            .serializeTextField("temperature", temperature)
+            .end()
+            .getRequestBody();
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
-                data, requestOptions)
-            : this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName, data,
-                requestOptions);
+                uploadFileRequest, multipartRequestOptions)
+            : this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions);
         return response.map(responseBinaryData -> new SimpleResponse<>(responseBinaryData,
             responseBinaryData.getValue().toObject(AudioTranscription.class)));
     }
@@ -999,15 +1009,26 @@ public final class OpenAIAsyncClient {
         if (CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())) {
             audioTranscriptionOptions.setFilename(fileName);
         }
-        final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions);
-        final BinaryData data = result.getData();
-        requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
+        RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranscriptionOptions.getFile()), fileName);
+        // String.valueOf would return "null" for a null value, which is not null
+        String temperature = audioTranscriptionOptions.getTemperature() == null
+            ? null
+            : String.valueOf(audioTranscriptionOptions.getTemperature());
+        BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
+            .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
+            .serializeTextField("response_format", audioTranscriptionOptions.getResponseFormat().toString())
+            .serializeTextField("model", audioTranscriptionOptions.getModel())
+            .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
+            .serializeTextField("language", audioTranscriptionOptions.getLanguage())
+            .serializeTextField("temperature", temperature)
+            .end()
+            .getRequestBody();
         Mono<Response<BinaryData>> response = openAIServiceClient != null
-            ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName, data,
-                requestOptions)
-            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName, data,
-                requestOptions);
+            ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions)
+            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions);
         return response.map(dataResponse -> new SimpleResponse<>(dataResponse, dataResponse.getValue().toString()));
     }
 
@@ -1068,15 +1089,25 @@ public final class OpenAIAsyncClient {
         if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
             audioTranslationOptions.setFilename(fileName);
         }
-        final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions);
-        final BinaryData data = result.getData();
-        requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
+        RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranslationOptions.getFile()), fileName);
+        // String.valueOf would return "null" for a null value, which is not null
+        String temperature = audioTranslationOptions.getTemperature() == null
+            ? null
+            : String.valueOf(audioTranslationOptions.getTemperature());
+        BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
+            .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
+            .serializeTextField("response_format", audioTranslationOptions.getResponseFormat().toString())
+            .serializeTextField("model", audioTranslationOptions.getModel())
+            .serializeTextField("prompt", audioTranslationOptions.getPrompt())
+            .serializeTextField("temperature", temperature)
+            .end()
+            .getRequestBody();
         Mono<Response<BinaryData>> response = openAIServiceClient != null
-            ? this.openAIServiceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName, data,
-                requestOptions)
-            : this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName, data,
-                requestOptions);
+            ? this.openAIServiceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions)
+            : this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions);
         return response.map(responseBinaryData -> new SimpleResponse<>(responseBinaryData,
             responseBinaryData.getValue().toObject(AudioTranslation.class)));
     }
@@ -1138,15 +1169,25 @@ public final class OpenAIAsyncClient {
         if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
             audioTranslationOptions.setFilename(fileName);
         }
-        final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions);
-        final BinaryData data = result.getData();
-        requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
+        RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranslationOptions.getFile()), fileName);
+        // String.valueOf would return "null" for a null value, which is not null
+        String temperature = audioTranslationOptions.getTemperature() == null
+            ? null
+            : String.valueOf(audioTranslationOptions.getTemperature());
+        BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
+            .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
+            .serializeTextField("response_format", audioTranslationOptions.getResponseFormat().toString())
+            .serializeTextField("model", audioTranslationOptions.getModel())
+            .serializeTextField("prompt", audioTranslationOptions.getPrompt())
+            .serializeTextField("temperature", temperature)
+            .end()
+            .getRequestBody();
         Mono<Response<BinaryData>> response = openAIServiceClient != null
-            ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName, data,
-                requestOptions)
-            : this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName, data,
-                requestOptions);
+            ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions)
+            : this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName,
+                uploadFileRequest, multipartRequestOptions);
         return response.map(
             responseBinaryData -> new SimpleResponse<>(responseBinaryData, responseBinaryData.getValue().toString()));
     }
@@ -2003,17 +2044,15 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of previously uploaded files on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<OpenAIFile> listFiles(FilePurpose purpose) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<OpenAIFile>> listFiles(FilePurpose purpose) {
         // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
         }
-        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono).flatMapMany(response -> {
-            FileListResponse fileListResponse = response.toObject(FileListResponse.class);
-            return Flux.fromIterable(fileListResponse.getData());
-        });
+        return listFilesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(FileListResponse.class).getData());
     }
 
     /**
@@ -2026,8 +2065,8 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of previously uploaded files on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<OpenAIFile> listFiles() {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<OpenAIFile>> listFiles() {
         return listFiles(null);
     }
 
