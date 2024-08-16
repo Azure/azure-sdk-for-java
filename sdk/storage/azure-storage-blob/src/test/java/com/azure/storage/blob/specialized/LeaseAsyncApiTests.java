@@ -847,7 +847,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(leaseClient.acquireLease(leaseTime)
             .then(leaseClient.breakLeaseWithResponse(
-            new BlobBreakLeaseOptions().setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)))))
+                new BlobBreakLeaseOptions().setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)))))
             .assertNext(r -> {
                 assertTrue(r.getValue() <= remainingTime);
                 assertTrue(validateBasicHeaders(r.getHeaders()));

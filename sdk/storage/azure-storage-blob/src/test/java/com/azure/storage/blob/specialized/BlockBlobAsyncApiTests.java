@@ -1672,8 +1672,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
                 .assertNext(it -> assertEquals(blockCount, it.getCommittedBlocks().size()))
                 .verifyComplete();
-        }
-        else {
+        } else {
             StepVerifier.create(asyncClient.upload(Flux.just(data), parallelTransferOptions, true)
                 .then(blockBlobAsyncClient.listBlocks(BlockListType.ALL)))
                 .assertNext(it -> assertEquals(blockCount, it.getCommittedBlocks().size()))
@@ -2454,7 +2453,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         Mono<BlockBlobItem> response = sourceBlob.upload(DATA.getDefaultFlux(), null).then(blockBlobAsyncClient.exists())
             .flatMap(r -> {
-                if(r) {
+                if (r) {
                     return blockBlobAsyncClient.delete();
                 }
                 return Mono.empty();

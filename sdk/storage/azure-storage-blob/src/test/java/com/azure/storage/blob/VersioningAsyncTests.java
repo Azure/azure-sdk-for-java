@@ -191,12 +191,12 @@ public class VersioningAsyncTests extends BlobTestBase {
             .flatMap(r -> Mono.zip(blobClient.getVersionClient(r.getT1().getVersionId()).exists(),
                 blobClient.getVersionClient(r.getT2().getVersionId()).exists()));
 
-       StepVerifier.create(response)
-           .assertNext(r -> {
+        StepVerifier.create(response)
+            .assertNext(r -> {
                assertFalse(r.getT1());
                assertTrue(r.getT2());
-           })
-           .verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @Test
