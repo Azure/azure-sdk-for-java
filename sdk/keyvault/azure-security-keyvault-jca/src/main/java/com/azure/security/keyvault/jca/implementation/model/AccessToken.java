@@ -80,8 +80,8 @@ public class AccessToken implements JsonSerializable<AccessToken> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("accessToken", this.accessToken);
-        jsonWriter.writeNumberField("expiresIn", this.expiresIn);
+        jsonWriter.writeStringField("access_token", this.accessToken);
+        jsonWriter.writeNumberField("expires_in", this.expiresIn);
 
         return jsonWriter.writeEndObject();
     }
@@ -105,9 +105,9 @@ public class AccessToken implements JsonSerializable<AccessToken> {
 
                 reader.nextToken();
 
-                if ("accessToken".equals(fieldName)) {
+                if ("access_token".equals(fieldName)) {
                     deserializedAccessToken.accessToken = reader.getString();
-                } else if ("expiresIn".equals(fieldName)) {
+                } else if ("expires_in".equals(fieldName)) {
                     deserializedAccessToken.expiresIn = reader.getLong();
                 } else {
                     reader.skipChildren();

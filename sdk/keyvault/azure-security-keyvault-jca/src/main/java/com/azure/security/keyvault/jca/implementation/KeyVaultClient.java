@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -199,8 +200,8 @@ public class KeyVaultClient {
             } else {
                 accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
             }
-        } catch (Throwable t) {
-            LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", t);
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", e);
         }
 
         LOGGER.exiting("KeyVaultClient", "getAccessTokenByHttpRequest", accessToken);
@@ -214,6 +215,8 @@ public class KeyVaultClient {
      * @return The list of aliases.
      */
     public List<String> getAliases() {
+        LOGGER.entering("KeyVaultClient", "getAliases");
+
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
 
@@ -227,10 +230,9 @@ public class KeyVaultClient {
 
             if (response != null) {
                 try {
-                    certificateListResult =
-                        (CertificateListResult) JsonConverterUtil.fromJson(CertificateListResult.class, response);
-                } catch (Throwable t) {
-                    LOGGER.log(WARNING, "Failed to parse certificate list response");
+                    certificateListResult = JsonConverterUtil.fromJson(CertificateListResult.class, response);
+                } catch (IOException e) {
+                    LOGGER.log(WARNING, "Failed to parse certificate list response", e);
                 }
             }
 
@@ -248,6 +250,8 @@ public class KeyVaultClient {
             }
         }
 
+        LOGGER.exiting("KeyVaultClient", "getAliases", result);
+
         return result;
     }
 
@@ -258,6 +262,8 @@ public class KeyVaultClient {
      * @return The certificate bundle.
      */
     private CertificateBundle getCertificateBundle(String alias) {
+        LOGGER.entering("KeyVaultClient", "getCertificateBundle", alias);
+
         CertificateBundle result = null;
         HashMap<String, String> headers = new HashMap<>();
 
@@ -268,11 +274,13 @@ public class KeyVaultClient {
 
         if (response != null) {
             try {
-                result = (CertificateBundle) JsonConverterUtil.fromJson(CertificateBundle.class, response);
-            } catch (Throwable t) {
-                LOGGER.log(WARNING, "Failed to parse certificate bundle response");
+                result = JsonConverterUtil.fromJson(CertificateBundle.class, response);
+            } catch (IOException e) {
+                LOGGER.log(WARNING, "Failed to parse certificate bundle response", e);
             }
         }
+
+        LOGGER.exiting("KeyVaultClient", "getCertificateBundle", result);
 
         return result;
     }
@@ -338,14 +346,16 @@ public class KeyVaultClient {
             // Return KeyVaultPrivateKey if certificate is not exportable because if the service needs to obtain the
             // private key for authentication, and we can't access private key(which is not exportable), we will use
             // the Azure Key Vault Secrets API to obtain the private key (keyless).
-            LOGGER.exiting("KeyVaultClient", "getKey", null);
-
             String keyType2 = keyType.contains("-HSM") ? keyType.substring(0, keyType.indexOf("-HSM")) : keyType;
 
-            return Optional.ofNullable(certificateBundle)
+            KeyVaultPrivateKey key = Optional.ofNullable(certificateBundle)
                 .map(CertificateBundle::getKid)
                 .map(kid -> new KeyVaultPrivateKey(keyType2, kid, this))
                 .orElse(null);
+
+            LOGGER.exiting("KeyVaultClient", "getKey", key);
+
+            return key;
         }
 
         String certificateSecretUri = certificateBundle.getSid();
@@ -374,10 +384,10 @@ public class KeyVaultClient {
         String contentType = null;
 
         try {
-            secretBundle = (SecretBundle) JsonConverterUtil.fromJson(SecretBundle.class, body);
+            secretBundle = JsonConverterUtil.fromJson(SecretBundle.class, body);
             contentType = secretBundle.getContentType();
-        } catch (Throwable t) {
-            LOGGER.log(WARNING, "Failed to parse secret bundle response");
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Failed to parse secret bundle response.", e);
         }
 
         if ("application/x-pkcs12".equals(contentType)) {
@@ -397,8 +407,8 @@ public class KeyVaultClient {
         } else if ("application/x-pem-file".equals(contentType)) {
             try {
                 key = createPrivateKeyFromPem(secretBundle.getValue(), keyType);
-            } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | IllegalArgumentException ex) {
-                LOGGER.log(WARNING, "Unable to decode key", ex);
+            } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | IllegalArgumentException e) {
+                LOGGER.log(WARNING, "Unable to decode key", e);
             }
         }
 
@@ -419,6 +429,8 @@ public class KeyVaultClient {
      * @return Signature.
      */
     public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String keyId) {
+        LOGGER.entering("KeyVaultClient", "getSignedWithPrivateKey", new Object[] { digestName, digestValue, keyId });
+
         SignResult result = null;
         String bodyString = String.format("{\"alg\": \"" + digestName + "\", \"value\": \"%s\"}", digestValue);
         Map<String, String> headers = new HashMap<>();
@@ -430,17 +442,23 @@ public class KeyVaultClient {
 
         if (response != null) {
             try {
-                result = (SignResult) JsonConverterUtil.fromJson(SignResult.class, response);
-            } catch (Throwable t) {
-                LOGGER.log(WARNING, "Failed to parse sign result response");
+                result = JsonConverterUtil.fromJson(SignResult.class, response);
+            } catch (IOException e) {
+                LOGGER.log(WARNING, "Failed to parse sign result response.", e);
             }
         }
 
+        byte[] signature;
+
         if (result != null) {
-            return Base64.getUrlDecoder().decode(result.getValue());
+            signature = Base64.getUrlDecoder().decode(result.getValue());
+        } else {
+            signature = new byte[0];
         }
 
-        return new byte[0];
+        LOGGER.exiting("KeyVaultClient", "getSignedWithPrivateKey", signature);
+
+        return signature;
     }
 
     /**
@@ -457,6 +475,8 @@ public class KeyVaultClient {
      */
     private PrivateKey createPrivateKeyFromPem(String pemString, String keyType)
         throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+
+        LOGGER.entering("KeyVaultClient", "createPrivateKeyFromPem", new Object[] { pemString, keyType });
 
         StringBuilder builder = new StringBuilder();
 
@@ -482,7 +502,10 @@ public class KeyVaultClient {
         byte[] bytes = Base64.getDecoder().decode(builder.toString());
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance(keyType);
+        PrivateKey privateKey = factory.generatePrivate(spec);
 
-        return factory.generatePrivate(spec);
+        LOGGER.exiting("KeyVaultClient", "createPrivateKeyFromPem", privateKey);
+
+        return privateKey;
     }
 }

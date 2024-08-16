@@ -16,49 +16,56 @@ import java.util.List;
  */
 public class CertificateListResult implements JsonSerializable<CertificateListResult> {
     /**
-     * Stores the value.
+     * Stores the list of certificates.
      */
     private List<CertificateItem> value;
 
     /**
-     * Get the value.
+     * Stores the link to the next certificates page.
+     */
+    private String nextLink;
+
+    /**
+     * Get the list of certificates in this page.
      *
-     * @return the id.
+     * @return The list of certificates in this page.
      */
     public List<CertificateItem> getValue() {
         return value;
     }
 
     /**
-     * Set the value.
+     * Set the list of certificates in this page.
      *
-     * @param value the value.
+     * @param value the list of certificates in this page.
      */
     public void setValue(List<CertificateItem> value) {
         this.value = value;
     }
 
     /**
-     * Get the NextLint
-     * @return the nextLink
+     * Get the link to the next certificates page.
+     *
+     * @return The link to the next certificates page.
      */
     public String getNextLink() {
         return nextLink;
     }
 
     /**
-     * Set the NextLink
-     * @param nextLink the nextLink
+     * Set the link to the next certificates page.
+     *
+     * @param nextLink The link to the next certificates page.
      */
     public void setNextLink(String nextLink) {
         this.nextLink = nextLink;
     }
 
-    private String nextLink;
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", value, JsonWriter::writeJson);
+        jsonWriter.writeStringField("nextLink", nextLink);
 
         return jsonWriter.writeEndObject();
     }

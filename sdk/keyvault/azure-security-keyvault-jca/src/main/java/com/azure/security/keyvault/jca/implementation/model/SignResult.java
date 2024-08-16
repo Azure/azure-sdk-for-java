@@ -54,6 +54,8 @@ public class SignResult implements JsonSerializable<SignResult> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kid", kid);
+        jsonWriter.writeStringField("value", value);
 
         return jsonWriter.writeEndObject();
     }
@@ -80,8 +82,7 @@ public class SignResult implements JsonSerializable<SignResult> {
                 if ("kid".equals(fieldName)) {
                     deserializedSignResult.kid = reader.getString();
                 } else if ("value".equals(fieldName)) {
-                    deserializedSignResult.value =
-                        reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()).toString());
+                    deserializedSignResult.value = new Base64Url(reader.getString()).toString();
                 } else {
                     reader.skipChildren();
                 }
