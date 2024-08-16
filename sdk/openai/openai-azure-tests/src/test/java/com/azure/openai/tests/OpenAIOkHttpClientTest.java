@@ -41,9 +41,9 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     private OpenAIOkHttpClient.Builder setAzureServiceApiVersion(
             OpenAIOkHttpClient.Builder clientBuilder, String apiVersion) {
         if (GA.equals(apiVersion)) {
-            AzureOpenAIExtensionsKt.azureOpenAIServiceVersion(clientBuilder, AZURE_OPENAI_SERVICE_VERSION_GA);
+            AzureOpenAIExtensionsKt.serviceVersion(clientBuilder, AZURE_OPENAI_SERVICE_VERSION_GA);
         } else if (PREVIEW.equals(apiVersion)) {
-            AzureOpenAIExtensionsKt.azureOpenAIServiceVersion(clientBuilder, AZURE_OPENAI_SERVICE_VERSION_PREVIEW);
+            AzureOpenAIExtensionsKt.serviceVersion(clientBuilder, AZURE_OPENAI_SERVICE_VERSION_PREVIEW);
         } else {
             throw new IllegalArgumentException("Invalid Azure API version");
         }
@@ -75,7 +75,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     // Azure-Only Test
-    @DisabledIf("com.openai.client.okhttp.TestUtils#isAzureConfigMissing")
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
     public void testAzureApiKey(String apiType, String apiVersion, String testModel) {
@@ -87,11 +86,9 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     // Azure-Only Test
-    @Disabled // because currently we have only one endpoint has Azure Entra ID authentication supported
-    @DisabledIf("com.azure.openai.tests.TestUtils#isAzureEndpointMissing")
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureAdTokenOnly")
-    public void testAzureAdToken(String apiType, String apiVersion, String testModel) {
+    public void testAzureEntraIdToken(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder();
