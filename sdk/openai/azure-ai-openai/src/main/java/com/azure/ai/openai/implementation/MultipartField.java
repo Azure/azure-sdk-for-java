@@ -5,8 +5,10 @@ package com.azure.ai.openai.implementation;
 
 /**
  * A field of a request for a multipart HTTP request.
+ *
+ * @deprecated This class is deprecated since version {@code V2024_07_01_PREVIEW} of the OpenAI client library.
  */
-@Deprecated(since = "v2024-07-01-preview service version was introduced")
+@Deprecated
 public class MultipartField {
 
     /**

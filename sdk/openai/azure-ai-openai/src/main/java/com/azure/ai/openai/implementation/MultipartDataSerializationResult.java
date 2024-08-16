@@ -7,8 +7,10 @@ import com.azure.core.util.BinaryData;
 
 /**
  * This class is used as a stand-in representation of marshalled data to be used in an HTTP multipart request.
+ *
+ * @deprecated This class is deprecated since version {@code V2024_07_01_PREVIEW} of the OpenAI client library.
  */
-@Deprecated(since = "v2024-07-01-preview service version was introduced")
+@Deprecated
 public class MultipartDataSerializationResult {
 
     /**
