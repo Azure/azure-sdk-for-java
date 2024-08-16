@@ -343,14 +343,14 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accessTier", this.accessTier == null ? null : this.accessTier.toString());
+        jsonWriter.writeStringField("previousTier", this.previousTier == null ? null : this.previousTier.toString());
         jsonWriter.writeStringField("api", this.api);
         jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
         jsonWriter.writeStringField("requestId", this.requestId);
         jsonWriter.writeStringField("contentType", this.contentType);
         jsonWriter.writeNumberField("contentLength", this.contentLength);
         jsonWriter.writeStringField("blobType", this.blobType);
-        jsonWriter.writeStringField("accessTier", this.accessTier == null ? null : this.accessTier.toString());
-        jsonWriter.writeStringField("previousTier", this.previousTier == null ? null : this.previousTier.toString());
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeStringField("sequencer", this.sequencer);
         jsonWriter.writeStringField("identity", this.identity);
@@ -364,6 +364,7 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
      * @param jsonReader The JsonReader being read.
      * @return An instance of StorageBlobTierChangedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StorageBlobTierChangedEventData.
      */
     public static StorageBlobTierChangedEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -374,7 +375,13 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("api".equals(fieldName)) {
+                if ("accessTier".equals(fieldName)) {
+                    deserializedStorageBlobTierChangedEventData.accessTier
+                        = StorageBlobAccessTier.fromString(reader.getString());
+                } else if ("previousTier".equals(fieldName)) {
+                    deserializedStorageBlobTierChangedEventData.previousTier
+                        = StorageBlobAccessTier.fromString(reader.getString());
+                } else if ("api".equals(fieldName)) {
                     deserializedStorageBlobTierChangedEventData.api = reader.getString();
                 } else if ("clientRequestId".equals(fieldName)) {
                     deserializedStorageBlobTierChangedEventData.clientRequestId = reader.getString();
@@ -386,12 +393,6 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
                     deserializedStorageBlobTierChangedEventData.contentLength = reader.getNullable(JsonReader::getLong);
                 } else if ("blobType".equals(fieldName)) {
                     deserializedStorageBlobTierChangedEventData.blobType = reader.getString();
-                } else if ("accessTier".equals(fieldName)) {
-                    deserializedStorageBlobTierChangedEventData.accessTier
-                        = StorageBlobAccessTier.fromString(reader.getString());
-                } else if ("previousTier".equals(fieldName)) {
-                    deserializedStorageBlobTierChangedEventData.previousTier
-                        = StorageBlobAccessTier.fromString(reader.getString());
                 } else if ("url".equals(fieldName)) {
                     deserializedStorageBlobTierChangedEventData.url = reader.getString();
                 } else if ("sequencer".equals(fieldName)) {

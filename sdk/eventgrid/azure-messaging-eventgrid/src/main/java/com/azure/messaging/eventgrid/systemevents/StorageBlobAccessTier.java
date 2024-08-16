@@ -32,6 +32,11 @@ public final class StorageBlobAccessTier extends ExpandableStringEnum<StorageBlo
     public static final StorageBlobAccessTier ARCHIVE = fromString("Archive");
 
     /**
+     * The blob is in access tier Default(Inferred).
+     */
+    public static final StorageBlobAccessTier DEFAULT = fromString("Default");
+
+    /**
      * Creates a new instance of StorageBlobAccessTier value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
