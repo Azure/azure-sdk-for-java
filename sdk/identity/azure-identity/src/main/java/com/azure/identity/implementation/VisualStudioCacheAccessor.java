@@ -54,15 +54,8 @@ public class VisualStudioCacheAccessor {
      * @return a Map containing VS Code user settings
      */
     public Map<String, String> getUserSettingsDetails() {
-        Map<String, String> details = null;
-        String json = null;
-        try {
-            json = new String(Files.readAllBytes(Paths.get(getSettingsPath())));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try (JsonReader jsonReader = JsonProviders.createReader(json)) {
-            details = jsonReader.readObject(reader -> {
+        try (JsonReader jsonReader = JsonProviders.createReader(Files.readAllBytes(Paths.get(getSettingsPath())))) {
+            return jsonReader.readObject(reader -> {
                 Map<String, String> result = new HashMap<>();
                 while (reader.nextToken() != JsonToken.END_OBJECT) {
                     String fieldName = reader.getFieldName();
@@ -75,16 +68,14 @@ public class VisualStudioCacheAccessor {
                         reader.skipChildren();
                     }
                 }
+                if (!result.containsKey("cloud")) {
+                    result.put("cloud", "AzureCloud");
+                }
                 return result;
             });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        if (!details.containsKey("cloud")) {
-            details.put("cloud", "AzureCloud");
-        }
-        return details;
     }
 
 
