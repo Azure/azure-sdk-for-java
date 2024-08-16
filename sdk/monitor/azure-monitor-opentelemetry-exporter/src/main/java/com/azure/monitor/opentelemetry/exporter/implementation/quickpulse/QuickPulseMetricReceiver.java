@@ -43,7 +43,6 @@ public class QuickPulseMetricReceiver implements Runnable {
     @Override
     public void run() {
         while (true) {
-
             Collection<MetricData> metrics = quickPulseMetricReader.collectAllMetrics();
             QuickPulseHeaderInfo headerInfo = getQuickPulseHeaderInfo();
 

@@ -128,7 +128,7 @@ class QuickPulseDataFetcher {
         envelopes.add(postEnvelope);
 
         //By default, '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
-        return postEnvelope.toJsonString().replace("/", "\\/");
+        return "[" + postEnvelope.toJsonString().replace("/", "\\/") + "]";
     }
 
     private static List<QuickPulseMetrics> addMetricsToQuickPulseEnvelope(

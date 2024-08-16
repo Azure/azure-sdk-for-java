@@ -80,11 +80,13 @@ final class QuickPulseCoordinator implements Runnable {
             case QP_IS_OFF:
                 pingMode = true;
                 collector.flushOtelMetrics();
+                QuickPulseMetricReceiver.setQuickPulseHeaderInfo(currentQuickPulseHeaderInfo);
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis
                     : waitBetweenPingsInMillis;
 
             case QP_IS_ON:
+                QuickPulseMetricReceiver.setQuickPulseHeaderInfo(currentQuickPulseHeaderInfo);
                 return waitBetweenPostsInMillis;
         }
 

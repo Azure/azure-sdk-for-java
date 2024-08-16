@@ -471,7 +471,6 @@ final class QuickPulseDataCollector {
             ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> requestedMetrics
                 = quickPulseConfiguration.getDerivedMetrics();
             ArrayList<QuickPulseMetrics> processedMetrics = new ArrayList<>();
-
             if (requestedMetrics.get("Metric") != null) {
                 for (QuickPulseConfiguration.DerivedMetricInfo metricInfo : requestedMetrics.get("Metric")) {
                     if (this.getMetrics().get(metricInfo.getProjection()) != null) {
