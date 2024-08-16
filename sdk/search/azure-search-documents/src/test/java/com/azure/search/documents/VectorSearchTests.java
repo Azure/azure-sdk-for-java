@@ -337,8 +337,6 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = searchIndexClient.getSearchAsyncClient(indexName);
         searchClient.uploadDocuments(Collections.singletonList(document)).block();
 
-        waitForIndexing();
-
         // Get the document
         StepVerifier.create(searchClient.getDocument("1", SearchDocument.class))
             .assertNext(response -> {
@@ -371,7 +369,7 @@ public class VectorSearchTests extends SearchTestBase {
             });
 
         // Update index
-        StepVerifier.create(getAndUpdateIndex)
+        StepVerifier.create(getAndUpdateIndex).thenAwait(Duration.ofSeconds(3))
             .assertNext(response -> {
                 assertEquals(indexName, response.getName());
                 assertEquals(3, response.getFields().size());
@@ -393,8 +391,9 @@ public class VectorSearchTests extends SearchTestBase {
                 if (TEST_MODE == TestMode.PLAYBACK) {
                     return searchClient.getDocument("1", SearchDocument.class);
                 } else {
+                    waitForIndexing();
                     return searchClient.getDocument("1", SearchDocument.class)
-                        .delaySubscription(Duration.ofSeconds(2));
+                        .delaySubscription(Duration.ofSeconds(3));
                 }
             });
 
