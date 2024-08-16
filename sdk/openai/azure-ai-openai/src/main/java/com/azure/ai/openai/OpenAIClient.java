@@ -45,8 +45,6 @@ import java.util.Objects;
 import com.azure.ai.openai.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.implementation.CompletionsUtils;
-import com.azure.ai.openai.implementation.MultipartDataHelper;
-import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.core.util.CoreUtils;
@@ -859,14 +857,14 @@ public final class OpenAIClient {
             audioTranscriptionOptions.setFilename(fileName);
         }
 
-        RequestOptions actualRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
 
         FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranscriptionOptions.getFile()), fileName);
         // String.valueOf would return "null" for a null value, which is not null
         String temperature = audioTranscriptionOptions.getTemperature() == null ? null
             : String.valueOf(audioTranscriptionOptions.getTemperature());
 
-        BinaryData uploadFileRequest = new MultipartFormDataHelper(actualRequestOptions)
+        BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
             .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
             .serializeTextField("response_format", audioTranscriptionOptions.getResponseFormat().toString())
             .serializeTextField("model", audioTranscriptionOptions.getModel())
@@ -877,9 +875,9 @@ public final class OpenAIClient {
 
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                actualRequestOptions)
+                multipartRequestOptions)
             : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                actualRequestOptions);
+                multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(AudioTranscription.class));
     }
 
@@ -937,15 +935,14 @@ public final class OpenAIClient {
             audioTranscriptionOptions.setFilename(fileName);
         }
 
-        RequestOptions actualRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
 
         FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranscriptionOptions.getFile()), fileName);
         // String.valueOf would return "null" for a null value, which is not null
         String temperature = audioTranscriptionOptions.getTemperature() == null ? null
             : String.valueOf(audioTranscriptionOptions.getTemperature());
 
-
-        BinaryData uploadFileRequest = new MultipartFormDataHelper(actualRequestOptions)
+        BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
             .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
             .serializeTextField("response_format", audioTranscriptionOptions.getResponseFormat().toString())
             .serializeTextField("model", audioTranscriptionOptions.getModel())
@@ -956,9 +953,9 @@ public final class OpenAIClient {
 
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                actualRequestOptions)
+                multipartRequestOptions)
             : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                actualRequestOptions);
+                multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toString());
     }
 
@@ -1016,15 +1013,14 @@ public final class OpenAIClient {
             audioTranslationOptions.setFilename(fileName);
         }
 
-        RequestOptions actualRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
 
         FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranslationOptions.getFile()), fileName);
         // String.valueOf would return "null" for a null value, which is not null
         String temperature = audioTranslationOptions.getTemperature() == null ? null
             : String.valueOf(audioTranslationOptions.getTemperature());
 
-
-        BinaryData uploadFileRequest = new MultipartFormDataHelper(actualRequestOptions)
+        BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
             .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
             .serializeTextField("response_format", audioTranslationOptions.getResponseFormat().toString())
             .serializeTextField("model", audioTranslationOptions.getModel())
@@ -1034,9 +1030,9 @@ public final class OpenAIClient {
 
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                actualRequestOptions)
+                multipartRequestOptions)
             : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
-                actualRequestOptions);
+                multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(AudioTranslation.class));
     }
 
@@ -1092,15 +1088,27 @@ public final class OpenAIClient {
         if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
             audioTranslationOptions.setFilename(fileName);
         }
-        final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions);
-        final BinaryData data = result.getData();
-        requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
+
+        RequestOptions multipartRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
+
+        FileDetails file = new FileDetails(BinaryData.fromBytes(audioTranslationOptions.getFile()), fileName);
+        // String.valueOf would return "null" for a null value, which is not null
+        String temperature = audioTranslationOptions.getTemperature() == null ? null
+                : String.valueOf(audioTranslationOptions.getTemperature());
+
+        BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
+                .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
+                .serializeTextField("response_format", audioTranslationOptions.getResponseFormat().toString())
+                .serializeTextField("model", audioTranslationOptions.getModel())
+                .serializeTextField("prompt", audioTranslationOptions.getPrompt())
+                .serializeTextField("temperature", temperature)
+                .end().getRequestBody();
+
         Response<BinaryData> response = openAIServiceClient != null
-            ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, data,
-                requestOptions)
-            : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, data,
-                requestOptions);
+            ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
+                multipartRequestOptions)
+            : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, uploadFileRequest,
+                multipartRequestOptions);
         return new SimpleResponse<>(response, response.getValue().toString());
     }
 
