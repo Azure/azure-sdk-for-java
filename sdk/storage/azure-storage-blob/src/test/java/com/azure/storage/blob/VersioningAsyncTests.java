@@ -193,8 +193,8 @@ public class VersioningAsyncTests extends BlobTestBase {
 
         StepVerifier.create(response)
             .assertNext(r -> {
-               assertFalse(r.getT1());
-               assertTrue(r.getT2());
+                assertFalse(r.getT1());
+                assertTrue(r.getT2());
             })
             .verifyComplete();
     }
