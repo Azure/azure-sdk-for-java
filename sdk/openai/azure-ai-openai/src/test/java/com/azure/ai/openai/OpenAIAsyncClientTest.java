@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.implementation.models.FileListResponse;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
@@ -23,20 +24,26 @@ import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.FileDeletionStatus;
+import com.azure.ai.openai.models.FilePurpose;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.ai.openai.models.OnYourDataApiKeyAuthenticationOptions;
 import com.azure.ai.openai.models.OnYourDataContextProperty;
+import com.azure.ai.openai.models.OpenAIFile;
 import com.azure.ai.openai.models.SpeechGenerationResponseFormat;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
@@ -1093,6 +1100,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         }));
     }
 
+    // Files
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void generateSpeechInWav(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -1107,5 +1116,310 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         assertTrue(bytes.length > 0);
                     }).verifyComplete();
         }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testTextFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        uploadTextFileRunner((fileDetails, filePurpose) -> {
+            StepVerifier.create(
+                    client.uploadFile(fileDetails, filePurpose)
+                        // Upload file
+                        .flatMap(uploadedFile -> {
+                            assertNotNull(uploadedFile);
+                            assertNotNull(uploadedFile.getId());
+                            return client.getFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Compare uploaded file with file from backend
+                        .flatMap(tuple -> {
+                            OpenAIFile fileFromBackend = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertNotNull(uploadedFile);
+                            assertNotNull(fileFromBackend);
+                            assertFileEquals(uploadedFile, fileFromBackend);
+                            return client.listFiles(FilePurpose.ASSISTANTS).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Check for existence of file when fetched by purpose
+                        .flatMap(tuple -> {
+                            List<OpenAIFile> files = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
+                            return client.deleteFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
+                        }))
+                // File deletion
+                .assertNext(tuple -> {
+                    FileDeletionStatus deletionStatus = tuple.getT1();
+                    OpenAIFile file = tuple.getT2();
+
+                    assertNotNull(deletionStatus);
+                    assertNotNull(deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                    assertEquals(file.getId(), deletionStatus.getId());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testImageFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        uploadImageFileRunner((fileDetails, filePurpose) -> {
+            StepVerifier.create(
+                    client.uploadFile(fileDetails, filePurpose)
+                        // Upload file
+                        .flatMap(uploadedFile -> {
+                            assertNotNull(uploadedFile);
+                            assertNotNull(uploadedFile.getId());
+                            return client.getFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Compare uploaded file with file from backend
+                        .flatMap(tuple -> {
+                            OpenAIFile fileFromBackend = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertNotNull(uploadedFile);
+                            assertNotNull(fileFromBackend);
+                            assertFileEquals(uploadedFile, fileFromBackend);
+                            return client.listFiles(FilePurpose.ASSISTANTS).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Check for existence of file when fetched by purpose
+                        .flatMap(tuple -> {
+                            List<OpenAIFile> files = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
+                            return client.deleteFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
+                        }))
+                // File deletion
+                .assertNext(tuple -> {
+                    FileDeletionStatus deletionStatus = tuple.getT1();
+                    OpenAIFile file = tuple.getT2();
+
+                    assertNotNull(deletionStatus);
+                    assertNotNull(deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                    assertEquals(file.getId(), deletionStatus.getId());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @Disabled("Support in Azure OpenAI for FINE_TUNE files is not yet available")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testFineTuningJsonFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        uploadFineTuningJsonFileRunner((fileDetails, filePurpose) -> {
+            StepVerifier.create(
+                    client.uploadFile(fileDetails, filePurpose)
+                        // Upload file
+                        .flatMap(uploadedFile -> {
+                            assertNotNull(uploadedFile);
+                            assertNotNull(uploadedFile.getId());
+                            return client.getFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Compare uploaded file with file from backend
+                        .flatMap(tuple -> {
+                            OpenAIFile fileFromBackend = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertNotNull(uploadedFile);
+                            assertNotNull(fileFromBackend);
+                            assertFileEquals(uploadedFile, fileFromBackend);
+                            return client.listFiles(FilePurpose.FINE_TUNE).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Check for existence of file when fetched by purpose
+                        .flatMap(tuple -> {
+                            List<OpenAIFile> files = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
+                            return client.deleteFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
+                        }))
+                // File deletion
+                .assertNext(tuple -> {
+                    FileDeletionStatus deletionStatus = tuple.getT1();
+                    OpenAIFile file = tuple.getT2();
+
+                    assertNotNull(deletionStatus);
+                    assertNotNull(deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                    assertEquals(file.getId(), deletionStatus.getId());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testTextFileOperationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        uploadTextFileRunner((fileDetails, filePurpose) -> {
+            StepVerifier.create(
+                    client.uploadFile(fileDetails, filePurpose)
+                        // Upload file
+                        .flatMap(uploadedFile -> {
+                            assertNotNull(uploadedFile);
+                            assertNotNull(uploadedFile.getId());
+                            return client.getFileWithResponse(uploadedFile.getId(), new RequestOptions()).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Compare uploaded file with file from backend
+                        .flatMap(tuple -> {
+                            Response<BinaryData> response = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertNotNull(uploadedFile);
+                            assertNotNull(response);
+                            assertEquals(200, response.getStatusCode());
+                            OpenAIFile fileFromBackend = response.getValue().toObject(OpenAIFile.class);
+                            assertFileEquals(uploadedFile, fileFromBackend);
+
+                            RequestOptions requestOptions = new RequestOptions();
+                            requestOptions.addQueryParam("purpose", FilePurpose.ASSISTANTS.toString());
+                            return client.listFilesWithResponse(requestOptions).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Check for existence of file when fetched by purpose
+                        .flatMap(tuple -> {
+                            Response<BinaryData> response = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertEquals(200, response.getStatusCode());
+                            List<OpenAIFile> files = response.getValue()
+                                .toObject(FileListResponse.class).getData();
+                            assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
+                            return client.deleteFileWithResponse(uploadedFile.getId(), new RequestOptions()).zipWith(Mono.just(uploadedFile));
+                        }))
+                // File deletion
+                .assertNext(tuple -> {
+                    Response<BinaryData> response = tuple.getT1();
+                    OpenAIFile file = tuple.getT2();
+
+                    assertEquals(200, response.getStatusCode());
+                    FileDeletionStatus deletionStatus = response.getValue().toObject(FileDeletionStatus.class);
+
+                    assertNotNull(deletionStatus);
+                    assertNotNull(deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                    assertEquals(file.getId(), deletionStatus.getId());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testImageFileOperationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        uploadImageFileRunner((fileDetails, filePurpose) -> {
+            StepVerifier.create(
+                    client.uploadFile(fileDetails, filePurpose)
+                        // Upload file
+                        .flatMap(uploadedFile -> {
+                            assertNotNull(uploadedFile);
+                            assertNotNull(uploadedFile.getId());
+                            return client.getFileWithResponse(uploadedFile.getId(), new RequestOptions()).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Compare uploaded file with file from backend
+                        .flatMap(tuple -> {
+                            Response<BinaryData> response = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertNotNull(uploadedFile);
+                            assertNotNull(response);
+                            assertEquals(200, response.getStatusCode());
+                            OpenAIFile fileFromBackend = response.getValue().toObject(OpenAIFile.class);
+                            assertFileEquals(uploadedFile, fileFromBackend);
+
+                            RequestOptions requestOptions = new RequestOptions();
+                            requestOptions.addQueryParam("purpose", FilePurpose.ASSISTANTS.toString());
+                            return client.listFilesWithResponse(requestOptions).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Check for existence of file when fetched by purpose
+                        .flatMap(tuple -> {
+                            Response<BinaryData> response = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertEquals(200, response.getStatusCode());
+                            List<OpenAIFile> files = response.getValue()
+                                .toObject(FileListResponse.class).getData();
+                            assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
+                            return client.deleteFileWithResponse(uploadedFile.getId(), new RequestOptions()).zipWith(Mono.just(uploadedFile));
+                        }))
+                // File deletion
+                .assertNext(tuple -> {
+                    Response<BinaryData> response = tuple.getT1();
+                    OpenAIFile file = tuple.getT2();
+
+                    assertEquals(200, response.getStatusCode());
+                    FileDeletionStatus deletionStatus = response.getValue().toObject(FileDeletionStatus.class);
+
+                    assertNotNull(deletionStatus);
+                    assertNotNull(deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                    assertEquals(file.getId(), deletionStatus.getId());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @Disabled("Support in Azure OpenAI for FINE_TUNE files is not yet available")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testFineTuningJsonFileOperationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        uploadFineTuningJsonFileRunner((fileDetails, filePurpose) -> {
+            StepVerifier.create(
+                    client.uploadFile(fileDetails, filePurpose)
+                        // Upload file
+                        .flatMap(uploadedFile -> {
+                            assertNotNull(uploadedFile);
+                            assertNotNull(uploadedFile.getId());
+                            return client.getFileWithResponse(uploadedFile.getId(), new RequestOptions()).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Compare uploaded file with file from backend
+                        .flatMap(tuple -> {
+                            Response<BinaryData> response = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertNotNull(uploadedFile);
+                            assertNotNull(response);
+                            assertEquals(200, response.getStatusCode());
+                            OpenAIFile fileFromBackend = response.getValue().toObject(OpenAIFile.class);
+                            assertFileEquals(uploadedFile, fileFromBackend);
+
+                            RequestOptions requestOptions = new RequestOptions();
+                            requestOptions.addQueryParam("purpose", FilePurpose.FINE_TUNE.toString());
+                            return client.listFilesWithResponse(requestOptions).zipWith(Mono.just(uploadedFile));
+                        })
+                        // Check for existence of file when fetched by purpose
+                        .flatMap(tuple -> {
+                            Response<BinaryData> response = tuple.getT1();
+                            OpenAIFile uploadedFile = tuple.getT2();
+
+                            assertEquals(200, response.getStatusCode());
+                            List<OpenAIFile> files = response.getValue()
+                                .toObject(FileListResponse.class).getData();
+                            assertTrue(files.stream().anyMatch(f -> f.getId().equals(uploadedFile.getId())));
+                            return client.deleteFileWithResponse(uploadedFile.getId(), new RequestOptions()).zipWith(Mono.just(uploadedFile));
+                        }))
+                // File deletion
+                .assertNext(tuple -> {
+                    Response<BinaryData> response = tuple.getT1();
+                    OpenAIFile file = tuple.getT2();
+
+                    assertEquals(200, response.getStatusCode());
+                    FileDeletionStatus deletionStatus = response.getValue().toObject(FileDeletionStatus.class);
+
+                    assertNotNull(deletionStatus);
+                    assertNotNull(deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                    assertEquals(file.getId(), deletionStatus.getId());
+                })
+                .verifyComplete();
+        });
     }
 }

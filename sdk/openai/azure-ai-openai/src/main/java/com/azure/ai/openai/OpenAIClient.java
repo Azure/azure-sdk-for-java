@@ -57,6 +57,7 @@ import static com.azure.ai.openai.implementation.AudioTranslationValidator.valid
 import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslationText;
 import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
 import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addModelIdJson;
+import static com.azure.ai.openai.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
 
 /**
  * Initializes a new instance of the synchronous OpenAIClient type.
@@ -1598,9 +1599,9 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a list of previously uploaded files along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listFilesWithResponse(requestOptions);
     }
 
@@ -1629,11 +1630,11 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation 'uploadFile' is
         // 'multipart/form-data'
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.uploadFileWithResponse(uploadFileRequest, requestOptions);
     }
 
@@ -1657,9 +1658,9 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a status response from a file deletion operation along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteFileWithResponse(fileId, requestOptions);
     }
 
@@ -1688,9 +1689,9 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getFileWithResponse(fileId, requestOptions);
     }
 
@@ -1710,9 +1711,9 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return represent a byte array along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getFileContentWithResponse(fileId, requestOptions);
     }
 
