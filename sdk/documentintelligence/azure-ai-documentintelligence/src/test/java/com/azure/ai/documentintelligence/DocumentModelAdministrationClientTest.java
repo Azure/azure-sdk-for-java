@@ -9,7 +9,6 @@ import com.azure.ai.documentintelligence.models.AzureBlobFileListContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
-import com.azure.ai.documentintelligence.models.ComponentDocumentModelDetails;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
@@ -18,6 +17,7 @@ import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
+import com.azure.ai.documentintelligence.models.DocumentTypeDetails;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -27,10 +27,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +47,8 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
                                                                                   DocumentIntelligenceServiceVersion serviceVersion) {
         return getModelAdminClientBuilder(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
-            serviceVersion,
-            true)
+            serviceVersion
+        )
             .buildClient();
     }
 
@@ -58,6 +58,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void getModelWithResponse(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
@@ -97,6 +98,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void deleteModelValidModelIDWithResponse(HttpClient httpClient,
                                                     DocumentIntelligenceServiceVersion serviceVersion) {
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
@@ -165,6 +167,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginCopy(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
@@ -194,6 +197,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildModelWithJPGTrainingSet(HttpClient httpClient,
                                                   DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
@@ -213,6 +217,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildModelWithMultiPagePDFTrainingSet(HttpClient httpClient,
                                                            DocumentIntelligenceServiceVersion serviceVersion) {
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
@@ -232,6 +237,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildModelWithJsonLTrainingSet(HttpClient httpClient,
                                                            DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
@@ -252,38 +258,34 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginCreateComposedModel(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
-        String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
-        buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller1 =
-                client.beginBuildDocumentModel(new BuildDocumentModelRequest(modelId, DocumentBuildMode.TEMPLATE).setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
-                    .setPollInterval(durationTestMode);
-            syncPoller1.waitForCompletion();
-            DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
+        String composedModelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "composedModelId" + UUID.randomUUID();
+        String classifierId = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
+        Map<String, DocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
+        documentTypeDetailsMap.put("IRS-1040-A",
+            new DocumentTypeDetails().setModelId("modelId" + UUID.randomUUID()));
+        documentTypeDetailsMap.put("IRS-1040-B",
+            new DocumentTypeDetails().setModelId("modelId" + UUID.randomUUID()));
+        documentTypeDetailsMap.put("IRS-1040-C",
+            new DocumentTypeDetails().setModelId("modelId" + UUID.randomUUID()));
 
-            SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller2 =
-                client.beginBuildDocumentModel(new BuildDocumentModelRequest("sync_component_model_2" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE).setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
-                    .setPollInterval(durationTestMode);
-            syncPoller2.waitForCompletion();
-            DocumentModelDetails createdModel2 = syncPoller2.getFinalResult();
+        documentTypeDetailsMap.put("IRS-1040-D",
+            new DocumentTypeDetails().setModelId("modelId" + UUID.randomUUID()));
 
-            final List<ComponentDocumentModelDetails> modelIDList = Arrays.asList(new ComponentDocumentModelDetails(createdModel1.getModelId()), new ComponentDocumentModelDetails(createdModel2.getModelId()));
+        documentTypeDetailsMap.put("IRS-1040-E",
+            new DocumentTypeDetails().setModelId("modelId" + UUID.randomUUID()));
 
-            DocumentModelDetails composedModel =
-                client.beginComposeModel(new ComposeDocumentModelRequest("sync_java_composed_model" + UUID.randomUUID(), modelIDList).setDescription("test desc"))
-                    .setPollInterval(durationTestMode)
-                    .getFinalResult();
+        DocumentModelDetails composedModel = client.beginComposeModel(new ComposeDocumentModelRequest(composedModelId, classifierId, documentTypeDetailsMap).setDescription("test desc"))
+            .setPollInterval(durationTestMode).getFinalResult();
 
-            assertNotNull(composedModel.getModelId());
-            assertEquals("test desc", composedModel.getDescription());
-            assertEquals(2, composedModel.getDocTypes().size());
-            validateDocumentModelData(composedModel);
+        assertNotNull(composedModel.getModelId());
+        assertEquals("test desc", composedModel.getDescription());
+        assertEquals(2, composedModel.getDocTypes().size());
+        validateDocumentModelData(composedModel);
 
-            client.deleteModel(createdModel1.getModelId());
-            client.deleteModel(createdModel2.getModelId());
-            client.deleteModel(composedModel.getModelId());
-        });
+        client.deleteModel(composedModel.getModelId());
     }
 
     /**
@@ -291,6 +293,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildClassifier(HttpClient httpClient,
                                                   DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdministrationClient(httpClient, serviceVersion);
@@ -330,6 +333,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildClassifierWithJsonL(HttpClient httpClient,
                                      DocumentIntelligenceServiceVersion serviceVersion) {
         String classifierId = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();

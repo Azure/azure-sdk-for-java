@@ -6,8 +6,11 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,11 +18,11 @@ import java.util.List;
  * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
  */
 @Fluent
-public final class ManagementPolicySchema {
+public final class ManagementPolicySchema implements JsonSerializable<ManagementPolicySchema> {
     /*
-     * The Storage Account ManagementPolicies Rules. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * The Storage Account ManagementPolicies Rules. See more details in:
+     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      */
-    @JsonProperty(value = "rules", required = true)
     private List<ManagementPolicyRule> rules;
 
     /**
@@ -31,7 +34,7 @@ public final class ManagementPolicySchema {
     /**
      * Get the rules property: The Storage Account ManagementPolicies Rules. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     *
+     * 
      * @return the rules value.
      */
     public List<ManagementPolicyRule> rules() {
@@ -41,7 +44,7 @@ public final class ManagementPolicySchema {
     /**
      * Set the rules property: The Storage Account ManagementPolicies Rules. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the ManagementPolicySchema object itself.
      */
@@ -52,7 +55,7 @@ public final class ManagementPolicySchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -65,4 +68,43 @@ public final class ManagementPolicySchema {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagementPolicySchema.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementPolicySchema from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementPolicySchema if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagementPolicySchema.
+     */
+    public static ManagementPolicySchema fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementPolicySchema deserializedManagementPolicySchema = new ManagementPolicySchema();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rules".equals(fieldName)) {
+                    List<ManagementPolicyRule> rules
+                        = reader.readArray(reader1 -> ManagementPolicyRule.fromJson(reader1));
+                    deserializedManagementPolicySchema.rules = rules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementPolicySchema;
+        });
+    }
 }

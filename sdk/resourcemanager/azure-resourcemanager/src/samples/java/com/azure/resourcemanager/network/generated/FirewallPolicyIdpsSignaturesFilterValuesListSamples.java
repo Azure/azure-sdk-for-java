@@ -11,7 +11,8 @@ import com.azure.resourcemanager.network.models.SignatureOverridesFilterValuesQu
  */
 public final class FirewallPolicyIdpsSignaturesFilterValuesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyQuerySignatureOverridesFilterValues.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * FirewallPolicyQuerySignatureOverridesFilterValues.json
      */
     /**
      * Sample code: query signature overrides.

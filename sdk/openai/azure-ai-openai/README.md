@@ -25,7 +25,7 @@ For concrete examples you can have a look at the following links. Some of the mo
 
 If you want to see the full code for these snippets check out our [samples folder][samples_folder].
 
-[Source code][source_code] | [API reference documentation][docs] | [Product Documentation][product_documentation] | [Samples][samples_readme]
+[Source code][source_code] | [API reference documentation][docs] | [Product Documentation][product_documentation] | [Samples][samples_readme] | [Troubleshooting][troubleshooting]
 
 ## Getting started
 
@@ -56,7 +56,7 @@ In order to interact with the Azure OpenAI Service you'll need to create an inst
 Azure OpenAI, provide a valid endpoint URI to an Azure OpenAI resource along with a corresponding key credential,
 token credential, or [Azure Identity][azure_identity] credential that's authorized to use the Azure OpenAI resource. 
 
-#### Create a Azure OpenAI client with key credential
+#### Create an Azure OpenAI client with key credential
 Get Azure OpenAI `key` credential from the Azure Portal.
 
 ```java readme-sample-createSyncClientKeyCredential
@@ -105,7 +105,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.12.2</version>
+    <version>1.13.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -435,6 +435,8 @@ operations. The Boring SSL library is an uber jar containing native libraries fo
 better performance compared to the default SSL implementation within the JDK. For more information, including how to
 reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
+For more details, see [TROUBLESHOOTING][troubleshooting] guideline.
+
 ## Next steps
 - Samples are explained in detail [here][samples_readme].
 
@@ -485,5 +487,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java
+[troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/TROUBLESHOOTING.md
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
 

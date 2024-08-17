@@ -5,7 +5,6 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,32 +12,48 @@ import java.util.Collection;
  * in the response.
  */
 public final class PrecipitationType extends ExpandableStringEnum<PrecipitationType> {
-    /** Static value Rain for PrecipitationType. */
+    /**
+     * Rain.
+     */
     public static final PrecipitationType RAIN = fromString("Rain");
 
-    /** Static value Snow for PrecipitationType. */
+    /**
+     * Snow.
+     */
     public static final PrecipitationType SNOW = fromString("Snow");
 
-    /** Static value Ice for PrecipitationType. */
+    /**
+     * Ice.
+     */
     public static final PrecipitationType ICE = fromString("Ice");
 
-    /** Static value Mix for PrecipitationType. */
+    /**
+     * Mix.
+     */
     public static final PrecipitationType MIX = fromString("Mix");
 
     /**
+     * Creates a new instance of PrecipitationType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrecipitationType() {
+    }
+
+    /**
      * Creates or finds a PrecipitationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrecipitationType.
      */
-    @JsonCreator
     public static PrecipitationType fromString(String name) {
         return fromString(name, PrecipitationType.class);
     }
 
     /**
      * Gets known PrecipitationType values.
-     *
+     * 
      * @return known PrecipitationType values.
      */
     public static Collection<PrecipitationType> values() {

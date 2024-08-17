@@ -6,23 +6,26 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The SKU of the storage account.
  */
 @Fluent
-public final class Sku {
+public final class Sku implements JsonSerializable<Sku> {
     /*
-     * The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called accountType.
+     * The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was
+     * called accountType.
      */
-    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
      * The SKU tier. This is based on the SKU name.
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuTier tier;
 
     /**
@@ -74,4 +77,43 @@ public final class Sku {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Sku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Sku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Sku.
+     */
+    public static Sku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Sku deserializedSku = new Sku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSku.name = SkuName.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSku.tier = SkuTier.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSku;
+        });
+    }
 }

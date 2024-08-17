@@ -6,23 +6,26 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The custom domain assigned to this storage account. This can be set via Update.
  */
 @Fluent
-public final class CustomDomain {
+public final class CustomDomain implements JsonSerializable<CustomDomain> {
     /*
      * Gets or sets the custom domain name assigned to the storage account. Name is the CNAME source.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * Indicates whether indirect CName validation is enabled. Default value is false. This should only be set on updates.
+     * Indicates whether indirect CName validation is enabled. Default value is false. This should only be set on
+     * updates.
      */
-    @JsonProperty(value = "useSubDomainName")
     private Boolean useSubDomainName;
 
     /**
@@ -88,4 +91,44 @@ public final class CustomDomain {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomDomain.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("useSubDomainName", this.useSubDomainName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDomain from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDomain if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomDomain.
+     */
+    public static CustomDomain fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDomain deserializedCustomDomain = new CustomDomain();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCustomDomain.name = reader.getString();
+                } else if ("useSubDomainName".equals(fieldName)) {
+                    deserializedCustomDomain.useSubDomainName = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDomain;
+        });
+    }
 }

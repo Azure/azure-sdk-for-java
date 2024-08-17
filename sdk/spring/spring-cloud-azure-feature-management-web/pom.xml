@@ -6,69 +6,156 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-feature-management-web</artifactId>
-  <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
+  <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
   <name>Spring Cloud Azure Feature Management Web</name>
   <description>Adds Feature Management into Spring Web</description>
-  
   <scm>
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
     <developerConnection>scm:git:ssh://git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
-  
   <developers>
     <developer>
       <id>microsoft</id>
       <name>Microsoft Corporation</name>
     </developer>
   </developers>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>6.1.11</version> <!-- {x-version-update;springboot3_org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>4.0.1</version> <!-- {x-version-update;javax.servlet:javax.servlet-api;external_dependency} -->
-      <scope>provided</scope>
+      <version>6.1.11</version> <!-- {x-version-update;springboot3_org.springframework:spring-webmvc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-feature-management</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
+    </dependency>
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version> <!-- {x-version-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <!-- bytebuddy dependencies are required for mockito to work with Java 21.-->
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy-agent</artifactId>
+      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
   <build>
     <plugins>
       <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.2.0</version> <!-- {x-version-update;springboot3_com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;springboot3_com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.14.6</version> <!-- {x-version-update;springboot3_org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.azure.spring.cloud.feature.management.web</Automatic-Module-Name>
+            </manifestEntries>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <executions>
+          <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+          <execution>
+            <id>base-modules-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile without module-info for Java 8 -->
+          <execution>
+            <id>base-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile with Java 8 -->
+          <execution>
+            <id>base-testCompile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <configuration>
+              <release>17</release>
+              <compilerArgs>
+                <arg>-parameters</arg> <!-- https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention -->
+              </compilerArgs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure.spring:spring-cloud-azure-feature-management:[4.20.0-beta.1]</include> <!-- {x-include-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
-                <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
-                <include>org.springframework:spring-web:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
-                <include>org.springframework:spring-webmvc:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
+                <include>com.azure.spring:spring-cloud-azure-feature-management:[5.16.0-beta.1]</include> <!-- {x-include-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
+                <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
+                <include>org.springframework:spring-web:[6.1.11]</include> <!-- {x-include-update;springboot3_org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-webmvc:[6.1.11]</include> <!-- {x-include-update;springboot3_org.springframework:spring-webmvc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

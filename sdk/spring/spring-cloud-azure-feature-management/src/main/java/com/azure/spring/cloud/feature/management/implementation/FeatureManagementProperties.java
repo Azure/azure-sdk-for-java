@@ -3,6 +3,8 @@
 package com.azure.spring.cloud.feature.management.implementation;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
+import com.azure.spring.cloud.feature.management.implementation.models.ServerSideFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
@@ -25,6 +28,8 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
     private static final long serialVersionUID = -1642032123104805346L;
+
+    private static final String FEATURE_FLAG_SNAKE_CASE = "feature_flags";
 
     /**
      * Map of all Feature Flags that use Feature Filters.
@@ -46,35 +51,61 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         if (m == null) {
             return;
         }
-
         // Need to reset or switch between on/off to conditional doesn't work
         featureManagement = new HashMap<>();
         onOff = new HashMap<>();
 
-        Map<? extends String, ? extends Object> features = removePrefixes(m, "featureManagement");
+        // try to parse the properties by server side schema as default
+        tryServerSideSchema(m);
 
-        if (!features.isEmpty()) {
-            m = features;
+        if (featureManagement.isEmpty() && onOff.isEmpty()) {
+            tryClientSideSchema(m);
+        }
+    }
+
+    @SuppressWarnings({"unchecked", "deprecation"})
+    private void tryServerSideSchema(Map<? extends String, ? extends Object> features) {
+        if (features.keySet().isEmpty()) {
+            return;
         }
 
-        for (String key : m.keySet()) {
-            addToFeatures(m, key, "");
+        // check if FeatureFlags section exist
+        String featureFlagsSectionKey = "";
+        for (String key : features.keySet()) {
+            if (FEATURE_FLAG_SNAKE_CASE.equalsIgnoreCase(key)) {
+                featureFlagsSectionKey = key;
+                break;
+            }
+        }
+        if (featureFlagsSectionKey.isEmpty()) {
+            return;
         }
 
+        // get FeatureFlags section and parse
+        final Object featureFlagsObject = features.get(featureFlagsSectionKey);
+        if (Map.class.isAssignableFrom(featureFlagsObject.getClass())) {
+            final Map<String, Object> featureFlagsSection = (Map<String, Object>) featureFlagsObject;
+            for (String key : featureFlagsSection.keySet()) {
+                addServerSideFeature(featureFlagsSection, key);
+            }
+        } else {
+            if (List.class.isAssignableFrom(featureFlagsObject.getClass())) {
+                final List<Object> featureFlagsSection = (List<Object>) featureFlagsObject;
+                for (Object flag : featureFlagsSection) {
+                    addServerSideFeature((Map<? extends String, ?>) flag, null);
+                }
+            }
+        }
+    }
+
+    private void tryClientSideSchema(Map<? extends String, ? extends Object> features) {
+        for (String key : features.keySet()) {
+            addFeature(features, key, "");
+        }
     }
 
     @SuppressWarnings("unchecked")
-    private Map<? extends String, ? extends Object> removePrefixes(Map<? extends String, ? extends Object> m,
-        String prefix) {
-        Map<? extends String, ? extends Object> removedPrefix = new HashMap<>();
-        if (m.containsKey(prefix)) {
-            removedPrefix = (Map<? extends String, ? extends Object>) m.get(prefix);
-        }
-        return removedPrefix;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void addToFeatures(Map<? extends String, ? extends Object> features, String key, String combined) {
+    private void addFeature(Map<? extends String, ? extends Object> features, String key, String combined) {
         Object featureValue = features.get(key);
         if (!combined.isEmpty() && !combined.endsWith(".")) {
             combined += ".";
@@ -93,7 +124,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
                 if (Map.class.isAssignableFrom(featureValue.getClass())) {
                     features = (Map<String, Object>) featureValue;
                     for (String fKey : features.keySet()) {
-                        addToFeatures(features, fKey, combined + key);
+                        addFeature(features, fKey, combined + key);
                     }
                 }
             } else {
@@ -101,6 +132,49 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
                     feature.setKey(key);
                     featureManagement.put(key, feature);
                 }
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void addServerSideFeature(Map<? extends String, ? extends Object> features, String key) {
+        Object featureValue = null;
+        if (key != null) {
+            featureValue = features.get(key);
+        } else {
+            featureValue = features;
+        }
+
+        ServerSideFeature serverSideFeature = null;
+        try {
+            LinkedHashMap<String, Object> ff = new LinkedHashMap<>();
+            if (featureValue.getClass().isAssignableFrom(LinkedHashMap.class)) {
+                ff = (LinkedHashMap<String, Object>) featureValue;
+            }
+            LinkedHashMap<String, Object> conditions = new LinkedHashMap<>();
+            if (ff.containsKey("conditions")
+                && ff.get("conditions").getClass().isAssignableFrom(LinkedHashMap.class)) {
+                conditions = (LinkedHashMap<String, Object>) ff.get("conditions");
+            }
+            FeatureFilterUtils.updateValueFromMapToList(conditions, "client_filters");
+
+            serverSideFeature = MAPPER.convertValue(featureValue, ServerSideFeature.class);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Found invalid feature {} with value {}.", key, featureValue.toString());
+        }
+
+        if (serverSideFeature != null && serverSideFeature.getId() != null) {
+            if (serverSideFeature.getConditions() != null
+                && serverSideFeature.getConditions().getClientFilters() != null
+                && serverSideFeature.getConditions().getClientFilters().size() > 0) {
+                final Feature feature = new Feature();
+                feature.setKey(serverSideFeature.getId());
+                feature.setEvaluate(serverSideFeature.isEnabled());
+                feature.setEnabledFor(serverSideFeature.getConditions().getClientFiltersAsMap());
+                feature.setRequirementType(serverSideFeature.getConditions().getRequirementType());
+                featureManagement.put(serverSideFeature.getId(), feature);
+            } else {
+                onOff.put(serverSideFeature.getId(), serverSideFeature.isEnabled());
             }
         }
     }

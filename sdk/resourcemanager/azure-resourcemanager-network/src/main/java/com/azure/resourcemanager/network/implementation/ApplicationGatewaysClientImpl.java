@@ -48,11 +48,10 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.nio.ByteBuffer;
 import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in ApplicationGatewaysClient.
@@ -71,7 +70,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Initializes an instance of ApplicationGatewaysClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationGatewaysClientImpl(NetworkManagementClientImpl client) {
@@ -272,7 +271,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,7 +298,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, applicationGatewayName,
@@ -309,7 +308,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -337,7 +336,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, applicationGatewayName, apiVersion,
@@ -346,7 +345,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,7 +363,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -385,7 +384,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,7 +399,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -417,7 +416,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -433,7 +432,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -450,7 +449,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -464,7 +463,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -479,7 +478,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -506,7 +505,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -516,7 +515,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -544,7 +543,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, applicationGatewayName,
@@ -553,7 +552,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -570,7 +569,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -587,7 +586,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -602,7 +601,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -635,7 +634,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -645,7 +644,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -679,7 +678,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, applicationGatewayName, apiVersion,
@@ -688,7 +687,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -709,7 +708,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -731,7 +730,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -748,7 +747,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -767,7 +766,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -785,7 +784,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -804,7 +803,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -821,7 +820,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -839,7 +838,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -872,7 +871,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -882,7 +881,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -916,7 +915,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, applicationGatewayName, apiVersion,
@@ -925,7 +924,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -943,7 +942,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -961,7 +960,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -978,7 +977,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1000,7 +999,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1012,7 +1011,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1036,7 +1035,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1048,7 +1047,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1063,7 +1062,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1079,7 +1078,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1093,7 +1092,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1108,7 +1107,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the application gateways in a subscription along with {@link PagedResponse} on successful completion
@@ -1124,7 +1123,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1136,7 +1135,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1154,7 +1153,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1164,7 +1163,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the application gateways in a subscription as paginated response with {@link PagedFlux}.
@@ -1176,7 +1175,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1191,7 +1190,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the application gateways in a subscription as paginated response with {@link PagedIterable}.
@@ -1203,7 +1202,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1217,7 +1216,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1244,7 +1243,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), resourceGroupName, applicationGatewayName,
@@ -1254,7 +1253,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1282,7 +1281,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), resourceGroupName, applicationGatewayName, apiVersion,
@@ -1291,7 +1290,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1308,7 +1307,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1329,7 +1328,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1344,7 +1343,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1361,7 +1360,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1377,7 +1376,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1394,7 +1393,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1408,7 +1407,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1423,7 +1422,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1450,7 +1449,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stop(this.client.getEndpoint(), resourceGroupName, applicationGatewayName,
@@ -1460,7 +1459,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1488,7 +1487,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stop(this.client.getEndpoint(), resourceGroupName, applicationGatewayName, apiVersion,
@@ -1497,7 +1496,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1514,7 +1513,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1535,7 +1534,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1550,7 +1549,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1567,7 +1566,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1583,7 +1582,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1600,7 +1599,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1614,7 +1613,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1629,7 +1628,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1658,7 +1657,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.backendHealth(this.client.getEndpoint(), resourceGroupName,
@@ -1668,7 +1667,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1698,7 +1697,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.backendHealth(this.client.getEndpoint(), resourceGroupName, applicationGatewayName, apiVersion,
@@ -1707,7 +1706,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1729,7 +1728,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1751,7 +1750,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1776,7 +1775,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1794,7 +1793,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1813,7 +1812,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1832,7 +1831,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1851,7 +1850,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1871,7 +1870,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1887,7 +1886,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1906,7 +1905,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -1941,7 +1940,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             probeRequest.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.backendHealthOnDemand(this.client.getEndpoint(), resourceGroupName,
@@ -1953,7 +1952,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -1989,7 +1988,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
         } else {
             probeRequest.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.backendHealthOnDemand(this.client.getEndpoint(), resourceGroupName, applicationGatewayName,
@@ -1999,7 +1998,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2026,7 +2025,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2053,7 +2052,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2082,7 +2081,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2105,7 +2104,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2130,7 +2129,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2151,7 +2150,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2172,7 +2171,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2195,7 +2194,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2215,7 +2214,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2236,7 +2235,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableServerVariables API service call along with {@link Response} on
@@ -2252,7 +2251,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableServerVariables(this.client.getEndpoint(), apiVersion,
@@ -2262,7 +2261,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2280,7 +2279,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableServerVariables(this.client.getEndpoint(), apiVersion,
@@ -2289,7 +2288,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableServerVariables API service call on successful completion of
@@ -2302,7 +2301,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2316,7 +2315,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableServerVariables API service call.
@@ -2328,7 +2327,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableRequestHeaders API service call along with {@link Response} on
@@ -2344,7 +2343,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableRequestHeaders(this.client.getEndpoint(), apiVersion,
@@ -2354,7 +2353,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2372,7 +2371,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableRequestHeaders(this.client.getEndpoint(), apiVersion,
@@ -2381,7 +2380,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableRequestHeaders API service call on successful completion of
@@ -2394,7 +2393,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2408,7 +2407,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableRequestHeaders API service call.
@@ -2420,7 +2419,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableResponseHeaders API service call along with {@link Response} on
@@ -2436,7 +2435,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableResponseHeaders(this.client.getEndpoint(), apiVersion,
@@ -2446,7 +2445,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2464,7 +2463,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableResponseHeaders(this.client.getEndpoint(), apiVersion,
@@ -2473,7 +2472,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableResponseHeaders API service call on successful completion of
@@ -2486,7 +2485,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2500,7 +2499,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableResponseHeaders API service call.
@@ -2512,7 +2511,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableWafRuleSets API service call along with {@link Response} on
@@ -2529,7 +2528,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableWafRuleSets(this.client.getEndpoint(), apiVersion,
@@ -2539,7 +2538,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2558,7 +2557,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableWafRuleSets(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2567,7 +2566,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableWafRuleSets API service call on successful completion of
@@ -2580,7 +2579,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2595,7 +2594,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableWafRuleSets API service call.
@@ -2607,7 +2606,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call along with {@link Response} on
@@ -2623,7 +2622,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableSslOptions(this.client.getEndpoint(), apiVersion,
@@ -2633,7 +2632,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2652,7 +2651,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableSslOptions(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2661,7 +2660,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call on successful completion of
@@ -2674,7 +2673,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2688,7 +2687,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call.
@@ -2700,7 +2699,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call along with {@link PagedResponse} on
@@ -2717,7 +2716,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableSslPredefinedPolicies(this.client.getEndpoint(), apiVersion,
@@ -2730,7 +2729,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2749,7 +2748,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2761,7 +2760,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call as paginated response with
@@ -2775,7 +2774,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2792,7 +2791,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call as paginated response with
@@ -2805,7 +2804,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2821,7 +2820,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2844,7 +2843,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono
                 .error(new IllegalArgumentException("Parameter predefinedPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSslPredefinedPolicy(this.client.getEndpoint(), apiVersion,
@@ -2854,7 +2853,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2878,7 +2877,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
             return Mono
                 .error(new IllegalArgumentException("Parameter predefinedPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSslPredefinedPolicy(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2887,7 +2886,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2902,7 +2901,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2918,7 +2917,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2932,10 +2931,8 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2960,10 +2957,8 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2989,10 +2984,8 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3018,10 +3011,8 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3047,10 +3038,8 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3079,10 +3068,8 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

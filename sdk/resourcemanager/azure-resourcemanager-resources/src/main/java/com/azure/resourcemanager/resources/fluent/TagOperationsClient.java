@@ -334,7 +334,7 @@ public interface TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -351,7 +351,7 @@ public interface TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -368,7 +368,7 @@ public interface TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -385,7 +385,7 @@ public interface TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -403,7 +403,7 @@ public interface TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -419,7 +419,7 @@ public interface TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -435,7 +435,7 @@ public interface TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -455,7 +455,7 @@ public interface TagOperationsClient {
      * name/value pairs.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags patch API request only.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -475,7 +475,7 @@ public interface TagOperationsClient {
      * name/value pairs.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags patch API request only.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -495,7 +495,7 @@ public interface TagOperationsClient {
      * name/value pairs.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags patch API request only.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -515,7 +515,7 @@ public interface TagOperationsClient {
      * name/value pairs.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags patch API request only.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -536,7 +536,7 @@ public interface TagOperationsClient {
      * name/value pairs.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags patch API request only.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -555,7 +555,7 @@ public interface TagOperationsClient {
      * name/value pairs.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags patch API request only.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -574,7 +574,7 @@ public interface TagOperationsClient {
      * name/value pairs.
      * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags patch API request only.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

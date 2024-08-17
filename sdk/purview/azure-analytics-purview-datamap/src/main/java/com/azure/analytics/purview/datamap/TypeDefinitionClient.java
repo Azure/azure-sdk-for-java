@@ -1983,9 +1983,7 @@ public final class TypeDefinitionClient {
     }
 
     /**
-     * Create all atlas type definitions in bulk, only new definitions will be
-     * created.
-     * Any changes to the existing definitions will be discarded.
+     * Create all atlas type definitions in bulk. Please avoid recreating existing types.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -2552,7 +2550,7 @@ public final class TypeDefinitionClient {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2562,8 +2560,8 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> batchCreateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
-        return this.serviceClient.batchCreateWithResponse(atlasTypesDef, requestOptions);
+    public Response<BinaryData> batchCreateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.batchCreateWithResponse(body, requestOptions);
     }
 
     /**
@@ -3135,7 +3133,7 @@ public final class TypeDefinitionClient {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3145,8 +3143,8 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> batchUpdateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
-        return this.serviceClient.batchUpdateWithResponse(atlasTypesDef, requestOptions);
+    public Response<BinaryData> batchUpdateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.batchUpdateWithResponse(body, requestOptions);
     }
 
     /**
@@ -3434,7 +3432,7 @@ public final class TypeDefinitionClient {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3444,8 +3442,8 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> batchDeleteWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
-        return this.serviceClient.batchDeleteWithResponse(atlasTypesDef, requestOptions);
+    public Response<Void> batchDeleteWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.batchDeleteWithResponse(body, requestOptions);
     }
 
     /**
@@ -4045,11 +4043,9 @@ public final class TypeDefinitionClient {
     }
 
     /**
-     * Create all atlas type definitions in bulk, only new definitions will be
-     * created.
-     * Any changes to the existing definitions will be discarded.
+     * Create all atlas type definitions in bulk. Please avoid recreating existing types.
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4060,10 +4056,10 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasTypesDef batchCreate(AtlasTypesDef atlasTypesDef) {
+    public AtlasTypesDef batchCreate(AtlasTypesDef body) {
         // Generated convenience method for batchCreateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return batchCreateWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).getValue()
+        return batchCreateWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasTypesDef.class);
     }
 
@@ -4071,7 +4067,7 @@ public final class TypeDefinitionClient {
      * Update all types in bulk, changes detected in the type definitions would be
      * persisted.
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4082,17 +4078,17 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasTypesDef batchUpdate(AtlasTypesDef atlasTypesDef) {
+    public AtlasTypesDef batchUpdate(AtlasTypesDef body) {
         // Generated convenience method for batchUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return batchUpdateWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).getValue()
+        return batchUpdateWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasTypesDef.class);
     }
 
     /**
      * Delete API for all types in bulk.
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4102,10 +4098,10 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void batchDelete(AtlasTypesDef atlasTypesDef) {
+    public void batchDelete(AtlasTypesDef body) {
         // Generated convenience method for batchDeleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        batchDeleteWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).getValue();
+        batchDeleteWithResponse(BinaryData.fromObject(body), requestOptions).getValue();
     }
 
     /**

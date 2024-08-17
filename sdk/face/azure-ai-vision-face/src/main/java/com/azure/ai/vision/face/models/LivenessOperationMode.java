@@ -5,18 +5,17 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The liveness operation mode to drive the client’s end-user experience.
+ * The liveness operation mode to drive the client's end-user experience.
  */
 public final class LivenessOperationMode extends ExpandableStringEnum<LivenessOperationMode> {
 
     /**
      * Utilizes a passive liveness technique that requires no additional actions from the user. Requires normal indoor
      * lighting and high screen brightness for optimal performance. And thus, this mode has a narrow operational
-     * envelope and will not be suitable for scenarios that requires the end-user’s to be in bright lighting conditions.
+     * envelope and will not be suitable for scenarios that requires the end-user's to be in bright lighting conditions.
      * Note: this is the only supported mode for the Mobile (iOS and Android) solution.
      */
     @Generated
@@ -27,7 +26,7 @@ public final class LivenessOperationMode extends ExpandableStringEnum<LivenessOp
      * optimized to require active motion only under suboptimal lighting conditions. Unlike the passive mode, this mode
      * has no lighting restrictions, and thus offering a broader operational envelope. This mode is preferable on Web
      * based solutions due to the lack of automatic screen brightness control available on browsers which hinders the
-     * Passive mode’s operational envelope on Web based solutions.
+     * Passive mode's operational envelope on Web based solutions.
      */
     @Generated
     public static final LivenessOperationMode PASSIVE_ACTIVE = fromString("PassiveActive");
@@ -49,7 +48,6 @@ public final class LivenessOperationMode extends ExpandableStringEnum<LivenessOp
      * @return the corresponding LivenessOperationMode.
      */
     @Generated
-    @JsonCreator
     public static LivenessOperationMode fromString(String name) {
         return fromString(name, LivenessOperationMode.class);
     }

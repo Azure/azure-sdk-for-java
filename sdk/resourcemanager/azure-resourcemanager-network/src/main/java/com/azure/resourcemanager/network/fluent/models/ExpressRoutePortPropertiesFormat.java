@@ -6,10 +6,14 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsBillingType;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsEncapsulation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,79 +22,65 @@ import java.util.List;
  * Properties specific to ExpressRoutePort resources.
  */
 @Fluent
-public final class ExpressRoutePortPropertiesFormat {
+public final class ExpressRoutePortPropertiesFormat implements JsonSerializable<ExpressRoutePortPropertiesFormat> {
     /*
      * The name of the peering location that the ExpressRoutePort is mapped to physically.
      */
-    @JsonProperty(value = "peeringLocation")
     private String peeringLocation;
 
     /*
      * Bandwidth of procured ports in Gbps.
      */
-    @JsonProperty(value = "bandwidthInGbps")
     private Integer bandwidthInGbps;
 
     /*
      * Aggregate Gbps of associated circuit bandwidths.
      */
-    @JsonProperty(value = "provisionedBandwidthInGbps", access = JsonProperty.Access.WRITE_ONLY)
     private Float provisionedBandwidthInGbps;
 
     /*
      * Maximum transmission unit of the physical port pair(s).
      */
-    @JsonProperty(value = "mtu", access = JsonProperty.Access.WRITE_ONLY)
     private String mtu;
 
     /*
      * Encapsulation method on physical ports.
      */
-    @JsonProperty(value = "encapsulation")
     private ExpressRoutePortsEncapsulation encapsulation;
 
     /*
      * Ether type of the physical port.
      */
-    @JsonProperty(value = "etherType", access = JsonProperty.Access.WRITE_ONLY)
     private String etherType;
 
     /*
      * Date of the physical port allocation to be used in Letter of Authorization.
      */
-    @JsonProperty(value = "allocationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String allocationDate;
 
     /*
-     * ExpressRouteLink Sub-Resources
-     * 
      * The set of physical links of the ExpressRoutePort resource.
      */
-    @JsonProperty(value = "links")
     private List<ExpressRouteLinkInner> links;
 
     /*
      * Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRoutePort resource.
      */
-    @JsonProperty(value = "circuits", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> circuits;
 
     /*
      * The provisioning state of the express route port resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The resource GUID property of the express route port resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * The billing type of the ExpressRoutePort resource.
      */
-    @JsonProperty(value = "billingType")
     private ExpressRoutePortsBillingType billingType;
 
     /**
@@ -198,9 +188,7 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Get the links property: ExpressRouteLink Sub-Resources
-     * 
-     * The set of physical links of the ExpressRoutePort resource.
+     * Get the links property: The set of physical links of the ExpressRoutePort resource.
      * 
      * @return the links value.
      */
@@ -209,9 +197,7 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Set the links property: ExpressRouteLink Sub-Resources
-     * 
-     * The set of physical links of the ExpressRoutePort resource.
+     * Set the links property: The set of physical links of the ExpressRoutePort resource.
      * 
      * @param links the links value to set.
      * @return the ExpressRoutePortPropertiesFormat object itself.
@@ -278,5 +264,76 @@ public final class ExpressRoutePortPropertiesFormat {
         if (links() != null) {
             links().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("peeringLocation", this.peeringLocation);
+        jsonWriter.writeNumberField("bandwidthInGbps", this.bandwidthInGbps);
+        jsonWriter.writeStringField("encapsulation", this.encapsulation == null ? null : this.encapsulation.toString());
+        jsonWriter.writeArrayField("links", this.links, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("billingType", this.billingType == null ? null : this.billingType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRoutePortPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRoutePortPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRoutePortPropertiesFormat.
+     */
+    public static ExpressRoutePortPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRoutePortPropertiesFormat deserializedExpressRoutePortPropertiesFormat
+                = new ExpressRoutePortPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("peeringLocation".equals(fieldName)) {
+                    deserializedExpressRoutePortPropertiesFormat.peeringLocation = reader.getString();
+                } else if ("bandwidthInGbps".equals(fieldName)) {
+                    deserializedExpressRoutePortPropertiesFormat.bandwidthInGbps
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("provisionedBandwidthInGbps".equals(fieldName)) {
+                    deserializedExpressRoutePortPropertiesFormat.provisionedBandwidthInGbps
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("mtu".equals(fieldName)) {
+                    deserializedExpressRoutePortPropertiesFormat.mtu = reader.getString();
+                } else if ("encapsulation".equals(fieldName)) {
+                    deserializedExpressRoutePortPropertiesFormat.encapsulation
+                        = ExpressRoutePortsEncapsulation.fromString(reader.getString());
+                } else if ("etherType".equals(fieldName)) {
+                    deserializedExpressRoutePortPropertiesFormat.etherType = reader.getString();
+                } else if ("allocationDate".equals(fieldName)) {
+                    deserializedExpressRoutePortPropertiesFormat.allocationDate = reader.getString();
+                } else if ("links".equals(fieldName)) {
+                    List<ExpressRouteLinkInner> links
+                        = reader.readArray(reader1 -> ExpressRouteLinkInner.fromJson(reader1));
+                    deserializedExpressRoutePortPropertiesFormat.links = links;
+                } else if ("circuits".equals(fieldName)) {
+                    List<SubResource> circuits = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedExpressRoutePortPropertiesFormat.circuits = circuits;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExpressRoutePortPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedExpressRoutePortPropertiesFormat.resourceGuid = reader.getString();
+                } else if ("billingType".equals(fieldName)) {
+                    deserializedExpressRoutePortPropertiesFormat.billingType
+                        = ExpressRoutePortsBillingType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRoutePortPropertiesFormat;
+        });
     }
 }

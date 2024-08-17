@@ -11,19 +11,19 @@ public final class SquareSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SquareSource model = BinaryData.fromString(
-            "{\"type\":\"nkhvpuqlh\",\"query\":\"datagephviue\",\"queryTimeout\":\"datayagaxruffkm\",\"additionalColumns\":\"datau\",\"sourceRetryCount\":\"databbitp\",\"sourceRetryWait\":\"datan\",\"maxConcurrentConnections\":\"datamsdgmxwfodvzpxmo\",\"disableMetricsCollection\":\"databvgieey\",\"\":{\"tbasvjodgplagwvg\":\"datan\",\"hinbsys\":\"datanxmqudnqcbb\",\"iyyzqdnrgnyb\":\"datalbfzkvrmdos\",\"mkhxunq\":\"dataqwjj\"}}")
+            "{\"type\":\"SquareSource\",\"query\":\"datalp\",\"queryTimeout\":\"dataclkbwkmwdrvkb\",\"additionalColumns\":\"datavnnvk\",\"sourceRetryCount\":\"datazldzzjj\",\"sourceRetryWait\":\"datahjqengopdvnzn\",\"maxConcurrentConnections\":\"dataiodaj\",\"disableMetricsCollection\":\"dataszdyv\",\"\":{\"awh\":\"dataufbwr\",\"uee\":\"datazhs\"}}")
             .toObject(SquareSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SquareSource model = new SquareSource().withSourceRetryCount("databbitp")
-            .withSourceRetryWait("datan")
-            .withMaxConcurrentConnections("datamsdgmxwfodvzpxmo")
-            .withDisableMetricsCollection("databvgieey")
-            .withQueryTimeout("datayagaxruffkm")
-            .withAdditionalColumns("datau")
-            .withQuery("datagephviue");
+        SquareSource model = new SquareSource().withSourceRetryCount("datazldzzjj")
+            .withSourceRetryWait("datahjqengopdvnzn")
+            .withMaxConcurrentConnections("dataiodaj")
+            .withDisableMetricsCollection("dataszdyv")
+            .withQueryTimeout("dataclkbwkmwdrvkb")
+            .withAdditionalColumns("datavnnvk")
+            .withQuery("datalp");
         model = BinaryData.fromObject(model).toObject(SquareSource.class);
     }
 }

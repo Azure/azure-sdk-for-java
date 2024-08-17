@@ -5,41 +5,41 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The encryption settings on the storage account.
  */
 @Fluent
-public final class Encryption {
+public final class Encryption implements JsonSerializable<Encryption> {
     /*
      * List of services which support encryption.
      */
-    @JsonProperty(value = "services")
     private EncryptionServices services;
 
     /*
-     * The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Storage, Microsoft.Keyvault
+     * The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Storage, Microsoft.Keyvault
      */
-    @JsonProperty(value = "keySource")
     private KeySource keySource;
 
     /*
-     * A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest.
+     * A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed
+     * keys for data at rest.
      */
-    @JsonProperty(value = "requireInfrastructureEncryption")
     private Boolean requireInfrastructureEncryption;
 
     /*
      * Properties provided by key vault.
      */
-    @JsonProperty(value = "keyvaultproperties")
     private KeyVaultProperties keyVaultProperties;
 
     /*
      * The identity to be used with service-side encryption at rest.
      */
-    @JsonProperty(value = "identity")
     private EncryptionIdentity encryptionIdentity;
 
     /**
@@ -167,5 +167,53 @@ public final class Encryption {
         if (encryptionIdentity() != null) {
             encryptionIdentity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("services", this.services);
+        jsonWriter.writeStringField("keySource", this.keySource == null ? null : this.keySource.toString());
+        jsonWriter.writeBooleanField("requireInfrastructureEncryption", this.requireInfrastructureEncryption);
+        jsonWriter.writeJsonField("keyvaultproperties", this.keyVaultProperties);
+        jsonWriter.writeJsonField("identity", this.encryptionIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Encryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Encryption if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Encryption.
+     */
+    public static Encryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Encryption deserializedEncryption = new Encryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("services".equals(fieldName)) {
+                    deserializedEncryption.services = EncryptionServices.fromJson(reader);
+                } else if ("keySource".equals(fieldName)) {
+                    deserializedEncryption.keySource = KeySource.fromString(reader.getString());
+                } else if ("requireInfrastructureEncryption".equals(fieldName)) {
+                    deserializedEncryption.requireInfrastructureEncryption = reader.getNullable(JsonReader::getBoolean);
+                } else if ("keyvaultproperties".equals(fieldName)) {
+                    deserializedEncryption.keyVaultProperties = KeyVaultProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedEncryption.encryptionIdentity = EncryptionIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryption;
+        });
     }
 }

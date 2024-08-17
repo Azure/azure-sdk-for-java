@@ -6,36 +6,38 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of IP configuration of an Azure Firewall.
  */
 @Fluent
-public final class AzureFirewallIpConfigurationPropertiesFormat {
+public final class AzureFirewallIpConfigurationPropertiesFormat
+    implements JsonSerializable<AzureFirewallIpConfigurationPropertiesFormat> {
     /*
      * The Firewall Internal Load Balancer IP to be used as the next hop in User Defined Routes.
      */
-    @JsonProperty(value = "privateIPAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
 
     /*
-     * Reference to the subnet resource. This resource must be named 'AzureFirewallSubnet' or 'AzureFirewallManagementSubnet'.
+     * Reference to the subnet resource. This resource must be named 'AzureFirewallSubnet' or
+     * 'AzureFirewallManagementSubnet'.
      */
-    @JsonProperty(value = "subnet")
     private SubResource subnet;
 
     /*
      * Reference to the PublicIP resource. This field is a mandatory input if subnet is not null.
      */
-    @JsonProperty(value = "publicIPAddress")
     private SubResource publicIpAddress;
 
     /*
      * The provisioning state of the Azure firewall IP configuration resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -113,5 +115,51 @@ public final class AzureFirewallIpConfigurationPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeJsonField("publicIPAddress", this.publicIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFirewallIpConfigurationPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFirewallIpConfigurationPropertiesFormat if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFirewallIpConfigurationPropertiesFormat.
+     */
+    public static AzureFirewallIpConfigurationPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFirewallIpConfigurationPropertiesFormat deserializedAzureFirewallIpConfigurationPropertiesFormat
+                = new AzureFirewallIpConfigurationPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateIPAddress".equals(fieldName)) {
+                    deserializedAzureFirewallIpConfigurationPropertiesFormat.privateIpAddress = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedAzureFirewallIpConfigurationPropertiesFormat.subnet = SubResource.fromJson(reader);
+                } else if ("publicIPAddress".equals(fieldName)) {
+                    deserializedAzureFirewallIpConfigurationPropertiesFormat.publicIpAddress
+                        = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAzureFirewallIpConfigurationPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFirewallIpConfigurationPropertiesFormat;
+        });
     }
 }

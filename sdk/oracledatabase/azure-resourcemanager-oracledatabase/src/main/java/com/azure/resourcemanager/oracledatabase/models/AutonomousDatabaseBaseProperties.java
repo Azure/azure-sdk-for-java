@@ -5,472 +5,412 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
  * Autonomous Database base resource model.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "dataBaseType",
-    defaultImpl = AutonomousDatabaseBaseProperties.class,
-    visible = true)
-@JsonTypeName("AutonomousDatabaseBaseProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Clone", value = AutonomousDatabaseCloneProperties.class),
-    @JsonSubTypes.Type(name = "Regular", value = AutonomousDatabaseProperties.class) })
 @Fluent
-public class AutonomousDatabaseBaseProperties {
+public class AutonomousDatabaseBaseProperties implements JsonSerializable<AutonomousDatabaseBaseProperties> {
     /*
      * Database type to be created.
      */
-    @JsonTypeId
-    @JsonProperty(value = "dataBaseType", required = true)
-    private DataBaseType dataBaseType;
+    private DataBaseType dataBaseType = DataBaseType.fromString("AutonomousDatabaseBaseProperties");
 
     /*
      * Admin password.
      */
-    @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
     /*
      * The maintenance schedule type of the Autonomous Database Serverless.
      */
-    @JsonProperty(value = "autonomousMaintenanceScheduleType")
     private AutonomousMaintenanceScheduleType autonomousMaintenanceScheduleType;
 
     /*
      * The character set for the autonomous database.
      */
-    @JsonProperty(value = "characterSet")
     private String characterSet;
 
     /*
      * The compute amount (CPUs) available to the database.
      */
-    @JsonProperty(value = "computeCount")
     private Float computeCount;
 
     /*
      * The compute model of the Autonomous Database.
      */
-    @JsonProperty(value = "computeModel")
     private ComputeModel computeModel;
 
     /*
      * The number of CPU cores to be made available to the database.
      */
-    @JsonProperty(value = "cpuCoreCount")
     private Integer cpuCoreCount;
 
     /*
      * Customer Contacts.
      */
-    @JsonProperty(value = "customerContacts")
     private List<CustomerContact> customerContacts;
 
     /*
      * The quantity of data in the database, in terabytes.
      */
-    @JsonProperty(value = "dataStorageSizeInTbs")
     private Integer dataStorageSizeInTbs;
 
     /*
      * The size, in gigabytes, of the data volume that will be created and attached to the database.
      */
-    @JsonProperty(value = "dataStorageSizeInGbs")
     private Integer dataStorageSizeInGbs;
 
     /*
      * A valid Oracle Database version for Autonomous Database.
      */
-    @JsonProperty(value = "dbVersion")
     private String dbVersion;
 
     /*
      * The Autonomous Database workload type
      */
-    @JsonProperty(value = "dbWorkload")
     private WorkloadType dbWorkload;
 
     /*
      * The user-friendly name for the Autonomous Database.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Indicates if auto scaling is enabled for the Autonomous Database CPU core count.
      */
-    @JsonProperty(value = "isAutoScalingEnabled")
     private Boolean isAutoScalingEnabled;
 
     /*
      * Indicates if auto scaling is enabled for the Autonomous Database storage.
      */
-    @JsonProperty(value = "isAutoScalingForStorageEnabled")
     private Boolean isAutoScalingForStorageEnabled;
 
     /*
-     * The list of [OCIDs](https://docs.oracle.com/iaas/Content/General/Concepts/identifiers.htm) of standby databases located in Autonomous Data Guard remote regions that are associated with the source database. Note that for Autonomous Database Serverless instances, standby databases located in the same region as the source primary database do not have OCIDs.
+     * The list of [OCIDs](https://docs.oracle.com/iaas/Content/General/Concepts/identifiers.htm) of standby databases
+     * located in Autonomous Data Guard remote regions that are associated with the source database. Note that for
+     * Autonomous Database Serverless instances, standby databases located in the same region as the source primary
+     * database do not have OCIDs.
      */
-    @JsonProperty(value = "peerDbIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> peerDbIds;
 
     /*
-     * The database OCID of the Disaster Recovery peer database, which is located in a different region from the current peer database.
+     * The database OCID of the Disaster Recovery peer database, which is located in a different region from the current
+     * peer database.
      */
-    @JsonProperty(value = "peerDbId")
     private String peerDbId;
 
     /*
      * Indicates whether the Autonomous Database has local or called in-region Data Guard enabled.
      */
-    @JsonProperty(value = "isLocalDataGuardEnabled")
     private Boolean isLocalDataGuardEnabled;
 
     /*
      * Indicates whether the Autonomous Database has Cross Region Data Guard enabled.
      */
-    @JsonProperty(value = "isRemoteDataGuardEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isRemoteDataGuardEnabled;
 
     /*
-     * Indicates the local disaster recovery (DR) type of the Autonomous Database Serverless instance.Autonomous Data Guard (ADG) DR type provides business critical DR with a faster recovery time objective (RTO) during failover or switchover.Backup-based DR type provides lower cost DR with a slower RTO during failover or switchover.
+     * Indicates the local disaster recovery (DR) type of the Autonomous Database Serverless instance.Autonomous Data
+     * Guard (ADG) DR type provides business critical DR with a faster recovery time objective (RTO) during failover or
+     * switchover.Backup-based DR type provides lower cost DR with a slower RTO during failover or switchover.
      */
-    @JsonProperty(value = "localDisasterRecoveryType", access = JsonProperty.Access.WRITE_ONLY)
     private DisasterRecoveryType localDisasterRecoveryType;
 
     /*
      * Local Autonomous Disaster Recovery standby database details.
      */
-    @JsonProperty(value = "localStandbyDb", access = JsonProperty.Access.WRITE_ONLY)
     private AutonomousDatabaseStandbySummary localStandbyDb;
 
     /*
      * Indicates the number of seconds of data loss for a Data Guard failover.
      */
-    @JsonProperty(value = "failedDataRecoveryInSeconds", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedDataRecoveryInSeconds;
 
     /*
      * Specifies if the Autonomous Database requires mTLS connections.
      */
-    @JsonProperty(value = "isMtlsConnectionRequired")
     private Boolean isMtlsConnectionRequired;
 
     /*
      * Specifies if the Autonomous Database preview version is being provisioned.
      */
-    @JsonProperty(value = "isPreviewVersionWithServiceTermsAccepted")
     private Boolean isPreviewVersionWithServiceTermsAccepted;
 
     /*
      * The Oracle license model that applies to the Oracle Autonomous Database. The default is LICENSE_INCLUDED.
      */
-    @JsonProperty(value = "licenseModel")
     private LicenseModel licenseModel;
 
     /*
      * The character set for the Autonomous Database.
      */
-    @JsonProperty(value = "ncharacterSet")
     private String ncharacterSet;
 
     /*
      * Additional information about the current lifecycle state.
      */
-    @JsonProperty(value = "lifecycleDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String lifecycleDetails;
 
     /*
      * Azure resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AzureResourceProvisioningState provisioningState;
 
     /*
      * Views lifecycleState
      */
-    @JsonProperty(value = "lifecycleState", access = JsonProperty.Access.WRITE_ONLY)
     private AutonomousDatabaseLifecycleState lifecycleState;
 
     /*
      * The list of scheduled operations.
      */
-    @JsonProperty(value = "scheduledOperations")
     private ScheduledOperationsType scheduledOperations;
 
     /*
      * The private endpoint Ip address for the resource.
      */
-    @JsonProperty(value = "privateEndpointIp")
     private String privateEndpointIp;
 
     /*
      * The resource's private endpoint label.
      */
-    @JsonProperty(value = "privateEndpointLabel")
     private String privateEndpointLabel;
 
     /*
      * HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
      */
-    @JsonProperty(value = "ociUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String ociUrl;
 
     /*
      * Client subnet
      */
-    @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
      * VNET for network connectivity
      */
-    @JsonProperty(value = "vnetId")
     private String vnetId;
 
     /*
      * The date and time that the database was created.
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /*
      * The date and time when maintenance will begin.
      */
-    @JsonProperty(value = "timeMaintenanceBegin", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeMaintenanceBegin;
 
     /*
      * The date and time when maintenance will end.
      */
-    @JsonProperty(value = "timeMaintenanceEnd", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeMaintenanceEnd;
 
     /*
      * The current amount of storage in use for user and system data, in terabytes (TB).
      */
-    @JsonProperty(value = "actualUsedDataStorageSizeInTbs", access = JsonProperty.Access.WRITE_ONLY)
     private Double actualUsedDataStorageSizeInTbs;
 
     /*
      * The amount of storage currently allocated for the database tables and billed for, rounded up.
      */
-    @JsonProperty(value = "allocatedStorageSizeInTbs", access = JsonProperty.Access.WRITE_ONLY)
     private Double allocatedStorageSizeInTbs;
 
     /*
      * Information about Oracle APEX Application Development.
      */
-    @JsonProperty(value = "apexDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ApexDetailsType apexDetails;
 
     /*
-     * List of Oracle Database versions available for a database upgrade. If there are no version upgrades available, this list is empty.
+     * List of Oracle Database versions available for a database upgrade. If there are no version upgrades available,
+     * this list is empty.
      */
-    @JsonProperty(value = "availableUpgradeVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> availableUpgradeVersions;
 
     /*
      * The connection string used to connect to the Autonomous Database.
      */
-    @JsonProperty(value = "connectionStrings", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectionStringType connectionStrings;
 
     /*
-     * The URLs for accessing Oracle Application Express (APEX) and SQL Developer Web with a browser from a Compute instance within your VCN or that has a direct connection to your VCN. 
+     * The URLs for accessing Oracle Application Express (APEX) and SQL Developer Web with a browser from a Compute
+     * instance within your VCN or that has a direct connection to your VCN.
      */
-    @JsonProperty(value = "connectionUrls", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectionUrlType connectionUrls;
 
     /*
      * Status of the Data Safe registration for this Autonomous Database.
      */
-    @JsonProperty(value = "dataSafeStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DataSafeStatusType dataSafeStatus;
 
     /*
      * The Oracle Database Edition that applies to the Autonomous databases.
      */
-    @JsonProperty(value = "databaseEdition")
     private DatabaseEditionType databaseEdition;
 
     /*
      * Autonomous Database ID
      */
-    @JsonProperty(value = "autonomousDatabaseId")
     private String autonomousDatabaseId;
 
     /*
      * The area assigned to In-Memory tables in Autonomous Database.
      */
-    @JsonProperty(value = "inMemoryAreaInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer inMemoryAreaInGbs;
+
+    /*
+     * The date and time when the next long-term backup would be created.
+     */
+    private OffsetDateTime nextLongTermBackupTimestamp;
+
+    /*
+     * Details for the long-term backup schedule.
+     */
+    private LongTermBackUpScheduleDetails longTermBackupSchedule;
 
     /*
      * Indicates if the Autonomous Database version is a preview version.
      */
-    @JsonProperty(value = "isPreview", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPreview;
 
     /*
-     * Parameter that allows users to select an acceptable maximum data loss limit in seconds, up to which Automatic Failover will be triggered when necessary for a Local Autonomous Data Guard
+     * Parameter that allows users to select an acceptable maximum data loss limit in seconds, up to which Automatic
+     * Failover will be triggered when necessary for a Local Autonomous Data Guard
      */
-    @JsonProperty(value = "localAdgAutoFailoverMaxDataLossLimit")
     private Integer localAdgAutoFailoverMaxDataLossLimit;
 
     /*
      * The amount of memory (in GBs) enabled per ECPU or OCPU.
      */
-    @JsonProperty(value = "memoryPerOracleComputeUnitInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer memoryPerOracleComputeUnitInGbs;
 
     /*
      * Indicates the Autonomous Database mode.
      */
-    @JsonProperty(value = "openMode")
     private OpenModeType openMode;
 
     /*
      * Status of Operations Insights for this Autonomous Database.
      */
-    @JsonProperty(value = "operationsInsightsStatus", access = JsonProperty.Access.WRITE_ONLY)
     private OperationsInsightsStatusType operationsInsightsStatus;
 
     /*
      * The Autonomous Database permission level.
      */
-    @JsonProperty(value = "permissionLevel")
     private PermissionLevelType permissionLevel;
 
     /*
      * The private endpoint for the resource.
      */
-    @JsonProperty(value = "privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String privateEndpoint;
 
     /*
      * An array of CPU values that an Autonomous Database can be scaled to.
      */
-    @JsonProperty(value = "provisionableCpus", access = JsonProperty.Access.WRITE_ONLY)
     private List<Integer> provisionableCpus;
 
     /*
-     * The Data Guard role of the Autonomous Container Database or Autonomous Database, if Autonomous Data Guard is enabled.
+     * The Data Guard role of the Autonomous Container Database or Autonomous Database, if Autonomous Data Guard is
+     * enabled.
      */
-    @JsonProperty(value = "role")
     private RoleType role;
 
     /*
      * The URL of the Service Console for the Autonomous Database.
      */
-    @JsonProperty(value = "serviceConsoleUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceConsoleUrl;
 
     /*
      * The SQL Web Developer URL for the Oracle Autonomous Database.
      */
-    @JsonProperty(value = "sqlWebDeveloperUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String sqlWebDeveloperUrl;
 
     /*
-     * The list of regions that support the creation of an Autonomous Database clone or an Autonomous Data Guard standby database.
+     * The list of regions that support the creation of an Autonomous Database clone or an Autonomous Data Guard standby
+     * database.
      */
-    @JsonProperty(value = "supportedRegionsToCloneTo", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> supportedRegionsToCloneTo;
 
     /*
      * The date and time the Autonomous Data Guard role was switched for the Autonomous Database.
      */
-    @JsonProperty(value = "timeDataGuardRoleChanged", access = JsonProperty.Access.WRITE_ONLY)
     private String timeDataGuardRoleChanged;
 
     /*
      * The date and time the Always Free database will be automatically deleted because of inactivity.
      */
-    @JsonProperty(value = "timeDeletionOfFreeAutonomousDatabase", access = JsonProperty.Access.WRITE_ONLY)
     private String timeDeletionOfFreeAutonomousDatabase;
 
     /*
-     * The date and time that Autonomous Data Guard was enabled for an Autonomous Database where the standby was provisioned in the same region as the primary database.
+     * The date and time that Autonomous Data Guard was enabled for an Autonomous Database where the standby was
+     * provisioned in the same region as the primary database.
      */
-    @JsonProperty(value = "timeLocalDataGuardEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private String timeLocalDataGuardEnabled;
 
     /*
      * The timestamp of the last failover operation.
      */
-    @JsonProperty(value = "timeOfLastFailover", access = JsonProperty.Access.WRITE_ONLY)
     private String timeOfLastFailover;
 
     /*
      * The date and time when last refresh happened.
      */
-    @JsonProperty(value = "timeOfLastRefresh", access = JsonProperty.Access.WRITE_ONLY)
     private String timeOfLastRefresh;
 
     /*
      * The refresh point timestamp (UTC).
      */
-    @JsonProperty(value = "timeOfLastRefreshPoint", access = JsonProperty.Access.WRITE_ONLY)
     private String timeOfLastRefreshPoint;
 
     /*
      * The timestamp of the last switchover operation for the Autonomous Database.
      */
-    @JsonProperty(value = "timeOfLastSwitchover", access = JsonProperty.Access.WRITE_ONLY)
     private String timeOfLastSwitchover;
 
     /*
      * The date and time the Always Free database will be stopped because of inactivity.
      */
-    @JsonProperty(value = "timeReclamationOfFreeAutonomousDatabase", access = JsonProperty.Access.WRITE_ONLY)
     private String timeReclamationOfFreeAutonomousDatabase;
 
     /*
      * The storage space consumed by Autonomous Database in GBs.
      */
-    @JsonProperty(value = "usedDataStorageSizeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer usedDataStorageSizeInGbs;
 
     /*
      * The amount of storage that has been used, in terabytes.
      */
-    @JsonProperty(value = "usedDataStorageSizeInTbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer usedDataStorageSizeInTbs;
 
     /*
      * Database ocid
      */
-    @JsonProperty(value = "ocid", access = JsonProperty.Access.WRITE_ONLY)
     private String ocid;
 
     /*
      * Retention period, in days, for long-term backups
      */
-    @JsonProperty(value = "backupRetentionPeriodInDays")
     private Integer backupRetentionPeriodInDays;
 
     /*
-     * The client IP access control list (ACL). This is an array of CIDR notations and/or IP addresses. Values should be separate strings, separated by commas. Example: ['1.1.1.1','1.1.1.0/24','1.1.2.25']
+     * The client IP access control list (ACL). This is an array of CIDR notations and/or IP addresses. Values should be
+     * separate strings, separated by commas. Example: ['1.1.1.1','1.1.1.0/24','1.1.2.25']
      */
-    @JsonProperty(value = "whitelistedIps")
     private List<String> whitelistedIps;
 
     /**
      * Creates an instance of AutonomousDatabaseBaseProperties class.
      */
     public AutonomousDatabaseBaseProperties() {
-        this.dataBaseType = DataBaseType.fromString("AutonomousDatabaseBaseProperties");
     }
 
     /**
@@ -785,6 +725,21 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the peerDbIds property: The list of
+     * [OCIDs](https://docs.oracle.com/iaas/Content/General/Concepts/identifiers.htm) of standby databases located in
+     * Autonomous Data Guard remote regions that are associated with the source database. Note that for Autonomous
+     * Database Serverless instances, standby databases located in the same region as the source primary database do not
+     * have OCIDs.
+     * 
+     * @param peerDbIds the peerDbIds value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withPeerDbIds(List<String> peerDbIds) {
+        this.peerDbIds = peerDbIds;
+        return this;
+    }
+
+    /**
      * Get the peerDbId property: The database OCID of the Disaster Recovery peer database, which is located in a
      * different region from the current peer database.
      * 
@@ -839,6 +794,18 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the isRemoteDataGuardEnabled property: Indicates whether the Autonomous Database has Cross Region Data Guard
+     * enabled.
+     * 
+     * @param isRemoteDataGuardEnabled the isRemoteDataGuardEnabled value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withIsRemoteDataGuardEnabled(Boolean isRemoteDataGuardEnabled) {
+        this.isRemoteDataGuardEnabled = isRemoteDataGuardEnabled;
+        return this;
+    }
+
+    /**
      * Get the localDisasterRecoveryType property: Indicates the local disaster recovery (DR) type of the Autonomous
      * Database Serverless instance.Autonomous Data Guard (ADG) DR type provides business critical DR with a faster
      * recovery time objective (RTO) during failover or switchover.Backup-based DR type provides lower cost DR with a
@@ -851,12 +818,37 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the localDisasterRecoveryType property: Indicates the local disaster recovery (DR) type of the Autonomous
+     * Database Serverless instance.Autonomous Data Guard (ADG) DR type provides business critical DR with a faster
+     * recovery time objective (RTO) during failover or switchover.Backup-based DR type provides lower cost DR with a
+     * slower RTO during failover or switchover.
+     * 
+     * @param localDisasterRecoveryType the localDisasterRecoveryType value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withLocalDisasterRecoveryType(DisasterRecoveryType localDisasterRecoveryType) {
+        this.localDisasterRecoveryType = localDisasterRecoveryType;
+        return this;
+    }
+
+    /**
      * Get the localStandbyDb property: Local Autonomous Disaster Recovery standby database details.
      * 
      * @return the localStandbyDb value.
      */
     public AutonomousDatabaseStandbySummary localStandbyDb() {
         return this.localStandbyDb;
+    }
+
+    /**
+     * Set the localStandbyDb property: Local Autonomous Disaster Recovery standby database details.
+     * 
+     * @param localStandbyDb the localStandbyDb value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withLocalStandbyDb(AutonomousDatabaseStandbySummary localStandbyDb) {
+        this.localStandbyDb = localStandbyDb;
+        return this;
     }
 
     /**
@@ -867,6 +859,18 @@ public class AutonomousDatabaseBaseProperties {
      */
     public Integer failedDataRecoveryInSeconds() {
         return this.failedDataRecoveryInSeconds;
+    }
+
+    /**
+     * Set the failedDataRecoveryInSeconds property: Indicates the number of seconds of data loss for a Data Guard
+     * failover.
+     * 
+     * @param failedDataRecoveryInSeconds the failedDataRecoveryInSeconds value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withFailedDataRecoveryInSeconds(Integer failedDataRecoveryInSeconds) {
+        this.failedDataRecoveryInSeconds = failedDataRecoveryInSeconds;
+        return this;
     }
 
     /**
@@ -964,6 +968,17 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the lifecycleDetails property: Additional information about the current lifecycle state.
+     * 
+     * @param lifecycleDetails the lifecycleDetails value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withLifecycleDetails(String lifecycleDetails) {
+        this.lifecycleDetails = lifecycleDetails;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Azure resource provisioning state.
      * 
      * @return the provisioningState value.
@@ -973,12 +988,34 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the provisioningState property: Azure resource provisioning state.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withProvisioningState(AzureResourceProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the lifecycleState property: Views lifecycleState.
      * 
      * @return the lifecycleState value.
      */
     public AutonomousDatabaseLifecycleState lifecycleState() {
         return this.lifecycleState;
+    }
+
+    /**
+     * Set the lifecycleState property: Views lifecycleState.
+     * 
+     * @param lifecycleState the lifecycleState value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withLifecycleState(AutonomousDatabaseLifecycleState lifecycleState) {
+        this.lifecycleState = lifecycleState;
+        return this;
     }
 
     /**
@@ -1051,6 +1088,17 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the ociUrl property: HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
+     * 
+     * @param ociUrl the ociUrl value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withOciUrl(String ociUrl) {
+        this.ociUrl = ociUrl;
+        return this;
+    }
+
+    /**
      * Get the subnetId property: Client subnet.
      * 
      * @return the subnetId value.
@@ -1100,6 +1148,17 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the timeCreated property: The date and time that the database was created.
+     * 
+     * @param timeCreated the timeCreated value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withTimeCreated(OffsetDateTime timeCreated) {
+        this.timeCreated = timeCreated;
+        return this;
+    }
+
+    /**
      * Get the timeMaintenanceBegin property: The date and time when maintenance will begin.
      * 
      * @return the timeMaintenanceBegin value.
@@ -1109,12 +1168,34 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the timeMaintenanceBegin property: The date and time when maintenance will begin.
+     * 
+     * @param timeMaintenanceBegin the timeMaintenanceBegin value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withTimeMaintenanceBegin(OffsetDateTime timeMaintenanceBegin) {
+        this.timeMaintenanceBegin = timeMaintenanceBegin;
+        return this;
+    }
+
+    /**
      * Get the timeMaintenanceEnd property: The date and time when maintenance will end.
      * 
      * @return the timeMaintenanceEnd value.
      */
     public OffsetDateTime timeMaintenanceEnd() {
         return this.timeMaintenanceEnd;
+    }
+
+    /**
+     * Set the timeMaintenanceEnd property: The date and time when maintenance will end.
+     * 
+     * @param timeMaintenanceEnd the timeMaintenanceEnd value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withTimeMaintenanceEnd(OffsetDateTime timeMaintenanceEnd) {
+        this.timeMaintenanceEnd = timeMaintenanceEnd;
+        return this;
     }
 
     /**
@@ -1128,6 +1209,18 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the actualUsedDataStorageSizeInTbs property: The current amount of storage in use for user and system data,
+     * in terabytes (TB).
+     * 
+     * @param actualUsedDataStorageSizeInTbs the actualUsedDataStorageSizeInTbs value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withActualUsedDataStorageSizeInTbs(Double actualUsedDataStorageSizeInTbs) {
+        this.actualUsedDataStorageSizeInTbs = actualUsedDataStorageSizeInTbs;
+        return this;
+    }
+
+    /**
      * Get the allocatedStorageSizeInTbs property: The amount of storage currently allocated for the database tables and
      * billed for, rounded up.
      * 
@@ -1138,12 +1231,35 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the allocatedStorageSizeInTbs property: The amount of storage currently allocated for the database tables and
+     * billed for, rounded up.
+     * 
+     * @param allocatedStorageSizeInTbs the allocatedStorageSizeInTbs value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withAllocatedStorageSizeInTbs(Double allocatedStorageSizeInTbs) {
+        this.allocatedStorageSizeInTbs = allocatedStorageSizeInTbs;
+        return this;
+    }
+
+    /**
      * Get the apexDetails property: Information about Oracle APEX Application Development.
      * 
      * @return the apexDetails value.
      */
     public ApexDetailsType apexDetails() {
         return this.apexDetails;
+    }
+
+    /**
+     * Set the apexDetails property: Information about Oracle APEX Application Development.
+     * 
+     * @param apexDetails the apexDetails value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withApexDetails(ApexDetailsType apexDetails) {
+        this.apexDetails = apexDetails;
+        return this;
     }
 
     /**
@@ -1157,12 +1273,35 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the availableUpgradeVersions property: List of Oracle Database versions available for a database upgrade. If
+     * there are no version upgrades available, this list is empty.
+     * 
+     * @param availableUpgradeVersions the availableUpgradeVersions value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withAvailableUpgradeVersions(List<String> availableUpgradeVersions) {
+        this.availableUpgradeVersions = availableUpgradeVersions;
+        return this;
+    }
+
+    /**
      * Get the connectionStrings property: The connection string used to connect to the Autonomous Database.
      * 
      * @return the connectionStrings value.
      */
     public ConnectionStringType connectionStrings() {
         return this.connectionStrings;
+    }
+
+    /**
+     * Set the connectionStrings property: The connection string used to connect to the Autonomous Database.
+     * 
+     * @param connectionStrings the connectionStrings value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withConnectionStrings(ConnectionStringType connectionStrings) {
+        this.connectionStrings = connectionStrings;
+        return this;
     }
 
     /**
@@ -1176,12 +1315,35 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the connectionUrls property: The URLs for accessing Oracle Application Express (APEX) and SQL Developer Web
+     * with a browser from a Compute instance within your VCN or that has a direct connection to your VCN.
+     * 
+     * @param connectionUrls the connectionUrls value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withConnectionUrls(ConnectionUrlType connectionUrls) {
+        this.connectionUrls = connectionUrls;
+        return this;
+    }
+
+    /**
      * Get the dataSafeStatus property: Status of the Data Safe registration for this Autonomous Database.
      * 
      * @return the dataSafeStatus value.
      */
     public DataSafeStatusType dataSafeStatus() {
         return this.dataSafeStatus;
+    }
+
+    /**
+     * Set the dataSafeStatus property: Status of the Data Safe registration for this Autonomous Database.
+     * 
+     * @param dataSafeStatus the dataSafeStatus value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withDataSafeStatus(DataSafeStatusType dataSafeStatus) {
+        this.dataSafeStatus = dataSafeStatus;
+        return this;
     }
 
     /**
@@ -1234,12 +1396,75 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the inMemoryAreaInGbs property: The area assigned to In-Memory tables in Autonomous Database.
+     * 
+     * @param inMemoryAreaInGbs the inMemoryAreaInGbs value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withInMemoryAreaInGbs(Integer inMemoryAreaInGbs) {
+        this.inMemoryAreaInGbs = inMemoryAreaInGbs;
+        return this;
+    }
+
+    /**
+     * Get the nextLongTermBackupTimestamp property: The date and time when the next long-term backup would be created.
+     * 
+     * @return the nextLongTermBackupTimestamp value.
+     */
+    public OffsetDateTime nextLongTermBackupTimestamp() {
+        return this.nextLongTermBackupTimestamp;
+    }
+
+    /**
+     * Set the nextLongTermBackupTimestamp property: The date and time when the next long-term backup would be created.
+     * 
+     * @param nextLongTermBackupTimestamp the nextLongTermBackupTimestamp value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withNextLongTermBackupTimestamp(OffsetDateTime nextLongTermBackupTimestamp) {
+        this.nextLongTermBackupTimestamp = nextLongTermBackupTimestamp;
+        return this;
+    }
+
+    /**
+     * Get the longTermBackupSchedule property: Details for the long-term backup schedule.
+     * 
+     * @return the longTermBackupSchedule value.
+     */
+    public LongTermBackUpScheduleDetails longTermBackupSchedule() {
+        return this.longTermBackupSchedule;
+    }
+
+    /**
+     * Set the longTermBackupSchedule property: Details for the long-term backup schedule.
+     * 
+     * @param longTermBackupSchedule the longTermBackupSchedule value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    public AutonomousDatabaseBaseProperties
+        withLongTermBackupSchedule(LongTermBackUpScheduleDetails longTermBackupSchedule) {
+        this.longTermBackupSchedule = longTermBackupSchedule;
+        return this;
+    }
+
+    /**
      * Get the isPreview property: Indicates if the Autonomous Database version is a preview version.
      * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
         return this.isPreview;
+    }
+
+    /**
+     * Set the isPreview property: Indicates if the Autonomous Database version is a preview version.
+     * 
+     * @param isPreview the isPreview value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withIsPreview(Boolean isPreview) {
+        this.isPreview = isPreview;
+        return this;
     }
 
     /**
@@ -1277,6 +1502,17 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the memoryPerOracleComputeUnitInGbs property: The amount of memory (in GBs) enabled per ECPU or OCPU.
+     * 
+     * @param memoryPerOracleComputeUnitInGbs the memoryPerOracleComputeUnitInGbs value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withMemoryPerOracleComputeUnitInGbs(Integer memoryPerOracleComputeUnitInGbs) {
+        this.memoryPerOracleComputeUnitInGbs = memoryPerOracleComputeUnitInGbs;
+        return this;
+    }
+
+    /**
      * Get the openMode property: Indicates the Autonomous Database mode.
      * 
      * @return the openMode value.
@@ -1303,6 +1539,18 @@ public class AutonomousDatabaseBaseProperties {
      */
     public OperationsInsightsStatusType operationsInsightsStatus() {
         return this.operationsInsightsStatus;
+    }
+
+    /**
+     * Set the operationsInsightsStatus property: Status of Operations Insights for this Autonomous Database.
+     * 
+     * @param operationsInsightsStatus the operationsInsightsStatus value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties
+        withOperationsInsightsStatus(OperationsInsightsStatusType operationsInsightsStatus) {
+        this.operationsInsightsStatus = operationsInsightsStatus;
+        return this;
     }
 
     /**
@@ -1335,12 +1583,34 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the privateEndpoint property: The private endpoint for the resource.
+     * 
+     * @param privateEndpoint the privateEndpoint value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withPrivateEndpoint(String privateEndpoint) {
+        this.privateEndpoint = privateEndpoint;
+        return this;
+    }
+
+    /**
      * Get the provisionableCpus property: An array of CPU values that an Autonomous Database can be scaled to.
      * 
      * @return the provisionableCpus value.
      */
     public List<Integer> provisionableCpus() {
         return this.provisionableCpus;
+    }
+
+    /**
+     * Set the provisionableCpus property: An array of CPU values that an Autonomous Database can be scaled to.
+     * 
+     * @param provisionableCpus the provisionableCpus value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withProvisionableCpus(List<Integer> provisionableCpus) {
+        this.provisionableCpus = provisionableCpus;
+        return this;
     }
 
     /**
@@ -1375,12 +1645,34 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the serviceConsoleUrl property: The URL of the Service Console for the Autonomous Database.
+     * 
+     * @param serviceConsoleUrl the serviceConsoleUrl value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withServiceConsoleUrl(String serviceConsoleUrl) {
+        this.serviceConsoleUrl = serviceConsoleUrl;
+        return this;
+    }
+
+    /**
      * Get the sqlWebDeveloperUrl property: The SQL Web Developer URL for the Oracle Autonomous Database.
      * 
      * @return the sqlWebDeveloperUrl value.
      */
     public String sqlWebDeveloperUrl() {
         return this.sqlWebDeveloperUrl;
+    }
+
+    /**
+     * Set the sqlWebDeveloperUrl property: The SQL Web Developer URL for the Oracle Autonomous Database.
+     * 
+     * @param sqlWebDeveloperUrl the sqlWebDeveloperUrl value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withSqlWebDeveloperUrl(String sqlWebDeveloperUrl) {
+        this.sqlWebDeveloperUrl = sqlWebDeveloperUrl;
+        return this;
     }
 
     /**
@@ -1394,6 +1686,18 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the supportedRegionsToCloneTo property: The list of regions that support the creation of an Autonomous
+     * Database clone or an Autonomous Data Guard standby database.
+     * 
+     * @param supportedRegionsToCloneTo the supportedRegionsToCloneTo value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withSupportedRegionsToCloneTo(List<String> supportedRegionsToCloneTo) {
+        this.supportedRegionsToCloneTo = supportedRegionsToCloneTo;
+        return this;
+    }
+
+    /**
      * Get the timeDataGuardRoleChanged property: The date and time the Autonomous Data Guard role was switched for the
      * Autonomous Database.
      * 
@@ -1401,6 +1705,18 @@ public class AutonomousDatabaseBaseProperties {
      */
     public String timeDataGuardRoleChanged() {
         return this.timeDataGuardRoleChanged;
+    }
+
+    /**
+     * Set the timeDataGuardRoleChanged property: The date and time the Autonomous Data Guard role was switched for the
+     * Autonomous Database.
+     * 
+     * @param timeDataGuardRoleChanged the timeDataGuardRoleChanged value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withTimeDataGuardRoleChanged(String timeDataGuardRoleChanged) {
+        this.timeDataGuardRoleChanged = timeDataGuardRoleChanged;
+        return this;
     }
 
     /**
@@ -1414,6 +1730,19 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the timeDeletionOfFreeAutonomousDatabase property: The date and time the Always Free database will be
+     * automatically deleted because of inactivity.
+     * 
+     * @param timeDeletionOfFreeAutonomousDatabase the timeDeletionOfFreeAutonomousDatabase value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties
+        withTimeDeletionOfFreeAutonomousDatabase(String timeDeletionOfFreeAutonomousDatabase) {
+        this.timeDeletionOfFreeAutonomousDatabase = timeDeletionOfFreeAutonomousDatabase;
+        return this;
+    }
+
+    /**
      * Get the timeLocalDataGuardEnabled property: The date and time that Autonomous Data Guard was enabled for an
      * Autonomous Database where the standby was provisioned in the same region as the primary database.
      * 
@@ -1421,6 +1750,18 @@ public class AutonomousDatabaseBaseProperties {
      */
     public String timeLocalDataGuardEnabled() {
         return this.timeLocalDataGuardEnabled;
+    }
+
+    /**
+     * Set the timeLocalDataGuardEnabled property: The date and time that Autonomous Data Guard was enabled for an
+     * Autonomous Database where the standby was provisioned in the same region as the primary database.
+     * 
+     * @param timeLocalDataGuardEnabled the timeLocalDataGuardEnabled value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withTimeLocalDataGuardEnabled(String timeLocalDataGuardEnabled) {
+        this.timeLocalDataGuardEnabled = timeLocalDataGuardEnabled;
+        return this;
     }
 
     /**
@@ -1433,6 +1774,17 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the timeOfLastFailover property: The timestamp of the last failover operation.
+     * 
+     * @param timeOfLastFailover the timeOfLastFailover value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withTimeOfLastFailover(String timeOfLastFailover) {
+        this.timeOfLastFailover = timeOfLastFailover;
+        return this;
+    }
+
+    /**
      * Get the timeOfLastRefresh property: The date and time when last refresh happened.
      * 
      * @return the timeOfLastRefresh value.
@@ -1442,12 +1794,34 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the timeOfLastRefresh property: The date and time when last refresh happened.
+     * 
+     * @param timeOfLastRefresh the timeOfLastRefresh value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withTimeOfLastRefresh(String timeOfLastRefresh) {
+        this.timeOfLastRefresh = timeOfLastRefresh;
+        return this;
+    }
+
+    /**
      * Get the timeOfLastRefreshPoint property: The refresh point timestamp (UTC).
      * 
      * @return the timeOfLastRefreshPoint value.
      */
     public String timeOfLastRefreshPoint() {
         return this.timeOfLastRefreshPoint;
+    }
+
+    /**
+     * Set the timeOfLastRefreshPoint property: The refresh point timestamp (UTC).
+     * 
+     * @param timeOfLastRefreshPoint the timeOfLastRefreshPoint value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withTimeOfLastRefreshPoint(String timeOfLastRefreshPoint) {
+        this.timeOfLastRefreshPoint = timeOfLastRefreshPoint;
+        return this;
     }
 
     /**
@@ -1461,6 +1835,18 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the timeOfLastSwitchover property: The timestamp of the last switchover operation for the Autonomous
+     * Database.
+     * 
+     * @param timeOfLastSwitchover the timeOfLastSwitchover value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withTimeOfLastSwitchover(String timeOfLastSwitchover) {
+        this.timeOfLastSwitchover = timeOfLastSwitchover;
+        return this;
+    }
+
+    /**
      * Get the timeReclamationOfFreeAutonomousDatabase property: The date and time the Always Free database will be
      * stopped because of inactivity.
      * 
@@ -1468,6 +1854,19 @@ public class AutonomousDatabaseBaseProperties {
      */
     public String timeReclamationOfFreeAutonomousDatabase() {
         return this.timeReclamationOfFreeAutonomousDatabase;
+    }
+
+    /**
+     * Set the timeReclamationOfFreeAutonomousDatabase property: The date and time the Always Free database will be
+     * stopped because of inactivity.
+     * 
+     * @param timeReclamationOfFreeAutonomousDatabase the timeReclamationOfFreeAutonomousDatabase value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties
+        withTimeReclamationOfFreeAutonomousDatabase(String timeReclamationOfFreeAutonomousDatabase) {
+        this.timeReclamationOfFreeAutonomousDatabase = timeReclamationOfFreeAutonomousDatabase;
+        return this;
     }
 
     /**
@@ -1480,6 +1879,17 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the usedDataStorageSizeInGbs property: The storage space consumed by Autonomous Database in GBs.
+     * 
+     * @param usedDataStorageSizeInGbs the usedDataStorageSizeInGbs value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withUsedDataStorageSizeInGbs(Integer usedDataStorageSizeInGbs) {
+        this.usedDataStorageSizeInGbs = usedDataStorageSizeInGbs;
+        return this;
+    }
+
+    /**
      * Get the usedDataStorageSizeInTbs property: The amount of storage that has been used, in terabytes.
      * 
      * @return the usedDataStorageSizeInTbs value.
@@ -1489,12 +1899,34 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Set the usedDataStorageSizeInTbs property: The amount of storage that has been used, in terabytes.
+     * 
+     * @param usedDataStorageSizeInTbs the usedDataStorageSizeInTbs value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withUsedDataStorageSizeInTbs(Integer usedDataStorageSizeInTbs) {
+        this.usedDataStorageSizeInTbs = usedDataStorageSizeInTbs;
+        return this;
+    }
+
+    /**
      * Get the ocid property: Database ocid.
      * 
      * @return the ocid value.
      */
     public String ocid() {
         return this.ocid;
+    }
+
+    /**
+     * Set the ocid property: Database ocid.
+     * 
+     * @param ocid the ocid value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    AutonomousDatabaseBaseProperties withOcid(String ocid) {
+        this.ocid = ocid;
+        return this;
     }
 
     /**
@@ -1565,5 +1997,307 @@ public class AutonomousDatabaseBaseProperties {
         if (connectionUrls() != null) {
             connectionUrls().validate();
         }
+        if (longTermBackupSchedule() != null) {
+            longTermBackupSchedule().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataBaseType", this.dataBaseType == null ? null : this.dataBaseType.toString());
+        jsonWriter.writeStringField("adminPassword", this.adminPassword);
+        jsonWriter.writeStringField("autonomousMaintenanceScheduleType",
+            this.autonomousMaintenanceScheduleType == null ? null : this.autonomousMaintenanceScheduleType.toString());
+        jsonWriter.writeStringField("characterSet", this.characterSet);
+        jsonWriter.writeNumberField("computeCount", this.computeCount);
+        jsonWriter.writeStringField("computeModel", this.computeModel == null ? null : this.computeModel.toString());
+        jsonWriter.writeNumberField("cpuCoreCount", this.cpuCoreCount);
+        jsonWriter.writeArrayField("customerContacts", this.customerContacts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("dataStorageSizeInTbs", this.dataStorageSizeInTbs);
+        jsonWriter.writeNumberField("dataStorageSizeInGbs", this.dataStorageSizeInGbs);
+        jsonWriter.writeStringField("dbVersion", this.dbVersion);
+        jsonWriter.writeStringField("dbWorkload", this.dbWorkload == null ? null : this.dbWorkload.toString());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("isAutoScalingEnabled", this.isAutoScalingEnabled);
+        jsonWriter.writeBooleanField("isAutoScalingForStorageEnabled", this.isAutoScalingForStorageEnabled);
+        jsonWriter.writeStringField("peerDbId", this.peerDbId);
+        jsonWriter.writeBooleanField("isLocalDataGuardEnabled", this.isLocalDataGuardEnabled);
+        jsonWriter.writeBooleanField("isMtlsConnectionRequired", this.isMtlsConnectionRequired);
+        jsonWriter.writeBooleanField("isPreviewVersionWithServiceTermsAccepted",
+            this.isPreviewVersionWithServiceTermsAccepted);
+        jsonWriter.writeStringField("licenseModel", this.licenseModel == null ? null : this.licenseModel.toString());
+        jsonWriter.writeStringField("ncharacterSet", this.ncharacterSet);
+        jsonWriter.writeJsonField("scheduledOperations", this.scheduledOperations);
+        jsonWriter.writeStringField("privateEndpointIp", this.privateEndpointIp);
+        jsonWriter.writeStringField("privateEndpointLabel", this.privateEndpointLabel);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("vnetId", this.vnetId);
+        jsonWriter.writeStringField("databaseEdition",
+            this.databaseEdition == null ? null : this.databaseEdition.toString());
+        jsonWriter.writeStringField("autonomousDatabaseId", this.autonomousDatabaseId);
+        jsonWriter.writeJsonField("longTermBackupSchedule", this.longTermBackupSchedule);
+        jsonWriter.writeNumberField("localAdgAutoFailoverMaxDataLossLimit", this.localAdgAutoFailoverMaxDataLossLimit);
+        jsonWriter.writeStringField("openMode", this.openMode == null ? null : this.openMode.toString());
+        jsonWriter.writeStringField("permissionLevel",
+            this.permissionLevel == null ? null : this.permissionLevel.toString());
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeNumberField("backupRetentionPeriodInDays", this.backupRetentionPeriodInDays);
+        jsonWriter.writeArrayField("whitelistedIps", this.whitelistedIps,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutonomousDatabaseBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutonomousDatabaseBaseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutonomousDatabaseBaseProperties.
+     */
+    public static AutonomousDatabaseBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("dataBaseType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Clone".equals(discriminatorValue)) {
+                    return AutonomousDatabaseCloneProperties.fromJson(readerToUse.reset());
+                } else if ("Regular".equals(discriminatorValue)) {
+                    return AutonomousDatabaseProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AutonomousDatabaseBaseProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutonomousDatabaseBaseProperties deserializedAutonomousDatabaseBaseProperties
+                = new AutonomousDatabaseBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataBaseType".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.dataBaseType
+                        = DataBaseType.fromString(reader.getString());
+                } else if ("adminPassword".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.adminPassword = reader.getString();
+                } else if ("autonomousMaintenanceScheduleType".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.autonomousMaintenanceScheduleType
+                        = AutonomousMaintenanceScheduleType.fromString(reader.getString());
+                } else if ("characterSet".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.characterSet = reader.getString();
+                } else if ("computeCount".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.computeCount
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("computeModel".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.computeModel
+                        = ComputeModel.fromString(reader.getString());
+                } else if ("cpuCoreCount".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.cpuCoreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("customerContacts".equals(fieldName)) {
+                    List<CustomerContact> customerContacts
+                        = reader.readArray(reader1 -> CustomerContact.fromJson(reader1));
+                    deserializedAutonomousDatabaseBaseProperties.customerContacts = customerContacts;
+                } else if ("dataStorageSizeInTbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.dataStorageSizeInTbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("dataStorageSizeInGbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.dataStorageSizeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("dbVersion".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.dbVersion = reader.getString();
+                } else if ("dbWorkload".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.dbWorkload
+                        = WorkloadType.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.displayName = reader.getString();
+                } else if ("isAutoScalingEnabled".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.isAutoScalingEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isAutoScalingForStorageEnabled".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.isAutoScalingForStorageEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("peerDbIds".equals(fieldName)) {
+                    List<String> peerDbIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAutonomousDatabaseBaseProperties.peerDbIds = peerDbIds;
+                } else if ("peerDbId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.peerDbId = reader.getString();
+                } else if ("isLocalDataGuardEnabled".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.isLocalDataGuardEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isRemoteDataGuardEnabled".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.isRemoteDataGuardEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("localDisasterRecoveryType".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.localDisasterRecoveryType
+                        = DisasterRecoveryType.fromString(reader.getString());
+                } else if ("localStandbyDb".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.localStandbyDb
+                        = AutonomousDatabaseStandbySummary.fromJson(reader);
+                } else if ("failedDataRecoveryInSeconds".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.failedDataRecoveryInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("isMtlsConnectionRequired".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.isMtlsConnectionRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isPreviewVersionWithServiceTermsAccepted".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.isPreviewVersionWithServiceTermsAccepted
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("licenseModel".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.licenseModel
+                        = LicenseModel.fromString(reader.getString());
+                } else if ("ncharacterSet".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.ncharacterSet = reader.getString();
+                } else if ("lifecycleDetails".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.lifecycleDetails = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.provisioningState
+                        = AzureResourceProvisioningState.fromString(reader.getString());
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.lifecycleState
+                        = AutonomousDatabaseLifecycleState.fromString(reader.getString());
+                } else if ("scheduledOperations".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.scheduledOperations
+                        = ScheduledOperationsType.fromJson(reader);
+                } else if ("privateEndpointIp".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.privateEndpointIp = reader.getString();
+                } else if ("privateEndpointLabel".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.privateEndpointLabel = reader.getString();
+                } else if ("ociUrl".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.ociUrl = reader.getString();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.subnetId = reader.getString();
+                } else if ("vnetId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.vnetId = reader.getString();
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeMaintenanceBegin".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeMaintenanceBegin = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeMaintenanceEnd".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeMaintenanceEnd = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("actualUsedDataStorageSizeInTbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.actualUsedDataStorageSizeInTbs
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("allocatedStorageSizeInTbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.allocatedStorageSizeInTbs
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("apexDetails".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.apexDetails = ApexDetailsType.fromJson(reader);
+                } else if ("availableUpgradeVersions".equals(fieldName)) {
+                    List<String> availableUpgradeVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAutonomousDatabaseBaseProperties.availableUpgradeVersions = availableUpgradeVersions;
+                } else if ("connectionStrings".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.connectionStrings
+                        = ConnectionStringType.fromJson(reader);
+                } else if ("connectionUrls".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.connectionUrls = ConnectionUrlType.fromJson(reader);
+                } else if ("dataSafeStatus".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.dataSafeStatus
+                        = DataSafeStatusType.fromString(reader.getString());
+                } else if ("databaseEdition".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.databaseEdition
+                        = DatabaseEditionType.fromString(reader.getString());
+                } else if ("autonomousDatabaseId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.autonomousDatabaseId = reader.getString();
+                } else if ("inMemoryAreaInGbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.inMemoryAreaInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("nextLongTermBackupTimeStamp".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.nextLongTermBackupTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("longTermBackupSchedule".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.longTermBackupSchedule
+                        = LongTermBackUpScheduleDetails.fromJson(reader);
+                } else if ("isPreview".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.isPreview = reader.getNullable(JsonReader::getBoolean);
+                } else if ("localAdgAutoFailoverMaxDataLossLimit".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.localAdgAutoFailoverMaxDataLossLimit
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("memoryPerOracleComputeUnitInGbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.memoryPerOracleComputeUnitInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("openMode".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.openMode = OpenModeType.fromString(reader.getString());
+                } else if ("operationsInsightsStatus".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.operationsInsightsStatus
+                        = OperationsInsightsStatusType.fromString(reader.getString());
+                } else if ("permissionLevel".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.permissionLevel
+                        = PermissionLevelType.fromString(reader.getString());
+                } else if ("privateEndpoint".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.privateEndpoint = reader.getString();
+                } else if ("provisionableCpus".equals(fieldName)) {
+                    List<Integer> provisionableCpus = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedAutonomousDatabaseBaseProperties.provisionableCpus = provisionableCpus;
+                } else if ("role".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.role = RoleType.fromString(reader.getString());
+                } else if ("serviceConsoleUrl".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.serviceConsoleUrl = reader.getString();
+                } else if ("sqlWebDeveloperUrl".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.sqlWebDeveloperUrl = reader.getString();
+                } else if ("supportedRegionsToCloneTo".equals(fieldName)) {
+                    List<String> supportedRegionsToCloneTo = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAutonomousDatabaseBaseProperties.supportedRegionsToCloneTo = supportedRegionsToCloneTo;
+                } else if ("timeDataGuardRoleChanged".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeDataGuardRoleChanged = reader.getString();
+                } else if ("timeDeletionOfFreeAutonomousDatabase".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeDeletionOfFreeAutonomousDatabase
+                        = reader.getString();
+                } else if ("timeLocalDataGuardEnabled".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeLocalDataGuardEnabled = reader.getString();
+                } else if ("timeOfLastFailover".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeOfLastFailover = reader.getString();
+                } else if ("timeOfLastRefresh".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeOfLastRefresh = reader.getString();
+                } else if ("timeOfLastRefreshPoint".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeOfLastRefreshPoint = reader.getString();
+                } else if ("timeOfLastSwitchover".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeOfLastSwitchover = reader.getString();
+                } else if ("timeReclamationOfFreeAutonomousDatabase".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeReclamationOfFreeAutonomousDatabase
+                        = reader.getString();
+                } else if ("usedDataStorageSizeInGbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.usedDataStorageSizeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("usedDataStorageSizeInTbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.usedDataStorageSizeInTbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("ocid".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.ocid = reader.getString();
+                } else if ("backupRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.backupRetentionPeriodInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("whitelistedIps".equals(fieldName)) {
+                    List<String> whitelistedIps = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAutonomousDatabaseBaseProperties.whitelistedIps = whitelistedIps;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutonomousDatabaseBaseProperties;
+        });
     }
 }

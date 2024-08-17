@@ -6,25 +6,26 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of Vpn-Sites.
  */
 @Fluent
-public final class GetVpnSitesConfigurationRequest {
+public final class GetVpnSitesConfigurationRequest implements JsonSerializable<GetVpnSitesConfigurationRequest> {
     /*
      * List of resource-ids of the vpn-sites for which config is to be downloaded.
      */
-    @JsonProperty(value = "vpnSites")
     private List<String> vpnSites;
 
     /*
      * The sas-url to download the configurations for vpn-sites.
      */
-    @JsonProperty(value = "outputBlobSasUrl", required = true)
     private String outputBlobSasUrl;
 
     /**
@@ -35,7 +36,7 @@ public final class GetVpnSitesConfigurationRequest {
 
     /**
      * Get the vpnSites property: List of resource-ids of the vpn-sites for which config is to be downloaded.
-     *
+     * 
      * @return the vpnSites value.
      */
     public List<String> vpnSites() {
@@ -44,7 +45,7 @@ public final class GetVpnSitesConfigurationRequest {
 
     /**
      * Set the vpnSites property: List of resource-ids of the vpn-sites for which config is to be downloaded.
-     *
+     * 
      * @param vpnSites the vpnSites value to set.
      * @return the GetVpnSitesConfigurationRequest object itself.
      */
@@ -55,7 +56,7 @@ public final class GetVpnSitesConfigurationRequest {
 
     /**
      * Get the outputBlobSasUrl property: The sas-url to download the configurations for vpn-sites.
-     *
+     * 
      * @return the outputBlobSasUrl value.
      */
     public String outputBlobSasUrl() {
@@ -64,7 +65,7 @@ public final class GetVpnSitesConfigurationRequest {
 
     /**
      * Set the outputBlobSasUrl property: The sas-url to download the configurations for vpn-sites.
-     *
+     * 
      * @param outputBlobSasUrl the outputBlobSasUrl value to set.
      * @return the GetVpnSitesConfigurationRequest object itself.
      */
@@ -75,7 +76,7 @@ public final class GetVpnSitesConfigurationRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -87,4 +88,46 @@ public final class GetVpnSitesConfigurationRequest {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GetVpnSitesConfigurationRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("outputBlobSasUrl", this.outputBlobSasUrl);
+        jsonWriter.writeArrayField("vpnSites", this.vpnSites, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetVpnSitesConfigurationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetVpnSitesConfigurationRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GetVpnSitesConfigurationRequest.
+     */
+    public static GetVpnSitesConfigurationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetVpnSitesConfigurationRequest deserializedGetVpnSitesConfigurationRequest
+                = new GetVpnSitesConfigurationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("outputBlobSasUrl".equals(fieldName)) {
+                    deserializedGetVpnSitesConfigurationRequest.outputBlobSasUrl = reader.getString();
+                } else if ("vpnSites".equals(fieldName)) {
+                    List<String> vpnSites = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGetVpnSitesConfigurationRequest.vpnSites = vpnSites;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetVpnSitesConfigurationRequest;
+        });
+    }
 }

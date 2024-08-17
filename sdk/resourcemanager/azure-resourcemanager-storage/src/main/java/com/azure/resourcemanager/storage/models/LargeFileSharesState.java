@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +23,7 @@ public final class LargeFileSharesState extends ExpandableStringEnum<LargeFileSh
 
     /**
      * Creates a new instance of LargeFileSharesState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +32,17 @@ public final class LargeFileSharesState extends ExpandableStringEnum<LargeFileSh
 
     /**
      * Creates or finds a LargeFileSharesState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LargeFileSharesState.
      */
-    @JsonCreator
     public static LargeFileSharesState fromString(String name) {
         return fromString(name, LargeFileSharesState.class);
     }
 
     /**
      * Gets known LargeFileSharesState values.
-     *
+     * 
      * @return known LargeFileSharesState values.
      */
     public static Collection<LargeFileSharesState> values() {

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -27,7 +25,7 @@ public final class ExpirationAction extends ExpandableStringEnum<ExpirationActio
 
     /**
      * Creates a new instance of ExpirationAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +34,17 @@ public final class ExpirationAction extends ExpandableStringEnum<ExpirationActio
 
     /**
      * Creates or finds a ExpirationAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExpirationAction.
      */
-    @JsonCreator
     public static ExpirationAction fromString(String name) {
         return fromString(name, ExpirationAction.class);
     }
 
     /**
      * Gets known ExpirationAction values.
-     *
+     * 
      * @return known ExpirationAction values.
      */
     public static Collection<ExpirationAction> values() {

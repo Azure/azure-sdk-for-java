@@ -5,32 +5,32 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties of an ImmutabilityPolicy of a blob container.
  */
 @Fluent
-public final class ImmutabilityPolicyProperties {
+public final class ImmutabilityPolicyProperties implements JsonSerializable<ImmutabilityPolicyProperties> {
     /*
      * The properties of an ImmutabilityPolicy of a blob container.
      */
-    @JsonProperty(value = "properties")
     private ImmutabilityPolicyProperty innerProperties;
 
     /*
      * ImmutabilityPolicy Etag.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The ImmutabilityPolicy update history of the blob container.
      */
-    @JsonProperty(value = "updateHistory", access = JsonProperty.Access.WRITE_ONLY)
     private List<UpdateHistoryProperty> updateHistory;
 
     /**
@@ -41,7 +41,7 @@ public final class ImmutabilityPolicyProperties {
 
     /**
      * Get the innerProperties property: The properties of an ImmutabilityPolicy of a blob container.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ImmutabilityPolicyProperty innerProperties() {
@@ -50,7 +50,7 @@ public final class ImmutabilityPolicyProperties {
 
     /**
      * Get the etag property: ImmutabilityPolicy Etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -59,7 +59,7 @@ public final class ImmutabilityPolicyProperties {
 
     /**
      * Get the updateHistory property: The ImmutabilityPolicy update history of the blob container.
-     *
+     * 
      * @return the updateHistory value.
      */
     public List<UpdateHistoryProperty> updateHistory() {
@@ -69,7 +69,7 @@ public final class ImmutabilityPolicyProperties {
     /**
      * Get the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
      * since the policy creation, in days.
-     *
+     * 
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
     public Integer immutabilityPeriodSinceCreationInDays() {
@@ -79,7 +79,7 @@ public final class ImmutabilityPolicyProperties {
     /**
      * Set the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
      * since the policy creation, in days.
-     *
+     * 
      * @param immutabilityPeriodSinceCreationInDays the immutabilityPeriodSinceCreationInDays value to set.
      * @return the ImmutabilityPolicyProperties object itself.
      */
@@ -95,7 +95,7 @@ public final class ImmutabilityPolicyProperties {
     /**
      * Get the state property: The ImmutabilityPolicy state of a blob container, possible values include: Locked and
      * Unlocked.
-     *
+     * 
      * @return the state value.
      */
     public ImmutabilityPolicyState state() {
@@ -107,7 +107,7 @@ public final class ImmutabilityPolicyProperties {
      * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
      * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      * cannot be changed with ExtendImmutabilityPolicy API.
-     *
+     * 
      * @return the allowProtectedAppendWrites value.
      */
     public Boolean allowProtectedAppendWrites() {
@@ -119,7 +119,7 @@ public final class ImmutabilityPolicyProperties {
      * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
      * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      * cannot be changed with ExtendImmutabilityPolicy API.
-     *
+     * 
      * @param allowProtectedAppendWrites the allowProtectedAppendWrites value to set.
      * @return the ImmutabilityPolicyProperties object itself.
      */
@@ -137,7 +137,7 @@ public final class ImmutabilityPolicyProperties {
      * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
      * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
      * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
-     *
+     * 
      * @return the allowProtectedAppendWritesAll value.
      */
     public Boolean allowProtectedAppendWritesAll() {
@@ -150,7 +150,7 @@ public final class ImmutabilityPolicyProperties {
      * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
      * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
      * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
-     *
+     * 
      * @param allowProtectedAppendWritesAll the allowProtectedAppendWritesAll value to set.
      * @return the ImmutabilityPolicyProperties object itself.
      */
@@ -164,7 +164,7 @@ public final class ImmutabilityPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -174,5 +174,48 @@ public final class ImmutabilityPolicyProperties {
         if (updateHistory() != null) {
             updateHistory().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImmutabilityPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImmutabilityPolicyProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImmutabilityPolicyProperties.
+     */
+    public static ImmutabilityPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImmutabilityPolicyProperties deserializedImmutabilityPolicyProperties = new ImmutabilityPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedImmutabilityPolicyProperties.innerProperties
+                        = ImmutabilityPolicyProperty.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedImmutabilityPolicyProperties.etag = reader.getString();
+                } else if ("updateHistory".equals(fieldName)) {
+                    List<UpdateHistoryProperty> updateHistory
+                        = reader.readArray(reader1 -> UpdateHistoryProperty.fromJson(reader1));
+                    deserializedImmutabilityPolicyProperties.updateHistory = updateHistory;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImmutabilityPolicyProperties;
+        });
     }
 }

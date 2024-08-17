@@ -5,27 +5,30 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The Storage Account ManagementPolicy properties.
  */
 @Fluent
-public final class ManagementPolicyProperties {
+public final class ManagementPolicyProperties implements JsonSerializable<ManagementPolicyProperties> {
     /*
      * Returns the date and time the ManagementPolicies was last modified.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
-     * The Storage Account ManagementPolicy, in JSON format. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * The Storage Account ManagementPolicy, in JSON format. See more details in:
+     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      */
-    @JsonProperty(value = "policy", required = true)
     private ManagementPolicySchema policy;
 
     /**
@@ -36,7 +39,7 @@ public final class ManagementPolicyProperties {
 
     /**
      * Get the lastModifiedTime property: Returns the date and time the ManagementPolicies was last modified.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -46,7 +49,7 @@ public final class ManagementPolicyProperties {
     /**
      * Get the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     *
+     * 
      * @return the policy value.
      */
     public ManagementPolicySchema policy() {
@@ -56,7 +59,7 @@ public final class ManagementPolicyProperties {
     /**
      * Set the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the ManagementPolicyProperties object itself.
      */
@@ -67,7 +70,7 @@ public final class ManagementPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -81,4 +84,44 @@ public final class ManagementPolicyProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagementPolicyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("policy", this.policy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementPolicyProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagementPolicyProperties.
+     */
+    public static ManagementPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementPolicyProperties deserializedManagementPolicyProperties = new ManagementPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policy".equals(fieldName)) {
+                    deserializedManagementPolicyProperties.policy = ManagementPolicySchema.fromJson(reader);
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedManagementPolicyProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementPolicyProperties;
+        });
+    }
 }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -31,7 +29,7 @@ public final class PrivateEndpointServiceConnectionStatus
 
     /**
      * Creates a new instance of PrivateEndpointServiceConnectionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +38,17 @@ public final class PrivateEndpointServiceConnectionStatus
 
     /**
      * Creates or finds a PrivateEndpointServiceConnectionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointServiceConnectionStatus.
      */
-    @JsonCreator
     public static PrivateEndpointServiceConnectionStatus fromString(String name) {
         return fromString(name, PrivateEndpointServiceConnectionStatus.class);
     }
 
     /**
      * Gets known PrivateEndpointServiceConnectionStatus values.
-     *
+     * 
      * @return known PrivateEndpointServiceConnectionStatus values.
      */
     public static Collection<PrivateEndpointServiceConnectionStatus> values() {

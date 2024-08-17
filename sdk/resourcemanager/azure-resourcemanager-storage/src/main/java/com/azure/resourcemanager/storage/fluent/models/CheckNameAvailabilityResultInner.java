@@ -5,30 +5,33 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.Reason;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The CheckNameAvailability operation response.
  */
 @Immutable
-public final class CheckNameAvailabilityResultInner {
+public final class CheckNameAvailabilityResultInner implements JsonSerializable<CheckNameAvailabilityResultInner> {
     /*
-     * Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already been taken or is invalid and cannot be used.
+     * Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available.
+     * If false, the name has already been taken or is invalid and cannot be used.
      */
-    @JsonProperty(value = "nameAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;
 
     /*
-     * Gets the reason that a storage account name could not be used. The Reason element is only returned if NameAvailable is false.
+     * Gets the reason that a storage account name could not be used. The Reason element is only returned if
+     * NameAvailable is false.
      */
-    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private Reason reason;
 
     /*
      * Gets an error message explaining the Reason value in more detail.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
@@ -72,5 +75,46 @@ public final class CheckNameAvailabilityResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameAvailabilityResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameAvailabilityResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckNameAvailabilityResultInner.
+     */
+    public static CheckNameAvailabilityResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameAvailabilityResultInner deserializedCheckNameAvailabilityResultInner
+                = new CheckNameAvailabilityResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResultInner.nameAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResultInner.reason = Reason.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResultInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameAvailabilityResultInner;
+        });
     }
 }

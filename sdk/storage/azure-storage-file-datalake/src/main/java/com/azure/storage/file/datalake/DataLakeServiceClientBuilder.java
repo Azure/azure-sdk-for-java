@@ -103,6 +103,16 @@ public class DataLakeServiceClientBuilder implements
         blobServiceClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
     }
 
+    private DataLakeServiceVersion getServiceVersion() {
+        return version != null ? version : DataLakeServiceVersion.getLatest();
+    }
+
+    private HttpPipeline constructPipeline() {
+        return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint, retryOptions, coreRetryOptions,
+            logOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+    }
+
     /**
      * @return a {@link DataLakeServiceClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.
@@ -110,7 +120,10 @@ public class DataLakeServiceClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeServiceClient buildClient() {
-        return new DataLakeServiceClient(buildAsyncClient(), blobServiceClientBuilder.buildClient());
+        DataLakeServiceAsyncClient asyncClient = buildAsyncClient();
+        return new DataLakeServiceClient(asyncClient, blobServiceClientBuilder.buildClient(),
+            asyncClient.getHttpPipeline(), endpoint, getServiceVersion(), accountName, azureSasCredential,
+            tokenCredential != null);
     }
 
     /**
@@ -125,14 +138,8 @@ public class DataLakeServiceClientBuilder implements
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Data Lake Service Client cannot be accessed "
                 + "anonymously. Please provide a form of authentication"));
         }
-        DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
-
-        return new DataLakeServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName,
+        return new DataLakeServiceAsyncClient(constructPipeline(), endpoint, getServiceVersion(), accountName,
             blobServiceClientBuilder.buildAsyncClient(), azureSasCredential, tokenCredential != null);
     }
 

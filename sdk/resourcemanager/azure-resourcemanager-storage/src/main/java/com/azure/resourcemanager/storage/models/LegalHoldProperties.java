@@ -5,31 +5,33 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The LegalHold property of a blob container.
  */
 @Fluent
-public final class LegalHoldProperties {
+public final class LegalHoldProperties implements JsonSerializable<LegalHoldProperties> {
     /*
-     * The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
+     * The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold
+     * public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum of
+     * 1000 blob containers with hasLegalHold=true for a given account.
      */
-    @JsonProperty(value = "hasLegalHold", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasLegalHold;
 
     /*
      * The list of LegalHold tags of a blob container.
      */
-    @JsonProperty(value = "tags")
     private List<TagProperty> tags;
 
     /*
      * Protected append blob writes history.
      */
-    @JsonProperty(value = "protectedAppendWritesHistory")
     private ProtectedAppendWritesHistory protectedAppendWritesHistory;
 
     /**
@@ -42,7 +44,7 @@ public final class LegalHoldProperties {
      * Get the hasLegalHold property: The hasLegalHold public property is set to true by SRP if there are at least one
      * existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared
      * out. There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
-     *
+     * 
      * @return the hasLegalHold value.
      */
     public Boolean hasLegalHold() {
@@ -51,7 +53,7 @@ public final class LegalHoldProperties {
 
     /**
      * Get the tags property: The list of LegalHold tags of a blob container.
-     *
+     * 
      * @return the tags value.
      */
     public List<TagProperty> tags() {
@@ -60,7 +62,7 @@ public final class LegalHoldProperties {
 
     /**
      * Set the tags property: The list of LegalHold tags of a blob container.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the LegalHoldProperties object itself.
      */
@@ -71,7 +73,7 @@ public final class LegalHoldProperties {
 
     /**
      * Get the protectedAppendWritesHistory property: Protected append blob writes history.
-     *
+     * 
      * @return the protectedAppendWritesHistory value.
      */
     public ProtectedAppendWritesHistory protectedAppendWritesHistory() {
@@ -80,7 +82,7 @@ public final class LegalHoldProperties {
 
     /**
      * Set the protectedAppendWritesHistory property: Protected append blob writes history.
-     *
+     * 
      * @param protectedAppendWritesHistory the protectedAppendWritesHistory value to set.
      * @return the LegalHoldProperties object itself.
      */
@@ -92,7 +94,7 @@ public final class LegalHoldProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -102,5 +104,48 @@ public final class LegalHoldProperties {
         if (protectedAppendWritesHistory() != null) {
             protectedAppendWritesHistory().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tags", this.tags, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("protectedAppendWritesHistory", this.protectedAppendWritesHistory);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LegalHoldProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LegalHoldProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LegalHoldProperties.
+     */
+    public static LegalHoldProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LegalHoldProperties deserializedLegalHoldProperties = new LegalHoldProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hasLegalHold".equals(fieldName)) {
+                    deserializedLegalHoldProperties.hasLegalHold = reader.getNullable(JsonReader::getBoolean);
+                } else if ("tags".equals(fieldName)) {
+                    List<TagProperty> tags = reader.readArray(reader1 -> TagProperty.fromJson(reader1));
+                    deserializedLegalHoldProperties.tags = tags;
+                } else if ("protectedAppendWritesHistory".equals(fieldName)) {
+                    deserializedLegalHoldProperties.protectedAppendWritesHistory
+                        = ProtectedAppendWritesHistory.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLegalHoldProperties;
+        });
     }
 }

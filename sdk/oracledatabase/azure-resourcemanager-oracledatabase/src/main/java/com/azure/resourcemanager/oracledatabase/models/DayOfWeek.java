@@ -6,17 +6,20 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * DayOfWeek resource properties.
  */
 @Fluent
-public final class DayOfWeek {
+public final class DayOfWeek implements JsonSerializable<DayOfWeek> {
     /*
      * Name of the day of the week.
      */
-    @JsonProperty(value = "name", required = true)
     private DayOfWeekName name;
 
     /**
@@ -58,4 +61,41 @@ public final class DayOfWeek {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DayOfWeek.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DayOfWeek from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DayOfWeek if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DayOfWeek.
+     */
+    public static DayOfWeek fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DayOfWeek deserializedDayOfWeek = new DayOfWeek();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDayOfWeek.name = DayOfWeekName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDayOfWeek;
+        });
+    }
 }

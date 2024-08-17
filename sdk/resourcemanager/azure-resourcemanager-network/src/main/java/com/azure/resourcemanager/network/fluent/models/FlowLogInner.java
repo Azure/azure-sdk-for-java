@@ -6,11 +6,15 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
+import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.models.TrafficAnalyticsProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -21,20 +25,32 @@ public final class FlowLogInner extends Resource {
     /*
      * Properties of the flow log.
      */
-    @JsonProperty(value = "properties")
     private FlowLogPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * FlowLog resource Managed Identity
+     */
+    private ManagedServiceIdentity identity;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of FlowLogInner class.
@@ -61,6 +77,26 @@ public final class FlowLogInner extends Resource {
     }
 
     /**
+     * Get the identity property: FlowLog resource Managed Identity.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: FlowLog resource Managed Identity.
+     * 
+     * @param identity the identity value to set.
+     * @return the FlowLogInner object itself.
+     */
+    public FlowLogInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      * 
      * @return the id value.
@@ -78,6 +114,26 @@ public final class FlowLogInner extends Resource {
     public FlowLogInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -263,5 +319,64 @@ public final class FlowLogInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FlowLogInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FlowLogInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FlowLogInner.
+     */
+    public static FlowLogInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FlowLogInner deserializedFlowLogInner = new FlowLogInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFlowLogInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFlowLogInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedFlowLogInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFlowLogInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFlowLogInner.innerProperties = FlowLogPropertiesFormat.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedFlowLogInner.etag = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedFlowLogInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedFlowLogInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFlowLogInner;
+        });
     }
 }

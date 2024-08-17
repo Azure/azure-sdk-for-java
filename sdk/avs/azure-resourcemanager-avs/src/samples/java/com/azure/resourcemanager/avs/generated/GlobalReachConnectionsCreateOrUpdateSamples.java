@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for GlobalReachConnections CreateOrUpdate. */
+/**
+ * Samples for GlobalReachConnections CreateOrUpdate.
+ */
 public final class GlobalReachConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/GlobalReachConnections_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/
+     * GlobalReachConnections_CreateOrUpdate.json
      */
     /**
      * Sample code: GlobalReachConnections_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void globalReachConnectionsCreateOrUpdate(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .globalReachConnections()
+        manager.globalReachConnections()
             .define("connection1")
             .withExistingPrivateCloud("group1", "cloud1")
             .withAuthorizationKey("01010101-0101-0101-0101-010101010101")

@@ -1,6 +1,6 @@
 # Release History
 
-## 12.23.0-beta.2 (Unreleased)
+## 12.24.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,29 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.24.0-beta.1 (2024-08-06)
+
+### Features Added
+- Added support for token-based authentication for all APIs.
+- Added support for paid bursting on premium file share accounts.
+- Added support for binary format for file permissions.
+- Added ability to retrieve SAS string to sign for debugging purposes.
+- Added support for service version 2024-11-04.
+
+## 12.23.0 (2024-07-18)
+
+### Features Added
+- Added support for snapshot management on NFS shares.
+- Added authorization error details in responses.
+- Added support for service version 2024-08-04.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-storage-common` from `12.25.1` to version `12.26.0`.
 
 ## 12.23.0-beta.1 (2024-06-11)
 
@@ -595,7 +618,7 @@ demonstrate the new API.
 - Added file smb properties and file permission parameters to create APIs on sync and async File and Directory clients.
 
 ## 12.0.0-preview.2 (2019-08-08)
-Version 12.0.0-preview.2 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+Version 12.0.0-preview.2 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://aka.ms/azsdk/guide/java).
 
 For details on the Azure SDK for Java (August 2019 Preview) release, you can refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html).
 

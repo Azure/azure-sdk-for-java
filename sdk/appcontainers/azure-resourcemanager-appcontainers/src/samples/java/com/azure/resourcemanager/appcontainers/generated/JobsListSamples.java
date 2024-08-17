@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JobsListSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Jobs_ListBySubscription.json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Jobs_ListBySubscription.json
      */
     /**
      * Sample code: List Container Apps Jobs by subscription.

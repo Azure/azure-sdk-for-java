@@ -24,7 +24,7 @@ public final class ChangeDataCapturesListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"folder\":{\"name\":\"icuc\"},\"description\":\"lhdwmqmdivx\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"qpczcimpdjn\"},\"linkedServiceType\":\"w\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{},{},{}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"gjptabdyvjhant\"},\"linkedServiceType\":\"zkiowzifhl\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{}]},\"dataMapperMappings\":[{}],\"relationships\":[\"datadhxopjvqgwr\",\"datacpatpxrwsqfnuqeh\",\"dataypixghahz\"]},{\"targetEntities\":[{},{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"ciewbywblgja\"},\"linkedServiceType\":\"ggvxjwevnrknb\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{},{}]},\"dataMapperMappings\":[{}],\"relationships\":[\"datawqvu\"]}],\"policy\":{\"mode\":\"jctwtgozaivfa\",\"recurrence\":{\"frequency\":\"Second\",\"interval\":1938405349}},\"allowVNetOverride\":true,\"status\":\"pyllswjzhsfuvo\"},\"name\":\"h\",\"type\":\"lnb\",\"etag\":\"pehjgeqfpzh\",\"\":{\"lqt\":\"datalbziud\",\"rpzubem\":\"datacrverpvyusxx\",\"mqhujsb\":\"datadpryvnr\"},\"id\":\"bauljmnp\"}]}";
+            = "{\"value\":[{\"properties\":{\"folder\":{\"name\":\"mlaile\"},\"description\":\"usiv\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"jwmdtbx\"},\"linkedServiceType\":\"omc\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{}]}},{\"sourceEntities\":[{},{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"fwzqaelxd\"},\"linkedServiceType\":\"dfsteouzoglvt\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{},{}]}},{\"sourceEntities\":[{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"zrqkgibpeh\"},\"linkedServiceType\":\"ctzcm\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{},{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"bwsdoaypixry\"},\"linkedServiceType\":\"lbzxyejoxd\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{}]},\"dataMapperMappings\":[{},{},{}],\"relationships\":[\"datanptbpiccriqhiwy\"]},{\"targetEntities\":[{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"fhlmgpar\"},\"linkedServiceType\":\"rgwmge\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{}]},\"dataMapperMappings\":[{}],\"relationships\":[\"datavdryxouqwt\"]},{\"targetEntities\":[{},{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"awxslstekbbqq\"},\"linkedServiceType\":\"psxycvoexbx\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{},{}]},\"dataMapperMappings\":[{}],\"relationships\":[\"databracgmnelozzfwy\"]}],\"policy\":{\"mode\":\"dutfktm\",\"recurrence\":{\"frequency\":\"Hour\",\"interval\":1329023766}},\"allowVNetOverride\":false,\"status\":\"trkesdfujfpnwfz\"},\"name\":\"lqmsybvjfnuyoyd\",\"type\":\"fknnlasfbpjyvu\",\"etag\":\"exlpmbtmc\",\"\":{\"yexamsgfvuffdvuk\":\"databp\",\"wxc\":\"dataykmdxnrgmjpcke\"},\"id\":\"ualb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,31 +34,31 @@ public final class ChangeDataCapturesListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ChangeDataCaptureResource> response
-            = manager.changeDataCaptures().listByFactory("xpcma", "ao", com.azure.core.util.Context.NONE);
+            = manager.changeDataCaptures().listByFactory("stybom", "yjfjsseem", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bauljmnp", response.iterator().next().id());
-        Assertions.assertEquals("icuc", response.iterator().next().folder().name());
-        Assertions.assertEquals("lhdwmqmdivx", response.iterator().next().description());
-        Assertions.assertEquals("qpczcimpdjn",
+        Assertions.assertEquals("ualb", response.iterator().next().id());
+        Assertions.assertEquals("mlaile", response.iterator().next().folder().name());
+        Assertions.assertEquals("usiv", response.iterator().next().description());
+        Assertions.assertEquals("jwmdtbx",
             response.iterator().next().sourceConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("w",
+        Assertions.assertEquals("omc",
             response.iterator().next().sourceConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             response.iterator().next().sourceConnectionsInfo().get(0).connection().type());
         Assertions.assertEquals(true,
             response.iterator().next().sourceConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("gjptabdyvjhant",
+        Assertions.assertEquals("bwsdoaypixry",
             response.iterator().next().targetConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("zkiowzifhl",
+        Assertions.assertEquals("lbzxyejoxd",
             response.iterator().next().targetConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             response.iterator().next().targetConnectionsInfo().get(0).connection().type());
         Assertions.assertEquals(false,
             response.iterator().next().targetConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("jctwtgozaivfa", response.iterator().next().policy().mode());
-        Assertions.assertEquals(FrequencyType.SECOND, response.iterator().next().policy().recurrence().frequency());
-        Assertions.assertEquals(1938405349, response.iterator().next().policy().recurrence().interval());
-        Assertions.assertEquals(true, response.iterator().next().allowVNetOverride());
-        Assertions.assertEquals("pyllswjzhsfuvo", response.iterator().next().status());
+        Assertions.assertEquals("dutfktm", response.iterator().next().policy().mode());
+        Assertions.assertEquals(FrequencyType.HOUR, response.iterator().next().policy().recurrence().frequency());
+        Assertions.assertEquals(1329023766, response.iterator().next().policy().recurrence().interval());
+        Assertions.assertEquals(false, response.iterator().next().allowVNetOverride());
+        Assertions.assertEquals("trkesdfujfpnwfz", response.iterator().next().status());
     }
 }

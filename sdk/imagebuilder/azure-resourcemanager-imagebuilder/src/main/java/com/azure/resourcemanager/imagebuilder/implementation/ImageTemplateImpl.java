@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.imagebuilder.fluent.models.ImageTemplateInner;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplate;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplateAutoRun;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateCustomizer;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
@@ -126,6 +127,19 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         return this.innerModel().exactStagingResourceGroup();
     }
 
+    public ImageTemplateAutoRun autoRun() {
+        return this.innerModel().autoRun();
+    }
+
+    public Map<String, String> managedResourceTags() {
+        Map<String, String> inner = this.innerModel().managedResourceTags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -158,13 +172,15 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
     }
 
     public ImageTemplate create() {
-        this.innerObject = serviceManager.serviceClient().getVirtualMachineImageTemplates()
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineImageTemplates()
             .createOrUpdate(resourceGroupName, imageTemplateName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ImageTemplate create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVirtualMachineImageTemplates()
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineImageTemplates()
             .createOrUpdate(resourceGroupName, imageTemplateName, this.innerModel(), context);
         return this;
     }
@@ -181,14 +197,16 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
     }
 
     public ImageTemplate apply() {
-        this.innerObject = serviceManager.serviceClient().getVirtualMachineImageTemplates().update(resourceGroupName,
-            imageTemplateName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineImageTemplates()
+            .update(resourceGroupName, imageTemplateName, updateParameters, Context.NONE);
         return this;
     }
 
     public ImageTemplate apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVirtualMachineImageTemplates().update(resourceGroupName,
-            imageTemplateName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineImageTemplates()
+            .update(resourceGroupName, imageTemplateName, updateParameters, context);
         return this;
     }
 
@@ -201,14 +219,18 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
     }
 
     public ImageTemplate refresh() {
-        this.innerObject = serviceManager.serviceClient().getVirtualMachineImageTemplates()
-            .getByResourceGroupWithResponse(resourceGroupName, imageTemplateName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineImageTemplates()
+            .getByResourceGroupWithResponse(resourceGroupName, imageTemplateName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ImageTemplate refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVirtualMachineImageTemplates()
-            .getByResourceGroupWithResponse(resourceGroupName, imageTemplateName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineImageTemplates()
+            .getByResourceGroupWithResponse(resourceGroupName, imageTemplateName, context)
+            .getValue();
         return this;
     }
 
@@ -300,6 +322,16 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
 
     public ImageTemplateImpl withStagingResourceGroup(String stagingResourceGroup) {
         this.innerModel().withStagingResourceGroup(stagingResourceGroup);
+        return this;
+    }
+
+    public ImageTemplateImpl withAutoRun(ImageTemplateAutoRun autoRun) {
+        this.innerModel().withAutoRun(autoRun);
+        return this;
+    }
+
+    public ImageTemplateImpl withManagedResourceTags(Map<String, String> managedResourceTags) {
+        this.innerModel().withManagedResourceTags(managedResourceTags);
         return this;
     }
 

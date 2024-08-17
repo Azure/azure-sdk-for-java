@@ -16,6 +16,7 @@ import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdateP
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseWalletFile;
 import com.azure.resourcemanager.oracledatabase.models.GenerateAutonomousDatabaseWalletDetails;
 import com.azure.resourcemanager.oracledatabase.models.PeerDbDetails;
+import com.azure.resourcemanager.oracledatabase.models.RestoreAutonomousDatabaseDetails;
 import java.util.Collections;
 import java.util.Map;
 
@@ -169,6 +170,22 @@ public final class AutonomousDatabaseImpl
 
     public AutonomousDatabaseWalletFile generateWallet(GenerateAutonomousDatabaseWalletDetails body) {
         return serviceManager.autonomousDatabases().generateWallet(resourceGroupName, autonomousdatabasename, body);
+    }
+
+    public AutonomousDatabase restore(RestoreAutonomousDatabaseDetails body) {
+        return serviceManager.autonomousDatabases().restore(resourceGroupName, autonomousdatabasename, body);
+    }
+
+    public AutonomousDatabase restore(RestoreAutonomousDatabaseDetails body, Context context) {
+        return serviceManager.autonomousDatabases().restore(resourceGroupName, autonomousdatabasename, body, context);
+    }
+
+    public AutonomousDatabase shrink() {
+        return serviceManager.autonomousDatabases().shrink(resourceGroupName, autonomousdatabasename);
+    }
+
+    public AutonomousDatabase shrink(Context context) {
+        return serviceManager.autonomousDatabases().shrink(resourceGroupName, autonomousdatabasename, context);
     }
 
     public AutonomousDatabase switchover(PeerDbDetails body) {

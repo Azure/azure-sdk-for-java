@@ -16,7 +16,8 @@ import java.util.Arrays;
  */
 public final class TriggerRunsQueryByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_QueryByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * TriggerRuns_QueryByFactory.json
      */
     /**
      * Sample code: TriggerRuns_QueryByFactory.

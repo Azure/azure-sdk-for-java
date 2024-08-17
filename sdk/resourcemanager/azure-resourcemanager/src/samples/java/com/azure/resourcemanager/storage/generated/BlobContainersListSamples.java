@@ -11,7 +11,8 @@ import com.azure.resourcemanager.storage.models.ListContainersInclude;
  */
 public final class BlobContainersListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/BlobContainersList.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/BlobContainersList.json
      */
     /**
      * Sample code: ListContainers.
@@ -27,7 +28,9 @@ public final class BlobContainersListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/DeletedBlobContainersList.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/DeletedBlobContainersList.
+     * json
      */
     /**
      * Sample code: ListDeletedContainers.

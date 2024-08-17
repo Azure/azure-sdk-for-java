@@ -52,7 +52,6 @@ extends:
   parameters:
     ServiceDirectory: identity
     TimeoutInMinutes: 90
-    EnableBatchRelease: true
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
       - name: azure-identity

@@ -39,7 +39,7 @@ import reactor.core.publisher.Mono;
 public final class DataFlowDebugSessionsAddDataFlowWithResponseMockTests {
     @Test
     public void testAddDataFlowWithResponse() throws Exception {
-        String responseStr = "{\"jobVersion\":\"cs\"}";
+        String responseStr = "{\"jobVersion\":\"pbfxvlacllteuksg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -49,87 +49,121 @@ public final class DataFlowDebugSessionsAddDataFlowWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AddDataFlowToDebugSessionResponse response = manager.dataFlowDebugSessions()
-            .addDataFlowWithResponse("jqzoabmuymaf", "ytbmfnkmcq",
-                new DataFlowDebugPackage().withSessionId("f")
-                    .withDataFlow(new DataFlowDebugResource().withName("giwzzgaxi")
-                        .withProperties(new DataFlow().withDescription("ktnadjz")
-                            .withAnnotations(
-                                Arrays.asList("datajlfyum", "datalntyilsiqdunkzad", "datadiqbtfam", "databkhqdf"))
-                            .withFolder(new DataFlowFolder().withName("hcpijri"))))
-                    .withDataFlows(
-                        Arrays.asList(new DataFlowDebugResource().withName("ov")
-                            .withProperties(new DataFlow().withDescription("il")
-                                .withAnnotations(Arrays.asList("datacptthwmuyqgbma"))
-                                .withFolder(new DataFlowFolder().withName("trvcbwt")))))
-                    .withDatasets(Arrays.asList(new DatasetDebugResource()
-                        .withName("mcuuztrrmsjr")
-                        .withProperties(new Dataset()
-                            .withDescription("pnbfvplztovpikik")
-                            .withStructure("datavuk")
-                            .withSchema("dataeejxqoiozap")
-                            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("xuytalrzrpkmv")
-                                .withParameters(mapOf("kfvmmszwqwthuviq", "datawhw", "czn", "datagbsdvbrz",
-                                    "yvllkskvnr", "datasrttfral")))
-                            .withParameters(mapOf("rxrkpy", new ParameterSpecification().withType(ParameterType.BOOL),
-                                "kvwtphdkdzjdrijo", new ParameterSpecification().withType(ParameterType.INT), "nwnx",
-                                new ParameterSpecification().withType(ParameterType.FLOAT)))
-                            .withAnnotations(Arrays.asList("datacoemx", "datalhqgqjrs", "datanfyzl"))
-                            .withFolder(new DatasetFolder().withName("kvpvdwylg"))
-                            .withAdditionalProperties(mapOf("type", "fbq")))))
-                    .withLinkedServices(Arrays.asList(
-                        new LinkedServiceDebugResource().withName("vbxxtgyadifves")
-                            .withProperties(new LinkedService()
-                                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("xnzerrfaumpgjuls")
-                                    .withParameters(mapOf("lpisfkd", "datajmgfmurrg", "pxlskjtdcgwuyx", "datakgrj",
-                                        "ysqwoi", "datacihtonesnurshfzk")))
-                                .withDescription("bqxbu")
+            .addDataFlowWithResponse("bfbzhczyhtj", "tzlflqpanceow",
+                new DataFlowDebugPackage().withSessionId("qzxluozmedaqpqu")
+                    .withDataFlow(new DataFlowDebugResource().withName("jzjjrhv")
+                        .withProperties(new DataFlow().withDescription("mruxebslaus")
+                            .withAnnotations(Arrays.asList("datatctiso"))
+                            .withFolder(new DataFlowFolder().withName("fyggbac"))))
+                    .withDataFlows(Arrays.asList(
+                        new DataFlowDebugResource().withName("blvpwuqqvmfuuh")
+                            .withProperties(new DataFlow().withDescription("tmbbjil")
+                                .withAnnotations(Arrays.asList("datactykc", "dataksvflurrfnlhlfv"))
+                                .withFolder(new DataFlowFolder().withName("hy"))),
+                        new DataFlowDebugResource().withName("fpemcfhxk")
+                            .withProperties(new DataFlow().withDescription("tshgcrcxam")
+                                .withAnnotations(Arrays.asList("datapzvvrfplkemvvl", "dataezyishi"))
+                                .withFolder(new DataFlowFolder().withName("wplyv"))),
+                        new DataFlowDebugResource().withName("lyaelv")
+                            .withProperties(new DataFlow().withDescription("jvilazop")
+                                .withAnnotations(Arrays.asList("databewbxaufo", "datahmdpggaktugephq", "dataoc"))
+                                .withFolder(new DataFlowFolder().withName("omqwfwtwjzzyiib")))))
+                    .withDatasets(Arrays.asList(
+                        new DatasetDebugResource().withName("vairau")
+                            .withProperties(new Dataset().withDescription("cta")
+                                .withStructure("datadj")
+                                .withSchema("dataas")
+                                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("jwtyvvkn")
+                                    .withParameters(mapOf("uojnikwzlowusa", "datajybtwgdlfg", "tdf", "datadmjiz")))
+                                .withParameters(mapOf("jce", new ParameterSpecification().withType(ParameterType.FLOAT),
+                                    "ays", new ParameterSpecification().withType(ParameterType.STRING), "pavutiszwycle",
+                                    new ParameterSpecification().withType(ParameterType.BOOL)))
+                                .withAnnotations(Arrays.asList("databjmwetfmpzamq", "datacitlyyphtdwh",
+                                    "datawxhvspumokmyms", "dataatpvebxesucr"))
+                                .withFolder(new DatasetFolder().withName("qxyowwrbxe"))
+                                .withAdditionalProperties(mapOf("type", "Dataset"))),
+                        new DatasetDebugResource().withName("xjvsqzchysqy")
+                            .withProperties(new Dataset().withDescription("fbmqgimwi")
+                                .withStructure("dataphd")
+                                .withSchema("datawfajajpojzazzaks")
+                                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("twnhpcfsqdzi")
+                                    .withParameters(mapOf("sa", "datak", "vinvryxwzxj", "dataevnerpyzuu")))
+                                .withParameters(mapOf("ei", new ParameterSpecification().withType(ParameterType.BOOL),
+                                    "ymdxwok", new ParameterSpecification().withType(ParameterType.BOOL), "aihgiglkins",
+                                    new ParameterSpecification().withType(ParameterType.BOOL)))
+                                .withAnnotations(Arrays.asList("datagabhpfpvadyx", "datacc", "datahg"))
+                                .withFolder(new DatasetFolder().withName("hzvrqbzlmvwuf"))
+                                .withAdditionalProperties(mapOf("type", "Dataset"))),
+                        new DatasetDebugResource().withName("corydjsaki")
+                            .withProperties(new Dataset().withDescription("sqmikljc")
+                                .withStructure("dataot")
+                                .withSchema("dataxlpqfxyyws")
+                                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("rxvjvwkzaqqkq")
+                                    .withParameters(mapOf("mgxunldbkuqcnji", "datayzhmfuksqiq")))
                                 .withParameters(
-                                    mapOf("ebhfhvpopctw", new ParameterSpecification().withType(ParameterType.FLOAT),
-                                        "jl", new ParameterSpecification().withType(ParameterType.SECURE_STRING),
-                                        "yaxnsfwsfdeqp", new ParameterSpecification().withType(ParameterType.STRING),
-                                        "hymyim", new ParameterSpecification().withType(ParameterType.FLOAT)))
-                                .withAnnotations(
-                                    Arrays.asList("dataolerxdeuckwnwbh", "datatevnpqtjejqkz", "datawwyrrttsp"))
-                                .withAdditionalProperties(mapOf("type", "oosq"))),
-                        new LinkedServiceDebugResource().withName("pthnkjades")
-                            .withProperties(new LinkedService()
-                                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("c")
-                                    .withParameters(mapOf("jxthsqlxsx", "datakareusxbcxhytkiq", "xegexrzzpcuas",
-                                        "datagzcjie", "uxtkiqcrhgtir", "dataaobapfxjedpvw")))
-                                .withDescription("bpdsxgxnnj")
-                                .withParameters(mapOf("t", new ParameterSpecification().withType(ParameterType.BOOL)))
-                                .withAnnotations(Arrays.asList("datalykelxpyzpqh", "datacwdiiecptcd"))
-                                .withAdditionalProperties(mapOf("type", "jwdfowjva"))),
-                        new LinkedServiceDebugResource().withName("fsmkfxahfvfpmztb")
-                            .withProperties(
-                                new LinkedService()
-                                    .withConnectVia(
-                                        new IntegrationRuntimeReference().withReferenceName("pbdmqhg")
-                                            .withParameters(mapOf("tjqbhenpfqhupbty", "dataxexvdlivlgu", "lmfrvgckjou",
-                                                "datawobydi")))
-                                    .withDescription("hrefopdc")
-                                    .withParameters(mapOf("ilfgdngczk",
-                                        new ParameterSpecification().withType(ParameterType.ARRAY), "gearrrbll",
-                                        new ParameterSpecification().withType(ParameterType.SECURE_STRING), "okkgutpqn",
-                                        new ParameterSpecification().withType(ParameterType.FLOAT)))
-                                    .withAnnotations(Arrays.asList("datajdofyhookx"))
-                                    .withAdditionalProperties(mapOf("type", "xs")))))
+                                    mapOf("bjkstvbmfnjuzvw", new ParameterSpecification().withType(ParameterType.BOOL),
+                                        "wyyyjage", new ParameterSpecification().withType(ParameterType.INT)))
+                                .withAnnotations(Arrays.asList("datahxjwiggca", "datamkoxpay", "datazqgsaegaah"))
+                                .withFolder(new DatasetFolder().withName("rdxhgrg"))
+                                .withAdditionalProperties(mapOf("type", "Dataset"))),
+                        new DatasetDebugResource().withName("qkkwzbgbwwop")
+                            .withProperties(new Dataset().withDescription("lmiglnqrmqefdq")
+                                .withStructure("datasfebhvkkpd")
+                                .withSchema("datakylioagvijrdyote")
+                                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ljdrerzjwe")
+                                    .withParameters(mapOf("beuf", "datar", "jsneybpqotfd", "databddcxfuizokzmeg")))
+                                .withParameters(mapOf("s", new ParameterSpecification().withType(ParameterType.INT)))
+                                .withAnnotations(Arrays.asList("datauptre", "datalauupwt", "datatpbi"))
+                                .withFolder(new DatasetFolder().withName("segcogyctekaa"))
+                                .withAdditionalProperties(mapOf("type", "Dataset")))))
+                    .withLinkedServices(
+                        Arrays
+                            .asList(
+                                new LinkedServiceDebugResource().withName("v")
+                                    .withProperties(new LinkedService()
+                                        .withConnectVia(
+                                            new IntegrationRuntimeReference().withReferenceName("sekrzcnlqstmik")
+                                                .withParameters(mapOf("k", "datatwvh")))
+                                        .withDescription("arqtkzeopoxd")
+                                        .withParameters(
+                                            mapOf("nqt", new ParameterSpecification().withType(ParameterType.STRING)))
+                                        .withAnnotations(Arrays.asList("datawfjrtxfshaqpml", "datazwgotlbflbax"))
+                                        .withAdditionalProperties(mapOf("type", "LinkedService"))),
+                                new LinkedServiceDebugResource().withName("lxqjshyyrc")
+                                    .withProperties(new LinkedService()
+                                        .withConnectVia(
+                                            new IntegrationRuntimeReference().withReferenceName("mdrbmff")
+                                                .withParameters(mapOf("nplzbzc", "datayykwwhscubgwzm", "ogjoocnseo",
+                                                    "datazhdrvkzzvh")))
+                                        .withDescription("ktqrvzaabeiqo")
+                                        .withParameters(mapOf(
+                                            "glgxvqdlw", new ParameterSpecification().withType(ParameterType.BOOL),
+                                            "kzkhbiee", new ParameterSpecification().withType(ParameterType.BOOL), "bp",
+                                            new ParameterSpecification().withType(ParameterType.ARRAY), "jteprqot",
+                                            new ParameterSpecification().withType(ParameterType.ARRAY)))
+                                        .withAnnotations(
+                                            Arrays.asList("dataapmt", "datafgswpqunvxtvmb", "dataydqoqpqyj"))
+                                        .withAdditionalProperties(mapOf("type", "LinkedService")))))
                     .withStaging(new DataFlowStagingInfo()
-                        .withLinkedService(new LinkedServiceReference().withReferenceName("scwiwzowshqrjjpx")
-                            .withParameters(mapOf("dniwtvoolonlc", "datadlxzx", "fuvtum", "datacmrybwuexszpgk",
-                                "lqklcfvvsebfjoyb", "dataghliny", "xlwhiqfjptytpchd", "dataowttraol")))
-                        .withFolderPath("datakrk"))
+                        .withLinkedService(new LinkedServiceReference().withReferenceName("z")
+                            .withParameters(mapOf("kgwf", "dataaurmq", "xhmrhhxlibd", "datalt")))
+                        .withFolderPath("dataeamslvpxsywn"))
                     .withDebugSettings(new DataFlowDebugPackageDebugSettings()
-                        .withSourceSettings(Arrays.asList(new DataFlowSourceSetting().withSourceName("ienothtinqshd")
-                            .withRowLimit(1482317078)
-                            .withAdditionalProperties(mapOf())))
-                        .withParameters(mapOf("ozcmffygaxbsh", "dataqhkgfxzwjoz"))
-                        .withDatasetParameters("datamhs"))
+                        .withSourceSettings(Arrays.asList(
+                            new DataFlowSourceSetting().withSourceName("dyaauls")
+                                .withRowLimit(2051357393)
+                                .withAdditionalProperties(mapOf()),
+                            new DataFlowSourceSetting().withSourceName("bhkyas")
+                                .withRowLimit(146099985)
+                                .withAdditionalProperties(mapOf())))
+                        .withParameters(mapOf("weqbeygnetuvsqv", "datau", "znblkofdmlrtlhp", "datajvum", "wqdjzbogtbyk",
+                            "dataucfiwaklf"))
+                        .withDatasetParameters("dataqxxy"))
                     .withAdditionalProperties(mapOf()),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cs", response.jobVersion());
+        Assertions.assertEquals("pbfxvlacllteuksg", response.jobVersion());
     }
 
     // Use "Map.of" if available

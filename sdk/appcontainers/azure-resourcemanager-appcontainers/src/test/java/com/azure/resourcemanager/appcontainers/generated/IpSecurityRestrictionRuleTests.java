@@ -12,23 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class IpSecurityRestrictionRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpSecurityRestrictionRule model = BinaryData.fromString(
-            "{\"name\":\"lfzxiavrmbzonoki\",\"description\":\"jq\",\"ipAddressRange\":\"irgzp\",\"action\":\"Deny\"}")
+        IpSecurityRestrictionRule model = BinaryData
+            .fromString(
+                "{\"name\":\"txon\",\"description\":\"ts\",\"ipAddressRange\":\"vjcbpwxqpsrknf\",\"action\":\"Deny\"}")
             .toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("lfzxiavrmbzonoki", model.name());
-        Assertions.assertEquals("jq", model.description());
-        Assertions.assertEquals("irgzp", model.ipAddressRange());
+        Assertions.assertEquals("txon", model.name());
+        Assertions.assertEquals("ts", model.description());
+        Assertions.assertEquals("vjcbpwxqpsrknf", model.ipAddressRange());
         Assertions.assertEquals(Action.DENY, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("lfzxiavrmbzonoki")
-            .withDescription("jq").withIpAddressRange("irgzp").withAction(Action.DENY);
+        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("txon")
+            .withDescription("ts")
+            .withIpAddressRange("vjcbpwxqpsrknf")
+            .withAction(Action.DENY);
         model = BinaryData.fromObject(model).toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("lfzxiavrmbzonoki", model.name());
-        Assertions.assertEquals("jq", model.description());
-        Assertions.assertEquals("irgzp", model.ipAddressRange());
+        Assertions.assertEquals("txon", model.name());
+        Assertions.assertEquals("ts", model.description());
+        Assertions.assertEquals("vjcbpwxqpsrknf", model.ipAddressRange());
         Assertions.assertEquals(Action.DENY, model.action());
     }
 }

@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of previewed features.
  */
 @Fluent
-public final class FeatureOperationsListResult {
+public final class FeatureOperationsListResult implements JsonSerializable<FeatureOperationsListResult> {
     /*
      * The array of features.
      */
-    @JsonProperty(value = "value")
     private List<FeatureResultInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,45 @@ public final class FeatureOperationsListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FeatureOperationsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FeatureOperationsListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FeatureOperationsListResult.
+     */
+    public static FeatureOperationsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FeatureOperationsListResult deserializedFeatureOperationsListResult = new FeatureOperationsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<FeatureResultInner> value = reader.readArray(reader1 -> FeatureResultInner.fromJson(reader1));
+                    deserializedFeatureOperationsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedFeatureOperationsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFeatureOperationsListResult;
+        });
     }
 }

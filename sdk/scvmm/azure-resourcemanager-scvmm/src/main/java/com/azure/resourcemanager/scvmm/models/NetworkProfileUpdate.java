@@ -5,49 +5,98 @@
 package com.azure.resourcemanager.scvmm.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the resource properties. */
+/**
+ * Defines the resource update properties.
+ */
 @Fluent
-public final class NetworkProfileUpdate {
+public final class NetworkProfileUpdate implements JsonSerializable<NetworkProfileUpdate> {
     /*
-     * Gets or sets the list of network interfaces associated with the virtual
-     * machine.
+     * Gets or sets the list of network interfaces associated with the virtual machine.
      */
-    @JsonProperty(value = "networkInterfaces")
-    private List<NetworkInterfacesUpdate> networkInterfaces;
+    private List<NetworkInterfaceUpdate> networkInterfaces;
+
+    /**
+     * Creates an instance of NetworkProfileUpdate class.
+     */
+    public NetworkProfileUpdate() {
+    }
 
     /**
      * Get the networkInterfaces property: Gets or sets the list of network interfaces associated with the virtual
      * machine.
-     *
+     * 
      * @return the networkInterfaces value.
      */
-    public List<NetworkInterfacesUpdate> networkInterfaces() {
+    public List<NetworkInterfaceUpdate> networkInterfaces() {
         return this.networkInterfaces;
     }
 
     /**
      * Set the networkInterfaces property: Gets or sets the list of network interfaces associated with the virtual
      * machine.
-     *
+     * 
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the NetworkProfileUpdate object itself.
      */
-    public NetworkProfileUpdate withNetworkInterfaces(List<NetworkInterfacesUpdate> networkInterfaces) {
+    public NetworkProfileUpdate withNetworkInterfaces(List<NetworkInterfaceUpdate> networkInterfaces) {
         this.networkInterfaces = networkInterfaces;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkInterfaces() != null) {
             networkInterfaces().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("networkInterfaces", this.networkInterfaces,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProfileUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProfileUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkProfileUpdate.
+     */
+    public static NetworkProfileUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProfileUpdate deserializedNetworkProfileUpdate = new NetworkProfileUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkInterfaces".equals(fieldName)) {
+                    List<NetworkInterfaceUpdate> networkInterfaces
+                        = reader.readArray(reader1 -> NetworkInterfaceUpdate.fromJson(reader1));
+                    deserializedNetworkProfileUpdate.networkInterfaces = networkInterfaces;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProfileUpdate;
+        });
     }
 }

@@ -31,7 +31,8 @@ public final class NetezzaSource extends TabularSource {
     private Object query;
 
     /*
-     * The partition mechanism that will be used for Netezza read in parallel. Possible values include: "None", "DataSlice", "DynamicRange".
+     * The partition mechanism that will be used for Netezza read in parallel. Possible values include: "None",
+     * "DataSlice", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;

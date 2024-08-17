@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
 import com.azure.resourcemanager.network.models.ConnectionMonitorEndpoint;
 import com.azure.resourcemanager.network.models.ConnectionMonitorOutput;
@@ -13,7 +17,7 @@ import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfigurati
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
 import com.azure.resourcemanager.network.models.ConnectionMonitorType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -25,25 +29,21 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
     /*
      * The provisioning state of the connection monitor.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The date and time when the connection monitor was started.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The monitoring status of the connection monitor.
      */
-    @JsonProperty(value = "monitoringStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String monitoringStatus;
 
     /*
      * Type of connection monitor.
      */
-    @JsonProperty(value = "connectionMonitorType", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectionMonitorType connectionMonitorType;
 
     /**
@@ -178,5 +178,89 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", source());
+        jsonWriter.writeJsonField("destination", destination());
+        jsonWriter.writeBooleanField("autoStart", autoStart());
+        jsonWriter.writeNumberField("monitoringIntervalInSeconds", monitoringIntervalInSeconds());
+        jsonWriter.writeArrayField("endpoints", endpoints(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("testConfigurations", testConfigurations(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("testGroups", testGroups(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", outputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("notes", notes());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionMonitorResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionMonitorResultProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionMonitorResultProperties.
+     */
+    public static ConnectionMonitorResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionMonitorResultProperties deserializedConnectionMonitorResultProperties
+                = new ConnectionMonitorResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedConnectionMonitorResultProperties.withSource(ConnectionMonitorSource.fromJson(reader));
+                } else if ("destination".equals(fieldName)) {
+                    deserializedConnectionMonitorResultProperties
+                        .withDestination(ConnectionMonitorDestination.fromJson(reader));
+                } else if ("autoStart".equals(fieldName)) {
+                    deserializedConnectionMonitorResultProperties
+                        .withAutoStart(reader.getNullable(JsonReader::getBoolean));
+                } else if ("monitoringIntervalInSeconds".equals(fieldName)) {
+                    deserializedConnectionMonitorResultProperties
+                        .withMonitoringIntervalInSeconds(reader.getNullable(JsonReader::getInt));
+                } else if ("endpoints".equals(fieldName)) {
+                    List<ConnectionMonitorEndpoint> endpoints
+                        = reader.readArray(reader1 -> ConnectionMonitorEndpoint.fromJson(reader1));
+                    deserializedConnectionMonitorResultProperties.withEndpoints(endpoints);
+                } else if ("testConfigurations".equals(fieldName)) {
+                    List<ConnectionMonitorTestConfiguration> testConfigurations
+                        = reader.readArray(reader1 -> ConnectionMonitorTestConfiguration.fromJson(reader1));
+                    deserializedConnectionMonitorResultProperties.withTestConfigurations(testConfigurations);
+                } else if ("testGroups".equals(fieldName)) {
+                    List<ConnectionMonitorTestGroup> testGroups
+                        = reader.readArray(reader1 -> ConnectionMonitorTestGroup.fromJson(reader1));
+                    deserializedConnectionMonitorResultProperties.withTestGroups(testGroups);
+                } else if ("outputs".equals(fieldName)) {
+                    List<ConnectionMonitorOutput> outputs
+                        = reader.readArray(reader1 -> ConnectionMonitorOutput.fromJson(reader1));
+                    deserializedConnectionMonitorResultProperties.withOutputs(outputs);
+                } else if ("notes".equals(fieldName)) {
+                    deserializedConnectionMonitorResultProperties.withNotes(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedConnectionMonitorResultProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedConnectionMonitorResultProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("monitoringStatus".equals(fieldName)) {
+                    deserializedConnectionMonitorResultProperties.monitoringStatus = reader.getString();
+                } else if ("connectionMonitorType".equals(fieldName)) {
+                    deserializedConnectionMonitorResultProperties.connectionMonitorType
+                        = ConnectionMonitorType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionMonitorResultProperties;
+        });
     }
 }

@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -22,7 +23,6 @@ import org.assertj.core.api.Fail;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.Exceptions;
 
@@ -437,7 +437,6 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         this.executeTestCase(scenario);
     }
 
-    @Ignore("Throws IllegalArgumentException instead of CosmosException")
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void idWithDisallowedCharForwardSlash() {
         TestScenario scenario = new TestScenario(
@@ -446,21 +445,49 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY.toString(),
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.NOTFOUND,
-                HttpConstants.StatusCodes.NOTFOUND,
-                HttpConstants.StatusCodes.NOTFOUND),
+                -1 , // Non-CosmosException - in this case IllegalArgumentException
+                -1,
+                -1),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.NOTFOUND,
-                HttpConstants.StatusCodes.NOTFOUND,
-                HttpConstants.StatusCodes.NOTFOUND),
+                -1 , // Non-CosmosException - in this case IllegalArgumentException
+                -1,
+                -1),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.NOTFOUND,
-                HttpConstants.StatusCodes.NOTFOUND,
-                HttpConstants.StatusCodes.NOTFOUND));
+                -1 , // Non-CosmosException - in this case IllegalArgumentException
+                -1,
+                -1));
+
+        this.executeTestCase(scenario);
+    }
+
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
+    public void idWithDisallowedCharForwardSlashButIdValidationEnabled() {
+        TestScenario scenario = new TestScenario(
+            "IdWithDisallowedCharForwardSlashButIdValidationEnabled",
+            "Disallowed/Chars" + UUID.randomUUID(),
+            true,
+            new TestScenarioExpectations(
+                ConnectionMode.GATEWAY.toString(),
+                HttpConstants.StatusCodes.BADREQUEST,
+                -1 , // Non-CosmosException - in this case IllegalArgumentException
+                -1,
+                -1),
+            new TestScenarioExpectations(
+                "COMPUTE_GATEWAY",
+                HttpConstants.StatusCodes.BADREQUEST,
+                -1 , // Non-CosmosException - in this case IllegalArgumentException
+                -1,
+                -1),
+            new TestScenarioExpectations(
+                ConnectionMode.DIRECT.toString(),
+                HttpConstants.StatusCodes.BADREQUEST,
+                -1 , // Non-CosmosException - in this case IllegalArgumentException
+                -1,
+                -1));
 
         this.executeTestCase(scenario);
     }
@@ -608,90 +635,103 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
 
         logger.info("Scenario: {}, Id: \"{}\"", scenario.name, scenario.id);
 
-        try {
-            CosmosItemResponse<ObjectNode> response = this.container.createItem(
-                getDocumentDefinition(scenario.id),
-                new PartitionKey(scenario.id),
-                null);
-
-            deserializeAndValidatePayload(response, scenario.id, expected.ExpectedCreateStatusCode);
-        } catch (Throwable throwable) {
-            CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
-            if (cosmosError == null) {
-                Fail.fail(
-                    "Unexpected exception type " + Exceptions.unwrap(throwable).getClass().getName(),
-                    throwable);
-            }
-
-            logger.error(cosmosError.toString());
-
-            assertThat(cosmosError.getStatusCode())
-                .isEqualTo(expected.ExpectedCreateStatusCode);
-
-            return;
+        if (scenario.idValidationEnabled) {
+            System.setProperty(Configs.PREVENT_INVALID_ID_CHARS, "false");
         }
 
         try {
-            CosmosItemResponse<ObjectNode> response = this.container.readItem(
-                scenario.id,
-                new PartitionKey(scenario.id),
-                ObjectNode.class);
+            try {
+                CosmosItemResponse<ObjectNode> response = this.container.createItem(
+                    getDocumentDefinition(scenario.id),
+                    new PartitionKey(scenario.id),
+                    null);
 
-            deserializeAndValidatePayload(response, scenario.id, expected.ExpectedReadStatusCode);
-        } catch (Throwable throwable) {
-            CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
-            if (cosmosError == null) {
-                Fail.fail(
-                    "Unexpected exception type " + Exceptions.unwrap(throwable).getClass().getName(),
-                    throwable);
-            }
-            if (cosmosError.getStatusCode() == 0 &&
-                cosmosError.getCause() instanceof IllegalArgumentException &&
-                cosmosError.getCause().getCause() instanceof JsonParseException &&
-                cosmosError.getCause().getCause().toString().contains("<TITLE>Bad Request</TITLE>")) {
+                deserializeAndValidatePayload(response, scenario.id, expected.ExpectedCreateStatusCode);
+            } catch (Throwable throwable) {
+                CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
+                if (cosmosError == null) {
+                    Fail.fail(
+                        "Unexpected exception type " + Exceptions.unwrap(throwable).getClass().getName(),
+                        throwable);
+                }
 
-                logger.info("HTML BAD REQUEST", cosmosError);
-                assertThat(expected.ExpectedReadStatusCode).isEqualTo(400);
+                logger.error(cosmosError.toString());
+
+                assertThat(cosmosError.getStatusCode())
+                    .isEqualTo(expected.ExpectedCreateStatusCode);
+
                 return;
-            } else {
-                logger.info("BAD REQUEST", cosmosError);
-                assertThat(cosmosError.getStatusCode()).isEqualTo(expected.ExpectedReadStatusCode);
             }
-        }
 
-        try {
-            CosmosItemResponse<ObjectNode> response = this.container.replaceItem(
-                getDocumentDefinition(scenario.id),
-                scenario.id,
-                new PartitionKey(scenario.id),
-                null);
+            try {
+                CosmosItemResponse<ObjectNode> response = this.container.readItem(
+                    scenario.id,
+                    new PartitionKey(scenario.id),
+                    ObjectNode.class);
 
-            deserializeAndValidatePayload(response, scenario.id, expected.ExpectedReplaceStatusCode);
-        } catch (Throwable throwable) {
-            CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
-            if (cosmosError == null) {
-                Fail.fail(
-                    "Unexpected exception type " + Exceptions.unwrap(throwable).getClass().getName(),
-                    throwable);
+                deserializeAndValidatePayload(response, scenario.id, expected.ExpectedReadStatusCode);
+            } catch (Throwable throwable) {
+                CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
+                if (cosmosError == null) {
+                    if (expected.ExpectedReadStatusCode == -1) {
+                        return;
+                    }
+
+                    Fail.fail(
+                        "Unexpected exception type " + Exceptions.unwrap(throwable).getClass().getName(),
+                        throwable);
+                }
+                if (cosmosError.getStatusCode() == 0 &&
+                    cosmosError.getCause() instanceof IllegalArgumentException &&
+                    cosmosError.getCause().getCause() instanceof JsonParseException &&
+                    (cosmosError.getCause().toString().contains("<TITLE>Bad Request</TITLE>") ||
+                    cosmosError.getCause().getCause().toString().contains("<TITLE>Bad Request</TITLE>"))) {
+
+                    logger.info("HTML BAD REQUEST", cosmosError);
+                    assertThat(expected.ExpectedReadStatusCode).isEqualTo(400);
+                    return;
+                } else {
+                    logger.info("BAD REQUEST", cosmosError);
+                    assertThat(cosmosError.getStatusCode()).isEqualTo(expected.ExpectedReadStatusCode);
+                }
             }
-            assertThat(cosmosError.getStatusCode()).isEqualTo(expected.ExpectedReplaceStatusCode);
-        }
 
-        try {
-            CosmosItemResponse<Object> response = this.container.deleteItem(
-                scenario.id,
-                new PartitionKey(scenario.id),
-                (CosmosItemRequestOptions)null);
+            try {
+                CosmosItemResponse<ObjectNode> response = this.container.replaceItem(
+                    getDocumentDefinition(scenario.id),
+                    scenario.id,
+                    new PartitionKey(scenario.id),
+                    null);
 
-            assertThat(response.getStatusCode()).isEqualTo(expected.ExpectedDeleteStatusCode);
-        } catch (Throwable throwable) {
-            CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
-            if (cosmosError == null) {
-                Fail.fail(
-                    "Unexpected exception type " + Exceptions.unwrap(throwable).getClass().getName(),
-                    throwable);
+                deserializeAndValidatePayload(response, scenario.id, expected.ExpectedReplaceStatusCode);
+            } catch (Throwable throwable) {
+                CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
+                if (cosmosError == null) {
+                    Fail.fail(
+                        "Unexpected exception type " + Exceptions.unwrap(throwable).getClass().getName(),
+                        throwable);
+                }
+                assertThat(cosmosError.getStatusCode()).isEqualTo(expected.ExpectedReplaceStatusCode);
             }
-            assertThat(cosmosError.getStatusCode()).isEqualTo(expected.ExpectedDeleteStatusCode);
+
+            try {
+                CosmosItemResponse<Object> response = this.container.deleteItem(
+                    scenario.id,
+                    new PartitionKey(scenario.id),
+                    (CosmosItemRequestOptions) null);
+
+                assertThat(response.getStatusCode()).isEqualTo(expected.ExpectedDeleteStatusCode);
+            } catch (Throwable throwable) {
+                CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
+                if (cosmosError == null) {
+                    Fail.fail(
+                        "Unexpected exception type " + Exceptions.unwrap(throwable).getClass().getName(),
+                        throwable);
+                }
+                assertThat(cosmosError.getStatusCode()).isEqualTo(expected.ExpectedDeleteStatusCode);
+            }
+        } finally {
+            System.clearProperty(Configs.PREVENT_INVALID_ID_CHARS);
         }
     }
 
@@ -757,16 +797,30 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             TestScenarioExpectations computeGateway,
             TestScenarioExpectations direct) {
 
+            this(name, id, false, gateway, computeGateway, direct);
+        }
+
+        public TestScenario(
+            String name,
+            String id,
+            boolean idValidationEnabled,
+            TestScenarioExpectations gateway,
+            TestScenarioExpectations computeGateway,
+            TestScenarioExpectations direct) {
+
             this.name = name;
             this.id = id;
             this.gateway = gateway;
             this.computeGateway = computeGateway;
             this.direct = direct;
+            this.idValidationEnabled = idValidationEnabled;
         }
 
         public String name;
 
         public String id;
+
+        public boolean idValidationEnabled;
 
         public TestScenarioExpectations gateway;
 

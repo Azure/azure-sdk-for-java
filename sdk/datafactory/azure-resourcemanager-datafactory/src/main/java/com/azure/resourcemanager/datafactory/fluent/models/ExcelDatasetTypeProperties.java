@@ -40,7 +40,8 @@ public final class ExcelDatasetTypeProperties {
     private Object range;
 
     /*
-     * When used as input, treat the first row of data as headers. When used as output,write the headers into the output as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
+     * When used as input, treat the first row of data as headers. When used as output,write the headers into the output
+     * as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "firstRowAsHeader")
     private Object firstRowAsHeader;

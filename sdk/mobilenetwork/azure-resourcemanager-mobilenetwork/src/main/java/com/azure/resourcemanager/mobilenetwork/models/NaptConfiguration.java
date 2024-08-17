@@ -21,22 +21,19 @@ public final class NaptConfiguration {
     /*
      * Range of port numbers to use as translated ports on each translated address.
      * If not specified and NAPT is enabled, this range defaults to 1,024 - 49,999.
-     * (Ports under 1,024 should not be used because these are special purpose ports reserved by IANA. Ports 50,000 and
-     * above are reserved for non-NAPT use.)
+     * (Ports under 1,024 should not be used because these are special purpose ports reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.)
      */
     @JsonProperty(value = "portRange")
     private PortRange portRange;
 
     /*
-     * The minimum time (in seconds) that will pass before a port that was used by a closed pinhole can be recycled for
-     * use by another pinhole. All hold times must be at least 1 second.
+     * The minimum time (in seconds) that will pass before a port that was used by a closed pinhole can be recycled for use by another pinhole. All hold times must be at least 1 second.
      */
     @JsonProperty(value = "portReuseHoldTime")
     private PortReuseHoldTimes portReuseHoldTime;
 
     /*
-     * Maximum number of UDP and TCP pinholes that can be open simultaneously on the core interface. For 5G networks,
-     * this is the N6 interface. For 4G networks, this is the SGi interface.
+     * Maximum number of UDP and TCP pinholes that can be open simultaneously on the core interface. For 5G networks, this is the N6 interface. For 4G networks, this is the SGi interface.
      */
     @JsonProperty(value = "pinholeLimits")
     private Integer pinholeLimits;
@@ -100,8 +97,8 @@ public final class NaptConfiguration {
     }
 
     /**
-     * Get the portReuseHoldTime property: The minimum time (in seconds) that will pass before a port that was used by
-     * a closed pinhole can be recycled for use by another pinhole. All hold times must be at least 1 second.
+     * Get the portReuseHoldTime property: The minimum time (in seconds) that will pass before a port that was used by a
+     * closed pinhole can be recycled for use by another pinhole. All hold times must be at least 1 second.
      * 
      * @return the portReuseHoldTime value.
      */
@@ -110,8 +107,8 @@ public final class NaptConfiguration {
     }
 
     /**
-     * Set the portReuseHoldTime property: The minimum time (in seconds) that will pass before a port that was used by
-     * a closed pinhole can be recycled for use by another pinhole. All hold times must be at least 1 second.
+     * Set the portReuseHoldTime property: The minimum time (in seconds) that will pass before a port that was used by a
+     * closed pinhole can be recycled for use by another pinhole. All hold times must be at least 1 second.
      * 
      * @param portReuseHoldTime the portReuseHoldTime value to set.
      * @return the NaptConfiguration object itself.
@@ -144,8 +141,8 @@ public final class NaptConfiguration {
     }
 
     /**
-     * Get the pinholeTimeouts property: Expiry times of inactive NAPT pinholes, in seconds. All timers must be at
-     * least 1 second.
+     * Get the pinholeTimeouts property: Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least
+     * 1 second.
      * 
      * @return the pinholeTimeouts value.
      */
@@ -154,8 +151,8 @@ public final class NaptConfiguration {
     }
 
     /**
-     * Set the pinholeTimeouts property: Expiry times of inactive NAPT pinholes, in seconds. All timers must be at
-     * least 1 second.
+     * Set the pinholeTimeouts property: Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least
+     * 1 second.
      * 
      * @param pinholeTimeouts the pinholeTimeouts value to set.
      * @return the NaptConfiguration object itself.

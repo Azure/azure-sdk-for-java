@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The trigger parameters update for the storage task assignment execution.
  */
 @Fluent
-public final class TriggerParameters {
+public final class TriggerParameters implements JsonSerializable<TriggerParameters> {
     /*
-     * When to start task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
+     * When to start task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule';
+     * this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
      */
-    @JsonProperty(value = "startFrom")
     private OffsetDateTime startFrom;
 
     /*
-     * Run interval of task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
+     * Run interval of task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule';
+     * this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
      */
-    @JsonProperty(value = "interval")
     private Integer interval;
 
     /*
-     * Run interval unit of task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
+     * Run interval unit of task execution. This is a required field when ExecutionTrigger.properties.type is
+     * 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
      */
-    @JsonProperty(value = "intervalUnit")
     private IntervalUnit intervalUnit;
 
     /*
-     * When to end task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
+     * When to end task execution. This is a required field when ExecutionTrigger.properties.type is 'OnSchedule'; this
+     * property should not be present when ExecutionTrigger.properties.type is 'RunOnce'
      */
-    @JsonProperty(value = "endBy")
     private OffsetDateTime endBy;
 
     /*
-     * When to start task execution. This is an optional field when ExecutionTrigger.properties.type is 'RunOnce'; this property should not be present when ExecutionTrigger.properties.type is 'OnSchedule'
+     * When to start task execution. This is an optional field when ExecutionTrigger.properties.type is 'RunOnce'; this
+     * property should not be present when ExecutionTrigger.properties.type is 'OnSchedule'
      */
-    @JsonProperty(value = "startOn")
     private OffsetDateTime startOn;
 
     /**
@@ -54,7 +59,7 @@ public final class TriggerParameters {
      * Get the startFrom property: When to start task execution. This is a required field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @return the startFrom value.
      */
     public OffsetDateTime startFrom() {
@@ -65,7 +70,7 @@ public final class TriggerParameters {
      * Set the startFrom property: When to start task execution. This is a required field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @param startFrom the startFrom value to set.
      * @return the TriggerParameters object itself.
      */
@@ -78,7 +83,7 @@ public final class TriggerParameters {
      * Get the interval property: Run interval of task execution. This is a required field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @return the interval value.
      */
     public Integer interval() {
@@ -89,7 +94,7 @@ public final class TriggerParameters {
      * Set the interval property: Run interval of task execution. This is a required field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the TriggerParameters object itself.
      */
@@ -102,7 +107,7 @@ public final class TriggerParameters {
      * Get the intervalUnit property: Run interval unit of task execution. This is a required field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @return the intervalUnit value.
      */
     public IntervalUnit intervalUnit() {
@@ -113,7 +118,7 @@ public final class TriggerParameters {
      * Set the intervalUnit property: Run interval unit of task execution. This is a required field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @param intervalUnit the intervalUnit value to set.
      * @return the TriggerParameters object itself.
      */
@@ -126,7 +131,7 @@ public final class TriggerParameters {
      * Get the endBy property: When to end task execution. This is a required field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @return the endBy value.
      */
     public OffsetDateTime endBy() {
@@ -137,7 +142,7 @@ public final class TriggerParameters {
      * Set the endBy property: When to end task execution. This is a required field when
      * ExecutionTrigger.properties.type is 'OnSchedule'; this property should not be present when
      * ExecutionTrigger.properties.type is 'RunOnce'.
-     *
+     * 
      * @param endBy the endBy value to set.
      * @return the TriggerParameters object itself.
      */
@@ -150,7 +155,7 @@ public final class TriggerParameters {
      * Get the startOn property: When to start task execution. This is an optional field when
      * ExecutionTrigger.properties.type is 'RunOnce'; this property should not be present when
      * ExecutionTrigger.properties.type is 'OnSchedule'.
-     *
+     * 
      * @return the startOn value.
      */
     public OffsetDateTime startOn() {
@@ -161,7 +166,7 @@ public final class TriggerParameters {
      * Set the startOn property: When to start task execution. This is an optional field when
      * ExecutionTrigger.properties.type is 'RunOnce'; this property should not be present when
      * ExecutionTrigger.properties.type is 'OnSchedule'.
-     *
+     * 
      * @param startOn the startOn value to set.
      * @return the TriggerParameters object itself.
      */
@@ -172,9 +177,63 @@ public final class TriggerParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startFrom",
+            this.startFrom == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startFrom));
+        jsonWriter.writeNumberField("interval", this.interval);
+        jsonWriter.writeStringField("intervalUnit", this.intervalUnit == null ? null : this.intervalUnit.toString());
+        jsonWriter.writeStringField("endBy",
+            this.endBy == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endBy));
+        jsonWriter.writeStringField("startOn",
+            this.startOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startOn));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggerParameters.
+     */
+    public static TriggerParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerParameters deserializedTriggerParameters = new TriggerParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startFrom".equals(fieldName)) {
+                    deserializedTriggerParameters.startFrom = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("interval".equals(fieldName)) {
+                    deserializedTriggerParameters.interval = reader.getNullable(JsonReader::getInt);
+                } else if ("intervalUnit".equals(fieldName)) {
+                    deserializedTriggerParameters.intervalUnit = IntervalUnit.fromString(reader.getString());
+                } else if ("endBy".equals(fieldName)) {
+                    deserializedTriggerParameters.endBy = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startOn".equals(fieldName)) {
+                    deserializedTriggerParameters.startOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerParameters;
+        });
     }
 }

@@ -5,566 +5,933 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Get7ItemsItem. */
+/**
+ * Defines values for Get7ItemsItem.
+ */
 public final class Get7ItemsItem extends ExpandableStringEnum<Get7ItemsItem> {
-    /** Static value id for Get7ItemsItem. */
+    /**
+     * Static value id for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ID = fromString("id");
 
-    /** Static value deletedDateTime for Get7ItemsItem. */
+    /**
+     * Static value deletedDateTime for Get7ItemsItem.
+     */
     public static final Get7ItemsItem DELETED_DATE_TIME = fromString("deletedDateTime");
 
-    /** Static value addIns for Get7ItemsItem. */
+    /**
+     * Static value addIns for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ADD_INS = fromString("addIns");
 
-    /** Static value api for Get7ItemsItem. */
+    /**
+     * Static value api for Get7ItemsItem.
+     */
     public static final Get7ItemsItem API = fromString("api");
 
-    /** Static value appId for Get7ItemsItem. */
+    /**
+     * Static value appId for Get7ItemsItem.
+     */
     public static final Get7ItemsItem APP_ID = fromString("appId");
 
-    /** Static value applicationTemplateId for Get7ItemsItem. */
+    /**
+     * Static value applicationTemplateId for Get7ItemsItem.
+     */
     public static final Get7ItemsItem APPLICATION_TEMPLATE_ID = fromString("applicationTemplateId");
 
-    /** Static value appRoles for Get7ItemsItem. */
+    /**
+     * Static value appRoles for Get7ItemsItem.
+     */
     public static final Get7ItemsItem APP_ROLES = fromString("appRoles");
 
-    /** Static value createdDateTime for Get7ItemsItem. */
+    /**
+     * Static value createdDateTime for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CREATED_DATE_TIME = fromString("createdDateTime");
 
-    /** Static value description for Get7ItemsItem. */
+    /**
+     * Static value description for Get7ItemsItem.
+     */
     public static final Get7ItemsItem DESCRIPTION = fromString("description");
 
-    /** Static value displayName for Get7ItemsItem. */
+    /**
+     * Static value displayName for Get7ItemsItem.
+     */
     public static final Get7ItemsItem DISPLAY_NAME = fromString("displayName");
 
-    /** Static value groupMembershipClaims for Get7ItemsItem. */
+    /**
+     * Static value groupMembershipClaims for Get7ItemsItem.
+     */
     public static final Get7ItemsItem GROUP_MEMBERSHIP_CLAIMS = fromString("groupMembershipClaims");
 
-    /** Static value identifierUris for Get7ItemsItem. */
+    /**
+     * Static value identifierUris for Get7ItemsItem.
+     */
     public static final Get7ItemsItem IDENTIFIER_URIS = fromString("identifierUris");
 
-    /** Static value info for Get7ItemsItem. */
+    /**
+     * Static value info for Get7ItemsItem.
+     */
     public static final Get7ItemsItem INFO = fromString("info");
 
-    /** Static value isDeviceOnlyAuthSupported for Get7ItemsItem. */
+    /**
+     * Static value isDeviceOnlyAuthSupported for Get7ItemsItem.
+     */
     public static final Get7ItemsItem IS_DEVICE_ONLY_AUTH_SUPPORTED = fromString("isDeviceOnlyAuthSupported");
 
-    /** Static value isFallbackPublicClient for Get7ItemsItem. */
+    /**
+     * Static value isFallbackPublicClient for Get7ItemsItem.
+     */
     public static final Get7ItemsItem IS_FALLBACK_PUBLIC_CLIENT = fromString("isFallbackPublicClient");
 
-    /** Static value keyCredentials for Get7ItemsItem. */
+    /**
+     * Static value keyCredentials for Get7ItemsItem.
+     */
     public static final Get7ItemsItem KEY_CREDENTIALS = fromString("keyCredentials");
 
-    /** Static value logo for Get7ItemsItem. */
+    /**
+     * Static value logo for Get7ItemsItem.
+     */
     public static final Get7ItemsItem LOGO = fromString("logo");
 
-    /** Static value notes for Get7ItemsItem. */
+    /**
+     * Static value notes for Get7ItemsItem.
+     */
     public static final Get7ItemsItem NOTES = fromString("notes");
 
-    /** Static value oauth2RequirePostResponse for Get7ItemsItem. */
+    /**
+     * Static value oauth2RequirePostResponse for Get7ItemsItem.
+     */
     public static final Get7ItemsItem OAUTH2REQUIRE_POST_RESPONSE = fromString("oauth2RequirePostResponse");
 
-    /** Static value optionalClaims for Get7ItemsItem. */
+    /**
+     * Static value optionalClaims for Get7ItemsItem.
+     */
     public static final Get7ItemsItem OPTIONAL_CLAIMS = fromString("optionalClaims");
 
-    /** Static value parentalControlSettings for Get7ItemsItem. */
+    /**
+     * Static value parentalControlSettings for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PARENTAL_CONTROL_SETTINGS = fromString("parentalControlSettings");
 
-    /** Static value passwordCredentials for Get7ItemsItem. */
+    /**
+     * Static value passwordCredentials for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PASSWORD_CREDENTIALS = fromString("passwordCredentials");
 
-    /** Static value publicClient for Get7ItemsItem. */
+    /**
+     * Static value publicClient for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PUBLIC_CLIENT = fromString("publicClient");
 
-    /** Static value publisherDomain for Get7ItemsItem. */
+    /**
+     * Static value publisherDomain for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PUBLISHER_DOMAIN = fromString("publisherDomain");
 
-    /** Static value requiredResourceAccess for Get7ItemsItem. */
+    /**
+     * Static value requiredResourceAccess for Get7ItemsItem.
+     */
     public static final Get7ItemsItem REQUIRED_RESOURCE_ACCESS = fromString("requiredResourceAccess");
 
-    /** Static value signInAudience for Get7ItemsItem. */
+    /**
+     * Static value signInAudience for Get7ItemsItem.
+     */
     public static final Get7ItemsItem SIGN_IN_AUDIENCE = fromString("signInAudience");
 
-    /** Static value tags for Get7ItemsItem. */
+    /**
+     * Static value tags for Get7ItemsItem.
+     */
     public static final Get7ItemsItem TAGS = fromString("tags");
 
-    /** Static value tokenEncryptionKeyId for Get7ItemsItem. */
+    /**
+     * Static value tokenEncryptionKeyId for Get7ItemsItem.
+     */
     public static final Get7ItemsItem TOKEN_ENCRYPTION_KEY_ID = fromString("tokenEncryptionKeyId");
 
-    /** Static value web for Get7ItemsItem. */
+    /**
+     * Static value web for Get7ItemsItem.
+     */
     public static final Get7ItemsItem WEB = fromString("web");
 
-    /** Static value createdOnBehalfOf for Get7ItemsItem. */
+    /**
+     * Static value createdOnBehalfOf for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CREATED_ON_BEHALF_OF = fromString("createdOnBehalfOf");
 
-    /** Static value extensionProperties for Get7ItemsItem. */
+    /**
+     * Static value extensionProperties for Get7ItemsItem.
+     */
     public static final Get7ItemsItem EXTENSION_PROPERTIES = fromString("extensionProperties");
 
-    /** Static value homeRealmDiscoveryPolicies for Get7ItemsItem. */
+    /**
+     * Static value homeRealmDiscoveryPolicies for Get7ItemsItem.
+     */
     public static final Get7ItemsItem HOME_REALM_DISCOVERY_POLICIES = fromString("homeRealmDiscoveryPolicies");
 
-    /** Static value owners for Get7ItemsItem. */
+    /**
+     * Static value owners for Get7ItemsItem.
+     */
     public static final Get7ItemsItem OWNERS = fromString("owners");
 
-    /** Static value tokenIssuancePolicies for Get7ItemsItem. */
+    /**
+     * Static value tokenIssuancePolicies for Get7ItemsItem.
+     */
     public static final Get7ItemsItem TOKEN_ISSUANCE_POLICIES = fromString("tokenIssuancePolicies");
 
-    /** Static value tokenLifetimePolicies for Get7ItemsItem. */
+    /**
+     * Static value tokenLifetimePolicies for Get7ItemsItem.
+     */
     public static final Get7ItemsItem TOKEN_LIFETIME_POLICIES = fromString("tokenLifetimePolicies");
 
-    /** Static value assignedLabels for Get7ItemsItem. */
+    /**
+     * Static value assignedLabels for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ASSIGNED_LABELS = fromString("assignedLabels");
 
-    /** Static value assignedLicenses for Get7ItemsItem. */
+    /**
+     * Static value assignedLicenses for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ASSIGNED_LICENSES = fromString("assignedLicenses");
 
-    /** Static value classification for Get7ItemsItem. */
+    /**
+     * Static value classification for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CLASSIFICATION = fromString("classification");
 
-    /** Static value expirationDateTime for Get7ItemsItem. */
+    /**
+     * Static value expirationDateTime for Get7ItemsItem.
+     */
     public static final Get7ItemsItem EXPIRATION_DATE_TIME = fromString("expirationDateTime");
 
-    /** Static value groupTypes for Get7ItemsItem. */
+    /**
+     * Static value groupTypes for Get7ItemsItem.
+     */
     public static final Get7ItemsItem GROUP_TYPES = fromString("groupTypes");
 
-    /** Static value hasMembersWithLicenseErrors for Get7ItemsItem. */
+    /**
+     * Static value hasMembersWithLicenseErrors for Get7ItemsItem.
+     */
     public static final Get7ItemsItem HAS_MEMBERS_WITH_LICENSE_ERRORS = fromString("hasMembersWithLicenseErrors");
 
-    /** Static value licenseProcessingState for Get7ItemsItem. */
+    /**
+     * Static value licenseProcessingState for Get7ItemsItem.
+     */
     public static final Get7ItemsItem LICENSE_PROCESSING_STATE = fromString("licenseProcessingState");
 
-    /** Static value mail for Get7ItemsItem. */
+    /**
+     * Static value mail for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MAIL = fromString("mail");
 
-    /** Static value mailEnabled for Get7ItemsItem. */
+    /**
+     * Static value mailEnabled for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MAIL_ENABLED = fromString("mailEnabled");
 
-    /** Static value mailNickname for Get7ItemsItem. */
+    /**
+     * Static value mailNickname for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MAIL_NICKNAME = fromString("mailNickname");
 
-    /** Static value membershipRule for Get7ItemsItem. */
+    /**
+     * Static value membershipRule for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MEMBERSHIP_RULE = fromString("membershipRule");
 
-    /** Static value membershipRuleProcessingState for Get7ItemsItem. */
+    /**
+     * Static value membershipRuleProcessingState for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MEMBERSHIP_RULE_PROCESSING_STATE = fromString("membershipRuleProcessingState");
 
-    /** Static value onPremisesDomainName for Get7ItemsItem. */
+    /**
+     * Static value onPremisesDomainName for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ON_PREMISES_DOMAIN_NAME = fromString("onPremisesDomainName");
 
-    /** Static value onPremisesLastSyncDateTime for Get7ItemsItem. */
+    /**
+     * Static value onPremisesLastSyncDateTime for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ON_PREMISES_LAST_SYNC_DATE_TIME = fromString("onPremisesLastSyncDateTime");
 
-    /** Static value onPremisesNetBiosName for Get7ItemsItem. */
+    /**
+     * Static value onPremisesNetBiosName for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ON_PREMISES_NET_BIOS_NAME = fromString("onPremisesNetBiosName");
 
-    /** Static value onPremisesProvisioningErrors for Get7ItemsItem. */
+    /**
+     * Static value onPremisesProvisioningErrors for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ON_PREMISES_PROVISIONING_ERRORS = fromString("onPremisesProvisioningErrors");
 
-    /** Static value onPremisesSamAccountName for Get7ItemsItem. */
+    /**
+     * Static value onPremisesSamAccountName for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ON_PREMISES_SAM_ACCOUNT_NAME = fromString("onPremisesSamAccountName");
 
-    /** Static value onPremisesSecurityIdentifier for Get7ItemsItem. */
+    /**
+     * Static value onPremisesSecurityIdentifier for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ON_PREMISES_SECURITY_IDENTIFIER = fromString("onPremisesSecurityIdentifier");
 
-    /** Static value onPremisesSyncEnabled for Get7ItemsItem. */
+    /**
+     * Static value onPremisesSyncEnabled for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ON_PREMISES_SYNC_ENABLED = fromString("onPremisesSyncEnabled");
 
-    /** Static value preferredDataLocation for Get7ItemsItem. */
+    /**
+     * Static value preferredDataLocation for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PREFERRED_DATA_LOCATION = fromString("preferredDataLocation");
 
-    /** Static value preferredLanguage for Get7ItemsItem. */
+    /**
+     * Static value preferredLanguage for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PREFERRED_LANGUAGE = fromString("preferredLanguage");
 
-    /** Static value proxyAddresses for Get7ItemsItem. */
+    /**
+     * Static value proxyAddresses for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PROXY_ADDRESSES = fromString("proxyAddresses");
 
-    /** Static value renewedDateTime for Get7ItemsItem. */
+    /**
+     * Static value renewedDateTime for Get7ItemsItem.
+     */
     public static final Get7ItemsItem RENEWED_DATE_TIME = fromString("renewedDateTime");
 
-    /** Static value securityEnabled for Get7ItemsItem. */
+    /**
+     * Static value securityEnabled for Get7ItemsItem.
+     */
     public static final Get7ItemsItem SECURITY_ENABLED = fromString("securityEnabled");
 
-    /** Static value securityIdentifier for Get7ItemsItem. */
+    /**
+     * Static value securityIdentifier for Get7ItemsItem.
+     */
     public static final Get7ItemsItem SECURITY_IDENTIFIER = fromString("securityIdentifier");
 
-    /** Static value theme for Get7ItemsItem. */
+    /**
+     * Static value theme for Get7ItemsItem.
+     */
     public static final Get7ItemsItem THEME = fromString("theme");
 
-    /** Static value visibility for Get7ItemsItem. */
+    /**
+     * Static value visibility for Get7ItemsItem.
+     */
     public static final Get7ItemsItem VISIBILITY = fromString("visibility");
 
-    /** Static value allowExternalSenders for Get7ItemsItem. */
+    /**
+     * Static value allowExternalSenders for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ALLOW_EXTERNAL_SENDERS = fromString("allowExternalSenders");
 
-    /** Static value autoSubscribeNewMembers for Get7ItemsItem. */
+    /**
+     * Static value autoSubscribeNewMembers for Get7ItemsItem.
+     */
     public static final Get7ItemsItem AUTO_SUBSCRIBE_NEW_MEMBERS = fromString("autoSubscribeNewMembers");
 
-    /** Static value hideFromAddressLists for Get7ItemsItem. */
+    /**
+     * Static value hideFromAddressLists for Get7ItemsItem.
+     */
     public static final Get7ItemsItem HIDE_FROM_ADDRESS_LISTS = fromString("hideFromAddressLists");
 
-    /** Static value hideFromOutlookClients for Get7ItemsItem. */
+    /**
+     * Static value hideFromOutlookClients for Get7ItemsItem.
+     */
     public static final Get7ItemsItem HIDE_FROM_OUTLOOK_CLIENTS = fromString("hideFromOutlookClients");
 
-    /** Static value isSubscribedByMail for Get7ItemsItem. */
+    /**
+     * Static value isSubscribedByMail for Get7ItemsItem.
+     */
     public static final Get7ItemsItem IS_SUBSCRIBED_BY_MAIL = fromString("isSubscribedByMail");
 
-    /** Static value unseenCount for Get7ItemsItem. */
+    /**
+     * Static value unseenCount for Get7ItemsItem.
+     */
     public static final Get7ItemsItem UNSEEN_COUNT = fromString("unseenCount");
 
-    /** Static value isArchived for Get7ItemsItem. */
+    /**
+     * Static value isArchived for Get7ItemsItem.
+     */
     public static final Get7ItemsItem IS_ARCHIVED = fromString("isArchived");
 
-    /** Static value appRoleAssignments for Get7ItemsItem. */
+    /**
+     * Static value appRoleAssignments for Get7ItemsItem.
+     */
     public static final Get7ItemsItem APP_ROLE_ASSIGNMENTS = fromString("appRoleAssignments");
 
-    /** Static value memberOf for Get7ItemsItem. */
+    /**
+     * Static value memberOf for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MEMBER_OF = fromString("memberOf");
 
-    /** Static value members for Get7ItemsItem. */
+    /**
+     * Static value members for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MEMBERS = fromString("members");
 
-    /** Static value membersWithLicenseErrors for Get7ItemsItem. */
+    /**
+     * Static value membersWithLicenseErrors for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MEMBERS_WITH_LICENSE_ERRORS = fromString("membersWithLicenseErrors");
 
-    /** Static value permissionGrants for Get7ItemsItem. */
+    /**
+     * Static value permissionGrants for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PERMISSION_GRANTS = fromString("permissionGrants");
 
-    /** Static value settings for Get7ItemsItem. */
+    /**
+     * Static value settings for Get7ItemsItem.
+     */
     public static final Get7ItemsItem SETTINGS = fromString("settings");
 
-    /** Static value transitiveMemberOf for Get7ItemsItem. */
+    /**
+     * Static value transitiveMemberOf for Get7ItemsItem.
+     */
     public static final Get7ItemsItem TRANSITIVE_MEMBER_OF = fromString("transitiveMemberOf");
 
-    /** Static value transitiveMembers for Get7ItemsItem. */
+    /**
+     * Static value transitiveMembers for Get7ItemsItem.
+     */
     public static final Get7ItemsItem TRANSITIVE_MEMBERS = fromString("transitiveMembers");
 
-    /** Static value acceptedSenders for Get7ItemsItem. */
+    /**
+     * Static value acceptedSenders for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ACCEPTED_SENDERS = fromString("acceptedSenders");
 
-    /** Static value calendar for Get7ItemsItem. */
+    /**
+     * Static value calendar for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CALENDAR = fromString("calendar");
 
-    /** Static value calendarView for Get7ItemsItem. */
+    /**
+     * Static value calendarView for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CALENDAR_VIEW = fromString("calendarView");
 
-    /** Static value conversations for Get7ItemsItem. */
+    /**
+     * Static value conversations for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CONVERSATIONS = fromString("conversations");
 
-    /** Static value events for Get7ItemsItem. */
+    /**
+     * Static value events for Get7ItemsItem.
+     */
     public static final Get7ItemsItem EVENTS = fromString("events");
 
-    /** Static value photo for Get7ItemsItem. */
+    /**
+     * Static value photo for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PHOTO = fromString("photo");
 
-    /** Static value photos for Get7ItemsItem. */
+    /**
+     * Static value photos for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PHOTOS = fromString("photos");
 
-    /** Static value rejectedSenders for Get7ItemsItem. */
+    /**
+     * Static value rejectedSenders for Get7ItemsItem.
+     */
     public static final Get7ItemsItem REJECTED_SENDERS = fromString("rejectedSenders");
 
-    /** Static value threads for Get7ItemsItem. */
+    /**
+     * Static value threads for Get7ItemsItem.
+     */
     public static final Get7ItemsItem THREADS = fromString("threads");
 
-    /** Static value drive for Get7ItemsItem. */
+    /**
+     * Static value drive for Get7ItemsItem.
+     */
     public static final Get7ItemsItem DRIVE = fromString("drive");
 
-    /** Static value drives for Get7ItemsItem. */
+    /**
+     * Static value drives for Get7ItemsItem.
+     */
     public static final Get7ItemsItem DRIVES = fromString("drives");
 
-    /** Static value sites for Get7ItemsItem. */
+    /**
+     * Static value sites for Get7ItemsItem.
+     */
     public static final Get7ItemsItem SITES = fromString("sites");
 
-    /** Static value extensions for Get7ItemsItem. */
+    /**
+     * Static value extensions for Get7ItemsItem.
+     */
     public static final Get7ItemsItem EXTENSIONS = fromString("extensions");
 
-    /** Static value groupLifecyclePolicies for Get7ItemsItem. */
+    /**
+     * Static value groupLifecyclePolicies for Get7ItemsItem.
+     */
     public static final Get7ItemsItem GROUP_LIFECYCLE_POLICIES = fromString("groupLifecyclePolicies");
 
-    /** Static value planner for Get7ItemsItem. */
+    /**
+     * Static value planner for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PLANNER = fromString("planner");
 
-    /** Static value onenote for Get7ItemsItem. */
+    /**
+     * Static value onenote for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ONENOTE = fromString("onenote");
 
-    /** Static value team for Get7ItemsItem. */
+    /**
+     * Static value team for Get7ItemsItem.
+     */
     public static final Get7ItemsItem TEAM = fromString("team");
 
-    /** Static value accountEnabled for Get7ItemsItem. */
+    /**
+     * Static value accountEnabled for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ACCOUNT_ENABLED = fromString("accountEnabled");
 
-    /** Static value ageGroup for Get7ItemsItem. */
+    /**
+     * Static value ageGroup for Get7ItemsItem.
+     */
     public static final Get7ItemsItem AGE_GROUP = fromString("ageGroup");
 
-    /** Static value assignedPlans for Get7ItemsItem. */
+    /**
+     * Static value assignedPlans for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ASSIGNED_PLANS = fromString("assignedPlans");
 
-    /** Static value businessPhones for Get7ItemsItem. */
+    /**
+     * Static value businessPhones for Get7ItemsItem.
+     */
     public static final Get7ItemsItem BUSINESS_PHONES = fromString("businessPhones");
 
-    /** Static value city for Get7ItemsItem. */
+    /**
+     * Static value city for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CITY = fromString("city");
 
-    /** Static value companyName for Get7ItemsItem. */
+    /**
+     * Static value companyName for Get7ItemsItem.
+     */
     public static final Get7ItemsItem COMPANY_NAME = fromString("companyName");
 
-    /** Static value consentProvidedForMinor for Get7ItemsItem. */
+    /**
+     * Static value consentProvidedForMinor for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CONSENT_PROVIDED_FOR_MINOR = fromString("consentProvidedForMinor");
 
-    /** Static value country for Get7ItemsItem. */
+    /**
+     * Static value country for Get7ItemsItem.
+     */
     public static final Get7ItemsItem COUNTRY = fromString("country");
 
-    /** Static value creationType for Get7ItemsItem. */
+    /**
+     * Static value creationType for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CREATION_TYPE = fromString("creationType");
 
-    /** Static value department for Get7ItemsItem. */
+    /**
+     * Static value department for Get7ItemsItem.
+     */
     public static final Get7ItemsItem DEPARTMENT = fromString("department");
 
-    /** Static value employeeHireDate for Get7ItemsItem. */
+    /**
+     * Static value employeeHireDate for Get7ItemsItem.
+     */
     public static final Get7ItemsItem EMPLOYEE_HIRE_DATE = fromString("employeeHireDate");
 
-    /** Static value employeeId for Get7ItemsItem. */
+    /**
+     * Static value employeeId for Get7ItemsItem.
+     */
     public static final Get7ItemsItem EMPLOYEE_ID = fromString("employeeId");
 
-    /** Static value employeeOrgData for Get7ItemsItem. */
+    /**
+     * Static value employeeOrgData for Get7ItemsItem.
+     */
     public static final Get7ItemsItem EMPLOYEE_ORG_DATA = fromString("employeeOrgData");
 
-    /** Static value employeeType for Get7ItemsItem. */
+    /**
+     * Static value employeeType for Get7ItemsItem.
+     */
     public static final Get7ItemsItem EMPLOYEE_TYPE = fromString("employeeType");
 
-    /** Static value externalUserState for Get7ItemsItem. */
+    /**
+     * Static value externalUserState for Get7ItemsItem.
+     */
     public static final Get7ItemsItem EXTERNAL_USER_STATE = fromString("externalUserState");
 
-    /** Static value externalUserStateChangeDateTime for Get7ItemsItem. */
-    public static final Get7ItemsItem EXTERNAL_USER_STATE_CHANGE_DATE_TIME =
-        fromString("externalUserStateChangeDateTime");
+    /**
+     * Static value externalUserStateChangeDateTime for Get7ItemsItem.
+     */
+    public static final Get7ItemsItem EXTERNAL_USER_STATE_CHANGE_DATE_TIME
+        = fromString("externalUserStateChangeDateTime");
 
-    /** Static value faxNumber for Get7ItemsItem. */
+    /**
+     * Static value faxNumber for Get7ItemsItem.
+     */
     public static final Get7ItemsItem FAX_NUMBER = fromString("faxNumber");
 
-    /** Static value givenName for Get7ItemsItem. */
+    /**
+     * Static value givenName for Get7ItemsItem.
+     */
     public static final Get7ItemsItem GIVEN_NAME = fromString("givenName");
 
-    /** Static value identities for Get7ItemsItem. */
+    /**
+     * Static value identities for Get7ItemsItem.
+     */
     public static final Get7ItemsItem IDENTITIES = fromString("identities");
 
-    /** Static value imAddresses for Get7ItemsItem. */
+    /**
+     * Static value imAddresses for Get7ItemsItem.
+     */
     public static final Get7ItemsItem IM_ADDRESSES = fromString("imAddresses");
 
-    /** Static value isResourceAccount for Get7ItemsItem. */
+    /**
+     * Static value isResourceAccount for Get7ItemsItem.
+     */
     public static final Get7ItemsItem IS_RESOURCE_ACCOUNT = fromString("isResourceAccount");
 
-    /** Static value jobTitle for Get7ItemsItem. */
+    /**
+     * Static value jobTitle for Get7ItemsItem.
+     */
     public static final Get7ItemsItem JOB_TITLE = fromString("jobTitle");
 
-    /** Static value lastPasswordChangeDateTime for Get7ItemsItem. */
+    /**
+     * Static value lastPasswordChangeDateTime for Get7ItemsItem.
+     */
     public static final Get7ItemsItem LAST_PASSWORD_CHANGE_DATE_TIME = fromString("lastPasswordChangeDateTime");
 
-    /** Static value legalAgeGroupClassification for Get7ItemsItem. */
+    /**
+     * Static value legalAgeGroupClassification for Get7ItemsItem.
+     */
     public static final Get7ItemsItem LEGAL_AGE_GROUP_CLASSIFICATION = fromString("legalAgeGroupClassification");
 
-    /** Static value licenseAssignmentStates for Get7ItemsItem. */
+    /**
+     * Static value licenseAssignmentStates for Get7ItemsItem.
+     */
     public static final Get7ItemsItem LICENSE_ASSIGNMENT_STATES = fromString("licenseAssignmentStates");
 
-    /** Static value mobilePhone for Get7ItemsItem. */
+    /**
+     * Static value mobilePhone for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MOBILE_PHONE = fromString("mobilePhone");
 
-    /** Static value officeLocation for Get7ItemsItem. */
+    /**
+     * Static value officeLocation for Get7ItemsItem.
+     */
     public static final Get7ItemsItem OFFICE_LOCATION = fromString("officeLocation");
 
-    /** Static value onPremisesDistinguishedName for Get7ItemsItem. */
+    /**
+     * Static value onPremisesDistinguishedName for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ON_PREMISES_DISTINGUISHED_NAME = fromString("onPremisesDistinguishedName");
 
-    /** Static value onPremisesExtensionAttributes for Get7ItemsItem. */
+    /**
+     * Static value onPremisesExtensionAttributes for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ON_PREMISES_EXTENSION_ATTRIBUTES = fromString("onPremisesExtensionAttributes");
 
-    /** Static value onPremisesImmutableId for Get7ItemsItem. */
+    /**
+     * Static value onPremisesImmutableId for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ON_PREMISES_IMMUTABLE_ID = fromString("onPremisesImmutableId");
 
-    /** Static value onPremisesUserPrincipalName for Get7ItemsItem. */
+    /**
+     * Static value onPremisesUserPrincipalName for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ON_PREMISES_USER_PRINCIPAL_NAME = fromString("onPremisesUserPrincipalName");
 
-    /** Static value otherMails for Get7ItemsItem. */
+    /**
+     * Static value otherMails for Get7ItemsItem.
+     */
     public static final Get7ItemsItem OTHER_MAILS = fromString("otherMails");
 
-    /** Static value passwordPolicies for Get7ItemsItem. */
+    /**
+     * Static value passwordPolicies for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PASSWORD_POLICIES = fromString("passwordPolicies");
 
-    /** Static value passwordProfile for Get7ItemsItem. */
+    /**
+     * Static value passwordProfile for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PASSWORD_PROFILE = fromString("passwordProfile");
 
-    /** Static value postalCode for Get7ItemsItem. */
+    /**
+     * Static value postalCode for Get7ItemsItem.
+     */
     public static final Get7ItemsItem POSTAL_CODE = fromString("postalCode");
 
-    /** Static value provisionedPlans for Get7ItemsItem. */
+    /**
+     * Static value provisionedPlans for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PROVISIONED_PLANS = fromString("provisionedPlans");
 
-    /** Static value showInAddressList for Get7ItemsItem. */
+    /**
+     * Static value showInAddressList for Get7ItemsItem.
+     */
     public static final Get7ItemsItem SHOW_IN_ADDRESS_LIST = fromString("showInAddressList");
 
-    /** Static value signInSessionsValidFromDateTime for Get7ItemsItem. */
-    public static final Get7ItemsItem SIGN_IN_SESSIONS_VALID_FROM_DATE_TIME =
-        fromString("signInSessionsValidFromDateTime");
+    /**
+     * Static value signInSessionsValidFromDateTime for Get7ItemsItem.
+     */
+    public static final Get7ItemsItem SIGN_IN_SESSIONS_VALID_FROM_DATE_TIME
+        = fromString("signInSessionsValidFromDateTime");
 
-    /** Static value state for Get7ItemsItem. */
+    /**
+     * Static value state for Get7ItemsItem.
+     */
     public static final Get7ItemsItem STATE = fromString("state");
 
-    /** Static value streetAddress for Get7ItemsItem. */
+    /**
+     * Static value streetAddress for Get7ItemsItem.
+     */
     public static final Get7ItemsItem STREET_ADDRESS = fromString("streetAddress");
 
-    /** Static value surname for Get7ItemsItem. */
+    /**
+     * Static value surname for Get7ItemsItem.
+     */
     public static final Get7ItemsItem SURNAME = fromString("surname");
 
-    /** Static value usageLocation for Get7ItemsItem. */
+    /**
+     * Static value usageLocation for Get7ItemsItem.
+     */
     public static final Get7ItemsItem USAGE_LOCATION = fromString("usageLocation");
 
-    /** Static value userPrincipalName for Get7ItemsItem. */
+    /**
+     * Static value userPrincipalName for Get7ItemsItem.
+     */
     public static final Get7ItemsItem USER_PRINCIPAL_NAME = fromString("userPrincipalName");
 
-    /** Static value userType for Get7ItemsItem. */
+    /**
+     * Static value userType for Get7ItemsItem.
+     */
     public static final Get7ItemsItem USER_TYPE = fromString("userType");
 
-    /** Static value mailboxSettings for Get7ItemsItem. */
+    /**
+     * Static value mailboxSettings for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MAILBOX_SETTINGS = fromString("mailboxSettings");
 
-    /** Static value deviceEnrollmentLimit for Get7ItemsItem. */
+    /**
+     * Static value deviceEnrollmentLimit for Get7ItemsItem.
+     */
     public static final Get7ItemsItem DEVICE_ENROLLMENT_LIMIT = fromString("deviceEnrollmentLimit");
 
-    /** Static value aboutMe for Get7ItemsItem. */
+    /**
+     * Static value aboutMe for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ABOUT_ME = fromString("aboutMe");
 
-    /** Static value birthday for Get7ItemsItem. */
+    /**
+     * Static value birthday for Get7ItemsItem.
+     */
     public static final Get7ItemsItem BIRTHDAY = fromString("birthday");
 
-    /** Static value hireDate for Get7ItemsItem. */
+    /**
+     * Static value hireDate for Get7ItemsItem.
+     */
     public static final Get7ItemsItem HIRE_DATE = fromString("hireDate");
 
-    /** Static value interests for Get7ItemsItem. */
+    /**
+     * Static value interests for Get7ItemsItem.
+     */
     public static final Get7ItemsItem INTERESTS = fromString("interests");
 
-    /** Static value mySite for Get7ItemsItem. */
+    /**
+     * Static value mySite for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MY_SITE = fromString("mySite");
 
-    /** Static value pastProjects for Get7ItemsItem. */
+    /**
+     * Static value pastProjects for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PAST_PROJECTS = fromString("pastProjects");
 
-    /** Static value preferredName for Get7ItemsItem. */
+    /**
+     * Static value preferredName for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PREFERRED_NAME = fromString("preferredName");
 
-    /** Static value responsibilities for Get7ItemsItem. */
+    /**
+     * Static value responsibilities for Get7ItemsItem.
+     */
     public static final Get7ItemsItem RESPONSIBILITIES = fromString("responsibilities");
 
-    /** Static value schools for Get7ItemsItem. */
+    /**
+     * Static value schools for Get7ItemsItem.
+     */
     public static final Get7ItemsItem SCHOOLS = fromString("schools");
 
-    /** Static value skills for Get7ItemsItem. */
+    /**
+     * Static value skills for Get7ItemsItem.
+     */
     public static final Get7ItemsItem SKILLS = fromString("skills");
 
-    /** Static value createdObjects for Get7ItemsItem. */
+    /**
+     * Static value createdObjects for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CREATED_OBJECTS = fromString("createdObjects");
 
-    /** Static value directReports for Get7ItemsItem. */
+    /**
+     * Static value directReports for Get7ItemsItem.
+     */
     public static final Get7ItemsItem DIRECT_REPORTS = fromString("directReports");
 
-    /** Static value licenseDetails for Get7ItemsItem. */
+    /**
+     * Static value licenseDetails for Get7ItemsItem.
+     */
     public static final Get7ItemsItem LICENSE_DETAILS = fromString("licenseDetails");
 
-    /** Static value manager for Get7ItemsItem. */
+    /**
+     * Static value manager for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MANAGER = fromString("manager");
 
-    /** Static value oauth2PermissionGrants for Get7ItemsItem. */
+    /**
+     * Static value oauth2PermissionGrants for Get7ItemsItem.
+     */
     public static final Get7ItemsItem OAUTH2PERMISSION_GRANTS = fromString("oauth2PermissionGrants");
 
-    /** Static value ownedDevices for Get7ItemsItem. */
+    /**
+     * Static value ownedDevices for Get7ItemsItem.
+     */
     public static final Get7ItemsItem OWNED_DEVICES = fromString("ownedDevices");
 
-    /** Static value ownedObjects for Get7ItemsItem. */
+    /**
+     * Static value ownedObjects for Get7ItemsItem.
+     */
     public static final Get7ItemsItem OWNED_OBJECTS = fromString("ownedObjects");
 
-    /** Static value registeredDevices for Get7ItemsItem. */
+    /**
+     * Static value registeredDevices for Get7ItemsItem.
+     */
     public static final Get7ItemsItem REGISTERED_DEVICES = fromString("registeredDevices");
 
-    /** Static value scopedRoleMemberOf for Get7ItemsItem. */
+    /**
+     * Static value scopedRoleMemberOf for Get7ItemsItem.
+     */
     public static final Get7ItemsItem SCOPED_ROLE_MEMBER_OF = fromString("scopedRoleMemberOf");
 
-    /** Static value calendarGroups for Get7ItemsItem. */
+    /**
+     * Static value calendarGroups for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CALENDAR_GROUPS = fromString("calendarGroups");
 
-    /** Static value calendars for Get7ItemsItem. */
+    /**
+     * Static value calendars for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CALENDARS = fromString("calendars");
 
-    /** Static value contactFolders for Get7ItemsItem. */
+    /**
+     * Static value contactFolders for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CONTACT_FOLDERS = fromString("contactFolders");
 
-    /** Static value contacts for Get7ItemsItem. */
+    /**
+     * Static value contacts for Get7ItemsItem.
+     */
     public static final Get7ItemsItem CONTACTS = fromString("contacts");
 
-    /** Static value inferenceClassification for Get7ItemsItem. */
+    /**
+     * Static value inferenceClassification for Get7ItemsItem.
+     */
     public static final Get7ItemsItem INFERENCE_CLASSIFICATION = fromString("inferenceClassification");
 
-    /** Static value mailFolders for Get7ItemsItem. */
+    /**
+     * Static value mailFolders for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MAIL_FOLDERS = fromString("mailFolders");
 
-    /** Static value messages for Get7ItemsItem. */
+    /**
+     * Static value messages for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MESSAGES = fromString("messages");
 
-    /** Static value outlook for Get7ItemsItem. */
+    /**
+     * Static value outlook for Get7ItemsItem.
+     */
     public static final Get7ItemsItem OUTLOOK = fromString("outlook");
 
-    /** Static value people for Get7ItemsItem. */
+    /**
+     * Static value people for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PEOPLE = fromString("people");
 
-    /** Static value followedSites for Get7ItemsItem. */
+    /**
+     * Static value followedSites for Get7ItemsItem.
+     */
     public static final Get7ItemsItem FOLLOWED_SITES = fromString("followedSites");
 
-    /** Static value managedDevices for Get7ItemsItem. */
+    /**
+     * Static value managedDevices for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MANAGED_DEVICES = fromString("managedDevices");
 
-    /** Static value managedAppRegistrations for Get7ItemsItem. */
+    /**
+     * Static value managedAppRegistrations for Get7ItemsItem.
+     */
     public static final Get7ItemsItem MANAGED_APP_REGISTRATIONS = fromString("managedAppRegistrations");
 
-    /** Static value deviceManagementTroubleshootingEvents for Get7ItemsItem. */
-    public static final Get7ItemsItem DEVICE_MANAGEMENT_TROUBLESHOOTING_EVENTS =
-        fromString("deviceManagementTroubleshootingEvents");
+    /**
+     * Static value deviceManagementTroubleshootingEvents for Get7ItemsItem.
+     */
+    public static final Get7ItemsItem DEVICE_MANAGEMENT_TROUBLESHOOTING_EVENTS
+        = fromString("deviceManagementTroubleshootingEvents");
 
-    /** Static value insights for Get7ItemsItem. */
+    /**
+     * Static value insights for Get7ItemsItem.
+     */
     public static final Get7ItemsItem INSIGHTS = fromString("insights");
 
-    /** Static value activities for Get7ItemsItem. */
+    /**
+     * Static value activities for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ACTIVITIES = fromString("activities");
 
-    /** Static value onlineMeetings for Get7ItemsItem. */
+    /**
+     * Static value onlineMeetings for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ONLINE_MEETINGS = fromString("onlineMeetings");
 
-    /** Static value presence for Get7ItemsItem. */
+    /**
+     * Static value presence for Get7ItemsItem.
+     */
     public static final Get7ItemsItem PRESENCE = fromString("presence");
 
-    /** Static value joinedTeams for Get7ItemsItem. */
+    /**
+     * Static value joinedTeams for Get7ItemsItem.
+     */
     public static final Get7ItemsItem JOINED_TEAMS = fromString("joinedTeams");
 
-    /** Static value teamwork for Get7ItemsItem. */
+    /**
+     * Static value teamwork for Get7ItemsItem.
+     */
     public static final Get7ItemsItem TEAMWORK = fromString("teamwork");
 
-    /** Static value todo for Get7ItemsItem. */
+    /**
+     * Static value todo for Get7ItemsItem.
+     */
     public static final Get7ItemsItem TODO = fromString("todo");
 
-    /** Static value * for Get7ItemsItem. */
+    /**
+     * Static value * for Get7ItemsItem.
+     */
     public static final Get7ItemsItem ASTERISK = fromString("*");
 
-    /** Static value domainNameReferences for Get7ItemsItem. */
+    /**
+     * Static value domainNameReferences for Get7ItemsItem.
+     */
     public static final Get7ItemsItem DOMAIN_NAME_REFERENCES = fromString("domainNameReferences");
 
-    /** Static value serviceConfigurationRecords for Get7ItemsItem. */
+    /**
+     * Static value serviceConfigurationRecords for Get7ItemsItem.
+     */
     public static final Get7ItemsItem SERVICE_CONFIGURATION_RECORDS = fromString("serviceConfigurationRecords");
 
-    /** Static value verificationDnsRecords for Get7ItemsItem. */
+    /**
+     * Static value verificationDnsRecords for Get7ItemsItem.
+     */
     public static final Get7ItemsItem VERIFICATION_DNS_RECORDS = fromString("verificationDnsRecords");
 
     /**
      * Creates a new instance of Get7ItemsItem value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -573,18 +940,17 @@ public final class Get7ItemsItem extends ExpandableStringEnum<Get7ItemsItem> {
 
     /**
      * Creates or finds a Get7ItemsItem from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Get7ItemsItem.
      */
-    @JsonCreator
     public static Get7ItemsItem fromString(String name) {
         return fromString(name, Get7ItemsItem.class);
     }
 
     /**
      * Gets known Get7ItemsItem values.
-     *
+     * 
      * @return known Get7ItemsItem values.
      */
     public static Collection<Get7ItemsItem> values() {

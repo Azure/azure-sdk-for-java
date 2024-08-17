@@ -22,7 +22,8 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     private Object dataLakeStoreUri;
 
     /*
-     * The ID of the application used to authenticate against the Azure Data Lake Store account. Type: string (or Expression with resultType string).
+     * The ID of the application used to authenticate against the Azure Data Lake Store account. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
@@ -34,13 +35,16 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or Expression with resultType string).
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
@@ -52,19 +56,22 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     private Object accountName;
 
     /*
-     * Data Lake Store account subscription ID (if different from Data Factory account). Type: string (or Expression with resultType string).
+     * Data Lake Store account subscription ID (if different from Data Factory account). Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "subscriptionId")
     private Object subscriptionId;
 
     /*
-     * Data Lake Store account resource group name (if different from Data Factory account). Type: string (or Expression with resultType string).
+     * Data Lake Store account resource group name (if different from Data Factory account). Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "resourceGroupName")
     private Object resourceGroupName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

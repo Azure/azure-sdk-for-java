@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the mode of an upgrade to virtual machines in the scale set.&lt;br /&gt;&lt;br /&gt; Possible values
  * are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to virtual machines in the scale
@@ -44,7 +41,6 @@ public enum UpgradeMode {
      * @param value the serialized value to parse.
      * @return the parsed UpgradeMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static UpgradeMode fromString(String value) {
         if (value == null) {
             return null;
@@ -61,7 +57,6 @@ public enum UpgradeMode {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

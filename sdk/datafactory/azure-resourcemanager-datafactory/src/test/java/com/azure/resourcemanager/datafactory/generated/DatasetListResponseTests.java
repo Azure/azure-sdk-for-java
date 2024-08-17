@@ -21,80 +21,67 @@ public final class DatasetListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatasetListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"auwzizxbmpgc\",\"description\":\"fuzmuvpbtt\",\"structure\":\"datamorppxebmnzbtbh\",\"schema\":\"dataglkfg\",\"linkedServiceName\":{\"referenceName\":\"hdneuelfph\",\"parameters\":{\"quuvxzxcl\":\"datahtozfikdow\",\"sg\":\"dataithhqzon\",\"c\":\"datab\",\"acffgdkzzewkfvhq\":\"datahfwdsjnkaljutiis\"}},\"parameters\":{\"uflrwd\":{\"type\":\"Object\",\"defaultValue\":\"datavpnpp\"}},\"annotations\":[\"datalxyjr\",\"datasag\"],\"folder\":{\"name\":\"nihgwqapnedg\"},\"\":{\"vdrhvoo\":\"datavkcvqvpkeqd\",\"dopcjwvnh\":\"datasotbob\",\"mgxcxrslpm\":\"datald\",\"qsluicp\":\"datatwuoegrpkhjwni\"}},\"name\":\"gk\",\"type\":\"lvmbmpaxmodfvuef\",\"etag\":\"sbpfvmwyhr\",\"id\":\"uyfta\"},{\"properties\":{\"type\":\"cpwi\",\"description\":\"vqtmnub\",\"structure\":\"datakpzksmondjmq\",\"schema\":\"datavypomgkopkwho\",\"linkedServiceName\":{\"referenceName\":\"v\",\"parameters\":{\"mocmbqfqvmk\":\"dataqgxy\"}},\"parameters\":{\"yat\":{\"type\":\"SecureString\",\"defaultValue\":\"datapvhelxprg\"}},\"annotations\":[\"datakcbcue\"],\"folder\":{\"name\":\"xgc\"},\"\":{\"sxsdqrhzoymibm\":\"databrh\",\"hwflu\":\"dataqyib\",\"voqacpiexpbt\":\"datazdtmhrkwofy\"}},\"name\":\"wbwo\",\"type\":\"washr\",\"etag\":\"tkcnqxwb\",\"id\":\"kulpiujwaasi\"},{\"properties\":{\"type\":\"i\",\"description\":\"byuqerpqlp\",\"structure\":\"datacciuqgbdbutau\",\"schema\":\"databtkuwhh\",\"linkedServiceName\":{\"referenceName\":\"hykojoxafnndlpic\",\"parameters\":{\"kkpwdreqnovvq\":\"dataymkcdyhb\"}},\"parameters\":{\"rsndsytgadgvra\":{\"type\":\"Array\",\"defaultValue\":\"dataxywsuws\"},\"arrwlquu\":{\"type\":\"SecureString\",\"defaultValue\":\"dataneqn\"}},\"annotations\":[\"dataqkacewii\"],\"folder\":{\"name\":\"ubjibww\"},\"\":{\"kn\":\"dataohqkvpuvksgpls\",\"synljphuopxodl\":\"datan\",\"sjswsrms\":\"dataiyntorzihle\",\"ox\":\"datayzrpzbchckqqzq\"}},\"name\":\"suiizynkedyat\",\"type\":\"yhqmibzyhwi\",\"etag\":\"mypyynpcdpu\",\"id\":\"zgmwznmabikns\"},{\"properties\":{\"type\":\"gj\",\"description\":\"bldtlww\",\"structure\":\"datakdmtncvokotll\",\"schema\":\"datayhgsy\",\"linkedServiceName\":{\"referenceName\":\"cogjltdtbn\",\"parameters\":{\"ocrkvcikh\":\"datad\",\"qgxqquezikyw\":\"datavpa\",\"lla\":\"datagxk\"}},\"parameters\":{\"ivgvvcna\":{\"type\":\"String\",\"defaultValue\":\"datauipiccjzk\"},\"rdvstkwqqtch\":{\"type\":\"Bool\",\"defaultValue\":\"datayrnxxmueedn\"}},\"annotations\":[\"datamfmtdaaygdvw\",\"datagpiohgwxrtfudxe\",\"dataxg\"],\"folder\":{\"name\":\"gvr\"},\"\":{\"dblx\":\"datapkukghi\",\"fnjhfjxwmszkkfo\":\"datawi\",\"kzikfjawneaivxwc\":\"datarey\",\"fatkld\":\"dataelpcirelsfeaenwa\"}},\"name\":\"bjhwuaan\",\"type\":\"jos\",\"etag\":\"youlp\",\"id\":\"v\"}],\"nextLink\":\"glrvimjwosytxi\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"Dataset\",\"description\":\"uxvypomgkopkwh\",\"structure\":\"datav\",\"schema\":\"datajqg\",\"linkedServiceName\":{\"referenceName\":\"ysmocmbqfqvmkcxo\",\"parameters\":{\"kcbcue\":\"datavhelxprglyatdd\",\"hos\":\"datarjxgciqib\",\"ibahwflus\":\"datasdqrhzoymibmrq\"}},\"parameters\":{\"piexpbtgiw\":{\"type\":\"Object\",\"defaultValue\":\"datarkwofyyvoqa\"},\"tdtkcn\":{\"type\":\"Object\",\"defaultValue\":\"dataenwash\"},\"i\":{\"type\":\"Float\",\"defaultValue\":\"databpokulpiujwaasip\"},\"rpqlp\":{\"type\":\"Int\",\"defaultValue\":\"datayuq\"}},\"annotations\":[\"dataciuqgbdb\",\"datat\",\"datauvfbtkuwh\",\"datamhykojoxafnndl\"],\"folder\":{\"name\":\"hkoymkcdyhbp\"},\"\":{\"xywsuws\":\"datawdreqnovvqfovl\",\"aeneqnzarrwl\":\"datarsndsytgadgvra\",\"jfqka\":\"datauu\"}},\"name\":\"wiipfpub\",\"type\":\"bwwift\",\"etag\":\"qkvpuvksgplsakn\",\"id\":\"fsynljphuop\"},{\"properties\":{\"type\":\"Dataset\",\"description\":\"dlqiyntorzih\",\"structure\":\"dataosjswsr\",\"schema\":\"datalyzrpzbchckqqzqi\",\"linkedServiceName\":{\"referenceName\":\"xiy\",\"parameters\":{\"ynkedyatrwyhqmib\":\"datai\",\"mnzgmwznmabi\":\"datayhwitsmypyynpcdp\",\"wwrlkdmtncv\":\"datansorgjhxbldt\",\"xdy\":\"datakotl\"}},\"parameters\":{\"hadoocrk\":{\"type\":\"Array\",\"defaultValue\":\"datacogjltdtbn\"},\"gxqquezik\":{\"type\":\"Object\",\"defaultValue\":\"datakhnvpam\"},\"lla\":{\"type\":\"Int\",\"defaultValue\":\"datagxk\"},\"ccjzkzivgvv\":{\"type\":\"Bool\",\"defaultValue\":\"datalwuip\"}},\"annotations\":[\"datay\",\"datahyrnxxmu\"],\"folder\":{\"name\":\"ndrdvstkwq\"},\"\":{\"ygdvwv\":\"datahealmfmtda\"}},\"name\":\"iohgwxrtfud\",\"type\":\"pxgy\",\"etag\":\"gvr\",\"id\":\"npkukghimdblx\"}],\"nextLink\":\"imfnjhfjx\"}")
             .toObject(DatasetListResponse.class);
-        Assertions.assertEquals("uyfta", model.value().get(0).id());
-        Assertions.assertEquals("fuzmuvpbtt", model.value().get(0).properties().description());
-        Assertions.assertEquals("hdneuelfph", model.value().get(0).properties().linkedServiceName().referenceName());
+        Assertions.assertEquals("fsynljphuop", model.value().get(0).id());
+        Assertions.assertEquals("uxvypomgkopkwh", model.value().get(0).properties().description());
+        Assertions.assertEquals("ysmocmbqfqvmkcxo",
+            model.value().get(0).properties().linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.OBJECT,
-            model.value().get(0).properties().parameters().get("uflrwd").type());
-        Assertions.assertEquals("nihgwqapnedg", model.value().get(0).properties().folder().name());
-        Assertions.assertEquals("glrvimjwosytxi", model.nextLink());
+            model.value().get(0).properties().parameters().get("piexpbtgiw").type());
+        Assertions.assertEquals("hkoymkcdyhbp", model.value().get(0).properties().folder().name());
+        Assertions.assertEquals("imfnjhfjx", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatasetListResponse model = new DatasetListResponse().withValue(Arrays.asList(
-            new DatasetResourceInner().withId("uyfta")
-                .withProperties(new Dataset().withDescription("fuzmuvpbtt")
-                    .withStructure("datamorppxebmnzbtbh")
-                    .withSchema("dataglkfg")
-                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("hdneuelfph")
-                        .withParameters(mapOf("quuvxzxcl", "datahtozfikdow", "sg", "dataithhqzon", "c", "datab",
-                            "acffgdkzzewkfvhq", "datahfwdsjnkaljutiis")))
-                    .withParameters(mapOf("uflrwd",
-                        new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datavpnpp")))
-                    .withAnnotations(Arrays.asList("datalxyjr", "datasag"))
-                    .withFolder(new DatasetFolder().withName("nihgwqapnedg"))
-                    .withAdditionalProperties(mapOf("type", "auwzizxbmpgc"))),
-            new DatasetResourceInner().withId("kulpiujwaasi")
-                .withProperties(new Dataset().withDescription("vqtmnub")
-                    .withStructure("datakpzksmondjmq")
-                    .withSchema("datavypomgkopkwho")
-                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("v")
-                        .withParameters(mapOf("mocmbqfqvmk", "dataqgxy")))
-                    .withParameters(mapOf("yat",
-                        new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                            .withDefaultValue("datapvhelxprg")))
-                    .withAnnotations(Arrays.asList("datakcbcue"))
-                    .withFolder(new DatasetFolder().withName("xgc"))
-                    .withAdditionalProperties(mapOf("type", "cpwi"))),
-            new DatasetResourceInner().withId("zgmwznmabikns")
-                .withProperties(new Dataset().withDescription("byuqerpqlp")
-                    .withStructure("datacciuqgbdbutau")
-                    .withSchema("databtkuwhh")
-                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("hykojoxafnndlpic")
-                        .withParameters(mapOf("kkpwdreqnovvq", "dataymkcdyhb")))
-                    .withParameters(mapOf("rsndsytgadgvra",
-                        new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataxywsuws"),
-                        "arrwlquu",
-                        new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                            .withDefaultValue("dataneqn")))
-                    .withAnnotations(Arrays.asList("dataqkacewii"))
-                    .withFolder(new DatasetFolder().withName("ubjibww"))
-                    .withAdditionalProperties(mapOf("type", "i"))),
-            new DatasetResourceInner().withId("v")
-                .withProperties(new Dataset().withDescription("bldtlww")
-                    .withStructure("datakdmtncvokotll")
-                    .withSchema("datayhgsy")
-                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cogjltdtbn")
-                        .withParameters(mapOf("ocrkvcikh", "datad", "qgxqquezikyw", "datavpa", "lla", "datagxk")))
-                    .withParameters(mapOf("ivgvvcna",
-                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datauipiccjzk"),
-                        "rdvstkwqqtch",
-                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datayrnxxmueedn")))
-                    .withAnnotations(Arrays.asList("datamfmtdaaygdvw", "datagpiohgwxrtfudxe", "dataxg"))
-                    .withFolder(new DatasetFolder().withName("gvr"))
-                    .withAdditionalProperties(mapOf("type", "gj")))))
-            .withNextLink("glrvimjwosytxi");
+            new DatasetResourceInner().withId("fsynljphuop")
+                .withProperties(new Dataset().withDescription("uxvypomgkopkwh")
+                    .withStructure("datav")
+                    .withSchema("datajqg")
+                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ysmocmbqfqvmkcxo")
+                        .withParameters(mapOf("kcbcue", "datavhelxprglyatdd", "hos", "datarjxgciqib", "ibahwflus",
+                            "datasdqrhzoymibmrq")))
+                    .withParameters(mapOf("piexpbtgiw",
+                        new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datarkwofyyvoqa"),
+                        "tdtkcn",
+                        new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataenwash"), "i",
+                        new ParameterSpecification().withType(ParameterType.FLOAT)
+                            .withDefaultValue("databpokulpiujwaasip"),
+                        "rpqlp", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datayuq")))
+                    .withAnnotations(Arrays.asList("dataciuqgbdb", "datat", "datauvfbtkuwh", "datamhykojoxafnndl"))
+                    .withFolder(new DatasetFolder().withName("hkoymkcdyhbp"))
+                    .withAdditionalProperties(mapOf("type", "Dataset"))),
+            new DatasetResourceInner().withId("npkukghimdblx")
+                .withProperties(
+                    new Dataset().withDescription("dlqiyntorzih")
+                        .withStructure("dataosjswsr")
+                        .withSchema("datalyzrpzbchckqqzqi")
+                        .withLinkedServiceName(new LinkedServiceReference().withReferenceName("xiy")
+                            .withParameters(mapOf("ynkedyatrwyhqmib", "datai", "mnzgmwznmabi", "datayhwitsmypyynpcdp",
+                                "wwrlkdmtncv", "datansorgjhxbldt", "xdy", "datakotl")))
+                        .withParameters(mapOf("hadoocrk",
+                            new ParameterSpecification().withType(ParameterType.ARRAY)
+                                .withDefaultValue("datacogjltdtbn"),
+                            "gxqquezik",
+                            new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datakhnvpam"),
+                            "lla", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datagxk"),
+                            "ccjzkzivgvv",
+                            new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datalwuip")))
+                        .withAnnotations(Arrays.asList("datay", "datahyrnxxmu"))
+                        .withFolder(new DatasetFolder().withName("ndrdvstkwq"))
+                        .withAdditionalProperties(mapOf("type", "Dataset")))))
+            .withNextLink("imfnjhfjx");
         model = BinaryData.fromObject(model).toObject(DatasetListResponse.class);
-        Assertions.assertEquals("uyfta", model.value().get(0).id());
-        Assertions.assertEquals("fuzmuvpbtt", model.value().get(0).properties().description());
-        Assertions.assertEquals("hdneuelfph", model.value().get(0).properties().linkedServiceName().referenceName());
+        Assertions.assertEquals("fsynljphuop", model.value().get(0).id());
+        Assertions.assertEquals("uxvypomgkopkwh", model.value().get(0).properties().description());
+        Assertions.assertEquals("ysmocmbqfqvmkcxo",
+            model.value().get(0).properties().linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.OBJECT,
-            model.value().get(0).properties().parameters().get("uflrwd").type());
-        Assertions.assertEquals("nihgwqapnedg", model.value().get(0).properties().folder().name());
-        Assertions.assertEquals("glrvimjwosytxi", model.nextLink());
+            model.value().get(0).properties().parameters().get("piexpbtgiw").type());
+        Assertions.assertEquals("hkoymkcdyhbp", model.value().get(0).properties().folder().name());
+        Assertions.assertEquals("imfnjhfjx", model.nextLink());
     }
 
     // Use "Map.of" if available

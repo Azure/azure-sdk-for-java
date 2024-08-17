@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -35,7 +33,7 @@ public final class DirectoryServiceOptions extends ExpandableStringEnum<Director
 
     /**
      * Creates a new instance of DirectoryServiceOptions value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -44,18 +42,17 @@ public final class DirectoryServiceOptions extends ExpandableStringEnum<Director
 
     /**
      * Creates or finds a DirectoryServiceOptions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DirectoryServiceOptions.
      */
-    @JsonCreator
     public static DirectoryServiceOptions fromString(String name) {
         return fromString(name, DirectoryServiceOptions.class);
     }
 
     /**
      * Gets known DirectoryServiceOptions values.
-     *
+     * 
      * @return known DirectoryServiceOptions values.
      */
     public static Collection<DirectoryServiceOptions> values() {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class HeaderAction extends ExpandableStringEnum<HeaderAction> {
      * @param name a name to look for.
      * @return the corresponding HeaderAction.
      */
-    @JsonCreator
     public static HeaderAction fromString(String name) {
         return fromString(name, HeaderAction.class);
     }

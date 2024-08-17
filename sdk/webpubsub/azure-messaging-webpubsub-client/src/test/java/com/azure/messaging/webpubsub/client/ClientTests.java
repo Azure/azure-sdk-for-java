@@ -3,7 +3,7 @@
 
 package com.azure.messaging.webpubsub.client;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -36,24 +36,21 @@ import java.util.function.Consumer;
 public class ClientTests extends TestBase {
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testClientState() {
         WebPubSubAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
 
         Assertions.assertEquals(WebPubSubClientState.STOPPED, asyncClient.getClientState());
 
-        Mono<Void> startMono = asyncClient.start().doOnSuccess(ignored -> {
-            Assertions.assertEquals(WebPubSubClientState.CONNECTED, asyncClient.getClientState());
-        });
+        Mono<Void> startMono = asyncClient.start().doOnSuccess(ignored ->
+            Assertions.assertEquals(WebPubSubClientState.CONNECTED, asyncClient.getClientState()));
         // test transient state of CONNECTING
-        Mono<Void> verifyMono = Mono.delay(Duration.ofMillis(10)).then().doOnSuccess(ignored -> {
-            Assertions.assertEquals(WebPubSubClientState.CONNECTING, asyncClient.getClientState());
-        });
+        Mono<Void> verifyMono = Mono.delay(Duration.ofMillis(10)).then().doOnSuccess(ignored ->
+            Assertions.assertEquals(WebPubSubClientState.CONNECTING, asyncClient.getClientState()));
         startMono.and(verifyMono).block();
 
-        asyncClient.stop().doOnSuccess(ignored -> {
-            Assertions.assertEquals(WebPubSubClientState.STOPPED, asyncClient.getClientState());
-        }).block();
+        asyncClient.stop().doOnSuccess(ignored ->
+            Assertions.assertEquals(WebPubSubClientState.STOPPED, asyncClient.getClientState())).block();
 
         asyncClient.start().block();
         Assertions.assertEquals(WebPubSubClientState.CONNECTED, asyncClient.getClientState());
@@ -62,7 +59,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testTwoClients() throws InterruptedException {
         String groupName = "testTwoClients";
         CountDownLatch latch = new CountDownLatch(1);
@@ -70,9 +67,7 @@ public class ClientTests extends TestBase {
         WebPubSubClient client1 = getClientBuilder("user1")
             .buildClient();
 
-        client1.addOnGroupMessageEventHandler(event -> {
-            latch.countDown();
-        });
+        client1.addOnGroupMessageEventHandler(event -> latch.countDown());
 
         WebPubSubClient client2 = getClientBuilder("user2")
             .buildClient();
@@ -95,7 +90,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testClientCloseable() {
         CountDownLatch connectedLatch = new CountDownLatch(1);
         CountDownLatch stoppedLatch = new CountDownLatch(1);
@@ -107,12 +102,8 @@ public class ClientTests extends TestBase {
                 stoppedEventReceived.set(true);
                 stoppedLatch.countDown();
             });
-            client.addOnConnectedEventHandler(connectedEvent -> {
-                connectedLatch.countDown();
-            });
-            client.addOnDisconnectedEventHandler(disconnectedEvent -> {
-                disconnectedEventReceived.set(true);
-            });
+            client.addOnConnectedEventHandler(connectedEvent -> connectedLatch.countDown());
+            client.addOnDisconnectedEventHandler(disconnectedEvent -> disconnectedEventReceived.set(true));
 
             client.start();
 
@@ -129,7 +120,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testStopAndStart() throws InterruptedException {
         String groupName = "testStopAndStart";
         CountDownLatch latch1 = new CountDownLatch(1);
@@ -176,7 +167,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testConcurrentStop() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(2);
 
@@ -208,7 +199,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testStopWhenStopped() {
         WebPubSubClient client = getClientBuilder()
             .buildClient();
@@ -217,7 +208,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testStopBeforeConnected() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -240,26 +231,22 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testNoCredential() {
-        Assertions.assertThrows(IllegalStateException.class, () -> {
-            WebPubSubClient client = new WebPubSubClientBuilder().buildClient();
-        });
+        Assertions.assertThrows(IllegalStateException.class, () -> new WebPubSubClientBuilder().buildClient());
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testBothCredential() {
-        Assertions.assertThrows(IllegalStateException.class, () -> {
-            WebPubSubClient client = new WebPubSubClientBuilder()
-                .credential(new WebPubSubClientCredential(() -> "mock"))
-                .clientAccessUrl("mock")
-                .buildClient();
-        });
+        Assertions.assertThrows(IllegalStateException.class, () -> new WebPubSubClientBuilder()
+            .credential(new WebPubSubClientCredential(() -> "mock"))
+            .clientAccessUrl("mock")
+            .buildClient());
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testInvalidCredential() {
         WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder()
             .connectionString(Configuration.getGlobalConfiguration().get("CONNECTION_STRING"))
@@ -293,7 +280,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testClientEvents() throws InterruptedException {
         CountDownLatch connectedLatch = new CountDownLatch(1);
         CountDownLatch stoppedLatch = new CountDownLatch(1);
@@ -330,7 +317,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testClientListener() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -371,7 +358,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testConnectedDisconnectedEvent() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         List<String> eventReceived = new ArrayList<>();
@@ -394,7 +381,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testServerDisconnectedOnInvalidPayload() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         List<String> eventReceived = new ArrayList<>();
@@ -423,7 +410,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testClientRecoveryOnSocketClose() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         List<String> eventReceived = new ArrayList<>();
@@ -462,7 +449,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testClientReconnectOnSocketClose() throws InterruptedException {
         String groupName = "testClientReconnectOnSocketClose";
         CountDownLatch latch = new CountDownLatch(1);
@@ -512,7 +499,7 @@ public class ClientTests extends TestBase {
 
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testClientStopOnSocketClose() throws InterruptedException {
         String groupName = "testClientStopOnSocketClose";
         CountDownLatch latch = new CountDownLatch(1);
@@ -548,7 +535,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testStartInStoppedEvent() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -572,7 +559,7 @@ public class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testProtocol() {
         WebPubSubClient client = getClientBuilder()
             .protocol(WebPubSubProtocolType.JSON_PROTOCOL)

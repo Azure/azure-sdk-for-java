@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about Oracle APEX Application Development.
  */
 @Fluent
-public final class ApexDetailsType {
+public final class ApexDetailsType implements JsonSerializable<ApexDetailsType> {
     /*
      * The Oracle APEX Application Development version.
      */
-    @JsonProperty(value = "apexVersion")
     private String apexVersion;
 
     /*
      * The Oracle REST Data Services (ORDS) version.
      */
-    @JsonProperty(value = "ordsVersion")
     private String ordsVersion;
 
     /**
@@ -76,5 +78,44 @@ public final class ApexDetailsType {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apexVersion", this.apexVersion);
+        jsonWriter.writeStringField("ordsVersion", this.ordsVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApexDetailsType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApexDetailsType if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApexDetailsType.
+     */
+    public static ApexDetailsType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApexDetailsType deserializedApexDetailsType = new ApexDetailsType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apexVersion".equals(fieldName)) {
+                    deserializedApexDetailsType.apexVersion = reader.getString();
+                } else if ("ordsVersion".equals(fieldName)) {
+                    deserializedApexDetailsType.ordsVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApexDetailsType;
+        });
     }
 }

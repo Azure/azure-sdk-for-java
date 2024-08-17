@@ -21,7 +21,8 @@ public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties {
     private Object accountName;
 
     /*
-     * The ID of the application used to authenticate against the Azure Data Lake Analytics account. Type: string (or Expression with resultType string).
+     * The ID of the application used to authenticate against the Azure Data Lake Analytics account. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
@@ -33,19 +34,22 @@ public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant", required = true)
     private Object tenant;
 
     /*
-     * Data Lake Analytics account subscription ID (if different from Data Factory account). Type: string (or Expression with resultType string).
+     * Data Lake Analytics account subscription ID (if different from Data Factory account). Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "subscriptionId")
     private Object subscriptionId;
 
     /*
-     * Data Lake Analytics account resource group name (if different from Data Factory account). Type: string (or Expression with resultType string).
+     * Data Lake Analytics account resource group name (if different from Data Factory account). Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "resourceGroupName")
     private Object resourceGroupName;
@@ -57,7 +61,8 @@ public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties {
     private Object dataLakeAnalyticsUri;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

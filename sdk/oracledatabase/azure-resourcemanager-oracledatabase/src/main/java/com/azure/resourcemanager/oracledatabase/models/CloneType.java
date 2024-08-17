@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * CloneType enum.
+ * Clone type enum.
  */
 public final class CloneType extends ExpandableStringEnum<CloneType> {
     /**
@@ -37,7 +36,6 @@ public final class CloneType extends ExpandableStringEnum<CloneType> {
      * @param name a name to look for.
      * @return the corresponding CloneType.
      */
-    @JsonCreator
     public static CloneType fromString(String name) {
         return fromString(name, CloneType.class);
     }

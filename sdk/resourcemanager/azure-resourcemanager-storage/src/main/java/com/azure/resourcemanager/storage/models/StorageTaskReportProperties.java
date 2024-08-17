@@ -5,95 +5,105 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Storage task execution report for a run instance.
  */
 @Immutable
-public final class StorageTaskReportProperties {
+public final class StorageTaskReportProperties implements JsonSerializable<StorageTaskReportProperties> {
     /*
      * Represents the Storage Task Assignment Id associated with the storage task that provided an execution context.
      */
-    @JsonProperty(value = "taskAssignmentId", access = JsonProperty.Access.WRITE_ONLY)
     private String taskAssignmentId;
 
     /*
      * Represents the Storage Account Id where the storage task definition was applied and executed.
      */
-    @JsonProperty(value = "storageAccountId", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccountId;
 
     /*
-     * Start time of the run instance. Filter options such as startTime gt '2023-06-26T20:51:24.4494016Z' and other comparison operators can be used as described for DateTime properties in https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
+     * Start time of the run instance. Filter options such as startTime gt '2023-06-26T20:51:24.4494016Z' and other
+     * comparison operators can be used as described for DateTime properties in
+     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
+     * operators
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private String startTime;
 
     /*
-     * End time of the run instance. Filter options such as startTime gt '2023-06-26T20:51:24.4494016Z' and other comparison operators can be used as described for DateTime properties in https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
+     * End time of the run instance. Filter options such as startTime gt '2023-06-26T20:51:24.4494016Z' and other
+     * comparison operators can be used as described for DateTime properties in
+     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
+     * operators
      */
-    @JsonProperty(value = "finishTime", access = JsonProperty.Access.WRITE_ONLY)
     private String finishTime;
 
     /*
-     * Total number of objects that meet the condition as defined in the storage task assignment execution context. Filter options such as objectsTargetedCount gt 50 and other comparison operators can be used as described for Numerical properties in https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
+     * Total number of objects that meet the condition as defined in the storage task assignment execution context.
+     * Filter options such as objectsTargetedCount gt 50 and other comparison operators can be used as described for
+     * Numerical properties in
+     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
+     * operators
      */
-    @JsonProperty(value = "objectsTargetedCount", access = JsonProperty.Access.WRITE_ONLY)
     private String objectsTargetedCount;
 
     /*
-     * Total number of objects that meet the storage tasks condition and were operated upon. Filter options such as objectsOperatedOnCount ge 100 and other comparison operators can be used as described for Numerical properties in https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
+     * Total number of objects that meet the storage tasks condition and were operated upon. Filter options such as
+     * objectsOperatedOnCount ge 100 and other comparison operators can be used as described for Numerical properties in
+     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
+     * operators
      */
-    @JsonProperty(value = "objectsOperatedOnCount", access = JsonProperty.Access.WRITE_ONLY)
     private String objectsOperatedOnCount;
 
     /*
-     * Total number of objects where task operation failed when was attempted. Filter options such as objectFailedCount eq 0 and other comparison operators can be used as described for Numerical properties in https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
+     * Total number of objects where task operation failed when was attempted. Filter options such as objectFailedCount
+     * eq 0 and other comparison operators can be used as described for Numerical properties in
+     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
+     * operators
      */
-    @JsonProperty(value = "objectFailedCount", access = JsonProperty.Access.WRITE_ONLY)
     private String objectFailedCount;
 
     /*
-     * Total number of objects where task operation succeeded when was attempted.Filter options such as objectsSucceededCount gt 150 and other comparison operators can be used as described for Numerical properties in https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-operators
+     * Total number of objects where task operation succeeded when was attempted.Filter options such as
+     * objectsSucceededCount gt 150 and other comparison operators can be used as described for Numerical properties in
+     * https://learn.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities#supported-comparison-
+     * operators
      */
-    @JsonProperty(value = "objectsSucceededCount", access = JsonProperty.Access.WRITE_ONLY)
     private String objectsSucceededCount;
 
     /*
      * Well known Azure Storage error code that represents the error encountered during execution of the run instance.
      */
-    @JsonProperty(value = "runStatusError", access = JsonProperty.Access.WRITE_ONLY)
     private String runStatusError;
 
     /*
      * Represents the status of the execution.
      */
-    @JsonProperty(value = "runStatusEnum", access = JsonProperty.Access.WRITE_ONLY)
     private RunStatusEnum runStatusEnum;
 
     /*
-     * Full path to the verbose report stored in the reporting container as specified in the assignment execution context for the storage account. 
+     * Full path to the verbose report stored in the reporting container as specified in the assignment execution
+     * context for the storage account.
      */
-    @JsonProperty(value = "summaryReportPath", access = JsonProperty.Access.WRITE_ONLY)
     private String summaryReportPath;
 
     /*
      * Storage Task Arm Id.
      */
-    @JsonProperty(value = "taskId", access = JsonProperty.Access.WRITE_ONLY)
     private String taskId;
 
     /*
      * Storage Task Version
      */
-    @JsonProperty(value = "taskVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String taskVersion;
 
     /*
      * Represents the overall result of the execution for the run instance
      */
-    @JsonProperty(value = "runResult", access = JsonProperty.Access.WRITE_ONLY)
     private RunResult runResult;
 
     /**
@@ -254,5 +264,67 @@ public final class StorageTaskReportProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskReportProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskReportProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTaskReportProperties.
+     */
+    public static StorageTaskReportProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskReportProperties deserializedStorageTaskReportProperties = new StorageTaskReportProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("taskAssignmentId".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.taskAssignmentId = reader.getString();
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.storageAccountId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.startTime = reader.getString();
+                } else if ("finishTime".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.finishTime = reader.getString();
+                } else if ("objectsTargetedCount".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.objectsTargetedCount = reader.getString();
+                } else if ("objectsOperatedOnCount".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.objectsOperatedOnCount = reader.getString();
+                } else if ("objectFailedCount".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.objectFailedCount = reader.getString();
+                } else if ("objectsSucceededCount".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.objectsSucceededCount = reader.getString();
+                } else if ("runStatusError".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.runStatusError = reader.getString();
+                } else if ("runStatusEnum".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.runStatusEnum
+                        = RunStatusEnum.fromString(reader.getString());
+                } else if ("summaryReportPath".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.summaryReportPath = reader.getString();
+                } else if ("taskId".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.taskId = reader.getString();
+                } else if ("taskVersion".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.taskVersion = reader.getString();
+                } else if ("runResult".equals(fieldName)) {
+                    deserializedStorageTaskReportProperties.runResult = RunResult.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskReportProperties;
+        });
     }
 }

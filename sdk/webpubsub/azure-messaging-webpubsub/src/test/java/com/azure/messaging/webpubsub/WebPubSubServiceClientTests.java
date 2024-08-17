@@ -3,6 +3,7 @@
 
 package com.azure.messaging.webpubsub;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -12,8 +13,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.messaging.webpubsub.models.WebPubSubClientProtocol;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
@@ -27,10 +30,13 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class WebPubSubServiceClientTests extends TestProxyTestBase {
@@ -66,6 +72,16 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     private static void assertResponse(Response<?> response, int expectedCode) {
         assertNotNull(response);
         assertEquals(expectedCode, response.getStatusCode());
+    }
+
+    @Test
+    public void testBroadcastStringWithContentType() {
+        String message = "Hello World - Broadcast test!";
+        assertResponse(client.sendToAllWithResponse(
+            BinaryData.fromString(message),
+            WebPubSubContentType.TEXT_PLAIN,
+            message.length(),
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
     }
 
     @Test
@@ -203,7 +219,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testGetAuthenticationToken() throws ParseException {
         WebPubSubClientAccessToken token = client.getClientAccessToken(new GetClientAccessTokenOptions());
         Assertions.assertNotNull(token);
@@ -225,6 +241,31 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
+    @LiveOnly
+    public void testGetMqttAuthenticationToken() throws ParseException {
+        GetClientAccessTokenOptions options = new GetClientAccessTokenOptions()
+            .setWebPubSubClientProtocol(WebPubSubClientProtocol.MQTT);
+        WebPubSubClientAccessToken token = client.getClientAccessToken(options);
+
+        Assertions.assertNotNull(token);
+        Assertions.assertNotNull(token.getToken());
+        Assertions.assertNotNull(token.getUrl());
+
+        Assertions.assertTrue(token.getUrl().startsWith("wss://"));
+        Assertions.assertTrue(token.getUrl().contains(".webpubsub.azure.com/clients/mqtt/hubs/"));
+
+        String authToken = token.getToken();
+        JWT jwt = JWTParser.parse(authToken);
+        JWTClaimsSet claimsSet = jwt.getJWTClaimsSet();
+        Assertions.assertNotNull(claimsSet);
+        Assertions.assertNotNull(claimsSet.getAudience());
+        Assertions.assertFalse(claimsSet.getAudience().isEmpty());
+
+        String aud = claimsSet.getAudience().iterator().next();
+        Assertions.assertTrue(aud.contains(".webpubsub.azure.com/clients/mqtt/hubs/"));
+    }
+
+    @Test
     public void testRemoveNonExistentUserFromGroup() {
         assertResponse(client.removeUserFromGroupWithResponse("java",
             "testRemoveNonExistentUserFromGroup", new RequestOptions()), 204);
@@ -235,6 +276,29 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
         assertResponse(client.sendToGroupWithResponse("java",
             BinaryData.fromString("Hello World!"),
             new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
+    }
+
+    @Test
+    public void testSendMessageToGroupWithContentType() {
+        String message = "Hello World!";
+        assertResponse(client.sendToGroupWithResponse("java",
+            BinaryData.fromString(message),
+            WebPubSubContentType.TEXT_PLAIN,
+            message.length(),
+            new RequestOptions().addRequestCallback(request -> request.setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain"))), 202);
+    }
+
+    @Test
+    public void testAddConnectionsToGroups() {
+        List<String> groupList = Arrays.asList("group1", "group2");
+        String filter = "userId eq 'user 1'";
+        assertDoesNotThrow(() -> client.addConnectionsToGroups(groupList, filter));
+    }
+
+    @Test
+    public void testAddConnectionsToGroupsThrowErrorWhenGroupsIsNull() {
+        String filter = "userId eq 'user 1'";
+        assertThrows(HttpResponseException.class, () -> client.addConnectionsToGroups(null, filter));
     }
 
     @Test
@@ -263,14 +327,17 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
+    @DoNotRecord
     public void testCheckPermission() {
-        assumeTrue(getTestMode() == TestMode.PLAYBACK, "This requires real "
-            + "connection id that is created when a client connects to Web PubSub service. So, run this in PLAYBACK "
-            + "mode only.");
 
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
-        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "71xtjgThROOJ6DsVY3xbBw2ef45fd11",
+        /*
+            To run this test in LIVE mode, please obtain a connectionID of a client with SEND_TO_GROUP Permission.
+            To do this, refer to https://learn.microsoft.com/en-us/azure/azure-web-pubsub/quickstarts-pubsub-among-clients
+            and define the connected event callback to get the connectionID.
+         */
+        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "M0UuAb14DkmvBp4hZsct8A-DPgpgK02",
             requestOptions).getValue();
         Assertions.assertTrue(permission);
     }

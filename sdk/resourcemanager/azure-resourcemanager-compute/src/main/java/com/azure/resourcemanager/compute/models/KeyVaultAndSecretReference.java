@@ -6,23 +6,25 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Key Vault Secret Url and vault id of the encryption key.
  */
 @Fluent
-public final class KeyVaultAndSecretReference {
+public final class KeyVaultAndSecretReference implements JsonSerializable<KeyVaultAndSecretReference> {
     /*
      * Resource id of the KeyVault containing the key or secret
      */
-    @JsonProperty(value = "sourceVault", required = true)
     private SourceVault sourceVault;
 
     /*
      * Url pointing to a key or secret in KeyVault
      */
-    @JsonProperty(value = "secretUrl", required = true)
     private String secretUrl;
 
     /**
@@ -78,16 +80,58 @@ public final class KeyVaultAndSecretReference {
      */
     public void validate() {
         if (sourceVault() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceVault in model KeyVaultAndSecretReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceVault in model KeyVaultAndSecretReference"));
         } else {
             sourceVault().validate();
         }
         if (secretUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property secretUrl in model KeyVaultAndSecretReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secretUrl in model KeyVaultAndSecretReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAndSecretReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceVault", this.sourceVault);
+        jsonWriter.writeStringField("secretUrl", this.secretUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultAndSecretReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultAndSecretReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyVaultAndSecretReference.
+     */
+    public static KeyVaultAndSecretReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultAndSecretReference deserializedKeyVaultAndSecretReference = new KeyVaultAndSecretReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceVault".equals(fieldName)) {
+                    deserializedKeyVaultAndSecretReference.sourceVault = SourceVault.fromJson(reader);
+                } else if ("secretUrl".equals(fieldName)) {
+                    deserializedKeyVaultAndSecretReference.secretUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultAndSecretReference;
+        });
+    }
 }

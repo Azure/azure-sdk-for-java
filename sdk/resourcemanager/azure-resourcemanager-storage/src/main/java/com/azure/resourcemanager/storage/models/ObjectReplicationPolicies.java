@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.ObjectReplicationPolicyInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List storage account object replication policies.
  */
 @Fluent
-public final class ObjectReplicationPolicies {
+public final class ObjectReplicationPolicies implements JsonSerializable<ObjectReplicationPolicies> {
     /*
      * The replication policy between two storage accounts.
      */
-    @JsonProperty(value = "value")
     private List<ObjectReplicationPolicyInner> value;
 
     /**
@@ -29,7 +31,7 @@ public final class ObjectReplicationPolicies {
 
     /**
      * Get the value property: The replication policy between two storage accounts.
-     *
+     * 
      * @return the value value.
      */
     public List<ObjectReplicationPolicyInner> value() {
@@ -38,7 +40,7 @@ public final class ObjectReplicationPolicies {
 
     /**
      * Set the value property: The replication policy between two storage accounts.
-     *
+     * 
      * @param value the value value to set.
      * @return the ObjectReplicationPolicies object itself.
      */
@@ -49,12 +51,50 @@ public final class ObjectReplicationPolicies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ObjectReplicationPolicies from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ObjectReplicationPolicies if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ObjectReplicationPolicies.
+     */
+    public static ObjectReplicationPolicies fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ObjectReplicationPolicies deserializedObjectReplicationPolicies = new ObjectReplicationPolicies();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ObjectReplicationPolicyInner> value
+                        = reader.readArray(reader1 -> ObjectReplicationPolicyInner.fromJson(reader1));
+                    deserializedObjectReplicationPolicies.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedObjectReplicationPolicies;
+        });
     }
 }

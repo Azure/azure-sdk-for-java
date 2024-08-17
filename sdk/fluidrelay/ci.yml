@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: fluidrelay
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-fluidrelay
         groupId: com.azure.resourcemanager

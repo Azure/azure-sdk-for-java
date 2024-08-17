@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,47 +18,47 @@ import java.util.List;
  * only prefixMatch is applicable and is optional.
  */
 @Fluent
-public final class BlobInventoryPolicyFilter {
+public final class BlobInventoryPolicyFilter implements JsonSerializable<BlobInventoryPolicyFilter> {
     /*
      * An array of strings with maximum 10 blob prefixes to be included in the inventory.
      */
-    @JsonProperty(value = "prefixMatch")
     private List<String> prefixMatch;
 
     /*
      * An array of strings with maximum 10 blob prefixes to be excluded from the inventory.
      */
-    @JsonProperty(value = "excludePrefix")
     private List<String> excludePrefix;
 
     /*
-     * An array of predefined enum values. Valid values include blockBlob, appendBlob, pageBlob. Hns accounts does not support pageBlobs. This field is required when definition.objectType property is set to 'Blob'.
+     * An array of predefined enum values. Valid values include blockBlob, appendBlob, pageBlob. Hns accounts does not
+     * support pageBlobs. This field is required when definition.objectType property is set to 'Blob'.
      */
-    @JsonProperty(value = "blobTypes")
     private List<String> blobTypes;
 
     /*
-     * Includes blob versions in blob inventory when value is set to true. The definition.schemaFields values 'VersionId and IsCurrentVersion' are required if this property is set to true, else they must be excluded.
+     * Includes blob versions in blob inventory when value is set to true. The definition.schemaFields values 'VersionId
+     * and IsCurrentVersion' are required if this property is set to true, else they must be excluded.
      */
-    @JsonProperty(value = "includeBlobVersions")
     private Boolean includeBlobVersions;
 
     /*
-     * Includes blob snapshots in blob inventory when value is set to true. The definition.schemaFields value 'Snapshot' is required if this property is set to true, else it must be excluded.
+     * Includes blob snapshots in blob inventory when value is set to true. The definition.schemaFields value 'Snapshot'
+     * is required if this property is set to true, else it must be excluded.
      */
-    @JsonProperty(value = "includeSnapshots")
     private Boolean includeSnapshots;
 
     /*
-     * For 'Container' definition.objectType the definition.schemaFields must include 'Deleted, Version, DeletedTime and RemainingRetentionDays'. For 'Blob' definition.objectType and HNS enabled storage accounts the definition.schemaFields must include 'DeletionId, Deleted, DeletedTime and RemainingRetentionDays' and for Hns disabled accounts the definition.schemaFields must include 'Deleted and RemainingRetentionDays', else it must be excluded.
+     * For 'Container' definition.objectType the definition.schemaFields must include 'Deleted, Version, DeletedTime and
+     * RemainingRetentionDays'. For 'Blob' definition.objectType and HNS enabled storage accounts the
+     * definition.schemaFields must include 'DeletionId, Deleted, DeletedTime and RemainingRetentionDays' and for Hns
+     * disabled accounts the definition.schemaFields must include 'Deleted and RemainingRetentionDays', else it must be
+     * excluded.
      */
-    @JsonProperty(value = "includeDeleted")
     private Boolean includeDeleted;
 
     /*
      * This property is used to filter objects based on the object creation time
      */
-    @JsonProperty(value = "creationTime")
     private BlobInventoryCreationTime creationTime;
 
     /**
@@ -66,7 +69,7 @@ public final class BlobInventoryPolicyFilter {
 
     /**
      * Get the prefixMatch property: An array of strings with maximum 10 blob prefixes to be included in the inventory.
-     *
+     * 
      * @return the prefixMatch value.
      */
     public List<String> prefixMatch() {
@@ -75,7 +78,7 @@ public final class BlobInventoryPolicyFilter {
 
     /**
      * Set the prefixMatch property: An array of strings with maximum 10 blob prefixes to be included in the inventory.
-     *
+     * 
      * @param prefixMatch the prefixMatch value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
@@ -87,7 +90,7 @@ public final class BlobInventoryPolicyFilter {
     /**
      * Get the excludePrefix property: An array of strings with maximum 10 blob prefixes to be excluded from the
      * inventory.
-     *
+     * 
      * @return the excludePrefix value.
      */
     public List<String> excludePrefix() {
@@ -97,7 +100,7 @@ public final class BlobInventoryPolicyFilter {
     /**
      * Set the excludePrefix property: An array of strings with maximum 10 blob prefixes to be excluded from the
      * inventory.
-     *
+     * 
      * @param excludePrefix the excludePrefix value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
@@ -110,7 +113,7 @@ public final class BlobInventoryPolicyFilter {
      * Get the blobTypes property: An array of predefined enum values. Valid values include blockBlob, appendBlob,
      * pageBlob. Hns accounts does not support pageBlobs. This field is required when definition.objectType property is
      * set to 'Blob'.
-     *
+     * 
      * @return the blobTypes value.
      */
     public List<String> blobTypes() {
@@ -121,7 +124,7 @@ public final class BlobInventoryPolicyFilter {
      * Set the blobTypes property: An array of predefined enum values. Valid values include blockBlob, appendBlob,
      * pageBlob. Hns accounts does not support pageBlobs. This field is required when definition.objectType property is
      * set to 'Blob'.
-     *
+     * 
      * @param blobTypes the blobTypes value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
@@ -134,7 +137,7 @@ public final class BlobInventoryPolicyFilter {
      * Get the includeBlobVersions property: Includes blob versions in blob inventory when value is set to true. The
      * definition.schemaFields values 'VersionId and IsCurrentVersion' are required if this property is set to true,
      * else they must be excluded.
-     *
+     * 
      * @return the includeBlobVersions value.
      */
     public Boolean includeBlobVersions() {
@@ -145,7 +148,7 @@ public final class BlobInventoryPolicyFilter {
      * Set the includeBlobVersions property: Includes blob versions in blob inventory when value is set to true. The
      * definition.schemaFields values 'VersionId and IsCurrentVersion' are required if this property is set to true,
      * else they must be excluded.
-     *
+     * 
      * @param includeBlobVersions the includeBlobVersions value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
@@ -157,7 +160,7 @@ public final class BlobInventoryPolicyFilter {
     /**
      * Get the includeSnapshots property: Includes blob snapshots in blob inventory when value is set to true. The
      * definition.schemaFields value 'Snapshot' is required if this property is set to true, else it must be excluded.
-     *
+     * 
      * @return the includeSnapshots value.
      */
     public Boolean includeSnapshots() {
@@ -167,7 +170,7 @@ public final class BlobInventoryPolicyFilter {
     /**
      * Set the includeSnapshots property: Includes blob snapshots in blob inventory when value is set to true. The
      * definition.schemaFields value 'Snapshot' is required if this property is set to true, else it must be excluded.
-     *
+     * 
      * @param includeSnapshots the includeSnapshots value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
@@ -182,7 +185,7 @@ public final class BlobInventoryPolicyFilter {
      * storage accounts the definition.schemaFields must include 'DeletionId, Deleted, DeletedTime and
      * RemainingRetentionDays' and for Hns disabled accounts the definition.schemaFields must include 'Deleted and
      * RemainingRetentionDays', else it must be excluded.
-     *
+     * 
      * @return the includeDeleted value.
      */
     public Boolean includeDeleted() {
@@ -195,7 +198,7 @@ public final class BlobInventoryPolicyFilter {
      * storage accounts the definition.schemaFields must include 'DeletionId, Deleted, DeletedTime and
      * RemainingRetentionDays' and for Hns disabled accounts the definition.schemaFields must include 'Deleted and
      * RemainingRetentionDays', else it must be excluded.
-     *
+     * 
      * @param includeDeleted the includeDeleted value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
@@ -206,7 +209,7 @@ public final class BlobInventoryPolicyFilter {
 
     /**
      * Get the creationTime property: This property is used to filter objects based on the object creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public BlobInventoryCreationTime creationTime() {
@@ -215,7 +218,7 @@ public final class BlobInventoryPolicyFilter {
 
     /**
      * Set the creationTime property: This property is used to filter objects based on the object creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
@@ -226,12 +229,71 @@ public final class BlobInventoryPolicyFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (creationTime() != null) {
             creationTime().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("prefixMatch", this.prefixMatch, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludePrefix", this.excludePrefix,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("blobTypes", this.blobTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("includeBlobVersions", this.includeBlobVersions);
+        jsonWriter.writeBooleanField("includeSnapshots", this.includeSnapshots);
+        jsonWriter.writeBooleanField("includeDeleted", this.includeDeleted);
+        jsonWriter.writeJsonField("creationTime", this.creationTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobInventoryPolicyFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobInventoryPolicyFilter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BlobInventoryPolicyFilter.
+     */
+    public static BlobInventoryPolicyFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobInventoryPolicyFilter deserializedBlobInventoryPolicyFilter = new BlobInventoryPolicyFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("prefixMatch".equals(fieldName)) {
+                    List<String> prefixMatch = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBlobInventoryPolicyFilter.prefixMatch = prefixMatch;
+                } else if ("excludePrefix".equals(fieldName)) {
+                    List<String> excludePrefix = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBlobInventoryPolicyFilter.excludePrefix = excludePrefix;
+                } else if ("blobTypes".equals(fieldName)) {
+                    List<String> blobTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBlobInventoryPolicyFilter.blobTypes = blobTypes;
+                } else if ("includeBlobVersions".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyFilter.includeBlobVersions
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("includeSnapshots".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyFilter.includeSnapshots = reader.getNullable(JsonReader::getBoolean);
+                } else if ("includeDeleted".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyFilter.includeDeleted = reader.getNullable(JsonReader::getBoolean);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyFilter.creationTime = BlobInventoryCreationTime.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobInventoryPolicyFilter;
+        });
     }
 }

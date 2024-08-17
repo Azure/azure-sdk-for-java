@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class LicenseModel extends ExpandableStringEnum<LicenseModel> {
      * @param name a name to look for.
      * @return the corresponding LicenseModel.
      */
-    @JsonCreator
     public static LicenseModel fromString(String name) {
         return fromString(name, LicenseModel.class);
     }

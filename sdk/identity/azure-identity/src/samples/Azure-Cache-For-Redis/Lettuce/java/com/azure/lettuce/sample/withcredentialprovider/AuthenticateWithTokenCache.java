@@ -9,6 +9,8 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisCredentialsProvider;
 import io.lettuce.core.RedisException;
@@ -21,8 +23,10 @@ import io.lettuce.core.ClientOptions;
 import io.lettuce.core.SocketOptions;
 import io.lettuce.core.RedisCredentials;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -35,12 +39,11 @@ public class AuthenticateWithTokenCache {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-        // Host Name, Port, Username, and Microsoft Entra token are required here.
+        // Host Name, Port, and Microsoft Entra token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
         String hostName = "<HOST_NAME>";
-        String userName = "<USERNAME>";
 
-        AzureRedisCredentials credentials = new AzureRedisCredentials(userName, defaultAzureCredential);
+        AzureRedisCredentials credentials = new AzureRedisCredentials(defaultAzureCredential);
         RedisClient client = createLettuceRedisClient(hostName, 6380, RedisCredentialsProvider.from(() -> credentials));
         StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
@@ -48,8 +51,7 @@ public class AuthenticateWithTokenCache {
         RedisCommands<String, String> sync = connection.sync();
 
         credentials.getTokenCache()
-            .setLettuceInstanceToAuthenticate(sync)
-            .setUsername(userName);
+            .setLettuceInstanceToAuthenticate(sync);
 
         int maxTries = 3;
         int i = 0;
@@ -71,8 +73,7 @@ public class AuthenticateWithTokenCache {
                     sync = connection.sync();
 
                     credentials.getTokenCache()
-                        .setLettuceInstanceToAuthenticate(sync)
-                        .setUsername(userName);
+                        .setLettuceInstanceToAuthenticate(sync);
                 }
             } catch (Exception e) {
                 // Handle the Exception as required in your application.
@@ -127,6 +128,17 @@ public class AuthenticateWithTokenCache {
             Objects.requireNonNull(tokenCredential, "Token Credential is required");
             this.username = username;
             this.tokenCredential = tokenCredential;
+            this.refreshCache = new TokenRefreshCache(tokenCredential, tokenRequestContext);
+        }
+
+        /**
+         * Create instance of Azure Redis Credentials
+         * @param tokenCredential the token credential to be used to fetch requests.
+         */
+        public AzureRedisCredentials(TokenCredential tokenCredential) {
+            Objects.requireNonNull(tokenCredential, "Token Credential is required");
+            this.tokenCredential = tokenCredential;
+            this.username = extractUsernameFromToken(tokenCredential.getToken(tokenRequestContext).block().getToken());
             this.refreshCache = new TokenRefreshCache(tokenCredential, tokenRequestContext);
         }
 
@@ -199,6 +211,7 @@ public class AuthenticateWithTokenCache {
             // Add your task here
             public void run() {
                 accessToken = tokenCredential.getToken(tokenRequestContext).block();
+                username = extractUsernameFromToken(accessToken.getToken());
                 System.out.println("Refreshed Token with Expiry: " + accessToken.getExpiresAt().toEpochSecond());
 
                 if (lettuceInstanceToAuthenticate != null && !CoreUtils.isNullOrEmpty(username)) {
@@ -226,15 +239,25 @@ public class AuthenticateWithTokenCache {
             this.lettuceInstanceToAuthenticate = lettuceInstanceToAuthenticate;
             return this;
         }
+    }
 
-        /**
-         * Sets the username to authenticate jedis instance with.
-         * @param username the username to authenticate with
-         * @return the updated instance
-         */
-        public TokenRefreshCache setUsername(String username) {
-            this.username = username;
-            return this;
+    private static String extractUsernameFromToken(String token) {
+        String[] parts = token.split("\\.");
+        String base64 = parts[1];
+
+        switch (base64.length() % 4) {
+            case 2:
+                base64 += "==";
+                break;
+            case 3:
+                base64 += "=";
+                break;
         }
+
+        byte[] jsonBytes = Base64.getDecoder().decode(base64);
+        String json = new String(jsonBytes, StandardCharsets.UTF_8);
+        JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+        return jwt.get("oid").getAsString();
     }
 }

@@ -5,37 +5,38 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The blob service properties for Last access time based tracking policy.
  */
 @Fluent
-public final class LastAccessTimeTrackingPolicy {
+public final class LastAccessTimeTrackingPolicy implements JsonSerializable<LastAccessTimeTrackingPolicy> {
     /*
      * When set to true last access time based tracking is enabled.
      */
-    @JsonProperty(value = "enable", required = true)
     private boolean enable;
 
     /*
      * Name of the policy. The valid value is AccessTimeTracking. This field is currently read only
      */
-    @JsonProperty(value = "name")
     private Name name;
 
     /*
-     * The field specifies blob object tracking granularity in days, typically how often the blob object should be tracked.This field is currently read only with value as 1
+     * The field specifies blob object tracking granularity in days, typically how often the blob object should be
+     * tracked.This field is currently read only with value as 1
      */
-    @JsonProperty(value = "trackingGranularityInDays")
     private Integer trackingGranularityInDays;
 
     /*
-     * An array of predefined supported blob types. Only blockBlob is the supported value. This field is currently read only
+     * An array of predefined supported blob types. Only blockBlob is the supported value. This field is currently read
+     * only
      */
-    @JsonProperty(value = "blobType")
     private List<String> blobType;
 
     /**
@@ -46,7 +47,7 @@ public final class LastAccessTimeTrackingPolicy {
 
     /**
      * Get the enable property: When set to true last access time based tracking is enabled.
-     *
+     * 
      * @return the enable value.
      */
     public boolean enable() {
@@ -55,7 +56,7 @@ public final class LastAccessTimeTrackingPolicy {
 
     /**
      * Set the enable property: When set to true last access time based tracking is enabled.
-     *
+     * 
      * @param enable the enable value to set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
@@ -67,7 +68,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Get the name property: Name of the policy. The valid value is AccessTimeTracking. This field is currently read
      * only.
-     *
+     * 
      * @return the name value.
      */
     public Name name() {
@@ -77,7 +78,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Set the name property: Name of the policy. The valid value is AccessTimeTracking. This field is currently read
      * only.
-     *
+     * 
      * @param name the name value to set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
@@ -89,7 +90,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Get the trackingGranularityInDays property: The field specifies blob object tracking granularity in days,
      * typically how often the blob object should be tracked.This field is currently read only with value as 1.
-     *
+     * 
      * @return the trackingGranularityInDays value.
      */
     public Integer trackingGranularityInDays() {
@@ -99,7 +100,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Set the trackingGranularityInDays property: The field specifies blob object tracking granularity in days,
      * typically how often the blob object should be tracked.This field is currently read only with value as 1.
-     *
+     * 
      * @param trackingGranularityInDays the trackingGranularityInDays value to set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
@@ -111,7 +112,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Get the blobType property: An array of predefined supported blob types. Only blockBlob is the supported value.
      * This field is currently read only.
-     *
+     * 
      * @return the blobType value.
      */
     public List<String> blobType() {
@@ -121,7 +122,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Set the blobType property: An array of predefined supported blob types. Only blockBlob is the supported value.
      * This field is currently read only.
-     *
+     * 
      * @param blobType the blobType value to set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
@@ -132,9 +133,57 @@ public final class LastAccessTimeTrackingPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enable", this.enable);
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeNumberField("trackingGranularityInDays", this.trackingGranularityInDays);
+        jsonWriter.writeArrayField("blobType", this.blobType, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LastAccessTimeTrackingPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LastAccessTimeTrackingPolicy if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LastAccessTimeTrackingPolicy.
+     */
+    public static LastAccessTimeTrackingPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LastAccessTimeTrackingPolicy deserializedLastAccessTimeTrackingPolicy = new LastAccessTimeTrackingPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enable".equals(fieldName)) {
+                    deserializedLastAccessTimeTrackingPolicy.enable = reader.getBoolean();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLastAccessTimeTrackingPolicy.name = Name.fromString(reader.getString());
+                } else if ("trackingGranularityInDays".equals(fieldName)) {
+                    deserializedLastAccessTimeTrackingPolicy.trackingGranularityInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("blobType".equals(fieldName)) {
+                    List<String> blobType = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLastAccessTimeTrackingPolicy.blobType = blobType;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLastAccessTimeTrackingPolicy;
+        });
     }
 }

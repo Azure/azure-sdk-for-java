@@ -5,49 +5,47 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Contains bgp community information offered in Service Community resources.
  */
 @Fluent
-public final class BgpCommunity {
+public final class BgpCommunity implements JsonSerializable<BgpCommunity> {
     /*
      * The region which the service support. e.g. For O365, region is Global.
      */
-    @JsonProperty(value = "serviceSupportedRegion")
     private String serviceSupportedRegion;
 
     /*
      * The name of the bgp community. e.g. Skype.
      */
-    @JsonProperty(value = "communityName")
     private String communityName;
 
     /*
-     * The value of the bgp community. For more information: https://docs.microsoft.com/en-us/azure/expressroute/expressroute-routing.
+     * The value of the bgp community. For more information:
+     * https://docs.microsoft.com/en-us/azure/expressroute/expressroute-routing.
      */
-    @JsonProperty(value = "communityValue")
     private String communityValue;
 
     /*
      * The prefixes that the bgp community contains.
      */
-    @JsonProperty(value = "communityPrefixes")
     private List<String> communityPrefixes;
 
     /*
      * Customer is authorized to use bgp community or not.
      */
-    @JsonProperty(value = "isAuthorizedToUse")
     private Boolean isAuthorizedToUse;
 
     /*
      * The service group of the bgp community contains.
      */
-    @JsonProperty(value = "serviceGroup")
     private String serviceGroup;
 
     /**
@@ -58,7 +56,7 @@ public final class BgpCommunity {
 
     /**
      * Get the serviceSupportedRegion property: The region which the service support. e.g. For O365, region is Global.
-     *
+     * 
      * @return the serviceSupportedRegion value.
      */
     public String serviceSupportedRegion() {
@@ -67,7 +65,7 @@ public final class BgpCommunity {
 
     /**
      * Set the serviceSupportedRegion property: The region which the service support. e.g. For O365, region is Global.
-     *
+     * 
      * @param serviceSupportedRegion the serviceSupportedRegion value to set.
      * @return the BgpCommunity object itself.
      */
@@ -78,7 +76,7 @@ public final class BgpCommunity {
 
     /**
      * Get the communityName property: The name of the bgp community. e.g. Skype.
-     *
+     * 
      * @return the communityName value.
      */
     public String communityName() {
@@ -87,7 +85,7 @@ public final class BgpCommunity {
 
     /**
      * Set the communityName property: The name of the bgp community. e.g. Skype.
-     *
+     * 
      * @param communityName the communityName value to set.
      * @return the BgpCommunity object itself.
      */
@@ -99,7 +97,7 @@ public final class BgpCommunity {
     /**
      * Get the communityValue property: The value of the bgp community. For more information:
      * https://docs.microsoft.com/en-us/azure/expressroute/expressroute-routing.
-     *
+     * 
      * @return the communityValue value.
      */
     public String communityValue() {
@@ -109,7 +107,7 @@ public final class BgpCommunity {
     /**
      * Set the communityValue property: The value of the bgp community. For more information:
      * https://docs.microsoft.com/en-us/azure/expressroute/expressroute-routing.
-     *
+     * 
      * @param communityValue the communityValue value to set.
      * @return the BgpCommunity object itself.
      */
@@ -120,7 +118,7 @@ public final class BgpCommunity {
 
     /**
      * Get the communityPrefixes property: The prefixes that the bgp community contains.
-     *
+     * 
      * @return the communityPrefixes value.
      */
     public List<String> communityPrefixes() {
@@ -129,7 +127,7 @@ public final class BgpCommunity {
 
     /**
      * Set the communityPrefixes property: The prefixes that the bgp community contains.
-     *
+     * 
      * @param communityPrefixes the communityPrefixes value to set.
      * @return the BgpCommunity object itself.
      */
@@ -140,7 +138,7 @@ public final class BgpCommunity {
 
     /**
      * Get the isAuthorizedToUse property: Customer is authorized to use bgp community or not.
-     *
+     * 
      * @return the isAuthorizedToUse value.
      */
     public Boolean isAuthorizedToUse() {
@@ -149,7 +147,7 @@ public final class BgpCommunity {
 
     /**
      * Set the isAuthorizedToUse property: Customer is authorized to use bgp community or not.
-     *
+     * 
      * @param isAuthorizedToUse the isAuthorizedToUse value to set.
      * @return the BgpCommunity object itself.
      */
@@ -160,7 +158,7 @@ public final class BgpCommunity {
 
     /**
      * Get the serviceGroup property: The service group of the bgp community contains.
-     *
+     * 
      * @return the serviceGroup value.
      */
     public String serviceGroup() {
@@ -169,7 +167,7 @@ public final class BgpCommunity {
 
     /**
      * Set the serviceGroup property: The service group of the bgp community contains.
-     *
+     * 
      * @param serviceGroup the serviceGroup value to set.
      * @return the BgpCommunity object itself.
      */
@@ -180,9 +178,62 @@ public final class BgpCommunity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceSupportedRegion", this.serviceSupportedRegion);
+        jsonWriter.writeStringField("communityName", this.communityName);
+        jsonWriter.writeStringField("communityValue", this.communityValue);
+        jsonWriter.writeArrayField("communityPrefixes", this.communityPrefixes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isAuthorizedToUse", this.isAuthorizedToUse);
+        jsonWriter.writeStringField("serviceGroup", this.serviceGroup);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BgpCommunity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BgpCommunity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BgpCommunity.
+     */
+    public static BgpCommunity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BgpCommunity deserializedBgpCommunity = new BgpCommunity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceSupportedRegion".equals(fieldName)) {
+                    deserializedBgpCommunity.serviceSupportedRegion = reader.getString();
+                } else if ("communityName".equals(fieldName)) {
+                    deserializedBgpCommunity.communityName = reader.getString();
+                } else if ("communityValue".equals(fieldName)) {
+                    deserializedBgpCommunity.communityValue = reader.getString();
+                } else if ("communityPrefixes".equals(fieldName)) {
+                    List<String> communityPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBgpCommunity.communityPrefixes = communityPrefixes;
+                } else if ("isAuthorizedToUse".equals(fieldName)) {
+                    deserializedBgpCommunity.isAuthorizedToUse = reader.getNullable(JsonReader::getBoolean);
+                } else if ("serviceGroup".equals(fieldName)) {
+                    deserializedBgpCommunity.serviceGroup = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBgpCommunity;
+        });
     }
 }

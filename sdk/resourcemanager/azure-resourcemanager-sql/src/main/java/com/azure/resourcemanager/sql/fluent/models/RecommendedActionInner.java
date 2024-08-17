@@ -6,46 +6,65 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.RecommendedActionErrorInfo;
 import com.azure.resourcemanager.sql.models.RecommendedActionImpactRecord;
 import com.azure.resourcemanager.sql.models.RecommendedActionImplementationInfo;
 import com.azure.resourcemanager.sql.models.RecommendedActionInitiatedBy;
 import com.azure.resourcemanager.sql.models.RecommendedActionMetricInfo;
 import com.azure.resourcemanager.sql.models.RecommendedActionStateInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Database, Server or Elastic Pool Recommended Action. */
+/**
+ * Database, Server or Elastic Pool Recommended Action.
+ */
 @Fluent
 public final class RecommendedActionInner extends ProxyResource {
     /*
      * Resource kind.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * Resource location.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private RecommendedActionProperties innerProperties;
 
-    /** Creates an instance of RecommendedActionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RecommendedActionInner class.
+     */
     public RecommendedActionInner() {
     }
 
     /**
      * Get the kind property: Resource kind.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -54,7 +73,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -63,7 +82,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RecommendedActionProperties innerProperties() {
@@ -71,8 +90,38 @@ public final class RecommendedActionInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the recommendationReason property: Gets the reason for recommending this action. e.g., DuplicateIndex.
-     *
+     * 
      * @return the recommendationReason value.
      */
     public String recommendationReason() {
@@ -81,7 +130,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Get the validSince property: Gets the time since when this recommended action is valid.
-     *
+     * 
      * @return the validSince value.
      */
     public OffsetDateTime validSince() {
@@ -90,7 +139,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Get the lastRefresh property: Gets time when this recommended action was last refreshed.
-     *
+     * 
      * @return the lastRefresh value.
      */
     public OffsetDateTime lastRefresh() {
@@ -99,7 +148,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Get the state property: Gets the info of the current state the recommended action is in.
-     *
+     * 
      * @return the state value.
      */
     public RecommendedActionStateInfo state() {
@@ -108,7 +157,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Set the state property: Gets the info of the current state the recommended action is in.
-     *
+     * 
      * @param state the state value to set.
      * @return the RecommendedActionInner object itself.
      */
@@ -122,7 +171,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Get the isExecutableAction property: Gets if this recommended action is actionable by user.
-     *
+     * 
      * @return the isExecutableAction value.
      */
     public Boolean isExecutableAction() {
@@ -131,7 +180,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Get the isRevertableAction property: Gets if changes applied by this recommended action can be reverted by user.
-     *
+     * 
      * @return the isRevertableAction value.
      */
     public Boolean isRevertableAction() {
@@ -141,7 +190,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the isArchivedAction property: Gets if this recommended action was suggested some time ago but user chose to
      * ignore this and system added a new recommended action again.
-     *
+     * 
      * @return the isArchivedAction value.
      */
     public Boolean isArchivedAction() {
@@ -151,7 +200,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the executeActionStartTime property: Gets the time when system started applying this recommended action on
      * the user resource. e.g., index creation start time.
-     *
+     * 
      * @return the executeActionStartTime value.
      */
     public OffsetDateTime executeActionStartTime() {
@@ -161,7 +210,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the executeActionDuration property: Gets the time taken for applying this recommended action on user
      * resource. e.g., time taken for index creation.
-     *
+     * 
      * @return the executeActionDuration value.
      */
     public Duration executeActionDuration() {
@@ -171,7 +220,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the revertActionStartTime property: Gets the time when system started reverting changes of this recommended
      * action on user resource. e.g., time when index drop is executed.
-     *
+     * 
      * @return the revertActionStartTime value.
      */
     public OffsetDateTime revertActionStartTime() {
@@ -181,7 +230,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the revertActionDuration property: Gets the time taken for reverting changes of this recommended action on
      * user resource. e.g., time taken for dropping the created index.
-     *
+     * 
      * @return the revertActionDuration value.
      */
     public Duration revertActionDuration() {
@@ -191,7 +240,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the executeActionInitiatedBy property: Gets if approval for applying this recommended action was given by
      * user/system.
-     *
+     * 
      * @return the executeActionInitiatedBy value.
      */
     public RecommendedActionInitiatedBy executeActionInitiatedBy() {
@@ -201,7 +250,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the executeActionInitiatedTime property: Gets the time when this recommended action was approved for
      * execution.
-     *
+     * 
      * @return the executeActionInitiatedTime value.
      */
     public OffsetDateTime executeActionInitiatedTime() {
@@ -211,7 +260,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the revertActionInitiatedBy property: Gets if approval for reverting this recommended action was given by
      * user/system.
-     *
+     * 
      * @return the revertActionInitiatedBy value.
      */
     public RecommendedActionInitiatedBy revertActionInitiatedBy() {
@@ -220,7 +269,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Get the revertActionInitiatedTime property: Gets the time when this recommended action was approved for revert.
-     *
+     * 
      * @return the revertActionInitiatedTime value.
      */
     public OffsetDateTime revertActionInitiatedTime() {
@@ -230,7 +279,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the score property: Gets the impact of this recommended action. Possible values are 1 - Low impact, 2 -
      * Medium Impact and 3 - High Impact.
-     *
+     * 
      * @return the score value.
      */
     public Integer score() {
@@ -240,7 +289,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the implementationDetails property: Gets the implementation details of this recommended action for user to
      * apply it manually.
-     *
+     * 
      * @return the implementationDetails value.
      */
     public RecommendedActionImplementationInfo implementationDetails() {
@@ -249,7 +298,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Get the errorDetails property: Gets the error details if and why this recommended action is put to error state.
-     *
+     * 
      * @return the errorDetails value.
      */
     public RecommendedActionErrorInfo errorDetails() {
@@ -259,7 +308,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the estimatedImpact property: Gets the estimated impact info for this recommended action e.g., Estimated CPU
      * gain, Estimated Disk Space change.
-     *
+     * 
      * @return the estimatedImpact value.
      */
     public List<RecommendedActionImpactRecord> estimatedImpact() {
@@ -269,7 +318,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the observedImpact property: Gets the observed/actual impact info for this recommended action e.g., Actual
      * CPU gain, Actual Disk Space change.
-     *
+     * 
      * @return the observedImpact value.
      */
     public List<RecommendedActionImpactRecord> observedImpact() {
@@ -279,7 +328,7 @@ public final class RecommendedActionInner extends ProxyResource {
     /**
      * Get the timeSeries property: Gets the time series info of metrics for this recommended action e.g., CPU
      * consumption time series.
-     *
+     * 
      * @return the timeSeries value.
      */
     public List<RecommendedActionMetricInfo> timeSeries() {
@@ -288,7 +337,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Get the linkedObjects property: Gets the linked objects, if any.
-     *
+     * 
      * @return the linkedObjects value.
      */
     public List<String> linkedObjects() {
@@ -297,7 +346,7 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Get the details property: Gets additional details specific to this recommended action.
-     *
+     * 
      * @return the details value.
      */
     public Map<String, Object> details() {
@@ -306,12 +355,59 @@ public final class RecommendedActionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendedActionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendedActionInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecommendedActionInner.
+     */
+    public static RecommendedActionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendedActionInner deserializedRecommendedActionInner = new RecommendedActionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRecommendedActionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRecommendedActionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRecommendedActionInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedRecommendedActionInner.kind = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRecommendedActionInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRecommendedActionInner.innerProperties = RecommendedActionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendedActionInner;
+        });
     }
 }

@@ -3,44 +3,33 @@
 
 package com.azure.digitaltwins.core;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ClientSecretCredentialBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import reactor.core.publisher.Mono;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.ReadValueCallback;
 
-import java.time.OffsetDateTime;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
 
 public class DigitalTwinsTestBase extends TestProxyTestBase {
     private static final String PLAYBACK_ENDPOINT = "https://playback.api.wus2.digitaltwins.azure.net";
-    private static final int DEFAULT_WAIT_TIME_IN_SECONDS = 5;
     private boolean sanitizersRemoved = false;
-
-    protected static final String TENANT_ID = Configuration.getGlobalConfiguration()
-        .get("DIGITALTWINS_TENANT_ID", "tenantId");
-
-    protected static final String CLIENT_SECRET = Configuration.getGlobalConfiguration()
-        .get("DIGITALTWINS_CLIENT_SECRET", "clientSecret");
-
-    protected static final String CLIENT_ID = Configuration.getGlobalConfiguration()
-        .get("DIGITALTWINS_CLIENT_ID", "clientId");
 
     protected static final String DIGITALTWINS_URL = Configuration.getGlobalConfiguration()
         .get("DIGITALTWINS_URL", PLAYBACK_ENDPOINT);
 
-    protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClientBuilder builder = new DigitalTwinsClientBuilder();
 
         builder.serviceVersion(serviceVersion);
@@ -53,33 +42,28 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
-            // Use fake credentials for playback mode.
-            builder.credential(new FakeCredentials());
-            // Connect to a special host when running tests in playback mode.
+            builder.credential(new MockTokenCredential());
             builder.endpoint(PLAYBACK_ENDPOINT);
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Telemetry-Source-Time"))));
-            return builder;
-        }
+            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Arrays.asList("Telemetry-Source-Time"))));
 
-        if (interceptorManager.isRecordMode()) {
+            return builder;
+        } else if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        } else {
+            builder.credential(new AzurePowerShellCredentialBuilder().build());
         }
 
         builder.httpClient(httpClient);
         builder.endpoint(DIGITALTWINS_URL);
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        // Only get valid live token when running live tests.
-        builder.credential(new ClientSecretCredentialBuilder()
-            .tenantId(TENANT_ID)
-            .clientId(CLIENT_ID)
-            .clientSecret(CLIENT_SECRET)
-            .build());
-
         return builder;
     }
 
-    protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion, HttpPipelinePolicy... policies) {
+    protected DigitalTwinsClientBuilder getDigitalTwinsClientBuilder(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion, HttpPipelinePolicy... policies) {
         DigitalTwinsClientBuilder builder = getDigitalTwinsClientBuilder(httpClient, serviceVersion);
 
         if (policies != null) {
@@ -92,13 +76,11 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
     }
 
     protected DigitalTwinsClient getClient(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
-        return getDigitalTwinsClientBuilder(httpClient, serviceVersion)
-            .buildClient();
+        return getDigitalTwinsClientBuilder(httpClient, serviceVersion).buildClient();
     }
 
     protected DigitalTwinsAsyncClient getAsyncClient(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
-        return getDigitalTwinsClientBuilder(httpClient, serviceVersion)
-            .buildAsyncClient();
+        return getDigitalTwinsClientBuilder(httpClient, serviceVersion).buildAsyncClient();
     }
 
     /**
@@ -107,13 +89,13 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
      * <p>
      * For instance, if maxLength is 5, then the longest string of integers generated by this function may be "12345"
      */
-    private Function<Integer, String> randomIntegerStringGenerator = (maxLength) -> {
+    private final Function<Integer, String> randomIntegerStringGenerator = (maxLength) -> {
         // This random string provided by azure.core is recorded, but it is also not guaranteed to be only integers
         // It usually generates a string like "154A52c29F42D" or similar. We need a string of random integers though
         // since our e2e tests need a random version number for our models. This function will convert the random
         // string of characters into a random string of integers.
         char[] randomCharactersString = testResourceNamer.randomName("", maxLength).toCharArray();
-        StringBuilder randomIntegersString = new StringBuilder();
+        StringBuilder randomIntegersString = new StringBuilder(randomCharactersString.length);
 
         // Convert the random string of characters into a random string of integers. A given random string of characters will always
         // be converted into the same random string of integers which is important since a recorded test and its replay
@@ -129,25 +111,11 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
         return randomIntegerStringGenerator;
     }
 
-    // This should only be used when running tests in playback mode. Our client library requires that some token provider
-    // is provided, but the actual value of the token is irrelevant when running playback tests.
-    static class FakeCredentials implements TokenCredential {
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
-        }
-    }
-
     // Used for converting json strings into BasicDigitalTwins, BasicRelationships, etc.
-    static <T> T deserializeJsonString(String rawJsonString, Class<T> clazz) throws JsonProcessingException {
-        return new ObjectMapper().registerModule(new JavaTimeModule()).readValue(rawJsonString, clazz);
-    }
-
-    void waitIfLive(int waitTimeInSeconds) throws InterruptedException {
-        sleepIfRunningAgainstService(waitTimeInSeconds * 1000L);
-    }
-
-    void waitIfLive() throws InterruptedException {
-        waitIfLive(DEFAULT_WAIT_TIME_IN_SECONDS);
+    static <T> T deserializeJsonString(String rawJsonString, ReadValueCallback<JsonReader, T> deserializer)
+        throws IOException {
+        try (JsonReader jsonReader = JsonProviders.createReader(rawJsonString)) {
+            return deserializer.read(jsonReader);
+        }
     }
 }

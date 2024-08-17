@@ -13,16 +13,16 @@ public final class IntegrationRuntimeNodeMonitoringDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeNodeMonitoringData model = BinaryData.fromString(
-            "{\"nodeName\":\"hcdhmdual\",\"availableMemoryInMB\":115440556,\"cpuUtilization\":758421621,\"concurrentJobsLimit\":1595213350,\"concurrentJobsRunning\":1911566048,\"maxConcurrentJobs\":294636913,\"sentBytes\":37.394695,\"receivedBytes\":4.791844,\"\":{\"zlfmisgwbnbbeld\":\"dataxpvgo\",\"ali\":\"datawkz\"}}")
+            "{\"nodeName\":\"cwwfvovbvme\",\"availableMemoryInMB\":321338352,\"cpuUtilization\":1542315989,\"concurrentJobsLimit\":1560245881,\"concurrentJobsRunning\":343837467,\"maxConcurrentJobs\":1240635196,\"sentBytes\":81.17821,\"receivedBytes\":67.35784,\"\":{\"wit\":\"datajueiotwmcdytd\"}}")
             .toObject(IntegrationRuntimeNodeMonitoringData.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IntegrationRuntimeNodeMonitoringData model = new IntegrationRuntimeNodeMonitoringData()
-            .withAdditionalProperties(mapOf("nodeName", "hcdhmdual", "cpuUtilization", 758421621, "receivedBytes",
-                4.791844f, "concurrentJobsLimit", 1595213350, "concurrentJobsRunning", 1911566048, "maxConcurrentJobs",
-                294636913, "availableMemoryInMB", 115440556, "sentBytes", 37.394695f));
+            .withAdditionalProperties(mapOf("nodeName", "cwwfvovbvme", "cpuUtilization", 1542315989, "receivedBytes",
+                67.35784f, "concurrentJobsLimit", 1560245881, "concurrentJobsRunning", 343837467, "maxConcurrentJobs",
+                1240635196, "availableMemoryInMB", 321338352, "sentBytes", 81.17821f));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeNodeMonitoringData.class);
     }
 

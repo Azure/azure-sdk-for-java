@@ -16,6 +16,7 @@ parameters:
   UsePlatformContainer: false
   DisableAzureResourceCreation: false
   BuildParallelization: '2C'
+  BuildOptions: ''
   TestGoals: $(TestGoals)
   TestOptions: $(TestOptions)
   TestParallelization: '1'
@@ -97,7 +98,11 @@ jobs:
           parameters:
             SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
             SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
-            EnvVars: ${{ parameters.EnvVars }}
+            ${{ if eq('true', parameters.UseFederatedAuth) }}:
+              SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
+            EnvVars:
+              Pool: $(Pool)
+              ${{ insert }}: ${{ parameters.EnvVars }}
 
         - ${{ if parameters.TestResourceDirectories }}:
           - ${{ each directory in parameters.TestResourceDirectories }}:
@@ -110,7 +115,10 @@ jobs:
                 ArmTemplateParameters: $(ArmTemplateParameters)
                 UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
                 ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
-                SubscriptionConfigurationFilePath: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePath }}
+                SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
+                EnvVars:
+                  Pool: $(Pool)
+                  ${{ insert }}: ${{ parameters.EnvVars }}
         - ${{ if not(parameters.TestResourceDirectories) }}:
           - template: /eng/common/TestResources/deploy-test-resources.yml
             parameters:
@@ -121,7 +129,10 @@ jobs:
               ArmTemplateParameters: $(ArmTemplateParameters)
               UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
               ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
-              SubscriptionConfigurationFilePath: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePath }}
+              SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
+              EnvVars:
+                Pool: $(Pool)
+                ${{ insert }}: ${{ parameters.EnvVars }}
 
       - ${{ parameters.PreSteps }}
 
@@ -129,6 +140,7 @@ jobs:
         parameters:
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
+          BuildOptions: ${{ parameters.BuildOptions }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
@@ -160,7 +172,7 @@ jobs:
                 SubscriptionConfiguration: $(SubscriptionConfiguration)
                 UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
                 ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
-                SubscriptionConfigurationFilePath: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePath }}
+                SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
         - ${{ if not(parameters.TestResourceDirectories) }}:
           - template: /eng/common/TestResources/remove-test-resources.yml
             parameters:
@@ -168,4 +180,4 @@ jobs:
               SubscriptionConfiguration: $(SubscriptionConfiguration)
               UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
               ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
-              SubscriptionConfigurationFilePath: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePath }}
+              SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}

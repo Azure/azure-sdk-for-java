@@ -5,10 +5,11 @@ package com.azure.ai.vision.face;
 
 import com.azure.ai.vision.face.implementation.FaceSessionClientImpl;
 import com.azure.ai.vision.face.implementation.MultipartFormDataHelper;
-import com.azure.ai.vision.face.implementation.models.CreateLivenessWithVerifySessionContent;
+import com.azure.ai.vision.face.implementation.models.CreateLivenessWithVerifySessionMultipartContent;
 import com.azure.ai.vision.face.implementation.models.VerifyImageFileDetails;
 import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
+import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionJsonContent;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult;
 import com.azure.ai.vision.face.models.LivenessSession;
 import com.azure.ai.vision.face.models.LivenessSessionAuditEntry;
@@ -65,19 +66,21 @@ public final class FaceSessionClient {
      * retrieve a result, use the Get Liveness Session. To audit the individual requests that a client has made to your
      * resource, use the List Liveness Session Audit Entries.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     sessionId: String (Required)
@@ -85,7 +88,7 @@ public final class FaceSessionClient {
      * }
      * }</pre>
      *
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -95,9 +98,8 @@ public final class FaceSessionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createLivenessSessionWithResponse(BinaryData createLivenessSessionContent,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createLivenessSessionWithResponse(createLivenessSessionContent, requestOptions);
+    public Response<BinaryData> createLivenessSessionWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createLivenessSessionWithResponse(body, requestOptions);
     }
 
     /**
@@ -126,7 +128,7 @@ public final class FaceSessionClient {
     /**
      * Get session result of detectLiveness/singleModal call.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -163,7 +165,7 @@ public final class FaceSessionClient {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -180,6 +182,8 @@ public final class FaceSessionClient {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }</pre>
@@ -215,7 +219,7 @@ public final class FaceSessionClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -255,7 +259,7 @@ public final class FaceSessionClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -285,7 +289,7 @@ public final class FaceSessionClient {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -302,6 +306,8 @@ public final class FaceSessionClient {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -348,19 +354,23 @@ public final class FaceSessionClient {
      * &gt; [!NOTE]
      * &gt; Extra measures should be taken to validate that the client is sending the expected VerifyImage.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     returnVerifyImageHash: Boolean (Optional)
+     *     verifyConfidenceThreshold: Double (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     sessionId: String (Required)
@@ -377,7 +387,7 @@ public final class FaceSessionClient {
      * }
      * }</pre>
      *
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -387,10 +397,8 @@ public final class FaceSessionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createLivenessWithVerifySessionWithResponse(BinaryData createLivenessSessionContent,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createLivenessWithVerifySessionWithResponse(createLivenessSessionContent,
-            requestOptions);
+    Response<BinaryData> createLivenessWithVerifySessionWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createLivenessWithVerifySessionWithResponse(body, requestOptions);
     }
 
     /**
@@ -417,7 +425,7 @@ public final class FaceSessionClient {
      *
      * Recommended Option: VerifyImage is provided during session creation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     sessionId: String (Required)
@@ -434,7 +442,7 @@ public final class FaceSessionClient {
      * }
      * }</pre>
      *
-     * @param createLivenessWithVerifySessionContent Request of liveness with verify session creation.
+     * @param body Request content of liveness with verify session creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -444,12 +452,11 @@ public final class FaceSessionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageWithResponse(
-        BinaryData createLivenessWithVerifySessionContent, RequestOptions requestOptions) {
+    Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageWithResponse(BinaryData body,
+        RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation
         // 'createLivenessWithVerifySessionWithVerifyImage' is 'multipart/form-data'
-        return this.serviceClient.createLivenessWithVerifySessionWithVerifyImageWithResponse(
-            createLivenessWithVerifySessionContent, requestOptions);
+        return this.serviceClient.createLivenessWithVerifySessionWithVerifyImageWithResponse(body, requestOptions);
     }
 
     /**
@@ -478,7 +485,7 @@ public final class FaceSessionClient {
     /**
      * Get session result of detectLivenessWithVerify/singleModal call.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -515,7 +522,7 @@ public final class FaceSessionClient {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -532,6 +539,8 @@ public final class FaceSessionClient {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }</pre>
@@ -568,7 +577,7 @@ public final class FaceSessionClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -608,7 +617,7 @@ public final class FaceSessionClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -638,7 +647,7 @@ public final class FaceSessionClient {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -655,6 +664,8 @@ public final class FaceSessionClient {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -692,7 +703,7 @@ public final class FaceSessionClient {
      * retrieve a result, use the Get Liveness Session. To audit the individual requests that a client has made to your
      * resource, use the List Liveness Session Audit Entries.
      *
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -703,12 +714,10 @@ public final class FaceSessionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateLivenessSessionResult
-        createLivenessSession(CreateLivenessSessionContent createLivenessSessionContent) {
+    public CreateLivenessSessionResult createLivenessSession(CreateLivenessSessionContent body) {
         // Generated convenience method for createLivenessSessionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createLivenessSessionWithResponse(BinaryData.fromObject(createLivenessSessionContent), requestOptions)
-            .getValue()
+        return createLivenessSessionWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(CreateLivenessSessionResult.class);
     }
 
@@ -861,100 +870,6 @@ public final class FaceSessionClient {
         RequestOptions requestOptions = new RequestOptions();
         return getLivenessSessionAuditEntriesWithResponse(sessionId, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_LIVENESS_SESSION_AUDIT_ENTRY);
-    }
-
-    /**
-     * Create a new liveness session with verify. Client device submits VerifyImage during the
-     * /detectLivenessWithVerify/singleModal call.
-     *
-     * A session is best for client device scenarios where developers want to authorize a client device to perform only
-     * a liveness detection without granting full access to their resource. Created sessions have a limited life span
-     * and only authorize clients to perform the desired action before access is expired.
-     *
-     * Permissions includes...
-     * &gt;
-     * *
-     * * Ability to call /detectLivenessWithVerify/singleModal for up to 3 retries.
-     * * A token lifetime of 10 minutes.
-     *
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Client access can be revoked by deleting the session using the Delete Liveness With Verify Session
-     * operation.
-     * &gt; * To retrieve a result, use the Get Liveness With Verify Session.
-     * &gt; * To audit the individual requests that a client has made to your resource, use the List Liveness With
-     * Verify Session Audit Entries.
-     *
-     * Alternative Option: Client device submits VerifyImage during the /detectLivenessWithVerify/singleModal call.
-     * &gt; [!NOTE]
-     * &gt; Extra measures should be taken to validate that the client is sending the expected VerifyImage.
-     *
-     * @param createLivenessSessionContent Request for creating liveness session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of liveness session with verify creation with verify image provided.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CreateLivenessWithVerifySessionResult
-        createLivenessWithVerifySession(CreateLivenessSessionContent createLivenessSessionContent) {
-        // Generated convenience method for createLivenessWithVerifySessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createLivenessWithVerifySessionWithResponse(BinaryData.fromObject(createLivenessSessionContent),
-            requestOptions).getValue().toObject(CreateLivenessWithVerifySessionResult.class);
-    }
-
-    /**
-     * Create a new liveness session with verify. Provide the verify image during session creation.
-     *
-     * A session is best for client device scenarios where developers want to authorize a client device to perform only
-     * a liveness detection without granting full access to their resource. Created sessions have a limited life span
-     * and only authorize clients to perform the desired action before access is expired.
-     *
-     * Permissions includes...
-     * &gt;
-     * *
-     * * Ability to call /detectLivenessWithVerify/singleModal for up to 3 retries.
-     * * A token lifetime of 10 minutes.
-     *
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Client access can be revoked by deleting the session using the Delete Liveness With Verify Session
-     * operation.
-     * &gt; * To retrieve a result, use the Get Liveness With Verify Session.
-     * &gt; * To audit the individual requests that a client has made to your resource, use the List Liveness With
-     * Verify Session Audit Entries.
-     *
-     * Recommended Option: VerifyImage is provided during session creation.
-     *
-     * @param createLivenessWithVerifySessionContent Request of liveness with verify session creation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of liveness session with verify creation with verify image provided.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CreateLivenessWithVerifySessionResult createLivenessWithVerifySessionWithVerifyImage(
-        CreateLivenessWithVerifySessionContent createLivenessWithVerifySessionContent) {
-        // Generated convenience method for createLivenessWithVerifySessionWithVerifyImageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createLivenessWithVerifySessionWithVerifyImageWithResponse(new MultipartFormDataHelper(requestOptions)
-            .serializeJsonField("Parameters", createLivenessWithVerifySessionContent.getParameters())
-            .serializeFileField("VerifyImage", createLivenessWithVerifySessionContent.getVerifyImage().getContent(),
-                createLivenessWithVerifySessionContent.getVerifyImage().getContentType(),
-                createLivenessWithVerifySessionContent.getVerifyImage().getFilename())
-            .end()
-            .getRequestBody(), requestOptions).getValue().toObject(CreateLivenessWithVerifySessionResult.class);
     }
 
     /**
@@ -1120,11 +1035,56 @@ public final class FaceSessionClient {
         };
 
     /**
-     * Creates a new liveness session with an optional verification reference image.
+     * Create a new liveness session with verify. Provide the verify image during session creation.
      *
-     * This method is used to initiate a liveness session with the option to provide a verification image.
-     * If the verification image is provided, it will be used during verification process.
-     * Otherwise, the client device is expected to submit the verification image during the verification process.
+     * A session is best for client device scenarios where developers want to authorize a client device to perform only
+     * a liveness detection without granting full access to their resource. Created sessions have a limited life span
+     * and only authorize clients to perform the desired action before access is expired.
+     *
+     * Permissions includes...
+     * &gt;
+     * *
+     * * Ability to call /detectLivenessWithVerify/singleModal for up to 3 retries.
+     * * A token lifetime of 10 minutes.
+     *
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; *
+     * &gt; * Client access can be revoked by deleting the session using the Delete Liveness With Verify Session
+     * operation.
+     * &gt; * To retrieve a result, use the Get Liveness With Verify Session.
+     * &gt; * To audit the individual requests that a client has made to your resource, use the List Liveness With
+     * Verify Session Audit Entries.
+     *
+     * Recommended Option: VerifyImage is provided during session creation.
+     *
+     * @param body Request content of liveness with verify session creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of liveness session with verify creation with verify image provided.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CreateLivenessWithVerifySessionResult
+        createLivenessWithVerifySessionWithVerifyImage(CreateLivenessWithVerifySessionMultipartContent body) {
+        // Generated convenience method for createLivenessWithVerifySessionWithVerifyImageWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createLivenessWithVerifySessionWithVerifyImageWithResponse(
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("Parameters", body.getParameters())
+                .serializeFileField("VerifyImage", body.getVerifyImage().getContent(),
+                    body.getVerifyImage().getContentType(), body.getVerifyImage().getFilename())
+                .end()
+                .getRequestBody(),
+            requestOptions).getValue().toObject(CreateLivenessWithVerifySessionResult.class);
+    }
+
+    /**
+     * Create a new liveness session with verify. Client device submits VerifyImage during the
+     * /detectLivenessWithVerify/singleModal call.
      *
      * A session is best for client device scenarios where developers want to authorize a client device to perform only
      * a liveness detection without granting full access to their resource. Created sessions have a limited life span
@@ -1149,8 +1109,49 @@ public final class FaceSessionClient {
      * &gt; [!NOTE]
      * &gt; Extra measures should be taken to validate that the client is sending the expected VerifyImage.
      *
-     * @param createLivenessSessionParameters Request for creating liveness session.
-     * @param verifyImage the content value of the verify image.
+     * @param body Body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of liveness session with verify creation with verify image provided.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CreateLivenessWithVerifySessionResult
+        createLivenessWithVerifySession(CreateLivenessWithVerifySessionJsonContent body) {
+        // Generated convenience method for createLivenessWithVerifySessionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createLivenessWithVerifySessionWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+            .toObject(CreateLivenessWithVerifySessionResult.class);
+    }
+
+    /**
+     * Create a new liveness session with verify. Provide the verify image during session creation.
+     *
+     * A session is best for client device scenarios where developers want to authorize a client device to perform only
+     * a liveness detection without granting full access to their resource. Created sessions have a limited life span
+     * and only authorize clients to perform the desired action before access is expired.
+     *
+     * Permissions includes...
+     * &gt;
+     * *
+     * * Ability to call /detectLivenessWithVerify/singleModal for up to 3 retries.
+     * * A token lifetime of 10 minutes.
+     *
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; *
+     * &gt; * Client access can be revoked by deleting the session using the Delete Liveness With Verify Session
+     * operation.
+     * &gt; * To retrieve a result, use the Get Liveness With Verify Session.
+     * &gt; * To audit the individual requests that a client has made to your resource, use the List Liveness With
+     * Verify Session Audit Entries.
+     *
+     * @param createLivenessWithVerifySessionParameters Request for creating liveness session.
+     * @param verifyImage The image to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1160,19 +1161,14 @@ public final class FaceSessionClient {
      * @return response of liveness session with verify creation with verify image provided.
      */
     public CreateLivenessWithVerifySessionResult createLivenessWithVerifySession(
-        CreateLivenessSessionContent createLivenessSessionParameters, BinaryData verifyImage) {
+        CreateLivenessWithVerifySessionJsonContent createLivenessWithVerifySessionParameters, BinaryData verifyImage) {
         if (verifyImage == null) {
-            return createLivenessWithVerifySession(createLivenessSessionParameters);
+            return createLivenessWithVerifySession(createLivenessWithVerifySessionParameters);
         }
-        CreateLivenessSessionContent sessionParameters
-            = new CreateLivenessSessionContent(createLivenessSessionParameters.getLivenessOperationMode())
-                .setDeviceCorrelationId(createLivenessSessionParameters.getDeviceCorrelationId())
-                .setDeviceCorrelationIdSetInClient(createLivenessSessionParameters.isDeviceCorrelationIdSetInClient())
-                .setAuthTokenTimeToLiveInSeconds(createLivenessSessionParameters.getAuthTokenTimeToLiveInSeconds())
-                .setSendResultsToClient(createLivenessSessionParameters.isSendResultsToClient());
         VerifyImageFileDetails verifyImageFileDetails = new VerifyImageFileDetails(verifyImage);
-        CreateLivenessWithVerifySessionContent realParameters
-            = new CreateLivenessWithVerifySessionContent(sessionParameters, verifyImageFileDetails);
+        CreateLivenessWithVerifySessionMultipartContent realParameters
+            = new CreateLivenessWithVerifySessionMultipartContent(createLivenessWithVerifySessionParameters,
+                verifyImageFileDetails);
         return this.createLivenessWithVerifySessionWithVerifyImage(realParameters);
     }
 }

@@ -5,65 +5,63 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** sharedInsight. */
+/**
+ * sharedInsight.
+ */
 @Fluent
 public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
     /*
      * sharingDetail
      */
-    @JsonProperty(value = "lastShared")
     private MicrosoftGraphSharingDetail lastShared;
 
     /*
      * resourceReference
      */
-    @JsonProperty(value = "resourceReference")
     private MicrosoftGraphResourceReference resourceReference;
 
     /*
      * resourceVisualization
      */
-    @JsonProperty(value = "resourceVisualization")
     private MicrosoftGraphResourceVisualization resourceVisualization;
 
     /*
      * The sharingHistory property.
      */
-    @JsonProperty(value = "sharingHistory")
     private List<MicrosoftGraphSharingDetail> sharingHistory;
 
     /*
      * entity
      */
-    @JsonProperty(value = "lastSharedMethod")
     private MicrosoftGraphEntity lastSharedMethod;
 
     /*
      * entity
      */
-    @JsonProperty(value = "resource")
     private MicrosoftGraphEntity resource;
 
     /*
      * sharedInsight
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSharedInsight class. */
+    /**
+     * Creates an instance of MicrosoftGraphSharedInsight class.
+     */
     public MicrosoftGraphSharedInsight() {
     }
 
     /**
      * Get the lastShared property: sharingDetail.
-     *
+     * 
      * @return the lastShared value.
      */
     public MicrosoftGraphSharingDetail lastShared() {
@@ -72,7 +70,7 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Set the lastShared property: sharingDetail.
-     *
+     * 
      * @param lastShared the lastShared value to set.
      * @return the MicrosoftGraphSharedInsight object itself.
      */
@@ -83,7 +81,7 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Get the resourceReference property: resourceReference.
-     *
+     * 
      * @return the resourceReference value.
      */
     public MicrosoftGraphResourceReference resourceReference() {
@@ -92,7 +90,7 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Set the resourceReference property: resourceReference.
-     *
+     * 
      * @param resourceReference the resourceReference value to set.
      * @return the MicrosoftGraphSharedInsight object itself.
      */
@@ -103,7 +101,7 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Get the resourceVisualization property: resourceVisualization.
-     *
+     * 
      * @return the resourceVisualization value.
      */
     public MicrosoftGraphResourceVisualization resourceVisualization() {
@@ -112,19 +110,19 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Set the resourceVisualization property: resourceVisualization.
-     *
+     * 
      * @param resourceVisualization the resourceVisualization value to set.
      * @return the MicrosoftGraphSharedInsight object itself.
      */
-    public MicrosoftGraphSharedInsight withResourceVisualization(
-        MicrosoftGraphResourceVisualization resourceVisualization) {
+    public MicrosoftGraphSharedInsight
+        withResourceVisualization(MicrosoftGraphResourceVisualization resourceVisualization) {
         this.resourceVisualization = resourceVisualization;
         return this;
     }
 
     /**
      * Get the sharingHistory property: The sharingHistory property.
-     *
+     * 
      * @return the sharingHistory value.
      */
     public List<MicrosoftGraphSharingDetail> sharingHistory() {
@@ -133,7 +131,7 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Set the sharingHistory property: The sharingHistory property.
-     *
+     * 
      * @param sharingHistory the sharingHistory value to set.
      * @return the MicrosoftGraphSharedInsight object itself.
      */
@@ -144,7 +142,7 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Get the lastSharedMethod property: entity.
-     *
+     * 
      * @return the lastSharedMethod value.
      */
     public MicrosoftGraphEntity lastSharedMethod() {
@@ -153,7 +151,7 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Set the lastSharedMethod property: entity.
-     *
+     * 
      * @param lastSharedMethod the lastSharedMethod value to set.
      * @return the MicrosoftGraphSharedInsight object itself.
      */
@@ -164,7 +162,7 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Get the resource property: entity.
-     *
+     * 
      * @return the resource value.
      */
     public MicrosoftGraphEntity resource() {
@@ -173,7 +171,7 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Set the resource property: entity.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the MicrosoftGraphSharedInsight object itself.
      */
@@ -184,17 +182,16 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: sharedInsight.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: sharedInsight.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSharedInsight object itself.
      */
@@ -203,15 +200,9 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSharedInsight withId(String id) {
         super.withId(id);
@@ -220,7 +211,7 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -244,5 +235,75 @@ public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {
         if (resource() != null) {
             resource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("lastShared", this.lastShared);
+        jsonWriter.writeJsonField("resourceReference", this.resourceReference);
+        jsonWriter.writeJsonField("resourceVisualization", this.resourceVisualization);
+        jsonWriter.writeArrayField("sharingHistory", this.sharingHistory,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("lastSharedMethod", this.lastSharedMethod);
+        jsonWriter.writeJsonField("resource", this.resource);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSharedInsight from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSharedInsight if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSharedInsight.
+     */
+    public static MicrosoftGraphSharedInsight fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSharedInsight deserializedMicrosoftGraphSharedInsight = new MicrosoftGraphSharedInsight();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharedInsight.withId(reader.getString());
+                } else if ("lastShared".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharedInsight.lastShared = MicrosoftGraphSharingDetail.fromJson(reader);
+                } else if ("resourceReference".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharedInsight.resourceReference
+                        = MicrosoftGraphResourceReference.fromJson(reader);
+                } else if ("resourceVisualization".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharedInsight.resourceVisualization
+                        = MicrosoftGraphResourceVisualization.fromJson(reader);
+                } else if ("sharingHistory".equals(fieldName)) {
+                    List<MicrosoftGraphSharingDetail> sharingHistory
+                        = reader.readArray(reader1 -> MicrosoftGraphSharingDetail.fromJson(reader1));
+                    deserializedMicrosoftGraphSharedInsight.sharingHistory = sharingHistory;
+                } else if ("lastSharedMethod".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharedInsight.lastSharedMethod = MicrosoftGraphEntity.fromJson(reader);
+                } else if ("resource".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharedInsight.resource = MicrosoftGraphEntity.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSharedInsight.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSharedInsight;
+        });
     }
 }

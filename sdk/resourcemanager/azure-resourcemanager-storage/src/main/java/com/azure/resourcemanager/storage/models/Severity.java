@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +23,7 @@ public final class Severity extends ExpandableStringEnum<Severity> {
 
     /**
      * Creates a new instance of Severity value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +32,17 @@ public final class Severity extends ExpandableStringEnum<Severity> {
 
     /**
      * Creates or finds a Severity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Severity.
      */
-    @JsonCreator
     public static Severity fromString(String name) {
         return fromString(name, Severity.class);
     }
 
     /**
      * Gets known Severity values.
-     *
+     * 
      * @return known Severity values.
      */
     public static Collection<Severity> values() {

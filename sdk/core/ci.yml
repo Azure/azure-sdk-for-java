@@ -101,7 +101,6 @@ extends:
     ServiceDirectory: core
     JavadocSafeJavaBuildVersion: '1.21'
     TimeoutInMinutes: 90
-    EnableBatchRelease: true
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
       - name: azure-core

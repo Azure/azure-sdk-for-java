@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,17 +17,16 @@ import java.util.List;
  * storage task.
  */
 @Fluent
-public final class ExecutionTarget {
+public final class ExecutionTarget implements JsonSerializable<ExecutionTarget> {
     /*
      * Required list of object prefixes to be included for task execution
      */
-    @JsonProperty(value = "prefix")
     private List<String> prefix;
 
     /*
-     * List of object prefixes to be excluded from task execution. If there is a conflict between include and exclude prefixes, the exclude prefix will be the determining factor
+     * List of object prefixes to be excluded from task execution. If there is a conflict between include and exclude
+     * prefixes, the exclude prefix will be the determining factor
      */
-    @JsonProperty(value = "excludePrefix")
     private List<String> excludePrefix;
 
     /**
@@ -35,7 +37,7 @@ public final class ExecutionTarget {
 
     /**
      * Get the prefix property: Required list of object prefixes to be included for task execution.
-     *
+     * 
      * @return the prefix value.
      */
     public List<String> prefix() {
@@ -44,7 +46,7 @@ public final class ExecutionTarget {
 
     /**
      * Set the prefix property: Required list of object prefixes to be included for task execution.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the ExecutionTarget object itself.
      */
@@ -56,7 +58,7 @@ public final class ExecutionTarget {
     /**
      * Get the excludePrefix property: List of object prefixes to be excluded from task execution. If there is a
      * conflict between include and exclude prefixes, the exclude prefix will be the determining factor.
-     *
+     * 
      * @return the excludePrefix value.
      */
     public List<String> excludePrefix() {
@@ -66,7 +68,7 @@ public final class ExecutionTarget {
     /**
      * Set the excludePrefix property: List of object prefixes to be excluded from task execution. If there is a
      * conflict between include and exclude prefixes, the exclude prefix will be the determining factor.
-     *
+     * 
      * @param excludePrefix the excludePrefix value to set.
      * @return the ExecutionTarget object itself.
      */
@@ -77,9 +79,51 @@ public final class ExecutionTarget {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("prefix", this.prefix, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludePrefix", this.excludePrefix,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecutionTarget from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecutionTarget if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExecutionTarget.
+     */
+    public static ExecutionTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecutionTarget deserializedExecutionTarget = new ExecutionTarget();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("prefix".equals(fieldName)) {
+                    List<String> prefix = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExecutionTarget.prefix = prefix;
+                } else if ("excludePrefix".equals(fieldName)) {
+                    List<String> excludePrefix = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExecutionTarget.excludePrefix = excludePrefix;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExecutionTarget;
+        });
     }
 }

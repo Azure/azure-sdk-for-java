@@ -5,34 +5,49 @@
 package com.azure.maps.traffic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrafficFlowSegmentStyle. */
+/**
+ * Defines values for TrafficFlowSegmentStyle.
+ */
 public final class TrafficFlowSegmentStyle extends ExpandableStringEnum<TrafficFlowSegmentStyle> {
-    /** Static value absolute for TrafficFlowSegmentStyle. */
+    /**
+     * Static value absolute for TrafficFlowSegmentStyle.
+     */
     public static final TrafficFlowSegmentStyle ABSOLUTE = fromString("absolute");
 
-    /** Static value relative for TrafficFlowSegmentStyle. */
+    /**
+     * Static value relative for TrafficFlowSegmentStyle.
+     */
     public static final TrafficFlowSegmentStyle RELATIVE = fromString("relative");
 
-    /** Static value relative-delay for TrafficFlowSegmentStyle. */
+    /**
+     * Static value relative-delay for TrafficFlowSegmentStyle.
+     */
     public static final TrafficFlowSegmentStyle RELATIVE_DELAY = fromString("relative-delay");
 
     /**
+     * Creates a new instance of TrafficFlowSegmentStyle value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrafficFlowSegmentStyle() {
+    }
+
+    /**
      * Creates or finds a TrafficFlowSegmentStyle from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TrafficFlowSegmentStyle.
      */
-    @JsonCreator
     public static TrafficFlowSegmentStyle fromString(String name) {
         return fromString(name, TrafficFlowSegmentStyle.class);
     }
 
     /**
      * Gets known TrafficFlowSegmentStyle values.
-     *
+     * 
      * @return known TrafficFlowSegmentStyle values.
      */
     public static Collection<TrafficFlowSegmentStyle> values() {

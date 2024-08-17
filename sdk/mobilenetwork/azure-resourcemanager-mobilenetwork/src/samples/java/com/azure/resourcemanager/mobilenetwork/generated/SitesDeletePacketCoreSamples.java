@@ -12,9 +12,7 @@ import com.azure.resourcemanager.mobilenetwork.models.SiteDeletePacketCore;
  */
 public final class SitesDeletePacketCoreSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * SiteDeletePacketCore.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteDeletePacketCore.json
      */
     /**
      * Sample code: Delete packet core in mobile network site.
@@ -23,9 +21,10 @@ public final class SitesDeletePacketCoreSamples {
      */
     public static void
         deletePacketCoreInMobileNetworkSite(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.sites().deletePacketCore("rg1", "testMobileNetwork", "testSite",
-            new SiteDeletePacketCore().withPacketCore(new PacketCoreControlPlaneResourceId().withId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP")),
-            com.azure.core.util.Context.NONE);
+        manager.sites()
+            .deletePacketCore("rg1", "testMobileNetwork", "testSite",
+                new SiteDeletePacketCore().withPacketCore(new PacketCoreControlPlaneResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP")),
+                com.azure.core.util.Context.NONE);
     }
 }

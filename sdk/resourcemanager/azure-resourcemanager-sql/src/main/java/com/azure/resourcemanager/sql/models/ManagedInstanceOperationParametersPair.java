@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters of a managed instance operation. */
+/**
+ * The parameters of a managed instance operation.
+ */
 @Immutable
-public final class ManagedInstanceOperationParametersPair {
+public final class ManagedInstanceOperationParametersPair
+    implements JsonSerializable<ManagedInstanceOperationParametersPair> {
     /*
      * The current parameters.
      */
-    @JsonProperty(value = "currentParameters", access = JsonProperty.Access.WRITE_ONLY)
     private UpsertManagedServerOperationParameters currentParameters;
 
     /*
      * The requested parameters.
      */
-    @JsonProperty(value = "requestedParameters", access = JsonProperty.Access.WRITE_ONLY)
     private UpsertManagedServerOperationParameters requestedParameters;
 
-    /** Creates an instance of ManagedInstanceOperationParametersPair class. */
+    /**
+     * Creates an instance of ManagedInstanceOperationParametersPair class.
+     */
     public ManagedInstanceOperationParametersPair() {
     }
 
     /**
      * Get the currentParameters property: The current parameters.
-     *
+     * 
      * @return the currentParameters value.
      */
     public UpsertManagedServerOperationParameters currentParameters() {
@@ -37,7 +44,7 @@ public final class ManagedInstanceOperationParametersPair {
 
     /**
      * Get the requestedParameters property: The requested parameters.
-     *
+     * 
      * @return the requestedParameters value.
      */
     public UpsertManagedServerOperationParameters requestedParameters() {
@@ -46,7 +53,7 @@ public final class ManagedInstanceOperationParametersPair {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -56,5 +63,45 @@ public final class ManagedInstanceOperationParametersPair {
         if (requestedParameters() != null) {
             requestedParameters().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceOperationParametersPair from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceOperationParametersPair if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedInstanceOperationParametersPair.
+     */
+    public static ManagedInstanceOperationParametersPair fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceOperationParametersPair deserializedManagedInstanceOperationParametersPair
+                = new ManagedInstanceOperationParametersPair();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentParameters".equals(fieldName)) {
+                    deserializedManagedInstanceOperationParametersPair.currentParameters
+                        = UpsertManagedServerOperationParameters.fromJson(reader);
+                } else if ("requestedParameters".equals(fieldName)) {
+                    deserializedManagedInstanceOperationParametersPair.requestedParameters
+                        = UpsertManagedServerOperationParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceOperationParametersPair;
+        });
     }
 }

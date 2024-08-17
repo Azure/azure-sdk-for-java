@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
@@ -33,6 +33,7 @@
   </issueManagement>
 
   <properties>
+    <java.version>17</java.version>
     <skipSpringITs>true</skipSpringITs>
   </properties>
 
@@ -40,72 +41,67 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-servicebus</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-servicebus-jms</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus-jms;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus-jms;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-eventhubs;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-keyvault-secrets</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-storage-blob</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-blob;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-storage-file-share</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-file-share;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-file-share;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-storage-queue</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-queue;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-appconfiguration</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-data-cosmos;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cosmos;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cosmos;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-data-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-stream-binder-servicebus</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-jdbc-mysql</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-jdbc-mysql;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-redis</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-redis;current} -->
+      <version>5.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -131,7 +127,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
   </dependencies>
 
@@ -140,7 +136,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <version>3.2.5</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>default</id>

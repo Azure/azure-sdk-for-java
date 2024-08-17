@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +23,7 @@ public final class AllowedCopyScope extends ExpandableStringEnum<AllowedCopyScop
 
     /**
      * Creates a new instance of AllowedCopyScope value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +32,17 @@ public final class AllowedCopyScope extends ExpandableStringEnum<AllowedCopyScop
 
     /**
      * Creates or finds a AllowedCopyScope from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AllowedCopyScope.
      */
-    @JsonCreator
     public static AllowedCopyScope fromString(String name) {
         return fromString(name, AllowedCopyScope.class);
     }
 
     /**
      * Gets known AllowedCopyScope values.
-     *
+     * 
      * @return known AllowedCopyScope values.
      */
     public static Collection<AllowedCopyScope> values() {

@@ -5,12 +5,15 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceAdministrationClientImpl;
+import com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyRequest;
 import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
+import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentClassifierCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails;
@@ -64,7 +67,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     buildMode: String(template/neural) (Required)
+     *     buildMode: String(template/neural/generative) (Required)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -76,6 +79,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     maxTrainingHours: Double (Optional)
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -102,11 +107,37 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     componentModels (Required): [
-     *          (Required){
-     *             modelId: String (Required)
+     *     classifierId: String (Required)
+     *     split: String(auto/none/perPage) (Optional)
+     *     docTypes (Required): {
+     *         String (Required): {
+     *             description: String (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Optional): {
+     *                 String (Required): {
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
+     *                     description: String (Optional)
+     *                     example: String (Optional)
+     *                     items (Optional): (recursive schema, see items above)
+     *                     properties (Optional): {
+     *                         String (Required): (recursive schema, see String above)
+     *                     }
+     *                 }
+     *             }
+     *             fieldConfidence (Optional): {
+     *                 String: double (Required)
+     *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
-     *     ]
+     *     }
      *     tags (Optional): {
      *         String: String (Required)
      *     }
@@ -217,7 +248,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -226,11 +257,13 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
-     *             fieldSchema (Required): {
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -244,6 +277,15 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [
@@ -253,6 +295,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
      * }</pre>
      * 
@@ -284,7 +327,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -293,11 +336,13 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
-     *             fieldSchema (Required): {
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -311,6 +356,15 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [
@@ -320,6 +374,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
      * }</pre>
      * 
@@ -363,11 +418,6 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *         count: int (Required)
      *         limit: int (Required)
      *     }
-     *     customNeuralDocumentModelBuilds (Required): {
-     *         used: int (Required)
-     *         quota: int (Required)
-     *         quotaResetDateTime: OffsetDateTime (Required)
-     *     }
      * }
      * }</pre>
      * 
@@ -391,7 +441,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * 
      * <pre>{@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -438,7 +488,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * 
      * <pre>{@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -500,6 +550,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *             }
      *         }
      *     }
+     *     allowOverwrite: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -516,6 +567,81 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     public PollerFlux<BinaryData, BinaryData> beginBuildClassifier(BinaryData buildRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.beginBuildClassifierAsync(buildRequest, requestOptions);
+    }
+
+    /**
+     * Generates authorization to copy a document classifier to this location with
+     * specified classifierId and optional description.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     classifierId: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     targetResourceId: String (Required)
+     *     targetResourceRegion: String (Required)
+     *     targetClassifierId: String (Required)
+     *     targetClassifierLocation: String (Required)
+     *     accessToken: String (Required)
+     *     expirationDateTime: OffsetDateTime (Required)
+     * }
+     * }</pre>
+     * 
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return authorization to copy a document classifier to the specified target resource and
+     * classifierId along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> authorizeClassifierCopyWithResponse(BinaryData authorizeCopyRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.authorizeClassifierCopyWithResponseAsync(authorizeCopyRequest, requestOptions);
+    }
+
+    /**
+     * Copies document classifier to the target resource, region, and classifierId.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     targetResourceId: String (Required)
+     *     targetResourceRegion: String (Required)
+     *     targetClassifierId: String (Required)
+     *     targetClassifierLocation: String (Required)
+     *     accessToken: String (Required)
+     *     expirationDateTime: OffsetDateTime (Required)
+     * }
+     * }</pre>
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param copyToRequest Copy to request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCopyClassifierTo(String classifierId, BinaryData copyToRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.beginCopyClassifierToAsync(classifierId, copyToRequest, requestOptions);
     }
 
     /**
@@ -759,10 +885,10 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
         // Generated convenience method for listModels
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listModels(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, DocumentModelDetails>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -850,10 +976,10 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
         // Generated convenience method for listOperations
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listOperations(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, OperationDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -883,6 +1009,54 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
         // Generated convenience method for beginBuildClassifierWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginBuildClassifierWithModelAsync(BinaryData.fromObject(buildRequest), requestOptions);
+    }
+
+    /**
+     * Generates authorization to copy a document classifier to this location with
+     * specified classifierId and optional description.
+     * 
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return authorization to copy a document classifier to the specified target resource and
+     * classifierId on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ClassifierCopyAuthorization>
+        authorizeClassifierCopy(AuthorizeClassifierCopyRequest authorizeCopyRequest) {
+        // Generated convenience method for authorizeClassifierCopyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return authorizeClassifierCopyWithResponse(BinaryData.fromObject(authorizeCopyRequest), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ClassifierCopyAuthorization.class));
+    }
+
+    /**
+     * Copies document classifier to the target resource, region, and classifierId.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param copyToRequest Copy to request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<DocumentClassifierCopyToOperationDetails, DocumentClassifierDetails>
+        beginCopyClassifierTo(String classifierId, ClassifierCopyAuthorization copyToRequest) {
+        // Generated convenience method for beginCopyClassifierToWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginCopyClassifierToWithModelAsync(classifierId, BinaryData.fromObject(copyToRequest),
+            requestOptions);
     }
 
     /**
@@ -922,10 +1096,10 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
         // Generated convenience method for listClassifiers
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listClassifiers(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, DocumentClassifierDetails>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/UsageList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/UsageList.json
      */
     /**
      * Sample code: List usages.
@@ -21,7 +22,8 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/UsageListSpacedLocation.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/UsageListSpacedLocation.json
      */
     /**
      * Sample code: List usages spaced location.

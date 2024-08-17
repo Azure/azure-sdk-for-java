@@ -5,26 +5,27 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.ListQueueInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response schema. Contains list of queues returned.
  */
 @Immutable
-public final class ListQueueResource {
+public final class ListQueueResource implements JsonSerializable<ListQueueResource> {
     /*
      * List of queues returned.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ListQueueInner> value;
 
     /*
      * Request URL that can be used to list next page of queues
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -35,7 +36,7 @@ public final class ListQueueResource {
 
     /**
      * Get the value property: List of queues returned.
-     *
+     * 
      * @return the value value.
      */
     public List<ListQueueInner> value() {
@@ -44,7 +45,7 @@ public final class ListQueueResource {
 
     /**
      * Get the nextLink property: Request URL that can be used to list next page of queues.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -53,12 +54,50 @@ public final class ListQueueResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListQueueResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListQueueResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListQueueResource.
+     */
+    public static ListQueueResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListQueueResource deserializedListQueueResource = new ListQueueResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ListQueueInner> value = reader.readArray(reader1 -> ListQueueInner.fromJson(reader1));
+                    deserializedListQueueResource.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedListQueueResource.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListQueueResource;
+        });
     }
 }

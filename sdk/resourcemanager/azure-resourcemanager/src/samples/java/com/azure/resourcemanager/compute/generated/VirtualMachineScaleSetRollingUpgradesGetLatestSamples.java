@@ -20,7 +20,10 @@ public final class VirtualMachineScaleSetRollingUpgradesGetLatestSamples {
      */
     public static void virtualMachineScaleSetRollingUpgradeGetLatestMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetRollingUpgrades()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetRollingUpgrades()
             .getLatestWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
@@ -36,7 +39,10 @@ public final class VirtualMachineScaleSetRollingUpgradesGetLatestSamples {
      */
     public static void virtualMachineScaleSetRollingUpgradeGetLatestMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetRollingUpgrades()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetRollingUpgrades()
             .getLatestWithResponse("rgcompute", "aaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

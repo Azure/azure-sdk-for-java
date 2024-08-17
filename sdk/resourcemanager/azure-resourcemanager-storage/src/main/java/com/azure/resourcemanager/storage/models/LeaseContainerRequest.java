@@ -6,41 +6,42 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Lease Container request schema.
  */
 @Fluent
-public final class LeaseContainerRequest {
+public final class LeaseContainerRequest implements JsonSerializable<LeaseContainerRequest> {
     /*
      * Specifies the lease action. Can be one of the available actions.
      */
-    @JsonProperty(value = "action", required = true)
     private LeaseContainerRequestAction action;
 
     /*
      * Identifies the lease. Can be specified in any valid GUID string format.
      */
-    @JsonProperty(value = "leaseId")
     private String leaseId;
 
     /*
-     * Optional. For a break action, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60.
+     * Optional. For a break action, proposed duration the lease should continue before it is broken, in seconds,
+     * between 0 and 60.
      */
-    @JsonProperty(value = "breakPeriod")
     private Integer breakPeriod;
 
     /*
-     * Required for acquire. Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
+     * Required for acquire. Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that
+     * never expires.
      */
-    @JsonProperty(value = "leaseDuration")
     private Integer leaseDuration;
 
     /*
      * Optional for acquire, required for change. Proposed lease ID, in a GUID string format.
      */
-    @JsonProperty(value = "proposedLeaseId")
     private String proposedLeaseId;
 
     /**
@@ -168,4 +169,54 @@ public final class LeaseContainerRequest {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LeaseContainerRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("leaseId", this.leaseId);
+        jsonWriter.writeNumberField("breakPeriod", this.breakPeriod);
+        jsonWriter.writeNumberField("leaseDuration", this.leaseDuration);
+        jsonWriter.writeStringField("proposedLeaseId", this.proposedLeaseId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LeaseContainerRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LeaseContainerRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LeaseContainerRequest.
+     */
+    public static LeaseContainerRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LeaseContainerRequest deserializedLeaseContainerRequest = new LeaseContainerRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedLeaseContainerRequest.action
+                        = LeaseContainerRequestAction.fromString(reader.getString());
+                } else if ("leaseId".equals(fieldName)) {
+                    deserializedLeaseContainerRequest.leaseId = reader.getString();
+                } else if ("breakPeriod".equals(fieldName)) {
+                    deserializedLeaseContainerRequest.breakPeriod = reader.getNullable(JsonReader::getInt);
+                } else if ("leaseDuration".equals(fieldName)) {
+                    deserializedLeaseContainerRequest.leaseDuration = reader.getNullable(JsonReader::getInt);
+                } else if ("proposedLeaseId".equals(fieldName)) {
+                    deserializedLeaseContainerRequest.proposedLeaseId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLeaseContainerRequest;
+        });
+    }
 }

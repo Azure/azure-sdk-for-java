@@ -12,13 +12,20 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.identity.EnvironmentCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -26,13 +33,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import reactor.core.publisher.Mono;
-
 class LoadTestingClientTestBase extends TestProxyTestBase {
     private static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
     private final String defaultEndpoint = "REDACTED.eastus.cnt-prod.loadtesting.azure.com";
-
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     protected final String existingTestId = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID",
             "11111111-1234-1234-1234-123456789012");
@@ -125,12 +128,54 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
     }
 
     private TokenCredential getTokenCredential() {
-        DefaultAzureCredentialBuilder credentialBuilder = new DefaultAzureCredentialBuilder();
         String authorityHost = Configuration.getGlobalConfiguration().get("AUTHORITY_HOST");
-        if (authorityHost != null) {
-            credentialBuilder.authorityHost(authorityHost);
+
+        switch (getTestMode()) {
+            case RECORD:
+                DefaultAzureCredentialBuilder defaultAzureCredentialBuilder = new DefaultAzureCredentialBuilder();
+
+                if (authorityHost != null && !authorityHost.isEmpty()) {
+                    defaultAzureCredentialBuilder.authorityHost(authorityHost);
+                }
+
+                return defaultAzureCredentialBuilder.build();
+            case LIVE:
+                Configuration config = Configuration.getGlobalConfiguration();
+                EnvironmentCredentialBuilder environmentCredentialBuilder = new EnvironmentCredentialBuilder();
+
+                if (authorityHost != null && !authorityHost.isEmpty()) {
+                    environmentCredentialBuilder.authorityHost(authorityHost);
+                }
+
+                ChainedTokenCredentialBuilder chainedTokenCredentialBuilder = new ChainedTokenCredentialBuilder()
+                    .addLast(environmentCredentialBuilder.build())
+                    .addLast(new AzureCliCredentialBuilder().build())
+                    .addLast(new AzureDeveloperCliCredentialBuilder().build())
+                    .addLast(new AzurePowerShellCredentialBuilder().build());
+
+                String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+                String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+                String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+                String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+                if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+                    && !CoreUtils.isNullOrEmpty(clientId)
+                    && !CoreUtils.isNullOrEmpty(tenantId)
+                    && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+                    chainedTokenCredentialBuilder.addLast(new AzurePipelinesCredentialBuilder()
+                        .systemAccessToken(systemAccessToken)
+                        .clientId(clientId)
+                        .tenantId(tenantId)
+                        .serviceConnectionId(serviceConnectionId)
+                        .build());
+                }
+
+                return chainedTokenCredentialBuilder.build();
+            default:
+                // On PLAYBACK mode
+                return new MockTokenCredential();
         }
-        return credentialBuilder.build();
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {

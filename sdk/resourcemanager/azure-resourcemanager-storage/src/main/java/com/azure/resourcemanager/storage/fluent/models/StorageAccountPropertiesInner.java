@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AccountStatus;
 import com.azure.resourcemanager.storage.models.AllowedCopyScope;
@@ -25,8 +30,7 @@ import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuConversionStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -34,251 +38,229 @@ import java.util.List;
  * Properties of the storage account.
  */
 @Fluent
-public final class StorageAccountPropertiesInner {
+public final class StorageAccountPropertiesInner implements JsonSerializable<StorageAccountPropertiesInner> {
     /*
      * Gets the status of the storage account at the time the operation was called.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * Gets the URLs that are used to perform a retrieval of a public blob, queue, or table object. Note that Standard_ZRS and Premium_LRS accounts only return the blob endpoint.
+     * Gets the URLs that are used to perform a retrieval of a public blob, queue, or table object. Note that
+     * Standard_ZRS and Premium_LRS accounts only return the blob endpoint.
      */
-    @JsonProperty(value = "primaryEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private Endpoints primaryEndpoints;
 
     /*
      * Gets the location of the primary data center for the storage account.
      */
-    @JsonProperty(value = "primaryLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryLocation;
 
     /*
      * Gets the status indicating whether the primary location of the storage account is available or unavailable.
      */
-    @JsonProperty(value = "statusOfPrimary", access = JsonProperty.Access.WRITE_ONLY)
     private AccountStatus statusOfPrimary;
 
     /*
-     * Gets the timestamp of the most recent instance of a failover to the secondary location. Only the most recent timestamp is retained. This element is not returned if there has never been a failover instance. Only available if the accountType is Standard_GRS or Standard_RAGRS.
+     * Gets the timestamp of the most recent instance of a failover to the secondary location. Only the most recent
+     * timestamp is retained. This element is not returned if there has never been a failover instance. Only available
+     * if the accountType is Standard_GRS or Standard_RAGRS.
      */
-    @JsonProperty(value = "lastGeoFailoverTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastGeoFailoverTime;
 
     /*
-     * Gets the location of the geo-replicated secondary for the storage account. Only available if the accountType is Standard_GRS or Standard_RAGRS.
+     * Gets the location of the geo-replicated secondary for the storage account. Only available if the accountType is
+     * Standard_GRS or Standard_RAGRS.
      */
-    @JsonProperty(value = "secondaryLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryLocation;
 
     /*
-     * Gets the status indicating whether the secondary location of the storage account is available or unavailable. Only available if the SKU name is Standard_GRS or Standard_RAGRS.
+     * Gets the status indicating whether the secondary location of the storage account is available or unavailable.
+     * Only available if the SKU name is Standard_GRS or Standard_RAGRS.
      */
-    @JsonProperty(value = "statusOfSecondary", access = JsonProperty.Access.WRITE_ONLY)
     private AccountStatus statusOfSecondary;
 
     /*
      * Gets the creation date and time of the storage account in UTC.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Gets the custom domain the user assigned to this storage account.
      */
-    @JsonProperty(value = "customDomain", access = JsonProperty.Access.WRITE_ONLY)
     private CustomDomain customDomain;
 
     /*
      * SasPolicy assigned to the storage account.
      */
-    @JsonProperty(value = "sasPolicy", access = JsonProperty.Access.WRITE_ONLY)
     private SasPolicy sasPolicy;
 
     /*
      * KeyPolicy assigned to the storage account.
      */
-    @JsonProperty(value = "keyPolicy", access = JsonProperty.Access.WRITE_ONLY)
     private KeyPolicy keyPolicy;
 
     /*
      * Storage account keys creation time.
      */
-    @JsonProperty(value = "keyCreationTime", access = JsonProperty.Access.WRITE_ONLY)
     private KeyCreationTime keyCreationTime;
 
     /*
-     * Gets the URLs that are used to perform a retrieval of a public blob, queue, or table object from the secondary location of the storage account. Only available if the SKU name is Standard_RAGRS.
+     * Gets the URLs that are used to perform a retrieval of a public blob, queue, or table object from the secondary
+     * location of the storage account. Only available if the SKU name is Standard_RAGRS.
      */
-    @JsonProperty(value = "secondaryEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private Endpoints secondaryEndpoints;
 
     /*
      * Encryption settings to be used for server-side encryption for the storage account.
      */
-    @JsonProperty(value = "encryption", access = JsonProperty.Access.WRITE_ONLY)
     private Encryption encryption;
 
     /*
-     * Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type.
+     * Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium' access
+     * tier is the default value for premium block blobs storage account type and it cannot be changed for the premium
+     * block blobs storage account type.
      */
-    @JsonProperty(value = "accessTier", access = JsonProperty.Access.WRITE_ONLY)
     private AccessTier accessTier;
 
     /*
      * Provides the identity based authentication settings for Azure Files.
      */
-    @JsonProperty(value = "azureFilesIdentityBasedAuthentication")
     private AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication;
 
     /*
      * Allows https traffic only to storage service if sets to true.
      */
-    @JsonProperty(value = "supportsHttpsTrafficOnly")
     private Boolean enableHttpsTrafficOnly;
 
     /*
      * Network rule set
      */
-    @JsonProperty(value = "networkAcls", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkRuleSet networkRuleSet;
 
     /*
      * Enables Secure File Transfer Protocol, if set to true
      */
-    @JsonProperty(value = "isSftpEnabled")
     private Boolean isSftpEnabled;
 
     /*
      * Enables local users feature, if set to true
      */
-    @JsonProperty(value = "isLocalUserEnabled")
     private Boolean isLocalUserEnabled;
 
     /*
      * Enables extended group support with local users feature, if set to true
      */
-    @JsonProperty(value = "enableExtendedGroups")
     private Boolean enableExtendedGroups;
 
     /*
      * Account HierarchicalNamespace enabled if sets to true.
      */
-    @JsonProperty(value = "isHnsEnabled")
     private Boolean isHnsEnabled;
 
     /*
      * Geo Replication Stats
      */
-    @JsonProperty(value = "geoReplicationStats", access = JsonProperty.Access.WRITE_ONLY)
     private GeoReplicationStats geoReplicationStats;
 
     /*
      * If the failover is in progress, the value will be true, otherwise, it will be null.
      */
-    @JsonProperty(value = "failoverInProgress", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean failoverInProgress;
 
     /*
      * Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled.
      */
-    @JsonProperty(value = "largeFileSharesState")
     private LargeFileSharesState largeFileSharesState;
 
     /*
      * List of private endpoint connection associated with the specified storage account
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Maintains information about the network routing choice opted by the user for data transfer
      */
-    @JsonProperty(value = "routingPreference")
     private RoutingPreference routingPreference;
 
     /*
      * Blob restore status
      */
-    @JsonProperty(value = "blobRestoreStatus", access = JsonProperty.Access.WRITE_ONLY)
     private BlobRestoreStatusInner blobRestoreStatus;
 
     /*
-     * Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is false for this property.
+     * Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is
+     * false for this property.
      */
-    @JsonProperty(value = "allowBlobPublicAccess")
     private Boolean allowBlobPublicAccess;
 
     /*
-     * Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property.
+     * Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for
+     * this property.
      */
-    @JsonProperty(value = "minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
 
     /*
-     * Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     * Indicates whether the storage account permits requests to be authorized with the account access key via Shared
+     * Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active
+     * Directory (Azure AD). The default value is null, which is equivalent to true.
      */
-    @JsonProperty(value = "allowSharedKeyAccess")
     private Boolean allowSharedKeyAccess;
 
     /*
      * NFS 3.0 protocol support enabled if set to true.
      */
-    @JsonProperty(value = "isNfsV3Enabled")
     private Boolean enableNfsV3;
 
     /*
-     * Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts only if object replication policies will involve storage accounts in different AAD tenants. The default interpretation is false for new accounts to follow best security practices by default.
+     * Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts
+     * only if object replication policies will involve storage accounts in different AAD tenants. The default
+     * interpretation is false for new accounts to follow best security practices by default.
      */
-    @JsonProperty(value = "allowCrossTenantReplication")
     private Boolean allowCrossTenantReplication;
 
     /*
-     * A boolean flag which indicates whether the default authentication is OAuth or not. The default interpretation is false for this property.
+     * A boolean flag which indicates whether the default authentication is OAuth or not. The default interpretation is
+     * false for this property.
      */
-    @JsonProperty(value = "defaultToOAuthAuthentication")
     private Boolean defaultToOAuthAuthentication;
 
     /*
-     * Allow, disallow, or let Network Security Perimeter configuration to evaluate public network access to Storage Account.
+     * Allow, disallow, or let Network Security Perimeter configuration to evaluate public network access to Storage
+     * Account.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * The property is immutable and can only be set to true at the account creation time. When set to true, it enables object level immutability for all the containers in the account by default.
+     * The property is immutable and can only be set to true at the account creation time. When set to true, it enables
+     * object level immutability for all the containers in the account by default.
      */
-    @JsonProperty(value = "immutableStorageWithVersioning")
     private ImmutableStorageAccount immutableStorageWithVersioning;
 
     /*
      * Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
      */
-    @JsonProperty(value = "allowedCopyScope")
     private AllowedCopyScope allowedCopyScope;
 
     /*
      * This property is readOnly and is set by server during asynchronous storage account sku conversion operations.
      */
-    @JsonProperty(value = "storageAccountSkuConversionStatus")
     private StorageAccountSkuConversionStatus storageAccountSkuConversionStatus;
 
     /*
-     * Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric DNS Zone identifier.
+     * Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a
+     * single subscription, which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric
+     * DNS Zone identifier.
      */
-    @JsonProperty(value = "dnsEndpointType")
     private DnsEndpointType dnsEndpointType;
 
     /*
      * This property will be set to true or false on an event of ongoing migration. Default value is null.
      */
-    @JsonProperty(value = "isSkuConversionBlocked", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isSkuConversionBlocked;
 
     /*
      * If customer initiated account migration is in progress, the value will be true else it will be null.
      */
-    @JsonProperty(value = "accountMigrationInProgress", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean accountMigrationInProgress;
 
     /**
@@ -289,7 +271,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the provisioningState property: Gets the status of the storage account at the time the operation was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -299,7 +281,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the primaryEndpoints property: Gets the URLs that are used to perform a retrieval of a public blob, queue, or
      * table object. Note that Standard_ZRS and Premium_LRS accounts only return the blob endpoint.
-     *
+     * 
      * @return the primaryEndpoints value.
      */
     public Endpoints primaryEndpoints() {
@@ -308,7 +290,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the primaryLocation property: Gets the location of the primary data center for the storage account.
-     *
+     * 
      * @return the primaryLocation value.
      */
     public String primaryLocation() {
@@ -318,7 +300,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the statusOfPrimary property: Gets the status indicating whether the primary location of the storage account
      * is available or unavailable.
-     *
+     * 
      * @return the statusOfPrimary value.
      */
     public AccountStatus statusOfPrimary() {
@@ -329,7 +311,7 @@ public final class StorageAccountPropertiesInner {
      * Get the lastGeoFailoverTime property: Gets the timestamp of the most recent instance of a failover to the
      * secondary location. Only the most recent timestamp is retained. This element is not returned if there has never
      * been a failover instance. Only available if the accountType is Standard_GRS or Standard_RAGRS.
-     *
+     * 
      * @return the lastGeoFailoverTime value.
      */
     public OffsetDateTime lastGeoFailoverTime() {
@@ -339,7 +321,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the secondaryLocation property: Gets the location of the geo-replicated secondary for the storage account.
      * Only available if the accountType is Standard_GRS or Standard_RAGRS.
-     *
+     * 
      * @return the secondaryLocation value.
      */
     public String secondaryLocation() {
@@ -349,7 +331,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the statusOfSecondary property: Gets the status indicating whether the secondary location of the storage
      * account is available or unavailable. Only available if the SKU name is Standard_GRS or Standard_RAGRS.
-     *
+     * 
      * @return the statusOfSecondary value.
      */
     public AccountStatus statusOfSecondary() {
@@ -358,7 +340,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the creationTime property: Gets the creation date and time of the storage account in UTC.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -367,7 +349,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the customDomain property: Gets the custom domain the user assigned to this storage account.
-     *
+     * 
      * @return the customDomain value.
      */
     public CustomDomain customDomain() {
@@ -376,7 +358,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the sasPolicy property: SasPolicy assigned to the storage account.
-     *
+     * 
      * @return the sasPolicy value.
      */
     public SasPolicy sasPolicy() {
@@ -385,7 +367,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
+     * 
      * @return the keyPolicy value.
      */
     public KeyPolicy keyPolicy() {
@@ -394,7 +376,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the keyCreationTime property: Storage account keys creation time.
-     *
+     * 
      * @return the keyCreationTime value.
      */
     public KeyCreationTime keyCreationTime() {
@@ -405,7 +387,7 @@ public final class StorageAccountPropertiesInner {
      * Get the secondaryEndpoints property: Gets the URLs that are used to perform a retrieval of a public blob, queue,
      * or table object from the secondary location of the storage account. Only available if the SKU name is
      * Standard_RAGRS.
-     *
+     * 
      * @return the secondaryEndpoints value.
      */
     public Endpoints secondaryEndpoints() {
@@ -414,7 +396,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the encryption property: Encryption settings to be used for server-side encryption for the storage account.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -425,7 +407,7 @@ public final class StorageAccountPropertiesInner {
      * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
      * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
      * cannot be changed for the premium block blobs storage account type.
-     *
+     * 
      * @return the accessTier value.
      */
     public AccessTier accessTier() {
@@ -435,7 +417,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
      * Azure Files.
-     *
+     * 
      * @return the azureFilesIdentityBasedAuthentication value.
      */
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
@@ -445,7 +427,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Set the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
      * Azure Files.
-     *
+     * 
      * @param azureFilesIdentityBasedAuthentication the azureFilesIdentityBasedAuthentication value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -457,7 +439,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
-     *
+     * 
      * @return the enableHttpsTrafficOnly value.
      */
     public Boolean enableHttpsTrafficOnly() {
@@ -466,7 +448,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Set the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
-     *
+     * 
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -477,7 +459,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the networkRuleSet property: Network rule set.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -486,7 +468,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
-     *
+     * 
      * @return the isSftpEnabled value.
      */
     public Boolean isSftpEnabled() {
@@ -495,7 +477,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Set the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
-     *
+     * 
      * @param isSftpEnabled the isSftpEnabled value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -506,7 +488,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the isLocalUserEnabled property: Enables local users feature, if set to true.
-     *
+     * 
      * @return the isLocalUserEnabled value.
      */
     public Boolean isLocalUserEnabled() {
@@ -515,7 +497,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Set the isLocalUserEnabled property: Enables local users feature, if set to true.
-     *
+     * 
      * @param isLocalUserEnabled the isLocalUserEnabled value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -526,7 +508,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the enableExtendedGroups property: Enables extended group support with local users feature, if set to true.
-     *
+     * 
      * @return the enableExtendedGroups value.
      */
     public Boolean enableExtendedGroups() {
@@ -535,7 +517,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Set the enableExtendedGroups property: Enables extended group support with local users feature, if set to true.
-     *
+     * 
      * @param enableExtendedGroups the enableExtendedGroups value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -546,7 +528,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the isHnsEnabled property: Account HierarchicalNamespace enabled if sets to true.
-     *
+     * 
      * @return the isHnsEnabled value.
      */
     public Boolean isHnsEnabled() {
@@ -555,7 +537,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Set the isHnsEnabled property: Account HierarchicalNamespace enabled if sets to true.
-     *
+     * 
      * @param isHnsEnabled the isHnsEnabled value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -566,7 +548,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the geoReplicationStats property: Geo Replication Stats.
-     *
+     * 
      * @return the geoReplicationStats value.
      */
     public GeoReplicationStats geoReplicationStats() {
@@ -576,7 +558,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the failoverInProgress property: If the failover is in progress, the value will be true, otherwise, it will
      * be null.
-     *
+     * 
      * @return the failoverInProgress value.
      */
     public Boolean failoverInProgress() {
@@ -586,7 +568,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
      * is enabled.
-     *
+     * 
      * @return the largeFileSharesState value.
      */
     public LargeFileSharesState largeFileSharesState() {
@@ -596,7 +578,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Set the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
      * is enabled.
-     *
+     * 
      * @param largeFileSharesState the largeFileSharesState value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -608,7 +590,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
      * storage account.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -618,7 +600,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the routingPreference property: Maintains information about the network routing choice opted by the user for
      * data transfer.
-     *
+     * 
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
@@ -628,7 +610,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Set the routingPreference property: Maintains information about the network routing choice opted by the user for
      * data transfer.
-     *
+     * 
      * @param routingPreference the routingPreference value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -639,7 +621,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the blobRestoreStatus property: Blob restore status.
-     *
+     * 
      * @return the blobRestoreStatus value.
      */
     public BlobRestoreStatusInner blobRestoreStatus() {
@@ -649,7 +631,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
      * account. The default interpretation is false for this property.
-     *
+     * 
      * @return the allowBlobPublicAccess value.
      */
     public Boolean allowBlobPublicAccess() {
@@ -659,7 +641,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Set the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
      * account. The default interpretation is false for this property.
-     *
+     * 
      * @param allowBlobPublicAccess the allowBlobPublicAccess value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -671,7 +653,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
      * default interpretation is TLS 1.0 for this property.
-     *
+     * 
      * @return the minimumTlsVersion value.
      */
     public MinimumTlsVersion minimumTlsVersion() {
@@ -681,7 +663,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Set the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
      * default interpretation is TLS 1.0 for this property.
-     *
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -694,7 +676,7 @@ public final class StorageAccountPropertiesInner {
      * Get the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
      * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
      * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
-     *
+     * 
      * @return the allowSharedKeyAccess value.
      */
     public Boolean allowSharedKeyAccess() {
@@ -705,7 +687,7 @@ public final class StorageAccountPropertiesInner {
      * Set the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
      * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
      * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
-     *
+     * 
      * @param allowSharedKeyAccess the allowSharedKeyAccess value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -716,7 +698,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
+     * 
      * @return the enableNfsV3 value.
      */
     public Boolean enableNfsV3() {
@@ -725,7 +707,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Set the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
+     * 
      * @param enableNfsV3 the enableNfsV3 value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -739,7 +721,7 @@ public final class StorageAccountPropertiesInner {
      * property to true for new or existing accounts only if object replication policies will involve storage accounts
      * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
      * by default.
-     *
+     * 
      * @return the allowCrossTenantReplication value.
      */
     public Boolean allowCrossTenantReplication() {
@@ -751,7 +733,7 @@ public final class StorageAccountPropertiesInner {
      * property to true for new or existing accounts only if object replication policies will involve storage accounts
      * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
      * by default.
-     *
+     * 
      * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -763,7 +745,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
      * is OAuth or not. The default interpretation is false for this property.
-     *
+     * 
      * @return the defaultToOAuthAuthentication value.
      */
     public Boolean defaultToOAuthAuthentication() {
@@ -773,7 +755,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Set the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
      * is OAuth or not. The default interpretation is false for this property.
-     *
+     * 
      * @param defaultToOAuthAuthentication the defaultToOAuthAuthentication value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -785,7 +767,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the publicNetworkAccess property: Allow, disallow, or let Network Security Perimeter configuration to
      * evaluate public network access to Storage Account.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -795,7 +777,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Set the publicNetworkAccess property: Allow, disallow, or let Network Security Perimeter configuration to
      * evaluate public network access to Storage Account.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -808,7 +790,7 @@ public final class StorageAccountPropertiesInner {
      * Get the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
      * account creation time. When set to true, it enables object level immutability for all the containers in the
      * account by default.
-     *
+     * 
      * @return the immutableStorageWithVersioning value.
      */
     public ImmutableStorageAccount immutableStorageWithVersioning() {
@@ -819,7 +801,7 @@ public final class StorageAccountPropertiesInner {
      * Set the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
      * account creation time. When set to true, it enables object level immutability for all the containers in the
      * account by default.
-     *
+     * 
      * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -832,7 +814,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
      * Private Links to the same VNet.
-     *
+     * 
      * @return the allowedCopyScope value.
      */
     public AllowedCopyScope allowedCopyScope() {
@@ -842,7 +824,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Set the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
      * Private Links to the same VNet.
-     *
+     * 
      * @param allowedCopyScope the allowedCopyScope value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -854,7 +836,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the storageAccountSkuConversionStatus property: This property is readOnly and is set by server during
      * asynchronous storage account sku conversion operations.
-     *
+     * 
      * @return the storageAccountSkuConversionStatus value.
      */
     public StorageAccountSkuConversionStatus storageAccountSkuConversionStatus() {
@@ -864,7 +846,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Set the storageAccountSkuConversionStatus property: This property is readOnly and is set by server during
      * asynchronous storage account sku conversion operations.
-     *
+     * 
      * @param storageAccountSkuConversionStatus the storageAccountSkuConversionStatus value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -878,7 +860,7 @@ public final class StorageAccountPropertiesInner {
      * Get the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
      * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
      * URL will have an alphanumeric DNS Zone identifier.
-     *
+     * 
      * @return the dnsEndpointType value.
      */
     public DnsEndpointType dnsEndpointType() {
@@ -889,7 +871,7 @@ public final class StorageAccountPropertiesInner {
      * Set the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
      * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
      * URL will have an alphanumeric DNS Zone identifier.
-     *
+     * 
      * @param dnsEndpointType the dnsEndpointType value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -901,7 +883,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the isSkuConversionBlocked property: This property will be set to true or false on an event of ongoing
      * migration. Default value is null.
-     *
+     * 
      * @return the isSkuConversionBlocked value.
      */
     public Boolean isSkuConversionBlocked() {
@@ -911,7 +893,7 @@ public final class StorageAccountPropertiesInner {
     /**
      * Get the accountMigrationInProgress property: If customer initiated account migration is in progress, the value
      * will be true else it will be null.
-     *
+     * 
      * @return the accountMigrationInProgress value.
      */
     public Boolean accountMigrationInProgress() {
@@ -920,7 +902,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -969,5 +951,173 @@ public final class StorageAccountPropertiesInner {
         if (storageAccountSkuConversionStatus() != null) {
             storageAccountSkuConversionStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("azureFilesIdentityBasedAuthentication", this.azureFilesIdentityBasedAuthentication);
+        jsonWriter.writeBooleanField("supportsHttpsTrafficOnly", this.enableHttpsTrafficOnly);
+        jsonWriter.writeBooleanField("isSftpEnabled", this.isSftpEnabled);
+        jsonWriter.writeBooleanField("isLocalUserEnabled", this.isLocalUserEnabled);
+        jsonWriter.writeBooleanField("enableExtendedGroups", this.enableExtendedGroups);
+        jsonWriter.writeBooleanField("isHnsEnabled", this.isHnsEnabled);
+        jsonWriter.writeStringField("largeFileSharesState",
+            this.largeFileSharesState == null ? null : this.largeFileSharesState.toString());
+        jsonWriter.writeJsonField("routingPreference", this.routingPreference);
+        jsonWriter.writeBooleanField("allowBlobPublicAccess", this.allowBlobPublicAccess);
+        jsonWriter.writeStringField("minimumTlsVersion",
+            this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
+        jsonWriter.writeBooleanField("allowSharedKeyAccess", this.allowSharedKeyAccess);
+        jsonWriter.writeBooleanField("isNfsV3Enabled", this.enableNfsV3);
+        jsonWriter.writeBooleanField("allowCrossTenantReplication", this.allowCrossTenantReplication);
+        jsonWriter.writeBooleanField("defaultToOAuthAuthentication", this.defaultToOAuthAuthentication);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("immutableStorageWithVersioning", this.immutableStorageWithVersioning);
+        jsonWriter.writeStringField("allowedCopyScope",
+            this.allowedCopyScope == null ? null : this.allowedCopyScope.toString());
+        jsonWriter.writeJsonField("storageAccountSkuConversionStatus", this.storageAccountSkuConversionStatus);
+        jsonWriter.writeStringField("dnsEndpointType",
+            this.dnsEndpointType == null ? null : this.dnsEndpointType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountPropertiesInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageAccountPropertiesInner.
+     */
+    public static StorageAccountPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountPropertiesInner deserializedStorageAccountPropertiesInner
+                = new StorageAccountPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("primaryEndpoints".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.primaryEndpoints = Endpoints.fromJson(reader);
+                } else if ("primaryLocation".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.primaryLocation = reader.getString();
+                } else if ("statusOfPrimary".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.statusOfPrimary
+                        = AccountStatus.fromString(reader.getString());
+                } else if ("lastGeoFailoverTime".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.lastGeoFailoverTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("secondaryLocation".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.secondaryLocation = reader.getString();
+                } else if ("statusOfSecondary".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.statusOfSecondary
+                        = AccountStatus.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("customDomain".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.customDomain = CustomDomain.fromJson(reader);
+                } else if ("sasPolicy".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.sasPolicy = SasPolicy.fromJson(reader);
+                } else if ("keyPolicy".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.keyPolicy = KeyPolicy.fromJson(reader);
+                } else if ("keyCreationTime".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.keyCreationTime = KeyCreationTime.fromJson(reader);
+                } else if ("secondaryEndpoints".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.secondaryEndpoints = Endpoints.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.encryption = Encryption.fromJson(reader);
+                } else if ("accessTier".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.accessTier = AccessTier.fromString(reader.getString());
+                } else if ("azureFilesIdentityBasedAuthentication".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.azureFilesIdentityBasedAuthentication
+                        = AzureFilesIdentityBasedAuthentication.fromJson(reader);
+                } else if ("supportsHttpsTrafficOnly".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.enableHttpsTrafficOnly
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("networkAcls".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.networkRuleSet = NetworkRuleSet.fromJson(reader);
+                } else if ("isSftpEnabled".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.isSftpEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isLocalUserEnabled".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.isLocalUserEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableExtendedGroups".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.enableExtendedGroups
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isHnsEnabled".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.isHnsEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("geoReplicationStats".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.geoReplicationStats
+                        = GeoReplicationStats.fromJson(reader);
+                } else if ("failoverInProgress".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.failoverInProgress
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("largeFileSharesState".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.largeFileSharesState
+                        = LargeFileSharesState.fromString(reader.getString());
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedStorageAccountPropertiesInner.privateEndpointConnections = privateEndpointConnections;
+                } else if ("routingPreference".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.routingPreference = RoutingPreference.fromJson(reader);
+                } else if ("blobRestoreStatus".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.blobRestoreStatus
+                        = BlobRestoreStatusInner.fromJson(reader);
+                } else if ("allowBlobPublicAccess".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.allowBlobPublicAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("minimumTlsVersion".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.minimumTlsVersion
+                        = MinimumTlsVersion.fromString(reader.getString());
+                } else if ("allowSharedKeyAccess".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.allowSharedKeyAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isNfsV3Enabled".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.enableNfsV3 = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowCrossTenantReplication".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.allowCrossTenantReplication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultToOAuthAuthentication".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.defaultToOAuthAuthentication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("immutableStorageWithVersioning".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.immutableStorageWithVersioning
+                        = ImmutableStorageAccount.fromJson(reader);
+                } else if ("allowedCopyScope".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.allowedCopyScope
+                        = AllowedCopyScope.fromString(reader.getString());
+                } else if ("storageAccountSkuConversionStatus".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.storageAccountSkuConversionStatus
+                        = StorageAccountSkuConversionStatus.fromJson(reader);
+                } else if ("dnsEndpointType".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.dnsEndpointType
+                        = DnsEndpointType.fromString(reader.getString());
+                } else if ("isSkuConversionBlocked".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.isSkuConversionBlocked
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("accountMigrationInProgress".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.accountMigrationInProgress
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountPropertiesInner;
+        });
     }
 }

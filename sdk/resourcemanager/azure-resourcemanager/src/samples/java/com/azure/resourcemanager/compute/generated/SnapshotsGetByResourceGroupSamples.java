@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class SnapshotsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/snapshotExamples/
      * Snapshot_GetIncrementalSnapshot.json
      */
     /**
@@ -19,13 +19,17 @@ public final class SnapshotsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getInformationAboutAnIncrementalSnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSnapshots().getByResourceGroupWithResponse(
-            "myResourceGroup", "myIncrementalSnapshot", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSnapshots()
+            .getByResourceGroupWithResponse("myResourceGroup", "myIncrementalSnapshot",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/snapshotExamples/
      * Snapshot_Get.json
      */
     /**
@@ -34,7 +38,10 @@ public final class SnapshotsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getInformationAboutASnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSnapshots()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSnapshots()
             .getByResourceGroupWithResponse("myResourceGroup", "mySnapshot", com.azure.core.util.Context.NONE);
     }
 }

@@ -14,19 +14,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureSynapseArtifactsLinkedServiceTypeProperties {
     /*
-     * https://<workspacename>.dev.azuresynapse.net, Azure Synapse Analytics workspace URL. Type: string (or Expression with resultType string).
+     * https://<workspacename>.dev.azuresynapse.net, Azure Synapse Analytics workspace URL. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "endpoint", required = true)
     private Object endpoint;
 
     /*
-     * Required to specify MSI, if using system assigned managed identity as authentication method. Type: string (or Expression with resultType string).
+     * Required to specify MSI, if using system assigned managed identity as authentication method. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "authentication")
     private Object authentication;
 
     /*
-     * The resource ID of the Synapse workspace. The format should be: /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{workspaceName}. Type: string (or Expression with resultType string).
+     * The resource ID of the Synapse workspace. The format should be:
+     * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{
+     * workspaceName}. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "workspaceResourceId")
     private Object workspaceResourceId;

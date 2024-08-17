@@ -5,62 +5,66 @@
 package com.azure.resourcemanager.scvmm.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Virtual disk model. */
+/**
+ * Virtual Disk Update model.
+ */
 @Fluent
-public final class VirtualDiskUpdate {
+public final class VirtualDiskUpdate implements JsonSerializable<VirtualDiskUpdate> {
     /*
      * Gets or sets the name of the disk.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the disk id.
      */
-    @JsonProperty(value = "diskId")
     private String diskId;
 
     /*
      * Gets or sets the disk total size.
      */
-    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
      * Gets or sets the disk bus.
      */
-    @JsonProperty(value = "bus")
     private Integer bus;
 
     /*
      * Gets or sets the disk lun.
      */
-    @JsonProperty(value = "lun")
     private Integer lun;
 
     /*
      * Gets or sets the disk bus type.
      */
-    @JsonProperty(value = "busType")
     private String busType;
 
     /*
      * Gets or sets the disk vhd type.
      */
-    @JsonProperty(value = "vhdType")
     private String vhdType;
 
     /*
      * The QoS policy for the disk.
      */
-    @JsonProperty(value = "storageQoSPolicy")
-    private StorageQoSPolicyDetails storageQoSPolicy;
+    private StorageQosPolicyDetails storageQosPolicy;
+
+    /**
+     * Creates an instance of VirtualDiskUpdate class.
+     */
+    public VirtualDiskUpdate() {
+    }
 
     /**
      * Get the name property: Gets or sets the name of the disk.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -69,7 +73,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Set the name property: Gets or sets the name of the disk.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualDiskUpdate object itself.
      */
@@ -80,7 +84,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Get the diskId property: Gets or sets the disk id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -89,7 +93,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Set the diskId property: Gets or sets the disk id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the VirtualDiskUpdate object itself.
      */
@@ -100,7 +104,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Get the diskSizeGB property: Gets or sets the disk total size.
-     *
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -109,7 +113,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Set the diskSizeGB property: Gets or sets the disk total size.
-     *
+     * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the VirtualDiskUpdate object itself.
      */
@@ -120,7 +124,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Get the bus property: Gets or sets the disk bus.
-     *
+     * 
      * @return the bus value.
      */
     public Integer bus() {
@@ -129,7 +133,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Set the bus property: Gets or sets the disk bus.
-     *
+     * 
      * @param bus the bus value to set.
      * @return the VirtualDiskUpdate object itself.
      */
@@ -140,7 +144,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Get the lun property: Gets or sets the disk lun.
-     *
+     * 
      * @return the lun value.
      */
     public Integer lun() {
@@ -149,7 +153,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Set the lun property: Gets or sets the disk lun.
-     *
+     * 
      * @param lun the lun value to set.
      * @return the VirtualDiskUpdate object itself.
      */
@@ -160,7 +164,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Get the busType property: Gets or sets the disk bus type.
-     *
+     * 
      * @return the busType value.
      */
     public String busType() {
@@ -169,7 +173,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Set the busType property: Gets or sets the disk bus type.
-     *
+     * 
      * @param busType the busType value to set.
      * @return the VirtualDiskUpdate object itself.
      */
@@ -180,7 +184,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Get the vhdType property: Gets or sets the disk vhd type.
-     *
+     * 
      * @return the vhdType value.
      */
     public String vhdType() {
@@ -189,7 +193,7 @@ public final class VirtualDiskUpdate {
 
     /**
      * Set the vhdType property: Gets or sets the disk vhd type.
-     *
+     * 
      * @param vhdType the vhdType value to set.
      * @return the VirtualDiskUpdate object itself.
      */
@@ -199,33 +203,90 @@ public final class VirtualDiskUpdate {
     }
 
     /**
-     * Get the storageQoSPolicy property: The QoS policy for the disk.
-     *
-     * @return the storageQoSPolicy value.
+     * Get the storageQosPolicy property: The QoS policy for the disk.
+     * 
+     * @return the storageQosPolicy value.
      */
-    public StorageQoSPolicyDetails storageQoSPolicy() {
-        return this.storageQoSPolicy;
+    public StorageQosPolicyDetails storageQosPolicy() {
+        return this.storageQosPolicy;
     }
 
     /**
-     * Set the storageQoSPolicy property: The QoS policy for the disk.
-     *
-     * @param storageQoSPolicy the storageQoSPolicy value to set.
+     * Set the storageQosPolicy property: The QoS policy for the disk.
+     * 
+     * @param storageQosPolicy the storageQosPolicy value to set.
      * @return the VirtualDiskUpdate object itself.
      */
-    public VirtualDiskUpdate withStorageQoSPolicy(StorageQoSPolicyDetails storageQoSPolicy) {
-        this.storageQoSPolicy = storageQoSPolicy;
+    public VirtualDiskUpdate withStorageQosPolicy(StorageQosPolicyDetails storageQosPolicy) {
+        this.storageQosPolicy = storageQosPolicy;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (storageQoSPolicy() != null) {
-            storageQoSPolicy().validate();
+        if (storageQosPolicy() != null) {
+            storageQosPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeNumberField("bus", this.bus);
+        jsonWriter.writeNumberField("lun", this.lun);
+        jsonWriter.writeStringField("busType", this.busType);
+        jsonWriter.writeStringField("vhdType", this.vhdType);
+        jsonWriter.writeJsonField("storageQoSPolicy", this.storageQosPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualDiskUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualDiskUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualDiskUpdate.
+     */
+    public static VirtualDiskUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualDiskUpdate deserializedVirtualDiskUpdate = new VirtualDiskUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualDiskUpdate.name = reader.getString();
+                } else if ("diskId".equals(fieldName)) {
+                    deserializedVirtualDiskUpdate.diskId = reader.getString();
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedVirtualDiskUpdate.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("bus".equals(fieldName)) {
+                    deserializedVirtualDiskUpdate.bus = reader.getNullable(JsonReader::getInt);
+                } else if ("lun".equals(fieldName)) {
+                    deserializedVirtualDiskUpdate.lun = reader.getNullable(JsonReader::getInt);
+                } else if ("busType".equals(fieldName)) {
+                    deserializedVirtualDiskUpdate.busType = reader.getString();
+                } else if ("vhdType".equals(fieldName)) {
+                    deserializedVirtualDiskUpdate.vhdType = reader.getString();
+                } else if ("storageQoSPolicy".equals(fieldName)) {
+                    deserializedVirtualDiskUpdate.storageQosPolicy = StorageQosPolicyDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualDiskUpdate;
+        });
     }
 }

@@ -1,5 +1,25 @@
 # Release History
 
+## 12.5.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.4.3 (2024-07-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+
+
 ## 12.4.2 (2024-06-13)
 
 ### Bugs Fixed

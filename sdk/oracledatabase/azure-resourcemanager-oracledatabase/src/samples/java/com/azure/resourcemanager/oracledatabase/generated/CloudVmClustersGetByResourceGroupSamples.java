@@ -9,7 +9,8 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class CloudVmClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/vmClusters_get.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/vmClusters_get.json
      */
     /**
      * Sample code: Get VM Cluster.

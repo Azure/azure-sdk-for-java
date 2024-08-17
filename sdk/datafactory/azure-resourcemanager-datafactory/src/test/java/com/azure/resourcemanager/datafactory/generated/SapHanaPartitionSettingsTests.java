@@ -11,12 +11,12 @@ public final class SapHanaPartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapHanaPartitionSettings model
-            = BinaryData.fromString("{\"partitionColumnName\":\"datadpd\"}").toObject(SapHanaPartitionSettings.class);
+            = BinaryData.fromString("{\"partitionColumnName\":\"datac\"}").toObject(SapHanaPartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapHanaPartitionSettings model = new SapHanaPartitionSettings().withPartitionColumnName("datadpd");
+        SapHanaPartitionSettings model = new SapHanaPartitionSettings().withPartitionColumnName("datac");
         model = BinaryData.fromObject(model).toObject(SapHanaPartitionSettings.class);
     }
 }

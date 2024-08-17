@@ -105,6 +105,31 @@ public interface MobileNetworks {
     PagedIterable<MobileNetwork> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
+     * Gets all the SIM groups assigned to a mobile network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIM groups assigned to a mobile network as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<SimGroup> listSimGroups(String resourceGroupName, String mobileNetworkName);
+
+    /**
+     * Gets all the SIM groups assigned to a mobile network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIM groups assigned to a mobile network as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<SimGroup> listSimGroups(String resourceGroupName, String mobileNetworkName, Context context);
+
+    /**
      * Gets information about the specified mobile network.
      * 
      * @param id the resource ID.

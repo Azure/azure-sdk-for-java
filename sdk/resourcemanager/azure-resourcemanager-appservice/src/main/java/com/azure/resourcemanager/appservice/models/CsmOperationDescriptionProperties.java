@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties available for a Microsoft.Web resource provider operation.
  */
 @Fluent
-public final class CsmOperationDescriptionProperties {
+public final class CsmOperationDescriptionProperties implements JsonSerializable<CsmOperationDescriptionProperties> {
     /*
      * Resource metrics service provided by Microsoft.Insights resource provider.
      */
-    @JsonProperty(value = "serviceSpecification")
     private ServiceSpecification serviceSpecification;
 
     /**
@@ -53,5 +56,43 @@ public final class CsmOperationDescriptionProperties {
         if (serviceSpecification() != null) {
             serviceSpecification().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("serviceSpecification", this.serviceSpecification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CsmOperationDescriptionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CsmOperationDescriptionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CsmOperationDescriptionProperties.
+     */
+    public static CsmOperationDescriptionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CsmOperationDescriptionProperties deserializedCsmOperationDescriptionProperties
+                = new CsmOperationDescriptionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceSpecification".equals(fieldName)) {
+                    deserializedCsmOperationDescriptionProperties.serviceSpecification
+                        = ServiceSpecification.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCsmOperationDescriptionProperties;
+        });
     }
 }

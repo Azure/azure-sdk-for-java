@@ -132,6 +132,7 @@ private[spark] object CosmosConfigNames {
   val MetricsEnabledForSlf4j = "spark.cosmos.metrics.slf4j.enabled"
   val MetricsIntervalInSeconds = "spark.cosmos.metrics.intervalInSeconds"
   val MetricsAzureMonitorConnectionString = "spark.cosmos.metrics.azureMonitor.connectionString"
+  val ClientBuilderInterceptors = "spark.cosmos.account.clientBuilderInterceptors"
 
   // Only meant to be used when throughput control is configured without using dedicated containers
   // Then in this case, we are going to allocate the throughput budget equally across all executors
@@ -223,7 +224,8 @@ private[spark] object CosmosConfigNames {
     SerializationDateTimeConversionMode,
     MetricsEnabledForSlf4j,
     MetricsIntervalInSeconds,
-    MetricsAzureMonitorConnectionString
+    MetricsAzureMonitorConnectionString,
+    ClientBuilderInterceptors
   )
 
   def validateConfigName(name: String): Unit = {
@@ -240,9 +242,17 @@ private[spark] object CosmosConfigNames {
 }
 
 private object CosmosConfig  extends BasicLoggingTrait {
-  def getAccountDataResolver(config: Map[String, String]): Option[AccountDataResolver] = {
-    val accountDataResolverServiceName : Option[String] = config.get(CosmosConfigNames.AccountDataResolverServiceName)
 
+  val accountDataResolvers: TrieMap[Option[String], Option[AccountDataResolver]] =
+    new TrieMap[Option[String], Option[AccountDataResolver]]()
+
+  def getAccountDataResolver(accountDataResolverServiceName : Option[String]): Option[AccountDataResolver] = {
+     accountDataResolvers.getOrElseUpdate(
+      accountDataResolverServiceName,
+       getAccountDataResolverImpl(accountDataResolverServiceName))
+  }
+
+  private def getAccountDataResolverImpl(accountDataResolverServiceName : Option[String]): Option[AccountDataResolver] = {
     logInfo(s"Checking for account resolvers - requested service name '${accountDataResolverServiceName.getOrElse("n/a")}'")
     var accountDataResolverCls = None: Option[AccountDataResolver]
     val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
@@ -281,7 +291,8 @@ private object CosmosConfig  extends BasicLoggingTrait {
       case None => effectiveUserConfig.toMap
     }
 
-    val accountDataResolverCls = getAccountDataResolver(mergedConfig)
+    val accountDataResolverServiceName : Option[String] = mergedConfig.get(CosmosConfigNames.AccountDataResolverServiceName)
+    val accountDataResolverCls = getAccountDataResolver(accountDataResolverServiceName)
     if (accountDataResolverCls.isDefined) {
         val accountDataConfig = accountDataResolverCls.get.getAccountDataConfig(effectiveUserConfig)
         effectiveUserConfig = CaseInsensitiveMap(accountDataConfig)
@@ -372,7 +383,8 @@ private case class CosmosAccountConfig(endpoint: String,
                                        subscriptionId: Option[String],
                                        tenantId: Option[String],
                                        resourceGroupName: Option[String],
-                                       azureEnvironmentEndpoints: java.util.Map[String, String])
+                                       azureEnvironmentEndpoints: java.util.Map[String, String],
+                                       clientBuilderInterceptors: Option[String])
 
 private object CosmosAccountConfig {
   private val DefaultAzureEnvironmentEndpoints = AzureEnvironmentType.Azure
@@ -520,6 +532,11 @@ private object CosmosAccountConfig {
       },
       helpMessage = "The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`.")
 
+  private val ClientBuilderInterceptors = CosmosConfigEntry[String](key = CosmosConfigNames.ClientBuilderInterceptors,
+    mandatory = false,
+    parseFromStringFunction = clientBuilderInterceptorFQDN => clientBuilderInterceptorFQDN,
+    helpMessage = "CosmosClientBuilder interceptors (comma separated) - FQDNs of the service implementing the 'CosmosClientBuilderInterceptor' trait.")
+
   private[spark] def parseProactiveConnectionInitConfigs(config: String): java.util.List[CosmosContainerIdentity] = {
     val result = new java.util.ArrayList[CosmosContainerIdentity]
     try {
@@ -552,6 +569,7 @@ private object CosmosAccountConfig {
     val resourceGroupNameOpt = CosmosConfigEntry.parse(cfg, ResourceGroupName)
     val tenantIdOpt = CosmosConfigEntry.parse(cfg, TenantId)
     val azureEnvironmentOpt = CosmosConfigEntry.parse(cfg, AzureEnvironmentTypeEnum)
+    val clientBuilderInterceptors = CosmosConfigEntry.parse(cfg, ClientBuilderInterceptors)
 
     val disableTcpConnectionEndpointRediscovery = CosmosConfigEntry.parse(cfg, DisableTcpConnectionEndpointRediscovery)
     val preferredRegionsListOpt = CosmosConfigEntry.parse(cfg, PreferredRegionsList)
@@ -612,7 +630,8 @@ private object CosmosAccountConfig {
       subscriptionIdOpt,
       tenantIdOpt,
       resourceGroupNameOpt,
-      azureEnvironmentOpt.get)
+      azureEnvironmentOpt.get,
+      clientBuilderInterceptors)
   }
 }
 
@@ -734,7 +753,8 @@ private object CosmosAuthConfig {
                 clientCert)
         } else if (authType.get == CosmosAuthType.AccessToken) {
           assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
-          val accountDataResolver = CosmosConfig.getAccountDataResolver(CaseInsensitiveMap(cfg))
+          val accountDataResolverServiceName : Option[String] = CaseInsensitiveMap(cfg).get(CosmosConfigNames.AccountDataResolverServiceName)
+          val accountDataResolver = CosmosConfig.getAccountDataResolver(accountDataResolverServiceName)
           if (!accountDataResolver.isDefined) {
             throw new IllegalArgumentException(
               s"For auth type '${authType.get}' you have to provide an implementation of the " +

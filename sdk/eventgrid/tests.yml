@@ -3,7 +3,9 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: eventgrid
+    Location: eastus
     TimeoutInMinutes: 60
     MaxParallel: 7
     Artifacts:

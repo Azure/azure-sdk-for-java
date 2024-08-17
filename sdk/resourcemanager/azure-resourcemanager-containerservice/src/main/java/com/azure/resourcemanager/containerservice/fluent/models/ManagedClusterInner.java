@@ -7,6 +7,9 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.ClusterUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
@@ -35,7 +38,7 @@ import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.ServiceMeshProfile;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -47,32 +50,42 @@ public final class ManagedClusterInner extends Resource {
     /*
      * The managed cluster SKU.
      */
-    @JsonProperty(value = "sku")
     private ManagedClusterSku sku;
 
     /*
      * The extended location of the Virtual Machine.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
      * The identity of the managed cluster, if configured.
      */
-    @JsonProperty(value = "identity")
     private ManagedClusterIdentity identity;
 
     /*
      * Properties of a managed cluster.
      */
-    @JsonProperty(value = "properties")
     private ManagedClusterProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of ManagedClusterInner class.
@@ -159,6 +172,36 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -204,16 +247,14 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the kubernetesVersion property: The version of Kubernetes specified by the user.
-     * 
-     * Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
-     * When &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating
-     * the cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger
-     * an upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes
-     * minor versions cannot be skipped. All upgrades must be performed sequentially by major version number. For
-     * example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is
-     * not allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more
-     * details.
+     * Get the kubernetesVersion property: Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and
+     * &lt;major.minor&gt; (e.g. 1.20) are supported. When &lt;major.minor&gt; is specified, the latest supported GA
+     * patch version is chosen automatically. Updating the cluster with the same &lt;major.minor&gt; once it has been
+     * created (e.g. 1.14.x -&gt; 1.14) will not trigger an upgrade, even if a newer patch version is available. When
+     * you upgrade a supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed
+     * sequentially by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x
+     * are allowed, however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
+     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      * 
      * @return the kubernetesVersion value.
      */
@@ -222,16 +263,14 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the kubernetesVersion property: The version of Kubernetes specified by the user.
-     * 
-     * Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
-     * When &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating
-     * the cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger
-     * an upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes
-     * minor versions cannot be skipped. All upgrades must be performed sequentially by major version number. For
-     * example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is
-     * not allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more
-     * details.
+     * Set the kubernetesVersion property: Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and
+     * &lt;major.minor&gt; (e.g. 1.20) are supported. When &lt;major.minor&gt; is specified, the latest supported GA
+     * patch version is chosen automatically. Updating the cluster with the same &lt;major.minor&gt; once it has been
+     * created (e.g. 1.14.x -&gt; 1.14) will not trigger an upgrade, even if a newer patch version is available. When
+     * you upgrade a supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed
+     * sequentially by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x
+     * are allowed, however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
+     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterInner object itself.
@@ -245,11 +284,9 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the currentKubernetesVersion property: The version of Kubernetes the Managed Cluster is running.
-     * 
-     * If kubernetesVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal
-     * to it. If kubernetesVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
-     * version being used.
+     * Get the currentKubernetesVersion property: If kubernetesVersion was a fully specified version
+     * &lt;major.minor.patch&gt;, this field will be exactly equal to it. If kubernetesVersion was &lt;major.minor&gt;,
+     * this field will contain the full &lt;major.minor.patch&gt; version being used.
      * 
      * @return the currentKubernetesVersion value.
      */
@@ -258,9 +295,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the dnsPrefix property: The DNS prefix of the Managed Cluster.
-     * 
-     * This cannot be updated once the Managed Cluster has been created.
+     * Get the dnsPrefix property: This cannot be updated once the Managed Cluster has been created.
      * 
      * @return the dnsPrefix value.
      */
@@ -269,9 +304,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the dnsPrefix property: The DNS prefix of the Managed Cluster.
-     * 
-     * This cannot be updated once the Managed Cluster has been created.
+     * Set the dnsPrefix property: This cannot be updated once the Managed Cluster has been created.
      * 
      * @param dnsPrefix the dnsPrefix value to set.
      * @return the ManagedClusterInner object itself.
@@ -285,9 +318,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the fqdnSubdomain property: The FQDN subdomain of the private cluster with custom private dns zone.
-     * 
-     * This cannot be updated once the Managed Cluster has been created.
+     * Get the fqdnSubdomain property: This cannot be updated once the Managed Cluster has been created.
      * 
      * @return the fqdnSubdomain value.
      */
@@ -296,9 +327,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the fqdnSubdomain property: The FQDN subdomain of the private cluster with custom private dns zone.
-     * 
-     * This cannot be updated once the Managed Cluster has been created.
+     * Set the fqdnSubdomain property: This cannot be updated once the Managed Cluster has been created.
      * 
      * @param fqdnSubdomain the fqdnSubdomain value to set.
      * @return the ManagedClusterInner object itself.
@@ -330,12 +359,9 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the azurePortalFqdn property: The special FQDN used by the Azure Portal to access the Managed Cluster. This
-     * FQDN is for use only by the Azure Portal and should not be used by other clients.
-     * 
-     * The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses,
-     * which Kubernetes APIServer doesn't handle by default. This special FQDN supports CORS, allowing the Azure Portal
-     * to function properly.
+     * Get the azurePortalFqdn property: The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers
+     * to be sent in some responses, which Kubernetes APIServer doesn't handle by default. This special FQDN supports
+     * CORS, allowing the Azure Portal to function properly.
      * 
      * @return the azurePortalFqdn value.
      */
@@ -462,10 +488,9 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the podIdentityProfile property: The pod identity profile of the Managed Cluster.
-     * 
-     * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on
-     * AAD pod identity integration.
+     * Get the podIdentityProfile property: See [use AAD pod
+     * identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on AAD pod identity
+     * integration.
      * 
      * @return the podIdentityProfile value.
      */
@@ -474,10 +499,9 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the podIdentityProfile property: The pod identity profile of the Managed Cluster.
-     * 
-     * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on
-     * AAD pod identity integration.
+     * Set the podIdentityProfile property: See [use AAD pod
+     * identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on AAD pod identity
+     * integration.
      * 
      * @param podIdentityProfile the podIdentityProfile value to set.
      * @return the ManagedClusterInner object itself.
@@ -586,8 +610,8 @@ public final class ManagedClusterInner extends Resource {
 
     /**
      * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn
-     * more at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
+     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
+     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
      * 
      * @return the enablePodSecurityPolicy value.
      */
@@ -597,8 +621,8 @@ public final class ManagedClusterInner extends Resource {
 
     /**
      * Set the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn
-     * more at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
+     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
+     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
      * 
      * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
      * @return the ManagedClusterInner object itself.
@@ -635,9 +659,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the aadProfile property: AADProfile specifies attributes for Azure Active Directory integration.
-     * 
-     * The Azure Active Directory configuration.
+     * Get the aadProfile property: The Azure Active Directory configuration.
      * 
      * @return the aadProfile value.
      */
@@ -646,9 +668,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the aadProfile property: AADProfile specifies attributes for Azure Active Directory integration.
-     * 
-     * The Azure Active Directory configuration.
+     * Set the aadProfile property: The Azure Active Directory configuration.
      * 
      * @param aadProfile the aadProfile value to set.
      * @return the ManagedClusterInner object itself.
@@ -754,10 +774,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the diskEncryptionSetId property: The Resource ID of the disk encryption set to use for enabling encryption
-     * at rest.
-     * 
-     * This is of the form:
+     * Get the diskEncryptionSetId property: This is of the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'.
      * 
      * @return the diskEncryptionSetId value.
@@ -767,10 +784,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the diskEncryptionSetId property: The Resource ID of the disk encryption set to use for enabling encryption
-     * at rest.
-     * 
-     * This is of the form:
+     * Set the diskEncryptionSetId property: This is of the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'.
      * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
@@ -831,10 +845,8 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the disableLocalAccounts property: If local accounts should be disabled on the Managed Cluster.
-     * 
-     * If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed
-     * Clusters that are AAD enabled. For more details see [disable local
+     * Get the disableLocalAccounts property: If set to true, getting static credentials will be disabled for this
+     * cluster. This must only be used on Managed Clusters that are AAD enabled. For more details see [disable local
      * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
      * 
      * @return the disableLocalAccounts value.
@@ -844,10 +856,8 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the disableLocalAccounts property: If local accounts should be disabled on the Managed Cluster.
-     * 
-     * If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed
-     * Clusters that are AAD enabled. For more details see [disable local
+     * Set the disableLocalAccounts property: If set to true, getting static credentials will be disabled for this
+     * cluster. This must only be used on Managed Clusters that are AAD enabled. For more details see [disable local
      * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
      * 
      * @param disableLocalAccounts the disableLocalAccounts value to set.
@@ -954,9 +964,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: PublicNetworkAccess of the managedCluster
-     * 
-     * Allow or deny public network access for AKS.
+     * Get the publicNetworkAccess property: Allow or deny public network access for AKS.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -965,9 +973,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the publicNetworkAccess property: PublicNetworkAccess of the managedCluster
-     * 
-     * Allow or deny public network access for AKS.
+     * Set the publicNetworkAccess property: Allow or deny public network access for AKS.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ManagedClusterInner object itself.
@@ -1101,5 +1107,66 @@ public final class ManagedClusterInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedClusterInner.
+     */
+    public static ManagedClusterInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterInner deserializedManagedClusterInner = new ManagedClusterInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedClusterInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedClusterInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedClusterInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedManagedClusterInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedManagedClusterInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedManagedClusterInner.sku = ManagedClusterSku.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedManagedClusterInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedManagedClusterInner.identity = ManagedClusterIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedClusterInner.innerProperties = ManagedClusterProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedManagedClusterInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterInner;
+        });
     }
 }

@@ -6,23 +6,26 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Log Analytics Workspace for Firewall Policy Insights.
  */
 @Fluent
-public final class FirewallPolicyLogAnalyticsWorkspace {
+public final class FirewallPolicyLogAnalyticsWorkspace
+    implements JsonSerializable<FirewallPolicyLogAnalyticsWorkspace> {
     /*
      * Region to configure the Workspace.
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * The workspace Id for Firewall Policy Insights.
      */
-    @JsonProperty(value = "workspaceId")
     private SubResource workspaceId;
 
     /**
@@ -77,5 +80,45 @@ public final class FirewallPolicyLogAnalyticsWorkspace {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeJsonField("workspaceId", this.workspaceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyLogAnalyticsWorkspace from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyLogAnalyticsWorkspace if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicyLogAnalyticsWorkspace.
+     */
+    public static FirewallPolicyLogAnalyticsWorkspace fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyLogAnalyticsWorkspace deserializedFirewallPolicyLogAnalyticsWorkspace
+                = new FirewallPolicyLogAnalyticsWorkspace();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("region".equals(fieldName)) {
+                    deserializedFirewallPolicyLogAnalyticsWorkspace.region = reader.getString();
+                } else if ("workspaceId".equals(fieldName)) {
+                    deserializedFirewallPolicyLogAnalyticsWorkspace.workspaceId = SubResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyLogAnalyticsWorkspace;
+        });
     }
 }

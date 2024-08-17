@@ -104,14 +104,18 @@ public final class PacketCoreDataPlaneImpl
     }
 
     public PacketCoreDataPlane create() {
-        this.innerObject = serviceManager.serviceClient().getPacketCoreDataPlanes().createOrUpdate(resourceGroupName,
-            packetCoreControlPlaneName, packetCoreDataPlaneName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreDataPlanes()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public PacketCoreDataPlane create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPacketCoreDataPlanes().createOrUpdate(resourceGroupName,
-            packetCoreControlPlaneName, packetCoreDataPlaneName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreDataPlanes()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -127,16 +131,20 @@ public final class PacketCoreDataPlaneImpl
     }
 
     public PacketCoreDataPlane apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getPacketCoreDataPlanes().updateTagsWithResponse(resourceGroupName,
-                packetCoreControlPlaneName, packetCoreDataPlaneName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreDataPlanes()
+            .updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PacketCoreDataPlane apply(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getPacketCoreDataPlanes().updateTagsWithResponse(resourceGroupName,
-                packetCoreControlPlaneName, packetCoreDataPlaneName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreDataPlanes()
+            .updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                updateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -152,14 +160,16 @@ public final class PacketCoreDataPlaneImpl
     }
 
     public PacketCoreDataPlane refresh() {
-        this.innerObject = serviceManager.serviceClient().getPacketCoreDataPlanes()
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreDataPlanes()
             .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, Context.NONE)
             .getValue();
         return this;
     }
 
     public PacketCoreDataPlane refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPacketCoreDataPlanes()
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreDataPlanes()
             .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, context)
             .getValue();
         return this;

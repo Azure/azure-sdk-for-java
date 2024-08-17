@@ -33,49 +33,59 @@ public final class SynapseSparkJobActivityTypeProperties {
     private List<Object> arguments;
 
     /*
-     * The main file used for the job, which will override the 'file' of the spark job definition you provide. Type: string (or Expression with resultType string).
+     * The main file used for the job, which will override the 'file' of the spark job definition you provide. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "file")
     private Object file;
 
     /*
-     * Scanning subfolders from the root folder of the main definition file, these files will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
+     * Scanning subfolders from the root folder of the main definition file, these files will be added as reference
+     * files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and the folders name are case
+     * sensitive. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "scanFolder")
     private Object scanFolder;
 
     /*
-     * The fully-qualified identifier or the main class that is in the main definition file, which will override the 'className' of the spark job definition you provide. Type: string (or Expression with resultType string).
+     * The fully-qualified identifier or the main class that is in the main definition file, which will override the
+     * 'className' of the spark job definition you provide. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "className")
     private Object className;
 
     /*
-     * (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for reference in the main definition file, which will override the 'files' of the spark job definition you provide.
+     * (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for reference in the main
+     * definition file, which will override the 'files' of the spark job definition you provide.
      */
     @JsonProperty(value = "files")
     private List<Object> files;
 
     /*
-     * Additional python code files used for reference in the main definition file, which will override the 'pyFiles' of the spark job definition you provide.
+     * Additional python code files used for reference in the main definition file, which will override the 'pyFiles' of
+     * the spark job definition you provide.
      */
     @JsonProperty(value = "pythonCodeReference")
     private List<Object> pythonCodeReference;
 
     /*
-     * Additional files used for reference in the main definition file, which will override the 'jars' and 'files' of the spark job definition you provide.
+     * Additional files used for reference in the main definition file, which will override the 'jars' and 'files' of
+     * the spark job definition you provide.
      */
     @JsonProperty(value = "filesV2")
     private List<Object> filesV2;
 
     /*
-     * The name of the big data pool which will be used to execute the spark batch job, which will override the 'targetBigDataPool' of the spark job definition you provide.
+     * The name of the big data pool which will be used to execute the spark batch job, which will override the
+     * 'targetBigDataPool' of the spark job definition you provide.
      */
     @JsonProperty(value = "targetBigDataPool")
     private BigDataPoolParametrizationReference targetBigDataPool;
 
     /*
-     * Number of core and memory to be used for executors allocated in the specified Spark pool for the job, which will be used for overriding 'executorCores' and 'executorMemory' of the spark job definition you provide. Type: string (or Expression with resultType string).
+     * Number of core and memory to be used for executors allocated in the specified Spark pool for the job, which will
+     * be used for overriding 'executorCores' and 'executorMemory' of the spark job definition you provide. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "executorSize")
     private Object executorSize;
@@ -87,13 +97,16 @@ public final class SynapseSparkJobActivityTypeProperties {
     private Object conf;
 
     /*
-     * Number of core and memory to be used for driver allocated in the specified Spark pool for the job, which will be used for overriding 'driverCores' and 'driverMemory' of the spark job definition you provide. Type: string (or Expression with resultType string).
+     * Number of core and memory to be used for driver allocated in the specified Spark pool for the job, which will be
+     * used for overriding 'driverCores' and 'driverMemory' of the spark job definition you provide. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "driverSize")
     private Object driverSize;
 
     /*
-     * Number of executors to launch for this job, which will override the 'numExecutors' of the spark job definition you provide. Type: integer (or Expression with resultType integer).
+     * Number of executors to launch for this job, which will override the 'numExecutors' of the spark job definition
+     * you provide. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "numExecutors")
     private Object numExecutors;

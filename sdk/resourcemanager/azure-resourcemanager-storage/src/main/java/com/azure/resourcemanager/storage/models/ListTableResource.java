@@ -5,26 +5,27 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.TableInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response schema. Contains list of tables returned.
  */
 @Immutable
-public final class ListTableResource {
+public final class ListTableResource implements JsonSerializable<ListTableResource> {
     /*
      * List of tables returned.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<TableInner> value;
 
     /*
      * Request URL that can be used to query next page of tables
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -35,7 +36,7 @@ public final class ListTableResource {
 
     /**
      * Get the value property: List of tables returned.
-     *
+     * 
      * @return the value value.
      */
     public List<TableInner> value() {
@@ -44,7 +45,7 @@ public final class ListTableResource {
 
     /**
      * Get the nextLink property: Request URL that can be used to query next page of tables.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -53,12 +54,50 @@ public final class ListTableResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListTableResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListTableResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListTableResource.
+     */
+    public static ListTableResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListTableResource deserializedListTableResource = new ListTableResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<TableInner> value = reader.readArray(reader1 -> TableInner.fromJson(reader1));
+                    deserializedListTableResource.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedListTableResource.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListTableResource;
+        });
     }
 }

@@ -6,26 +6,47 @@ package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.models.AccessPolicyProvisioningState;
 import com.azure.resourcemanager.redis.models.AccessPolicyType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Response to get/put access policy. */
+/**
+ * Response to get/put access policy.
+ */
 @Fluent
 public final class RedisCacheAccessPolicyInner extends ProxyResource {
     /*
      * Properties of an access policy.
      */
-    @JsonProperty(value = "properties")
     private RedisCacheAccessPolicyProperties innerProperties;
 
-    /** Creates an instance of RedisCacheAccessPolicyInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of RedisCacheAccessPolicyInner class.
+     */
     public RedisCacheAccessPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of an access policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RedisCacheAccessPolicyProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class RedisCacheAccessPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of access policy.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AccessPolicyProvisioningState provisioningState() {
@@ -43,7 +94,7 @@ public final class RedisCacheAccessPolicyInner extends ProxyResource {
 
     /**
      * Get the type property: Built-In or Custom access policy.
-     *
+     * 
      * @return the type value.
      */
     public AccessPolicyType typePropertiesType() {
@@ -53,7 +104,7 @@ public final class RedisCacheAccessPolicyInner extends ProxyResource {
     /**
      * Get the permissions property: Permissions for the access policy. Learn how to configure permissions at
      * https://aka.ms/redis/AADPreRequisites.
-     *
+     * 
      * @return the permissions value.
      */
     public String permissions() {
@@ -63,7 +114,7 @@ public final class RedisCacheAccessPolicyInner extends ProxyResource {
     /**
      * Set the permissions property: Permissions for the access policy. Learn how to configure permissions at
      * https://aka.ms/redis/AADPreRequisites.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the RedisCacheAccessPolicyInner object itself.
      */
@@ -77,12 +128,56 @@ public final class RedisCacheAccessPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisCacheAccessPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisCacheAccessPolicyInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisCacheAccessPolicyInner.
+     */
+    public static RedisCacheAccessPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisCacheAccessPolicyInner deserializedRedisCacheAccessPolicyInner = new RedisCacheAccessPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRedisCacheAccessPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRedisCacheAccessPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRedisCacheAccessPolicyInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRedisCacheAccessPolicyInner.innerProperties
+                        = RedisCacheAccessPolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisCacheAccessPolicyInner;
+        });
     }
 }

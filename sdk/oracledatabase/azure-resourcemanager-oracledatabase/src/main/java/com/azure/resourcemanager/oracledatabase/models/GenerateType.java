@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * GenerateType enum.
+ * Generate type enum.
  */
 public final class GenerateType extends ExpandableStringEnum<GenerateType> {
     /**
@@ -37,7 +36,6 @@ public final class GenerateType extends ExpandableStringEnum<GenerateType> {
      * @param name a name to look for.
      * @return the corresponding GenerateType.
      */
-    @JsonCreator
     public static GenerateType fromString(String name) {
         return fromString(name, GenerateType.class);
     }

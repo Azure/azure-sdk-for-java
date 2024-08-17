@@ -99,14 +99,16 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
     }
 
     public Site create() {
-        this.innerObject = serviceManager.serviceClient().getSites().createOrUpdate(resourceGroupName,
-            mobileNetworkName, siteName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, siteName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Site create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSites().createOrUpdate(resourceGroupName,
-            mobileNetworkName, siteName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, siteName, this.innerModel(), context);
         return this;
     }
 
@@ -122,14 +124,16 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
     }
 
     public Site apply() {
-        this.innerObject = serviceManager.serviceClient().getSites()
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
             .updateTagsWithResponse(resourceGroupName, mobileNetworkName, siteName, updateParameters, Context.NONE)
             .getValue();
         return this;
     }
 
     public Site apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSites()
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
             .updateTagsWithResponse(resourceGroupName, mobileNetworkName, siteName, updateParameters, context)
             .getValue();
         return this;
@@ -144,14 +148,18 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
     }
 
     public Site refresh() {
-        this.innerObject = serviceManager.serviceClient().getSites()
-            .getWithResponse(resourceGroupName, mobileNetworkName, siteName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
+            .getWithResponse(resourceGroupName, mobileNetworkName, siteName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Site refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSites()
-            .getWithResponse(resourceGroupName, mobileNetworkName, siteName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSites()
+            .getWithResponse(resourceGroupName, mobileNetworkName, siteName, context)
+            .getValue();
         return this;
     }
 

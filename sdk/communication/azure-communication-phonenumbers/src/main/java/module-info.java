@@ -12,13 +12,13 @@ module com.azure.communication.phonenumbers {
     exports com.azure.communication.phonenumbers.siprouting.models;
 
     opens com.azure.communication.phonenumbers.implementation.models
-        to com.fasterxml.jackson.databind, com.azure.core;
+        to com.azure.core;
     opens com.azure.communication.phonenumbers.models
-        to com.fasterxml.jackson.databind;
+        to com.azure.core;
 
     opens com.azure.communication.phonenumbers.siprouting.implementation.models
-        to com.fasterxml.jackson.databind, com.azure.core;
+        to com.azure.core;
     opens com.azure.communication.phonenumbers.siprouting.models
-        to com.fasterxml.jackson.databind;
+        to com.azure.core;
 
 }

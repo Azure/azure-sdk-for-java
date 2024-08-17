@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.LocalUserInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of local users requested, and if paging is required, a URL to the next page of local users.
  */
 @Fluent
-public final class LocalUsers {
+public final class LocalUsers implements JsonSerializable<LocalUsers> {
     /*
      * The list of local users associated with the storage account.
      */
-    @JsonProperty(value = "value")
     private List<LocalUserInner> value;
 
     /*
-     * Request URL that can be used to query next page of local users. Returned when total number of requested local users exceeds the maximum page size.
+     * Request URL that can be used to query next page of local users. Returned when total number of requested local
+     * users exceeds the maximum page size.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -35,7 +37,7 @@ public final class LocalUsers {
 
     /**
      * Get the value property: The list of local users associated with the storage account.
-     *
+     * 
      * @return the value value.
      */
     public List<LocalUserInner> value() {
@@ -44,7 +46,7 @@ public final class LocalUsers {
 
     /**
      * Set the value property: The list of local users associated with the storage account.
-     *
+     * 
      * @param value the value value to set.
      * @return the LocalUsers object itself.
      */
@@ -56,7 +58,7 @@ public final class LocalUsers {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of local users. Returned when total
      * number of requested local users exceeds the maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,12 +67,51 @@ public final class LocalUsers {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocalUsers from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocalUsers if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the LocalUsers.
+     */
+    public static LocalUsers fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocalUsers deserializedLocalUsers = new LocalUsers();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LocalUserInner> value = reader.readArray(reader1 -> LocalUserInner.fromJson(reader1));
+                    deserializedLocalUsers.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLocalUsers.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocalUsers;
+        });
     }
 }

@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapCloudForCustomerLinkedServiceTypeProperties {
     /*
-     * The URL of SAP Cloud for Customer OData API. For example, '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
+     * The URL of SAP Cloud for Customer OData API. For example,
+     * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
@@ -33,7 +34,8 @@ public final class SapCloudForCustomerLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must be provided. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Either encryptedCredential or username/password must be provided. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

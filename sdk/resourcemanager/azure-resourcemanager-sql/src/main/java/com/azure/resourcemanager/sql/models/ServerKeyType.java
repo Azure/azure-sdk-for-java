@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The encryption protector type like 'ServiceManaged', 'AzureKeyVault'. */
+/**
+ * The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
+ */
 public final class ServerKeyType extends ExpandableStringEnum<ServerKeyType> {
-    /** Static value ServiceManaged for ServerKeyType. */
+    /**
+     * Static value ServiceManaged for ServerKeyType.
+     */
     public static final ServerKeyType SERVICE_MANAGED = fromString("ServiceManaged");
 
-    /** Static value AzureKeyVault for ServerKeyType. */
+    /**
+     * Static value AzureKeyVault for ServerKeyType.
+     */
     public static final ServerKeyType AZURE_KEY_VAULT = fromString("AzureKeyVault");
 
     /**
+     * Creates a new instance of ServerKeyType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerKeyType() {
+    }
+
+    /**
      * Creates or finds a ServerKeyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServerKeyType.
      */
-    @JsonCreator
     public static ServerKeyType fromString(String name) {
         return fromString(name, ServerKeyType.class);
     }
 
     /**
      * Gets known ServerKeyType values.
-     *
+     * 
      * @return known ServerKeyType values.
      */
     public static Collection<ServerKeyType> values() {

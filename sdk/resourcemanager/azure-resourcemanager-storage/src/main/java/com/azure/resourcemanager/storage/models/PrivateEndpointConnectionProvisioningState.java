@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -36,7 +34,7 @@ public final class PrivateEndpointConnectionProvisioningState
 
     /**
      * Creates a new instance of PrivateEndpointConnectionProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +43,17 @@ public final class PrivateEndpointConnectionProvisioningState
 
     /**
      * Creates or finds a PrivateEndpointConnectionProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointConnectionProvisioningState.
      */
-    @JsonCreator
     public static PrivateEndpointConnectionProvisioningState fromString(String name) {
         return fromString(name, PrivateEndpointConnectionProvisioningState.class);
     }
 
     /**
      * Gets known PrivateEndpointConnectionProvisioningState values.
-     *
+     * 
      * @return known PrivateEndpointConnectionProvisioningState values.
      */
     public static Collection<PrivateEndpointConnectionProvisioningState> values() {

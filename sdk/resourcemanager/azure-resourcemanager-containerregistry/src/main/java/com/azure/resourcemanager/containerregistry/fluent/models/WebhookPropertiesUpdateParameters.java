@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,38 +19,32 @@ import java.util.Map;
  * The parameters for updating the properties of a webhook.
  */
 @Fluent
-public final class WebhookPropertiesUpdateParameters {
+public final class WebhookPropertiesUpdateParameters implements JsonSerializable<WebhookPropertiesUpdateParameters> {
     /*
      * The service URI for the webhook to post notifications.
      */
-    @JsonProperty(value = "serviceUri")
     private String serviceUri;
 
     /*
      * Custom headers that will be added to the webhook notifications.
      */
-    @JsonProperty(value = "customHeaders")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customHeaders;
 
     /*
      * The status of the webhook at the time the operation was called.
      */
-    @JsonProperty(value = "status")
     private WebhookStatus status;
 
     /*
      * The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under
-     * repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means
-     * all events.
+     * repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all
+     * events.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * The list of actions that trigger the webhook to post notifications.
      */
-    @JsonProperty(value = "actions")
     private List<WebhookAction> actions;
 
     /**
@@ -166,5 +163,58 @@ public final class WebhookPropertiesUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceUri", this.serviceUri);
+        jsonWriter.writeMapField("customHeaders", this.customHeaders, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeArrayField("actions", this.actions,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookPropertiesUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookPropertiesUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebhookPropertiesUpdateParameters.
+     */
+    public static WebhookPropertiesUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookPropertiesUpdateParameters deserializedWebhookPropertiesUpdateParameters
+                = new WebhookPropertiesUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceUri".equals(fieldName)) {
+                    deserializedWebhookPropertiesUpdateParameters.serviceUri = reader.getString();
+                } else if ("customHeaders".equals(fieldName)) {
+                    Map<String, String> customHeaders = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebhookPropertiesUpdateParameters.customHeaders = customHeaders;
+                } else if ("status".equals(fieldName)) {
+                    deserializedWebhookPropertiesUpdateParameters.status = WebhookStatus.fromString(reader.getString());
+                } else if ("scope".equals(fieldName)) {
+                    deserializedWebhookPropertiesUpdateParameters.scope = reader.getString();
+                } else if ("actions".equals(fieldName)) {
+                    List<WebhookAction> actions
+                        = reader.readArray(reader1 -> WebhookAction.fromString(reader1.getString()));
+                    deserializedWebhookPropertiesUpdateParameters.actions = actions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookPropertiesUpdateParameters;
+        });
     }
 }

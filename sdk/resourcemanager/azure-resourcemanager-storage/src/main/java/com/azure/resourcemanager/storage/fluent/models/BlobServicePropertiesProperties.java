@@ -5,70 +5,68 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.ChangeFeed;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.storage.models.LastAccessTimeTrackingPolicy;
 import com.azure.resourcemanager.storage.models.RestorePolicyProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties of a storage account’s Blob service.
  */
 @Fluent
-public final class BlobServicePropertiesProperties {
+public final class BlobServicePropertiesProperties implements JsonSerializable<BlobServicePropertiesProperties> {
     /*
-     * Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Blob service.
+     * Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no
+     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for
+     * the Blob service.
      */
-    @JsonProperty(value = "cors")
     private CorsRules cors;
 
     /*
-     * DefaultServiceVersion indicates the default version to use for requests to the Blob service if an incoming request’s version is not specified. Possible values include version 2008-10-27 and all more recent versions.
+     * DefaultServiceVersion indicates the default version to use for requests to the Blob service if an incoming
+     * request’s version is not specified. Possible values include version 2008-10-27 and all more recent versions.
      */
-    @JsonProperty(value = "defaultServiceVersion")
     private String defaultServiceVersion;
 
     /*
      * The blob service properties for blob soft delete.
      */
-    @JsonProperty(value = "deleteRetentionPolicy")
     private DeleteRetentionPolicy deleteRetentionPolicy;
 
     /*
      * Versioning is enabled if set to true.
      */
-    @JsonProperty(value = "isVersioningEnabled")
     private Boolean isVersioningEnabled;
 
     /*
      * Deprecated in favor of isVersioningEnabled property.
      */
-    @JsonProperty(value = "automaticSnapshotPolicyEnabled")
     private Boolean automaticSnapshotPolicyEnabled;
 
     /*
      * The blob service properties for change feed events.
      */
-    @JsonProperty(value = "changeFeed")
     private ChangeFeed changeFeed;
 
     /*
      * The blob service properties for blob restore policy.
      */
-    @JsonProperty(value = "restorePolicy")
     private RestorePolicyProperties restorePolicy;
 
     /*
      * The blob service properties for container soft delete.
      */
-    @JsonProperty(value = "containerDeleteRetentionPolicy")
     private DeleteRetentionPolicy containerDeleteRetentionPolicy;
 
     /*
      * The blob service property to configure last access time based tracking policy.
      */
-    @JsonProperty(value = "lastAccessTimeTrackingPolicy")
     private LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy;
 
     /**
@@ -293,5 +291,72 @@ public final class BlobServicePropertiesProperties {
         if (lastAccessTimeTrackingPolicy() != null) {
             lastAccessTimeTrackingPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("cors", this.cors);
+        jsonWriter.writeStringField("defaultServiceVersion", this.defaultServiceVersion);
+        jsonWriter.writeJsonField("deleteRetentionPolicy", this.deleteRetentionPolicy);
+        jsonWriter.writeBooleanField("isVersioningEnabled", this.isVersioningEnabled);
+        jsonWriter.writeBooleanField("automaticSnapshotPolicyEnabled", this.automaticSnapshotPolicyEnabled);
+        jsonWriter.writeJsonField("changeFeed", this.changeFeed);
+        jsonWriter.writeJsonField("restorePolicy", this.restorePolicy);
+        jsonWriter.writeJsonField("containerDeleteRetentionPolicy", this.containerDeleteRetentionPolicy);
+        jsonWriter.writeJsonField("lastAccessTimeTrackingPolicy", this.lastAccessTimeTrackingPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobServicePropertiesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobServicePropertiesProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BlobServicePropertiesProperties.
+     */
+    public static BlobServicePropertiesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobServicePropertiesProperties deserializedBlobServicePropertiesProperties
+                = new BlobServicePropertiesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cors".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.cors = CorsRules.fromJson(reader);
+                } else if ("defaultServiceVersion".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.defaultServiceVersion = reader.getString();
+                } else if ("deleteRetentionPolicy".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.deleteRetentionPolicy
+                        = DeleteRetentionPolicy.fromJson(reader);
+                } else if ("isVersioningEnabled".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.isVersioningEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("automaticSnapshotPolicyEnabled".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.automaticSnapshotPolicyEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("changeFeed".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.changeFeed = ChangeFeed.fromJson(reader);
+                } else if ("restorePolicy".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.restorePolicy
+                        = RestorePolicyProperties.fromJson(reader);
+                } else if ("containerDeleteRetentionPolicy".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.containerDeleteRetentionPolicy
+                        = DeleteRetentionPolicy.fromJson(reader);
+                } else if ("lastAccessTimeTrackingPolicy".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.lastAccessTimeTrackingPolicy
+                        = LastAccessTimeTrackingPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobServicePropertiesProperties;
+        });
     }
 }

@@ -9,8 +9,9 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ConnectedEnvironmentsStoragesDeleteSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
-     * ConnectedEnvironmentsStorages_Delete.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/ConnectedEnvironmentsStorages_Delete.
+     * json
      */
     /**
      * Sample code: List environments storages by subscription.
@@ -19,7 +20,7 @@ public final class ConnectedEnvironmentsStoragesDeleteSamples {
      */
     public static void listEnvironmentsStoragesBySubscription(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.connectedEnvironmentsStorages().deleteWithResponse("examplerg", "env", "jlaw-demo1",
-            com.azure.core.util.Context.NONE);
+        manager.connectedEnvironmentsStorages()
+            .deleteWithResponse("examplerg", "env", "jlaw-demo1", com.azure.core.util.Context.NONE);
     }
 }

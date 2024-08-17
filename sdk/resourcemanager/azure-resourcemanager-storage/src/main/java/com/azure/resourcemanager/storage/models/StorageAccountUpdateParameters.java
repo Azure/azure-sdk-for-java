@@ -5,46 +5,45 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The parameters that can be provided when updating the storage account properties.
  */
 @Fluent
-public final class StorageAccountUpdateParameters {
+public final class StorageAccountUpdateParameters implements JsonSerializable<StorageAccountUpdateParameters> {
     /*
-     * Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
+     * Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS,
+     * nor can accounts of those SKU names be updated to any other value.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
-     * Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
+     * Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping
+     * this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a
+     * key no greater in length than 128 characters and a value no greater in length than 256 characters.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * The parameters used when updating a storage account.
      */
-    @JsonProperty(value = "properties")
     private StorageAccountPropertiesUpdateParameters innerProperties;
 
     /*
      * Optional. Indicates the type of storage account. Currently only StorageV2 value supported by server.
      */
-    @JsonProperty(value = "kind")
     private Kind kind;
 
     /**
@@ -56,7 +55,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Get the sku property: Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS,
      * Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -66,7 +65,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Set the sku property: Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS,
      * Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -80,7 +79,7 @@ public final class StorageAccountUpdateParameters {
      * in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
      * resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than
      * 256 characters.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -92,7 +91,7 @@ public final class StorageAccountUpdateParameters {
      * in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
      * resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than
      * 256 characters.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -103,7 +102,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -112,7 +111,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -123,7 +122,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Get the innerProperties property: The parameters used when updating a storage account.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StorageAccountPropertiesUpdateParameters innerProperties() {
@@ -133,7 +132,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Get the kind property: Optional. Indicates the type of storage account. Currently only StorageV2 value supported
      * by server.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -143,7 +142,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Set the kind property: Optional. Indicates the type of storage account. Currently only StorageV2 value supported
      * by server.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -156,7 +155,7 @@ public final class StorageAccountUpdateParameters {
      * Get the customDomain property: Custom domain assigned to the storage account by the user. Name is the CNAME
      * source. Only one custom domain is supported per storage account at this time. To clear the existing custom
      * domain, use an empty string for the custom domain name property.
-     *
+     * 
      * @return the customDomain value.
      */
     public CustomDomain customDomain() {
@@ -167,7 +166,7 @@ public final class StorageAccountUpdateParameters {
      * Set the customDomain property: Custom domain assigned to the storage account by the user. Name is the CNAME
      * source. Only one custom domain is supported per storage account at this time. To clear the existing custom
      * domain, use an empty string for the custom domain name property.
-     *
+     * 
      * @param customDomain the customDomain value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -182,7 +181,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Get the encryption property: Not applicable. Azure Storage encryption at rest is enabled by default for all
      * storage accounts and cannot be disabled.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -192,7 +191,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Set the encryption property: Not applicable. Azure Storage encryption at rest is enabled by default for all
      * storage accounts and cannot be disabled.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -206,7 +205,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Get the sasPolicy property: SasPolicy assigned to the storage account.
-     *
+     * 
      * @return the sasPolicy value.
      */
     public SasPolicy sasPolicy() {
@@ -215,7 +214,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Set the sasPolicy property: SasPolicy assigned to the storage account.
-     *
+     * 
      * @param sasPolicy the sasPolicy value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -229,7 +228,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Get the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
+     * 
      * @return the keyPolicy value.
      */
     public KeyPolicy keyPolicy() {
@@ -238,7 +237,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Set the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
+     * 
      * @param keyPolicy the keyPolicy value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -254,7 +253,7 @@ public final class StorageAccountUpdateParameters {
      * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
      * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
      * cannot be changed for the premium block blobs storage account type.
-     *
+     * 
      * @return the accessTier value.
      */
     public AccessTier accessTier() {
@@ -265,7 +264,7 @@ public final class StorageAccountUpdateParameters {
      * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
      * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
      * cannot be changed for the premium block blobs storage account type.
-     *
+     * 
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -280,7 +279,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Get the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
      * Azure Files.
-     *
+     * 
      * @return the azureFilesIdentityBasedAuthentication value.
      */
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
@@ -290,7 +289,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Set the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
      * Azure Files.
-     *
+     * 
      * @param azureFilesIdentityBasedAuthentication the azureFilesIdentityBasedAuthentication value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -305,7 +304,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Get the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
-     *
+     * 
      * @return the enableHttpsTrafficOnly value.
      */
     public Boolean enableHttpsTrafficOnly() {
@@ -314,7 +313,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Set the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
-     *
+     * 
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -328,7 +327,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Get the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
-     *
+     * 
      * @return the isSftpEnabled value.
      */
     public Boolean isSftpEnabled() {
@@ -337,7 +336,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Set the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
-     *
+     * 
      * @param isSftpEnabled the isSftpEnabled value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -351,7 +350,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Get the isLocalUserEnabled property: Enables local users feature, if set to true.
-     *
+     * 
      * @return the isLocalUserEnabled value.
      */
     public Boolean isLocalUserEnabled() {
@@ -360,7 +359,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Set the isLocalUserEnabled property: Enables local users feature, if set to true.
-     *
+     * 
      * @param isLocalUserEnabled the isLocalUserEnabled value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -374,7 +373,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Get the enableExtendedGroups property: Enables extended group support with local users feature, if set to true.
-     *
+     * 
      * @return the enableExtendedGroups value.
      */
     public Boolean enableExtendedGroups() {
@@ -383,7 +382,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Set the enableExtendedGroups property: Enables extended group support with local users feature, if set to true.
-     *
+     * 
      * @param enableExtendedGroups the enableExtendedGroups value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -397,7 +396,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Get the networkRuleSet property: Network rule set.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -406,7 +405,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Set the networkRuleSet property: Network rule set.
-     *
+     * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -421,7 +420,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Get the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
      * is enabled.
-     *
+     * 
      * @return the largeFileSharesState value.
      */
     public LargeFileSharesState largeFileSharesState() {
@@ -431,7 +430,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Set the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
      * is enabled.
-     *
+     * 
      * @param largeFileSharesState the largeFileSharesState value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -446,7 +445,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Get the routingPreference property: Maintains information about the network routing choice opted by the user for
      * data transfer.
-     *
+     * 
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
@@ -456,7 +455,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Set the routingPreference property: Maintains information about the network routing choice opted by the user for
      * data transfer.
-     *
+     * 
      * @param routingPreference the routingPreference value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -471,7 +470,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
      * account. The default interpretation is false for this property.
-     *
+     * 
      * @return the allowBlobPublicAccess value.
      */
     public Boolean allowBlobPublicAccess() {
@@ -481,7 +480,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Set the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
      * account. The default interpretation is false for this property.
-     *
+     * 
      * @param allowBlobPublicAccess the allowBlobPublicAccess value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -496,7 +495,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Get the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
      * default interpretation is TLS 1.0 for this property.
-     *
+     * 
      * @return the minimumTlsVersion value.
      */
     public MinimumTlsVersion minimumTlsVersion() {
@@ -506,7 +505,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Set the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
      * default interpretation is TLS 1.0 for this property.
-     *
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -522,7 +521,7 @@ public final class StorageAccountUpdateParameters {
      * Get the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
      * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
      * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
-     *
+     * 
      * @return the allowSharedKeyAccess value.
      */
     public Boolean allowSharedKeyAccess() {
@@ -533,7 +532,7 @@ public final class StorageAccountUpdateParameters {
      * Set the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
      * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
      * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
-     *
+     * 
      * @param allowSharedKeyAccess the allowSharedKeyAccess value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -550,7 +549,7 @@ public final class StorageAccountUpdateParameters {
      * property to true for new or existing accounts only if object replication policies will involve storage accounts
      * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
      * by default.
-     *
+     * 
      * @return the allowCrossTenantReplication value.
      */
     public Boolean allowCrossTenantReplication() {
@@ -562,7 +561,7 @@ public final class StorageAccountUpdateParameters {
      * property to true for new or existing accounts only if object replication policies will involve storage accounts
      * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
      * by default.
-     *
+     * 
      * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -577,7 +576,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Get the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
      * is OAuth or not. The default interpretation is false for this property.
-     *
+     * 
      * @return the defaultToOAuthAuthentication value.
      */
     public Boolean defaultToOAuthAuthentication() {
@@ -587,7 +586,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Set the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
      * is OAuth or not. The default interpretation is false for this property.
-     *
+     * 
      * @param defaultToOAuthAuthentication the defaultToOAuthAuthentication value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -603,7 +602,7 @@ public final class StorageAccountUpdateParameters {
      * Get the publicNetworkAccess property: Allow, disallow, or let Network Security Perimeter configuration to
      * evaluate public network access to Storage Account. Value is optional but if passed in, must be 'Enabled',
      * 'Disabled' or 'SecuredByPerimeter'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -614,7 +613,7 @@ public final class StorageAccountUpdateParameters {
      * Set the publicNetworkAccess property: Allow, disallow, or let Network Security Perimeter configuration to
      * evaluate public network access to Storage Account. Value is optional but if passed in, must be 'Enabled',
      * 'Disabled' or 'SecuredByPerimeter'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -630,7 +629,7 @@ public final class StorageAccountUpdateParameters {
      * Get the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
      * account creation time. When set to true, it enables object level immutability for all the containers in the
      * account by default.
-     *
+     * 
      * @return the immutableStorageWithVersioning value.
      */
     public ImmutableStorageAccount immutableStorageWithVersioning() {
@@ -641,7 +640,7 @@ public final class StorageAccountUpdateParameters {
      * Set the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
      * account creation time. When set to true, it enables object level immutability for all the containers in the
      * account by default.
-     *
+     * 
      * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -657,7 +656,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Get the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
      * Private Links to the same VNet.
-     *
+     * 
      * @return the allowedCopyScope value.
      */
     public AllowedCopyScope allowedCopyScope() {
@@ -667,7 +666,7 @@ public final class StorageAccountUpdateParameters {
     /**
      * Set the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
      * Private Links to the same VNet.
-     *
+     * 
      * @param allowedCopyScope the allowedCopyScope value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -683,7 +682,7 @@ public final class StorageAccountUpdateParameters {
      * Get the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
      * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
      * URL will have an alphanumeric DNS Zone identifier.
-     *
+     * 
      * @return the dnsEndpointType value.
      */
     public DnsEndpointType dnsEndpointType() {
@@ -694,7 +693,7 @@ public final class StorageAccountUpdateParameters {
      * Set the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
      * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
      * URL will have an alphanumeric DNS Zone identifier.
-     *
+     * 
      * @param dnsEndpointType the dnsEndpointType value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -708,7 +707,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -721,5 +720,56 @@ public final class StorageAccountUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageAccountUpdateParameters.
+     */
+    public static StorageAccountUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountUpdateParameters deserializedStorageAccountUpdateParameters
+                = new StorageAccountUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedStorageAccountUpdateParameters.sku = Sku.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStorageAccountUpdateParameters.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedStorageAccountUpdateParameters.identity = Identity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageAccountUpdateParameters.innerProperties
+                        = StorageAccountPropertiesUpdateParameters.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStorageAccountUpdateParameters.kind = Kind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountUpdateParameters;
+        });
     }
 }

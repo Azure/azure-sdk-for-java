@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -36,7 +34,7 @@ public final class Bypass extends ExpandableStringEnum<Bypass> {
 
     /**
      * Creates a new instance of Bypass value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +43,17 @@ public final class Bypass extends ExpandableStringEnum<Bypass> {
 
     /**
      * Creates or finds a Bypass from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Bypass.
      */
-    @JsonCreator
     public static Bypass fromString(String name) {
         return fromString(name, Bypass.class);
     }
 
     /**
      * Gets known Bypass values.
-     *
+     * 
      * @return known Bypass values.
      */
     public static Collection<Bypass> values() {

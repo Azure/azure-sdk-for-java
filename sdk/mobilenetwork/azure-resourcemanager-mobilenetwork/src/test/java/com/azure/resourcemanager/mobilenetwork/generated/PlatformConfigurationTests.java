@@ -17,27 +17,27 @@ public final class PlatformConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlatformConfiguration model = BinaryData.fromString(
-            "{\"type\":\"3P-AZURE-STACK-HCI\",\"azureStackEdgeDevice\":{\"id\":\"ycanuzbpzkafku\"},\"azureStackEdgeDevices\":[{\"id\":\"rnwb\"},{\"id\":\"ehhseyvjusrts\"}],\"azureStackHciCluster\":{\"id\":\"spkdee\"},\"connectedCluster\":{\"id\":\"ofmxagkvtmelmqkr\"},\"customLocation\":{\"id\":\"hvljuahaquh\"}}")
+            "{\"type\":\"AKS-HCI\",\"azureStackEdgeDevice\":{\"id\":\"r\"},\"azureStackEdgeDevices\":[{\"id\":\"pv\"},{\"id\":\"omzlfmi\"}],\"azureStackHciCluster\":{\"id\":\"wbnb\"},\"connectedCluster\":{\"id\":\"ldawkzbaliourqha\"},\"customLocation\":{\"id\":\"uhashsfwx\"}}")
             .toObject(PlatformConfiguration.class);
-        Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI, model.type());
-        Assertions.assertEquals("ycanuzbpzkafku", model.azureStackEdgeDevice().id());
-        Assertions.assertEquals("spkdee", model.azureStackHciCluster().id());
-        Assertions.assertEquals("ofmxagkvtmelmqkr", model.connectedCluster().id());
-        Assertions.assertEquals("hvljuahaquh", model.customLocation().id());
+        Assertions.assertEquals(PlatformType.AKS_HCI, model.type());
+        Assertions.assertEquals("r", model.azureStackEdgeDevice().id());
+        Assertions.assertEquals("wbnb", model.azureStackHciCluster().id());
+        Assertions.assertEquals("ldawkzbaliourqha", model.connectedCluster().id());
+        Assertions.assertEquals("uhashsfwx", model.customLocation().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlatformConfiguration model = new PlatformConfiguration().withType(PlatformType.THREE_P_AZURE_STACK_HCI)
-            .withAzureStackEdgeDevice(new AzureStackEdgeDeviceResourceId().withId("ycanuzbpzkafku"))
-            .withAzureStackHciCluster(new AzureStackHciClusterResourceId().withId("spkdee"))
-            .withConnectedCluster(new ConnectedClusterResourceId().withId("ofmxagkvtmelmqkr"))
-            .withCustomLocation(new CustomLocationResourceId().withId("hvljuahaquh"));
+        PlatformConfiguration model = new PlatformConfiguration().withType(PlatformType.AKS_HCI)
+            .withAzureStackEdgeDevice(new AzureStackEdgeDeviceResourceId().withId("r"))
+            .withAzureStackHciCluster(new AzureStackHciClusterResourceId().withId("wbnb"))
+            .withConnectedCluster(new ConnectedClusterResourceId().withId("ldawkzbaliourqha"))
+            .withCustomLocation(new CustomLocationResourceId().withId("uhashsfwx"));
         model = BinaryData.fromObject(model).toObject(PlatformConfiguration.class);
-        Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI, model.type());
-        Assertions.assertEquals("ycanuzbpzkafku", model.azureStackEdgeDevice().id());
-        Assertions.assertEquals("spkdee", model.azureStackHciCluster().id());
-        Assertions.assertEquals("ofmxagkvtmelmqkr", model.connectedCluster().id());
-        Assertions.assertEquals("hvljuahaquh", model.customLocation().id());
+        Assertions.assertEquals(PlatformType.AKS_HCI, model.type());
+        Assertions.assertEquals("r", model.azureStackEdgeDevice().id());
+        Assertions.assertEquals("wbnb", model.azureStackHciCluster().id());
+        Assertions.assertEquals("ldawkzbaliourqha", model.connectedCluster().id());
+        Assertions.assertEquals("uhashsfwx", model.customLocation().id());
     }
 }

@@ -12,20 +12,20 @@ public final class IngressPortMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IngressPortMapping model
-            = BinaryData.fromString("{\"external\":true,\"targetPort\":2060980520,\"exposedPort\":200260047}")
+            = BinaryData.fromString("{\"external\":false,\"targetPort\":1817395780,\"exposedPort\":311434030}")
                 .toObject(IngressPortMapping.class);
-        Assertions.assertEquals(true, model.external());
-        Assertions.assertEquals(2060980520, model.targetPort());
-        Assertions.assertEquals(200260047, model.exposedPort());
+        Assertions.assertEquals(false, model.external());
+        Assertions.assertEquals(1817395780, model.targetPort());
+        Assertions.assertEquals(311434030, model.exposedPort());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IngressPortMapping model
-            = new IngressPortMapping().withExternal(true).withTargetPort(2060980520).withExposedPort(200260047);
+            = new IngressPortMapping().withExternal(false).withTargetPort(1817395780).withExposedPort(311434030);
         model = BinaryData.fromObject(model).toObject(IngressPortMapping.class);
-        Assertions.assertEquals(true, model.external());
-        Assertions.assertEquals(2060980520, model.targetPort());
-        Assertions.assertEquals(200260047, model.exposedPort());
+        Assertions.assertEquals(false, model.external());
+        Assertions.assertEquals(1817395780, model.targetPort());
+        Assertions.assertEquals(311434030, model.exposedPort());
     }
 }

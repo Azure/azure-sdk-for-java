@@ -5,54 +5,51 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The URLs for accessing Oracle Application Express (APEX) and SQL Developer Web with a browser from a Compute instance
  * within your VCN or that has a direct connection to your VCN.
  */
 @Fluent
-public final class ConnectionUrlType {
+public final class ConnectionUrlType implements JsonSerializable<ConnectionUrlType> {
     /*
      * Oracle Application Express (APEX) URL.
      */
-    @JsonProperty(value = "apexUrl")
     private String apexUrl;
 
     /*
      * The URL of the Database Transforms for the Autonomous Database.
      */
-    @JsonProperty(value = "databaseTransformsUrl")
     private String databaseTransformsUrl;
 
     /*
      * The URL of the Graph Studio for the Autonomous Database.
      */
-    @JsonProperty(value = "graphStudioUrl")
     private String graphStudioUrl;
 
     /*
      * The URL of the Oracle Machine Learning (OML) Notebook for the Autonomous Database.
      */
-    @JsonProperty(value = "machineLearningNotebookUrl")
     private String machineLearningNotebookUrl;
 
     /*
      * The URL of the MongoDB API for the Autonomous Database.
      */
-    @JsonProperty(value = "mongoDbUrl")
     private String mongoDbUrl;
 
     /*
      * The Oracle REST Data Services (ORDS) URL of the Web Access for the Autonomous Database.
      */
-    @JsonProperty(value = "ordsUrl")
     private String ordsUrl;
 
     /*
      * Oracle SQL Developer Web URL.
      */
-    @JsonProperty(value = "sqlDevWebUrl")
     private String sqlDevWebUrl;
 
     /**
@@ -209,5 +206,59 @@ public final class ConnectionUrlType {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apexUrl", this.apexUrl);
+        jsonWriter.writeStringField("databaseTransformsUrl", this.databaseTransformsUrl);
+        jsonWriter.writeStringField("graphStudioUrl", this.graphStudioUrl);
+        jsonWriter.writeStringField("machineLearningNotebookUrl", this.machineLearningNotebookUrl);
+        jsonWriter.writeStringField("mongoDbUrl", this.mongoDbUrl);
+        jsonWriter.writeStringField("ordsUrl", this.ordsUrl);
+        jsonWriter.writeStringField("sqlDevWebUrl", this.sqlDevWebUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionUrlType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionUrlType if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionUrlType.
+     */
+    public static ConnectionUrlType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionUrlType deserializedConnectionUrlType = new ConnectionUrlType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apexUrl".equals(fieldName)) {
+                    deserializedConnectionUrlType.apexUrl = reader.getString();
+                } else if ("databaseTransformsUrl".equals(fieldName)) {
+                    deserializedConnectionUrlType.databaseTransformsUrl = reader.getString();
+                } else if ("graphStudioUrl".equals(fieldName)) {
+                    deserializedConnectionUrlType.graphStudioUrl = reader.getString();
+                } else if ("machineLearningNotebookUrl".equals(fieldName)) {
+                    deserializedConnectionUrlType.machineLearningNotebookUrl = reader.getString();
+                } else if ("mongoDbUrl".equals(fieldName)) {
+                    deserializedConnectionUrlType.mongoDbUrl = reader.getString();
+                } else if ("ordsUrl".equals(fieldName)) {
+                    deserializedConnectionUrlType.ordsUrl = reader.getString();
+                } else if ("sqlDevWebUrl".equals(fieldName)) {
+                    deserializedConnectionUrlType.sqlDevWebUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionUrlType;
+        });
     }
 }

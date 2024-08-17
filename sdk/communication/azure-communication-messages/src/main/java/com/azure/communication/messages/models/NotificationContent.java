@@ -5,38 +5,35 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Details of the message to send.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = NotificationContent.class, visible = true)
-@JsonTypeName("NotificationContent")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "text", value = TextNotificationContent.class),
-    @JsonSubTypes.Type(name = "image", value = MediaNotificationContent.class),
-    @JsonSubTypes.Type(name = "template", value = TemplateNotificationContent.class) })
 @Immutable
-public abstract class NotificationContent {
+public class NotificationContent implements JsonSerializable<NotificationContent> {
+
+    /*
+     * The type discriminator describing a notification type.
+     */
+    @Generated
+    private CommunicationMessageKind kind = CommunicationMessageKind.fromString("NotificationContent");
 
     /*
      * The Channel Registration ID for the Business Identifier.
      */
     @Generated
-    @JsonProperty(value = "channelRegistrationId")
     private final String channelRegistrationId;
 
     /*
      * The native external platform user identifiers of the recipient.
      */
     @Generated
-    @JsonProperty(value = "to")
     private final List<String> to;
 
     /**
@@ -46,12 +43,19 @@ public abstract class NotificationContent {
      * @param to the to value to set.
      */
     @Generated
-    @JsonCreator
-    protected NotificationContent(@JsonProperty(value = "channelRegistrationId") String channelRegistrationId,
-        @JsonProperty(value = "to") List<String> to) {
-        this.kind = CommunicationMessageKind.fromString("NotificationContent");
+    public NotificationContent(String channelRegistrationId, List<String> to) {
         this.channelRegistrationId = channelRegistrationId;
         this.to = to;
+    }
+
+    /**
+     * Get the kind property: The type discriminator describing a notification type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public CommunicationMessageKind getKind() {
+        return this.kind;
     }
 
     /**
@@ -74,21 +78,81 @@ public abstract class NotificationContent {
         return this.to;
     }
 
-    /*
-     * The type discriminator describing a notification type.
+    /**
+     * {@inheritDoc}
      */
     @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private CommunicationMessageKind kind;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("channelRegistrationId", this.channelRegistrationId);
+        jsonWriter.writeArrayField("to", this.to, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
 
     /**
-     * Get the kind property: The type discriminator describing a notification type.
+     * Reads an instance of NotificationContent from the JsonReader.
      *
-     * @return the kind value.
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationContent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NotificationContent.
      */
     @Generated
-    public CommunicationMessageKind getKind() {
-        return this.kind;
+    public static NotificationContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("text".equals(discriminatorValue)) {
+                    return TextNotificationContent.fromJson(readerToUse.reset());
+                } else if ("image".equals(discriminatorValue)) {
+                    return MediaNotificationContent.fromJson(readerToUse.reset());
+                } else if ("template".equals(discriminatorValue)) {
+                    return TemplateNotificationContent.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static NotificationContent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String channelRegistrationId = null;
+            List<String> to = null;
+            CommunicationMessageKind kind = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("channelRegistrationId".equals(fieldName)) {
+                    channelRegistrationId = reader.getString();
+                } else if ("to".equals(fieldName)) {
+                    to = reader.readArray(reader1 -> reader1.getString());
+                } else if ("kind".equals(fieldName)) {
+                    kind = CommunicationMessageKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            NotificationContent deserializedNotificationContent = new NotificationContent(channelRegistrationId, to);
+            deserializedNotificationContent.kind = kind;
+            return deserializedNotificationContent;
+        });
     }
 }

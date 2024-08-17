@@ -162,6 +162,60 @@ public interface AutonomousDatabases {
         GenerateAutonomousDatabaseWalletDetails body);
 
     /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    AutonomousDatabase restore(String resourceGroupName, String autonomousdatabasename,
+        RestoreAutonomousDatabaseDetails body);
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    AutonomousDatabase restore(String resourceGroupName, String autonomousdatabasename,
+        RestoreAutonomousDatabaseDetails body, Context context);
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    AutonomousDatabase shrink(String resourceGroupName, String autonomousdatabasename);
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    AutonomousDatabase shrink(String resourceGroupName, String autonomousdatabasename, Context context);
+
+    /**
      * Perform switchover action on Autonomous Database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

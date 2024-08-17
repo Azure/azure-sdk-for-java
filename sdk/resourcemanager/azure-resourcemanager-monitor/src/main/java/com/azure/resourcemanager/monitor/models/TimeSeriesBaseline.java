@@ -5,44 +5,45 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The baseline values for a single time series.
  */
 @Fluent
-public final class TimeSeriesBaseline {
+public final class TimeSeriesBaseline implements JsonSerializable<TimeSeriesBaseline> {
     /*
      * The aggregation type of the metric.
      */
-    @JsonProperty(value = "aggregation", required = true)
     private String aggregation;
 
     /*
      * The dimensions of this time series.
      */
-    @JsonProperty(value = "dimensions")
     private List<MetricSingleDimension> dimensions;
 
     /*
      * The list of timestamps of the baselines.
      */
-    @JsonProperty(value = "timestamps", required = true)
     private List<OffsetDateTime> timestamps;
 
     /*
      * The baseline values for each sensitivity.
      */
-    @JsonProperty(value = "data", required = true)
     private List<SingleBaseline> data;
 
     /*
      * The baseline metadata values.
      */
-    @JsonProperty(value = "metadataValues")
     private List<BaselineMetadata> metadataValues;
 
     /**
@@ -158,19 +159,19 @@ public final class TimeSeriesBaseline {
      */
     public void validate() {
         if (aggregation() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property aggregation in model TimeSeriesBaseline"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property aggregation in model TimeSeriesBaseline"));
         }
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());
         }
         if (timestamps() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property timestamps in model TimeSeriesBaseline"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timestamps in model TimeSeriesBaseline"));
         }
         if (data() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property data in model TimeSeriesBaseline"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property data in model TimeSeriesBaseline"));
         } else {
             data().forEach(e -> e.validate());
         }
@@ -180,4 +181,62 @@ public final class TimeSeriesBaseline {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TimeSeriesBaseline.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aggregation", this.aggregation);
+        jsonWriter.writeArrayField("timestamps", this.timestamps, (writer, element) -> writer
+            .writeString(element == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(element)));
+        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("metadataValues", this.metadataValues,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeSeriesBaseline from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeSeriesBaseline if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TimeSeriesBaseline.
+     */
+    public static TimeSeriesBaseline fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeSeriesBaseline deserializedTimeSeriesBaseline = new TimeSeriesBaseline();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aggregation".equals(fieldName)) {
+                    deserializedTimeSeriesBaseline.aggregation = reader.getString();
+                } else if ("timestamps".equals(fieldName)) {
+                    List<OffsetDateTime> timestamps = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedTimeSeriesBaseline.timestamps = timestamps;
+                } else if ("data".equals(fieldName)) {
+                    List<SingleBaseline> data = reader.readArray(reader1 -> SingleBaseline.fromJson(reader1));
+                    deserializedTimeSeriesBaseline.data = data;
+                } else if ("dimensions".equals(fieldName)) {
+                    List<MetricSingleDimension> dimensions
+                        = reader.readArray(reader1 -> MetricSingleDimension.fromJson(reader1));
+                    deserializedTimeSeriesBaseline.dimensions = dimensions;
+                } else if ("metadataValues".equals(fieldName)) {
+                    List<BaselineMetadata> metadataValues
+                        = reader.readArray(reader1 -> BaselineMetadata.fromJson(reader1));
+                    deserializedTimeSeriesBaseline.metadataValues = metadataValues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeSeriesBaseline;
+        });
+    }
 }

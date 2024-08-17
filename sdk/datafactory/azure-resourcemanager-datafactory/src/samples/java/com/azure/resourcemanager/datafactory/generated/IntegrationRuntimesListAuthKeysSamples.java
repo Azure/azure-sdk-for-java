@@ -9,7 +9,8 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class IntegrationRuntimesListAuthKeysSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_ListAuthKeys.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_ListAuthKeys.json
      */
     /**
      * Sample code: IntegrationRuntimes_ListAuthKeys.

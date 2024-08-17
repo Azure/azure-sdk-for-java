@@ -38,7 +38,7 @@ public interface StorageTaskAssignmentInstancesReportsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String accountName,
-        String storageTaskAssignmentName, String maxpagesize, String filter);
+        String storageTaskAssignmentName, Integer maxpagesize, String filter);
 
     /**
      * Fetch the report summary of a single storage task assignment's instances.
@@ -99,5 +99,5 @@ public interface StorageTaskAssignmentInstancesReportsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StorageTaskReportInstanceInner> list(String resourceGroupName, String accountName,
-        String storageTaskAssignmentName, String maxpagesize, String filter, Context context);
+        String storageTaskAssignmentName, Integer maxpagesize, String filter, Context context);
 }

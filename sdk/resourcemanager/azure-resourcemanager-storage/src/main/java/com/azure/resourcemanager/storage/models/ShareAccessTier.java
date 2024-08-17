@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -36,7 +34,7 @@ public final class ShareAccessTier extends ExpandableStringEnum<ShareAccessTier>
 
     /**
      * Creates a new instance of ShareAccessTier value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +43,17 @@ public final class ShareAccessTier extends ExpandableStringEnum<ShareAccessTier>
 
     /**
      * Creates or finds a ShareAccessTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ShareAccessTier.
      */
-    @JsonCreator
     public static ShareAccessTier fromString(String name) {
         return fromString(name, ShareAccessTier.class);
     }
 
     /**
      * Gets known ShareAccessTier values.
-     *
+     * 
      * @return known ShareAccessTier values.
      */
     public static Collection<ShareAccessTier> values() {

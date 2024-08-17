@@ -5,71 +5,69 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.models.ExemptionCategory;
 import com.azure.resourcemanager.resources.models.ResourceSelector;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The policy exemption properties.
  */
 @Fluent
-public final class PolicyExemptionProperties {
+public final class PolicyExemptionProperties implements JsonSerializable<PolicyExemptionProperties> {
     /*
      * The ID of the policy assignment that is being exempted.
      */
-    @JsonProperty(value = "policyAssignmentId", required = true)
     private String policyAssignmentId;
 
     /*
-     * The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.
+     * The policy definition reference ID list when the associated policy assignment is an assignment of a policy set
+     * definition.
      */
-    @JsonProperty(value = "policyDefinitionReferenceIds")
     private List<String> policyDefinitionReferenceIds;
 
     /*
      * The policy exemption category. Possible values are Waiver and Mitigated.
      */
-    @JsonProperty(value = "exemptionCategory", required = true)
     private ExemptionCategory exemptionCategory;
 
     /*
      * The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption.
      */
-    @JsonProperty(value = "expiresOn")
     private OffsetDateTime expiresOn;
 
     /*
      * The display name of the policy exemption.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description of the policy exemption.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The policy exemption metadata. Metadata is an open ended object and is typically a collection of key value pairs.
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The resource selector list to filter policies by resource properties.
      */
-    @JsonProperty(value = "resourceSelectors")
     private List<ResourceSelector> resourceSelectors;
 
     /*
      * The option whether validate the exemption is at or under the assignment scope.
      */
-    @JsonProperty(value = "assignmentScopeValidation")
     private AssignmentScopeValidation assignmentScopeValidation;
 
     /**
@@ -289,4 +287,76 @@ public final class PolicyExemptionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PolicyExemptionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyAssignmentId", this.policyAssignmentId);
+        jsonWriter.writeStringField("exemptionCategory",
+            this.exemptionCategory == null ? null : this.exemptionCategory.toString());
+        jsonWriter.writeArrayField("policyDefinitionReferenceIds", this.policyDefinitionReferenceIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("expiresOn",
+            this.expiresOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresOn));
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeArrayField("resourceSelectors", this.resourceSelectors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("assignmentScopeValidation",
+            this.assignmentScopeValidation == null ? null : this.assignmentScopeValidation.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyExemptionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyExemptionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PolicyExemptionProperties.
+     */
+    public static PolicyExemptionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyExemptionProperties deserializedPolicyExemptionProperties = new PolicyExemptionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyAssignmentId".equals(fieldName)) {
+                    deserializedPolicyExemptionProperties.policyAssignmentId = reader.getString();
+                } else if ("exemptionCategory".equals(fieldName)) {
+                    deserializedPolicyExemptionProperties.exemptionCategory
+                        = ExemptionCategory.fromString(reader.getString());
+                } else if ("policyDefinitionReferenceIds".equals(fieldName)) {
+                    List<String> policyDefinitionReferenceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPolicyExemptionProperties.policyDefinitionReferenceIds = policyDefinitionReferenceIds;
+                } else if ("expiresOn".equals(fieldName)) {
+                    deserializedPolicyExemptionProperties.expiresOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPolicyExemptionProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedPolicyExemptionProperties.description = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedPolicyExemptionProperties.metadata = reader.readUntyped();
+                } else if ("resourceSelectors".equals(fieldName)) {
+                    List<ResourceSelector> resourceSelectors
+                        = reader.readArray(reader1 -> ResourceSelector.fromJson(reader1));
+                    deserializedPolicyExemptionProperties.resourceSelectors = resourceSelectors;
+                } else if ("assignmentScopeValidation".equals(fieldName)) {
+                    deserializedPolicyExemptionProperties.assignmentScopeValidation
+                        = AssignmentScopeValidation.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyExemptionProperties;
+        });
+    }
 }

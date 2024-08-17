@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +23,7 @@ public final class EncryptionScopeState extends ExpandableStringEnum<EncryptionS
 
     /**
      * Creates a new instance of EncryptionScopeState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +32,17 @@ public final class EncryptionScopeState extends ExpandableStringEnum<EncryptionS
 
     /**
      * Creates or finds a EncryptionScopeState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionScopeState.
      */
-    @JsonCreator
     public static EncryptionScopeState fromString(String name) {
         return fromString(name, EncryptionScopeState.class);
     }
 
     /**
      * Gets known EncryptionScopeState values.
-     *
+     * 
      * @return known EncryptionScopeState values.
      */
     public static Collection<EncryptionScopeState> values() {

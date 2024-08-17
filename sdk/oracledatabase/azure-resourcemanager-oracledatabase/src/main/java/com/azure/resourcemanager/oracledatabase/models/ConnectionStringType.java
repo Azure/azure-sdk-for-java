@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Connection strings to connect to an Oracle Autonomous Database.
  */
 @Fluent
-public final class ConnectionStringType {
+public final class ConnectionStringType implements JsonSerializable<ConnectionStringType> {
     /*
      * Returns all connection strings that can be used to connect to the Autonomous Database.
      */
-    @JsonProperty(value = "allConnectionStrings")
     private AllConnectionStringType allConnectionStrings;
 
     /*
-     * The database service provides the least level of resources to each SQL statement, but supports the most number of concurrent SQL statements.
+     * The database service provides the least level of resources to each SQL statement, but supports the most number of
+     * concurrent SQL statements.
      */
-    @JsonProperty(value = "dedicated")
     private String dedicated;
 
     /*
-     * The High database service provides the highest level of resources to each SQL statement resulting in the highest performance, but supports the fewest number of concurrent SQL statements.
+     * The High database service provides the highest level of resources to each SQL statement resulting in the highest
+     * performance, but supports the fewest number of concurrent SQL statements.
      */
-    @JsonProperty(value = "high")
     private String high;
 
     /*
-     * The Low database service provides the least level of resources to each SQL statement, but supports the most number of concurrent SQL statements.
+     * The Low database service provides the least level of resources to each SQL statement, but supports the most
+     * number of concurrent SQL statements.
      */
-    @JsonProperty(value = "low")
     private String low;
 
     /*
-     * The Medium database service provides a lower level of resources to each SQL statement potentially resulting a lower level of performance, but supports more concurrent SQL statements.
+     * The Medium database service provides a lower level of resources to each SQL statement potentially resulting a
+     * lower level of performance, but supports more concurrent SQL statements.
      */
-    @JsonProperty(value = "medium")
     private String medium;
 
     /*
-     * A list of connection string profiles to allow clients to group, filter and select connection string values based on structured metadata.
+     * A list of connection string profiles to allow clients to group, filter and select connection string values based
+     * on structured metadata.
      */
-    @JsonProperty(value = "profiles")
     private List<ProfileType> profiles;
 
     /**
@@ -199,5 +202,57 @@ public final class ConnectionStringType {
         if (profiles() != null) {
             profiles().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("allConnectionStrings", this.allConnectionStrings);
+        jsonWriter.writeStringField("dedicated", this.dedicated);
+        jsonWriter.writeStringField("high", this.high);
+        jsonWriter.writeStringField("low", this.low);
+        jsonWriter.writeStringField("medium", this.medium);
+        jsonWriter.writeArrayField("profiles", this.profiles, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionStringType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionStringType if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionStringType.
+     */
+    public static ConnectionStringType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionStringType deserializedConnectionStringType = new ConnectionStringType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allConnectionStrings".equals(fieldName)) {
+                    deserializedConnectionStringType.allConnectionStrings = AllConnectionStringType.fromJson(reader);
+                } else if ("dedicated".equals(fieldName)) {
+                    deserializedConnectionStringType.dedicated = reader.getString();
+                } else if ("high".equals(fieldName)) {
+                    deserializedConnectionStringType.high = reader.getString();
+                } else if ("low".equals(fieldName)) {
+                    deserializedConnectionStringType.low = reader.getString();
+                } else if ("medium".equals(fieldName)) {
+                    deserializedConnectionStringType.medium = reader.getString();
+                } else if ("profiles".equals(fieldName)) {
+                    List<ProfileType> profiles = reader.readArray(reader1 -> ProfileType.fromJson(reader1));
+                    deserializedConnectionStringType.profiles = profiles;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionStringType;
+        });
     }
 }

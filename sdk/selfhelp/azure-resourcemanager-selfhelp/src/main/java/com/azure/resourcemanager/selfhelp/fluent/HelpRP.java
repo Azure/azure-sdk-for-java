@@ -96,16 +96,9 @@ public interface HelpRP {
     SolutionSelfHelpsClient getSolutionSelfHelps();
 
     /**
-     * Gets the DiscoverySolutionNlpTenantScopesClient object to access its operations.
+     * Gets the DiscoverySolutionNlpsClient object to access its operations.
      * 
-     * @return the DiscoverySolutionNlpTenantScopesClient object.
+     * @return the DiscoverySolutionNlpsClient object.
      */
-    DiscoverySolutionNlpTenantScopesClient getDiscoverySolutionNlpTenantScopes();
-
-    /**
-     * Gets the DiscoverySolutionNlpSubscriptionScopesClient object to access its operations.
-     * 
-     * @return the DiscoverySolutionNlpSubscriptionScopesClient object.
-     */
-    DiscoverySolutionNlpSubscriptionScopesClient getDiscoverySolutionNlpSubscriptionScopes();
+    DiscoverySolutionNlpsClient getDiscoverySolutionNlps();
 }

@@ -46,7 +46,7 @@ public class JsonSerializableTypeAdapter extends TypeAdapter<JsonSerializable<?>
     @Override
     public JsonSerializable<?> read(JsonReader in) throws IOException {
         try {
-            return jsonSerializableType.cast(readJson.invokeWithArguments(new GsonJsonReader(in, null, true)));
+            return jsonSerializableType.cast(readJson.invokeStatic(new GsonJsonReader(in, null, true)));
         } catch (Exception exception) {
             if (exception instanceof IOException) {
                 throw (IOException) exception;

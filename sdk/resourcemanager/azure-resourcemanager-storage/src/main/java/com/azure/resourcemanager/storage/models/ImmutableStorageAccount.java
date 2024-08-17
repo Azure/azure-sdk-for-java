@@ -5,23 +5,29 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * This property enables and defines account-level immutability. Enabling the feature auto-enables Blob Versioning.
  */
 @Fluent
-public final class ImmutableStorageAccount {
+public final class ImmutableStorageAccount implements JsonSerializable<ImmutableStorageAccount> {
     /*
-     * A boolean flag which enables account-level immutability. All the containers under such an account have object-level immutability enabled by default.
+     * A boolean flag which enables account-level immutability. All the containers under such an account have
+     * object-level immutability enabled by default.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * Specifies the default account-level immutability policy which is inherited and applied to objects that do not possess an explicit immutability policy at the object level. The object-level immutability policy has higher precedence than the container-level immutability policy, which has a higher precedence than the account-level immutability policy.
+     * Specifies the default account-level immutability policy which is inherited and applied to objects that do not
+     * possess an explicit immutability policy at the object level. The object-level immutability policy has higher
+     * precedence than the container-level immutability policy, which has a higher precedence than the account-level
+     * immutability policy.
      */
-    @JsonProperty(value = "immutabilityPolicy")
     private AccountImmutabilityPolicyProperties immutabilityPolicy;
 
     /**
@@ -87,5 +93,45 @@ public final class ImmutableStorageAccount {
         if (immutabilityPolicy() != null) {
             immutabilityPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("immutabilityPolicy", this.immutabilityPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImmutableStorageAccount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImmutableStorageAccount if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImmutableStorageAccount.
+     */
+    public static ImmutableStorageAccount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImmutableStorageAccount deserializedImmutableStorageAccount = new ImmutableStorageAccount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedImmutableStorageAccount.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("immutabilityPolicy".equals(fieldName)) {
+                    deserializedImmutableStorageAccount.immutabilityPolicy
+                        = AccountImmutabilityPolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImmutableStorageAccount;
+        });
     }
 }

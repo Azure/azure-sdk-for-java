@@ -11,19 +11,19 @@ public final class CosmosDbMongoDbApiSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbMongoDbApiSink model = BinaryData.fromString(
-            "{\"type\":\"tdmrqravpx\",\"writeBehavior\":\"dataavoqcyl\",\"writeBatchSize\":\"dataewpngcocbo\",\"writeBatchTimeout\":\"datasjobzvsugentr\",\"sinkRetryCount\":\"databwtivgdcrrbsw\",\"sinkRetryWait\":\"dataizmxvdtkmwyiko\",\"maxConcurrentConnections\":\"dataepkknyvn\",\"disableMetricsCollection\":\"dataglia\",\"\":{\"sg\":\"datajdhbqwcu\",\"kzwijqxwmjl\":\"dataefna\",\"fsqruyqaqemozj\":\"dataosqhnwbqc\",\"pclmkeswtkhfcnce\":\"datahixcivjokauj\"}}")
+            "{\"type\":\"CosmosDbMongoDbApiSink\",\"writeBehavior\":\"dataylt\",\"writeBatchSize\":\"dataqjfoujeiagnyeefj\",\"writeBatchTimeout\":\"dataayrwyffut\",\"sinkRetryCount\":\"dataxrpxdhzwdy\",\"sinkRetryWait\":\"datayhvx\",\"maxConcurrentConnections\":\"dataexwhoscinpmvcvnm\",\"disableMetricsCollection\":\"datalshglym\",\"\":{\"hiayro\":\"dataazvc\",\"glytwzttkhyrwd\":\"dataxeezlqw\",\"pqatkzghwcywrb\":\"datanpuoaorfpizybpj\",\"kf\":\"dataxwls\"}}")
             .toObject(CosmosDbMongoDbApiSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbMongoDbApiSink model = new CosmosDbMongoDbApiSink().withWriteBatchSize("dataewpngcocbo")
-            .withWriteBatchTimeout("datasjobzvsugentr")
-            .withSinkRetryCount("databwtivgdcrrbsw")
-            .withSinkRetryWait("dataizmxvdtkmwyiko")
-            .withMaxConcurrentConnections("dataepkknyvn")
-            .withDisableMetricsCollection("dataglia")
-            .withWriteBehavior("dataavoqcyl");
+        CosmosDbMongoDbApiSink model = new CosmosDbMongoDbApiSink().withWriteBatchSize("dataqjfoujeiagnyeefj")
+            .withWriteBatchTimeout("dataayrwyffut")
+            .withSinkRetryCount("dataxrpxdhzwdy")
+            .withSinkRetryWait("datayhvx")
+            .withMaxConcurrentConnections("dataexwhoscinpmvcvnm")
+            .withDisableMetricsCollection("datalshglym")
+            .withWriteBehavior("dataylt");
         model = BinaryData.fromObject(model).toObject(CosmosDbMongoDbApiSink.class);
     }
 }

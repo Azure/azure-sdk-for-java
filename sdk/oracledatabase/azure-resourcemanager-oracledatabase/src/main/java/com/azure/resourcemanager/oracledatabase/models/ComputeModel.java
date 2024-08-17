@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * ComputeModel enum.
+ * Compute model enum.
  */
 public final class ComputeModel extends ExpandableStringEnum<ComputeModel> {
     /**
@@ -37,7 +36,6 @@ public final class ComputeModel extends ExpandableStringEnum<ComputeModel> {
      * @param name a name to look for.
      * @return the corresponding ComputeModel.
      */
-    @JsonCreator
     public static ComputeModel fromString(String name) {
         return fromString(name, ComputeModel.class);
     }

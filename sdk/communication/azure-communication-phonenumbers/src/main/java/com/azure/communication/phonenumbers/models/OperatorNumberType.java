@@ -5,37 +5,54 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperatorNumberType. */
+/**
+ * Type of service associated with the phone number.
+ */
 public final class OperatorNumberType extends ExpandableStringEnum<OperatorNumberType> {
-    /** Static value unknown for OperatorNumberType. */
+    /**
+     * Static value unknown for OperatorNumberType.
+     */
     public static final OperatorNumberType UNKNOWN = fromString("unknown");
 
-    /** Static value other for OperatorNumberType. */
+    /**
+     * Static value other for OperatorNumberType.
+     */
     public static final OperatorNumberType OTHER = fromString("other");
 
-    /** Static value geographic for OperatorNumberType. */
+    /**
+     * Static value geographic for OperatorNumberType.
+     */
     public static final OperatorNumberType GEOGRAPHIC = fromString("geographic");
 
-    /** Static value mobile for OperatorNumberType. */
+    /**
+     * Static value mobile for OperatorNumberType.
+     */
     public static final OperatorNumberType MOBILE = fromString("mobile");
 
     /**
+     * Creates a new instance of OperatorNumberType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperatorNumberType() {
+    }
+
+    /**
      * Creates or finds a OperatorNumberType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperatorNumberType.
      */
-    @JsonCreator
     public static OperatorNumberType fromString(String name) {
         return fromString(name, OperatorNumberType.class);
     }
 
     /**
      * Gets known OperatorNumberType values.
-     *
+     * 
      * @return known OperatorNumberType values.
      */
     public static Collection<OperatorNumberType> values() {

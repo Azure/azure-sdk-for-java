@@ -26,10 +26,10 @@ public final class ExpressionV2 {
     private String value;
 
     /*
-     * Expression operator value Type: string.
+     * Expression operator value Type: list of strings.
      */
-    @JsonProperty(value = "operator")
-    private String operator;
+    @JsonProperty(value = "operators")
+    private List<String> operators;
 
     /*
      * List of nested expressions.
@@ -84,22 +84,22 @@ public final class ExpressionV2 {
     }
 
     /**
-     * Get the operator property: Expression operator value Type: string.
+     * Get the operators property: Expression operator value Type: list of strings.
      * 
-     * @return the operator value.
+     * @return the operators value.
      */
-    public String operator() {
-        return this.operator;
+    public List<String> operators() {
+        return this.operators;
     }
 
     /**
-     * Set the operator property: Expression operator value Type: string.
+     * Set the operators property: Expression operator value Type: list of strings.
      * 
-     * @param operator the operator value to set.
+     * @param operators the operators value to set.
      * @return the ExpressionV2 object itself.
      */
-    public ExpressionV2 withOperator(String operator) {
-        this.operator = operator;
+    public ExpressionV2 withOperators(List<String> operators) {
+        this.operators = operators;
         return this;
     }
 

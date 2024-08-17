@@ -5,19 +5,48 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The AzureStorageBlobContainerEndpointUpdateProperties model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+/**
+ * The AzureStorageBlobContainerEndpointUpdateProperties model.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "endpointType",
+    defaultImpl = AzureStorageBlobContainerEndpointUpdateProperties.class,
+    visible = true)
 @JsonTypeName("AzureStorageBlobContainer")
 @Fluent
 public final class AzureStorageBlobContainerEndpointUpdateProperties extends EndpointBaseUpdateProperties {
-    /** Creates an instance of AzureStorageBlobContainerEndpointUpdateProperties class. */
+    /*
+     * The Endpoint resource type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private EndpointType endpointType = EndpointType.AZURE_STORAGE_BLOB_CONTAINER;
+
+    /**
+     * Creates an instance of AzureStorageBlobContainerEndpointUpdateProperties class.
+     */
     public AzureStorageBlobContainerEndpointUpdateProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the endpointType property: The Endpoint resource type.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageBlobContainerEndpointUpdateProperties withDescription(String description) {
         super.withDescription(description);
@@ -26,7 +55,7 @@ public final class AzureStorageBlobContainerEndpointUpdateProperties extends End
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

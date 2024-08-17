@@ -50,7 +50,7 @@ public final class ResponseExceptionConstructorCache {
     static <T extends HttpResponseException> T invoke(ReflectiveInvoker reflectiveInvoker, String exceptionMessage,
         HttpResponse httpResponse, Object exceptionBody) {
         try {
-            return (T) reflectiveInvoker.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);
+            return (T) reflectiveInvoker.invokeStatic(exceptionMessage, httpResponse, exceptionBody);
         } catch (Exception exception) {
             if (exception instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) exception);

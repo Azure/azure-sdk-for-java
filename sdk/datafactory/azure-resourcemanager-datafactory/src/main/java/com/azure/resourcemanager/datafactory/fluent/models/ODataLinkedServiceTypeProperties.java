@@ -41,31 +41,37 @@ public final class ODataLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The additional HTTP headers in the request to RESTful API used for authorization. Type: key value pairs (value should be string type).
+     * The additional HTTP headers in the request to RESTful API used for authorization. Type: key value pairs (value
+     * should be string type).
      */
     @JsonProperty(value = "authHeaders")
     private Object authHeaders;
 
     /*
-     * Specify the tenant information (domain name or tenant ID) under which your application resides. Type: string (or Expression with resultType string).
+     * Specify the tenant information (domain name or tenant ID) under which your application resides. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * Specify the application id of your application registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * Specify the application id of your application registered in Azure Active Directory. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or Expression with resultType string).
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
-     * Specify the resource you are requesting authorization to use Directory. Type: string (or Expression with resultType string).
+     * Specify the resource you are requesting authorization to use Directory. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "aadResourceId")
     private Object aadResourceId;
@@ -77,25 +83,29 @@ public final class ODataLinkedServiceTypeProperties {
     private ODataAadServicePrincipalCredentialType aadServicePrincipalCredentialType;
 
     /*
-     * Specify the secret of your application registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * Specify the secret of your application registered in Azure Active Directory. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalEmbeddedCert")
     private SecretBase servicePrincipalEmbeddedCert;
 
     /*
-     * Specify the password of your certificate if your certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with resultType string).
+     * Specify the password of your certificate if your certificate has a password and you are using AadServicePrincipal
+     * authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalEmbeddedCertPassword")
     private SecretBase servicePrincipalEmbeddedCertPassword;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

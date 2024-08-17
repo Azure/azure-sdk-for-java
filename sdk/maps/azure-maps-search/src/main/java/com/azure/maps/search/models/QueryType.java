@@ -5,31 +5,44 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of query being returned: NEARBY or NON_NEAR. */
+/**
+ * The type of query being returned: NEARBY or NON_NEAR.
+ */
 public final class QueryType extends ExpandableStringEnum<QueryType> {
-    /** Static value NEARBY for QueryType. */
+    /**
+     * Search was performed around a certain latitude and longitude with a defined radius.
+     */
     public static final QueryType NEARBY = fromString("NEARBY");
 
-    /** Static value NON_NEAR for QueryType. */
+    /**
+     * Search was performed globally, without biasing to a certain latitude and longitude, and no defined radius.
+     */
     public static final QueryType GLOBAL = fromString("NON_NEAR");
 
     /**
+     * Creates a new instance of QueryType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryType() {
+    }
+
+    /**
      * Creates or finds a QueryType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QueryType.
      */
-    @JsonCreator
     public static QueryType fromString(String name) {
         return fromString(name, QueryType.class);
     }
 
     /**
      * Gets known QueryType values.
-     *
+     * 
      * @return known QueryType values.
      */
     public static Collection<QueryType> values() {

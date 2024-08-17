@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public final class MachineExtensionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/extension/Extension_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * extension/Extension_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Machine Extension.

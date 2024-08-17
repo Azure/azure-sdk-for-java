@@ -5,21 +5,33 @@
 package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpInner;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIPsList;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class WorkloadNetworkPublicIPsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkPublicIPsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"kfwynw\",\"numberOfPublicIPs\":4797206470804726594,\"publicIPBlock\":\"kayh\",\"provisioningState\":\"Deleting\"},\"id\":\"vyqia\",\"name\":\"kzwpcnpw\",\"type\":\"cjaesgvvs\"}],\"nextLink\":\"yajguqfhwygzlv\"}")
-                .toObject(WorkloadNetworkPublicIPsList.class);
+        WorkloadNetworkPublicIPsList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"pqlmfe\",\"numberOfPublicIPs\":5076002706235027340,\"publicIPBlock\":\"wkyhkobopgxe\",\"provisioningState\":\"Deleting\"},\"id\":\"epbqpcrfkbw\",\"name\":\"csnjvcdwxlpqekft\",\"type\":\"khtj\"},{\"properties\":{\"displayName\":\"ngwfqatm\",\"numberOfPublicIPs\":6035898469586356847,\"publicIPBlock\":\"dvypgikdgsz\",\"provisioningState\":\"Canceled\"},\"id\":\"irryuzhlh\",\"name\":\"joqrvqqaatj\",\"type\":\"nrvgoupmfiibfgg\"},{\"properties\":{\"displayName\":\"olvrw\",\"numberOfPublicIPs\":639224671106145818,\"publicIPBlock\":\"k\",\"provisioningState\":\"Failed\"},\"id\":\"wjygvjayvblmhvk\",\"name\":\"uhbxvvy\",\"type\":\"gsopbyrqufegxu\"},{\"properties\":{\"displayName\":\"fbn\",\"numberOfPublicIPs\":2314508611274397861,\"publicIPBlock\":\"l\",\"provisioningState\":\"Building\"},\"id\":\"itvgbmhrixkwm\",\"name\":\"ijejvegrhbpn\",\"type\":\"ixexcc\"}],\"nextLink\":\"reaxhcexdr\"}")
+            .toObject(WorkloadNetworkPublicIPsList.class);
+        Assertions.assertEquals("pqlmfe", model.value().get(0).displayName());
+        Assertions.assertEquals(5076002706235027340L, model.value().get(0).numberOfPublicIPs());
+        Assertions.assertEquals("reaxhcexdr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkPublicIPsList model = new WorkloadNetworkPublicIPsList();
+        WorkloadNetworkPublicIPsList model = new WorkloadNetworkPublicIPsList().withValue(Arrays.asList(
+            new WorkloadNetworkPublicIpInner().withDisplayName("pqlmfe").withNumberOfPublicIPs(5076002706235027340L),
+            new WorkloadNetworkPublicIpInner().withDisplayName("ngwfqatm").withNumberOfPublicIPs(6035898469586356847L),
+            new WorkloadNetworkPublicIpInner().withDisplayName("olvrw").withNumberOfPublicIPs(639224671106145818L),
+            new WorkloadNetworkPublicIpInner().withDisplayName("fbn").withNumberOfPublicIPs(2314508611274397861L)))
+            .withNextLink("reaxhcexdr");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkPublicIPsList.class);
+        Assertions.assertEquals("pqlmfe", model.value().get(0).displayName());
+        Assertions.assertEquals(5076002706235027340L, model.value().get(0).numberOfPublicIPs());
+        Assertions.assertEquals("reaxhcexdr", model.nextLink());
     }
 }

@@ -5,28 +5,50 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of a vSphere Replication (VR) addon. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "addonType")
-@JsonTypeName("VR")
+/**
+ * The properties of a vSphere Replication (VR) addon.
+ */
 @Fluent
 public final class AddonVrProperties extends AddonProperties {
     /*
+     * Addon type
+     */
+    private AddonType addonType = AddonType.VR;
+
+    /*
      * The vSphere Replication Server (VRS) count
      */
-    @JsonProperty(value = "vrsCount", required = true)
     private int vrsCount;
 
-    /** Creates an instance of AddonVrProperties class. */
+    /*
+     * The state of the addon provisioning
+     */
+    private AddonProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of AddonVrProperties class.
+     */
     public AddonVrProperties() {
     }
 
     /**
+     * Get the addonType property: Addon type.
+     * 
+     * @return the addonType value.
+     */
+    @Override
+    public AddonType addonType() {
+        return this.addonType;
+    }
+
+    /**
      * Get the vrsCount property: The vSphere Replication Server (VRS) count.
-     *
+     * 
      * @return the vrsCount value.
      */
     public int vrsCount() {
@@ -35,7 +57,7 @@ public final class AddonVrProperties extends AddonProperties {
 
     /**
      * Set the vrsCount property: The vSphere Replication Server (VRS) count.
-     *
+     * 
      * @param vrsCount the vrsCount value to set.
      * @return the AddonVrProperties object itself.
      */
@@ -45,12 +67,65 @@ public final class AddonVrProperties extends AddonProperties {
     }
 
     /**
+     * Get the provisioningState property: The state of the addon provisioning.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public AddonProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("vrsCount", this.vrsCount);
+        jsonWriter.writeStringField("addonType", this.addonType == null ? null : this.addonType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddonVrProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddonVrProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddonVrProperties.
+     */
+    public static AddonVrProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddonVrProperties deserializedAddonVrProperties = new AddonVrProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedAddonVrProperties.provisioningState
+                        = AddonProvisioningState.fromString(reader.getString());
+                } else if ("vrsCount".equals(fieldName)) {
+                    deserializedAddonVrProperties.vrsCount = reader.getInt();
+                } else if ("addonType".equals(fieldName)) {
+                    deserializedAddonVrProperties.addonType = AddonType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddonVrProperties;
+        });
     }
 }

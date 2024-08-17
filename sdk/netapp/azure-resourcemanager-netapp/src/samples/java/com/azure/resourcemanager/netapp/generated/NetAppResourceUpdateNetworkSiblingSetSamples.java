@@ -12,7 +12,8 @@ import com.azure.resourcemanager.netapp.models.UpdateNetworkSiblingSetRequest;
  */
 public final class NetAppResourceUpdateNetworkSiblingSetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/NetworkSiblingSet_Update.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/NetworkSiblingSet_Update.json
      */
     /**
      * Sample code: NetworkFeatures_Update.

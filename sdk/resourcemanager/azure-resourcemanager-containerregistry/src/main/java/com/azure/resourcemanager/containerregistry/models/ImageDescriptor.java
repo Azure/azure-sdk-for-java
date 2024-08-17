@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties for a registry image.
  */
 @Fluent
-public final class ImageDescriptor {
+public final class ImageDescriptor implements JsonSerializable<ImageDescriptor> {
     /*
      * The registry login server.
      */
-    @JsonProperty(value = "registry")
     private String registry;
 
     /*
      * The repository name.
      */
-    @JsonProperty(value = "repository")
     private String repository;
 
     /*
      * The tag name.
      */
-    @JsonProperty(value = "tag")
     private String tag;
 
     /*
      * The sha256-based digest of the image manifest.
      */
-    @JsonProperty(value = "digest")
     private String digest;
 
     /**
@@ -128,5 +128,50 @@ public final class ImageDescriptor {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("registry", this.registry);
+        jsonWriter.writeStringField("repository", this.repository);
+        jsonWriter.writeStringField("tag", this.tag);
+        jsonWriter.writeStringField("digest", this.digest);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageDescriptor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageDescriptor if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageDescriptor.
+     */
+    public static ImageDescriptor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageDescriptor deserializedImageDescriptor = new ImageDescriptor();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("registry".equals(fieldName)) {
+                    deserializedImageDescriptor.registry = reader.getString();
+                } else if ("repository".equals(fieldName)) {
+                    deserializedImageDescriptor.repository = reader.getString();
+                } else if ("tag".equals(fieldName)) {
+                    deserializedImageDescriptor.tag = reader.getString();
+                } else if ("digest".equals(fieldName)) {
+                    deserializedImageDescriptor.digest = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageDescriptor;
+        });
     }
 }

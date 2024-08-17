@@ -9,7 +9,8 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class AutonomousDatabaseBackupsListByAutonomousDatabaseSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_listByParent.json
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/
+     * autonomousDatabaseBackup_listByParent.json
      */
     /**
      * Sample code: List Autonomous Database Backups by Autonomous Database.
@@ -17,6 +18,21 @@ public final class AutonomousDatabaseBackupsListByAutonomousDatabaseSamples {
      * @param manager Entry point to OracleDatabaseManager.
      */
     public static void listAutonomousDatabaseBackupsByAutonomousDatabase(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabaseBackups()
+            .listByAutonomousDatabase("rg000", "databasedb1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/
+     * autonomousDatabaseBackup_listByParent.json
+     */
+    /**
+     * Sample code: AutonomousDatabaseBackups_ListByAutonomousDatabase.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void autonomousDatabaseBackupsListByAutonomousDatabase(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.autonomousDatabaseBackups()
             .listByAutonomousDatabase("rg000", "databasedb1", com.azure.core.util.Context.NONE);

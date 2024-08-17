@@ -24,15 +24,13 @@ public final class MobileNetworkPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * The unique public land mobile network identifier for the network. If both 'publicLandMobileNetworks' and
-     * 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
+     * The unique public land mobile network identifier for the network. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
      */
     @JsonProperty(value = "publicLandMobileNetworkIdentifier", required = true)
     private PlmnId publicLandMobileNetworkIdentifier;
 
     /*
-     * A list of public land mobile networks including their identifiers. If both 'publicLandMobileNetworks' and
-     * 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
+     * A list of public land mobile networks including their identifiers. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
      */
     @JsonProperty(value = "publicLandMobileNetworks")
     private List<PublicLandMobileNetwork> publicLandMobileNetworks;
@@ -124,8 +122,9 @@ public final class MobileNetworkPropertiesFormat {
      */
     public void validate() {
         if (publicLandMobileNetworkIdentifier() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publicLandMobileNetworkIdentifier in model MobileNetworkPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publicLandMobileNetworkIdentifier in model MobileNetworkPropertiesFormat"));
         } else {
             publicLandMobileNetworkIdentifier().validate();
         }

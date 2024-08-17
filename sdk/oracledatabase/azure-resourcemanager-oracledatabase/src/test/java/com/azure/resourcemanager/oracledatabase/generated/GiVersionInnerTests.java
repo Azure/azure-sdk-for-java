@@ -12,7 +12,7 @@ public final class GiVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GiVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"version\":\"ikvmkqzeqqk\"},\"id\":\"tfz\",\"name\":\"mhhv\",\"type\":\"gureodkwobdag\"}")
+            "{\"properties\":{\"version\":\"dfvue\"},\"id\":\"wsbpfvm\",\"name\":\"yhrfouyftaakcpw\",\"type\":\"yzvqt\"}")
             .toObject(GiVersionInner.class);
     }
 

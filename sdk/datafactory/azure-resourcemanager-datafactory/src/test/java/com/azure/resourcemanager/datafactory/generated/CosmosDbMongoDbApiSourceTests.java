@@ -14,25 +14,25 @@ public final class CosmosDbMongoDbApiSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbMongoDbApiSource model = BinaryData.fromString(
-            "{\"type\":\"afks\",\"filter\":\"datappsnljduwkb\",\"cursorMethods\":{\"project\":\"datamrhnghvlv\",\"sort\":\"dataxbjqiabitevv\",\"skip\":\"dataiyp\",\"limit\":\"datajz\",\"\":{\"lhmneykxewemtaz\":\"datadfyvgcftaqydcr\",\"jzpxo\":\"datar\",\"erxmlfnugl\":\"datae\",\"snitlmcaehjhwk\":\"datayrkrtdkpoxzwg\"}},\"batchSize\":\"datajzq\",\"queryTimeout\":\"dataypanwejbngojna\",\"additionalColumns\":\"datawytkwtf\",\"sourceRetryCount\":\"datamfhruhw\",\"sourceRetryWait\":\"datanrdf\",\"maxConcurrentConnections\":\"databhrvonea\",\"disableMetricsCollection\":\"datajmjig\",\"\":{\"rxtoxlx\":\"datadfrtasa\",\"ycissh\":\"datajijttsyrxynnfsk\"}}")
+            "{\"type\":\"CosmosDbMongoDbApiSource\",\"filter\":\"datazdb\",\"cursorMethods\":{\"project\":\"datapphfmzeufjzqaqe\",\"sort\":\"databygqcwz\",\"skip\":\"dataomnqcthgqy\",\"limit\":\"dataoaz\",\"\":{\"pyekslllz\":\"datakkcqafnvjgixsjhi\",\"pnloifx\":\"dataqolckwhgnfbnnh\"}},\"batchSize\":\"dataohfvxavhfhlx\",\"queryTimeout\":\"datawzpba\",\"additionalColumns\":\"datafrfaytcyg\",\"sourceRetryCount\":\"datam\",\"sourceRetryWait\":\"datarmbcklfp\",\"maxConcurrentConnections\":\"datagfvvnkpwl\",\"disableMetricsCollection\":\"datazxdzold\",\"\":{\"regesoozpudalu\":\"datanpnyaterjjuz\"}}")
             .toObject(CosmosDbMongoDbApiSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbMongoDbApiSource model = new CosmosDbMongoDbApiSource().withSourceRetryCount("datamfhruhw")
-            .withSourceRetryWait("datanrdf")
-            .withMaxConcurrentConnections("databhrvonea")
-            .withDisableMetricsCollection("datajmjig")
-            .withFilter("datappsnljduwkb")
-            .withCursorMethods(new MongoDbCursorMethodsProperties().withProject("datamrhnghvlv")
-                .withSort("dataxbjqiabitevv")
-                .withSkip("dataiyp")
-                .withLimit("datajz")
+        CosmosDbMongoDbApiSource model = new CosmosDbMongoDbApiSource().withSourceRetryCount("datam")
+            .withSourceRetryWait("datarmbcklfp")
+            .withMaxConcurrentConnections("datagfvvnkpwl")
+            .withDisableMetricsCollection("datazxdzold")
+            .withFilter("datazdb")
+            .withCursorMethods(new MongoDbCursorMethodsProperties().withProject("datapphfmzeufjzqaqe")
+                .withSort("databygqcwz")
+                .withSkip("dataomnqcthgqy")
+                .withLimit("dataoaz")
                 .withAdditionalProperties(mapOf()))
-            .withBatchSize("datajzq")
-            .withQueryTimeout("dataypanwejbngojna")
-            .withAdditionalColumns("datawytkwtf");
+            .withBatchSize("dataohfvxavhfhlx")
+            .withQueryTimeout("datawzpba")
+            .withAdditionalColumns("datafrfaytcyg");
         model = BinaryData.fromObject(model).toObject(CosmosDbMongoDbApiSource.class);
     }
 

@@ -40,29 +40,6 @@ public final class CredentialOperationsImpl implements CredentialOperations {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CredentialResourceImpl(inner1, this.manager()));
     }
 
-    public Response<CredentialResource> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
-        String credentialName, CredentialResourceInner credential, String ifMatch, Context context) {
-        Response<CredentialResourceInner> inner = this.serviceClient()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, credentialName, credential, ifMatch, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CredentialResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public CredentialResource createOrUpdate(String resourceGroupName, String factoryName, String credentialName,
-        CredentialResourceInner credential) {
-        CredentialResourceInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, factoryName, credentialName, credential);
-        if (inner != null) {
-            return new CredentialResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CredentialResource> getWithResponse(String resourceGroupName, String factoryName,
         String credentialName, String ifNoneMatch, Context context) {
         Response<CredentialResourceInner> inner = this.serviceClient()
@@ -93,11 +70,93 @@ public final class CredentialOperationsImpl implements CredentialOperations {
         this.serviceClient().delete(resourceGroupName, factoryName, credentialName);
     }
 
+    public CredentialResource getById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
+        if (factoryName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+        }
+        String credentialName = ResourceManagerUtils.getValueFromIdByName(id, "credentials");
+        if (credentialName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'credentials'.", id)));
+        }
+        String localIfNoneMatch = null;
+        return this.getWithResponse(resourceGroupName, factoryName, credentialName, localIfNoneMatch, Context.NONE)
+            .getValue();
+    }
+
+    public Response<CredentialResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
+        if (factoryName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+        }
+        String credentialName = ResourceManagerUtils.getValueFromIdByName(id, "credentials");
+        if (credentialName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'credentials'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, factoryName, credentialName, ifNoneMatch, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
+        if (factoryName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+        }
+        String credentialName = ResourceManagerUtils.getValueFromIdByName(id, "credentials");
+        if (credentialName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'credentials'.", id)));
+        }
+        this.deleteWithResponse(resourceGroupName, factoryName, credentialName, Context.NONE);
+    }
+
+    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
+        if (factoryName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+        }
+        String credentialName = ResourceManagerUtils.getValueFromIdByName(id, "credentials");
+        if (credentialName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'credentials'.", id)));
+        }
+        return this.deleteWithResponse(resourceGroupName, factoryName, credentialName, context);
+    }
+
     private CredentialOperationsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.datafactory.DataFactoryManager manager() {
         return this.serviceManager;
+    }
+
+    public CredentialResourceImpl define(String name) {
+        return new CredentialResourceImpl(name, this.manager());
     }
 }

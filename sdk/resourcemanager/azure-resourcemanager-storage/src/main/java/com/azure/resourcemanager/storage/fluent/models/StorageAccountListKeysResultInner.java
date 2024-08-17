@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response from the ListKeys operation.
  */
 @Immutable
-public final class StorageAccountListKeysResultInner {
+public final class StorageAccountListKeysResultInner implements JsonSerializable<StorageAccountListKeysResultInner> {
     /*
      * Gets the list of storage account keys and their properties for the specified storage account.
      */
-    @JsonProperty(value = "keys", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageAccountKey> keys;
 
     /**
@@ -30,7 +32,7 @@ public final class StorageAccountListKeysResultInner {
     /**
      * Get the keys property: Gets the list of storage account keys and their properties for the specified storage
      * account.
-     *
+     * 
      * @return the keys value.
      */
     public List<StorageAccountKey> keys() {
@@ -39,12 +41,49 @@ public final class StorageAccountListKeysResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keys() != null) {
             keys().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountListKeysResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountListKeysResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageAccountListKeysResultInner.
+     */
+    public static StorageAccountListKeysResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountListKeysResultInner deserializedStorageAccountListKeysResultInner
+                = new StorageAccountListKeysResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keys".equals(fieldName)) {
+                    List<StorageAccountKey> keys = reader.readArray(reader1 -> StorageAccountKey.fromJson(reader1));
+                    deserializedStorageAccountListKeysResultInner.keys = keys;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountListKeysResultInner;
+        });
     }
 }

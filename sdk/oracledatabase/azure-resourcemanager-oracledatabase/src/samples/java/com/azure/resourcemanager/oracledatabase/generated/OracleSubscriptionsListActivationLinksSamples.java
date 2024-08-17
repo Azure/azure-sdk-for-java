@@ -9,7 +9,8 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class OracleSubscriptionsListActivationLinksSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/oracleSubscriptions_listActivationLinks.json
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/
+     * oracleSubscriptions_listActivationLinks.json
      */
     /**
      * Sample code: List Activation Links for the Oracle Subscription.

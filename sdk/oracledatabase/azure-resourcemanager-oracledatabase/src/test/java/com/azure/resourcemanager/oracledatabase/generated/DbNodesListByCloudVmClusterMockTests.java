@@ -21,7 +21,7 @@ public final class DbNodesListByCloudVmClusterMockTests {
     @Test
     public void testListByCloudVmCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ocid\":\"sxoa\",\"additionalDetails\":\"tgzpnpb\",\"backupIpId\":\"vefloccsrmozihmi\",\"backupVnic2Id\":\"awtxxpk\",\"backupVnicId\":\"cxcjxgry\",\"cpuCoreCount\":1729978627,\"dbNodeStorageSizeInGbs\":451045794,\"dbServerId\":\"cil\",\"dbSystemId\":\"mcayk\",\"faultDomain\":\"noxuztrksx\",\"hostIpId\":\"ndfcpfn\",\"hostname\":\"thjtwk\",\"lifecycleState\":\"Updating\",\"lifecycleDetails\":\"rxuzvoam\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1821726929,\"softwareStorageSizeInGb\":935700745,\"timeCreated\":\"2021-03-16T14:43:14Z\",\"timeMaintenanceWindowEnd\":\"2021-04-09T14:36:37Z\",\"timeMaintenanceWindowStart\":\"2021-01-16T00:08:26Z\",\"vnic2Id\":\"xqdlyrtltlapr\",\"vnicId\":\"zkatb\",\"provisioningState\":\"Canceled\"},\"id\":\"nnbsoqeqa\",\"name\":\"arvlagunbt\",\"type\":\"febwlnbmhyreeudz\"}]}";
+            = "{\"value\":[{\"properties\":{\"ocid\":\"wfepbnwgfmx\",\"additionalDetails\":\"cgbjbgdlfgt\",\"backupIpId\":\"snaquf\",\"backupVnic2Id\":\"bctqhamzjrwd\",\"backupVnicId\":\"zeqyjleziun\",\"cpuCoreCount\":822376850,\"dbNodeStorageSizeInGbs\":105350426,\"dbServerId\":\"ntkwcegy\",\"dbSystemId\":\"lbnseqac\",\"faultDomain\":\"vpilg\",\"hostIpId\":\"oq\",\"hostname\":\"gmditgueiookjbs\",\"lifecycleState\":\"Available\",\"lifecycleDetails\":\"dt\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1267925694,\"softwareStorageSizeInGb\":1329198912,\"timeCreated\":\"2021-08-29T23:35:12Z\",\"timeMaintenanceWindowEnd\":\"2021-01-30T09:51:14Z\",\"timeMaintenanceWindowStart\":\"2021-04-06T22:02:45Z\",\"vnic2Id\":\"bnfxofvc\",\"vnicId\":\"gdirazf\",\"provisioningState\":\"Canceled\"},\"id\":\"w\",\"name\":\"bmdujtmvcopexc\",\"type\":\"jurbuhhlkyqltqsr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class DbNodesListByCloudVmClusterMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DbNode> response
-            = manager.dbNodes().listByCloudVmCluster("hflzokxco", "pelnjetag", com.azure.core.util.Context.NONE);
+            = manager.dbNodes().listByCloudVmCluster("o", "gebx", com.azure.core.util.Context.NONE);
 
     }
 }

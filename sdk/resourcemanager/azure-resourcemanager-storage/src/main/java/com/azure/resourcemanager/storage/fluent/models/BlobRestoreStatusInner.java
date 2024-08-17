@@ -5,37 +5,39 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.BlobRestoreParameters;
 import com.azure.resourcemanager.storage.models.BlobRestoreProgressStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Blob restore status.
  */
 @Immutable
-public final class BlobRestoreStatusInner {
+public final class BlobRestoreStatusInner implements JsonSerializable<BlobRestoreStatusInner> {
     /*
-     * The status of blob restore progress. Possible values are: - InProgress: Indicates that blob restore is ongoing. - Complete: Indicates that blob restore has been completed successfully. - Failed: Indicates that blob restore is failed.
+     * The status of blob restore progress. Possible values are: - InProgress: Indicates that blob restore is ongoing. -
+     * Complete: Indicates that blob restore has been completed successfully. - Failed: Indicates that blob restore is
+     * failed.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private BlobRestoreProgressStatus status;
 
     /*
      * Failure reason when blob restore is failed.
      */
-    @JsonProperty(value = "failureReason", access = JsonProperty.Access.WRITE_ONLY)
     private String failureReason;
 
     /*
      * Id for tracking blob restore request.
      */
-    @JsonProperty(value = "restoreId", access = JsonProperty.Access.WRITE_ONLY)
     private String restoreId;
 
     /*
      * Blob restore request parameters.
      */
-    @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private BlobRestoreParameters parameters;
 
     /**
@@ -91,5 +93,47 @@ public final class BlobRestoreStatusInner {
         if (parameters() != null) {
             parameters().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobRestoreStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobRestoreStatusInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BlobRestoreStatusInner.
+     */
+    public static BlobRestoreStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobRestoreStatusInner deserializedBlobRestoreStatusInner = new BlobRestoreStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedBlobRestoreStatusInner.status
+                        = BlobRestoreProgressStatus.fromString(reader.getString());
+                } else if ("failureReason".equals(fieldName)) {
+                    deserializedBlobRestoreStatusInner.failureReason = reader.getString();
+                } else if ("restoreId".equals(fieldName)) {
+                    deserializedBlobRestoreStatusInner.restoreId = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedBlobRestoreStatusInner.parameters = BlobRestoreParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobRestoreStatusInner;
+        });
     }
 }

@@ -32,11 +32,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.resourcemanager.network.fluent.VirtualHubBgpConnectionsClient;
 import com.azure.resourcemanager.network.fluent.models.BgpConnectionInner;
 import com.azure.resourcemanager.network.models.ListVirtualHubBgpConnectionResults;
 import com.azure.resourcemanager.network.models.PeerRoute;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
@@ -175,7 +175,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -216,7 +216,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -312,7 +312,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -359,7 +359,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -558,7 +558,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -599,7 +599,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -778,7 +778,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -817,7 +817,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -924,7 +924,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listLearnedRoutes(this.client.getEndpoint(), resourceGroupName, hubName,
@@ -966,7 +966,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listLearnedRoutes(this.client.getEndpoint(), resourceGroupName, hubName, connectionName,
@@ -991,8 +991,8 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             = listLearnedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName);
         return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), this.client.getContext());
+            }.getJavaType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     /**
@@ -1015,8 +1015,8 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             = listLearnedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName, context);
         return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), context);
+            }.getJavaType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getJavaType(), context);
     }
 
     /**
@@ -1159,7 +1159,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName, hubName,
@@ -1201,7 +1201,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName, hubName, connectionName,
@@ -1226,8 +1226,8 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             = listAdvertisedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName);
         return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), this.client.getContext());
+            }.getJavaType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     /**
@@ -1251,8 +1251,8 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             = listAdvertisedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName, context);
         return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
-            }.getType(), context);
+            }.getJavaType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getJavaType(), context);
     }
 
     /**
@@ -1365,9 +1365,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1392,9 +1390,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

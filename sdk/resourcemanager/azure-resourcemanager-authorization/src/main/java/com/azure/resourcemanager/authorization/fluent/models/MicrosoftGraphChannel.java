@@ -5,46 +5,44 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** channel. */
+/**
+ * channel.
+ */
 @Fluent
 public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
     /*
      * Optional textual description for the channel.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Channel name as it will appear to the user in Microsoft Teams.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The email address for sending messages to the channel. Read-only.
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /*
-     * Indicates whether the channel should automatically be marked 'favorite' for all members of the team. Can only be
-     * set programmatically with Create team. Default: false.
+     * Indicates whether the channel should be marked 'recommended' for all members of the team to show in their channel
+     * list. Can only be set programmatically with Create team. Default: false. NOTE: All recommended channels will
+     * automatically show in channels list for EDU and FLW users.
      */
-    @JsonProperty(value = "isFavoriteByDefault")
     private Boolean isFavoriteByDefault;
 
     /*
      * channelMembershipType
      */
-    @JsonProperty(value = "membershipType")
     private MicrosoftGraphChannelMembershipType membershipType;
 
     /*
@@ -52,45 +50,42 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
      * channel in Microsoft Teams and select Get link to channel. This URL should be treated as an opaque blob, and not
      * parsed. Read-only.
      */
-    @JsonProperty(value = "webUrl")
     private String webUrl;
 
     /*
      * driveItem
      */
-    @JsonProperty(value = "filesFolder")
     private MicrosoftGraphDriveItem filesFolder;
 
     /*
      * A collection of membership records associated with the channel.
      */
-    @JsonProperty(value = "members")
     private List<MicrosoftGraphConversationMember> members;
 
     /*
      * A collection of all the messages in the channel. A navigation property. Nullable.
      */
-    @JsonProperty(value = "messages")
     private List<MicrosoftGraphChatMessage> messages;
 
     /*
      * A collection of all the tabs in the channel. A navigation property.
      */
-    @JsonProperty(value = "tabs")
     private List<MicrosoftGraphTeamsTab> tabs;
 
     /*
      * channel
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphChannel class. */
+    /**
+     * Creates an instance of MicrosoftGraphChannel class.
+     */
     public MicrosoftGraphChannel() {
     }
 
     /**
      * Get the description property: Optional textual description for the channel.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -99,7 +94,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Set the description property: Optional textual description for the channel.
-     *
+     * 
      * @param description the description value to set.
      * @return the MicrosoftGraphChannel object itself.
      */
@@ -110,7 +105,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Get the displayName property: Channel name as it will appear to the user in Microsoft Teams.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -119,7 +114,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Set the displayName property: Channel name as it will appear to the user in Microsoft Teams.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphChannel object itself.
      */
@@ -130,7 +125,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Get the email property: The email address for sending messages to the channel. Read-only.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -139,7 +134,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Set the email property: The email address for sending messages to the channel. Read-only.
-     *
+     * 
      * @param email the email value to set.
      * @return the MicrosoftGraphChannel object itself.
      */
@@ -150,9 +145,9 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Get the isFavoriteByDefault property: Indicates whether the channel should be marked 'recommended' for all
-     * members of the team to show in their channel list.
-     * NOTE: All recommended channels will automatically show in channels list for EDU and FLW users.
-     *
+     * members of the team to show in their channel list. Can only be set programmatically with Create team. Default:
+     * false. NOTE: All recommended channels will automatically show in channels list for EDU and FLW users.
+     * 
      * @return the isFavoriteByDefault value.
      */
     public Boolean isFavoriteByDefault() {
@@ -161,9 +156,9 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Set the isFavoriteByDefault property: Indicates whether the channel should be marked 'recommended' for all
-     * members of the team to show in their channel list.
-     * NOTE: All recommended channels will automatically show in channels list for EDU and FLW users.
-     *
+     * members of the team to show in their channel list. Can only be set programmatically with Create team. Default:
+     * false. NOTE: All recommended channels will automatically show in channels list for EDU and FLW users.
+     * 
      * @param isFavoriteByDefault the isFavoriteByDefault value to set.
      * @return the MicrosoftGraphChannel object itself.
      */
@@ -174,7 +169,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Get the membershipType property: channelMembershipType.
-     *
+     * 
      * @return the membershipType value.
      */
     public MicrosoftGraphChannelMembershipType membershipType() {
@@ -183,7 +178,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Set the membershipType property: channelMembershipType.
-     *
+     * 
      * @param membershipType the membershipType value to set.
      * @return the MicrosoftGraphChannel object itself.
      */
@@ -196,7 +191,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
      * Get the webUrl property: A hyperlink that will go to the channel in Microsoft Teams. This is the URL that you get
      * when you right-click a channel in Microsoft Teams and select Get link to channel. This URL should be treated as
      * an opaque blob, and not parsed. Read-only.
-     *
+     * 
      * @return the webUrl value.
      */
     public String webUrl() {
@@ -207,7 +202,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
      * Set the webUrl property: A hyperlink that will go to the channel in Microsoft Teams. This is the URL that you get
      * when you right-click a channel in Microsoft Teams and select Get link to channel. This URL should be treated as
      * an opaque blob, and not parsed. Read-only.
-     *
+     * 
      * @param webUrl the webUrl value to set.
      * @return the MicrosoftGraphChannel object itself.
      */
@@ -218,7 +213,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Get the filesFolder property: driveItem.
-     *
+     * 
      * @return the filesFolder value.
      */
     public MicrosoftGraphDriveItem filesFolder() {
@@ -227,7 +222,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Set the filesFolder property: driveItem.
-     *
+     * 
      * @param filesFolder the filesFolder value to set.
      * @return the MicrosoftGraphChannel object itself.
      */
@@ -238,7 +233,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Get the members property: A collection of membership records associated with the channel.
-     *
+     * 
      * @return the members value.
      */
     public List<MicrosoftGraphConversationMember> members() {
@@ -247,7 +242,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Set the members property: A collection of membership records associated with the channel.
-     *
+     * 
      * @param members the members value to set.
      * @return the MicrosoftGraphChannel object itself.
      */
@@ -258,7 +253,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Get the messages property: A collection of all the messages in the channel. A navigation property. Nullable.
-     *
+     * 
      * @return the messages value.
      */
     public List<MicrosoftGraphChatMessage> messages() {
@@ -267,7 +262,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Set the messages property: A collection of all the messages in the channel. A navigation property. Nullable.
-     *
+     * 
      * @param messages the messages value to set.
      * @return the MicrosoftGraphChannel object itself.
      */
@@ -278,7 +273,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Get the tabs property: A collection of all the tabs in the channel. A navigation property.
-     *
+     * 
      * @return the tabs value.
      */
     public List<MicrosoftGraphTeamsTab> tabs() {
@@ -287,7 +282,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Set the tabs property: A collection of all the tabs in the channel. A navigation property.
-     *
+     * 
      * @param tabs the tabs value to set.
      * @return the MicrosoftGraphChannel object itself.
      */
@@ -298,17 +293,16 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: channel.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: channel.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphChannel object itself.
      */
@@ -317,15 +311,9 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphChannel withId(String id) {
         super.withId(id);
@@ -334,7 +322,7 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -352,5 +340,90 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
         if (tabs() != null) {
             tabs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeBooleanField("isFavoriteByDefault", this.isFavoriteByDefault);
+        jsonWriter.writeStringField("membershipType",
+            this.membershipType == null ? null : this.membershipType.toString());
+        jsonWriter.writeStringField("webUrl", this.webUrl);
+        jsonWriter.writeJsonField("filesFolder", this.filesFolder);
+        jsonWriter.writeArrayField("members", this.members, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tabs", this.tabs, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphChannel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphChannel if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphChannel.
+     */
+    public static MicrosoftGraphChannel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphChannel deserializedMicrosoftGraphChannel = new MicrosoftGraphChannel();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphChannel.withId(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphChannel.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphChannel.displayName = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedMicrosoftGraphChannel.email = reader.getString();
+                } else if ("isFavoriteByDefault".equals(fieldName)) {
+                    deserializedMicrosoftGraphChannel.isFavoriteByDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("membershipType".equals(fieldName)) {
+                    deserializedMicrosoftGraphChannel.membershipType
+                        = MicrosoftGraphChannelMembershipType.fromString(reader.getString());
+                } else if ("webUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphChannel.webUrl = reader.getString();
+                } else if ("filesFolder".equals(fieldName)) {
+                    deserializedMicrosoftGraphChannel.filesFolder = MicrosoftGraphDriveItem.fromJson(reader);
+                } else if ("members".equals(fieldName)) {
+                    List<MicrosoftGraphConversationMember> members
+                        = reader.readArray(reader1 -> MicrosoftGraphConversationMember.fromJson(reader1));
+                    deserializedMicrosoftGraphChannel.members = members;
+                } else if ("messages".equals(fieldName)) {
+                    List<MicrosoftGraphChatMessage> messages
+                        = reader.readArray(reader1 -> MicrosoftGraphChatMessage.fromJson(reader1));
+                    deserializedMicrosoftGraphChannel.messages = messages;
+                } else if ("tabs".equals(fieldName)) {
+                    List<MicrosoftGraphTeamsTab> tabs
+                        = reader.readArray(reader1 -> MicrosoftGraphTeamsTab.fromJson(reader1));
+                    deserializedMicrosoftGraphChannel.tabs = tabs;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphChannel.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphChannel;
+        });
     }
 }

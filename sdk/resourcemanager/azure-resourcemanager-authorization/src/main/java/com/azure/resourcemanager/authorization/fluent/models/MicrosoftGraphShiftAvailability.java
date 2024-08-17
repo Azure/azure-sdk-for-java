@@ -5,47 +5,49 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** shiftAvailability. */
+/**
+ * shiftAvailability.
+ */
 @Fluent
-public final class MicrosoftGraphShiftAvailability {
+public final class MicrosoftGraphShiftAvailability implements JsonSerializable<MicrosoftGraphShiftAvailability> {
     /*
      * patternedRecurrence
      */
-    @JsonProperty(value = "recurrence")
     private MicrosoftGraphPatternedRecurrence recurrence;
 
     /*
      * The time slot(s) preferred by the user.
      */
-    @JsonProperty(value = "timeSlots")
     private List<MicrosoftGraphTimeRange> timeSlots;
 
     /*
      * Specifies the time zone for the indicated time.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * shiftAvailability
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphShiftAvailability class. */
+    /**
+     * Creates an instance of MicrosoftGraphShiftAvailability class.
+     */
     public MicrosoftGraphShiftAvailability() {
     }
 
     /**
      * Get the recurrence property: patternedRecurrence.
-     *
+     * 
      * @return the recurrence value.
      */
     public MicrosoftGraphPatternedRecurrence recurrence() {
@@ -54,7 +56,7 @@ public final class MicrosoftGraphShiftAvailability {
 
     /**
      * Set the recurrence property: patternedRecurrence.
-     *
+     * 
      * @param recurrence the recurrence value to set.
      * @return the MicrosoftGraphShiftAvailability object itself.
      */
@@ -65,7 +67,7 @@ public final class MicrosoftGraphShiftAvailability {
 
     /**
      * Get the timeSlots property: The time slot(s) preferred by the user.
-     *
+     * 
      * @return the timeSlots value.
      */
     public List<MicrosoftGraphTimeRange> timeSlots() {
@@ -74,7 +76,7 @@ public final class MicrosoftGraphShiftAvailability {
 
     /**
      * Set the timeSlots property: The time slot(s) preferred by the user.
-     *
+     * 
      * @param timeSlots the timeSlots value to set.
      * @return the MicrosoftGraphShiftAvailability object itself.
      */
@@ -85,7 +87,7 @@ public final class MicrosoftGraphShiftAvailability {
 
     /**
      * Get the timeZone property: Specifies the time zone for the indicated time.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -94,7 +96,7 @@ public final class MicrosoftGraphShiftAvailability {
 
     /**
      * Set the timeZone property: Specifies the time zone for the indicated time.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the MicrosoftGraphShiftAvailability object itself.
      */
@@ -105,17 +107,16 @@ public final class MicrosoftGraphShiftAvailability {
 
     /**
      * Get the additionalProperties property: shiftAvailability.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: shiftAvailability.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphShiftAvailability object itself.
      */
@@ -124,17 +125,9 @@ public final class MicrosoftGraphShiftAvailability {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -144,5 +137,62 @@ public final class MicrosoftGraphShiftAvailability {
         if (timeSlots() != null) {
             timeSlots().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("recurrence", this.recurrence);
+        jsonWriter.writeArrayField("timeSlots", this.timeSlots, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphShiftAvailability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphShiftAvailability if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphShiftAvailability.
+     */
+    public static MicrosoftGraphShiftAvailability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphShiftAvailability deserializedMicrosoftGraphShiftAvailability
+                = new MicrosoftGraphShiftAvailability();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recurrence".equals(fieldName)) {
+                    deserializedMicrosoftGraphShiftAvailability.recurrence
+                        = MicrosoftGraphPatternedRecurrence.fromJson(reader);
+                } else if ("timeSlots".equals(fieldName)) {
+                    List<MicrosoftGraphTimeRange> timeSlots
+                        = reader.readArray(reader1 -> MicrosoftGraphTimeRange.fromJson(reader1));
+                    deserializedMicrosoftGraphShiftAvailability.timeSlots = timeSlots;
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedMicrosoftGraphShiftAvailability.timeZone = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphShiftAvailability.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphShiftAvailability;
+        });
     }
 }

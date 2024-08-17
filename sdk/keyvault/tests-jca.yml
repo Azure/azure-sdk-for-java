@@ -1,0 +1,49 @@
+trigger: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: keyvault
+    TestResourceDirectories:
+      - keyvault/test-resources-jca
+    TimeoutInMinutes: 240
+    SupportedClouds: 'Public,UsGov,China,Canary'
+    EnvVars:
+      AZURE_LOG_LEVEL: 2
+    CloudConfig:
+      Public:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
+      UsGov:
+        SubscriptionConfiguration: $(sub-config-gov-test-resources)
+        MatrixFilters:
+          - ArmTemplateParameters=^(?!.*enableHsm.*true)
+      China:
+        SubscriptionConfiguration: $(sub-config-cn-test-resources)
+        MatrixFilters:
+          - ArmTemplateParameters=^(?!.*enableHsm.*true)
+      Canary:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        Location: 'centraluseuap'
+        ServiceConnection: azure-sdk-tests
+        # Managed HSM test resources are expensive and provisioning has not been reliable.
+        # Given test coverage of non-canary regions we probably don't need to test in canary.
+        MatrixFilters:
+          - ArmTemplateParameters=^(?!.*enableHsm.*true)
+        # Some resource providers required for attestation are not supported in canary.
+        MatrixReplace:
+          - 'ArmTemplateParameters=(.*)enableAttestation.*?\$true(.*)/$1enableAttestation \= $false$2'
+    MatrixConfigs:
+      - Name: Key_Vault_live_test
+        Path: sdk/keyvault/platform-matrix.json
+        Selection: sparse
+        GenerateVMJobs: true
+    Artifacts:
+      - name: azure-security-test-keyvault-jca
+        groupId: com.azure
+        safeName: azuresecuritytestkeyvaultjca
+      - name: azure-security-keyvault-jca
+        groupId: com.azure
+        safeName: azuresecuritykeyvaultjca

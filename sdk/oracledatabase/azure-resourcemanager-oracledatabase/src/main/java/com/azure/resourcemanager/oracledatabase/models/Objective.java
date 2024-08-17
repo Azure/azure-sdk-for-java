@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class Objective extends ExpandableStringEnum<Objective> {
      * @param name a name to look for.
      * @return the corresponding Objective.
      */
-    @JsonCreator
     public static Objective fromString(String name) {
         return fromString(name, Objective.class);
     }

@@ -5,91 +5,86 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The Service model.
  */
 @Immutable
-public final class Service {
+public final class Service implements JsonSerializable<Service> {
 
     /*
      * The scheme property.
      */
     @Generated
-    @JsonProperty(value = "scheme")
     private String scheme;
 
     /*
      * The port property.
      */
     @Generated
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * The webComponents property.
      */
     @Generated
-    @JsonProperty(value = "webComponents")
     private List<WebComponent> webComponents;
 
     /*
      * The sslCerts property.
      */
     @Generated
-    @JsonProperty(value = "sslCerts")
     private List<SslCertAsset> sslCerts;
 
     /*
      * The exceptions property.
      */
     @Generated
-    @JsonProperty(value = "exceptions")
     private List<ObservedString> exceptions;
 
     /*
      * The sources property.
      */
     @Generated
-    @JsonProperty(value = "sources")
     private List<Source> sources;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The recent property.
      */
     @Generated
-    @JsonProperty(value = "recent")
     private Boolean recent;
 
     /*
      * The portStates property.
      */
     @Generated
-    @JsonProperty(value = "portStates")
     private List<ObservedPortState> portStates;
 
     /**
@@ -207,5 +202,81 @@ public final class Service {
     @Generated
     public List<ObservedPortState> getPortStates() {
         return this.portStates;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scheme", this.scheme);
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeArrayField("webComponents", this.webComponents, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sslCerts", this.sslCerts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("exceptions", this.exceptions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeBooleanField("recent", this.recent);
+        jsonWriter.writeArrayField("portStates", this.portStates, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Service from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Service if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Service.
+     */
+    @Generated
+    public static Service fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Service deserializedService = new Service();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("scheme".equals(fieldName)) {
+                    deserializedService.scheme = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedService.port = reader.getNullable(JsonReader::getInt);
+                } else if ("webComponents".equals(fieldName)) {
+                    List<WebComponent> webComponents = reader.readArray(reader1 -> WebComponent.fromJson(reader1));
+                    deserializedService.webComponents = webComponents;
+                } else if ("sslCerts".equals(fieldName)) {
+                    List<SslCertAsset> sslCerts = reader.readArray(reader1 -> SslCertAsset.fromJson(reader1));
+                    deserializedService.sslCerts = sslCerts;
+                } else if ("exceptions".equals(fieldName)) {
+                    List<ObservedString> exceptions = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedService.exceptions = exceptions;
+                } else if ("sources".equals(fieldName)) {
+                    List<Source> sources = reader.readArray(reader1 -> Source.fromJson(reader1));
+                    deserializedService.sources = sources;
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedService.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedService.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedService.count = reader.getNullable(JsonReader::getLong);
+                } else if ("recent".equals(fieldName)) {
+                    deserializedService.recent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("portStates".equals(fieldName)) {
+                    List<ObservedPortState> portStates
+                        = reader.readArray(reader1 -> ObservedPortState.fromJson(reader1));
+                    deserializedService.portStates = portStates;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedService;
+        });
     }
 }

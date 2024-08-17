@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -32,7 +30,7 @@ public final class BlobRestoreProgressStatus extends ExpandableStringEnum<BlobRe
 
     /**
      * Creates a new instance of BlobRestoreProgressStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -41,18 +39,17 @@ public final class BlobRestoreProgressStatus extends ExpandableStringEnum<BlobRe
 
     /**
      * Creates or finds a BlobRestoreProgressStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BlobRestoreProgressStatus.
      */
-    @JsonCreator
     public static BlobRestoreProgressStatus fromString(String name) {
         return fromString(name, BlobRestoreProgressStatus.class);
     }
 
     /**
      * Gets known BlobRestoreProgressStatus values.
-     *
+     * 
      * @return known BlobRestoreProgressStatus values.
      */
     public static Collection<BlobRestoreProgressStatus> values() {

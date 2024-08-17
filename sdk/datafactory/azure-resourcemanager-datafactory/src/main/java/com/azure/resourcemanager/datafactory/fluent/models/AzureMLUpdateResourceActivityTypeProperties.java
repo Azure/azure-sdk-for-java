@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureMLUpdateResourceActivityTypeProperties {
     /*
-     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with resultType string).
+     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "trainedModelName", required = true)
     private Object trainedModelName;
@@ -27,7 +28,8 @@ public final class AzureMLUpdateResourceActivityTypeProperties {
     private LinkedServiceReference trainedModelLinkedServiceName;
 
     /*
-     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the update operation.  Type: string (or Expression with resultType string).
+     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the
+     * update operation. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "trainedModelFilePath", required = true)
     private Object trainedModelFilePath;

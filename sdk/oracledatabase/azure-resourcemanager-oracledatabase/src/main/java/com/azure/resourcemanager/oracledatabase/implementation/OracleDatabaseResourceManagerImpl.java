@@ -39,6 +39,7 @@ import com.azure.resourcemanager.oracledatabase.fluent.GiVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.OperationsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.OracleDatabaseResourceManager;
 import com.azure.resourcemanager.oracledatabase.fluent.OracleSubscriptionsClient;
+import com.azure.resourcemanager.oracledatabase.fluent.SystemVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.VirtualNetworkAddressesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -293,6 +294,20 @@ public final class OracleDatabaseResourceManagerImpl implements OracleDatabaseRe
     }
 
     /**
+     * The SystemVersionsClient object to access its operations.
+     */
+    private final SystemVersionsClient systemVersions;
+
+    /**
+     * Gets the SystemVersionsClient object to access its operations.
+     * 
+     * @return the SystemVersionsClient object.
+     */
+    public SystemVersionsClient getSystemVersions() {
+        return this.systemVersions;
+    }
+
+    /**
      * The OracleSubscriptionsClient object to access its operations.
      */
     private final OracleSubscriptionsClient oracleSubscriptions;
@@ -379,7 +394,7 @@ public final class OracleDatabaseResourceManagerImpl implements OracleDatabaseRe
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-09-01-preview";
+        this.apiVersion = "2023-09-01";
         this.operations = new OperationsClientImpl(this);
         this.autonomousDatabases = new AutonomousDatabasesClientImpl(this);
         this.cloudExadataInfrastructures = new CloudExadataInfrastructuresClientImpl(this);
@@ -391,6 +406,7 @@ public final class OracleDatabaseResourceManagerImpl implements OracleDatabaseRe
         this.dnsPrivateViews = new DnsPrivateViewsClientImpl(this);
         this.dnsPrivateZones = new DnsPrivateZonesClientImpl(this);
         this.giVersions = new GiVersionsClientImpl(this);
+        this.systemVersions = new SystemVersionsClientImpl(this);
         this.oracleSubscriptions = new OracleSubscriptionsClientImpl(this);
         this.autonomousDatabaseBackups = new AutonomousDatabaseBackupsClientImpl(this);
         this.dbServers = new DbServersClientImpl(this);

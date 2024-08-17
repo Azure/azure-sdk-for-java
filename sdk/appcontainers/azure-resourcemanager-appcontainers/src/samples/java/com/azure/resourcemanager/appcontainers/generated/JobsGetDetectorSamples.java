@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JobsGetDetectorSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_GetDetector.json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_GetDetector.json
      */
     /**
      * Sample code: Get diagnostic data for a Container App Job.
@@ -19,7 +19,8 @@ public final class JobsGetDetectorSamples {
      */
     public static void
         getDiagnosticDataForAContainerAppJob(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.jobs().getDetectorWithResponse("mikono-workerapp-test-rg", "mikonojob1", "containerappjobnetworkIO",
-            com.azure.core.util.Context.NONE);
+        manager.jobs()
+            .getDetectorWithResponse("mikono-workerapp-test-rg", "mikonojob1", "containerappjobnetworkIO",
+                com.azure.core.util.Context.NONE);
     }
 }

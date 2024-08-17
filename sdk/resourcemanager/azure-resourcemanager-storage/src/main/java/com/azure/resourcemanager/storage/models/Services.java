@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -36,7 +34,7 @@ public final class Services extends ExpandableStringEnum<Services> {
 
     /**
      * Creates a new instance of Services value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +43,17 @@ public final class Services extends ExpandableStringEnum<Services> {
 
     /**
      * Creates or finds a Services from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Services.
      */
-    @JsonCreator
     public static Services fromString(String name) {
         return fromString(name, Services.class);
     }
 
     /**
      * Gets known Services values.
-     *
+     * 
      * @return known Services values.
      */
     public static Collection<Services> values() {

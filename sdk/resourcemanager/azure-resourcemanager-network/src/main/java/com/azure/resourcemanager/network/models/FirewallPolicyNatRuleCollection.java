@@ -5,42 +5,31 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Firewall Policy NAT Rule Collection.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "ruleCollectionType",
-    defaultImpl = FirewallPolicyNatRuleCollection.class,
-    visible = true)
-@JsonTypeName("FirewallPolicyNatRuleCollection")
 @Fluent
 public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCollection {
     /*
      * The type of the rule collection.
      */
-    @JsonTypeId
-    @JsonProperty(value = "ruleCollectionType", required = true)
     private FirewallPolicyRuleCollectionType ruleCollectionType
         = FirewallPolicyRuleCollectionType.FIREWALL_POLICY_NAT_RULE_COLLECTION;
 
     /*
      * The action type of a Nat rule collection.
      */
-    @JsonProperty(value = "action")
     private FirewallPolicyNatRuleCollectionAction action;
 
     /*
      * List of rules included in a rule collection.
      */
-    @JsonProperty(value = "rules")
     private List<FirewallPolicyRule> rules;
 
     /**
@@ -51,7 +40,7 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
 
     /**
      * Get the ruleCollectionType property: The type of the rule collection.
-     *
+     * 
      * @return the ruleCollectionType value.
      */
     @Override
@@ -61,7 +50,7 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
 
     /**
      * Get the action property: The action type of a Nat rule collection.
-     *
+     * 
      * @return the action value.
      */
     public FirewallPolicyNatRuleCollectionAction action() {
@@ -70,7 +59,7 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
 
     /**
      * Set the action property: The action type of a Nat rule collection.
-     *
+     * 
      * @param action the action value to set.
      * @return the FirewallPolicyNatRuleCollection object itself.
      */
@@ -81,7 +70,7 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
 
     /**
      * Get the rules property: List of rules included in a rule collection.
-     *
+     * 
      * @return the rules value.
      */
     public List<FirewallPolicyRule> rules() {
@@ -90,7 +79,7 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
 
     /**
      * Set the rules property: List of rules included in a rule collection.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the FirewallPolicyNatRuleCollection object itself.
      */
@@ -119,7 +108,7 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -131,5 +120,58 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeNumberField("priority", priority());
+        jsonWriter.writeStringField("ruleCollectionType",
+            this.ruleCollectionType == null ? null : this.ruleCollectionType.toString());
+        jsonWriter.writeJsonField("action", this.action);
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyNatRuleCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyNatRuleCollection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicyNatRuleCollection.
+     */
+    public static FirewallPolicyNatRuleCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyNatRuleCollection deserializedFirewallPolicyNatRuleCollection
+                = new FirewallPolicyNatRuleCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFirewallPolicyNatRuleCollection.withName(reader.getString());
+                } else if ("priority".equals(fieldName)) {
+                    deserializedFirewallPolicyNatRuleCollection.withPriority(reader.getNullable(JsonReader::getInt));
+                } else if ("ruleCollectionType".equals(fieldName)) {
+                    deserializedFirewallPolicyNatRuleCollection.ruleCollectionType
+                        = FirewallPolicyRuleCollectionType.fromString(reader.getString());
+                } else if ("action".equals(fieldName)) {
+                    deserializedFirewallPolicyNatRuleCollection.action
+                        = FirewallPolicyNatRuleCollectionAction.fromJson(reader);
+                } else if ("rules".equals(fieldName)) {
+                    List<FirewallPolicyRule> rules = reader.readArray(reader1 -> FirewallPolicyRule.fromJson(reader1));
+                    deserializedFirewallPolicyNatRuleCollection.rules = rules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyNatRuleCollection;
+        });
     }
 }

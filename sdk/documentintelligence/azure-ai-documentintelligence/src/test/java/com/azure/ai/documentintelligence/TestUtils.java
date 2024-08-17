@@ -49,8 +49,10 @@ public final class TestUtils {
     static final String LICENSE_PNG = "license.png";
     static final String W2_JPG = "w2-single.png";
     static final String IRS_1040 = "IRS-1040_3.pdf";
+    static final String LAYOUT_SAMPLE = "layout-pageobject.pdf";
+    static final String BATCH_SAMPLE_PDF = "Acord_27.pdf";
+
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
-    public static final String INVALID_KEY = "invalid key";
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
         + "main/sdk/documentintelligence/azure-ai-documentintelligence/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
@@ -63,8 +65,6 @@ public final class TestUtils {
         GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL");
     public static final String DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
         GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL");
-    public static final String AZURE_DOCUMENTINTELLIGENCE_API_KEY_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_API_KEY");
     public static final String AZURE_DOCUMENTINTELLIGENCE_ENDPOINT_CONFIGURATION =
         GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_ENDPOINT");
     public static final String DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
@@ -73,13 +73,10 @@ public final class TestUtils {
         GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL");
     public static final String DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
         GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL");
-    public static final String AZURE_CLIENT_ID
-        = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_ID");
-    public static final String AZURE_TENANT_ID
-        = GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID");
-    public static final String AZURE_DOCUMENTINTELLIGENCE_CLIENT_SECRET
-        = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
+    public static final String DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL");
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+    public static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     private TestUtils() {
     }
 
@@ -107,13 +104,12 @@ public final class TestUtils {
     public static void getSelectionMarkTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getSelectionMarkTrainingSasUri(isPlaybackMode));
     }
-    static void getTestingContainerHelper(Consumer<String> testRunner, String fileName, boolean isPlaybackMode) {
-        testRunner.accept(getStorageTestingFileUrl(fileName, isPlaybackMode));
-    }
     public static void getClassifierTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getClassifierTrainingFilesContainerUrl(isPlaybackMode));
     }
-
+    public static void getBatchTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
+        testRunner.accept(getBatchTrainingFilesContainerUrl(isPlaybackMode));
+    }
     /**
      * Get the testing data set SAS Url value based on the test running mode.
      *
@@ -122,20 +118,6 @@ public final class TestUtils {
      */
     private static String getTestingSasUri(boolean isPlaybackMode) {
         return isPlaybackMode ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
-    }
-
-    /**
-     * Prepare the file url from the testing data set SAS Url value.
-     *
-     * @return the testing data specific file Url
-     */
-    private static String getStorageTestingFileUrl(String fileName, boolean isPlaybackMode) {
-        if (isPlaybackMode) {
-            return "https://isPlaybackmode";
-        } else {
-            final String[] urlParts = getTestingSasUri(isPlaybackMode).split("\\?");
-            return urlParts[0] + "/" + fileName + "?" + urlParts[1];
-        }
     }
 
     /**
@@ -174,6 +156,15 @@ public final class TestUtils {
      */
     private static String getClassifierTrainingFilesContainerUrl(boolean isPlaybackMode) {
         return isPlaybackMode ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+    }
+
+    /**
+     * Get the training data set SAS Url value based on the test running mode.
+     *
+     * @return the training data set Url
+     */
+    private static String getBatchTrainingFilesContainerUrl(boolean isPlaybackMode) {
+        return isPlaybackMode ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**

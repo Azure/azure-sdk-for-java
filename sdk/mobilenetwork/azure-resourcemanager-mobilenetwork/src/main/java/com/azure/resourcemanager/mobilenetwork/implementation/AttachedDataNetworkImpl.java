@@ -130,15 +130,18 @@ public final class AttachedDataNetworkImpl
     }
 
     public AttachedDataNetwork create() {
-        this.innerObject = serviceManager.serviceClient().getAttachedDataNetworks().createOrUpdate(resourceGroupName,
-            packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, this.innerModel(),
-            Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDataNetworks()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AttachedDataNetwork create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAttachedDataNetworks().createOrUpdate(resourceGroupName,
-            packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDataNetworks()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, this.innerModel(), context);
         return this;
     }
 
@@ -154,7 +157,8 @@ public final class AttachedDataNetworkImpl
     }
 
     public AttachedDataNetwork apply() {
-        this.innerObject = serviceManager.serviceClient().getAttachedDataNetworks()
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDataNetworks()
             .updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
                 attachedDataNetworkName, updateParameters, Context.NONE)
             .getValue();
@@ -162,9 +166,10 @@ public final class AttachedDataNetworkImpl
     }
 
     public AttachedDataNetwork apply(Context context) {
-        this.innerObject = serviceManager
-            .serviceClient().getAttachedDataNetworks().updateTagsWithResponse(resourceGroupName,
-                packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, updateParameters, context)
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDataNetworks()
+            .updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, updateParameters, context)
             .getValue();
         return this;
     }
@@ -183,17 +188,20 @@ public final class AttachedDataNetworkImpl
     }
 
     public AttachedDataNetwork refresh() {
-        this.innerObject
-            = serviceManager
-                .serviceClient().getAttachedDataNetworks().getWithResponse(resourceGroupName,
-                    packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDataNetworks()
+            .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AttachedDataNetwork refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAttachedDataNetworks().getWithResponse(resourceGroupName,
-            packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDataNetworks()
+            .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, context)
+            .getValue();
         return this;
     }
 

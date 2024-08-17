@@ -5,23 +5,36 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
+import com.azure.resourcemanager.datafactory.models.AzureSqlDatabaseAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SqlAlwaysEncryptedProperties;
+import com.azure.resourcemanager.datafactory.models.SqlServerBaseLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Azure SQL Database linked service properties.
  */
 @Fluent
-public final class AzureSqlDatabaseLinkedServiceTypeProperties {
+public final class AzureSqlDatabaseLinkedServiceTypeProperties extends SqlServerBaseLinkedServiceTypeProperties {
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString", required = true)
+    @JsonProperty(value = "connectionString")
     private Object connectionString;
+
+    /*
+     * The type used for authentication. Type: string.
+     */
+    @JsonProperty(value = "authenticationType")
+    private AzureSqlDatabaseAuthenticationType authenticationType;
+
+    /*
+     * The user name to be used when connecting to server. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "userName")
+    private Object username;
 
     /*
      * The Azure key vault secret reference of password in connection string.
@@ -30,7 +43,8 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference password;
 
     /*
-     * The ID of the service principal used to authenticate against Azure SQL Database. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against Azure SQL Database. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
@@ -42,19 +56,39 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
+     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
+     * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "servicePrincipalCredentialType")
+    private Object servicePrincipalCredentialType;
+
+    /*
+     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is
+     * 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If
+     * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
+     * AzureKeyVaultSecretReference.
+     */
+    @JsonProperty(value = "servicePrincipalCredential")
+    private SecretBase servicePrincipalCredential;
+
+    /*
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or Expression with resultType string).
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -96,6 +130,49 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties {
      */
     public AzureSqlDatabaseLinkedServiceTypeProperties withConnectionString(Object connectionString) {
         this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @return the authenticationType value.
+     */
+    public AzureSqlDatabaseAuthenticationType authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the AzureSqlDatabaseLinkedServiceTypeProperties object itself.
+     */
+    public AzureSqlDatabaseLinkedServiceTypeProperties
+        withAuthenticationType(AzureSqlDatabaseAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the username property: The user name to be used when connecting to server. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the username value.
+     */
+    public Object username() {
+        return this.username;
+    }
+
+    /**
+     * Set the username property: The user name to be used when connecting to server. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param username the username value to set.
+     * @return the AzureSqlDatabaseLinkedServiceTypeProperties object itself.
+     */
+    public AzureSqlDatabaseLinkedServiceTypeProperties withUsername(Object username) {
+        this.username = username;
         return this;
     }
 
@@ -160,6 +237,58 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties {
      */
     public AzureSqlDatabaseLinkedServiceTypeProperties withServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the servicePrincipalCredentialType value.
+     */
+    public Object servicePrincipalCredentialType() {
+        return this.servicePrincipalCredentialType;
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the AzureSqlDatabaseLinkedServiceTypeProperties object itself.
+     */
+    public AzureSqlDatabaseLinkedServiceTypeProperties
+        withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
+        this.servicePrincipalCredentialType = servicePrincipalCredentialType;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalCredential property: The credential of the service principal object in Azure Active
+     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
+     * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
+     * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
+     * 
+     * @return the servicePrincipalCredential value.
+     */
+    public SecretBase servicePrincipalCredential() {
+        return this.servicePrincipalCredential;
+    }
+
+    /**
+     * Set the servicePrincipalCredential property: The credential of the service principal object in Azure Active
+     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
+     * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
+     * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
+     * 
+     * @param servicePrincipalCredential the servicePrincipalCredential value to set.
+     * @return the AzureSqlDatabaseLinkedServiceTypeProperties object itself.
+     */
+    public AzureSqlDatabaseLinkedServiceTypeProperties
+        withServicePrincipalCredential(SecretBase servicePrincipalCredential) {
+        this.servicePrincipalCredential = servicePrincipalCredential;
         return this;
     }
 
@@ -273,21 +402,192 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withServer(Object server) {
+        super.withServer(server);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withDatabase(Object database) {
+        super.withDatabase(database);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withEncrypt(Object encrypt) {
+        super.withEncrypt(encrypt);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withTrustServerCertificate(Object trustServerCertificate) {
+        super.withTrustServerCertificate(trustServerCertificate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withHostnameInCertificate(Object hostnameInCertificate) {
+        super.withHostnameInCertificate(hostnameInCertificate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withApplicationIntent(Object applicationIntent) {
+        super.withApplicationIntent(applicationIntent);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withConnectTimeout(Object connectTimeout) {
+        super.withConnectTimeout(connectTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withConnectRetryCount(Object connectRetryCount) {
+        super.withConnectRetryCount(connectRetryCount);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withConnectRetryInterval(Object connectRetryInterval) {
+        super.withConnectRetryInterval(connectRetryInterval);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withLoadBalanceTimeout(Object loadBalanceTimeout) {
+        super.withLoadBalanceTimeout(loadBalanceTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withCommandTimeout(Object commandTimeout) {
+        super.withCommandTimeout(commandTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withIntegratedSecurity(Object integratedSecurity) {
+        super.withIntegratedSecurity(integratedSecurity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withFailoverPartner(Object failoverPartner) {
+        super.withFailoverPartner(failoverPartner);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withMaxPoolSize(Object maxPoolSize) {
+        super.withMaxPoolSize(maxPoolSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withMinPoolSize(Object minPoolSize) {
+        super.withMinPoolSize(minPoolSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withMultipleActiveResultSets(Object multipleActiveResultSets) {
+        super.withMultipleActiveResultSets(multipleActiveResultSets);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withMultiSubnetFailover(Object multiSubnetFailover) {
+        super.withMultiSubnetFailover(multiSubnetFailover);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withPacketSize(Object packetSize) {
+        super.withPacketSize(packetSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDatabaseLinkedServiceTypeProperties withPooling(Object pooling) {
+        super.withPooling(pooling);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (connectionString() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property connectionString in model AzureSqlDatabaseLinkedServiceTypeProperties"));
-        }
+        super.validate();
         if (password() != null) {
             password().validate();
         }
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();
+        }
+        if (servicePrincipalCredential() != null) {
+            servicePrincipalCredential().validate();
         }
         if (alwaysEncryptedSettings() != null) {
             alwaysEncryptedSettings().validate();
@@ -296,6 +596,4 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties {
             credential().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureSqlDatabaseLinkedServiceTypeProperties.class);
 }

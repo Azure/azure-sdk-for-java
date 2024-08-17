@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of an endpoint certificate. */
+/**
+ * The properties of an endpoint certificate.
+ */
 @Fluent
-public final class EndpointCertificateProperties {
+public final class EndpointCertificateProperties implements JsonSerializable<EndpointCertificateProperties> {
     /*
      * The certificate public blob
      */
-    @JsonProperty(value = "publicBlob")
     private String publicBlob;
 
-    /** Creates an instance of EndpointCertificateProperties class. */
+    /**
+     * Creates an instance of EndpointCertificateProperties class.
+     */
     public EndpointCertificateProperties() {
     }
 
     /**
      * Get the publicBlob property: The certificate public blob.
-     *
+     * 
      * @return the publicBlob value.
      */
     public String publicBlob() {
@@ -31,7 +38,7 @@ public final class EndpointCertificateProperties {
 
     /**
      * Set the publicBlob property: The certificate public blob.
-     *
+     * 
      * @param publicBlob the publicBlob value to set.
      * @return the EndpointCertificateProperties object itself.
      */
@@ -42,9 +49,46 @@ public final class EndpointCertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publicBlob", this.publicBlob);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointCertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointCertificateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EndpointCertificateProperties.
+     */
+    public static EndpointCertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointCertificateProperties deserializedEndpointCertificateProperties
+                = new EndpointCertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicBlob".equals(fieldName)) {
+                    deserializedEndpointCertificateProperties.publicBlob = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointCertificateProperties;
+        });
     }
 }

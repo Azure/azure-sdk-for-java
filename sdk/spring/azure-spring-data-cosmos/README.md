@@ -58,13 +58,13 @@ Mapping from **Spring Boot** / **Spring Cloud** version to **Azure Spring Data C
 | 2.4.x                 | 2020.0.x             | 3.5.0 - 3.7.0                     |
 
 ### I'm Using Spring Boot Version X
-If you are using **Spring Boot** in your project, you can find related **Azure Spring Data Cosmos** versions from above table. For example: if you are using **Spring Boot** 2.7.x, you should use **Azure Spring Data Cosmos** versions 3.23.0 and above.
+If you are using **Spring Boot** in your project, you can find related **Azure Spring Data Cosmos** versions from above table. For example: if you are using **Spring Boot** 3.0.x, you should use **Azure Spring Data Cosmos** versions 5.3.0 and above.
 
 ### I'm Using Spring Cloud Version Y
-If you are using **Spring Cloud** in your project, you can also find related **Azure Spring Data Cosmos** versions from above table. For example, if you are using **Spring Cloud** 2021.0.x, you should use **Azure Spring Data Cosmos** versions 3.23.0 and above.
+If you are using **Spring Cloud** in your project, you can also find related **Azure Spring Data Cosmos** versions from above table. For example, if you are using **Spring Cloud** 2022.0.x, you should use **Azure Spring Data Cosmos** versions 5.3.0 and above.
 
 ## Spring Data Version Support
-This project supports `spring-data-commons 2.7.x` versions.
+This project supports `spring-data-commons 3.0.x` versions.
 
 The above setup does not allow you to override individual dependencies using a property as explained above. To achieve the same result, you’d need to add an entry in the dependencyManagement of your project before the `spring-boot-dependencies` entry. For instance, to upgrade to another Spring Data release train you’d add the following to your pom.xml.
 ```xml
@@ -100,7 +100,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.46.0</version>
+    <version>5.15.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -303,7 +303,7 @@ public CosmosConfig cosmosConfig() {
 
 - Containers will be created automatically unless you don't want them to. Set `autoCreateContainer` to false in `@Container` annotation to disable auto creation of containers.
 
-- Note: If you are using provisioned throughput, you can optionally specify different ru values to customize request units for the container created by the SDK. The minimum ru should be 400
+- Note: By default request units assigned to newly created containers is 400. Specify different ru value to customize request units for the container created by the SDK (minimum RU value is 400).
 ```java readme-sample-User
 @Container(containerName = "myContainer", ru = "400")
 public class User {
@@ -376,7 +376,7 @@ public class UserSample {
 - Azure Spring Data Cosmos supports nested partition key. To add nested partition key, use `partitionKeyPath` field in `@Container` annotation.
 - `partitionKeyPath` should only be used to support nested partition key path. For general partition key support, use the `@PartitionKey` annotation.
 - By default `@PartitionKey` annotation will take precedence, unless not specified.
-- Below example shows how to properly use Nested Partition key feature.
+- Below example shows how to properly use Nested Partition Key feature.
 
 ```java readme-sample-NestedPartitionKeyEntitySample
 @Container(containerName = "nested-partition-key", partitionKeyPath = "/nestedEntitySample/nestedPartitionKey")
@@ -389,6 +389,29 @@ public class NestedPartitionKeyEntitySample {
 ```java readme-sample-NestedEntitySample
 public class NestedEntitySample {
     private String nestedPartitionKey;
+}
+```
+
+#### Hierarchical Partition Key support
+
+- Azure Spring Data Cosmos supports hierarchical partition key. To add hierarchical partition key, use `hierarchicalPartitionKeyPaths` field in `@Container` annotation.
+- `hierarchicalPartitionKeyPaths` should only be used to support hierarchical partition keys. For general partition key support, use the `@PartitionKey` annotation.
+- By default `@PartitionKey` annotation will take precedence, unless not specified.
+- Below example shows how to properly use Hierarchical Partition Key feature.
+
+```java readme-sample-HierarchicalPartitionKeyEntitySample
+@Container(containerName = "hierarchical-partition-key", hierarchicalPartitionKeyPaths = {"/id", "/firstName", "/lastName"})
+public class HierarchicalPartitionKeyEntitySample {
+
+    private HierarchicalEntitySample hierarchicalEntitySample;
+}
+```
+
+```java readme-sample-HierarchicalEntitySample
+public class HierarchicalEntitySample {
+    private String id;
+    private String firstName;
+    private String lastName;
 }
 ```
 
@@ -776,7 +799,7 @@ public class SecondaryDatasourceConfiguration {
     public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProperties secondaryProperties) {
         return CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
             .key(secondaryProperties.getKey())
-            .endpoint(secondaryProperties.getUri());
+            .endpoint(secondaryProperties.getUri()));
     }
 
     @Bean("secondaryCosmosConfig")
@@ -815,7 +838,7 @@ public class SecondaryDatasourceConfiguration {
 public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProperties secondaryProperties) {
     return CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
         .key(secondaryProperties.getKey())
-        .endpoint(secondaryProperties.getUri());
+        .endpoint(secondaryProperties.getUri()));
 }
 
 @Bean("secondaryCosmosConfig")

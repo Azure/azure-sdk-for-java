@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class CloudAccountProvisioningState extends ExpandableStringEnum<Cl
      * @param name a name to look for.
      * @return the corresponding CloudAccountProvisioningState.
      */
-    @JsonCreator
     public static CloudAccountProvisioningState fromString(String name) {
         return fromString(name, CloudAccountProvisioningState.class);
     }

@@ -12,7 +12,8 @@ import java.util.Map;
  */
 public final class TroubleshootersCreateSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Create.json
+     * x-ms-original-file:
+     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Create.json
      */
     /**
      * Sample code: Troubleshooters_Create.

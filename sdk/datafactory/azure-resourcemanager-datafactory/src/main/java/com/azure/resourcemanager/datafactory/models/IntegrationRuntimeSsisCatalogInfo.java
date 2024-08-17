@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -36,7 +36,8 @@ public final class IntegrationRuntimeSsisCatalogInfo {
     private SecureString catalogAdminPassword;
 
     /*
-     * The pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/
+     * The pricing tier for the catalog database. The valid values could be found in
+     * https://azure.microsoft.com/en-us/pricing/details/sql-database/
      */
     @JsonProperty(value = "catalogPricingTier")
     private IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier;
@@ -188,7 +189,7 @@ public final class IntegrationRuntimeSsisCatalogInfo {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

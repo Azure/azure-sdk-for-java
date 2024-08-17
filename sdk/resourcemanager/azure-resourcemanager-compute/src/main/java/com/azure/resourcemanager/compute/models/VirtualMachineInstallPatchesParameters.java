@@ -6,36 +6,37 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Input for InstallPatches as directly received by the API.
  */
 @Fluent
-public final class VirtualMachineInstallPatchesParameters {
+public final class VirtualMachineInstallPatchesParameters
+    implements JsonSerializable<VirtualMachineInstallPatchesParameters> {
     /*
      * Specifies the maximum amount of time that the operation will run. It must be an ISO 8601-compliant duration
      * string such as PT4H (4 hours)
      */
-    @JsonProperty(value = "maximumDuration")
     private String maximumDuration;
 
     /*
      * Defines when it is acceptable to reboot a VM during a software update operation.
      */
-    @JsonProperty(value = "rebootSetting", required = true)
     private VMGuestPatchRebootSetting rebootSetting;
 
     /*
      * Input for InstallPatches on a Windows VM, as directly received by the API
      */
-    @JsonProperty(value = "windowsParameters")
     private WindowsParameters windowsParameters;
 
     /*
      * Input for InstallPatches on a Linux VM, as directly received by the API
      */
-    @JsonProperty(value = "linuxParameters")
     private LinuxParameters linuxParameters;
 
     /**
@@ -45,8 +46,8 @@ public final class VirtualMachineInstallPatchesParameters {
     }
 
     /**
-     * Get the maximumDuration property: Specifies the maximum amount of time that the operation will run. It must be
-     * an ISO 8601-compliant duration string such as PT4H (4 hours).
+     * Get the maximumDuration property: Specifies the maximum amount of time that the operation will run. It must be an
+     * ISO 8601-compliant duration string such as PT4H (4 hours).
      * 
      * @return the maximumDuration value.
      */
@@ -55,8 +56,8 @@ public final class VirtualMachineInstallPatchesParameters {
     }
 
     /**
-     * Set the maximumDuration property: Specifies the maximum amount of time that the operation will run. It must be
-     * an ISO 8601-compliant duration string such as PT4H (4 hours).
+     * Set the maximumDuration property: Specifies the maximum amount of time that the operation will run. It must be an
+     * ISO 8601-compliant duration string such as PT4H (4 hours).
      * 
      * @param maximumDuration the maximumDuration value to set.
      * @return the VirtualMachineInstallPatchesParameters object itself.
@@ -133,8 +134,9 @@ public final class VirtualMachineInstallPatchesParameters {
      */
     public void validate() {
         if (rebootSetting() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property rebootSetting in model VirtualMachineInstallPatchesParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rebootSetting in model VirtualMachineInstallPatchesParameters"));
         }
         if (windowsParameters() != null) {
             windowsParameters().validate();
@@ -145,4 +147,54 @@ public final class VirtualMachineInstallPatchesParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineInstallPatchesParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rebootSetting", this.rebootSetting == null ? null : this.rebootSetting.toString());
+        jsonWriter.writeStringField("maximumDuration", this.maximumDuration);
+        jsonWriter.writeJsonField("windowsParameters", this.windowsParameters);
+        jsonWriter.writeJsonField("linuxParameters", this.linuxParameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineInstallPatchesParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineInstallPatchesParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineInstallPatchesParameters.
+     */
+    public static VirtualMachineInstallPatchesParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineInstallPatchesParameters deserializedVirtualMachineInstallPatchesParameters
+                = new VirtualMachineInstallPatchesParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rebootSetting".equals(fieldName)) {
+                    deserializedVirtualMachineInstallPatchesParameters.rebootSetting
+                        = VMGuestPatchRebootSetting.fromString(reader.getString());
+                } else if ("maximumDuration".equals(fieldName)) {
+                    deserializedVirtualMachineInstallPatchesParameters.maximumDuration = reader.getString();
+                } else if ("windowsParameters".equals(fieldName)) {
+                    deserializedVirtualMachineInstallPatchesParameters.windowsParameters
+                        = WindowsParameters.fromJson(reader);
+                } else if ("linuxParameters".equals(fieldName)) {
+                    deserializedVirtualMachineInstallPatchesParameters.linuxParameters
+                        = LinuxParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineInstallPatchesParameters;
+        });
+    }
 }

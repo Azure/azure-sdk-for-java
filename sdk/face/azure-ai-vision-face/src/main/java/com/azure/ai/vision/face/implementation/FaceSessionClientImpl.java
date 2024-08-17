@@ -160,8 +160,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createLivenessSession(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData createLivenessSessionContent, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/detectLiveness/singleModal/sessions")
         @ExpectedResponses({ 200 })
@@ -171,8 +170,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createLivenessSessionSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData createLivenessSessionContent, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/detectLiveness/singleModal/sessions/{sessionId}")
         @ExpectedResponses({ 200 })
@@ -262,8 +260,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createLivenessWithVerifySession(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData createLivenessSessionContent, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/detectLivenessWithVerify/singleModal/sessions")
         @ExpectedResponses({ 200 })
@@ -273,8 +270,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createLivenessWithVerifySessionSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData createLivenessSessionContent, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/detectLivenessWithVerify/singleModal/sessions")
@@ -285,9 +281,8 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImage(
             @HostParam("endpoint") String endpoint, @HostParam("apiVersion") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData createLivenessWithVerifySessionContent,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData body, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/detectLivenessWithVerify/singleModal/sessions")
@@ -297,9 +292,8 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData createLivenessWithVerifySessionContent,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HeaderParam("accept") String accept, @BodyParam("multipart/form-data") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Delete("/detectLivenessWithVerify/singleModal/sessions/{sessionId}")
@@ -407,6 +401,8 @@ public final class FaceSessionClientImpl {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
      * }
@@ -421,7 +417,7 @@ public final class FaceSessionClientImpl {
      * }
      * }</pre>
      * 
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -431,11 +427,11 @@ public final class FaceSessionClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createLivenessSessionWithResponseAsync(BinaryData createLivenessSessionContent,
+    public Mono<Response<BinaryData>> createLivenessSessionWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createLivenessSession(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, createLivenessSessionContent, requestOptions, context));
+            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
     }
 
     /**
@@ -462,6 +458,8 @@ public final class FaceSessionClientImpl {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
      * }
@@ -476,7 +474,7 @@ public final class FaceSessionClientImpl {
      * }
      * }</pre>
      * 
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -485,11 +483,10 @@ public final class FaceSessionClientImpl {
      * @return response of liveness session creation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createLivenessSessionWithResponse(BinaryData createLivenessSessionContent,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createLivenessSessionWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createLivenessSessionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            createLivenessSessionContent, requestOptions, Context.NONE);
+            body, requestOptions, Context.NONE);
     }
 
     /**
@@ -581,7 +578,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -598,6 +595,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }</pre>
@@ -659,7 +658,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -676,6 +675,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }</pre>
@@ -828,7 +829,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -845,6 +846,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -909,7 +912,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -926,6 +929,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -979,8 +984,12 @@ public final class FaceSessionClientImpl {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     returnVerifyImageHash: Boolean (Optional)
+     *     verifyConfidenceThreshold: Double (Optional)
      * }
      * }</pre>
      * 
@@ -1002,7 +1011,7 @@ public final class FaceSessionClientImpl {
      * }
      * }</pre>
      * 
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1012,11 +1021,11 @@ public final class FaceSessionClientImpl {
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createLivenessWithVerifySessionWithResponseAsync(
-        BinaryData createLivenessSessionContent, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createLivenessWithVerifySessionWithResponseAsync(BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createLivenessWithVerifySession(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, createLivenessSessionContent, requestOptions, context));
+            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
     }
 
     /**
@@ -1052,8 +1061,12 @@ public final class FaceSessionClientImpl {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
+     *     enableSessionImage: Boolean (Optional)
+     *     livenessSingleModalModel: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
+     *     returnVerifyImageHash: Boolean (Optional)
+     *     verifyConfidenceThreshold: Double (Optional)
      * }
      * }</pre>
      * 
@@ -1075,7 +1088,7 @@ public final class FaceSessionClientImpl {
      * }
      * }</pre>
      * 
-     * @param createLivenessSessionContent Request for creating liveness session.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1084,11 +1097,11 @@ public final class FaceSessionClientImpl {
      * @return response of liveness session with verify creation with verify image provided along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createLivenessWithVerifySessionWithResponse(BinaryData createLivenessSessionContent,
+    public Response<BinaryData> createLivenessWithVerifySessionWithResponse(BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createLivenessWithVerifySessionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, createLivenessSessionContent, requestOptions, Context.NONE);
+            accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -1132,7 +1145,7 @@ public final class FaceSessionClientImpl {
      * }
      * }</pre>
      * 
-     * @param createLivenessWithVerifySessionContent Request of liveness with verify session creation.
+     * @param body Request content of liveness with verify session creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1142,14 +1155,13 @@ public final class FaceSessionClientImpl {
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImageWithResponseAsync(
-        BinaryData createLivenessWithVerifySessionContent, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImageWithResponseAsync(BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createLivenessWithVerifySessionWithVerifyImage(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), contentType, accept, createLivenessWithVerifySessionContent,
-                requestOptions, context));
+                this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -1193,7 +1205,7 @@ public final class FaceSessionClientImpl {
      * }
      * }</pre>
      * 
-     * @param createLivenessWithVerifySessionContent Request of liveness with verify session creation.
+     * @param body Request content of liveness with verify session creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1202,13 +1214,12 @@ public final class FaceSessionClientImpl {
      * @return response of liveness session with verify creation with verify image provided along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageWithResponse(
-        BinaryData createLivenessWithVerifySessionContent, RequestOptions requestOptions) {
+    public Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageWithResponse(BinaryData body,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return service.createLivenessWithVerifySessionWithVerifyImageSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, createLivenessWithVerifySessionContent,
-            requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -1300,7 +1311,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -1317,6 +1328,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1378,7 +1391,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -1395,6 +1408,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1548,7 +1563,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -1565,6 +1580,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -1629,7 +1646,7 @@ public final class FaceSessionClientImpl {
      *                     timeOffsetWithinFile: int (Required)
      *                     imageType: String(Color/Infrared/Depth) (Required)
      *                 }
-     *                 modelVersionUsed: String(2020-02-15-preview.01/2021-11-12-preview.03/2022-10-15-preview.04/2023-03-02-preview.05) (Optional)
+     *                 modelVersionUsed: String(2022-10-15-preview.04/2023-12-20-preview.06) (Optional)
      *                 verifyResult (Optional): {
      *                     verifyImage (Required): {
      *                         faceRectangle (Required): (recursive schema, see faceRectangle above)
@@ -1646,6 +1663,8 @@ public final class FaceSessionClientImpl {
      *             latencyInMilliseconds: long (Required)
      *         }
      *         digest: String (Required)
+     *         sessionImageId: String (Optional)
+     *         verifyImageHash: String (Optional)
      *     }
      * ]
      * }</pre>

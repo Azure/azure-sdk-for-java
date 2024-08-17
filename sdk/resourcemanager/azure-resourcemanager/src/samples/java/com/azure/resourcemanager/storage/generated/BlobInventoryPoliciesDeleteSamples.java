@@ -11,7 +11,8 @@ import com.azure.resourcemanager.storage.models.BlobInventoryPolicyName;
  */
 public final class BlobInventoryPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountDeleteBlobInventoryPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountDeleteBlobInventoryPolicy.json
      */
     /**
      * Sample code: StorageAccountDeleteBlobInventoryPolicy.

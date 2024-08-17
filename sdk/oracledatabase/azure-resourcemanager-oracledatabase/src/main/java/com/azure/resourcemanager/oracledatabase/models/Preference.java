@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class Preference extends ExpandableStringEnum<Preference> {
      * @param name a name to look for.
      * @return the corresponding Preference.
      */
-    @JsonCreator
     public static Preference fromString(String name) {
         return fromString(name, Preference.class);
     }

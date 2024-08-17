@@ -15,10 +15,9 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storage.fluent.models.StorageTaskAssignmentInner;
 import com.azure.resourcemanager.storage.models.StorageTaskAssignmentUpdateParameters;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in StorageTaskAssignmentsClient.
@@ -29,7 +28,7 @@ public interface StorageTaskAssignmentsClient {
      * task assignment is already created and a subsequent create request is issued with different properties, the
      * storage task assignment properties will be updated. If a storage task assignment is already created and a
      * subsequent create or update request is issued with the exact same set of properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -51,7 +50,7 @@ public interface StorageTaskAssignmentsClient {
      * task assignment is already created and a subsequent create request is issued with different properties, the
      * storage task assignment properties will be updated. If a storage task assignment is already created and a
      * subsequent create or update request is issued with the exact same set of properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -74,7 +73,7 @@ public interface StorageTaskAssignmentsClient {
      * task assignment is already created and a subsequent create request is issued with different properties, the
      * storage task assignment properties will be updated. If a storage task assignment is already created and a
      * subsequent create or update request is issued with the exact same set of properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -96,7 +95,7 @@ public interface StorageTaskAssignmentsClient {
      * task assignment is already created and a subsequent create request is issued with different properties, the
      * storage task assignment properties will be updated. If a storage task assignment is already created and a
      * subsequent create or update request is issued with the exact same set of properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -119,7 +118,7 @@ public interface StorageTaskAssignmentsClient {
      * task assignment is already created and a subsequent create request is issued with different properties, the
      * storage task assignment properties will be updated. If a storage task assignment is already created and a
      * subsequent create or update request is issued with the exact same set of properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -141,7 +140,7 @@ public interface StorageTaskAssignmentsClient {
      * task assignment is already created and a subsequent create request is issued with different properties, the
      * storage task assignment properties will be updated. If a storage task assignment is already created and a
      * subsequent create or update request is issued with the exact same set of properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -163,7 +162,7 @@ public interface StorageTaskAssignmentsClient {
      * task assignment is already created and a subsequent create request is issued with different properties, the
      * storage task assignment properties will be updated. If a storage task assignment is already created and a
      * subsequent create or update request is issued with the exact same set of properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -183,7 +182,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Update storage task assignment properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -202,7 +201,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Update storage task assignment properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -222,7 +221,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Update storage task assignment properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -241,7 +240,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Update storage task assignment properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -262,7 +261,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Update storage task assignment properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -281,7 +280,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Update storage task assignment properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -300,7 +299,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Update storage task assignment properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -320,7 +319,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Get the storage task assignment properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -339,7 +338,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Get the storage task assignment properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -357,7 +356,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Get the storage task assignment properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -376,7 +375,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Get the storage task assignment properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -393,7 +392,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Delete the storage task assignment sub-resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -411,7 +410,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Delete the storage task assignment sub-resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -429,7 +428,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Delete the storage task assignment sub-resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -447,7 +446,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Delete the storage task assignment sub-resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -466,7 +465,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Delete the storage task assignment sub-resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -483,7 +482,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Delete the storage task assignment sub-resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -499,7 +498,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * Delete the storage task assignment sub-resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -516,7 +515,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * List all the storage task assignments in an account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -528,11 +527,11 @@ public interface StorageTaskAssignmentsClient {
      * @return list of storage task assignments for the storage account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StorageTaskAssignmentInner> listAsync(String resourceGroupName, String accountName, String maxpagesize);
+    PagedFlux<StorageTaskAssignmentInner> listAsync(String resourceGroupName, String accountName, Integer maxpagesize);
 
     /**
      * List all the storage task assignments in an account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -546,7 +545,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * List all the storage task assignments in an account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -561,7 +560,7 @@ public interface StorageTaskAssignmentsClient {
 
     /**
      * List all the storage task assignments in an account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -575,6 +574,6 @@ public interface StorageTaskAssignmentsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String accountName, String maxpagesize,
+    PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String accountName, Integer maxpagesize,
         Context context);
 }

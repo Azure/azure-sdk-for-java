@@ -7,6 +7,9 @@ package com.azure.resourcemanager.redis.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redis.models.ProvisioningState;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
@@ -16,38 +19,54 @@ import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.redis.models.UpdateChannel;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** A single Redis item in List or Get Operation. */
+/**
+ * A single Redis item in List or Get Operation.
+ */
 @Fluent
 public final class RedisResourceInner extends Resource {
     /*
      * Redis cache properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private RedisPropertiesInner innerProperties = new RedisPropertiesInner();
 
     /*
      * A list of availability zones denoting where the resource needs to come from.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
-    /** Creates an instance of RedisResourceInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of RedisResourceInner class.
+     */
     public RedisResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Redis cache properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RedisPropertiesInner innerProperties() {
@@ -56,7 +75,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the zones property: A list of availability zones denoting where the resource needs to come from.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -65,7 +84,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Set the zones property: A list of availability zones denoting where the resource needs to come from.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -76,7 +95,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -85,7 +104,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -94,14 +113,48 @@ public final class RedisResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -110,7 +163,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: Redis instance provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -119,7 +172,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the hostname property: Redis host name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -128,7 +181,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the port property: Redis non-SSL port.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -137,7 +190,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the sslPort property: Redis SSL port.
-     *
+     * 
      * @return the sslPort value.
      */
     public Integer sslPort() {
@@ -147,7 +200,7 @@ public final class RedisResourceInner extends Resource {
     /**
      * Get the accessKeys property: The keys of the Redis cache - not set if this object is not the response to Create
      * or Update redis cache.
-     *
+     * 
      * @return the accessKeys value.
      */
     public RedisAccessKeysInner accessKeys() {
@@ -156,7 +209,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the linkedServers property: List of the linked servers associated with the cache.
-     *
+     * 
      * @return the linkedServers value.
      */
     public List<RedisLinkedServer> linkedServers() {
@@ -165,7 +218,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the instances property: List of the Redis instances associated with the cache.
-     *
+     * 
      * @return the instances value.
      */
     public List<RedisInstanceDetails> instances() {
@@ -175,7 +228,7 @@ public final class RedisResourceInner extends Resource {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
      * redis cache.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -184,7 +237,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the sku property: The SKU of the Redis cache to deploy.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -193,7 +246,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Set the sku property: The SKU of the Redis cache to deploy.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -209,7 +262,7 @@ public final class RedisResourceInner extends Resource {
      * Get the subnetId property: The full resource ID of a subnet in a virtual network to deploy the Redis cache in.
      * Example format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -220,7 +273,7 @@ public final class RedisResourceInner extends Resource {
      * Set the subnetId property: The full resource ID of a subnet in a virtual network to deploy the Redis cache in.
      * Example format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -235,7 +288,7 @@ public final class RedisResourceInner extends Resource {
     /**
      * Get the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside an
      * existing Azure Virtual Network; auto assigned by default.
-     *
+     * 
      * @return the staticIp value.
      */
     public String staticIp() {
@@ -245,7 +298,7 @@ public final class RedisResourceInner extends Resource {
     /**
      * Set the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside an
      * existing Azure Virtual Network; auto assigned by default.
-     *
+     * 
      * @param staticIp the staticIp value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -259,9 +312,10 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the redisConfiguration property: All Redis Settings. Few possible keys:
-     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-     * etc.
-     *
+     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,
+     * maxmemory-policy,notify-keyspace-events, aof-backup-enabled, aof-storage-connection-string-0,
+     * aof-storage-connection-string-1 etc.
+     * 
      * @return the redisConfiguration value.
      */
     public RedisConfiguration redisConfiguration() {
@@ -270,9 +324,10 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Set the redisConfiguration property: All Redis Settings. Few possible keys:
-     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-     * etc.
-     *
+     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,
+     * maxmemory-policy,notify-keyspace-events, aof-backup-enabled, aof-storage-connection-string-0,
+     * aof-storage-connection-string-1 etc.
+     * 
      * @param redisConfiguration the redisConfiguration value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -288,7 +343,7 @@ public final class RedisResourceInner extends Resource {
      * Get the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
      * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
      * versions: 4.0, 6.0 (latest). Default value is 'latest'.
-     *
+     * 
      * @return the redisVersion value.
      */
     public String redisVersion() {
@@ -299,7 +354,7 @@ public final class RedisResourceInner extends Resource {
      * Set the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
      * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
      * versions: 4.0, 6.0 (latest). Default value is 'latest'.
-     *
+     * 
      * @param redisVersion the redisVersion value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -313,7 +368,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the enableNonSslPort property: Specifies whether the non-ssl Redis server port (6379) is enabled.
-     *
+     * 
      * @return the enableNonSslPort value.
      */
     public Boolean enableNonSslPort() {
@@ -322,7 +377,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Set the enableNonSslPort property: Specifies whether the non-ssl Redis server port (6379) is enabled.
-     *
+     * 
      * @param enableNonSslPort the enableNonSslPort value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -336,7 +391,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the replicasPerMaster property: The number of replicas to be created per primary.
-     *
+     * 
      * @return the replicasPerMaster value.
      */
     public Integer replicasPerMaster() {
@@ -345,7 +400,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Set the replicasPerMaster property: The number of replicas to be created per primary.
-     *
+     * 
      * @param replicasPerMaster the replicasPerMaster value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -359,7 +414,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the replicasPerPrimary property: The number of replicas to be created per primary.
-     *
+     * 
      * @return the replicasPerPrimary value.
      */
     public Integer replicasPerPrimary() {
@@ -368,7 +423,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Set the replicasPerPrimary property: The number of replicas to be created per primary.
-     *
+     * 
      * @param replicasPerPrimary the replicasPerPrimary value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -382,7 +437,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the tenantSettings property: A dictionary of tenant settings.
-     *
+     * 
      * @return the tenantSettings value.
      */
     public Map<String, String> tenantSettings() {
@@ -391,7 +446,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Set the tenantSettings property: A dictionary of tenant settings.
-     *
+     * 
      * @param tenantSettings the tenantSettings value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -405,7 +460,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Get the shardCount property: The number of shards to be created on a Premium Cluster Cache.
-     *
+     * 
      * @return the shardCount value.
      */
     public Integer shardCount() {
@@ -414,7 +469,7 @@ public final class RedisResourceInner extends Resource {
 
     /**
      * Set the shardCount property: The number of shards to be created on a Premium Cluster Cache.
-     *
+     * 
      * @param shardCount the shardCount value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -429,7 +484,7 @@ public final class RedisResourceInner extends Resource {
     /**
      * Get the minimumTlsVersion property: Optional: requires clients to use a specified TLS version (or higher) to
      * connect (e,g, '1.0', '1.1', '1.2').
-     *
+     * 
      * @return the minimumTlsVersion value.
      */
     public TlsVersion minimumTlsVersion() {
@@ -439,7 +494,7 @@ public final class RedisResourceInner extends Resource {
     /**
      * Set the minimumTlsVersion property: Optional: requires clients to use a specified TLS version (or higher) to
      * connect (e,g, '1.0', '1.1', '1.2').
-     *
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -455,7 +510,7 @@ public final class RedisResourceInner extends Resource {
      * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
      * access method. Default value is 'Enabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -466,7 +521,7 @@ public final class RedisResourceInner extends Resource {
      * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
      * access method. Default value is 'Enabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -482,7 +537,7 @@ public final class RedisResourceInner extends Resource {
      * Get the updateChannel property: Optional: Specifies the update channel for the monthly Redis updates your Redis
      * Cache will receive. Caches using 'Preview' update channel get latest Redis updates at least 4 weeks ahead of
      * 'Stable' channel caches. Default value is 'Stable'.
-     *
+     * 
      * @return the updateChannel value.
      */
     public UpdateChannel updateChannel() {
@@ -493,7 +548,7 @@ public final class RedisResourceInner extends Resource {
      * Set the updateChannel property: Optional: Specifies the update channel for the monthly Redis updates your Redis
      * Cache will receive. Caches using 'Preview' update channel get latest Redis updates at least 4 weeks ahead of
      * 'Stable' channel caches. Default value is 'Stable'.
-     *
+     * 
      * @param updateChannel the updateChannel value to set.
      * @return the RedisResourceInner object itself.
      */
@@ -506,23 +561,108 @@ public final class RedisResourceInner extends Resource {
     }
 
     /**
+     * Get the disableAccessKeyAuthentication property: Authentication to Redis through access keys is disabled when set
+     * as true. Default value is false.
+     * 
+     * @return the disableAccessKeyAuthentication value.
+     */
+    public Boolean disableAccessKeyAuthentication() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableAccessKeyAuthentication();
+    }
+
+    /**
+     * Set the disableAccessKeyAuthentication property: Authentication to Redis through access keys is disabled when set
+     * as true. Default value is false.
+     * 
+     * @param disableAccessKeyAuthentication the disableAccessKeyAuthentication value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withDisableAccessKeyAuthentication(Boolean disableAccessKeyAuthentication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withDisableAccessKeyAuthentication(disableAccessKeyAuthentication);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model RedisResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model RedisResourceInner"));
         } else {
             innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model RedisResourceInner"));
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RedisResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisResourceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisResourceInner.
+     */
+    public static RedisResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisResourceInner deserializedRedisResourceInner = new RedisResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRedisResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRedisResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRedisResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRedisResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRedisResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRedisResourceInner.innerProperties = RedisPropertiesInner.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRedisResourceInner.zones = zones;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedRedisResourceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisResourceInner;
+        });
+    }
 }

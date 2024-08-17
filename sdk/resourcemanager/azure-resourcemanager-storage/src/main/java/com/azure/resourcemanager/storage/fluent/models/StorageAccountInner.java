@@ -6,6 +6,9 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AccountStatus;
 import com.azure.resourcemanager.storage.models.AllowedCopyScope;
@@ -30,8 +33,7 @@ import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.azure.resourcemanager.storage.models.Sku;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuConversionStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -44,32 +46,42 @@ public final class StorageAccountInner extends Resource {
     /*
      * Gets the SKU.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
     /*
      * Gets the Kind.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private Kind kind;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * The extendedLocation of the resource.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
      * Properties of the storage account.
      */
-    @JsonProperty(value = "properties")
     private StorageAccountPropertiesInner innerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of StorageAccountInner class.
@@ -79,7 +91,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the sku property: Gets the SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -88,7 +100,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the kind property: Gets the Kind.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -97,7 +109,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -106,7 +118,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -117,7 +129,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the extendedLocation property: The extendedLocation of the resource.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -126,7 +138,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extendedLocation of the resource.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -137,11 +149,41 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the storage account.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StorageAccountPropertiesInner innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -164,7 +206,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the provisioningState property: Gets the status of the storage account at the time the operation was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -174,7 +216,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the primaryEndpoints property: Gets the URLs that are used to perform a retrieval of a public blob, queue, or
      * table object. Note that Standard_ZRS and Premium_LRS accounts only return the blob endpoint.
-     *
+     * 
      * @return the primaryEndpoints value.
      */
     public Endpoints primaryEndpoints() {
@@ -183,7 +225,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the primaryLocation property: Gets the location of the primary data center for the storage account.
-     *
+     * 
      * @return the primaryLocation value.
      */
     public String primaryLocation() {
@@ -193,7 +235,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the statusOfPrimary property: Gets the status indicating whether the primary location of the storage account
      * is available or unavailable.
-     *
+     * 
      * @return the statusOfPrimary value.
      */
     public AccountStatus statusOfPrimary() {
@@ -204,7 +246,7 @@ public final class StorageAccountInner extends Resource {
      * Get the lastGeoFailoverTime property: Gets the timestamp of the most recent instance of a failover to the
      * secondary location. Only the most recent timestamp is retained. This element is not returned if there has never
      * been a failover instance. Only available if the accountType is Standard_GRS or Standard_RAGRS.
-     *
+     * 
      * @return the lastGeoFailoverTime value.
      */
     public OffsetDateTime lastGeoFailoverTime() {
@@ -214,7 +256,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the secondaryLocation property: Gets the location of the geo-replicated secondary for the storage account.
      * Only available if the accountType is Standard_GRS or Standard_RAGRS.
-     *
+     * 
      * @return the secondaryLocation value.
      */
     public String secondaryLocation() {
@@ -224,7 +266,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the statusOfSecondary property: Gets the status indicating whether the secondary location of the storage
      * account is available or unavailable. Only available if the SKU name is Standard_GRS or Standard_RAGRS.
-     *
+     * 
      * @return the statusOfSecondary value.
      */
     public AccountStatus statusOfSecondary() {
@@ -233,7 +275,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the creationTime property: Gets the creation date and time of the storage account in UTC.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -242,7 +284,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the customDomain property: Gets the custom domain the user assigned to this storage account.
-     *
+     * 
      * @return the customDomain value.
      */
     public CustomDomain customDomain() {
@@ -251,7 +293,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the sasPolicy property: SasPolicy assigned to the storage account.
-     *
+     * 
      * @return the sasPolicy value.
      */
     public SasPolicy sasPolicy() {
@@ -260,7 +302,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
+     * 
      * @return the keyPolicy value.
      */
     public KeyPolicy keyPolicy() {
@@ -269,7 +311,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the keyCreationTime property: Storage account keys creation time.
-     *
+     * 
      * @return the keyCreationTime value.
      */
     public KeyCreationTime keyCreationTime() {
@@ -280,7 +322,7 @@ public final class StorageAccountInner extends Resource {
      * Get the secondaryEndpoints property: Gets the URLs that are used to perform a retrieval of a public blob, queue,
      * or table object from the secondary location of the storage account. Only available if the SKU name is
      * Standard_RAGRS.
-     *
+     * 
      * @return the secondaryEndpoints value.
      */
     public Endpoints secondaryEndpoints() {
@@ -289,7 +331,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the encryption property: Encryption settings to be used for server-side encryption for the storage account.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -300,7 +342,7 @@ public final class StorageAccountInner extends Resource {
      * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
      * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
      * cannot be changed for the premium block blobs storage account type.
-     *
+     * 
      * @return the accessTier value.
      */
     public AccessTier accessTier() {
@@ -310,7 +352,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
      * Azure Files.
-     *
+     * 
      * @return the azureFilesIdentityBasedAuthentication value.
      */
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
@@ -320,7 +362,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Set the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
      * Azure Files.
-     *
+     * 
      * @param azureFilesIdentityBasedAuthentication the azureFilesIdentityBasedAuthentication value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -335,7 +377,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
-     *
+     * 
      * @return the enableHttpsTrafficOnly value.
      */
     public Boolean enableHttpsTrafficOnly() {
@@ -344,7 +386,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Set the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
-     *
+     * 
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -358,7 +400,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the networkRuleSet property: Network rule set.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -367,7 +409,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
-     *
+     * 
      * @return the isSftpEnabled value.
      */
     public Boolean isSftpEnabled() {
@@ -376,7 +418,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Set the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
-     *
+     * 
      * @param isSftpEnabled the isSftpEnabled value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -390,7 +432,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the isLocalUserEnabled property: Enables local users feature, if set to true.
-     *
+     * 
      * @return the isLocalUserEnabled value.
      */
     public Boolean isLocalUserEnabled() {
@@ -399,7 +441,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Set the isLocalUserEnabled property: Enables local users feature, if set to true.
-     *
+     * 
      * @param isLocalUserEnabled the isLocalUserEnabled value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -413,7 +455,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the enableExtendedGroups property: Enables extended group support with local users feature, if set to true.
-     *
+     * 
      * @return the enableExtendedGroups value.
      */
     public Boolean enableExtendedGroups() {
@@ -422,7 +464,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Set the enableExtendedGroups property: Enables extended group support with local users feature, if set to true.
-     *
+     * 
      * @param enableExtendedGroups the enableExtendedGroups value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -436,7 +478,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the isHnsEnabled property: Account HierarchicalNamespace enabled if sets to true.
-     *
+     * 
      * @return the isHnsEnabled value.
      */
     public Boolean isHnsEnabled() {
@@ -445,7 +487,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Set the isHnsEnabled property: Account HierarchicalNamespace enabled if sets to true.
-     *
+     * 
      * @param isHnsEnabled the isHnsEnabled value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -459,7 +501,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the geoReplicationStats property: Geo Replication Stats.
-     *
+     * 
      * @return the geoReplicationStats value.
      */
     public GeoReplicationStats geoReplicationStats() {
@@ -469,7 +511,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the failoverInProgress property: If the failover is in progress, the value will be true, otherwise, it will
      * be null.
-     *
+     * 
      * @return the failoverInProgress value.
      */
     public Boolean failoverInProgress() {
@@ -479,7 +521,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
      * is enabled.
-     *
+     * 
      * @return the largeFileSharesState value.
      */
     public LargeFileSharesState largeFileSharesState() {
@@ -489,7 +531,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Set the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
      * is enabled.
-     *
+     * 
      * @param largeFileSharesState the largeFileSharesState value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -504,7 +546,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
      * storage account.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -514,7 +556,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the routingPreference property: Maintains information about the network routing choice opted by the user for
      * data transfer.
-     *
+     * 
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
@@ -524,7 +566,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Set the routingPreference property: Maintains information about the network routing choice opted by the user for
      * data transfer.
-     *
+     * 
      * @param routingPreference the routingPreference value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -538,7 +580,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the blobRestoreStatus property: Blob restore status.
-     *
+     * 
      * @return the blobRestoreStatus value.
      */
     public BlobRestoreStatusInner blobRestoreStatus() {
@@ -548,7 +590,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
      * account. The default interpretation is false for this property.
-     *
+     * 
      * @return the allowBlobPublicAccess value.
      */
     public Boolean allowBlobPublicAccess() {
@@ -558,7 +600,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Set the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
      * account. The default interpretation is false for this property.
-     *
+     * 
      * @param allowBlobPublicAccess the allowBlobPublicAccess value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -573,7 +615,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
      * default interpretation is TLS 1.0 for this property.
-     *
+     * 
      * @return the minimumTlsVersion value.
      */
     public MinimumTlsVersion minimumTlsVersion() {
@@ -583,7 +625,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Set the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
      * default interpretation is TLS 1.0 for this property.
-     *
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -599,7 +641,7 @@ public final class StorageAccountInner extends Resource {
      * Get the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
      * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
      * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
-     *
+     * 
      * @return the allowSharedKeyAccess value.
      */
     public Boolean allowSharedKeyAccess() {
@@ -610,7 +652,7 @@ public final class StorageAccountInner extends Resource {
      * Set the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
      * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
      * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
-     *
+     * 
      * @param allowSharedKeyAccess the allowSharedKeyAccess value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -624,7 +666,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
+     * 
      * @return the enableNfsV3 value.
      */
     public Boolean enableNfsV3() {
@@ -633,7 +675,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Set the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
+     * 
      * @param enableNfsV3 the enableNfsV3 value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -650,7 +692,7 @@ public final class StorageAccountInner extends Resource {
      * property to true for new or existing accounts only if object replication policies will involve storage accounts
      * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
      * by default.
-     *
+     * 
      * @return the allowCrossTenantReplication value.
      */
     public Boolean allowCrossTenantReplication() {
@@ -662,7 +704,7 @@ public final class StorageAccountInner extends Resource {
      * property to true for new or existing accounts only if object replication policies will involve storage accounts
      * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
      * by default.
-     *
+     * 
      * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -677,7 +719,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
      * is OAuth or not. The default interpretation is false for this property.
-     *
+     * 
      * @return the defaultToOAuthAuthentication value.
      */
     public Boolean defaultToOAuthAuthentication() {
@@ -687,7 +729,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Set the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
      * is OAuth or not. The default interpretation is false for this property.
-     *
+     * 
      * @param defaultToOAuthAuthentication the defaultToOAuthAuthentication value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -702,7 +744,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the publicNetworkAccess property: Allow, disallow, or let Network Security Perimeter configuration to
      * evaluate public network access to Storage Account.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -712,7 +754,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Set the publicNetworkAccess property: Allow, disallow, or let Network Security Perimeter configuration to
      * evaluate public network access to Storage Account.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -728,7 +770,7 @@ public final class StorageAccountInner extends Resource {
      * Get the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
      * account creation time. When set to true, it enables object level immutability for all the containers in the
      * account by default.
-     *
+     * 
      * @return the immutableStorageWithVersioning value.
      */
     public ImmutableStorageAccount immutableStorageWithVersioning() {
@@ -739,7 +781,7 @@ public final class StorageAccountInner extends Resource {
      * Set the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
      * account creation time. When set to true, it enables object level immutability for all the containers in the
      * account by default.
-     *
+     * 
      * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -755,7 +797,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
      * Private Links to the same VNet.
-     *
+     * 
      * @return the allowedCopyScope value.
      */
     public AllowedCopyScope allowedCopyScope() {
@@ -765,7 +807,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Set the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
      * Private Links to the same VNet.
-     *
+     * 
      * @param allowedCopyScope the allowedCopyScope value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -780,7 +822,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the storageAccountSkuConversionStatus property: This property is readOnly and is set by server during
      * asynchronous storage account sku conversion operations.
-     *
+     * 
      * @return the storageAccountSkuConversionStatus value.
      */
     public StorageAccountSkuConversionStatus storageAccountSkuConversionStatus() {
@@ -790,7 +832,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Set the storageAccountSkuConversionStatus property: This property is readOnly and is set by server during
      * asynchronous storage account sku conversion operations.
-     *
+     * 
      * @param storageAccountSkuConversionStatus the storageAccountSkuConversionStatus value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -807,7 +849,7 @@ public final class StorageAccountInner extends Resource {
      * Get the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
      * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
      * URL will have an alphanumeric DNS Zone identifier.
-     *
+     * 
      * @return the dnsEndpointType value.
      */
     public DnsEndpointType dnsEndpointType() {
@@ -818,7 +860,7 @@ public final class StorageAccountInner extends Resource {
      * Set the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
      * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
      * URL will have an alphanumeric DNS Zone identifier.
-     *
+     * 
      * @param dnsEndpointType the dnsEndpointType value to set.
      * @return the StorageAccountInner object itself.
      */
@@ -833,7 +875,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the isSkuConversionBlocked property: This property will be set to true or false on an event of ongoing
      * migration. Default value is null.
-     *
+     * 
      * @return the isSkuConversionBlocked value.
      */
     public Boolean isSkuConversionBlocked() {
@@ -843,7 +885,7 @@ public final class StorageAccountInner extends Resource {
     /**
      * Get the accountMigrationInProgress property: If customer initiated account migration is in progress, the value
      * will be true else it will be null.
-     *
+     * 
      * @return the accountMigrationInProgress value.
      */
     public Boolean accountMigrationInProgress() {
@@ -852,7 +894,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -868,5 +910,65 @@ public final class StorageAccountInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountInner.
+     */
+    public static StorageAccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountInner deserializedStorageAccountInner = new StorageAccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageAccountInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedStorageAccountInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStorageAccountInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedStorageAccountInner.sku = Sku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStorageAccountInner.kind = Kind.fromString(reader.getString());
+                } else if ("identity".equals(fieldName)) {
+                    deserializedStorageAccountInner.identity = Identity.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedStorageAccountInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageAccountInner.innerProperties = StorageAccountPropertiesInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountInner;
+        });
     }
 }

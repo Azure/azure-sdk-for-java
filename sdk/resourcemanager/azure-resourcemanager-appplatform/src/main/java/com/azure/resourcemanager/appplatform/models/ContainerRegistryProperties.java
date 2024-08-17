@@ -6,23 +6,25 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Container registry resource payload.
  */
 @Fluent
-public final class ContainerRegistryProperties {
+public final class ContainerRegistryProperties implements JsonSerializable<ContainerRegistryProperties> {
     /*
      * The credentials of the container registry resource.
      */
-    @JsonProperty(value = "credentials", required = true)
     private ContainerRegistryCredentials credentials;
 
     /*
      * State of the Container Registry.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ContainerRegistryProvisioningState provisioningState;
 
     /**
@@ -67,12 +69,53 @@ public final class ContainerRegistryProperties {
      */
     public void validate() {
         if (credentials() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property credentials in model ContainerRegistryProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property credentials in model ContainerRegistryProperties"));
         } else {
             credentials().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerRegistryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerRegistryProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerRegistryProperties.
+     */
+    public static ContainerRegistryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerRegistryProperties deserializedContainerRegistryProperties = new ContainerRegistryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("credentials".equals(fieldName)) {
+                    deserializedContainerRegistryProperties.credentials = ContainerRegistryCredentials.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedContainerRegistryProperties.provisioningState
+                        = ContainerRegistryProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerRegistryProperties;
+        });
+    }
 }

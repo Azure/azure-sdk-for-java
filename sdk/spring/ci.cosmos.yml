@@ -11,6 +11,8 @@ trigger:
     include:
       - sdk/spring/ci.cosmos.yml
       - sdk/spring/azure-spring-data-cosmos/
+      - eng/pipelines/templates/stages/cosmos-emulator-matrix.json
+      - eng/pipelines/templates/stages/cosmos-sdk-client.yml
 pr:
   branches:
     include:
@@ -22,19 +24,22 @@ pr:
     include:
       - sdk/spring/ci.cosmos.yml
       - sdk/spring/azure-spring-data-cosmos/
+      - eng/pipelines/templates/stages/cosmos-emulator-matrix.json
+      - eng/pipelines/templates/stages/cosmos-sdk-client.yml
 
 extends:
   # NOTE: This is for running spring data cosmos emulator tests
   template: /eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
   parameters:
     ServiceDirectory: spring
-    EnableBatchRelease: true
     SDKType: client
     Artifacts:
       - name: azure-spring-data-cosmos
         groupId: com.azure
         safeName: azurespringdatacosmos
         releaseInBatch: true
+    MatrixFilters:
+      - JavaTestVersion=^(?!1.8|1.11).*
     LanguageFilter:
       - Language=.*(Spring).*
     AdditionalModules:

@@ -1,6 +1,6 @@
 # Release History
 
-## 11.7.0-beta.4 (Unreleased)
+## 11.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,79 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+- Migrate Search test from local auth to Microsoft Entra authentication.
+
+## 11.7.0 (2024-07-17)
+
+### Features Added
+
+- Added support for `2024-07-01` service version.
+- `SemanticSearchOptions` now supports `semanticQuery`, which allows for specifying a semantic query that is only used
+  for semantic reranking.
+- `VectorQuery` now supports `oversampling` and `weight`, which allows for specifying richer configurations on how
+  vector queries affect search results.
+- Added support for `VectorizableTextQuery`, which allows for passing a text-based query that is vectorized service-side
+  by `VectorSearchVectorizer`s configured on the index so that vectorization doesn't need to happen before querying.
+- Added support for "bring your own endpoint" with `VectorSearchVectorizer`, with implementations `AzureOpenAIVectorizer`
+  and `WebApiVectorizer`. This enables the service to use a user-provided configuration for vectorizing text, rather 
+  than requiring all client-side calls to vectorize before querying, allowing for easier standardization of vectorization.
+- Added support for compression with `VectorSearchCompression`, with implementations `BinaryQuantizationCompression`
+  and `ScalarQuantizationCompression`. This allows for reducing the size of vectors in the index, which can reduce
+  storage costs and improve querying performance.
+- Added support for `VectorEncodingFormat`, which allows for specifying the encoding format of the vector data.
+- Added support for `AzureOpenAIEmbeddingSkill`, which is a skill that uses the Azure OpenAI service to create text 
+  embeddings during indexing.
+- Added support for index projections with `SearchIndexerIndexProjection`, which allows for specifying how indexed 
+  documents are projected in the index (or indexes).
+- Added support for "narrow" types in `SearchFieldDataType`. This allows for specifying smaller types for vector fields
+  to reduce storage costs and improve querying performance.
+- Added support for `SearchIndexerDataIdentity`, which allows for specifying the identity for the data source for the 
+  indexer.
+- `SearchField` and `SearchableField` now support `stored` and `vectorEncodingFormat` configurations. `stored` allows
+  for specifying behaviors on how the index will retain vector data (enabling the ability to reduce storage costs), and
+  `vectorEncodingFormat` allows for specifying the encoding format of the vector data.
+- `OcrSkill` now supports `OcrLineEnding`, which allows for specifying the line ending character used by the OCR skill.
+- `SplitSkill` now supports `maximumPagesToTake` and `pageOverlapLength`, which allows for specifying how the split
+  skill behaves when splitting documents into pages.
+- `SearchServiceLimits` now supports `maxStoragePerIndexInBytes`, which shows the maximum storage allowed per index.
+
+### Breaking Changes
+
+- All service concepts that have been in preview but not included in the `2024-07-01` GA have been removed. This
+  includes concepts such as index aliases, normalizers, Azure Machine Learning skills, hybrid search, and more.
+
+### Other Changes
+
+- All polymorphic models now expose their discriminator value through a getter, where the getter is named after the
+  discriminator property such as `getOdataType()`. Super most polymorphic classes are no longer `abstract` to allow for
+  direct instantiation of the class.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.13` to version `1.4.14`.
+
+## 11.6.6 (2024-06-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.12` to version `1.4.13`.
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+
+## 11.6.5 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.11` to version `1.4.12`.
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
 
 ## 11.7.0-beta.3 (2024-05-07)
 
@@ -42,7 +115,6 @@
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.4.10` to version `1.4.11`.
 
-
 ## 11.6.3 (2024-03-20)
 
 ### Other Changes
@@ -52,7 +124,6 @@
 - Upgraded `azure-core-serializer-json-jackson` from `1.4.9` to version `1.4.10`.
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
-
 
 ## 11.7.0-beta.2 (2024-03-11)
 
@@ -74,7 +145,6 @@
 - Upgraded `azure-core-http-netty` to version `1.14.1`.
 - Upgraded `azure-core` to version `1.47.0`.
 
-
 ## 11.6.2 (2024-02-22)
 
 ### Other Changes
@@ -83,7 +153,6 @@
 
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
-
 
 ## 11.7.0-beta.1 (2024-02-09)
 
@@ -144,8 +213,7 @@
 ### Features Added
 
 - `SemanticQuery` has been added to `SearchOptions`, allowing the setting of a separate search query that will be solely 
-used for semantic reranking, semantic captions and semantic answers.
-
+  used for semantic reranking, semantic captions and semantic answers.
 
 ### Breaking Changes
 
@@ -154,7 +222,7 @@ used for semantic reranking, semantic captions and semantic answers.
 - `SearchOptions` instance method `SearchOptions setVectors(SearchQueryVector...)` has been replaced by `SearchOptions setVectorQueries(VectorQuery...)`.
 - `SearchOptions` instance method `List<SearchQueryVector> getVectors()` has been replaced by `List<VectorQuery> getVectorQueries()`.
 - `VectorSearch` instance property `List<VectorSearchAlgorithmConfiguration> algorithmConfigurations` has been replaced by properties `List<VectorSearchProfile> profiles`, 
-`List<VectorSearchAlgorithmConfiguration> algorithms`, and `List<VectorSearchVectorizer> vectorizers`.
+  `List<VectorSearchAlgorithmConfiguration> algorithms`, and `List<VectorSearchVectorizer> vectorizers`.
 
 ### Other Changes
 
@@ -340,7 +408,7 @@ used for semantic reranking, semantic captions and semantic answers.
 - Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
 - Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.23` to version `1.2.24`.
-- 
+
 ## 11.6.0-beta.3 (2022-11-11)
 
 ### Other Changes

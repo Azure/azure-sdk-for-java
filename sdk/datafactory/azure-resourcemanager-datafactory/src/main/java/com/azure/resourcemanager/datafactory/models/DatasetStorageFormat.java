@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -34,7 +34,7 @@ public class DatasetStorageFormat {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "DatasetStorageFormat";
 
     /*
      * Serializer. Type: string (or Expression with resultType string).
@@ -58,7 +58,6 @@ public class DatasetStorageFormat {
      * Creates an instance of DatasetStorageFormat class.
      */
     public DatasetStorageFormat() {
-        this.type = "DatasetStorageFormat";
     }
 
     /**
@@ -134,7 +133,7 @@ public class DatasetStorageFormat {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

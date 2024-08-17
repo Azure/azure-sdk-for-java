@@ -12,6 +12,7 @@ import com.azure.resourcemanager.storagemover.models.AgentPropertiesErrorDetails
 import com.azure.resourcemanager.storagemover.models.AgentStatus;
 import com.azure.resourcemanager.storagemover.models.AgentUpdateParameters;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
+import com.azure.resourcemanager.storagemover.models.UploadLimitSchedule;
 import java.time.OffsetDateTime;
 
 public final class AgentImpl implements Agent, Agent.Definition, Agent.Update {
@@ -75,6 +76,14 @@ public final class AgentImpl implements Agent, Agent.Definition, Agent.Update {
         return this.innerModel().uptimeInSeconds();
     }
 
+    public String timeZone() {
+        return this.innerModel().timeZone();
+    }
+
+    public UploadLimitSchedule uploadLimitSchedule() {
+        return this.innerModel().uploadLimitSchedule();
+    }
+
     public AgentPropertiesErrorDetails errorDetails() {
         return this.innerModel().errorDetails();
     }
@@ -110,23 +119,18 @@ public final class AgentImpl implements Agent, Agent.Definition, Agent.Update {
     }
 
     public Agent create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAgents()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, storageMoverName, agentName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAgents()
+            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, agentName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Agent create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAgents()
-                .createOrUpdateWithResponse(resourceGroupName, storageMoverName, agentName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAgents()
+            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, agentName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -142,50 +146,42 @@ public final class AgentImpl implements Agent, Agent.Definition, Agent.Update {
     }
 
     public Agent apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAgents()
-                .updateWithResponse(resourceGroupName, storageMoverName, agentName, updateAgent, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAgents()
+            .updateWithResponse(resourceGroupName, storageMoverName, agentName, updateAgent, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Agent apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAgents()
-                .updateWithResponse(resourceGroupName, storageMoverName, agentName, updateAgent, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAgents()
+            .updateWithResponse(resourceGroupName, storageMoverName, agentName, updateAgent, context)
+            .getValue();
         return this;
     }
 
     AgentImpl(AgentInner innerObject, com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageMoverName = Utils.getValueFromIdByName(innerObject.id(), "storageMovers");
-        this.agentName = Utils.getValueFromIdByName(innerObject.id(), "agents");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.storageMoverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageMovers");
+        this.agentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "agents");
     }
 
     public Agent refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAgents()
-                .getWithResponse(resourceGroupName, storageMoverName, agentName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAgents()
+            .getWithResponse(resourceGroupName, storageMoverName, agentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Agent refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAgents()
-                .getWithResponse(resourceGroupName, storageMoverName, agentName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAgents()
+            .getWithResponse(resourceGroupName, storageMoverName, agentName, context)
+            .getValue();
         return this;
     }
 
@@ -205,6 +201,16 @@ public final class AgentImpl implements Agent, Agent.Definition, Agent.Update {
             return this;
         } else {
             this.updateAgent.withDescription(description);
+            return this;
+        }
+    }
+
+    public AgentImpl withUploadLimitSchedule(UploadLimitSchedule uploadLimitSchedule) {
+        if (isInCreateMode()) {
+            this.innerModel().withUploadLimitSchedule(uploadLimitSchedule);
+            return this;
+        } else {
+            this.updateAgent.withUploadLimitSchedule(uploadLimitSchedule);
             return this;
         }
     }

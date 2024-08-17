@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of role definition. */
+/**
+ * Details of role definition.
+ */
 @Fluent
-public final class PolicyAssignmentPropertiesRoleDefinition {
+public final class PolicyAssignmentPropertiesRoleDefinition
+    implements JsonSerializable<PolicyAssignmentPropertiesRoleDefinition> {
     /*
      * Id of the role definition
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Display name of the role definition
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Type of the role definition
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of PolicyAssignmentPropertiesRoleDefinition class. */
+    /**
+     * Creates an instance of PolicyAssignmentPropertiesRoleDefinition class.
+     */
     public PolicyAssignmentPropertiesRoleDefinition() {
     }
 
     /**
      * Get the id property: Id of the role definition.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +49,7 @@ public final class PolicyAssignmentPropertiesRoleDefinition {
 
     /**
      * Set the id property: Id of the role definition.
-     *
+     * 
      * @param id the id value to set.
      * @return the PolicyAssignmentPropertiesRoleDefinition object itself.
      */
@@ -54,7 +60,7 @@ public final class PolicyAssignmentPropertiesRoleDefinition {
 
     /**
      * Get the displayName property: Display name of the role definition.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -63,7 +69,7 @@ public final class PolicyAssignmentPropertiesRoleDefinition {
 
     /**
      * Set the displayName property: Display name of the role definition.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PolicyAssignmentPropertiesRoleDefinition object itself.
      */
@@ -74,7 +80,7 @@ public final class PolicyAssignmentPropertiesRoleDefinition {
 
     /**
      * Get the type property: Type of the role definition.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -83,7 +89,7 @@ public final class PolicyAssignmentPropertiesRoleDefinition {
 
     /**
      * Set the type property: Type of the role definition.
-     *
+     * 
      * @param type the type value to set.
      * @return the PolicyAssignmentPropertiesRoleDefinition object itself.
      */
@@ -94,9 +100,52 @@ public final class PolicyAssignmentPropertiesRoleDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyAssignmentPropertiesRoleDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyAssignmentPropertiesRoleDefinition if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyAssignmentPropertiesRoleDefinition.
+     */
+    public static PolicyAssignmentPropertiesRoleDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyAssignmentPropertiesRoleDefinition deserializedPolicyAssignmentPropertiesRoleDefinition
+                = new PolicyAssignmentPropertiesRoleDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPolicyAssignmentPropertiesRoleDefinition.id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPolicyAssignmentPropertiesRoleDefinition.displayName = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPolicyAssignmentPropertiesRoleDefinition.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyAssignmentPropertiesRoleDefinition;
+        });
     }
 }

@@ -5,21 +5,32 @@
 package com.azure.maps.render.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Copyright attribution for the requested section of a tileset. */
+/**
+ * Copyright attribution for the requested section of a tileset.
+ */
 @Fluent
-public final class MapAttribution {
+public final class MapAttribution implements JsonSerializable<MapAttribution> {
     /*
      * A list of copyright strings.
      */
-    @JsonProperty(value = "copyrights")
     private List<String> copyrights;
 
     /**
+     * Creates an instance of MapAttribution class.
+     */
+    public MapAttribution() {
+    }
+
+    /**
      * Get the copyrights property: A list of copyright strings.
-     *
+     * 
      * @return the copyrights value.
      */
     public List<String> getCopyrights() {
@@ -28,12 +39,49 @@ public final class MapAttribution {
 
     /**
      * Set the copyrights property: A list of copyright strings.
-     *
+     * 
      * @param copyrights the copyrights value to set.
      * @return the MapAttribution object itself.
      */
     public MapAttribution setCopyrights(List<String> copyrights) {
         this.copyrights = copyrights;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("copyrights", this.copyrights, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapAttribution from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapAttribution if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapAttribution.
+     */
+    public static MapAttribution fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapAttribution deserializedMapAttribution = new MapAttribution();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("copyrights".equals(fieldName)) {
+                    List<String> copyrights = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMapAttribution.copyrights = copyrights;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapAttribution;
+        });
     }
 }

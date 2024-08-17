@@ -6,25 +6,25 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Operation status message object.
  */
 @Fluent
-public final class StatusMessage {
+public final class StatusMessage implements JsonSerializable<StatusMessage> {
     /*
      * Status of the deployment operation.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
-     * Error Response
-     * 
      * The error reported by the operation.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /**
@@ -54,9 +54,7 @@ public final class StatusMessage {
     }
 
     /**
-     * Get the error property: Error Response
-     * 
-     * The error reported by the operation.
+     * Get the error property: The error reported by the operation.
      * 
      * @return the error value.
      */
@@ -65,9 +63,7 @@ public final class StatusMessage {
     }
 
     /**
-     * Set the error property: Error Response
-     * 
-     * The error reported by the operation.
+     * Set the error property: The error reported by the operation.
      * 
      * @param error the error value to set.
      * @return the StatusMessage object itself.
@@ -83,5 +79,44 @@ public final class StatusMessage {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatusMessage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatusMessage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatusMessage.
+     */
+    public static StatusMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatusMessage deserializedStatusMessage = new StatusMessage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedStatusMessage.status = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedStatusMessage.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatusMessage;
+        });
     }
 }

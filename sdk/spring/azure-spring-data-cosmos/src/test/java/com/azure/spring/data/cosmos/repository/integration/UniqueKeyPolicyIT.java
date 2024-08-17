@@ -18,6 +18,7 @@ import com.azure.spring.data.cosmos.repository.repository.UniqueKeyPolicyEntityR
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.repository.support.SimpleCosmosRepository;
 import com.azure.spring.data.cosmos.repository.support.SimpleReactiveCosmosRepository;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -59,13 +60,18 @@ public class UniqueKeyPolicyIT {
     @Autowired
     ReactiveCosmosTemplate reactiveTemplate;
 
-    private CosmosEntityInformation<UniqueKeyPolicyEntity, String> information =
+    private static CosmosEntityInformation<UniqueKeyPolicyEntity, String> information =
         new CosmosEntityInformation<>(UniqueKeyPolicyEntity.class);
 
     @Before
     public void setup() {
         collectionManager.ensureContainersCreatedAndEmpty(template, CompositeIndexEntity.class);
         repository.saveAll(Arrays.asList(ENTITY_1, ENTITY_2, ENTITY_3, ENTITY_4, ENTITY_5));
+    }
+
+    @AfterClass
+    public static void teardown() {
+        collectionManager.deleteContainer(information);
     }
 
     @Test

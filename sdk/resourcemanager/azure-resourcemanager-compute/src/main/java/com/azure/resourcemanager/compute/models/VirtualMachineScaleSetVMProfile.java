@@ -5,135 +5,120 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Describes a virtual machine scale set virtual machine profile.
  */
 @Fluent
-public final class VirtualMachineScaleSetVMProfile {
+public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<VirtualMachineScaleSetVMProfile> {
     /*
      * Specifies the operating system settings for the virtual machines in the scale set.
      */
-    @JsonProperty(value = "osProfile")
     private VirtualMachineScaleSetOSProfile osProfile;
 
     /*
      * Specifies the storage settings for the virtual machine disks.
      */
-    @JsonProperty(value = "storageProfile")
     private VirtualMachineScaleSetStorageProfile storageProfile;
 
     /*
      * Specifies properties of the network interfaces of the virtual machines in the scale set.
      */
-    @JsonProperty(value = "networkProfile")
     private VirtualMachineScaleSetNetworkProfile networkProfile;
 
     /*
      * Specifies the Security related profile settings for the virtual machines in the scale set.
      */
-    @JsonProperty(value = "securityProfile")
     private SecurityProfile securityProfile;
 
     /*
      * Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15.
      */
-    @JsonProperty(value = "diagnosticsProfile")
     private DiagnosticsProfile diagnosticsProfile;
 
     /*
      * Specifies a collection of settings for extensions installed on virtual machines in the scale set.
      */
-    @JsonProperty(value = "extensionProfile")
     private VirtualMachineScaleSetExtensionProfile extensionProfile;
 
     /*
      * Specifies that the image or disk that is being used was licensed on-premises. <br><br> Possible values for
-     * Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values
-     * for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For
-     * more information, see [Azure Hybrid Use Benefit for Windows
+     * Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values for
+     * Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure
      * Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum
      * api-version: 2015-06-15
      */
-    @JsonProperty(value = "licenseType")
     private String licenseType;
 
     /*
      * Specifies the priority for the virtual machines in the scale set. Minimum api-version: 2017-10-30-preview.
      */
-    @JsonProperty(value = "priority")
     private VirtualMachinePriorityTypes priority;
 
     /*
-     * Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. For Azure Spot
-     * virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. For
-     * Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is
-     * 2017-10-30-preview.
+     * Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. For Azure Spot virtual
+     * machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. For Azure Spot
+     * scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
      */
-    @JsonProperty(value = "evictionPolicy")
     private VirtualMachineEvictionPolicyTypes evictionPolicy;
 
     /*
      * Specifies the billing related details of a Azure Spot VMSS. Minimum api-version: 2019-03-01.
      */
-    @JsonProperty(value = "billingProfile")
     private BillingProfile billingProfile;
 
     /*
      * Specifies Scheduled Event related configurations.
      */
-    @JsonProperty(value = "scheduledEventsProfile")
     private ScheduledEventsProfile scheduledEventsProfile;
 
     /*
      * UserData for the virtual machines in the scale set, which must be base-64 encoded. Customer should not pass any
      * secrets in here. Minimum api-version: 2021-03-01.
      */
-    @JsonProperty(value = "userData")
     private String userData;
 
     /*
      * Specifies the capacity reservation related details of a scale set. Minimum api-version: 2021-04-01.
      */
-    @JsonProperty(value = "capacityReservation")
     private CapacityReservationProfile capacityReservation;
 
     /*
      * Specifies the gallery applications that should be made available to the VM/VMSS
      */
-    @JsonProperty(value = "applicationProfile")
     private ApplicationProfile applicationProfile;
 
     /*
      * Specifies the hardware profile related details of a scale set. Minimum api-version: 2021-11-01.
      */
-    @JsonProperty(value = "hardwareProfile")
     private VirtualMachineScaleSetHardwareProfile hardwareProfile;
 
     /*
      * Specifies the service artifact reference id used to set same image version for all virtual machines in the scale
      * set when using 'latest' image version. Minimum api-version: 2022-11-01
      */
-    @JsonProperty(value = "serviceArtifactReference")
     private ServiceArtifactReference serviceArtifactReference;
 
     /*
-     * Specifies the security posture to be used for all virtual machines in the scale set. Minimum api-version:
-     * 2023-03-01
+     * Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
      */
-    @JsonProperty(value = "securityPostureReference")
     private SecurityPostureReference securityPostureReference;
 
     /*
      * Specifies the time in which this VM profile for the Virtual Machine Scale Set was created. Minimum API version
-     * for this property is 2024-03-01. This value will be added to VMSS Flex VM tags when creating/updating the VMSS
-     * VM Profile with minimum api-version 2024-03-01.
+     * for this property is 2024-03-01. This value will be added to VMSS Flex VM tags when creating/updating the VMSS VM
+     * Profile with minimum api-version 2024-03-01.
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /**
@@ -205,8 +190,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the securityProfile property: Specifies the Security related profile settings for the virtual machines in
-     * the scale set.
+     * Get the securityProfile property: Specifies the Security related profile settings for the virtual machines in the
+     * scale set.
      * 
      * @return the securityProfile value.
      */
@@ -215,8 +200,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the securityProfile property: Specifies the Security related profile settings for the virtual machines in
-     * the scale set.
+     * Set the securityProfile property: Specifies the Security related profile settings for the virtual machines in the
+     * scale set.
      * 
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -273,10 +258,10 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /**
      * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -290,10 +275,10 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /**
      * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -308,8 +293,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the priority property: Specifies the priority for the virtual machines in the scale set. Minimum
-     * api-version: 2017-10-30-preview.
+     * Get the priority property: Specifies the priority for the virtual machines in the scale set. Minimum api-version:
+     * 2017-10-30-preview.
      * 
      * @return the priority value.
      */
@@ -318,8 +303,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the priority property: Specifies the priority for the virtual machines in the scale set. Minimum
-     * api-version: 2017-10-30-preview.
+     * Set the priority property: Specifies the priority for the virtual machines in the scale set. Minimum api-version:
+     * 2017-10-30-preview.
      * 
      * @param priority the priority value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -356,8 +341,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum
-     * api-version: 2019-03-01.
+     * Get the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum api-version:
+     * 2019-03-01.
      * 
      * @return the billingProfile value.
      */
@@ -366,8 +351,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum
-     * api-version: 2019-03-01.
+     * Set the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum api-version:
+     * 2019-03-01.
      * 
      * @param billingProfile the billingProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -511,8 +496,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the securityPostureReference property: Specifies the security posture to be used for all virtual machines in
-     * the scale set. Minimum api-version: 2023-03-01.
+     * Get the securityPostureReference property: Specifies the security posture to be used in the scale set. Minimum
+     * api-version: 2023-03-01.
      * 
      * @return the securityPostureReference value.
      */
@@ -521,8 +506,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the securityPostureReference property: Specifies the security posture to be used for all virtual machines in
-     * the scale set. Minimum api-version: 2023-03-01.
+     * Set the securityPostureReference property: Specifies the security posture to be used in the scale set. Minimum
+     * api-version: 2023-03-01.
      * 
      * @param securityPostureReference the securityPostureReference value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -589,5 +574,107 @@ public final class VirtualMachineScaleSetVMProfile {
         if (securityPostureReference() != null) {
             securityPostureReference().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeJsonField("diagnosticsProfile", this.diagnosticsProfile);
+        jsonWriter.writeJsonField("extensionProfile", this.extensionProfile);
+        jsonWriter.writeStringField("licenseType", this.licenseType);
+        jsonWriter.writeStringField("priority", this.priority == null ? null : this.priority.toString());
+        jsonWriter.writeStringField("evictionPolicy",
+            this.evictionPolicy == null ? null : this.evictionPolicy.toString());
+        jsonWriter.writeJsonField("billingProfile", this.billingProfile);
+        jsonWriter.writeJsonField("scheduledEventsProfile", this.scheduledEventsProfile);
+        jsonWriter.writeStringField("userData", this.userData);
+        jsonWriter.writeJsonField("capacityReservation", this.capacityReservation);
+        jsonWriter.writeJsonField("applicationProfile", this.applicationProfile);
+        jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("serviceArtifactReference", this.serviceArtifactReference);
+        jsonWriter.writeJsonField("securityPostureReference", this.securityPostureReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetVMProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetVMProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetVMProfile.
+     */
+    public static VirtualMachineScaleSetVMProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetVMProfile deserializedVirtualMachineScaleSetVMProfile
+                = new VirtualMachineScaleSetVMProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.osProfile
+                        = VirtualMachineScaleSetOSProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.storageProfile
+                        = VirtualMachineScaleSetStorageProfile.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.networkProfile
+                        = VirtualMachineScaleSetNetworkProfile.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.securityProfile = SecurityProfile.fromJson(reader);
+                } else if ("diagnosticsProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.diagnosticsProfile
+                        = DiagnosticsProfile.fromJson(reader);
+                } else if ("extensionProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.extensionProfile
+                        = VirtualMachineScaleSetExtensionProfile.fromJson(reader);
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.licenseType = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.priority
+                        = VirtualMachinePriorityTypes.fromString(reader.getString());
+                } else if ("evictionPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.evictionPolicy
+                        = VirtualMachineEvictionPolicyTypes.fromString(reader.getString());
+                } else if ("billingProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.billingProfile = BillingProfile.fromJson(reader);
+                } else if ("scheduledEventsProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.scheduledEventsProfile
+                        = ScheduledEventsProfile.fromJson(reader);
+                } else if ("userData".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.userData = reader.getString();
+                } else if ("capacityReservation".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.capacityReservation
+                        = CapacityReservationProfile.fromJson(reader);
+                } else if ("applicationProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.applicationProfile
+                        = ApplicationProfile.fromJson(reader);
+                } else if ("hardwareProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.hardwareProfile
+                        = VirtualMachineScaleSetHardwareProfile.fromJson(reader);
+                } else if ("serviceArtifactReference".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.serviceArtifactReference
+                        = ServiceArtifactReference.fromJson(reader);
+                } else if ("securityPostureReference".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.securityPostureReference
+                        = SecurityPostureReference.fromJson(reader);
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetVMProfile;
+        });
     }
 }

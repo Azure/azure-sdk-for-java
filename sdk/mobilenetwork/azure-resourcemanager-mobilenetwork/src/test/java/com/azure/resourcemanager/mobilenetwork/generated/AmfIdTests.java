@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AmfIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmfId model = BinaryData.fromString("{\"regionId\":161082288,\"setId\":2027553854,\"pointer\":1407254135}")
+        AmfId model = BinaryData.fromString("{\"regionId\":1771778971,\"setId\":330319008,\"pointer\":559578866}")
             .toObject(AmfId.class);
-        Assertions.assertEquals(161082288, model.regionId());
-        Assertions.assertEquals(2027553854, model.setId());
-        Assertions.assertEquals(1407254135, model.pointer());
+        Assertions.assertEquals(1771778971, model.regionId());
+        Assertions.assertEquals(330319008, model.setId());
+        Assertions.assertEquals(559578866, model.pointer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmfId model = new AmfId().withRegionId(161082288).withSetId(2027553854).withPointer(1407254135);
+        AmfId model = new AmfId().withRegionId(1771778971).withSetId(330319008).withPointer(559578866);
         model = BinaryData.fromObject(model).toObject(AmfId.class);
-        Assertions.assertEquals(161082288, model.regionId());
-        Assertions.assertEquals(2027553854, model.setId());
-        Assertions.assertEquals(1407254135, model.pointer());
+        Assertions.assertEquals(1771778971, model.regionId());
+        Assertions.assertEquals(330319008, model.setId());
+        Assertions.assertEquals(559578866, model.pointer());
     }
 }

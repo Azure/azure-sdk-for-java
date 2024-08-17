@@ -29,20 +29,22 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
 
     public void delete(String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
         String attachedDataNetworkName) {
-        this.serviceClient().delete(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
-            attachedDataNetworkName);
+        this.serviceClient()
+            .delete(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName);
     }
 
     public void delete(String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
         String attachedDataNetworkName, Context context) {
-        this.serviceClient().delete(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
-            attachedDataNetworkName, context);
+        this.serviceClient()
+            .delete(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName,
+                context);
     }
 
     public Response<AttachedDataNetwork> getWithResponse(String resourceGroupName, String packetCoreControlPlaneName,
         String packetCoreDataPlaneName, String attachedDataNetworkName, Context context) {
-        Response<AttachedDataNetworkInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, context);
+        Response<AttachedDataNetworkInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AttachedDataNetworkImpl(inner.getValue(), this.manager()));
@@ -53,8 +55,8 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
 
     public AttachedDataNetwork get(String resourceGroupName, String packetCoreControlPlaneName,
         String packetCoreDataPlaneName, String attachedDataNetworkName) {
-        AttachedDataNetworkInner inner = this.serviceClient().get(resourceGroupName, packetCoreControlPlaneName,
-            packetCoreDataPlaneName, attachedDataNetworkName);
+        AttachedDataNetworkInner inner = this.serviceClient()
+            .get(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName);
         if (inner != null) {
             return new AttachedDataNetworkImpl(inner, this.manager());
         } else {
@@ -97,8 +99,10 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'attachedDataNetworks'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
-            attachedDataNetworkName, Context.NONE).getValue();
+        return this
+            .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, Context.NONE)
+            .getValue();
     }
 
     public Response<AttachedDataNetwork> getByIdWithResponse(String id, Context context) {

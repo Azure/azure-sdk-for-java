@@ -11,7 +11,8 @@ import com.azure.resourcemanager.datafactory.models.SelfHostedIntegrationRuntime
  */
 public final class IntegrationRuntimesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_Create.json
      */
     /**
      * Sample code: IntegrationRuntimes_Create.

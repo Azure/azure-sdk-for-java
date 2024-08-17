@@ -5,7 +5,6 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class ExposureLevel extends ExpandableStringEnum<ExposureLevel> {
      * @return the corresponding ExposureLevel.
      */
     @Generated
-    @JsonCreator
     public static ExposureLevel fromString(String name) {
         return fromString(name, ExposureLevel.class);
     }

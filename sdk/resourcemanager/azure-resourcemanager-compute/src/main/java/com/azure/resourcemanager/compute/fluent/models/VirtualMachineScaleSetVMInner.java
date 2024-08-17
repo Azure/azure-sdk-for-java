@@ -7,6 +7,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
@@ -19,7 +22,7 @@ import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -32,19 +35,16 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     /*
      * The virtual machine instance ID.
      */
-    @JsonProperty(value = "instanceId", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceId;
 
     /*
      * The virtual machine SKU.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
     /*
      * Describes the properties of a virtual machine scale set virtual machine.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineScaleSetVMPropertiesInner innerProperties;
 
     /*
@@ -53,33 +53,43 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * programmatic use. In the Azure portal, find the marketplace image that you want to use and then click **Want to
      * deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
      */
-    @JsonProperty(value = "plan")
     private Plan plan;
 
     /*
      * The virtual machine child extension resources.
      */
-    @JsonProperty(value = "resources", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineExtensionInner> resources;
 
     /*
      * The virtual machine zones.
      */
-    @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> zones;
 
     /*
      * The identity of the virtual machine, if configured.
      */
-    @JsonProperty(value = "identity")
     private VirtualMachineIdentity identity;
 
     /*
      * Etag is property returned in Update/Get response of the VMSS VM, so that customer can supply it in the header to
      * ensure optimistic updates.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of VirtualMachineScaleSetVMInner class.
@@ -115,10 +125,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
-     * Get the plan property: Specifies information about the marketplace image used to create the virtual machine.
-     * This element is only used for marketplace images. Before you can use a marketplace image from an API, you must
-     * enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and
-     * then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
+     * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
+     * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
+     * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
+     * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
      * 
      * @return the plan value.
@@ -128,10 +138,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
-     * Set the plan property: Specifies information about the marketplace image used to create the virtual machine.
-     * This element is only used for marketplace images. Before you can use a marketplace image from an API, you must
-     * enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and
-     * then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
+     * Set the plan property: Specifies information about the marketplace image used to create the virtual machine. This
+     * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
+     * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
+     * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
      * 
      * @param plan the plan value to set.
@@ -188,6 +198,36 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -378,8 +418,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
-     * Get the networkProfileConfiguration property: Specifies the network profile configuration of the virtual
-     * machine.
+     * Get the networkProfileConfiguration property: Specifies the network profile configuration of the virtual machine.
      * 
      * @return the networkProfileConfiguration value.
      */
@@ -388,8 +427,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
-     * Set the networkProfileConfiguration property: Specifies the network profile configuration of the virtual
-     * machine.
+     * Set the networkProfileConfiguration property: Specifies the network profile configuration of the virtual machine.
      * 
      * @param networkProfileConfiguration the networkProfileConfiguration value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
@@ -474,10 +512,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -491,10 +529,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -600,5 +638,76 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("plan", this.plan);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetVMInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetVMInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetVMInner.
+     */
+    public static VirtualMachineScaleSetVMInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetVMInner deserializedVirtualMachineScaleSetVMInner
+                = new VirtualMachineScaleSetVMInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetVMInner.withTags(tags);
+                } else if ("instanceId".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.instanceId = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.innerProperties
+                        = VirtualMachineScaleSetVMPropertiesInner.fromJson(reader);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.plan = Plan.fromJson(reader);
+                } else if ("resources".equals(fieldName)) {
+                    List<VirtualMachineExtensionInner> resources
+                        = reader.readArray(reader1 -> VirtualMachineExtensionInner.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetVMInner.resources = resources;
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetVMInner.zones = zones;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.identity = VirtualMachineIdentity.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetVMInner;
+        });
     }
 }

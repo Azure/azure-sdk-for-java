@@ -9,7 +9,8 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class DataFlowDebugSessionQueryByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_QueryByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DataFlowDebugSession_QueryByFactory.json
      */
     /**
      * Sample code: DataFlowDebugSession_QueryByFactory.

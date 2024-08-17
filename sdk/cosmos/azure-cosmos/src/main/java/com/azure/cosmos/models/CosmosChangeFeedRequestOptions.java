@@ -5,10 +5,10 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.CosmosChangeFeedRequestOptionsImpl;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
@@ -24,51 +24,23 @@ import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Encapsulates options that can be specified for an operation within a change feed request.
  */
 public final class CosmosChangeFeedRequestOptions {
-    private static final int DEFAULT_MAX_ITEM_COUNT = 100;
-    private static final int DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
-    private final ChangeFeedState continuationState;
-    private final FeedRangeInternal feedRangeInternal;
-    private final Map<String, Object> properties;
-    private int maxItemCount;
-    private int maxPrefetchPageCount;
-    private ChangeFeedMode mode;
-    private ChangeFeedStartFromInternal startFromInternal;
-    private boolean isSplitHandlingDisabled;
-    private boolean quotaInfoEnabled;
-    private String throughputControlGroupName;
-    private Map<String, String> customOptions;
-    private OperationContextAndListenerTuple operationContextAndListenerTuple;
-    private CosmosDiagnosticsThresholds thresholds;
-    private List<String> excludeRegions;
-    private CosmosItemSerializer customSerializer;
+   private final CosmosChangeFeedRequestOptionsImpl actualRequestOptions;
+   private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     CosmosChangeFeedRequestOptions(CosmosChangeFeedRequestOptions topBeCloned) {
-        this.continuationState = topBeCloned.continuationState;
-        this.feedRangeInternal = topBeCloned.feedRangeInternal;
-        this.properties = topBeCloned.properties;
-        this.maxItemCount = topBeCloned.maxItemCount;
-        this.maxPrefetchPageCount = topBeCloned.maxPrefetchPageCount;
-        this.mode = topBeCloned.mode;
-        this.startFromInternal = topBeCloned.startFromInternal;
-        this.isSplitHandlingDisabled = topBeCloned.isSplitHandlingDisabled;
-        this.quotaInfoEnabled = topBeCloned.quotaInfoEnabled;
-        this.throughputControlGroupName = topBeCloned.throughputControlGroupName;
-        this.customOptions = topBeCloned.customOptions;
-        this.operationContextAndListenerTuple = topBeCloned.operationContextAndListenerTuple;
-        this.thresholds = topBeCloned.thresholds;
-        this.excludeRegions = topBeCloned.excludeRegions;
-        this.customSerializer = topBeCloned.customSerializer;
+       this.actualRequestOptions  = new CosmosChangeFeedRequestOptionsImpl(topBeCloned.actualRequestOptions);
     }
 
     private CosmosChangeFeedRequestOptions(
@@ -76,40 +48,11 @@ public final class CosmosChangeFeedRequestOptions {
         ChangeFeedStartFromInternal startFromInternal,
         ChangeFeedMode mode,
         ChangeFeedState continuationState) {
-        super();
-
-        if (feedRange == null) {
-            throw new NullPointerException("feedRange");
-        }
-
-        if (startFromInternal == null) {
-            throw new NullPointerException("startFromInternal");
-        }
-
-        this.maxItemCount = DEFAULT_MAX_ITEM_COUNT;
-        this.maxPrefetchPageCount = DEFAULT_MAX_PREFETCH_PAGE_COUNT;
-        this.feedRangeInternal = feedRange;
-        this.startFromInternal = startFromInternal;
-        this.continuationState = continuationState;
-
-        if (mode != ChangeFeedMode.INCREMENTAL && mode != ChangeFeedMode.FULL_FIDELITY) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "Argument 'mode' has unsupported change feed mode %s",
-                    mode.toString()));
-        }
-
-        this.mode = mode;
-        if (this.mode == ChangeFeedMode.FULL_FIDELITY) {
-            this.addCustomOptionsForFullFidelityMode();
-        }
-
-        this.properties = new HashMap<>();
-        this.isSplitHandlingDisabled = false;
+       this.actualRequestOptions = new CosmosChangeFeedRequestOptionsImpl(feedRange, startFromInternal, mode, continuationState);
     }
 
     ChangeFeedState getContinuation() {
-        return this.continuationState;
+        return this.actualRequestOptions.getContinuation();
     }
 
     /**
@@ -118,7 +61,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the feed range.
      */
     public FeedRange getFeedRange() {
-        return this.feedRangeInternal;
+        return this.actualRequestOptions.getFeedRange();
     }
 
     /**
@@ -128,7 +71,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the max number of items.
      */
     public int getMaxItemCount() {
-        return this.maxItemCount;
+        return this.actualRequestOptions.getMaxItemCount();
     }
 
     /**
@@ -139,7 +82,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the FeedOptionsBase.
      */
     public CosmosChangeFeedRequestOptions setMaxItemCount(int maxItemCount) {
-        this.maxItemCount = maxItemCount;
+        this.actualRequestOptions.setMaxItemCount(maxItemCount);
         return this;
     }
 
@@ -156,7 +99,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the modified change feed request options.
      */
     public int getMaxPrefetchPageCount() {
-        return this.maxPrefetchPageCount;
+        return this.actualRequestOptions.getMaxPrefetchPageCount();
     }
 
     /**
@@ -174,10 +117,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the modified change feed request options.
      */
     public CosmosChangeFeedRequestOptions setMaxPrefetchPageCount(int maxPrefetchPageCount) {
-        checkArgument(
-            maxPrefetchPageCount > 0,
-            "Argument 'maxPrefetchCount' must be larger than 0.");
-        this.maxPrefetchPageCount = maxPrefetchPageCount;
+       this.actualRequestOptions.setMaxPrefetchPageCount(maxPrefetchPageCount);
 
         return this;
     }
@@ -189,7 +129,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return true if quotaInfoEnabled is enabled
      */
     public boolean isQuotaInfoEnabled() {
-        return quotaInfoEnabled;
+        return this.actualRequestOptions.isQuotaInfoEnabled();
     }
 
     /**
@@ -199,7 +139,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
      */
     public void setQuotaInfoEnabled(boolean quotaInfoEnabled) {
-        this.quotaInfoEnabled = quotaInfoEnabled;
+        this.actualRequestOptions.setQuotaInfoEnabled(quotaInfoEnabled);
     }
 
     /**
@@ -210,7 +150,7 @@ public final class CosmosChangeFeedRequestOptions {
     public CosmosChangeFeedRequestOptions setDiagnosticsThresholds(
         CosmosDiagnosticsThresholds operationSpecificThresholds) {
 
-        this.thresholds = operationSpecificThresholds;
+        this.actualRequestOptions.setDiagnosticsThresholds(operationSpecificThresholds);
         return this;
     }
 
@@ -221,7 +161,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the diagnostic thresholds used as an override for a specific operation.
      */
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
-        return this.thresholds;
+        return this.actualRequestOptions.getDiagnosticsThresholds();
     }
 
     /**
@@ -229,7 +169,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the custom item serializer
      */
     public CosmosItemSerializer getCustomItemSerializer() {
-        return this.customSerializer;
+        return this.actualRequestOptions.getCustomItemSerializer();
     }
 
     /**
@@ -240,22 +180,21 @@ public final class CosmosChangeFeedRequestOptions {
      * @return  the CosmosChangeFeedRequestOptions.
      */
     public CosmosChangeFeedRequestOptions setCustomItemSerializer(CosmosItemSerializer customItemSerializer) {
-        this.customSerializer = customItemSerializer;
-
+        this.actualRequestOptions.setCustomItemSerializer(customItemSerializer);
         return this;
     }
 
     boolean isSplitHandlingDisabled() {
-        return this.isSplitHandlingDisabled;
+        return this.actualRequestOptions.isSplitHandlingDisabled();
     }
 
     CosmosChangeFeedRequestOptions disableSplitHandling() {
-        this.isSplitHandlingDisabled = true;
+        this.actualRequestOptions.disableSplitHandling();
         return this;
     }
 
     ChangeFeedMode getMode() {
-        return this.mode;
+        return this.actualRequestOptions.getMode();
     }
 
     /**
@@ -264,11 +203,11 @@ public final class CosmosChangeFeedRequestOptions {
      * @return Map of request options properties
      */
     Map<String, Object> getProperties() {
-        return properties;
+        return this.actualRequestOptions.getProperties();
     }
 
     ChangeFeedStartFromInternal getStartFromSettings() {
-        return this.startFromInternal;
+        return this.actualRequestOptions.getStartFromSettings();
     }
 
     /**
@@ -429,9 +368,7 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     void setRequestContinuation(String etag) {
-        this.startFromInternal = ChangeFeedStartFromInternal.createFromETagAndFeedRange(
-            etag,
-            this.feedRangeInternal);
+        this.actualRequestOptions.setRequestContinuation(etag);
     }
 
     CosmosChangeFeedRequestOptions withCosmosPagedFluxOptions(
@@ -487,17 +424,7 @@ public final class CosmosChangeFeedRequestOptions {
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated //since = "V4_37_0", forRemoval = true
     public CosmosChangeFeedRequestOptions fullFidelity() {
-
-        if (!this.startFromInternal.supportsFullFidelityRetention()) {
-            throw new IllegalStateException(
-                "Full fidelity retention is not supported for the chosen change feed start from " +
-                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
-                    "CosmosChangeFeedRequestOptions.createFromContinuation instead."
-            );
-        }
-
-        this.mode = ChangeFeedMode.FULL_FIDELITY;
-        this.addCustomOptionsForFullFidelityMode();
+        this.actualRequestOptions.fullFidelity();
         return this;
     }
 
@@ -527,17 +454,7 @@ public final class CosmosChangeFeedRequestOptions {
      */
     @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions allVersionsAndDeletes() {
-
-        if (!this.startFromInternal.supportsFullFidelityRetention()) {
-            throw new IllegalStateException(
-                "All Versions and Deletes mode is not supported for the chosen change feed start from " +
-                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
-                    "CosmosChangeFeedRequestOptions.createFromContinuation instead."
-            );
-        }
-
-        this.mode = ChangeFeedMode.FULL_FIDELITY;
-        this.addCustomOptionsForFullFidelityMode();
+        this.actualRequestOptions.allVersionsAndDeletes();
         return this;
     }
 
@@ -547,7 +464,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return The throughput control group name.
      */
     public String getThroughputControlGroupName() {
-        return this.throughputControlGroupName;
+        return this.actualRequestOptions.getThroughputControlGroupName();
     }
 
     /**
@@ -557,7 +474,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return A {@link CosmosChangeFeedRequestOptions}.
      */
     public CosmosChangeFeedRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
-        this.throughputControlGroupName = throughputControlGroupName;
+        this.actualRequestOptions.setThroughputControlGroupName(throughputControlGroupName);
         return this;
     }
 
@@ -569,7 +486,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the {@link CosmosChangeFeedRequestOptions}
      */
     public CosmosChangeFeedRequestOptions setExcludedRegions(List<String> excludeRegions) {
-        this.excludeRegions = excludeRegions;
+        this.actualRequestOptions.setExcludedRegions(excludeRegions);
         return this;
     }
 
@@ -580,10 +497,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return a list of excluded regions
      * */
     public List<String> getExcludedRegions() {
-        if (this.excludeRegions == null) {
-            return null;
-        }
-        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+        return this.actualRequestOptions.getExcludedRegions();
     }
 
     /**
@@ -595,10 +509,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the CosmosChangeFeedRequestOptions.
      */
     CosmosChangeFeedRequestOptions setHeader(String name, String value) {
-        if (this.customOptions == null) {
-            this.customOptions = new HashMap<>();
-        }
-        this.customOptions.put(name, value);
+        this.actualRequestOptions.setHeader(name, value);
         return this;
     }
 
@@ -608,21 +519,65 @@ public final class CosmosChangeFeedRequestOptions {
      * @return Map of custom request options
      */
     Map<String, String> getHeaders() {
-        return this.customOptions;
+        return this.actualRequestOptions.getHeaders();
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param keywordIdentifiers the custom ids.
+     * @return the current request options.
+     */
+    public CosmosChangeFeedRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        if (keywordIdentifiers != null) {
+            this.actualRequestOptions.setKeywordIdentifiers(Collections.unmodifiableSet(keywordIdentifiers));
+        } else {
+            this.actualRequestOptions.setKeywordIdentifiers(EMPTY_KEYWORD_IDENTIFIERS);
+        }
+        return this;
+    }
+
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return this.actualRequestOptions.getKeywordIdentifiers();
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
-        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+        this.actualRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
     }
 
     OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
-        return this.operationContextAndListenerTuple;
+        return this.actualRequestOptions.getOperationContextAndListenerTuple();
     }
 
     private void addCustomOptionsForFullFidelityMode() {
         this.setHeader(
             HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
             HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
+    }
+
+    CosmosChangeFeedRequestOptionsImpl getImpl() {
+        return this.actualRequestOptions;
+    }
+
+    String getCollectionRid() {
+        return this.actualRequestOptions.getCollectionRid();
+    }
+
+    void setCollectionRid(String collectionRid) {
+        this.actualRequestOptions.setCollectionRid(collectionRid);
+    }
+
+    PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.actualRequestOptions.getPartitionKeyDefinition();
+    }
+
+    void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -640,6 +595,11 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.getHeaders();
+                }
+
+                @Override
+                public CosmosChangeFeedRequestOptionsImpl getImpl(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.getImpl();
                 }
 
                 @Override
@@ -663,12 +623,7 @@ public final class CosmosChangeFeedRequestOptions {
 
                 @Override
                 public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options) {
-                    return options.thresholds;
-                }
-
-                @Override
-                public List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions) {
-                    return cosmosChangeFeedRequestOptions.excludeRegions;
+                    return options.getDiagnosticsThresholds();
                 }
 
                 @Override
@@ -683,6 +638,26 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public CosmosChangeFeedRequestOptions clone(CosmosChangeFeedRequestOptions toBeCloned) {
                     return new CosmosChangeFeedRequestOptions(toBeCloned);
+                }
+
+                @Override
+                public String getCollectionRid(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.getCollectionRid();
+                }
+
+                @Override
+                public void setCollectionRid(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String collectionRid) {
+                    changeFeedRequestOptions.setCollectionRid(collectionRid);
+                }
+
+                @Override
+                public PartitionKeyDefinition getPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.getPartitionKeyDefinition();
+                }
+
+                @Override
+                public void setPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions, PartitionKeyDefinition partitionKeyDefinition) {
+                    changeFeedRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
                 }
             });
     }

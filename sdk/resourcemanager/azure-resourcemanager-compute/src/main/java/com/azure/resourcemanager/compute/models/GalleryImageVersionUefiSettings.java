@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Contains UEFI settings for the image version.
  */
 @Fluent
-public final class GalleryImageVersionUefiSettings {
+public final class GalleryImageVersionUefiSettings implements JsonSerializable<GalleryImageVersionUefiSettings> {
     /*
      * The name of the template(s) that contains default UEFI key signatures that will be added to the image.
      */
-    @JsonProperty(value = "signatureTemplateNames")
     private List<UefiSignatureTemplateName> signatureTemplateNames;
 
     /*
      * Additional UEFI key signatures that will be added to the image in addition to the signature templates
      */
-    @JsonProperty(value = "additionalSignatures")
     private UefiKeySignatures additionalSignatures;
 
     /**
@@ -55,8 +57,8 @@ public final class GalleryImageVersionUefiSettings {
     }
 
     /**
-     * Get the additionalSignatures property: Additional UEFI key signatures that will be added to the image in
-     * addition to the signature templates.
+     * Get the additionalSignatures property: Additional UEFI key signatures that will be added to the image in addition
+     * to the signature templates.
      * 
      * @return the additionalSignatures value.
      */
@@ -65,8 +67,8 @@ public final class GalleryImageVersionUefiSettings {
     }
 
     /**
-     * Set the additionalSignatures property: Additional UEFI key signatures that will be added to the image in
-     * addition to the signature templates.
+     * Set the additionalSignatures property: Additional UEFI key signatures that will be added to the image in addition
+     * to the signature templates.
      * 
      * @param additionalSignatures the additionalSignatures value to set.
      * @return the GalleryImageVersionUefiSettings object itself.
@@ -85,5 +87,49 @@ public final class GalleryImageVersionUefiSettings {
         if (additionalSignatures() != null) {
             additionalSignatures().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("signatureTemplateNames", this.signatureTemplateNames,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("additionalSignatures", this.additionalSignatures);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageVersionUefiSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageVersionUefiSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryImageVersionUefiSettings.
+     */
+    public static GalleryImageVersionUefiSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageVersionUefiSettings deserializedGalleryImageVersionUefiSettings
+                = new GalleryImageVersionUefiSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("signatureTemplateNames".equals(fieldName)) {
+                    List<UefiSignatureTemplateName> signatureTemplateNames
+                        = reader.readArray(reader1 -> UefiSignatureTemplateName.fromString(reader1.getString()));
+                    deserializedGalleryImageVersionUefiSettings.signatureTemplateNames = signatureTemplateNames;
+                } else if ("additionalSignatures".equals(fieldName)) {
+                    deserializedGalleryImageVersionUefiSettings.additionalSignatures
+                        = UefiKeySignatures.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageVersionUefiSettings;
+        });
     }
 }

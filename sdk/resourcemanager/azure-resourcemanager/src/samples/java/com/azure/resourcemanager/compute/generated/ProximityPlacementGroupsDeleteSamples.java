@@ -19,7 +19,10 @@ public final class ProximityPlacementGroupsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAProximityPlacementGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getProximityPlacementGroups()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getProximityPlacementGroups()
             .deleteWithResponse("myResourceGroup", "myProximityPlacementGroup", com.azure.core.util.Context.NONE);
     }
 }

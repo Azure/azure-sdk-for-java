@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.0.0-beta.3 (Unreleased)
+### 1.0.0-beta.5 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,17 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 1.0.0-beta.4 (2024-07-26)
+
+#### Other Changes
+* Connector status appears as `FAILED` if try to create a connector with incorrect container names - See [PR 41160](https://github.com/Azure/azure-sdk-for-java/pull/41160) 
+
+### 1.0.0-beta.3 (2024-06-24)
+
+#### Bugs Fixed
+* Changed to only disable `PartitionKeyRangeGoneRetryPolicy` when enable `disableSplitHandling` in `ChangeFeedRequestOptions`. - See [PR 40738](https://github.com/Azure/azure-sdk-for-java/pull/40738)
+* Fixed an issue where the task will fail due to single `RequestRateTooLarge` exception - See [PR 40738](https://github.com/Azure/azure-sdk-for-java/pull/40738)
 
 ### 1.0.0-beta.2 (2024-05-01)
 

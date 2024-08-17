@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.FileShareItemInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,17 +18,16 @@ import java.util.List;
  * shares.
  */
 @Immutable
-public final class FileShareItems {
+public final class FileShareItems implements JsonSerializable<FileShareItems> {
     /*
      * List of file shares returned.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<FileShareItemInner> value;
 
     /*
-     * Request URL that can be used to query next page of shares. Returned when total number of requested shares exceed maximum page size.
+     * Request URL that can be used to query next page of shares. Returned when total number of requested shares exceed
+     * maximum page size.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -36,7 +38,7 @@ public final class FileShareItems {
 
     /**
      * Get the value property: List of file shares returned.
-     *
+     * 
      * @return the value value.
      */
     public List<FileShareItemInner> value() {
@@ -46,7 +48,7 @@ public final class FileShareItems {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of shares. Returned when total number
      * of requested shares exceed maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,12 +57,50 @@ public final class FileShareItems {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileShareItems from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileShareItems if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileShareItems.
+     */
+    public static FileShareItems fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileShareItems deserializedFileShareItems = new FileShareItems();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<FileShareItemInner> value = reader.readArray(reader1 -> FileShareItemInner.fromJson(reader1));
+                    deserializedFileShareItems.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedFileShareItems.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileShareItems;
+        });
     }
 }

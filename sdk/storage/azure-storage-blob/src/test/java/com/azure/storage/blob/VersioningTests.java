@@ -19,7 +19,6 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PageBlobItem;
-import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -300,7 +299,6 @@ public class VersioningTests extends BlobTestBase {
 
     @Test
     public void copyFromUrlBlobsWithVersion() {
-        blobContainerClient.setAccessPolicy(PublicAccessType.CONTAINER, null);
         BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize());
         BlobClient sourceBlob = blobContainerClient.getBlobClient(generateBlobName());

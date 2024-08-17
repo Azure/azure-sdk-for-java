@@ -17,6 +17,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,6 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
     private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
     private static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
 
-    static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
     static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
@@ -99,7 +99,7 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isLiveMode()) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new AzurePowerShellCredentialBuilder().build());
         }
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);

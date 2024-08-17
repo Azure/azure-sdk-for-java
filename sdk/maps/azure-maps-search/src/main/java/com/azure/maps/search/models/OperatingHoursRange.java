@@ -5,28 +5,39 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperatingHoursRange. */
+/**
+ * Defines values for OperatingHoursRange.
+ */
 public final class OperatingHoursRange extends ExpandableStringEnum<OperatingHoursRange> {
-    /** Static value nextSevenDays for OperatingHoursRange. */
+    /**
+     * Shows the hours of operation for the next week, starting with the current day in the local time of the POI.
+     */
     public static final OperatingHoursRange NEXT_SEVEN_DAYS = fromString("nextSevenDays");
 
     /**
+     * Creates a new instance of OperatingHoursRange value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperatingHoursRange() {
+    }
+
+    /**
      * Creates or finds a OperatingHoursRange from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperatingHoursRange.
      */
-    @JsonCreator
     public static OperatingHoursRange fromString(String name) {
         return fromString(name, OperatingHoursRange.class);
     }
 
     /**
      * Gets known OperatingHoursRange values.
-     *
+     * 
      * @return known OperatingHoursRange values.
      */
     public static Collection<OperatingHoursRange> values() {

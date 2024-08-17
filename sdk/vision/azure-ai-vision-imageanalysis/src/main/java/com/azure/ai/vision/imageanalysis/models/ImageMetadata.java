@@ -5,28 +5,29 @@ package com.azure.ai.vision.imageanalysis.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Metadata associated with the analyzed image.
  */
 @Immutable
-public final class ImageMetadata {
+public final class ImageMetadata implements JsonSerializable<ImageMetadata> {
 
     /*
      * The height of the image in pixels.
      */
     @Generated
-    @JsonProperty(value = "height")
-    private int height;
+    private final int height;
 
     /*
      * The width of the image in pixels.
      */
     @Generated
-    @JsonProperty(value = "width")
-    private int width;
+    private final int width;
 
     /**
      * Creates an instance of ImageMetadata class.
@@ -35,8 +36,7 @@ public final class ImageMetadata {
      * @param width the width value to set.
      */
     @Generated
-    @JsonCreator
-    private ImageMetadata(@JsonProperty(value = "height") int height, @JsonProperty(value = "width") int width) {
+    private ImageMetadata(int height, int width) {
         this.height = height;
         this.width = width;
     }
@@ -59,5 +59,46 @@ public final class ImageMetadata {
     @Generated
     public int getWidth() {
         return this.width;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("height", this.height);
+        jsonWriter.writeIntField("width", this.width);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageMetadata from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageMetadata.
+     */
+    @Generated
+    public static ImageMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int height = 0;
+            int width = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("height".equals(fieldName)) {
+                    height = reader.getInt();
+                } else if ("width".equals(fieldName)) {
+                    width = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new ImageMetadata(height, width);
+        });
     }
 }

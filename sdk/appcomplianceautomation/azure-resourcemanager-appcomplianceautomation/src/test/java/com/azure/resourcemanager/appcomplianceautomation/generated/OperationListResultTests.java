@@ -6,21 +6,12 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.OperationListResult;
-import org.junit.jupiter.api.Test;
 
 public final class OperationListResultTests {
-    @Test
-    public void testDeserialize() {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"display\":{\"provider\":\"pbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"izhwlrxy\",\"isDataAction\":false,\"display\":{\"provider\":\"ijgkdm\",\"resource\":\"azlobcufpdznrbt\",\"operation\":\"qjnqglhqgnufoooj\",\"description\":\"ifsqesaagdfmg\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"rifkwm\",\"isDataAction\":true,\"display\":{\"provider\":\"izntocipao\",\"resource\":\"jpsq\",\"operation\":\"mpoyfd\",\"description\":\"ogknygjofjdd\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"upewnwreitjzy\"}")
-                .toObject(OperationListResult.class);
-    }
-
-    @Test
-    public void testSerialize() {
-        OperationListResult model = new OperationListResult();
-        model = BinaryData.fromObject(model).toObject(OperationListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"nryrtihf\",\"isDataAction\":true,\"display\":{\"provider\":\"pzvgnwzsymglzufc\",\"resource\":\"kohdbiha\",\"operation\":\"fhfcb\",\"description\":\"s\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"qhabifpikxwcz\",\"isDataAction\":true,\"display\":{\"provider\":\"pqxu\",\"resource\":\"vyq\",\"operation\":\"wby\",\"description\":\"k\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"grtfwvu\",\"isDataAction\":false,\"display\":{\"provider\":\"dcc\",\"resource\":\"h\",\"operation\":\"cnyejhkryhtnapcz\",\"description\":\"okjye\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"pjoxzjnch\"}")
+            .toObject(OperationListResult.class);
     }
 }

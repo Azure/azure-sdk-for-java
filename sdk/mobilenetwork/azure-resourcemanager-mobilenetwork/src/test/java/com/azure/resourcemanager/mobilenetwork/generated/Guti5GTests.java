@@ -14,27 +14,27 @@ public final class Guti5GTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Guti5G model = BinaryData.fromString(
-            "{\"plmn\":{\"mcc\":\"zflbqvg\",\"mnc\":\"qvlgafcqusrdvetn\"},\"amfId\":{\"regionId\":999562740,\"setId\":89870573,\"pointer\":2059814466},\"fivegTmsi\":1022807330}")
+            "{\"plmn\":{\"mcc\":\"tayx\",\"mnc\":\"nsup\"},\"amfId\":{\"regionId\":1417437720,\"setId\":1744580177,\"pointer\":2074822274},\"fivegTmsi\":593939862}")
             .toObject(Guti5G.class);
-        Assertions.assertEquals("zflbqvg", model.plmn().mcc());
-        Assertions.assertEquals("qvlgafcqusrdvetn", model.plmn().mnc());
-        Assertions.assertEquals(999562740, model.amfId().regionId());
-        Assertions.assertEquals(89870573, model.amfId().setId());
-        Assertions.assertEquals(2059814466, model.amfId().pointer());
-        Assertions.assertEquals(1022807330, model.fivegTmsi());
+        Assertions.assertEquals("tayx", model.plmn().mcc());
+        Assertions.assertEquals("nsup", model.plmn().mnc());
+        Assertions.assertEquals(1417437720, model.amfId().regionId());
+        Assertions.assertEquals(1744580177, model.amfId().setId());
+        Assertions.assertEquals(2074822274, model.amfId().pointer());
+        Assertions.assertEquals(593939862, model.fivegTmsi());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Guti5G model = new Guti5G().withPlmn(new PlmnId().withMcc("zflbqvg").withMnc("qvlgafcqusrdvetn"))
-            .withAmfId(new AmfId().withRegionId(999562740).withSetId(89870573).withPointer(2059814466))
-            .withFivegTmsi(1022807330);
+        Guti5G model = new Guti5G().withPlmn(new PlmnId().withMcc("tayx").withMnc("nsup"))
+            .withAmfId(new AmfId().withRegionId(1417437720).withSetId(1744580177).withPointer(2074822274))
+            .withFivegTmsi(593939862);
         model = BinaryData.fromObject(model).toObject(Guti5G.class);
-        Assertions.assertEquals("zflbqvg", model.plmn().mcc());
-        Assertions.assertEquals("qvlgafcqusrdvetn", model.plmn().mnc());
-        Assertions.assertEquals(999562740, model.amfId().regionId());
-        Assertions.assertEquals(89870573, model.amfId().setId());
-        Assertions.assertEquals(2059814466, model.amfId().pointer());
-        Assertions.assertEquals(1022807330, model.fivegTmsi());
+        Assertions.assertEquals("tayx", model.plmn().mcc());
+        Assertions.assertEquals("nsup", model.plmn().mnc());
+        Assertions.assertEquals(1417437720, model.amfId().regionId());
+        Assertions.assertEquals(1744580177, model.amfId().setId());
+        Assertions.assertEquals(2074822274, model.amfId().pointer());
+        Assertions.assertEquals(593939862, model.fivegTmsi());
     }
 }

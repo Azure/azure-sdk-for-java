@@ -16,31 +16,32 @@ public final class ExadataIormConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExadataIormConfig model = BinaryData.fromString(
-            "{\"dbPlans\":[{\"dbName\":\"yskpbhen\",\"flashCacheLimit\":\"kcxywnyt\",\"share\":1863766018},{\"dbName\":\"nlqidybyxczf\",\"flashCacheLimit\":\"haaxdbabphl\",\"share\":77204722}],\"lifecycleDetails\":\"fkts\",\"lifecycleState\":\"Updating\",\"objective\":\"Basic\"}")
+            "{\"dbPlans\":[{\"dbName\":\"bzpfzab\",\"flashCacheLimit\":\"cuh\",\"share\":1070511980},{\"dbName\":\"tyq\",\"flashCacheLimit\":\"lbbovplw\",\"share\":869574502},{\"dbName\":\"gy\",\"flashCacheLimit\":\"uosvmkfssxqukk\",\"share\":89011603}],\"lifecycleDetails\":\"mg\",\"lifecycleState\":\"Updating\",\"objective\":\"LowLatency\"}")
             .toObject(ExadataIormConfig.class);
-        Assertions.assertEquals("yskpbhen", model.dbPlans().get(0).dbName());
-        Assertions.assertEquals("kcxywnyt", model.dbPlans().get(0).flashCacheLimit());
-        Assertions.assertEquals(1863766018, model.dbPlans().get(0).share());
-        Assertions.assertEquals("fkts", model.lifecycleDetails());
+        Assertions.assertEquals("bzpfzab", model.dbPlans().get(0).dbName());
+        Assertions.assertEquals("cuh", model.dbPlans().get(0).flashCacheLimit());
+        Assertions.assertEquals(1070511980, model.dbPlans().get(0).share());
+        Assertions.assertEquals("mg", model.lifecycleDetails());
         Assertions.assertEquals(IormLifecycleState.UPDATING, model.lifecycleState());
-        Assertions.assertEquals(Objective.BASIC, model.objective());
+        Assertions.assertEquals(Objective.LOW_LATENCY, model.objective());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExadataIormConfig model = new ExadataIormConfig()
-            .withDbPlans(Arrays.asList(
-                new DbIormConfig().withDbName("yskpbhen").withFlashCacheLimit("kcxywnyt").withShare(1863766018),
-                new DbIormConfig().withDbName("nlqidybyxczf").withFlashCacheLimit("haaxdbabphl").withShare(77204722)))
-            .withLifecycleDetails("fkts")
+            .withDbPlans(
+                Arrays.asList(new DbIormConfig().withDbName("bzpfzab").withFlashCacheLimit("cuh").withShare(1070511980),
+                    new DbIormConfig().withDbName("tyq").withFlashCacheLimit("lbbovplw").withShare(869574502),
+                    new DbIormConfig().withDbName("gy").withFlashCacheLimit("uosvmkfssxqukk").withShare(89011603)))
+            .withLifecycleDetails("mg")
             .withLifecycleState(IormLifecycleState.UPDATING)
-            .withObjective(Objective.BASIC);
+            .withObjective(Objective.LOW_LATENCY);
         model = BinaryData.fromObject(model).toObject(ExadataIormConfig.class);
-        Assertions.assertEquals("yskpbhen", model.dbPlans().get(0).dbName());
-        Assertions.assertEquals("kcxywnyt", model.dbPlans().get(0).flashCacheLimit());
-        Assertions.assertEquals(1863766018, model.dbPlans().get(0).share());
-        Assertions.assertEquals("fkts", model.lifecycleDetails());
+        Assertions.assertEquals("bzpfzab", model.dbPlans().get(0).dbName());
+        Assertions.assertEquals("cuh", model.dbPlans().get(0).flashCacheLimit());
+        Assertions.assertEquals(1070511980, model.dbPlans().get(0).share());
+        Assertions.assertEquals("mg", model.lifecycleDetails());
         Assertions.assertEquals(IormLifecycleState.UPDATING, model.lifecycleState());
-        Assertions.assertEquals(Objective.BASIC, model.objective());
+        Assertions.assertEquals(Objective.LOW_LATENCY, model.objective());
     }
 }

@@ -6,37 +6,42 @@ package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SKU parameters supplied to the create Redis operation. */
+/**
+ * SKU parameters supplied to the create Redis operation.
+ */
 @Fluent
-public final class Sku {
+public final class Sku implements JsonSerializable<Sku> {
     /*
      * The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)
      */
-    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
      * The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).
      */
-    @JsonProperty(value = "family", required = true)
     private SkuFamily family;
 
     /*
      * The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P
      * (Premium) family (1, 2, 3, 4).
      */
-    @JsonProperty(value = "capacity", required = true)
     private int capacity;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
     /**
      * Get the name property: The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium).
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -45,7 +50,7 @@ public final class Sku {
 
     /**
      * Set the name property: The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium).
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -56,7 +61,7 @@ public final class Sku {
 
     /**
      * Get the family property: The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).
-     *
+     * 
      * @return the family value.
      */
     public SkuFamily family() {
@@ -65,7 +70,7 @@ public final class Sku {
 
     /**
      * Set the family property: The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).
-     *
+     * 
      * @param family the family value to set.
      * @return the Sku object itself.
      */
@@ -77,7 +82,7 @@ public final class Sku {
     /**
      * Get the capacity property: The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0,
      * 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).
-     *
+     * 
      * @return the capacity value.
      */
     public int capacity() {
@@ -87,7 +92,7 @@ public final class Sku {
     /**
      * Set the capacity property: The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0,
      * 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -98,19 +103,60 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model Sku"));
         }
         if (family() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property family in model Sku"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property family in model Sku"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("family", this.family == null ? null : this.family.toString());
+        jsonWriter.writeIntField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Sku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Sku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Sku.
+     */
+    public static Sku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Sku deserializedSku = new Sku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSku.name = SkuName.fromString(reader.getString());
+                } else if ("family".equals(fieldName)) {
+                    deserializedSku.family = SkuFamily.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSku.capacity = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSku;
+        });
+    }
 }

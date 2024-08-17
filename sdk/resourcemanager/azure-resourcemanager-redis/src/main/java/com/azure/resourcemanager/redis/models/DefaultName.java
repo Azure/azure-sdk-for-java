@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DefaultName. */
+/**
+ * Defines values for DefaultName.
+ */
 public final class DefaultName extends ExpandableStringEnum<DefaultName> {
-    /** Static value default for DefaultName. */
+    /**
+     * Static value default for DefaultName.
+     */
     public static final DefaultName DEFAULT = fromString("default");
 
     /**
      * Creates a new instance of DefaultName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class DefaultName extends ExpandableStringEnum<DefaultName> {
 
     /**
      * Creates or finds a DefaultName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DefaultName.
      */
-    @JsonCreator
     public static DefaultName fromString(String name) {
         return fromString(name, DefaultName.class);
     }
 
     /**
      * Gets known DefaultName values.
-     *
+     * 
      * @return known DefaultName values.
      */
     public static Collection<DefaultName> values() {

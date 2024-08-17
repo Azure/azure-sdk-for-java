@@ -7,32 +7,52 @@ package com.azure.resourcemanager.redis.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response to put/get patch schedules for Redis cache. */
+/**
+ * Response to put/get patch schedules for Redis cache.
+ */
 @Fluent
 public final class RedisPatchScheduleInner extends ProxyResource {
     /*
      * List of patch schedules for a Redis cache.
      */
-    @JsonProperty(value = "properties", required = true)
     private ScheduleEntries innerProperties = new ScheduleEntries();
 
     /*
      * The geo-location where the resource lives
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of RedisPatchScheduleInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of RedisPatchScheduleInner class.
+     */
     public RedisPatchScheduleInner() {
     }
 
     /**
      * Get the innerProperties property: List of patch schedules for a Redis cache.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScheduleEntries innerProperties() {
@@ -41,7 +61,7 @@ public final class RedisPatchScheduleInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -49,8 +69,38 @@ public final class RedisPatchScheduleInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the scheduleEntries property: List of patch schedules for a Redis cache.
-     *
+     * 
      * @return the scheduleEntries value.
      */
     public List<ScheduleEntry> scheduleEntries() {
@@ -59,7 +109,7 @@ public final class RedisPatchScheduleInner extends ProxyResource {
 
     /**
      * Set the scheduleEntries property: List of patch schedules for a Redis cache.
-     *
+     * 
      * @param scheduleEntries the scheduleEntries value to set.
      * @return the RedisPatchScheduleInner object itself.
      */
@@ -73,19 +123,63 @@ public final class RedisPatchScheduleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model RedisPatchScheduleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model RedisPatchScheduleInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RedisPatchScheduleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisPatchScheduleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisPatchScheduleInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisPatchScheduleInner.
+     */
+    public static RedisPatchScheduleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisPatchScheduleInner deserializedRedisPatchScheduleInner = new RedisPatchScheduleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRedisPatchScheduleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRedisPatchScheduleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRedisPatchScheduleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRedisPatchScheduleInner.innerProperties = ScheduleEntries.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedRedisPatchScheduleInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisPatchScheduleInner;
+        });
+    }
 }

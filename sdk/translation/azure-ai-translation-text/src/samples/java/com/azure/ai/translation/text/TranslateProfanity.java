@@ -3,16 +3,12 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.List;
-import java.util.ArrayList;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
-import com.azure.ai.translation.text.models.TextType;
+import com.azure.ai.translation.text.models.TranslateOptions;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
-import com.azure.ai.translation.text.models.TranslateOptions;
+import com.azure.core.credential.AzureKeyCredential;
 
 /**
  * Profanity handling: https://learn.microsoft.com/en-us/azure/cognitive-services/translator/reference/v3-0-translate#handle-profanity

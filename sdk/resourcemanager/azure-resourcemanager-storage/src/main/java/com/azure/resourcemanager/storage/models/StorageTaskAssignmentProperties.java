@@ -6,53 +6,50 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the storage task assignment.
  */
 @Fluent
-public final class StorageTaskAssignmentProperties {
+public final class StorageTaskAssignmentProperties implements JsonSerializable<StorageTaskAssignmentProperties> {
     /*
      * Id of the corresponding storage task
      */
-    @JsonProperty(value = "taskId", required = true)
     private String taskId;
 
     /*
      * Whether the storage task assignment is enabled or not
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * Text that describes the purpose of the storage task assignment
      */
-    @JsonProperty(value = "description", required = true)
     private String description;
 
     /*
      * The storage task assignment execution context
      */
-    @JsonProperty(value = "executionContext", required = true)
     private StorageTaskAssignmentExecutionContext executionContext;
 
     /*
      * The storage task assignment report
      */
-    @JsonProperty(value = "report", required = true)
     private StorageTaskAssignmentReport report;
 
     /*
      * Represents the provisioning state of the storage task assignment.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Run status of storage task assignment
      */
-    @JsonProperty(value = "runStatus")
     private StorageTaskReportProperties runStatus;
 
     /**
@@ -227,4 +224,62 @@ public final class StorageTaskAssignmentProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageTaskAssignmentProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("taskId", this.taskId);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("executionContext", this.executionContext);
+        jsonWriter.writeJsonField("report", this.report);
+        jsonWriter.writeJsonField("runStatus", this.runStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskAssignmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskAssignmentProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageTaskAssignmentProperties.
+     */
+    public static StorageTaskAssignmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskAssignmentProperties deserializedStorageTaskAssignmentProperties
+                = new StorageTaskAssignmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("taskId".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentProperties.taskId = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentProperties.enabled = reader.getBoolean();
+                } else if ("description".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentProperties.description = reader.getString();
+                } else if ("executionContext".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentProperties.executionContext
+                        = StorageTaskAssignmentExecutionContext.fromJson(reader);
+                } else if ("report".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentProperties.report = StorageTaskAssignmentReport.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("runStatus".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentProperties.runStatus
+                        = StorageTaskReportProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskAssignmentProperties;
+        });
+    }
 }

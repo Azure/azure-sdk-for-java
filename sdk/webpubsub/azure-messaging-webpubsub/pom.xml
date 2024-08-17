@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-webpubsub</artifactId>
-  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+  <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
 
   <name>Microsoft Azure client library for Azure Web Pub Sub Service</name>
   <description>This package contains the Microsoft Azure Web Pub Sub library.</description>
@@ -32,16 +32,21 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <jacoco.min.linecoverage>0.39</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.29</jacoco.min.branchcoverage>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.49.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.51.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
@@ -53,7 +58,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -89,13 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
 

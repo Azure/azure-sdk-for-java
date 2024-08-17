@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The OSImageNotificationProfile model.
  */
 @Fluent
-public final class OSImageNotificationProfile {
+public final class OSImageNotificationProfile implements JsonSerializable<OSImageNotificationProfile> {
     /*
-     * Length of time a Virtual Machine being reimaged or having its OS upgraded will have to potentially approve the
-     * OS Image Scheduled Event before the event is auto approved (timed out). The configuration is specified in ISO
-     * 8601 format, and the value must be 15 minutes (PT15M)
+     * Length of time a Virtual Machine being reimaged or having its OS upgraded will have to potentially approve the OS
+     * Image Scheduled Event before the event is auto approved (timed out). The configuration is specified in ISO 8601
+     * format, and the value must be 15 minutes (PT15M)
      */
-    @JsonProperty(value = "notBeforeTimeout")
     private String notBeforeTimeout;
 
     /*
      * Specifies whether the OS Image Scheduled event is enabled or disabled.
      */
-    @JsonProperty(value = "enable")
     private Boolean enable;
 
     /**
@@ -33,8 +35,8 @@ public final class OSImageNotificationProfile {
     }
 
     /**
-     * Get the notBeforeTimeout property: Length of time a Virtual Machine being reimaged or having its OS upgraded
-     * will have to potentially approve the OS Image Scheduled Event before the event is auto approved (timed out). The
+     * Get the notBeforeTimeout property: Length of time a Virtual Machine being reimaged or having its OS upgraded will
+     * have to potentially approve the OS Image Scheduled Event before the event is auto approved (timed out). The
      * configuration is specified in ISO 8601 format, and the value must be 15 minutes (PT15M).
      * 
      * @return the notBeforeTimeout value.
@@ -44,8 +46,8 @@ public final class OSImageNotificationProfile {
     }
 
     /**
-     * Set the notBeforeTimeout property: Length of time a Virtual Machine being reimaged or having its OS upgraded
-     * will have to potentially approve the OS Image Scheduled Event before the event is auto approved (timed out). The
+     * Set the notBeforeTimeout property: Length of time a Virtual Machine being reimaged or having its OS upgraded will
+     * have to potentially approve the OS Image Scheduled Event before the event is auto approved (timed out). The
      * configuration is specified in ISO 8601 format, and the value must be 15 minutes (PT15M).
      * 
      * @param notBeforeTimeout the notBeforeTimeout value to set.
@@ -82,5 +84,44 @@ public final class OSImageNotificationProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("notBeforeTimeout", this.notBeforeTimeout);
+        jsonWriter.writeBooleanField("enable", this.enable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSImageNotificationProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSImageNotificationProfile if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OSImageNotificationProfile.
+     */
+    public static OSImageNotificationProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSImageNotificationProfile deserializedOSImageNotificationProfile = new OSImageNotificationProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notBeforeTimeout".equals(fieldName)) {
+                    deserializedOSImageNotificationProfile.notBeforeTimeout = reader.getString();
+                } else if ("enable".equals(fieldName)) {
+                    deserializedOSImageNotificationProfile.enable = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSImageNotificationProfile;
+        });
     }
 }

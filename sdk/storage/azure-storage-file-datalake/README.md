@@ -13,6 +13,7 @@ efficient data access.
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
@@ -56,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.20.0-beta.1</version>
+    <version>12.21.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

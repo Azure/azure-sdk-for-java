@@ -20,7 +20,7 @@ public final class IntegrationRuntimeNodesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"nodeName\":\"nwafjibaq\",\"machineName\":\"tdije\",\"hostServiceUri\":\"xrrmnoxjwl\",\"status\":\"NeedRegistration\",\"capabilities\":{\"l\":\"zvvidokvzqeadk\",\"tvtpw\":\"rcxvoltjyzolnqk\",\"qpl\":\"mmyaoegh\",\"hewcevpmt\":\"y\"},\"versionStatus\":\"dfpgsoje\",\"version\":\"jnlvcgar\",\"registerTime\":\"2021-02-19T07:29:51Z\",\"lastConnectTime\":\"2021-07-10T06:20:08Z\",\"expiryTime\":\"2021-02-04T14:24:28Z\",\"lastStartTime\":\"2021-01-08T18:44:26Z\",\"lastStopTime\":\"2021-09-02T20:47:22Z\",\"lastUpdateResult\":\"Succeed\",\"lastStartUpdateTime\":\"2021-12-03T17:37:13Z\",\"lastEndUpdateTime\":\"2021-06-09T07:55:39Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":671274453,\"maxConcurrentJobs\":684366978,\"\":{\"d\":\"datatonovveouwixte\",\"qtpbb\":\"dataqprhzsaquha\",\"jlynlrjoydzmbvs\":\"dataicteq\"}}";
+            = "{\"nodeName\":\"clpvwtwboxgrv\",\"machineName\":\"voq\",\"hostServiceUri\":\"quwkuszllognl\",\"status\":\"Offline\",\"capabilities\":{\"opulwd\":\"lenygimnfvqaqt\",\"flbch\":\"jbv\",\"eiakwdtuwbrw\":\"obo\"},\"versionStatus\":\"qtyuywzcc\",\"version\":\"kl\",\"registerTime\":\"2021-01-12T20:56:12Z\",\"lastConnectTime\":\"2021-11-02T23:11:41Z\",\"expiryTime\":\"2021-09-29T00:46:12Z\",\"lastStartTime\":\"2021-12-09T20:21:55Z\",\"lastStopTime\":\"2021-05-15T17:00:04Z\",\"lastUpdateResult\":\"None\",\"lastStartUpdateTime\":\"2021-09-28T17:21:23Z\",\"lastEndUpdateTime\":\"2021-10-28T21:18:37Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":2020009199,\"maxConcurrentJobs\":1316905686,\"\":{\"mln\":\"dataxpayjselrfqstbfu\",\"ykenmjznj\":\"datafvbeyugggfshn\",\"suappdmu\":\"datarxyaaevrkxy\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class IntegrationRuntimeNodesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SelfHostedIntegrationRuntimeNode response = manager.integrationRuntimeNodes()
-            .getWithResponse("ii", "jkiajokjuehcryww", "ns", "rcj", com.azure.core.util.Context.NONE)
+            .getWithResponse("yzer", "ezgi", "fisfmcxarh", "cuejtxxlkok", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

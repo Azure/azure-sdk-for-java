@@ -14,7 +14,9 @@ import java.time.OffsetDateTime;
  */
 public final class StorageAccountsListServiceSasSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountListServiceSAS.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountListServiceSAS.
+     * json
      */
     /**
      * Sample code: StorageAccountListServiceSAS.

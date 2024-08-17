@@ -9,7 +9,8 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class TriggersSubscribeToEventsSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_SubscribeToEvents.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Triggers_SubscribeToEvents.json
      */
     /**
      * Sample code: Triggers_SubscribeToEvents.

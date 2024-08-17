@@ -7,6 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.avs.fluent.models.DatastoreInner;
 import com.azure.resourcemanager.avs.models.DiskPoolVolume;
+import com.azure.resourcemanager.avs.models.ElasticSanVolume;
 import com.azure.resourcemanager.avs.models.MountOptionEnum;
 import com.azure.resourcemanager.avs.models.NetAppVolume;
 import org.junit.jupiter.api.Assertions;
@@ -14,31 +15,28 @@ import org.junit.jupiter.api.Assertions;
 public final class DatastoreInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatastoreInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Pending\",\"netAppVolume\":{\"id\":\"slqb\"},\"diskPoolVolume\":{\"targetId\":\"fxoblytkb\",\"lunName\":\"mpew\",\"mountOption\":\"ATTACH\",\"path\":\"krvrns\"},\"status\":\"DeadOrError\"},\"id\":\"q\",\"name\":\"ohxcrsbfova\",\"type\":\"rruvwbhsq\"}")
-                .toObject(DatastoreInner.class);
-        Assertions.assertEquals("slqb", model.netAppVolume().id());
-        Assertions.assertEquals("fxoblytkb", model.diskPoolVolume().targetId());
-        Assertions.assertEquals("mpew", model.diskPoolVolume().lunName());
+        DatastoreInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"zy\"},\"diskPoolVolume\":{\"targetId\":\"hxmzsbbzoggig\",\"lunName\":\"xwburvjxxjns\",\"mountOption\":\"ATTACH\",\"path\":\"tko\"},\"elasticSanVolume\":{\"targetId\":\"kouknvudwtiu\"},\"status\":\"Detached\"},\"id\":\"ngkpocipazy\",\"name\":\"o\",\"type\":\"gukgjnpiucgygevq\"}")
+            .toObject(DatastoreInner.class);
+        Assertions.assertEquals("zy", model.netAppVolume().id());
+        Assertions.assertEquals("hxmzsbbzoggig", model.diskPoolVolume().targetId());
+        Assertions.assertEquals("xwburvjxxjns", model.diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.ATTACH, model.diskPoolVolume().mountOption());
+        Assertions.assertEquals("kouknvudwtiu", model.elasticSanVolume().targetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatastoreInner model =
-            new DatastoreInner()
-                .withNetAppVolume(new NetAppVolume().withId("slqb"))
-                .withDiskPoolVolume(
-                    new DiskPoolVolume()
-                        .withTargetId("fxoblytkb")
-                        .withLunName("mpew")
-                        .withMountOption(MountOptionEnum.ATTACH));
+        DatastoreInner model = new DatastoreInner().withNetAppVolume(new NetAppVolume().withId("zy"))
+            .withDiskPoolVolume(new DiskPoolVolume().withTargetId("hxmzsbbzoggig")
+                .withLunName("xwburvjxxjns")
+                .withMountOption(MountOptionEnum.ATTACH))
+            .withElasticSanVolume(new ElasticSanVolume().withTargetId("kouknvudwtiu"));
         model = BinaryData.fromObject(model).toObject(DatastoreInner.class);
-        Assertions.assertEquals("slqb", model.netAppVolume().id());
-        Assertions.assertEquals("fxoblytkb", model.diskPoolVolume().targetId());
-        Assertions.assertEquals("mpew", model.diskPoolVolume().lunName());
+        Assertions.assertEquals("zy", model.netAppVolume().id());
+        Assertions.assertEquals("hxmzsbbzoggig", model.diskPoolVolume().targetId());
+        Assertions.assertEquals("xwburvjxxjns", model.diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.ATTACH, model.diskPoolVolume().mountOption());
+        Assertions.assertEquals("kouknvudwtiu", model.elasticSanVolume().targetId());
     }
 }

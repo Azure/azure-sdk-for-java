@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.RecoverableManagedDatabaseInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RecoverableManagedDatabasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecoverableManagedDatabasesClient.
+ */
 public interface RecoverableManagedDatabasesClient {
     /**
      * Gets a list of recoverable managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,14 +29,14 @@ public interface RecoverableManagedDatabasesClient {
      * @return a list of recoverable managed databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RecoverableManagedDatabaseInner> listByInstanceAsync(
-        String resourceGroupName, String managedInstanceName);
+    PagedFlux<RecoverableManagedDatabaseInner> listByInstanceAsync(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Gets a list of recoverable managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,9 +48,9 @@ public interface RecoverableManagedDatabasesClient {
 
     /**
      * Gets a list of recoverable managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -57,14 +59,14 @@ public interface RecoverableManagedDatabasesClient {
      * @return a list of recoverable managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecoverableManagedDatabaseInner> listByInstance(
-        String resourceGroupName, String managedInstanceName, Context context);
+    PagedIterable<RecoverableManagedDatabaseInner> listByInstance(String resourceGroupName, String managedInstanceName,
+        Context context);
 
     /**
      * Gets a recoverable managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param recoverableDatabaseName The recoverableDatabaseName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,14 +75,14 @@ public interface RecoverableManagedDatabasesClient {
      * @return a recoverable managed database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RecoverableManagedDatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String recoverableDatabaseName);
+    Mono<Response<RecoverableManagedDatabaseInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String recoverableDatabaseName);
 
     /**
      * Gets a recoverable managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param recoverableDatabaseName The recoverableDatabaseName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,14 +91,14 @@ public interface RecoverableManagedDatabasesClient {
      * @return a recoverable managed database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RecoverableManagedDatabaseInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String recoverableDatabaseName);
+    Mono<RecoverableManagedDatabaseInner> getAsync(String resourceGroupName, String managedInstanceName,
+        String recoverableDatabaseName);
 
     /**
      * Gets a recoverable managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param recoverableDatabaseName The recoverableDatabaseName parameter.
      * @param context The context to associate with this operation.
@@ -106,14 +108,14 @@ public interface RecoverableManagedDatabasesClient {
      * @return a recoverable managed database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecoverableManagedDatabaseInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, String recoverableDatabaseName, Context context);
+    Response<RecoverableManagedDatabaseInner> getWithResponse(String resourceGroupName, String managedInstanceName,
+        String recoverableDatabaseName, Context context);
 
     /**
      * Gets a recoverable managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param recoverableDatabaseName The recoverableDatabaseName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,6 +124,6 @@ public interface RecoverableManagedDatabasesClient {
      * @return a recoverable managed database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecoverableManagedDatabaseInner get(
-        String resourceGroupName, String managedInstanceName, String recoverableDatabaseName);
+    RecoverableManagedDatabaseInner get(String resourceGroupName, String managedInstanceName,
+        String recoverableDatabaseName);
 }

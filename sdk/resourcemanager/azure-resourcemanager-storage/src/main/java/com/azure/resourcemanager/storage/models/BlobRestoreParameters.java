@@ -5,27 +5,30 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Blob restore parameters.
  */
 @Fluent
-public final class BlobRestoreParameters {
+public final class BlobRestoreParameters implements JsonSerializable<BlobRestoreParameters> {
     /*
      * Restore blob to the specified time.
      */
-    @JsonProperty(value = "timeToRestore", required = true)
     private OffsetDateTime timeToRestore;
 
     /*
      * Blob ranges to restore.
      */
-    @JsonProperty(value = "blobRanges", required = true)
     private List<BlobRestoreRange> blobRanges;
 
     /**
@@ -36,7 +39,7 @@ public final class BlobRestoreParameters {
 
     /**
      * Get the timeToRestore property: Restore blob to the specified time.
-     *
+     * 
      * @return the timeToRestore value.
      */
     public OffsetDateTime timeToRestore() {
@@ -45,7 +48,7 @@ public final class BlobRestoreParameters {
 
     /**
      * Set the timeToRestore property: Restore blob to the specified time.
-     *
+     * 
      * @param timeToRestore the timeToRestore value to set.
      * @return the BlobRestoreParameters object itself.
      */
@@ -56,7 +59,7 @@ public final class BlobRestoreParameters {
 
     /**
      * Get the blobRanges property: Blob ranges to restore.
-     *
+     * 
      * @return the blobRanges value.
      */
     public List<BlobRestoreRange> blobRanges() {
@@ -65,7 +68,7 @@ public final class BlobRestoreParameters {
 
     /**
      * Set the blobRanges property: Blob ranges to restore.
-     *
+     * 
      * @param blobRanges the blobRanges value to set.
      * @return the BlobRestoreParameters object itself.
      */
@@ -76,7 +79,7 @@ public final class BlobRestoreParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -95,4 +98,47 @@ public final class BlobRestoreParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobRestoreParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeToRestore",
+            this.timeToRestore == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeToRestore));
+        jsonWriter.writeArrayField("blobRanges", this.blobRanges, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobRestoreParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobRestoreParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobRestoreParameters.
+     */
+    public static BlobRestoreParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobRestoreParameters deserializedBlobRestoreParameters = new BlobRestoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeToRestore".equals(fieldName)) {
+                    deserializedBlobRestoreParameters.timeToRestore = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("blobRanges".equals(fieldName)) {
+                    List<BlobRestoreRange> blobRanges = reader.readArray(reader1 -> BlobRestoreRange.fromJson(reader1));
+                    deserializedBlobRestoreParameters.blobRanges = blobRanges;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobRestoreParameters;
+        });
+    }
 }

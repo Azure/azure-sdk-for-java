@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * CloudVmClusterLifecycleState enum.
+ * Cloud VM Cluster lifecycle state enum.
  */
 public final class CloudVmClusterLifecycleState extends ExpandableStringEnum<CloudVmClusterLifecycleState> {
     /**
@@ -62,7 +61,6 @@ public final class CloudVmClusterLifecycleState extends ExpandableStringEnum<Clo
      * @param name a name to look for.
      * @return the corresponding CloudVmClusterLifecycleState.
      */
-    @JsonCreator
     public static CloudVmClusterLifecycleState fromString(String name) {
         return fromString(name, CloudVmClusterLifecycleState.class);
     }

@@ -70,7 +70,6 @@ extends:
   parameters:
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
     ServiceDirectory: template
-    EnableBatchRelease: true
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     # If you're copying template for a new pipeline, remove this variable. It is only valid for the template pipeline.
     TestPipeline: true

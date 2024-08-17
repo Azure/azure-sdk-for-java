@@ -35,6 +35,13 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
     private String systemAccessToken;
 
     /**
+     * Creates an instance of the {@link AzurePipelinesCredentialBuilder}.
+     */
+    public AzurePipelinesCredentialBuilder() {
+        super();
+    }
+
+    /**
      * Sets the service connection id for the Azure Pipelines service connection. The service connection ID is
      * retrieved from the Service Connection in the portal.
      *
@@ -56,6 +63,19 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
      */
     public AzurePipelinesCredentialBuilder systemAccessToken(String systemAccessToken) {
         this.systemAccessToken = systemAccessToken;
+        return this;
+    }
+
+    /**
+     * Configures the persistent shared token cache options and enables the persistent token cache which is disabled
+     * by default. If configured, the credential will store tokens in a cache persisted to the machine, protected to
+     * the current user, which can be shared by other credentials and processes.
+     *
+     * @param tokenCachePersistenceOptions the token cache configuration options
+     * @return An updated instance of this builder with the token cache options configured.
+     */
+    public AzurePipelinesCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
+        this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
 

@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state. */
+/**
+ * Placement Policy provisioning state.
+ */
 public final class PlacementPolicyProvisioningState extends ExpandableStringEnum<PlacementPolicyProvisioningState> {
-    /** Static value Succeeded for PlacementPolicyProvisioningState. */
+    /**
+     * Static value Succeeded for PlacementPolicyProvisioningState.
+     */
     public static final PlacementPolicyProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for PlacementPolicyProvisioningState. */
+    /**
+     * Static value Failed for PlacementPolicyProvisioningState.
+     */
     public static final PlacementPolicyProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Building for PlacementPolicyProvisioningState. */
-    public static final PlacementPolicyProvisioningState BUILDING = fromString("Building");
-
-    /** Static value Deleting for PlacementPolicyProvisioningState. */
-    public static final PlacementPolicyProvisioningState DELETING = fromString("Deleting");
-
-    /** Static value Updating for PlacementPolicyProvisioningState. */
-    public static final PlacementPolicyProvisioningState UPDATING = fromString("Updating");
-
-    /** Static value Canceled for PlacementPolicyProvisioningState. */
+    /**
+     * Static value Canceled for PlacementPolicyProvisioningState.
+     */
     public static final PlacementPolicyProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Static value Building for PlacementPolicyProvisioningState.
+     */
+    public static final PlacementPolicyProvisioningState BUILDING = fromString("Building");
+
+    /**
+     * Static value Deleting for PlacementPolicyProvisioningState.
+     */
+    public static final PlacementPolicyProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Static value Updating for PlacementPolicyProvisioningState.
+     */
+    public static final PlacementPolicyProvisioningState UPDATING = fromString("Updating");
+
+    /**
      * Creates a new instance of PlacementPolicyProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class PlacementPolicyProvisioningState extends ExpandableStringEnum
 
     /**
      * Creates or finds a PlacementPolicyProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PlacementPolicyProvisioningState.
      */
-    @JsonCreator
     public static PlacementPolicyProvisioningState fromString(String name) {
         return fromString(name, PlacementPolicyProvisioningState.class);
     }
 
     /**
      * Gets known PlacementPolicyProvisioningState values.
-     *
+     * 
      * @return known PlacementPolicyProvisioningState values.
      */
     public static Collection<PlacementPolicyProvisioningState> values() {

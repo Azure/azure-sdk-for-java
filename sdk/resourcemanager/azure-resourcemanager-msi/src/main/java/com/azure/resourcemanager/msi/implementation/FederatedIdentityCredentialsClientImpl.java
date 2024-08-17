@@ -33,24 +33,28 @@ import com.azure.resourcemanager.msi.fluent.models.FederatedIdentityCredentialIn
 import com.azure.resourcemanager.msi.models.FederatedIdentityCredentialsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FederatedIdentityCredentialsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FederatedIdentityCredentialsClient.
+ */
 public final class FederatedIdentityCredentialsClientImpl implements FederatedIdentityCredentialsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FederatedIdentityCredentialsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ManagedServiceIdentityClientImpl client;
 
     /**
      * Initializes an instance of FederatedIdentityCredentialsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FederatedIdentityCredentialsClientImpl(ManagedServiceIdentityClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    FederatedIdentityCredentialsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(FederatedIdentityCredentialsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,108 +65,82 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
     @Host("{$host}")
     @ServiceInterface(name = "ManagedServiceIdenti")
     public interface FederatedIdentityCredentialsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FederatedIdentityCredentialsListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FederatedIdentityCredentialsListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skiptoken") String skiptoken,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("$top") Integer top, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FederatedIdentityCredentialInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FederatedIdentityCredentialInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("federatedIdentityCredentialResourceName") String federatedIdentityCredentialResourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") FederatedIdentityCredentialInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FederatedIdentityCredentialInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FederatedIdentityCredentialInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("federatedIdentityCredentialResourceName") String federatedIdentityCredentialResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("federatedIdentityCredentialResourceName") String federatedIdentityCredentialResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FederatedIdentityCredentialsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all the federated identity credentials under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param top Number of records to return.
      * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FederatedIdentityCredentialInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName, Integer top, String skiptoken) {
+    private Mono<PagedResponse<FederatedIdentityCredentialInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, Integer top, String skiptoken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -173,61 +151,39 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            top,
-                            skiptoken,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<FederatedIdentityCredentialInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, top, skiptoken, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<FederatedIdentityCredentialInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the federated identity credentials under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param top Number of records to return.
      * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FederatedIdentityCredentialInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName, Integer top, String skiptoken, Context context) {
+    private Mono<PagedResponse<FederatedIdentityCredentialInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, Integer top, String skiptoken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -239,104 +195,86 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                top,
-                skiptoken,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, resourceName, top,
+                skiptoken, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the federated identity credentials under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param top Number of records to return.
      * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<FederatedIdentityCredentialInner> listAsync(
-        String resourceGroupName, String resourceName, Integer top, String skiptoken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName, top, skiptoken),
+    public PagedFlux<FederatedIdentityCredentialInner> listAsync(String resourceGroupName, String resourceName,
+        Integer top, String skiptoken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, top, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the federated identity credentials under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FederatedIdentityCredentialInner> listAsync(String resourceGroupName, String resourceName) {
         final Integer top = null;
         final String skiptoken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName, top, skiptoken),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, top, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the federated identity credentials under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param top Number of records to return.
      * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FederatedIdentityCredentialInner> listAsync(
-        String resourceGroupName, String resourceName, Integer top, String skiptoken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName, top, skiptoken, context),
+    private PagedFlux<FederatedIdentityCredentialInner> listAsync(String resourceGroupName, String resourceName,
+        Integer top, String skiptoken, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, top, skiptoken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the federated identity credentials under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FederatedIdentityCredentialInner> list(String resourceGroupName, String resourceName) {
@@ -347,29 +285,29 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
 
     /**
      * Lists all the federated identity credentials under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param top Number of records to return.
      * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FederatedIdentityCredentialInner> list(
-        String resourceGroupName, String resourceName, Integer top, String skiptoken, Context context) {
+    public PagedIterable<FederatedIdentityCredentialInner> list(String resourceGroupName, String resourceName,
+        Integer top, String skiptoken, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName, top, skiptoken, context));
     }
 
     /**
      * Create or update a federated identity credential under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -377,26 +315,20 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a federated identity credential along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a federated identity credential along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FederatedIdentityCredentialInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
+    public Mono<Response<FederatedIdentityCredentialInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String federatedIdentityCredentialResourceName,
         FederatedIdentityCredentialInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -406,10 +338,8 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (federatedIdentityCredentialResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -418,25 +348,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            federatedIdentityCredentialResourceName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, federatedIdentityCredentialResourceName, this.client.getApiVersion(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a federated identity credential under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -445,27 +365,20 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a federated identity credential along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a federated identity credential along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FederatedIdentityCredentialInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
-        FederatedIdentityCredentialInner parameters,
-        Context context) {
+    private Mono<Response<FederatedIdentityCredentialInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String federatedIdentityCredentialResourceName,
+        FederatedIdentityCredentialInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -475,10 +388,8 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (federatedIdentityCredentialResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -487,22 +398,14 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                federatedIdentityCredentialResourceName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, federatedIdentityCredentialResourceName, this.client.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
      * Create or update a federated identity credential under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -513,19 +416,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return describes a federated identity credential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FederatedIdentityCredentialInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
-        FederatedIdentityCredentialInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, resourceName, federatedIdentityCredentialResourceName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<FederatedIdentityCredentialInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName, FederatedIdentityCredentialInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, federatedIdentityCredentialResourceName,
+            parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a federated identity credential under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -537,20 +436,16 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return describes a federated identity credential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FederatedIdentityCredentialInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
-        FederatedIdentityCredentialInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, resourceName, federatedIdentityCredentialResourceName, parameters, context)
-            .block();
+    public Response<FederatedIdentityCredentialInner> createOrUpdateWithResponse(String resourceGroupName,
+        String resourceName, String federatedIdentityCredentialResourceName,
+        FederatedIdentityCredentialInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, federatedIdentityCredentialResourceName,
+            parameters, context).block();
     }
 
     /**
      * Create or update a federated identity credential under the specified user assigned identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -561,19 +456,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return describes a federated identity credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FederatedIdentityCredentialInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
-        FederatedIdentityCredentialInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, resourceName, federatedIdentityCredentialResourceName, parameters, Context.NONE)
-            .getValue();
+    public FederatedIdentityCredentialInner createOrUpdate(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName, FederatedIdentityCredentialInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, federatedIdentityCredentialResourceName,
+            parameters, Context.NONE).getValue();
     }
 
     /**
      * Gets the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -583,19 +474,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return the federated identity credential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FederatedIdentityCredentialInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName) {
+    public Mono<Response<FederatedIdentityCredentialInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String federatedIdentityCredentialResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -605,31 +492,20 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (federatedIdentityCredentialResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            federatedIdentityCredentialResourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, federatedIdentityCredentialResourceName, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -640,22 +516,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return the federated identity credential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FederatedIdentityCredentialInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
-        Context context) {
+    private Mono<Response<FederatedIdentityCredentialInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String federatedIdentityCredentialResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -665,28 +534,18 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (federatedIdentityCredentialResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                federatedIdentityCredentialResourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, resourceName,
+            federatedIdentityCredentialResourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -696,15 +555,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return the federated identity credential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FederatedIdentityCredentialInner> getAsync(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName) {
+    public Mono<FederatedIdentityCredentialInner> getAsync(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName) {
         return getWithResponseAsync(resourceGroupName, resourceName, federatedIdentityCredentialResourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -715,18 +574,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return the federated identity credential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FederatedIdentityCredentialInner> getWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
-        Context context) {
+    public Response<FederatedIdentityCredentialInner> getWithResponse(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, federatedIdentityCredentialResourceName, context)
             .block();
     }
 
     /**
      * Gets the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -736,15 +592,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return the federated identity credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FederatedIdentityCredentialInner get(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName) {
+    public FederatedIdentityCredentialInner get(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName) {
         return getWithResponse(resourceGroupName, resourceName, federatedIdentityCredentialResourceName, Context.NONE)
             .getValue();
     }
 
     /**
      * Deletes the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -754,19 +610,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -776,31 +628,20 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (federatedIdentityCredentialResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            federatedIdentityCredentialResourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, federatedIdentityCredentialResourceName, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -811,22 +652,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -836,28 +670,18 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (federatedIdentityCredentialResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter federatedIdentityCredentialResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                federatedIdentityCredentialResourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, federatedIdentityCredentialResourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -867,15 +691,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String resourceName, String federatedIdentityCredentialResourceName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, federatedIdentityCredentialResourceName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -886,19 +710,15 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String federatedIdentityCredentialResourceName,
-        Context context) {
-        return deleteWithResponseAsync(
-                resourceGroupName, resourceName, federatedIdentityCredentialResourceName, context)
-            .block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName,
+        String federatedIdentityCredentialResourceName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, resourceName, federatedIdentityCredentialResourceName,
+            context).block();
     }
 
     /**
      * Deletes the federated identity credential.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the identity resource.
      * @param federatedIdentityCredentialResourceName The name of the federated identity credential resource.
@@ -913,14 +733,13 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FederatedIdentityCredentialInner>> listNextSinglePageAsync(String nextLink) {
@@ -928,62 +747,41 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FederatedIdentityCredentialInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<FederatedIdentityCredentialInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation for federated identity credentials along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FederatedIdentityCredentialInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<FederatedIdentityCredentialInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

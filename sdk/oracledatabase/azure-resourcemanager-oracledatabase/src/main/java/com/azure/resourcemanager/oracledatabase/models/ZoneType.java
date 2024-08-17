@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * ZoneType enum.
+ * Zone type enum.
  */
 public final class ZoneType extends ExpandableStringEnum<ZoneType> {
     /**
@@ -37,7 +36,6 @@ public final class ZoneType extends ExpandableStringEnum<ZoneType> {
      * @param name a name to look for.
      * @return the corresponding ZoneType.
      */
-    @JsonCreator
     public static ZoneType fromString(String name) {
         return fromString(name, ZoneType.class);
     }
