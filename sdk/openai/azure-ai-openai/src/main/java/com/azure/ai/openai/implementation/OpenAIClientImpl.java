@@ -398,7 +398,7 @@ public final class OpenAIClientImpl {
 
         // @Multipart not supported by RestProxy
         @Post("/files")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -522,7 +522,7 @@ public final class OpenAIClientImpl {
         Response<BinaryData> getBatchSync(@HostParam("endpoint") String endpoint, @PathParam("batchId") String batchId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/batches/{batchId}/cancel")
+        @Post("/batches/{batchId}/cancel")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -532,7 +532,7 @@ public final class OpenAIClientImpl {
             @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
-        @Get("/batches/{batchId}/cancel")
+        @Post("/batches/{batchId}/cancel")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })

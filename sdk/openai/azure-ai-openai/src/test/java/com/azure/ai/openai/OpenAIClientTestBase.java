@@ -104,6 +104,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     private static final String JAVA_SDK_TESTS_FINE_TUNING_JSON = "java_sdk_tests_fine_tuning.json";
     private static final String MS_LOGO_PNG = "ms_logo.png";
 
+    private static final String BATCH_TASKS = "batch_tasks.jsonl";
+    private static final String BATCH_TASKS_AZURE = "batch_tasks_azure.jsonl";
+
     OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
                 .httpClient(httpClient)
@@ -374,6 +377,20 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         String fileName = JAVA_SDK_TESTS_FINE_TUNING_JSON;
         FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
         testRunner.accept(fileDetails, FilePurpose.FINE_TUNE);
+    }
+
+    // Batch
+
+    void uploadBatchFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        String fileName = BATCH_TASKS;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
+        testRunner.accept(fileDetails, FilePurpose.BATCH);
+    }
+
+    void uploadBatchFileAzureRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        String fileName = BATCH_TASKS_AZURE;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
+        testRunner.accept(fileDetails, FilePurpose.BATCH);
     }
 
     private static AudioTranslationOptions getAudioTranslationOptions(String fileName) {

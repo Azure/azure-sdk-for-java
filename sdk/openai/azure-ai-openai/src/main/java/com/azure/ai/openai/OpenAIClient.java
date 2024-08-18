@@ -1573,7 +1573,7 @@ public final class OpenAIClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1601,6 +1601,9 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
+        if (openAIServiceClient != null) {
+            return this.openAIServiceClient.listFilesWithResponse(requestOptions);
+        }
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listFilesWithResponse(requestOptions);
     }
@@ -1608,7 +1611,7 @@ public final class OpenAIClient {
     /**
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1634,6 +1637,9 @@ public final class OpenAIClient {
     Response<BinaryData> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation 'uploadFile' is
         // 'multipart/form-data'
+        if (openAIServiceClient != null) {
+            return this.openAIServiceClient.uploadFileWithResponse(uploadFileRequest, requestOptions);
+        }
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.uploadFileWithResponse(uploadFileRequest, requestOptions);
     }
@@ -1641,7 +1647,7 @@ public final class OpenAIClient {
     /**
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1660,6 +1666,9 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
+        if (openAIServiceClient != null) {
+            return this.openAIServiceClient.deleteFileWithResponse(fileId, requestOptions);
+        }
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteFileWithResponse(fileId, requestOptions);
     }
@@ -1667,7 +1676,7 @@ public final class OpenAIClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1691,6 +1700,9 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
+        if (openAIServiceClient != null) {
+            return this.openAIServiceClient.getFileWithResponse(fileId, requestOptions);
+        }
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getFileWithResponse(fileId, requestOptions);
     }
@@ -1698,7 +1710,7 @@ public final class OpenAIClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * byte[]
      * }</pre>
@@ -1713,6 +1725,9 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
+        if (openAIServiceClient != null) {
+            return this.openAIServiceClient.getFileContentWithResponse(fileId, requestOptions);
+        }
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getFileContentWithResponse(fileId, requestOptions);
     }
@@ -1786,9 +1801,11 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a list of all batches owned by the Azure OpenAI resource along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listBatchesWithResponse(RequestOptions requestOptions) {
+        if (openAIServiceClient != null) {
+            return this.openAIServiceClient.listBatchesWithResponse(requestOptions);
+        }
         return this.serviceClient.listBatchesWithResponse(requestOptions);
     }
 
@@ -1860,9 +1877,11 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the Batch object along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createBatchWithResponse(BinaryData createBatchRequest, RequestOptions requestOptions) {
+        if (openAIServiceClient != null) {
+            return this.openAIServiceClient.createBatchWithResponse(createBatchRequest, requestOptions);
+        }
         return this.serviceClient.createBatchWithResponse(createBatchRequest, requestOptions);
     }
 
@@ -1919,9 +1938,11 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return details for a single batch specified by the given batchID along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getBatchWithResponse(String batchId, RequestOptions requestOptions) {
+        if (openAIServiceClient != null) {
+            return this.openAIServiceClient.getBatchWithResponse(batchId, requestOptions);
+        }
         return this.serviceClient.getBatchWithResponse(batchId, requestOptions);
     }
 
@@ -1978,9 +1999,11 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return details for a single batch specified by the given batchID along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelBatchWithResponse(String batchId, RequestOptions requestOptions) {
+        if (openAIServiceClient != null) {
+            return this.openAIServiceClient.cancelBatchWithResponse(batchId, requestOptions);
+        }
         return this.serviceClient.cancelBatchWithResponse(batchId, requestOptions);
     }
 
@@ -2035,9 +2058,8 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an assistant that can call the model and use tools.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIFile uploadFile(FileDetails file, FilePurpose purpose, String filename) {
+    private OpenAIFile uploadFile(FileDetails file, FilePurpose purpose, String filename) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest uploadFileRequestObj = new UploadFileRequest(file, purpose).setFilename(filename);
@@ -2132,12 +2154,11 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represent a byte array.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] getFileContent(String fileId) {
         // Generated convenience method for getFileContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getFileContentWithResponse(fileId, requestOptions).getValue().toObject(byte[].class);
+        return getFileContentWithResponse(fileId, requestOptions).getValue().toBytes();
     }
 
     /**

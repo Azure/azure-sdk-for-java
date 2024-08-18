@@ -12,6 +12,8 @@ import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.AzureSearchChatExtensionConfiguration;
 import com.azure.ai.openai.models.AzureSearchChatExtensionParameters;
+import com.azure.ai.openai.models.Batch;
+import com.azure.ai.openai.models.BatchStatus;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
@@ -27,12 +29,14 @@ import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FileDeletionStatus;
 import com.azure.ai.openai.models.FilePurpose;
+import com.azure.ai.openai.models.FileState;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.ai.openai.models.OnYourDataApiKeyAuthenticationOptions;
 import com.azure.ai.openai.models.OnYourDataContextProperty;
 import com.azure.ai.openai.models.OpenAIFile;
+import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.models.SpeechGenerationResponseFormat;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -47,6 +51,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -1183,5 +1188,103 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertTrue(deletionStatus.isDeleted());
             assertEquals(deletionStatus.getId(), file.getId());
         });
+    }
+
+    // Batch
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testBatchOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        uploadBatchFileAzureRunner(((fileDetails, filePurpose) -> {
+            // Upload file
+            OpenAIFile file = client.uploadFile(fileDetails, filePurpose);
+            assertNotNull(file);
+            assertNotNull(file.getId());
+
+            // Create a batch
+            while (file.getStatus() == FileState.PENDING) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                file = client.getFile(file.getId());
+            }
+
+            Batch batch = client.createBatch("/chat/completions",
+                file.getId(), "24h");
+            assertNotNull(batch);
+
+            // Get single file
+            while (batch.getStatus() == BatchStatus.VALIDATING
+                || batch.getStatus() == BatchStatus.IN_PROGRESS
+                || batch.getStatus() == BatchStatus.FINALIZING) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                batch = client.getBatch(batch.getId());
+            }
+            assertNotNull(batch);
+
+            String outputFileId = batch.getOutputFileId();
+            assertNotNull(outputFileId);
+
+            byte[] fileContent = client.getFileContent(outputFileId);
+            assertNotNull(fileContent);
+
+            // Get file by purpose
+            PageableList<Batch> batchPageableList = client.listBatches();
+            assertNotNull(batchPageableList);
+            assertFalse(CoreUtils.isNullOrEmpty(batchPageableList.getData()));
+
+            // Delete file
+            FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
+            assertTrue(deletionStatus.isDeleted());
+            assertEquals(deletionStatus.getId(), file.getId());
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testCancelBatch(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        uploadBatchFileRunner(((fileDetails, filePurpose) -> {
+            // Upload file
+            OpenAIFile file = client.uploadFile(fileDetails, filePurpose);
+            assertNotNull(file);
+            assertNotNull(file.getId());
+
+            while (file.getStatus() == FileState.PENDING) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                file = client.getFile(file.getId());
+            }
+
+            // Create a batch
+            Batch batch = client.createBatch("/openai/deployments/gpt-4o/chat/completions?api-version=2024-07-01-preview",
+                file.getId(), "24h");
+            assertNotNull(batch);
+
+            // Cancel the batch
+            if (batch.getStatus() == BatchStatus.VALIDATING
+                || batch.getStatus() == BatchStatus.IN_PROGRESS
+                || batch.getStatus() == BatchStatus.FINALIZING) {
+                batch = client.cancelBatch(batch.getId());
+                OffsetDateTime cancellingAt = batch.getCancellingAt();
+                assertNotNull(cancellingAt);
+                BatchStatus status = batch.getStatus();
+                assertTrue(status == BatchStatus.CANCELLED || status == BatchStatus.CANCELLING);
+            }
+
+            // Delete file
+            FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
+            assertTrue(deletionStatus.isDeleted());
+            assertEquals(deletionStatus.getId(), file.getId());
+        }));
     }
 }

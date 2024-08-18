@@ -1100,8 +1100,6 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         }));
     }
 
-    // Files
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void generateSpeechInWav(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -1118,6 +1116,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         }));
     }
 
+    // Files
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testTextFileOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
