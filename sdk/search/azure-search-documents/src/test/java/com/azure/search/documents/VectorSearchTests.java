@@ -384,6 +384,7 @@ public class VectorSearchTests extends SearchTestBase {
                 // Update document to add vector field data
                 resultDoc.put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
                 return searchClient.mergeDocuments(Collections.singletonList(resultDoc));
+
             })
             .flatMap(ignored -> {
                 // Equivalent of 'waitForIndexing()' where in PLAYBACK getting the document is called right away,
@@ -393,7 +394,7 @@ public class VectorSearchTests extends SearchTestBase {
                 } else {
                     waitForIndexing();
                     return searchClient.getDocument("1", SearchDocument.class)
-                        .delaySubscription(Duration.ofSeconds(3));
+                        .delaySubscription(Duration.ofSeconds(5));
                 }
             });
 
@@ -482,6 +483,8 @@ public class VectorSearchTests extends SearchTestBase {
 
         // Get the document
         responseDocument = searchClient.getDocument("1", SearchDocument.class);
+
+        waitForIndexing();
 
         assertEquals(document.get("Id"), responseDocument.get("Id"));
         assertEquals(document.get("Name"), responseDocument.get("Name"));
