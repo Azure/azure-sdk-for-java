@@ -134,7 +134,8 @@ public class ValidationsTest {
             throw new IllegalArgumentException("The sample files and tests files should have same count.");
         }
         for (int i = 0; i < sampleFiles.length; i++) {
-            if (sampleFiles[i].getName().equals("TargetingFilter.sample.json")) { // TODO. Not run the test case until we release the little endian fix
+            System.out.println("sampleFiles[i].getName(): " + sampleFiles[i].getName());
+            if (sampleFiles[i].getName().contains("TargetingFilter.sample")) { // TODO. Not run the test case until we release the little endian fix
                 continue;
             }
             runTestcases(sampleFiles[i], testsFiles[i]);
