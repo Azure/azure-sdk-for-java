@@ -34,8 +34,12 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.UncheckedIOException;
+import java.lang.reflect.Method;
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.JDK;
@@ -158,6 +162,87 @@ public class TelemetryHelper {
                     .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
             }
         });
+    }
+
+    /**
+     * Instruments a CompletableFuture: records future duration along with the status (success, error, cancellation),
+     * @param runAsyncFuture the future to instrument
+     * @return the instrumented future
+     */
+    @SuppressWarnings("try")
+    public CompletableFuture<Void> instrumentRunAsyncWithCompletableFuture(CompletableFuture<Void> runAsyncFuture) {
+        Instant start = Instant.now();
+        Span span = tracer.spanBuilder("runAsyncCompletableFuture").startSpan();
+        try (Scope s = span.makeCurrent()) {
+            return runAsyncFuture
+                .whenComplete((result, throwable) -> {
+                    if (throwable != null) {
+                        trackFailure(start, throwable, span);
+                    } else {
+                        trackSuccess(start, span);
+                    }
+                });
+        } finally {
+            span.end();
+        }
+    }
+
+    /**
+     * Instruments a Runnable: records runnable duration along with the status (success, error, cancellation),
+     * @param executorService the executor service to run the task
+     * @param task the runnable to instrument
+     */
+    @SuppressWarnings("try")
+    public void instrumentRunAsyncWithExecutorService(ExecutorService executorService, Runnable task) {
+        Instant start = Instant.now();
+        Span span = tracer.spanBuilder("runAsyncExecutorService").startSpan();
+        try (Scope s = span.makeCurrent()) {
+            executorService.submit(() -> {
+                try {
+                    task.run();
+                    trackSuccess(start, span);
+                } catch (Exception e) {
+                    trackFailure(start, e, span);
+                } finally {
+                    span.end();
+                }
+            });
+        }
+    }
+
+    /**
+     * Instruments a Runnable: records runnable duration along with the status (success, error, cancellation),
+     * @param task the runnable to instrument
+     */
+    @SuppressWarnings("try")
+    public void instrumentRunAsyncWithVirtualThreads(Runnable task) {
+        Instant start = Instant.now();
+        Span span = tracer.spanBuilder("runAsyncVirtualThreads").startSpan();
+        ExecutorService virtualThreadExecutor = createVirtualThreadExecutor();
+        try (Scope s = span.makeCurrent()) {
+            virtualThreadExecutor.submit(() -> {
+                try {
+                    task.run();
+                    trackSuccess(start, span);
+                } catch (Exception e) {
+                    trackFailure(start, e, span);
+                } finally {
+                    span.end();
+                }
+            });
+        } finally {
+            virtualThreadExecutor.shutdown();
+        }
+    }
+
+    private ExecutorService createVirtualThreadExecutor() {
+        try {
+            Method method = Executors.class.getMethod("newVirtualThreadPerTaskExecutor");
+            return (ExecutorService) method.invoke(null);
+        } catch (Exception e) {
+            // Fallback for Java versions that do not support newVirtualThreadPerTaskExecutor
+            return Executors.newCachedThreadPool();
+        }
     }
 
     private void trackSuccess(Instant start, Span span) {

@@ -24,6 +24,10 @@ import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 import reactor.core.publisher.Mono;
 
@@ -65,7 +69,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         try (Response<?> response = pipeline.send(request)) {
             response.getBody().toBytes();
         } catch (IOException e) {
-            new UncheckedIOException(e);
+            LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -74,8 +78,24 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         return TELEMETRY_HELPER.instrumentRunAsync(runInternalAsync());
     }
 
+    @Override
+    public CompletableFuture<Void> runAsyncWithCompletableFuture() {
+        return TELEMETRY_HELPER.instrumentRunAsyncWithCompletableFuture(runAsyncWithCompletableFutureInternal());
+    }
+
+    @Override
+    public Runnable runAsyncWithExecutorService() {
+        final ExecutorService executorService = Executors.newFixedThreadPool(10);
+        TELEMETRY_HELPER.instrumentRunAsyncWithExecutorService(executorService, runAsyncWithExecutorServiceInternal());
+        return executorService::shutdown;
+    }
+
+    @Override
+    public void runAsyncWithVirtualThread() {
+        TELEMETRY_HELPER.instrumentRunAsyncWithVirtualThreads(runAsyncWithVirtualThreadInternal());
+    }
+
     private Mono<Void> runInternalAsync() {
-        // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
         return Mono.usingWhen(Mono.fromCallable(() -> pipeline.send(createRequest())),
             response -> {
                 ((HttpResponse<?>) response).getBody().toBytes();
@@ -85,10 +105,50 @@ public class HttpGet extends ScenarioBase<StressOptions> {
                 try {
                     response.close();
                 } catch (IOException e) {
-                    throw new UncheckedIOException(e);
+                    LOGGER.logThrowableAsError(new UncheckedIOException(e));
                 }
             }));
     }
+
+    // Method to run using CompletableFuture
+    private CompletableFuture<Void> runAsyncWithCompletableFutureInternal() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Response<?> response = pipeline.send(createRequest());
+                response.getBody().toBytes();
+            } catch (Exception e) {
+                LOGGER.logThrowableAsError(e);
+            }
+            return null;
+        });
+    }
+
+    // Method to run using ExecutorService
+    private Runnable runAsyncWithExecutorServiceInternal() {
+        Runnable task = () -> {
+            try {
+                Response<?> response = pipeline.send(createRequest());
+                response.getBody().toBytes();
+            } catch (Exception e) {
+                LOGGER.logThrowableAsError(e);
+            }
+        };
+        return task;
+    }
+
+    // Method to run using Virtual Threads
+    private Runnable runAsyncWithVirtualThreadInternal() {
+        Runnable task = () -> {
+            try {
+                Response<?> response = pipeline.send(createRequest());
+                response.getBody().toBytes();
+            } catch (Exception e) {
+                LOGGER.logThrowableAsError(e);
+            }
+        };
+        return task;
+    }
+
 
     private HttpRequest createRequest() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);

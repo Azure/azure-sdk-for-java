@@ -3,6 +3,7 @@
 
 package com.azure.perf.test.core;
 
+import java.util.concurrent.CompletableFuture;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -56,6 +57,12 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
      * @return A {@link Mono} containing void.
      */
     public abstract Mono<Void> runAllAsync(long endNanoTime);
+
+    public abstract CompletableFuture<Void> runAllAsyncWithCompletableFuture(long endNanoTime);
+
+    public abstract Runnable runAllAsyncWithExecutorService(long endNanoTime);
+
+    public abstract void runAllAsyncWithVirtualThread(long endNanoTime);
 
     /**
      * Runs before cleanup stage.

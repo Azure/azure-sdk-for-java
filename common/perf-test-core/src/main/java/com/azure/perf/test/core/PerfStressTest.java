@@ -5,6 +5,8 @@ package com.azure.perf.test.core;
 
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Represents the abstraction of a Performance test class.
  *
@@ -37,6 +39,21 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> extends
         return runAsync().then(Mono.just(1));
     }
 
+    @Override
+    CompletableFuture<Integer> runTestAsyncWithCompletableFuture() {
+        return runAsyncWithCompletableFuture().thenApply(unused -> 1);
+    }
+
+    @Override
+    Runnable runTestAsyncWithExecutorService() {
+        return runAsyncWithExecutorService();
+    }
+
+    @Override
+    void runTestAsyncWithVirtualThread() {
+        runAsyncWithVirtualThread();
+    }
+
     /**
      * Runs the performance test.
      */
@@ -47,4 +64,10 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> extends
      * @return An empty {@link Mono}
      */
     public abstract Mono<Void> runAsync();
+
+    public abstract CompletableFuture<Void> runAsyncWithCompletableFuture();
+
+    public abstract Runnable runAsyncWithExecutorService();
+
+    public abstract void runAsyncWithVirtualThread();
 }

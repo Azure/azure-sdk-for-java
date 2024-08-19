@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Perf test for {@link HttpPipeline}.
@@ -60,6 +61,21 @@ public class HttpPipelineTest extends PerfStressTest<HttpPipelineOptions> {
         } else {
             return sendRequest();
         }
+    }
+
+    @Override
+    public CompletableFuture<Void> runAsyncWithCompletableFuture() {
+        return null;
+    }
+
+    @Override
+    public Runnable runAsyncWithExecutorService() {
+        return null;
+    }
+
+    @Override
+    public void runAsyncWithVirtualThread() {
+
     }
 
     /**

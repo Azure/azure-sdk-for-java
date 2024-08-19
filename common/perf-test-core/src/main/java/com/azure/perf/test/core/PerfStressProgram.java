@@ -156,7 +156,10 @@ public class PerfStressProgram {
                 }
 
                 if (options.getWarmup() > 0) {
-                    runTests(tests, options.isSync(), options.getParallel(), options.getWarmup(), "Warmup");
+                    runTests(tests, options.isSync(), options.isCompletableFuture(), options.isExecutorService(),
+                        options.isVirtualThread(),
+                        options.getParallel(),
+                        options.getWarmup(), "Warmup");
                 }
 
                 for (int i = 0; i < options.getIterations(); i++) {
@@ -164,7 +167,8 @@ public class PerfStressProgram {
                     if (options.getIterations() > 1) {
                         title += " " + (i + 1);
                     }
-                    runTests(tests, options.isSync(), options.getParallel(), options.getDuration(), title);
+                    runTests(tests, options.isSync(), options.isCompletableFuture(), options.isExecutorService(),
+                        startedPlayback, options.getParallel(), options.getDuration(), title);
                 }
             } finally {
                 try {
@@ -253,13 +257,18 @@ public class PerfStressProgram {
      *
      * @param tests the performance tests to be executed.
      * @param sync indicate if synchronous test should be run.
+     * @param completableFuture
+     * @param executorService
+     * @param virtualThread
      * @param parallel the number of parallel threads to run the performance test on.
      * @param durationSeconds the duration for which performance test should be run on.
      * @param title the title of the performance tests.
+     *
      * @throws RuntimeException if the execution fails.
      * @throws IllegalStateException if zero operations completed of the performance test.
      */
-    public static void runTests(PerfTestBase<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
+    public static void runTests(PerfTestBase<?>[] tests, boolean sync, boolean completableFuture,
+        boolean executorService, boolean virtualThread, int parallel, int durationSeconds, String title) {
 
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
@@ -288,7 +297,19 @@ public class PerfStressProgram {
                 forkJoinPool.invokeAll(operations);
 
                 forkJoinPool.awaitQuiescence(durationSeconds + 1, TimeUnit.SECONDS);
-            } else {
+            } else if (completableFuture) {
+                for (PerfTestBase<?> test : tests) {
+                    test.runAllAsyncWithCompletableFuture(endNanoTime).get();
+                }
+            } else if (executorService) {
+                for (PerfTestBase<?> test : tests) {
+                    test.runAllAsyncWithExecutorService(endNanoTime);
+                }
+            } else if (virtualThread) {
+                for (PerfTestBase<?> test : tests) {
+                    test.runAllAsyncWithVirtualThread(endNanoTime);
+                }
+            }else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
                 // Schedulers.onHandleError.  This handler ensures the perf framework will fail fast on any such exceptions.

@@ -6,6 +6,7 @@ package com.azure.perf.test.core;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class SleepTest extends PerfStressTest<PerfStressOptions> {
@@ -38,5 +39,20 @@ class SleepTest extends PerfStressTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return Mono.delay(Duration.ofSeconds(secondsPerOperation)).then();
+    }
+
+    @Override
+    public CompletableFuture<Void> runAsyncWithCompletableFuture() {
+        return null;
+    }
+
+    @Override
+    public Runnable runAsyncWithExecutorService() {
+        return null;
+    }
+
+    @Override
+    public void runAsyncWithVirtualThread() {
+
     }
 }

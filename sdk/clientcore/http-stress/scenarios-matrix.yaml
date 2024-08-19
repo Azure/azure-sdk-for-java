@@ -13,39 +13,4 @@ matrix:
       testDurationMin: 30
       testScenario: httpget
       concurrency: 75
-    getFuture:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 30
-      testScenario: httpgetfuture
-      concurrency: 75
-    getExeService:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 30
-      testScenario: httpgetexecutorservice
-      concurrency: 75
-    getVirtual:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 30
-      testScenario: httpgetvirtualthreads
-      concurrency: 75
-    post:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 30
-      testScenario: httppost
-      concurrency: 75
-    postFuture:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 30
-      testScenario: httppostfuture
-      concurrency: 75
-    postExeService:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 30
-      testScenario: httppostexecutorservice
-      concurrency: 75
-    postVirtual:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 30
-      testScenario: httppostvirtualthreads
-      concurrency: 75
 
