@@ -108,6 +108,7 @@ public class ValidationsTest {
 
         final List<ValidationTestCase> testCases = readTestcasesFromFile(testsFile);
         for (ValidationTestCase testCase : testCases) {
+            System.out.println("Running test case " + testCase.getFriendlyName());
             if (hasException(testCase)) {   // TODO. Currently we didn't throw the exception when parameter is invalid
                 assertNull(managementProperties.getOnOff().get(testCase.getFeatureFlagName()));
             } else {
