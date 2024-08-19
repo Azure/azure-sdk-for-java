@@ -45,7 +45,7 @@ public class ValidationsTest {
 
     private final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
-    private final String TEST_CAE_FOLDER_PATH = "validations-tests";
+    private final String TEST_CASE_FOLDER_PATH = "validations-tests";
     private final String INPUTS_USER = "user";
     private final String INPUTS_GROUPS = "groups";
     private final String SAMPLE_FILE_NAME_FILTER = "sample";
@@ -73,8 +73,9 @@ public class ValidationsTest {
         return inputsMap != null && !inputsMap.isEmpty();
     }
 
-    private File[] getFileList(String folderPath, String fileNameFilter) {
-        final URL folderUrl = Thread.currentThread().getContextClassLoader().getResource(folderPath);
+    private File[] getFileList(String fileNameFilter) {
+        final URL folderUrl = Thread.currentThread().getContextClassLoader().getResource(TEST_CASE_FOLDER_PATH);
+        assert folderUrl != null;
         final File folderFile = new File(folderUrl.getFile());
         return folderFile.listFiles(pathname -> pathname.getName().toLowerCase().contains(fileNameFilter));
     }
@@ -86,6 +87,7 @@ public class ValidationsTest {
         return OBJECT_MAPPER.readValue(jsonString, typeReference);
     }
 
+    @SuppressWarnings("unchecked")
     private LinkedHashMap<String, Object> readConfigurationFromFile(File sampleFile) throws IOException {
         final String jsonString = Files.readString(sampleFile.toPath());
         final LinkedHashMap<String, Object> configurations = OBJECT_MAPPER.readValue(jsonString, new TypeReference<>() {
@@ -97,6 +99,7 @@ public class ValidationsTest {
         return new LinkedHashMap<>();
     }
 
+    @SuppressWarnings("unchecked")
     private void runTestcases(File sampleFile, File testsFile) throws IOException {
         // initialize feature manager
         final FeatureManagementProperties managementProperties = new FeatureManagementProperties();
@@ -124,8 +127,8 @@ public class ValidationsTest {
 
     @Test
     void validationsTest() throws IOException {
-        final File[] sampleFiles = getFileList(TEST_CAE_FOLDER_PATH, SAMPLE_FILE_NAME_FILTER);
-        final File[] testsFiles = getFileList(TEST_CAE_FOLDER_PATH, TESTS_FILE_NAME_FILTER);
+        final File[] sampleFiles = getFileList(SAMPLE_FILE_NAME_FILTER);
+        final File[] testsFiles = getFileList(TESTS_FILE_NAME_FILTER);
         if (sampleFiles.length != testsFiles.length) {
             throw new IllegalArgumentException("The sample files and tests files should have same count.");
         }
