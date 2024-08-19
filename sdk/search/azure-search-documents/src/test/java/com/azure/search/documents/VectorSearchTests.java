@@ -444,6 +444,8 @@ public class VectorSearchTests extends SearchTestBase {
         // Get created index
         SearchIndex createdIndex = searchIndexClient.getIndex(indexName);
 
+        waitForIndexing();
+
         // Add vector
         SearchField vectorField = new SearchField("DescriptionVector",
             SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
@@ -461,6 +463,8 @@ public class VectorSearchTests extends SearchTestBase {
 
         // Update index
         SearchIndex responseIndex = searchIndexClient.createOrUpdateIndex(createdIndex);
+
+        waitForIndexing();
 
         assertEquals(indexName, responseIndex.getName());
         assertEquals(3, responseIndex.getFields().size());

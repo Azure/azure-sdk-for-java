@@ -143,6 +143,10 @@
     "SEARCH_STORAGE_CONNECTION_STRING": {
       "type": "string",
       "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
+    },
+    "AZURE_TEST_MODE": {
+      "type": "string",
+      "value": "LIVE"
     }
   }
 }
