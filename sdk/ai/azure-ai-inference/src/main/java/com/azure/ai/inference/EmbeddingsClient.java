@@ -35,7 +35,7 @@ public final class EmbeddingsClient {
 
     /**
      * Initializes an instance of EmbeddingsClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -57,7 +57,7 @@ public final class EmbeddingsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     input (Required): [
@@ -72,9 +72,9 @@ public final class EmbeddingsClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     data (Required): [
@@ -90,7 +90,7 @@ public final class EmbeddingsClient {
      *     model: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param embedRequest The embedRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -111,7 +111,7 @@ public final class EmbeddingsClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     model_name: String (Required)
@@ -119,7 +119,7 @@ public final class EmbeddingsClient {
      *     model_provider_name: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -136,7 +136,7 @@ public final class EmbeddingsClient {
     /**
      * Return the embedding vectors for given text prompts.
      * The method makes a REST API call to the `/embeddings` route on the given endpoint.
-     * 
+     *
      * @param input Input text to embed, encoded as a string or array of tokens.
      * To embed multiple inputs in a single request, pass an array
      * of strings or array of token arrays.
@@ -180,7 +180,7 @@ public final class EmbeddingsClient {
     /**
      * Return the embedding vectors for given text prompts.
      * The method makes a REST API call to the `/embeddings` route on the given endpoint.
-     * 
+     *
      * @param input Input text to embed, encoded as a string or array of tokens.
      * To embed multiple inputs in a single request, pass an array
      * of strings or array of token arrays.
@@ -196,7 +196,7 @@ public final class EmbeddingsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EmbeddingsResult embed(List<String> input) {
+    public EmbeddingsResult embed(List<String> input) {
         // Generated convenience method for embedWithResponse
         RequestOptions requestOptions = new RequestOptions();
         EmbedRequest embedRequestObj = new EmbedRequest(input);
@@ -207,7 +207,7 @@ public final class EmbeddingsClient {
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.

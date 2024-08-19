@@ -7,11 +7,14 @@ package com.azure.ai.inference.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Base64;
+import java.util.List;
 
 /**
  * Representation of a single embeddings relatedness comparison.
@@ -33,7 +36,7 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
 
     /**
      * Creates an instance of EmbeddingItem class.
-     * 
+     *
      * @param embedding the embedding value to set.
      * @param index the index value to set.
      */
@@ -46,17 +49,16 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
     /**
      * Get the embedding property: List of embedding values for the input prompt. These represent a measurement of the
      * vector-based relatedness of the provided input. Or a base64 encoded string of the embedding vector.
-     * 
+     *
      * @return the embedding value.
      */
-    @Generated
-    public BinaryData getEmbedding() {
-        return this.embedding;
+    public List<Float> getEmbedding() {
+        return this.embedding.toObject(new TypeReference<>() { });
     }
 
     /**
      * Get the index property: Index of the prompt to which the EmbeddingItem corresponds.
-     * 
+     *
      * @return the index value.
      */
     @Generated
@@ -78,7 +80,7 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
 
     /**
      * Reads an instance of EmbeddingItem from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of EmbeddingItem if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
