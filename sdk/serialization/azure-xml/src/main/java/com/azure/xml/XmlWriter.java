@@ -48,8 +48,7 @@ public final class XmlWriter implements AutoCloseable {
      */
     public static XmlWriter toStream(OutputStream xml) throws XMLStreamException {
         Objects.requireNonNull(xml, "'xml' cannot be null.");
-        return new XmlWriter(
-            XML_OUTPUT_FACTORY.createXMLStreamWriter(xml, StandardCharsets.UTF_8.name()));
+        return new XmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(xml, StandardCharsets.UTF_8.name()));
     }
 
     /**
