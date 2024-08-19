@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.circuitBreaker;
 
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -52,7 +51,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
     private final AtomicReference<GlobalAddressResolver> globalAddressResolverSnapshot;
     private final ConcurrentHashMap<URI, String> locationToRegion;
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
-    private final Scheduler scheduler = Schedulers.newSingle("partition-availability-staleness-check");
+    private final Scheduler partitionRecoveryScheduler = Schedulers.newSingle("partition-availability-staleness-check");
 
     public GlobalPartitionEndpointManagerForCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
         this.partitionKeyRangeToLocationSpecificUnavailabilityInfo = new ConcurrentHashMap<>();
@@ -69,7 +68,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
 
     public void init() {
         if (this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled()) {
-            this.updateStaleLocationInfo().subscribeOn(scheduler).subscribe();
+            this.updateStaleLocationInfo().subscribeOn(this.partitionRecoveryScheduler).subscribe();
         }
     }
 
@@ -203,7 +202,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
             .delayElement(Duration.ofSeconds(Configs.getStalePartitionUnavailabilityRefreshIntervalInSeconds()))
             .repeat(() -> !this.isClosed.get())
             .flatMap(ignore -> Flux.fromIterable(this.partitionKeyRangesWithPossibleUnavailableRegions.entrySet()))
-            .publishOn(this.scheduler)
+            .publishOn(this.partitionRecoveryScheduler)
             .flatMap(partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair -> {
 
                 logger.debug("Background updateStaleLocationInfo kicking in...");
@@ -260,7 +259,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
 
                             return gatewayAddressCache
                                 .submitOpenConnectionTasks(partitionKeyRangeWrapper.getPartitionKeyRange(), partitionKeyRangeWrapper.getCollectionResourceId())
-                                .publishOn(this.scheduler)
+                                .publishOn(this.partitionRecoveryScheduler)
                                 .timeout(Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()))
                                 .doOnComplete(() -> {
 
@@ -353,7 +352,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
     @Override
     public void close() {
         this.isClosed.set(true);
-        this.scheduler.dispose();
+        this.partitionRecoveryScheduler.dispose();
     }
 
     private class PartitionLevelLocationUnavailabilityInfo {
