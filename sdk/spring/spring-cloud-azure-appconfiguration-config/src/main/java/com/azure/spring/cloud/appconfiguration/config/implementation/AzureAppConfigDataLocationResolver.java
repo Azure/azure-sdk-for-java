@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import org.apache.commons.logging.Log;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigDataLocation;
@@ -16,9 +17,11 @@ import org.springframework.boot.context.config.ConfigDataLocationResolver;
 import org.springframework.boot.context.config.ConfigDataLocationResolverContext;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.boot.context.config.Profiles;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.BindHandler;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.boot.logging.DeferredLog;
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
@@ -26,8 +29,11 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 
+@EnableConfigurationProperties(AppConfigurationProviderProperties.class)
 public class AzureAppConfigDataLocationResolver
     implements ConfigDataLocationResolver<AzureAppConfigDataResource> {
+    
+    private static Log LOGGER = new DeferredLog();
 
     public static final String PREFIX = "azureAppConfiguration";
 
@@ -42,14 +48,13 @@ public class AzureAppConfigDataLocationResolver
         Boolean hasConnectionString = StringUtils.hasText(context.getBinder()
             .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].connection-string", String.class)
             .orElse(""));
-        // TODO (mametcal) This file never loads
         Boolean hasClientConfigs = StringUtils
             .hasText(context.getBinder().bind("spring.cloud.appconfiguration.version", String.class)
                 .orElse(""));
         
-        //if (!context.getBootstrapContext().isRegistered(AzureAppConfigDataLoader.class)) {
-        //    return false;
-        //}
+        if (!hasClientConfigs) {
+            return false;
+        }
 
         return (hasEndpoint || hasConnectionString);
     }
@@ -68,6 +73,7 @@ public class AzureAppConfigDataLocationResolver
 
         Holder holder = loadProperties(resolverContext);
         List<AzureAppConfigDataResource> locations = new ArrayList<>();
+
         for (ConfigStore store : holder.properties.getStores()) {
             locations.add(
                 new AzureAppConfigDataResource(store, profiles, holder.appProperties));
@@ -108,7 +114,7 @@ public class AzureAppConfigDataLocationResolver
             replicaLookup = new ReplicaLookUp(properties);
             context.getBootstrapContext().registerIfAbsent(ReplicaLookUp.class, InstanceSupplier.of(replicaLookup));
         } catch (NamingException e) {
-            // TODO Auto-generated catch block
+            LOGGER.info("Failed to find DNS Entry for config store while looking for replicas.");
         }
 
         AzureAppConfigurationBootstrapRegistrar.register(context, binder, properties, appProperties, replicaLookup);

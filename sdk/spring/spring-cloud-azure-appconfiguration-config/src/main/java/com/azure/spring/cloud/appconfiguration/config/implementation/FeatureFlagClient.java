@@ -94,7 +94,7 @@ public class FeatureFlagClient {
             if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                 FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
-                properties.put(featureFlag.getFeatureId(), createFeature(featureFlag, endpoint));
+                properties.put(featureFlag.getKey(), createFeature(featureFlag, endpoint));
             }
         }
         return loadedFeatureFlags;
@@ -152,17 +152,15 @@ public class FeatureFlagClient {
      */
     private static String calculateFeatureFlagId(String key, String label) {
         final String data = String.format("%s\n%s", key, label.isEmpty() ? null : label);
-        MessageDigest sha256 = null;
         try {
-            sha256 = MessageDigest.getInstance("SHA-256");
+            MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+            final String beforeTrim = Base64URL.encode(sha256.digest(data.getBytes(StandardCharsets.UTF_8)))
+                .toString().replace('+', '-').replace('/', '_');
+            final int index = beforeTrim.indexOf('=');
+            return beforeTrim.substring(0, index > -1 ? index : beforeTrim.length());
         } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
-        final String beforeTrim = Base64URL.encode(sha256.digest(data.getBytes(StandardCharsets.UTF_8)))
-            .toString().replace('+', '-').replace('/', '_');
-        final int index = beforeTrim.indexOf('=');
-        return beforeTrim.substring(0, index > -1 ? index : beforeTrim.length());
+        return "";
     }
 
     /**

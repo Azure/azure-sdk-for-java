@@ -14,6 +14,7 @@ import org.springframework.boot.context.config.ConfigData;
 import org.springframework.boot.context.config.ConfigDataLoader;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.logging.DeferredLog;
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.env.EnumerablePropertySource;
@@ -22,9 +23,11 @@ import org.springframework.util.StringUtils;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 
+@EnableConfigurationProperties(AppConfigurationProviderProperties.class)
 public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfigDataResource> {
 
     private static Log LOGGER = new DeferredLog();
@@ -143,9 +146,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     private List<AppConfigurationPropertySource> createSettings(AppConfigurationReplicaClient client) throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
         List<AppConfigurationKeyValueSelector> selects = resource.getSelects();
-
-        // TODO (mametcal): figure out profiles
-        List<String> profiles = List.of();
+        List<String> profiles = resource.getProfiles().getActive();
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
             AppConfigurationPropertySource propertySource = null;
