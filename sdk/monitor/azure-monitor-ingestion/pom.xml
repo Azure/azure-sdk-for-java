@@ -53,6 +53,7 @@
             --add-opens com.azure.monitor.ingestion/com.azure.monitor.ingestion=com.fasterxml.jackson.databind
             --add-opens com.azure.monitor.ingestion/com.azure.monitor.ingestion.implementation=com.fasterxml.jackson.databind
         </javaModulesSurefireArgLine>
+        <spotless.skip>false</spotless.skip>
     </properties>
 
     <developers>
