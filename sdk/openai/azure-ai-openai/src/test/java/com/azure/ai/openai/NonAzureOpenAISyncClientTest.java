@@ -895,7 +895,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             assertFileEquals(file, fileFromBackend);
 
             // Get file by purpose
-            List<OpenAIFile> files = client.listFiles(filePurpose);
+            List<OpenAIFile> files = client.listFiles();
             assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file

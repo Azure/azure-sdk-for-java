@@ -1011,7 +1011,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                             assertNotNull(uploadedFile);
                             assertNotNull(fileFromBackend);
                             assertFileEquals(uploadedFile, fileFromBackend);
-                            return client.listFiles(FilePurpose.ASSISTANTS).zipWith(Mono.just(uploadedFile));
+                            return client.listFiles().zipWith(Mono.just(uploadedFile));
                         })
                         // Check for existence of file when fetched by purpose
                         .flatMap(tuple -> {
