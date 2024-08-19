@@ -43,13 +43,13 @@ public class ValidationsTest {
     @Mock
     private FeatureManagementConfigProperties configProperties;
 
-    private final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
+    private final ObjectMapper objectMapper = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
-    private final String TEST_CASE_FOLDER_PATH = "validations-tests";
-    private final String INPUTS_USER = "user";
-    private final String INPUTS_GROUPS = "groups";
-    private final String SAMPLE_FILE_NAME_FILTER = "sample";
-    private final String TESTS_FILE_NAME_FILTER = "tests";
+    private final String testCaseFolderPath = "validations-tests";
+    private final String inputsUser = "user";
+    private final String inputsGroups = "groups";
+    private final String sampleFileNameFilter = "sample";
+    private final String testsFileNameFilter = "tests";
 
     @BeforeEach
     public void setup() {
@@ -74,7 +74,7 @@ public class ValidationsTest {
     }
 
     private File[] getFileList(String fileNameFilter) {
-        final URL folderUrl = Thread.currentThread().getContextClassLoader().getResource(TEST_CASE_FOLDER_PATH);
+        final URL folderUrl = Thread.currentThread().getContextClassLoader().getResource(testCaseFolderPath);
         assert folderUrl != null;
         final File folderFile = new File(folderUrl.getFile());
         return folderFile.listFiles(pathname -> pathname.getName().toLowerCase().contains(fileNameFilter));
@@ -84,13 +84,13 @@ public class ValidationsTest {
         final String jsonString = Files.readString(testFile.toPath());
         final CollectionType typeReference =
             TypeFactory.defaultInstance().constructCollectionType(List.class, ValidationTestCase.class);
-        return OBJECT_MAPPER.readValue(jsonString, typeReference);
+        return objectMapper.readValue(jsonString, typeReference);
     }
 
     @SuppressWarnings("unchecked")
     private LinkedHashMap<String, Object> readConfigurationFromFile(File sampleFile) throws IOException {
         final String jsonString = Files.readString(sampleFile.toPath());
-        final LinkedHashMap<String, Object> configurations = OBJECT_MAPPER.readValue(jsonString, new TypeReference<>() {
+        final LinkedHashMap<String, Object> configurations = objectMapper.readValue(jsonString, new TypeReference<>() {
         });
         final Object featureManagementSection = configurations.get("feature_management");
         if (featureManagementSection.getClass().isAssignableFrom(LinkedHashMap.class)) {
@@ -112,8 +112,8 @@ public class ValidationsTest {
                 assertNull(managementProperties.getOnOff().get(testCase.getFeatureFlagName()));
             } else {
                 if (hasInput(testCase)) { // Set inputs
-                    final Object userObj = testCase.getInputs().get(INPUTS_USER);
-                    final Object groupsObj = testCase.getInputs().get(INPUTS_GROUPS);
+                    final Object userObj = testCase.getInputs().get(inputsUser);
+                    final Object groupsObj = testCase.getInputs().get(inputsGroups);
                     final String user = userObj != null ? userObj.toString() : null;
                     final List<String> groups = groupsObj != null ? (List<String>) groupsObj : null;
                     when(context.getBean(Mockito.contains("Targeting"))).thenReturn(new TargetingFilter(new TargetingFilterTestContextAccessor(user, groups)));
@@ -127,8 +127,8 @@ public class ValidationsTest {
 
     @Test
     void validationsTest() throws IOException {
-        final File[] sampleFiles = getFileList(SAMPLE_FILE_NAME_FILTER);
-        final File[] testsFiles = getFileList(TESTS_FILE_NAME_FILTER);
+        final File[] sampleFiles = getFileList(sampleFileNameFilter);
+        final File[] testsFiles = getFileList(testsFileNameFilter);
         if (sampleFiles.length != testsFiles.length) {
             throw new IllegalArgumentException("The sample files and tests files should have same count.");
         }
