@@ -22,7 +22,7 @@ public class JsonConverterUtilTest {
     @Test
     public void testFromJson() throws IOException {
         String string = "{ \"cer\": \"cer\" }";
-        CertificateBundle bundle = (CertificateBundle) JsonConverterUtil.fromJson(CertificateBundle.class, string);
+        CertificateBundle bundle = JsonConverterUtil.fromJson(CertificateBundle.class, string);
 
         assertNotNull(bundle);
         assertEquals("cer", bundle.getCer());
@@ -30,7 +30,6 @@ public class JsonConverterUtilTest {
 
     /**
      * Test toJson method.
-     *
      */
     @Test
     public void testToJson() {
