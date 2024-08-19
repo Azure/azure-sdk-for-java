@@ -15,25 +15,27 @@ public final class VolumeQuotaRulePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulePatch model = BinaryData.fromString(
-            "{\"tags\":{\"tn\":\"qek\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":768157718472448573,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"fq\"}}")
+            "{\"tags\":{\"apfcqdpsq\":\"semdwzrmu\",\"celve\":\"qvpsvuoymg\",\"erqwkyhkobopg\":\"rypqlmfeo\",\"wccsnjvcdwxlpqek\":\"edkowepbqpcrfk\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":5918937804164279163,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"ngwfqatm\"}}")
             .toObject(VolumeQuotaRulePatch.class);
-        Assertions.assertEquals("qek", model.tags().get("tn"));
-        Assertions.assertEquals(768157718472448573L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("fq", model.quotaTarget());
+        Assertions.assertEquals("semdwzrmu", model.tags().get("apfcqdpsq"));
+        Assertions.assertEquals(5918937804164279163L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("ngwfqatm", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulePatch model = new VolumeQuotaRulePatch().withTags(mapOf("tn", "qek"))
-            .withQuotaSizeInKiBs(768157718472448573L)
-            .withQuotaType(Type.DEFAULT_GROUP_QUOTA)
-            .withQuotaTarget("fq");
+        VolumeQuotaRulePatch model = new VolumeQuotaRulePatch()
+            .withTags(mapOf("apfcqdpsq", "semdwzrmu", "celve", "qvpsvuoymg", "erqwkyhkobopg", "rypqlmfeo",
+                "wccsnjvcdwxlpqek", "edkowepbqpcrfk"))
+            .withQuotaSizeInKiBs(5918937804164279163L)
+            .withQuotaType(Type.DEFAULT_USER_QUOTA)
+            .withQuotaTarget("ngwfqatm");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulePatch.class);
-        Assertions.assertEquals("qek", model.tags().get("tn"));
-        Assertions.assertEquals(768157718472448573L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("fq", model.quotaTarget());
+        Assertions.assertEquals("semdwzrmu", model.tags().get("apfcqdpsq"));
+        Assertions.assertEquals(5918937804164279163L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("ngwfqatm", model.quotaTarget());
     }
 
     // Use "Map.of" if available
