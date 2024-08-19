@@ -107,21 +107,23 @@ public class ValidationsTest {
         final FeatureManager featureManager = new FeatureManager(context, managementProperties, configProperties);
 
         final List<ValidationTestCase> testCases = readTestcasesFromFile(testsFile);
-        for (ValidationTestCase testCase : testCases) {
-            System.out.println("Running test case " + testCase.getFriendlyName());
-            if (hasException(testCase)) {   // TODO. Currently we didn't throw the exception when parameter is invalid
-                assertNull(managementProperties.getOnOff().get(testCase.getFeatureFlagName()));
+        System.out.println("Running test case from file: " + testsFile.getName());
+
+        for (int i = 0; i < testCases.size(); i++) {
+            System.out.println("Test case " + i + " : " + testCases.get(i).getDescription());
+            if (hasException(testCases.get(i))) {   // TODO. Currently we didn't throw the exception when parameter is invalid
+                assertNull(managementProperties.getOnOff().get(testCases.get(i).getFeatureFlagName()));
             } else {
-                if (hasInput(testCase)) { // Set inputs
-                    final Object userObj = testCase.getInputs().get(inputsUser);
-                    final Object groupsObj = testCase.getInputs().get(inputsGroups);
+                if (hasInput(testCases.get(i))) { // Set inputs
+                    final Object userObj = testCases.get(i).getInputs().get(inputsUser);
+                    final Object groupsObj = testCases.get(i).getInputs().get(inputsGroups);
                     final String user = userObj != null ? userObj.toString() : null;
                     final List<String> groups = groupsObj != null ? (List<String>) groupsObj : null;
                     when(context.getBean(Mockito.contains("Targeting"))).thenReturn(new TargetingFilter(new TargetingFilterTestContextAccessor(user, groups)));
                 }
 
-                final Boolean result = featureManager.isEnabled(testCase.getFeatureFlagName());
-                assertEquals(result.toString(), testCase.getIsEnabled().getResult());
+                final Boolean result = featureManager.isEnabled(testCases.get(i).getFeatureFlagName());
+                assertEquals(result.toString(), testCases.get(i).getIsEnabled().getResult());
             }
         }
     }
@@ -134,7 +136,6 @@ public class ValidationsTest {
             throw new IllegalArgumentException("The sample files and tests files should have same count.");
         }
         for (int i = 0; i < sampleFiles.length; i++) {
-            System.out.println("sampleFiles[i].getName(): " + sampleFiles[i].getName());
             if (sampleFiles[i].getName().contains("TargetingFilter.sample")) { // TODO. Not run the test case until we release the little endian fix
                 continue;
             }
