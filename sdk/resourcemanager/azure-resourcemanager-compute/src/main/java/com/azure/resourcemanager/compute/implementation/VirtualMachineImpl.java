@@ -1603,20 +1603,36 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl enableHibernation() {
-        if (this.innerModel().additionalCapabilities() == null) {
-            this.innerModel().withAdditionalCapabilities(new AdditionalCapabilities());
-        }
+        ensureAdditionalCapabilities();
         this.innerModel().additionalCapabilities().withHibernationEnabled(true);
         return this;
     }
 
     @Override
     public VirtualMachineImpl disableHibernation() {
+        ensureAdditionalCapabilities();
+        this.innerModel().additionalCapabilities().withHibernationEnabled(false);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl enableUltraSsd() {
+        ensureAdditionalCapabilities();
+        this.innerModel().additionalCapabilities().withUltraSsdEnabled(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl disableUltraSsd() {
+        ensureAdditionalCapabilities();
+        this.innerModel().additionalCapabilities().withUltraSsdEnabled(false);
+        return this;
+    }
+
+    public void ensureAdditionalCapabilities() {
         if (this.innerModel().additionalCapabilities() == null) {
             this.innerModel().withAdditionalCapabilities(new AdditionalCapabilities());
         }
-        this.innerModel().additionalCapabilities().withHibernationEnabled(false);
-        return this;
     }
 
     // GETTERS
@@ -1979,6 +1995,12 @@ class VirtualMachineImpl
     public boolean isHibernationEnabled() {
         return this.innerModel().additionalCapabilities() != null
             && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().additionalCapabilities().hibernationEnabled());
+    }
+
+    @Override
+    public boolean isUltraSsdEnabled() {
+        return this.innerModel().additionalCapabilities() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().additionalCapabilities().ultraSsdEnabled());
     }
 
     @Override

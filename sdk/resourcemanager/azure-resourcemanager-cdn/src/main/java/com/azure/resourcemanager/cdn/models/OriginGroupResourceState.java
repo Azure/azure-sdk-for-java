@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class OriginGroupResourceState extends ExpandableStringEnum<OriginG
      * @param name a name to look for.
      * @return the corresponding OriginGroupResourceState.
      */
-    @JsonCreator
     public static OriginGroupResourceState fromString(String name) {
         return fromString(name, OriginGroupResourceState.class);
     }

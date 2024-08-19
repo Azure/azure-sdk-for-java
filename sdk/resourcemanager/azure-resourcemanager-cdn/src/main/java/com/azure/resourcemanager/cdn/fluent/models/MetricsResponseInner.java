@@ -5,39 +5,41 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.MetricsGranularity;
 import com.azure.resourcemanager.cdn.models.MetricsResponseSeriesItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Metrics Response.
  */
 @Fluent
-public final class MetricsResponseInner {
+public final class MetricsResponseInner implements JsonSerializable<MetricsResponseInner> {
     /*
      * The dateTimeBegin property.
      */
-    @JsonProperty(value = "dateTimeBegin")
     private OffsetDateTime dateTimeBegin;
 
     /*
      * The dateTimeEnd property.
      */
-    @JsonProperty(value = "dateTimeEnd")
     private OffsetDateTime dateTimeEnd;
 
     /*
      * The granularity property.
      */
-    @JsonProperty(value = "granularity")
     private MetricsGranularity granularity;
 
     /*
      * The series property.
      */
-    @JsonProperty(value = "series")
     private List<MetricsResponseSeriesItem> series;
 
     /**
@@ -135,5 +137,56 @@ public final class MetricsResponseInner {
         if (series() != null) {
             series().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dateTimeBegin",
+            this.dateTimeBegin == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dateTimeBegin));
+        jsonWriter.writeStringField("dateTimeEnd",
+            this.dateTimeEnd == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dateTimeEnd));
+        jsonWriter.writeStringField("granularity", this.granularity == null ? null : this.granularity.toString());
+        jsonWriter.writeArrayField("series", this.series, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricsResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricsResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricsResponseInner.
+     */
+    public static MetricsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricsResponseInner deserializedMetricsResponseInner = new MetricsResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dateTimeBegin".equals(fieldName)) {
+                    deserializedMetricsResponseInner.dateTimeBegin = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dateTimeEnd".equals(fieldName)) {
+                    deserializedMetricsResponseInner.dateTimeEnd = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("granularity".equals(fieldName)) {
+                    deserializedMetricsResponseInner.granularity = MetricsGranularity.fromString(reader.getString());
+                } else if ("series".equals(fieldName)) {
+                    List<MetricsResponseSeriesItem> series
+                        = reader.readArray(reader1 -> MetricsResponseSeriesItem.fromJson(reader1));
+                    deserializedMetricsResponseInner.series = series;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricsResponseInner;
+        });
     }
 }

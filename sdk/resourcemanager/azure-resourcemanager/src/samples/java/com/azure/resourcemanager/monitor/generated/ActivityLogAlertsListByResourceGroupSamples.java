@@ -18,7 +18,10 @@ public final class ActivityLogAlertsListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listActivityLogAlerts(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getActivityLogAlerts()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getActivityLogAlerts()
             .listByResourceGroup("MyResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
