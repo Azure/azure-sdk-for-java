@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -77,7 +76,6 @@ public final class CookiesOperator extends ExpandableStringEnum<CookiesOperator>
      * @param name a name to look for.
      * @return the corresponding CookiesOperator.
      */
-    @JsonCreator
     public static CookiesOperator fromString(String name) {
         return fromString(name, CookiesOperator.class);
     }

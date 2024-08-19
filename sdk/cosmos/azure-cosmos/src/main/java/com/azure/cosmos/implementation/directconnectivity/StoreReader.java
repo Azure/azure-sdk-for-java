@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.addressEnumerator.AddressEnumerator;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ClosedClientTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -1016,6 +1017,7 @@ public class StoreReader {
             } else {
                 String errorMessage = "Unexpected exception " + responseException.getMessage() + " received while reading from store.";
                 logger.error(errorMessage, responseException);
+
                 return new StoreResult(
                         /* storeResponse: */ null,
                         /* exception: */ new InternalServerErrorException(
@@ -1063,6 +1065,10 @@ public class StoreReader {
         }
 
         if (ex instanceof PartitionIsMigratingException) {
+            throw ex;
+        }
+
+        if (ex instanceof InternalServerErrorException && isSubStatusCode(ex, HttpConstants.SubStatusCodes.CLOSED_CLIENT)) {
             throw ex;
         }
 

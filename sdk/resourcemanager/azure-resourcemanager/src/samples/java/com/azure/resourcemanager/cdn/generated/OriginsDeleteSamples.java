@@ -18,7 +18,10 @@ public final class OriginsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void originsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getOrigins().delete("RG", "profile1", "endpoint1", "origin1",
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getOrigins()
+            .delete("RG", "profile1", "endpoint1", "origin1", com.azure.core.util.Context.NONE);
     }
 }

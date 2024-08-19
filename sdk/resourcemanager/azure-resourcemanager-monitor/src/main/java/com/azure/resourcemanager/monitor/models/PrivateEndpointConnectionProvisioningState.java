@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class PrivateEndpointConnectionProvisioningState
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointConnectionProvisioningState.
      */
-    @JsonCreator
     public static PrivateEndpointConnectionProvisioningState fromString(String name) {
         return fromString(name, PrivateEndpointConnectionProvisioningState.class);
     }

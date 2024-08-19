@@ -6,27 +6,40 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the certificate source parameters using user's keyvault certificate for enabling SSL.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "certificateSource")
-@JsonTypeName("AzureKeyVault")
 @Fluent
 public final class UserManagedHttpsParameters extends CustomDomainHttpsParameters {
     /*
+     * Defines the source of the SSL certificate.
+     */
+    private CertificateSource certificateSource = CertificateSource.AZURE_KEY_VAULT;
+
+    /*
      * Defines the certificate source parameters using user's keyvault certificate for enabling SSL.
      */
-    @JsonProperty(value = "certificateSourceParameters", required = true)
     private KeyVaultCertificateSourceParameters certificateSourceParameters;
 
     /**
      * Creates an instance of UserManagedHttpsParameters class.
      */
     public UserManagedHttpsParameters() {
+    }
+
+    /**
+     * Get the certificateSource property: Defines the source of the SSL certificate.
+     * 
+     * @return the certificateSource value.
+     */
+    @Override
+    public CertificateSource certificateSource() {
+        return this.certificateSource;
     }
 
     /**
@@ -79,12 +92,65 @@ public final class UserManagedHttpsParameters extends CustomDomainHttpsParameter
     public void validate() {
         super.validate();
         if (certificateSourceParameters() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property certificateSourceParameters in model UserManagedHttpsParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property certificateSourceParameters in model UserManagedHttpsParameters"));
         } else {
             certificateSourceParameters().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserManagedHttpsParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protocolType", protocolType() == null ? null : protocolType().toString());
+        jsonWriter.writeStringField("minimumTlsVersion",
+            minimumTlsVersion() == null ? null : minimumTlsVersion().toString());
+        jsonWriter.writeJsonField("certificateSourceParameters", this.certificateSourceParameters);
+        jsonWriter.writeStringField("certificateSource",
+            this.certificateSource == null ? null : this.certificateSource.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserManagedHttpsParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserManagedHttpsParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserManagedHttpsParameters.
+     */
+    public static UserManagedHttpsParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserManagedHttpsParameters deserializedUserManagedHttpsParameters = new UserManagedHttpsParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocolType".equals(fieldName)) {
+                    deserializedUserManagedHttpsParameters
+                        .withProtocolType(ProtocolType.fromString(reader.getString()));
+                } else if ("minimumTlsVersion".equals(fieldName)) {
+                    deserializedUserManagedHttpsParameters
+                        .withMinimumTlsVersion(MinimumTlsVersion.fromString(reader.getString()));
+                } else if ("certificateSourceParameters".equals(fieldName)) {
+                    deserializedUserManagedHttpsParameters.certificateSourceParameters
+                        = KeyVaultCertificateSourceParameters.fromJson(reader);
+                } else if ("certificateSource".equals(fieldName)) {
+                    deserializedUserManagedHttpsParameters.certificateSource
+                        = CertificateSource.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserManagedHttpsParameters;
+        });
+    }
 }

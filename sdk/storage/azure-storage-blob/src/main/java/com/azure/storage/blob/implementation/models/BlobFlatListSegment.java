@@ -9,10 +9,10 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-
-import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * The BlobFlatListSegment model.
@@ -97,16 +97,15 @@ public final class BlobFlatListSegment implements XmlSerializable<BlobFlatListSe
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobFlatListSegment deserializedBlobFlatListSegment = new BlobFlatListSegment();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                reader.processNextElement((namespaceUri, localName, reader1) -> {
-                    if ("Blob".equals(localName)) {
-                        if (deserializedBlobFlatListSegment.blobItems == null) {
-                            deserializedBlobFlatListSegment.blobItems = new ArrayList<>();
-                        }
-                        deserializedBlobFlatListSegment.blobItems.add(BlobItemInternal.fromXml(reader1, "Blob"));
-                    } else {
-                        reader1.skipElement();
+                QName elementName = reader.getElementName();
+                if ("Blob".equals(elementName.getLocalPart())) {
+                    if (deserializedBlobFlatListSegment.blobItems == null) {
+                        deserializedBlobFlatListSegment.blobItems = new ArrayList<>();
                     }
-                });
+                    deserializedBlobFlatListSegment.blobItems.add(BlobItemInternal.fromXml(reader, "Blob"));
+                } else {
+                    reader.skipElement();
+                }
             }
             return deserializedBlobFlatListSegment;
         });

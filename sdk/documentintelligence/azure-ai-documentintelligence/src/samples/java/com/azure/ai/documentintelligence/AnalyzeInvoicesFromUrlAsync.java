@@ -48,6 +48,7 @@ public class AnalyzeInvoicesFromUrlAsync {
             null,
             null,
             null,
+                null,
             null, new AnalyzeDocumentRequest().setUrlSource(invoiceUrl));
 
         Mono<AnalyzeResult> analyzeInvoiceResultMono = analyzeInvoicePoller

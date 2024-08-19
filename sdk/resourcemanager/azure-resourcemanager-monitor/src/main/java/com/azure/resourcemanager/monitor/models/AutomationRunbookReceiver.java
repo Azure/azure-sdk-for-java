@@ -6,53 +6,50 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Azure Automation Runbook notification receiver.
  */
 @Fluent
-public final class AutomationRunbookReceiver {
+public final class AutomationRunbookReceiver implements JsonSerializable<AutomationRunbookReceiver> {
     /*
      * The Azure automation account Id which holds this runbook and authenticate to Azure resource.
      */
-    @JsonProperty(value = "automationAccountId", required = true)
     private String automationAccountId;
 
     /*
      * The name for this runbook.
      */
-    @JsonProperty(value = "runbookName", required = true)
     private String runbookName;
 
     /*
      * The resource id for webhook linked to this runbook.
      */
-    @JsonProperty(value = "webhookResourceId", required = true)
     private String webhookResourceId;
 
     /*
      * Indicates whether this instance is global runbook.
      */
-    @JsonProperty(value = "isGlobalRunbook", required = true)
     private boolean isGlobalRunbook;
 
     /*
      * Indicates name of the webhook.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The URI where webhooks should be sent.
      */
-    @JsonProperty(value = "serviceUri")
     private String serviceUri;
 
     /*
      * Indicates whether to use common alert schema.
      */
-    @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
     /**
@@ -210,18 +207,77 @@ public final class AutomationRunbookReceiver {
      */
     public void validate() {
         if (automationAccountId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property automationAccountId in model AutomationRunbookReceiver"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property automationAccountId in model AutomationRunbookReceiver"));
         }
         if (runbookName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property runbookName in model AutomationRunbookReceiver"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property runbookName in model AutomationRunbookReceiver"));
         }
         if (webhookResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property webhookResourceId in model AutomationRunbookReceiver"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property webhookResourceId in model AutomationRunbookReceiver"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutomationRunbookReceiver.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("automationAccountId", this.automationAccountId);
+        jsonWriter.writeStringField("runbookName", this.runbookName);
+        jsonWriter.writeStringField("webhookResourceId", this.webhookResourceId);
+        jsonWriter.writeBooleanField("isGlobalRunbook", this.isGlobalRunbook);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("serviceUri", this.serviceUri);
+        jsonWriter.writeBooleanField("useCommonAlertSchema", this.useCommonAlertSchema);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationRunbookReceiver from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationRunbookReceiver if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutomationRunbookReceiver.
+     */
+    public static AutomationRunbookReceiver fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationRunbookReceiver deserializedAutomationRunbookReceiver = new AutomationRunbookReceiver();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("automationAccountId".equals(fieldName)) {
+                    deserializedAutomationRunbookReceiver.automationAccountId = reader.getString();
+                } else if ("runbookName".equals(fieldName)) {
+                    deserializedAutomationRunbookReceiver.runbookName = reader.getString();
+                } else if ("webhookResourceId".equals(fieldName)) {
+                    deserializedAutomationRunbookReceiver.webhookResourceId = reader.getString();
+                } else if ("isGlobalRunbook".equals(fieldName)) {
+                    deserializedAutomationRunbookReceiver.isGlobalRunbook = reader.getBoolean();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAutomationRunbookReceiver.name = reader.getString();
+                } else if ("serviceUri".equals(fieldName)) {
+                    deserializedAutomationRunbookReceiver.serviceUri = reader.getString();
+                } else if ("useCommonAlertSchema".equals(fieldName)) {
+                    deserializedAutomationRunbookReceiver.useCommonAlertSchema
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationRunbookReceiver;
+        });
+    }
 }
