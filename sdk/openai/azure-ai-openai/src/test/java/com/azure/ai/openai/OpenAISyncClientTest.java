@@ -1050,7 +1050,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             OpenAIFile fileFromBackend = client.getFile(file.getId());
             assertFileEquals(file, fileFromBackend);
 
-            // Get file by purpose
+            // List files
             List<OpenAIFile> files = client.listFiles();
             assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 

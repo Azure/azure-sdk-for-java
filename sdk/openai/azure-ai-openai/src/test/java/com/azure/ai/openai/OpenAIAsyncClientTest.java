@@ -1185,7 +1185,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                             assertFileEquals(uploadedFile, fileFromBackend);
                             return client.listFiles().zipWith(Mono.just(uploadedFile));
                         })
-                        // Check for existence of file when fetched by purpose
+                        // Check for existence of files
                         .flatMap(tuple -> {
                             List<OpenAIFile> files = tuple.getT1();
                             OpenAIFile uploadedFile = tuple.getT2();
