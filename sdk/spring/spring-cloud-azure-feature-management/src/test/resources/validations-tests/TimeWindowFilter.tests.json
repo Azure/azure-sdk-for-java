@@ -30,7 +30,7 @@
         "Variant": {
             "Result": null
         },
-        "Description": "Time Window filter where Start has happend but End hasn't happend."
+        "Description": "Time Window filter where Start has happened but End hasn't happened."
     },
     {
         "FeatureFlagName": "StartedTimeWindow",
