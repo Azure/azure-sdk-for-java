@@ -58,12 +58,17 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
      */
     public abstract Mono<Void> runAllAsync(long endNanoTime);
 
-    public abstract CompletableFuture<Void> runAllAsyncWithCompletableFuture(long endNanoTime);
+    public CompletableFuture<Void> runAllAsyncWithCompletableFuture(long endNanoTime) {
+        throw new UnsupportedOperationException("runAllAsyncWithCompletableFuture is not supported.");
+    }
 
-    public abstract Runnable runAllAsyncWithExecutorService(long endNanoTime);
+    public Runnable runAllAsyncWithExecutorService(long endNanoTime) {
+        throw new UnsupportedOperationException("runAllAsyncWithExecutorService is not supported.");
+    }
 
-    public abstract void runAllAsyncWithVirtualThread(long endNanoTime);
-
+    public Runnable runAllAsyncWithVirtualThread(long endNanoTime) {
+        throw new UnsupportedOperationException("runAllAsyncWithVirtualThread is not supported.");
+    }
     /**
      * Runs before cleanup stage.
      *

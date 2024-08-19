@@ -4,7 +4,6 @@
 package com.azure.perf.test.core;
 
 import com.beust.jcommander.Parameter;
-import java.util.concurrent.CompletableFuture;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -39,22 +38,6 @@ public class MockEventProcessorTest extends EventPerfTest<MockEventProcessorTest
             mockEventProcessor.start();
             return Mono.empty();
         }));
-    }
-
-    @Override
-    public CompletableFuture<Void> runAllAsyncWithCompletableFuture(long endNanoTime) {
-        return null;
-    }
-
-
-    @Override
-    public Runnable runAllAsyncWithExecutorService(long endNanoTime) {
-        return null;
-    }
-
-    @Override
-    public void runAllAsyncWithVirtualThread(long endNanoTime) {
-
     }
 
     @Override

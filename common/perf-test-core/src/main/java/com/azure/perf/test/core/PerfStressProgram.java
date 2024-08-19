@@ -11,12 +11,16 @@ import reactor.core.scheduler.Schedulers;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -159,6 +163,7 @@ public class PerfStressProgram {
                     runTests(tests, options.isSync(), options.isCompletableFuture(), options.isExecutorService(),
                         options.isVirtualThread(),
                         options.getParallel(),
+                        options.getConcurrentTaskLimit(),
                         options.getWarmup(), "Warmup");
                 }
 
@@ -168,7 +173,8 @@ public class PerfStressProgram {
                         title += " " + (i + 1);
                     }
                     runTests(tests, options.isSync(), options.isCompletableFuture(), options.isExecutorService(),
-                        startedPlayback, options.getParallel(), options.getDuration(), title);
+                        startedPlayback, options.getParallel(), options.getDuration(), options.getConcurrentTaskLimit()
+                        , title);
                 }
             } finally {
                 try {
@@ -257,10 +263,11 @@ public class PerfStressProgram {
      *
      * @param tests the performance tests to be executed.
      * @param sync indicate if synchronous test should be run.
-     * @param completableFuture
-     * @param executorService
-     * @param virtualThread
+     * @param completableFuture indicate if completable future test should be run.
+     * @param executorService indicate if executor service test should be run.
+     * @param virtualThread indicate if virtual thread test should be run.
      * @param parallel the number of parallel threads to run the performance test on.
+     * @param concurrentTaskLimit the number of concurrent tasks to run the performance test on.
      * @param durationSeconds the duration for which performance test should be run on.
      * @param title the title of the performance tests.
      *
@@ -268,7 +275,8 @@ public class PerfStressProgram {
      * @throws IllegalStateException if zero operations completed of the performance test.
      */
     public static void runTests(PerfTestBase<?>[] tests, boolean sync, boolean completableFuture,
-        boolean executorService, boolean virtualThread, int parallel, int durationSeconds, String title) {
+                                boolean executorService, boolean virtualThread, int parallel, int concurrentTaskLimit, int durationSeconds,
+                                String title) {
 
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
@@ -298,18 +306,37 @@ public class PerfStressProgram {
 
                 forkJoinPool.awaitQuiescence(durationSeconds + 1, TimeUnit.SECONDS);
             } else if (completableFuture) {
+                List<CompletableFuture<Void>> futures = new LinkedList<>();
                 for (PerfTestBase<?> test : tests) {
-                    test.runAllAsyncWithCompletableFuture(endNanoTime).get();
+                    futures.add(test.runAllAsyncWithCompletableFuture(endNanoTime));
                 }
+                CompletableFuture<Void> allFutures =
+                    CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
+                allFutures.get(); // Wait for all futures to complete
             } else if (executorService) {
-                for (PerfTestBase<?> test : tests) {
-                    test.runAllAsyncWithExecutorService(endNanoTime);
+                // when updated to concurrentTaskLimit, the performance drops?
+                ExecutorService executor = Executors.newFixedThreadPool(tests.length);
+                try {
+                    for (PerfTestBase<?> test : tests) {
+                        Runnable task = test.runAllAsyncWithExecutorService(endNanoTime);
+                        executor.submit(task);
+                    }
+                } finally {
+                    executor.shutdown();
+                    try {
+                        if (!executor.awaitTermination(durationSeconds + 1, TimeUnit.SECONDS)) {
+                            executor.shutdownNow();
+                        }
+                    } catch (InterruptedException e) {
+                        executor.shutdownNow();
+                        Thread.currentThread().interrupt();
+                    }
                 }
             } else if (virtualThread) {
                 for (PerfTestBase<?> test : tests) {
                     test.runAllAsyncWithVirtualThread(endNanoTime);
                 }
-            }else {
+            } else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
                 // Schedulers.onHandleError.  This handler ensures the perf framework will fail fast on any such exceptions.

@@ -13,26 +13,30 @@ import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.vertx.VertxAsyncHttpClientBuilder;
 import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-import okhttp3.OkHttpClient;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.X509TrustManager;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.X509TrustManager;
+import okhttp3.OkHttpClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.JDK;
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.NETTY;
@@ -45,6 +49,7 @@ import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.VERTX;
  * @param <TOptions> the performance test options to use while running the test.
  */
 public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extends PerfTestBase<TOptions> {
+    ClientLogger LOGGER = new ClientLogger(ApiPerfTestBase.class);
     private final reactor.netty.http.client.HttpClient recordPlaybackHttpClient;
     private final URI testProxy;
     private final TestProxyPolicy testProxyPolicy;
@@ -229,69 +234,102 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             .then();
     }
 
-    @Override
     public CompletableFuture<Void> runAllAsyncWithCompletableFuture(long endNanoTime) {
         completedOperations = 0;
         lastCompletionNanoTime = 0;
         long startNanoTime = System.nanoTime();
-        Semaphore semaphore = new Semaphore(10); // Limit to 10 concurrent tasks
+        Semaphore semaphore = new Semaphore(options.getConcurrentTaskLimit()); // Use configurable limit
 
-        CompletableFuture<Void> future = CompletableFuture.completedFuture(null);
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-        return runTasksRecursively(future, endNanoTime, startNanoTime, semaphore);
-    }
-
-    private CompletableFuture<Void> runTasksRecursively(CompletableFuture<Void> future, long endNanoTime, long startNanoTime, Semaphore semaphore) {
-        if (System.nanoTime() >= endNanoTime) {
-            return future;
-        }
-
-        return future.thenCompose(ignored -> {
+        while (System.nanoTime() < endNanoTime) {
             try {
                 semaphore.acquire();
-                return runTestAsyncWithCompletableFuture()
+                // Each runTestAsyncWithCompletableFuture() call runs independently
+                CompletableFuture<Void> testFuture = runTestAsyncWithCompletableFuture()
                     .thenAccept(result -> {
                         completedOperations += result;
                         lastCompletionNanoTime = System.nanoTime() - startNanoTime;
                     })
                     .whenComplete((res, ex) -> semaphore.release());
+                futures.add(testFuture);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new RuntimeException(e);
             }
-        }).thenCompose(ignored -> runTasksRecursively(future, endNanoTime, startNanoTime, semaphore));
-    }
+        }
 
+        // Combine all futures so we can wait for all to complete
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
+    }
 
     @Override
     public Runnable runAllAsyncWithExecutorService(long endNanoTime) {
         completedOperations = 0;
         lastCompletionNanoTime = 0;
-        long startNanoTime = System.nanoTime();
+
+        // Create the ExecutorService here and pass it down to the other methods
+        final ExecutorService executor = Executors.newFixedThreadPool(options.getConcurrentTaskLimit());
 
         return () -> {
-            while (System.nanoTime() < endNanoTime) {
+            try {
+                while (System.nanoTime() < endNanoTime) {
+                    long startNanoTime = System.nanoTime(); // Reset startNanoTime before each task
+
+                    try {
+                        Runnable task = runTestAsyncWithExecutorService(); // Get the Runnable task
+                        executor.submit(() -> {
+                            task.run(); // Execute the task's run() method
+                            completedOperations++;
+                            lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+                        }).get(); // Wait for the task to complete
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } finally {
+                executor.shutdown();
                 try {
-                    int result = Executors.newFixedThreadPool(1).submit(() -> runTestAsyncWithCompletableFuture().get()).get();
-                    completedOperations += result;
-                    lastCompletionNanoTime = System.nanoTime() - startNanoTime;
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
+                    if (!executor.awaitTermination(options.getDuration(), TimeUnit.SECONDS)) {
+                        executor.shutdownNow();
+                    }
+                } catch (InterruptedException e) {
+                    executor.shutdownNow();
+                    Thread.currentThread().interrupt();
                 }
             }
         };
     }
 
     @Override
-    public void runAllAsyncWithVirtualThread(long endNanoTime) {
+    public Runnable runAllAsyncWithVirtualThread(long endNanoTime) {
         completedOperations = 0;
         lastCompletionNanoTime = 0;
-        long startNanoTime = System.nanoTime();
+        ExecutorService virtualThreadExecutor = createVirtualThreadExecutor();
+        return () -> {
+            while (System.nanoTime() < endNanoTime) {
+                long startNanoTime = System.nanoTime();
+                virtualThreadExecutor.execute(() -> {
+                    try {
+                        runTestAsyncWithVirtualThread();
+                        completedOperations++;
+                        lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+                    } catch (Exception e) {
+                        LOGGER.logThrowableAsError(e);
+                    }
+                });
+            }
+            virtualThreadExecutor.shutdown();
+        };
+    }
 
-        while (System.nanoTime() < endNanoTime) {
-            runTestAsyncWithVirtualThread();
-            completedOperations++;
-            lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+    private ExecutorService createVirtualThreadExecutor() {
+        try {
+            Method method = Executors.class.getMethod("newVirtualThreadPerTaskExecutor");
+            return (ExecutorService) method.invoke(null);
+        } catch (Exception e) {
+            // Fallback for Java versions that do not support newVirtualThreadPerTaskExecutor
+            return Executors.newCachedThreadPool();
         }
     }
 
@@ -310,11 +348,30 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
      */
     abstract Mono<Integer> runTestAsync();
 
-    abstract CompletableFuture<Integer> runTestAsyncWithCompletableFuture();
+    /**
+     * Indicates how many operations were completed in a single run of the async test using CompletableFuture.
+     *
+     * @return the number of successful operations completed.
+     */
+    CompletableFuture<Integer> runTestAsyncWithCompletableFuture() {
+        throw new UnsupportedOperationException("runAllAsyncWithCompletableFuture is not supported.");
+    }
 
-    abstract Runnable runTestAsyncWithExecutorService();
+    /**
+     * Indicates how many operations were completed in a single run of the async test using ExecutorService.
+     *
+     * @return the number of successful operations completed.
+     */
+    Runnable runTestAsyncWithExecutorService() {
+        throw new UnsupportedOperationException("runAllAsyncWithExecutorService is not supported.");
+    }
 
-    abstract void runTestAsyncWithVirtualThread();
+    /**
+     * Indicates how many operations were completed in a single run of the async test using Virtual Threads.
+     */
+    Runnable runTestAsyncWithVirtualThread() {
+        throw new UnsupportedOperationException("runAllAsyncWithVirtualThread is not supported.");
+    }
 
     /**
      * Stops playback tests.

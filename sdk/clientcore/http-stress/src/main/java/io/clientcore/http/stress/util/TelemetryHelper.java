@@ -4,8 +4,8 @@
 package io.clientcore.http.stress.util;
 
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import io.clientcore.http.stress.StressOptions;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.http.stress.StressOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -29,10 +29,6 @@ import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
-
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.time.Instant;
@@ -41,6 +37,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.JDK;
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.OKHTTP;
@@ -173,31 +172,33 @@ public class TelemetryHelper {
     public CompletableFuture<Void> instrumentRunAsyncWithCompletableFuture(CompletableFuture<Void> runAsyncFuture) {
         Instant start = Instant.now();
         Span span = tracer.spanBuilder("runAsyncCompletableFuture").startSpan();
-        try (Scope s = span.makeCurrent()) {
-            return runAsyncFuture
-                .whenComplete((result, throwable) -> {
+
+        CompletableFuture<Void> instrumentedFuture = runAsyncFuture
+            .whenComplete((result, throwable) -> {
+                try (Scope s = span.makeCurrent()) {
                     if (throwable != null) {
                         trackFailure(start, throwable, span);
                     } else {
                         trackSuccess(start, span);
                     }
-                });
-        } finally {
-            span.end();
-        }
+                } finally {
+                    span.end();
+                }
+            });
+
+        return instrumentedFuture;
     }
 
     /**
      * Instruments a Runnable: records runnable duration along with the status (success, error, cancellation),
-     * @param executorService the executor service to run the task
      * @param task the runnable to instrument
      */
     @SuppressWarnings("try")
-    public void instrumentRunAsyncWithExecutorService(ExecutorService executorService, Runnable task) {
-        Instant start = Instant.now();
-        Span span = tracer.spanBuilder("runAsyncExecutorService").startSpan();
-        try (Scope s = span.makeCurrent()) {
-            executorService.submit(() -> {
+    public Runnable instrumentRunAsyncWithRunnable(Runnable task) {
+        return () -> {
+            Instant start = Instant.now();
+            Span span = tracer.spanBuilder("runAsyncRunnable").startSpan();
+            try (Scope s = span.makeCurrent()) {
                 try {
                     task.run();
                     trackSuccess(start, span);
@@ -206,43 +207,8 @@ public class TelemetryHelper {
                 } finally {
                     span.end();
                 }
-            });
-        }
-    }
-
-    /**
-     * Instruments a Runnable: records runnable duration along with the status (success, error, cancellation),
-     * @param task the runnable to instrument
-     */
-    @SuppressWarnings("try")
-    public void instrumentRunAsyncWithVirtualThreads(Runnable task) {
-        Instant start = Instant.now();
-        Span span = tracer.spanBuilder("runAsyncVirtualThreads").startSpan();
-        ExecutorService virtualThreadExecutor = createVirtualThreadExecutor();
-        try (Scope s = span.makeCurrent()) {
-            virtualThreadExecutor.submit(() -> {
-                try {
-                    task.run();
-                    trackSuccess(start, span);
-                } catch (Exception e) {
-                    trackFailure(start, e, span);
-                } finally {
-                    span.end();
-                }
-            });
-        } finally {
-            virtualThreadExecutor.shutdown();
-        }
-    }
-
-    private ExecutorService createVirtualThreadExecutor() {
-        try {
-            Method method = Executors.class.getMethod("newVirtualThreadPerTaskExecutor");
-            return (ExecutorService) method.invoke(null);
-        } catch (Exception e) {
-            // Fallback for Java versions that do not support newVirtualThreadPerTaskExecutor
-            return Executors.newCachedThreadPool();
-        }
+            }
+        };
     }
 
     private void trackSuccess(Instant start, Span span) {

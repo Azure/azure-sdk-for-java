@@ -24,10 +24,7 @@ import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 import reactor.core.publisher.Mono;
 
@@ -85,14 +82,12 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     @Override
     public Runnable runAsyncWithExecutorService() {
-        final ExecutorService executorService = Executors.newFixedThreadPool(10);
-        TELEMETRY_HELPER.instrumentRunAsyncWithExecutorService(executorService, runAsyncWithExecutorServiceInternal());
-        return executorService::shutdown;
+        return TELEMETRY_HELPER.instrumentRunAsyncWithRunnable(runAsyncWithExecutorServiceInternal());
     }
 
     @Override
-    public void runAsyncWithVirtualThread() {
-        TELEMETRY_HELPER.instrumentRunAsyncWithVirtualThreads(runAsyncWithVirtualThreadInternal());
+    public Runnable runAsyncWithVirtualThread() {
+        return TELEMETRY_HELPER.instrumentRunAsyncWithRunnable(runAsyncWithVirtualThreadInternal());
     }
 
     private Mono<Void> runInternalAsync() {
@@ -148,7 +143,6 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         };
         return task;
     }
-
 
     private HttpRequest createRequest() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);

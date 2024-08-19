@@ -8,7 +8,6 @@ import com.beust.jcommander.Parameter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -26,21 +25,6 @@ public class MockBatchReceiverTest extends BatchPerfTest<MockBatchReceiverTest.M
     public MockBatchReceiverTest(MockReceiverOptions options) {
         super(options);
         mockReceiver = new MockReceiver();
-    }
-
-    @Override
-    CompletableFuture<Integer> runTestAsyncWithCompletableFuture() {
-        return null;
-    }
-
-    @Override
-    Runnable runTestAsyncWithExecutorService() {
-        return null;
-    }
-
-    @Override
-    void runTestAsyncWithVirtualThread() {
-
     }
 
     @Override

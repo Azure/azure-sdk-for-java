@@ -5,8 +5,6 @@ package com.azure.perf.test.core;
 
 import reactor.core.publisher.Mono;
 
-import java.util.concurrent.CompletableFuture;
-
 class NoOpTest extends PerfStressTest<PerfStressOptions> {
 
     /**
@@ -24,20 +22,5 @@ class NoOpTest extends PerfStressTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return Mono.empty();
-    }
-
-    @Override
-    public CompletableFuture<Void> runAsyncWithCompletableFuture() {
-        return null;
-    }
-
-    @Override
-    public Runnable runAsyncWithExecutorService() {
-        return null;
-    }
-
-    @Override
-    public void runAsyncWithVirtualThread() {
-
     }
 }
