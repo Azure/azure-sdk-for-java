@@ -35,11 +35,11 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      * The parameters the function accepts, described as a JSON Schema object.
      */
     @Generated
-    private Map<String, Object> parameters;
+    private Object parameters;
 
     /**
      * Creates an instance of FunctionDefinition class.
-     * 
+     *
      * @param name the name value to set.
      */
     @Generated
@@ -49,7 +49,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
 
     /**
      * Get the name property: The name of the function to be called.
-     * 
+     *
      * @return the name value.
      */
     @Generated
@@ -61,7 +61,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      * Get the description property: A description of what the function does. The model will use this description when
      * selecting the function and
      * interpreting its parameters.
-     * 
+     *
      * @return the description value.
      */
     @Generated
@@ -73,7 +73,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      * Set the description property: A description of what the function does. The model will use this description when
      * selecting the function and
      * interpreting its parameters.
-     * 
+     *
      * @param description the description value to set.
      * @return the FunctionDefinition object itself.
      */
@@ -85,17 +85,17 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
 
     /**
      * Get the parameters property: The parameters the function accepts, described as a JSON Schema object.
-     * 
+     *
      * @return the parameters value.
      */
     @Generated
-    public Map<String, Object> getParameters() {
+    public Object getParameters() {
         return this.parameters;
     }
 
     /**
      * Set the parameters property: The parameters the function accepts, described as a JSON Schema object.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the FunctionDefinition object itself.
      */
@@ -114,13 +114,13 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeUntypedField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of FunctionDefinition from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of FunctionDefinition if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -132,7 +132,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
-            Map<String, Object> parameters = null;
+            Object parameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -142,7 +142,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("parameters".equals(fieldName)) {
-                    parameters = reader.readMap(reader1 -> reader1.readUntyped());
+                    parameters = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }
