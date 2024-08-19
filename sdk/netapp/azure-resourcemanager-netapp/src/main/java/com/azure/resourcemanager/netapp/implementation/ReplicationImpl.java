@@ -19,6 +19,10 @@ public final class ReplicationImpl implements Replication {
         this.serviceManager = serviceManager;
     }
 
+    public String replicationId() {
+        return this.innerModel().replicationId();
+    }
+
     public EndpointType endpointType() {
         return this.innerModel().endpointType();
     }

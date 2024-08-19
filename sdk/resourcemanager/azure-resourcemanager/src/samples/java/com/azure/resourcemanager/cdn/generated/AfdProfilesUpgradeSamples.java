@@ -23,11 +23,15 @@ public final class AfdProfilesUpgradeSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void aFDProfilesUpgrade(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getAfdProfiles().upgrade("RG", "profile1",
-            new ProfileUpgradeParameters().withWafMappingList(Arrays.asList(new ProfileChangeSkuWafMapping()
-                .withSecurityPolicyName("securityPolicy1")
-                .withChangeToWafPolicy(new ResourceReference().withId(
-                    "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/waf2")))),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getAfdProfiles()
+            .upgrade("RG", "profile1",
+                new ProfileUpgradeParameters().withWafMappingList(Arrays.asList(new ProfileChangeSkuWafMapping()
+                    .withSecurityPolicyName("securityPolicy1")
+                    .withChangeToWafPolicy(new ResourceReference().withId(
+                        "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/waf2")))),
+                com.azure.core.util.Context.NONE);
     }
 }
