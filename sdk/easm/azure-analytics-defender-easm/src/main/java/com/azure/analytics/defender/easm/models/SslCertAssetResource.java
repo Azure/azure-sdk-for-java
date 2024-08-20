@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -21,88 +20,10 @@ import java.util.List;
 public final class SslCertAssetResource extends AssetResource {
 
     /*
-     * Discriminator property for AssetResource.
-     */
-    @Generated
-    private String kind = "sslCert";
-
-    /*
      * asset
      */
     @Generated
     private final SslCertAsset asset;
-
-    /*
-     * The caller provided unique name for the resource.
-     */
-    @Generated
-    private String name;
-
-    /*
-     * The name that can be used for display purposes.
-     */
-    @Generated
-    private String displayName;
-
-    /*
-     * Global UUID for the asset.
-     */
-    @Generated
-    private String uuid;
-
-    /*
-     * The date this asset was first added to this workspace.
-     */
-    @Generated
-    private OffsetDateTime createdDate;
-
-    /*
-     * The date this asset was last updated for this workspace.
-     */
-    @Generated
-    private OffsetDateTime updatedDate;
-
-    /*
-     * The state property.
-     */
-    @Generated
-    private AssetState state;
-
-    /*
-     * An optional customer provided identifier for this asset.
-     */
-    @Generated
-    private String externalId;
-
-    /*
-     * Customer labels assigned to this asset.
-     */
-    @Generated
-    private List<String> labels;
-
-    /*
-     * An indicator of whether this asset represents a wildcard rollup of assets on this domain.
-     */
-    @Generated
-    private Boolean wildcard;
-
-    /*
-     * The name of the DiscoGroup that brought added this asset to the workspace.
-     */
-    @Generated
-    private String discoGroupName;
-
-    /*
-     * The history of how this asset was pulled into the workspace through the discovery process.
-     */
-    @Generated
-    private List<AuditTrailItem> auditTrail;
-
-    /*
-     * The reason property.
-     */
-    @Generated
-    private String reason;
 
     /**
      * Creates an instance of SslCertAssetResource class.
@@ -112,17 +33,7 @@ public final class SslCertAssetResource extends AssetResource {
     @Generated
     private SslCertAssetResource(SslCertAsset asset) {
         this.asset = asset;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for AssetResource.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public String getKind() {
-        return this.kind;
+        this.kind = "sslCert";
     }
 
     /**
@@ -136,162 +47,14 @@ public final class SslCertAssetResource extends AssetResource {
     }
 
     /**
-     * Get the name property: The caller provided unique name for the resource.
-     *
-     * @return the name value.
-     */
-    @Generated
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the displayName property: The name that can be used for display purposes.
-     *
-     * @return the displayName value.
-     */
-    @Generated
-    @Override
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Get the uuid property: Global UUID for the asset.
-     *
-     * @return the uuid value.
-     */
-    @Generated
-    @Override
-    public String getUuid() {
-        return this.uuid;
-    }
-
-    /**
-     * Get the createdDate property: The date this asset was first added to this workspace.
-     *
-     * @return the createdDate value.
-     */
-    @Generated
-    @Override
-    public OffsetDateTime getCreatedDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the updatedDate property: The date this asset was last updated for this workspace.
-     *
-     * @return the updatedDate value.
-     */
-    @Generated
-    @Override
-    public OffsetDateTime getUpdatedDate() {
-        return this.updatedDate;
-    }
-
-    /**
-     * Get the state property: The state property.
-     *
-     * @return the state value.
-     */
-    @Generated
-    @Override
-    public AssetState getState() {
-        return this.state;
-    }
-
-    /**
-     * Get the externalId property: An optional customer provided identifier for this asset.
-     *
-     * @return the externalId value.
-     */
-    @Generated
-    @Override
-    public String getExternalId() {
-        return this.externalId;
-    }
-
-    /**
-     * Get the labels property: Customer labels assigned to this asset.
-     *
-     * @return the labels value.
-     */
-    @Generated
-    @Override
-    public List<String> getLabels() {
-        return this.labels;
-    }
-
-    /**
-     * Get the wildcard property: An indicator of whether this asset represents a wildcard rollup of assets on this
-     * domain.
-     *
-     * @return the wildcard value.
-     */
-    @Generated
-    @Override
-    public Boolean isWildcard() {
-        return this.wildcard;
-    }
-
-    /**
-     * Get the discoGroupName property: The name of the DiscoGroup that brought added this asset to the workspace.
-     *
-     * @return the discoGroupName value.
-     */
-    @Generated
-    @Override
-    public String getDiscoGroupName() {
-        return this.discoGroupName;
-    }
-
-    /**
-     * Get the auditTrail property: The history of how this asset was pulled into the workspace through the discovery
-     * process.
-     *
-     * @return the auditTrail value.
-     */
-    @Generated
-    @Override
-    public List<AuditTrailItem> getAuditTrail() {
-        return this.auditTrail;
-    }
-
-    /**
-     * Get the reason property: The reason property.
-     *
-     * @return the reason value.
-     */
-    @Generated
-    @Override
-    public String getReason() {
-        return this.reason;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("displayName", getDisplayName());
-        jsonWriter.writeStringField("uuid", getUuid());
-        jsonWriter.writeStringField("createdDate",
-            getCreatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDate()));
-        jsonWriter.writeStringField("updatedDate",
-            getUpdatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getUpdatedDate()));
-        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
-        jsonWriter.writeStringField("externalId", getExternalId());
-        jsonWriter.writeArrayField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("wildcard", isWildcard());
-        jsonWriter.writeStringField("discoGroupName", getDiscoGroupName());
-        jsonWriter.writeArrayField("auditTrail", getAuditTrail(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("reason", getReason());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("asset", this.asset);
-        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 

@@ -24,6 +24,7 @@ public class AzureChatExtensionConfiguration implements JsonSerializable<AzureCh
      */
     @Generated
     public AzureChatExtensionConfiguration() {
+        this.type = AzureChatExtensionType.fromString("AzureChatExtensionConfiguration");
     }
 
     /*
@@ -31,7 +32,7 @@ public class AzureChatExtensionConfiguration implements JsonSerializable<AzureCh
      * Azure chat extensions are only compatible with Azure OpenAI.
      */
     @Generated
-    private AzureChatExtensionType type = AzureChatExtensionType.fromString("AzureChatExtensionConfiguration");
+    AzureChatExtensionType type;
 
     /**
      * Get the type property: The label for the type of an Azure chat extension. This typically corresponds to a
@@ -52,7 +53,7 @@ public class AzureChatExtensionConfiguration implements JsonSerializable<AzureCh
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -107,14 +108,26 @@ public class AzureChatExtensionConfiguration implements JsonSerializable<AzureCh
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedAzureChatExtensionConfiguration.type
-                        = AzureChatExtensionType.fromString(reader.getString());
-                } else {
+                if (!AzureChatExtensionConfiguration.fromJsonShared(reader, fieldName,
+                    deserializedAzureChatExtensionConfiguration)) {
                     reader.skipChildren();
                 }
             }
             return deserializedAzureChatExtensionConfiguration;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        AzureChatExtensionConfiguration deserializedAzureChatExtensionConfiguration) throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedAzureChatExtensionConfiguration.type = AzureChatExtensionType.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

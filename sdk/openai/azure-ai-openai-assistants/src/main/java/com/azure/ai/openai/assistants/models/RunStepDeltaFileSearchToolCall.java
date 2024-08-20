@@ -18,12 +18,6 @@ import java.util.Map;
 public final class RunStepDeltaFileSearchToolCall extends RunStepDeltaToolCall {
 
     /*
-     * The type of the tool call detail item in a streaming run step's details.
-     */
-    @Generated
-    private String type = "file_search";
-
-    /*
      * Reserved for future use.
      */
     @Generated
@@ -38,17 +32,7 @@ public final class RunStepDeltaFileSearchToolCall extends RunStepDeltaToolCall {
     @Generated
     private RunStepDeltaFileSearchToolCall(int index, String id) {
         super(index, id);
-    }
-
-    /**
-     * Get the type property: The type of the tool call detail item in a streaming run step's details.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "file_search";
     }
 
     /**
@@ -68,9 +52,7 @@ public final class RunStepDeltaFileSearchToolCall extends RunStepDeltaToolCall {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", getIndex());
-        jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         jsonWriter.writeMapField("file_search", this.fileSearch, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }

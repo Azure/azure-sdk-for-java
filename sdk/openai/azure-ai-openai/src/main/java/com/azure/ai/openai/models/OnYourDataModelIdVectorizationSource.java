@@ -31,6 +31,7 @@ public final class OnYourDataModelIdVectorizationSource extends OnYourDataVector
     @Generated
     public OnYourDataModelIdVectorizationSource(String modelId) {
         this.modelId = modelId;
+        this.type = OnYourDataVectorizationSourceType.MODEL_ID;
     }
 
     /**
@@ -44,23 +45,6 @@ public final class OnYourDataModelIdVectorizationSource extends OnYourDataVector
         return this.modelId;
     }
 
-    /*
-     * The type of vectorization source to use.
-     */
-    @Generated
-    private OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.MODEL_ID;
-
-    /**
-     * Get the type property: The type of vectorization source to use.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataVectorizationSourceType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -68,8 +52,8 @@ public final class OnYourDataModelIdVectorizationSource extends OnYourDataVector
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("model_id", this.modelId);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

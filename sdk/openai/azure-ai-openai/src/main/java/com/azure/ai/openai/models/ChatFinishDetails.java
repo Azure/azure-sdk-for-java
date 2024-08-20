@@ -22,13 +22,14 @@ public class ChatFinishDetails implements JsonSerializable<ChatFinishDetails> {
      */
     @Generated
     protected ChatFinishDetails() {
+        this.type = "ChatFinishDetails";
     }
 
     /*
      * The object type.
      */
     @Generated
-    private String type = "ChatFinishDetails";
+    String type;
 
     /**
      * Get the type property: The object type.
@@ -47,7 +48,7 @@ public class ChatFinishDetails implements JsonSerializable<ChatFinishDetails> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -95,13 +96,25 @@ public class ChatFinishDetails implements JsonSerializable<ChatFinishDetails> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedChatFinishDetails.type = reader.getString();
-                } else {
+                if (!ChatFinishDetails.fromJsonShared(reader, fieldName, deserializedChatFinishDetails)) {
                     reader.skipChildren();
                 }
             }
             return deserializedChatFinishDetails;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName, ChatFinishDetails deserializedChatFinishDetails)
+        throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedChatFinishDetails.type = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

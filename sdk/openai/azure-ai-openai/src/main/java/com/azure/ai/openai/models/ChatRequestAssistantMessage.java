@@ -51,6 +51,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     @Generated
     public ChatRequestAssistantMessage(String content) {
         this.content = content;
+        this.role = ChatRole.ASSISTANT;
     }
 
     /**
@@ -137,23 +138,6 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
         return this;
     }
 
-    /*
-     * The chat role associated with this message.
-     */
-    @Generated
-    private ChatRole role = ChatRole.ASSISTANT;
-
-    /**
-     * Get the role property: The chat role associated with this message.
-     *
-     * @return the role value.
-     */
-    @Generated
-    @Override
-    public ChatRole getRole() {
-        return this.role;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -161,8 +145,8 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("content", this.content);
-        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("function_call", this.functionCall);

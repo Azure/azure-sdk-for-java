@@ -16,28 +16,12 @@ import java.io.IOException;
 @Immutable
 public final class FileSearchToolDefinition extends ToolDefinition {
 
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "file_search";
-
     /**
      * Creates an instance of FileSearchToolDefinition class.
      */
     @Generated
     public FileSearchToolDefinition() {
-    }
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "file_search";
     }
 
     /**
@@ -47,7 +31,7 @@ public final class FileSearchToolDefinition extends ToolDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -66,8 +50,8 @@ public final class FileSearchToolDefinition extends ToolDefinition {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedFileSearchToolDefinition.type = reader.getString();
+                if (ToolDefinition.fromJsonShared(reader, fieldName, deserializedFileSearchToolDefinition)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

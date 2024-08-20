@@ -20,12 +20,6 @@ import java.util.Set;
 public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment {
 
     /*
-     * The type discriminator describing a sub-type of QueueSelectorAttachment.
-     */
-    @Generated
-    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.STATIC;
-
-    /*
      * The queue selector to attach.
      */
     @Generated
@@ -42,17 +36,7 @@ public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment
      */
     @Generated
     public StaticQueueSelectorAttachment() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public QueueSelectorAttachmentKind getKind() {
-        return this.kind;
+        this.kind = QueueSelectorAttachmentKind.STATIC;
     }
 
     /**
@@ -129,9 +113,9 @@ public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedStaticQueueSelectorAttachment.kind
-                        = QueueSelectorAttachmentKind.fromString(reader.getString());
+                if (QueueSelectorAttachment.fromJsonShared(reader, fieldName,
+                    deserializedStaticQueueSelectorAttachment)) {
+                    continue;
                 } else if ("queueSelector".equals(fieldName)) {
                     deserializedStaticQueueSelectorAttachment.queueSelector = RouterQueueSelector.fromJson(reader);
                 } else {

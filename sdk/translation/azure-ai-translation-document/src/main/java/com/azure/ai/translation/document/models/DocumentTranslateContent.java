@@ -5,6 +5,7 @@ package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import java.util.List;
 
 /**
@@ -17,23 +18,13 @@ public final class DocumentTranslateContent {
      * Document to be translated in the form
      */
     @Generated
-    private final DocumentFileDetails document;
+    private final byte[] document;
 
     /*
      * Glossary-translation memory will be used during translation in the form.
      */
     @Generated
-    private List<GlossaryFileDetails> glossary;
-
-    /**
-     * Creates an instance of DocumentTranslateContent class.
-     *
-     * @param document the document value to set.
-     */
-    @Generated
-    public DocumentTranslateContent(DocumentFileDetails document) {
-        this.document = document;
-    }
+    private List<byte[]> glossary;
 
     /**
      * Get the document property: Document to be translated in the form.
@@ -41,8 +32,8 @@ public final class DocumentTranslateContent {
      * @return the document value.
      */
     @Generated
-    public DocumentFileDetails getDocument() {
-        return this.document;
+    public byte[] getDocument() {
+        return CoreUtils.clone(this.document);
     }
 
     /**
@@ -51,7 +42,7 @@ public final class DocumentTranslateContent {
      * @return the glossary value.
      */
     @Generated
-    public List<GlossaryFileDetails> getGlossary() {
+    public List<byte[]> getGlossary() {
         return this.glossary;
     }
 
@@ -62,8 +53,18 @@ public final class DocumentTranslateContent {
      * @return the DocumentTranslateContent object itself.
      */
     @Generated
-    public DocumentTranslateContent setGlossary(List<GlossaryFileDetails> glossary) {
+    public DocumentTranslateContent setGlossary(List<byte[]> glossary) {
         this.glossary = glossary;
         return this;
+    }
+
+    /**
+     * Creates an instance of DocumentTranslateContent class.
+     *
+     * @param document the document value to set.
+     */
+    @Generated
+    public DocumentTranslateContent(byte[] document) {
+        this.document = document;
     }
 }

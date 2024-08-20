@@ -38,6 +38,7 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
     public ChatRequestFunctionMessage(String name, String content) {
         this.name = name;
         this.content = content;
+        this.role = ChatRole.FUNCTION;
     }
 
     /**
@@ -60,23 +61,6 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
         return this.content;
     }
 
-    /*
-     * The chat role associated with this message.
-     */
-    @Generated
-    private ChatRole role = ChatRole.FUNCTION;
-
-    /**
-     * Get the role property: The chat role associated with this message.
-     *
-     * @return the role value.
-     */
-    @Generated
-    @Override
-    public ChatRole getRole() {
-        return this.role;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -84,9 +68,9 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("content", this.content);
-        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         return jsonWriter.writeEndObject();
     }
 

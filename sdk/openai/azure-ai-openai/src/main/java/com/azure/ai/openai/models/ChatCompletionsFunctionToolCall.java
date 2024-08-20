@@ -33,6 +33,7 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
     public ChatCompletionsFunctionToolCall(String id, FunctionCall function) {
         super(id);
         this.function = function;
+        this.type = "function";
     }
 
     /**
@@ -52,9 +53,8 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("function", this.function);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -91,22 +91,5 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
             deserializedChatCompletionsFunctionToolCall.type = type;
             return deserializedChatCompletionsFunctionToolCall;
         });
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "function";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

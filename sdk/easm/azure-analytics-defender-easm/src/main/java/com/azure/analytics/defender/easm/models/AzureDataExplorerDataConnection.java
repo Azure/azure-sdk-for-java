@@ -19,76 +19,10 @@ import java.time.OffsetDateTime;
 public final class AzureDataExplorerDataConnection extends DataConnection {
 
     /*
-     * Discriminator property for DataConnection.
-     */
-    @Generated
-    private String kind = "azureDataExplorer";
-
-    /*
      * properties
      */
     @Generated
     private final AzureDataExplorerDataConnectionProperties properties;
-
-    /*
-     * The system generated unique id for the resource.
-     */
-    @Generated
-    private String id;
-
-    /*
-     * The name that can be used for display purposes.
-     */
-    @Generated
-    private String displayName;
-
-    /*
-     * The type of data the data connection will transfer
-     */
-    @Generated
-    private DataConnectionContent content;
-
-    /*
-     * The date the data connection was created.
-     */
-    @Generated
-    private OffsetDateTime createdDate;
-
-    /*
-     * The rate at which the data connection will receive updates.
-     */
-    @Generated
-    private DataConnectionFrequency frequency;
-
-    /*
-     * The day to update the data connection on.
-     */
-    @Generated
-    private Integer frequencyOffset;
-
-    /*
-     * The date the data connection was last updated.
-     */
-    @Generated
-    private OffsetDateTime updatedDate;
-
-    /*
-     * The date the data connection was last updated by user.
-     */
-    @Generated
-    private OffsetDateTime userUpdatedAt;
-
-    /*
-     * An indicator of whether the data connection is active.
-     */
-    @Generated
-    private Boolean active;
-
-    /*
-     * A message that specifies details about data connection if inactive.
-     */
-    @Generated
-    private String inactiveMessage;
 
     /**
      * Creates an instance of AzureDataExplorerDataConnection class.
@@ -98,17 +32,7 @@ public final class AzureDataExplorerDataConnection extends DataConnection {
     @Generated
     private AzureDataExplorerDataConnection(AzureDataExplorerDataConnectionProperties properties) {
         this.properties = properties;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for DataConnection.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public String getKind() {
-        return this.kind;
+        this.kind = "azureDataExplorer";
     }
 
     /**
@@ -122,130 +46,14 @@ public final class AzureDataExplorerDataConnection extends DataConnection {
     }
 
     /**
-     * Get the id property: The system generated unique id for the resource.
-     *
-     * @return the id value.
-     */
-    @Generated
-    @Override
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Get the displayName property: The name that can be used for display purposes.
-     *
-     * @return the displayName value.
-     */
-    @Generated
-    @Override
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Get the content property: The type of data the data connection will transfer.
-     *
-     * @return the content value.
-     */
-    @Generated
-    @Override
-    public DataConnectionContent getContent() {
-        return this.content;
-    }
-
-    /**
-     * Get the createdDate property: The date the data connection was created.
-     *
-     * @return the createdDate value.
-     */
-    @Generated
-    @Override
-    public OffsetDateTime getCreatedDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the frequency property: The rate at which the data connection will receive updates.
-     *
-     * @return the frequency value.
-     */
-    @Generated
-    @Override
-    public DataConnectionFrequency getFrequency() {
-        return this.frequency;
-    }
-
-    /**
-     * Get the frequencyOffset property: The day to update the data connection on.
-     *
-     * @return the frequencyOffset value.
-     */
-    @Generated
-    @Override
-    public Integer getFrequencyOffset() {
-        return this.frequencyOffset;
-    }
-
-    /**
-     * Get the updatedDate property: The date the data connection was last updated.
-     *
-     * @return the updatedDate value.
-     */
-    @Generated
-    @Override
-    public OffsetDateTime getUpdatedDate() {
-        return this.updatedDate;
-    }
-
-    /**
-     * Get the userUpdatedAt property: The date the data connection was last updated by user.
-     *
-     * @return the userUpdatedAt value.
-     */
-    @Generated
-    @Override
-    public OffsetDateTime getUserUpdatedAt() {
-        return this.userUpdatedAt;
-    }
-
-    /**
-     * Get the active property: An indicator of whether the data connection is active.
-     *
-     * @return the active value.
-     */
-    @Generated
-    @Override
-    public Boolean isActive() {
-        return this.active;
-    }
-
-    /**
-     * Get the inactiveMessage property: A message that specifies details about data connection if inactive.
-     *
-     * @return the inactiveMessage value.
-     */
-    @Generated
-    @Override
-    public String getInactiveMessage() {
-        return this.inactiveMessage;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeStringField("displayName", getDisplayName());
-        jsonWriter.writeStringField("content", getContent() == null ? null : getContent().toString());
-        jsonWriter.writeStringField("frequency", getFrequency() == null ? null : getFrequency().toString());
-        jsonWriter.writeNumberField("frequencyOffset", getFrequencyOffset());
-        jsonWriter.writeBooleanField("active", isActive());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 
