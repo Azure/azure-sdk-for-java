@@ -398,7 +398,7 @@ public final class OpenAIClientImpl {
 
         // @Multipart not supported by RestProxy
         @Post("/files")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -419,7 +419,7 @@ public final class OpenAIClientImpl {
             Context context);
 
         @Delete("/files/{fileId}")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -494,7 +494,7 @@ public final class OpenAIClientImpl {
             RequestOptions requestOptions, Context context);
 
         @Post("/batches")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })

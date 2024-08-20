@@ -35,8 +35,11 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
@@ -54,6 +57,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+
 import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscription;
 import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscriptionText;
 import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslation;
@@ -1686,7 +1691,18 @@ public final class OpenAIAsyncClient {
             return this.openAIServiceClient.uploadFileWithResponseAsync(uploadFileRequest, requestOptions);
         }
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.uploadFileWithResponseAsync(uploadFileRequest, requestOptions);
+
+        return this.serviceClient.uploadFileWithResponseAsync(uploadFileRequest, requestOptions)
+            .onErrorResume(HttpResponseException.class,
+                (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
+                    HttpResponseException ex = (HttpResponseException) throwable;
+                    HttpResponse httpResponse = ex.getResponse();
+                    if (httpResponse.getStatusCode() == 201) {
+                        return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
+                            httpResponse.getStatusCode(), httpResponse.getHeaders(), BinaryData.fromObject(ex.getValue()), null));
+                    }
+                    return Mono.error(throwable);
+                });
     }
 
     /**
@@ -1716,7 +1732,17 @@ public final class OpenAIAsyncClient {
             return this.openAIServiceClient.deleteFileWithResponseAsync(fileId, requestOptions);
         }
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.deleteFileWithResponseAsync(fileId, requestOptions);
+        return this.serviceClient.deleteFileWithResponseAsync(fileId, requestOptions)
+            .onErrorResume(HttpResponseException.class,
+                (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
+                    HttpResponseException ex = (HttpResponseException) throwable;
+                    HttpResponse httpResponse = ex.getResponse();
+                    if (httpResponse.getStatusCode() == 204) {
+                        return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
+                            httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null));
+                    }
+                    return Mono.error(throwable);
+                });
     }
 
     /**
@@ -1791,7 +1817,7 @@ public final class OpenAIAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1849,7 +1875,6 @@ public final class OpenAIAsyncClient {
      * @return a list of all batches owned by the Azure OpenAI resource along with {@link Response} on successful
      * completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listBatchesWithResponse(RequestOptions requestOptions) {
         if (openAIServiceClient != null) {
@@ -1864,7 +1889,7 @@ public final class OpenAIAsyncClient {
      * Response includes details of the enqueued job including job status.
      * The ID of the result file is added to the response once complete.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     endpoint: String (Required)
@@ -1875,9 +1900,9 @@ public final class OpenAIAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1934,13 +1959,23 @@ public final class OpenAIAsyncClient {
             return this.openAIServiceClient.createBatchWithResponseAsync(createBatchRequest, requestOptions);
         }
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.createBatchWithResponseAsync(createBatchRequest, requestOptions);
+        return this.serviceClient.createBatchWithResponseAsync(createBatchRequest, requestOptions)
+            .onErrorResume(HttpResponseException.class,
+                (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
+                    HttpResponseException ex = (HttpResponseException) throwable;
+                    HttpResponse httpResponse = ex.getResponse();
+                    if (httpResponse.getStatusCode() == 200) {
+                        return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
+                            httpResponse.getStatusCode(), httpResponse.getHeaders(), BinaryData.fromObject(ex.getValue()), null));
+                    }
+                    return Mono.error(throwable);
+                });
     }
 
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2003,7 +2038,7 @@ public final class OpenAIAsyncClient {
     /**
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2219,8 +2254,7 @@ public final class OpenAIAsyncClient {
     public Mono<byte[]> getFileContent(String fileId) {
         // Generated convenience method for getFileContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(BinaryData::toBytes);
+        return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono).map(BinaryData::toBytes);
     }
 
     /**

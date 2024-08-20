@@ -457,7 +457,7 @@ public final class NonAzureOpenAIClientImpl {
 
         // @Multipart not supported by RestProxy
         @Post("/files")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -546,7 +546,7 @@ public final class NonAzureOpenAIClientImpl {
                                              @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/batches")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -556,7 +556,7 @@ public final class NonAzureOpenAIClientImpl {
                                                RequestOptions requestOptions, Context context);
 
         @Post("/batches")
-        @ExpectedResponses({ 200, 201 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
