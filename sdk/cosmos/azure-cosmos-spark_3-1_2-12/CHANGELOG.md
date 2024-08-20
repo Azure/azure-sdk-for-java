@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added retries on a new `BulkWriter` instance when first attempt to commit times out for bulk write jobs. - See [PR 41553](https://github.com/Azure/azure-sdk-for-java/pull/41553)
 
 ### 4.33.0 (2024-06-22)
 
