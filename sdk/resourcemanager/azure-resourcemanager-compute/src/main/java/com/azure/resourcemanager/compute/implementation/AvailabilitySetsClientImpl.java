@@ -57,7 +57,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Initializes an instance of AvailabilitySetsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     AvailabilitySetsClientImpl(ComputeManagementClientImpl client) {
@@ -157,7 +157,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Create or update an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
@@ -191,7 +191,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -201,7 +201,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Create or update an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
@@ -236,7 +236,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, availabilitySetName, apiVersion,
@@ -245,7 +245,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Create or update an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
@@ -264,7 +264,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Create or update an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
@@ -283,7 +283,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Create or update an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
@@ -300,7 +300,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Update an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
@@ -334,7 +334,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, availabilitySetName,
@@ -344,7 +344,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Update an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
@@ -379,7 +379,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, availabilitySetName, apiVersion,
@@ -388,7 +388,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Update an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
@@ -407,7 +407,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Update an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
@@ -426,7 +426,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Update an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
@@ -443,7 +443,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Delete an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -469,7 +469,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, availabilitySetName,
@@ -479,7 +479,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Delete an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
@@ -507,7 +507,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, availabilitySetName, apiVersion,
@@ -516,7 +516,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Delete an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -531,7 +531,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Delete an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
@@ -547,7 +547,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Delete an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -561,7 +561,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Retrieves information about an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -589,7 +589,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -599,7 +599,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Retrieves information about an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
@@ -628,7 +628,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, availabilitySetName, apiVersion,
@@ -637,7 +637,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Retrieves information about an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -654,7 +654,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Retrieves information about an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
@@ -672,7 +672,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Retrieves information about an availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -687,7 +687,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a subscription.
-     * 
+     *
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -705,7 +705,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -717,7 +717,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a subscription.
-     * 
+     *
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -736,7 +736,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -747,7 +747,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a subscription.
-     * 
+     *
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -762,7 +762,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a subscription.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
@@ -776,7 +776,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a subscription.
-     * 
+     *
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -792,7 +792,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a subscription.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
@@ -805,7 +805,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a subscription.
-     * 
+     *
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -820,7 +820,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -842,7 +842,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -854,7 +854,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -878,7 +878,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -890,7 +890,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -905,7 +905,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -921,7 +921,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -935,7 +935,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Lists all availability sets in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -951,7 +951,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
     /**
      * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
      * availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -979,7 +979,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableSizes(this.client.getEndpoint(), resourceGroupName,
@@ -992,7 +992,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
     /**
      * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
      * availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
@@ -1021,7 +1021,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1034,7 +1034,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
     /**
      * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
      * availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1051,7 +1051,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
     /**
      * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
      * availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
@@ -1070,7 +1070,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
     /**
      * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
      * availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1087,7 +1087,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
     /**
      * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing
      * availability set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
@@ -1104,7 +1104,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1132,7 +1132,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1160,7 +1160,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1186,7 +1186,7 @@ public final class AvailabilitySetsClientImpl implements InnerSupportsGet<Availa
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

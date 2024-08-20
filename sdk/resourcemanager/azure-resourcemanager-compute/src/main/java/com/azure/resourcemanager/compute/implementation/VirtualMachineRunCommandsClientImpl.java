@@ -60,7 +60,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Initializes an instance of VirtualMachineRunCommandsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineRunCommandsClientImpl(ComputeManagementClientImpl client) {
@@ -161,7 +161,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Lists all available run commands for a subscription in a location.
-     * 
+     *
      * @param location The location upon which run commands is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -182,7 +182,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), location, apiVersion,
@@ -194,7 +194,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Lists all available run commands for a subscription in a location.
-     * 
+     *
      * @param location The location upon which run commands is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,7 +216,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -227,7 +227,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Lists all available run commands for a subscription in a location.
-     * 
+     *
      * @param location The location upon which run commands is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -241,7 +241,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Lists all available run commands for a subscription in a location.
-     * 
+     *
      * @param location The location upon which run commands is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +257,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Lists all available run commands for a subscription in a location.
-     * 
+     *
      * @param location The location upon which run commands is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -271,7 +271,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Lists all available run commands for a subscription in a location.
-     * 
+     *
      * @param location The location upon which run commands is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -286,7 +286,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Gets specific run command for a subscription in a location.
-     * 
+     *
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -311,7 +311,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), location, commandId, apiVersion,
@@ -321,7 +321,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Gets specific run command for a subscription in a location.
-     * 
+     *
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @param context The context to associate with this operation.
@@ -348,7 +348,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), location, commandId, apiVersion, this.client.getSubscriptionId(),
@@ -357,7 +357,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Gets specific run command for a subscription in a location.
-     * 
+     *
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -372,7 +372,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Gets specific run command for a subscription in a location.
-     * 
+     *
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @param context The context to associate with this operation.
@@ -388,7 +388,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Gets specific run command for a subscription in a location.
-     * 
+     *
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -403,7 +403,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -440,7 +440,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -450,7 +450,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -488,7 +488,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, apiVersion,
@@ -497,7 +497,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -520,7 +520,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -545,7 +545,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -563,7 +563,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -584,7 +584,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -603,7 +603,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -623,7 +623,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -641,7 +641,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to create or update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -660,7 +660,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -697,7 +697,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName,
@@ -707,7 +707,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -745,7 +745,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, apiVersion,
@@ -754,7 +754,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -776,7 +776,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -801,7 +801,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -819,7 +819,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -839,7 +839,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -858,7 +858,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -878,7 +878,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -896,7 +896,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to update the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -915,7 +915,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to delete the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -945,7 +945,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName,
@@ -955,7 +955,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to delete the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -986,7 +986,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, apiVersion,
@@ -995,7 +995,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to delete the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1014,7 +1014,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to delete the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1036,7 +1036,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to delete the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1053,7 +1053,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to delete the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1071,7 +1071,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to delete the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1088,7 +1088,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to delete the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1106,7 +1106,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to delete the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1121,7 +1121,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to delete the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -1137,7 +1137,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -1169,7 +1169,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.getByVirtualMachine(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -1179,7 +1179,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -1212,7 +1212,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.getByVirtualMachine(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, expand,
@@ -1221,7 +1221,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -1240,7 +1240,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -1259,7 +1259,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get the run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -1278,7 +1278,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -1306,7 +1306,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.listByVirtualMachine(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -1318,7 +1318,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -1347,7 +1347,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1359,7 +1359,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -1377,7 +1377,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1394,7 +1394,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -1413,7 +1413,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1429,7 +1429,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -1447,7 +1447,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1473,7 +1473,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1500,7 +1500,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1529,7 +1529,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

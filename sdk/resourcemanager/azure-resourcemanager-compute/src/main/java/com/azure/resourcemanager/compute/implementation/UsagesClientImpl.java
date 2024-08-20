@@ -46,7 +46,7 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Initializes an instance of UsagesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     UsagesClientImpl(ComputeManagementClientImpl client) {
@@ -80,7 +80,7 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Gets, for the specified location, the current compute resource usage information as well as the limits for
      * compute resources under the subscription.
-     * 
+     *
      * @param location The location for which resource usage is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -101,7 +101,7 @@ public final class UsagesClientImpl implements UsagesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), location, apiVersion,
@@ -114,7 +114,7 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Gets, for the specified location, the current compute resource usage information as well as the limits for
      * compute resources under the subscription.
-     * 
+     *
      * @param location The location for which resource usage is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,7 +136,7 @@ public final class UsagesClientImpl implements UsagesClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -148,7 +148,7 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Gets, for the specified location, the current compute resource usage information as well as the limits for
      * compute resources under the subscription.
-     * 
+     *
      * @param location The location for which resource usage is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -163,7 +163,7 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Gets, for the specified location, the current compute resource usage information as well as the limits for
      * compute resources under the subscription.
-     * 
+     *
      * @param location The location for which resource usage is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +180,7 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Gets, for the specified location, the current compute resource usage information as well as the limits for
      * compute resources under the subscription.
-     * 
+     *
      * @param location The location for which resource usage is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -195,7 +195,7 @@ public final class UsagesClientImpl implements UsagesClient {
     /**
      * Gets, for the specified location, the current compute resource usage information as well as the limits for
      * compute resources under the subscription.
-     * 
+     *
      * @param location The location for which resource usage is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +210,7 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -236,7 +236,7 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

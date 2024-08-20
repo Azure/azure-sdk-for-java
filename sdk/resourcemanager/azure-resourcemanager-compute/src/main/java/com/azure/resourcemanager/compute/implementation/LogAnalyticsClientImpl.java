@@ -49,7 +49,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Initializes an instance of LogAnalyticsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     LogAnalyticsClientImpl(ComputeManagementClientImpl client) {
@@ -89,7 +89,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,7 +117,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.exportRequestRateByInterval(this.client.getEndpoint(), location, apiVersion,
@@ -128,7 +128,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
@@ -157,7 +157,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.exportRequestRateByInterval(this.client.getEndpoint(), location, apiVersion,
@@ -167,7 +167,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,7 +187,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
@@ -210,7 +210,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,7 +227,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
@@ -245,7 +245,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -263,7 +263,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
@@ -282,7 +282,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,7 +299,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
@@ -316,7 +316,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -344,7 +344,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.exportThrottledRequests(this.client.getEndpoint(), location, apiVersion,
@@ -354,7 +354,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
@@ -383,7 +383,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.exportThrottledRequests(this.client.getEndpoint(), location, apiVersion,
@@ -392,7 +392,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -411,7 +411,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
@@ -432,7 +432,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -448,7 +448,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
@@ -465,7 +465,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -482,7 +482,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
@@ -500,7 +500,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -516,7 +516,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.

@@ -52,7 +52,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * Initializes an instance of VirtualMachineScaleSetVMExtensionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineScaleSetVMExtensionsClientImpl(ComputeManagementClientImpl client) {
@@ -126,7 +126,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to create or update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -169,7 +169,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -180,7 +180,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to create or update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -224,7 +224,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -233,7 +233,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to create or update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -257,7 +257,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to create or update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -283,7 +283,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to create or update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -306,7 +306,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to create or update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -330,7 +330,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to create or update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -351,7 +351,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to create or update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -373,7 +373,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to create or update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -393,7 +393,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to create or update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -415,7 +415,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -457,7 +457,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -468,7 +468,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -512,7 +512,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
@@ -521,7 +521,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -545,7 +545,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -571,7 +571,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -593,7 +593,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -617,7 +617,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -638,7 +638,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -660,7 +660,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -679,7 +679,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to update the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -701,7 +701,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -736,7 +736,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -746,7 +746,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -782,7 +782,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
@@ -791,7 +791,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -812,7 +812,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -835,7 +835,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -853,7 +853,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -873,7 +873,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -892,7 +892,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -912,7 +912,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -928,7 +928,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -946,7 +946,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to get the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -982,7 +982,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -992,7 +992,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to get the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1029,7 +1029,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
@@ -1038,7 +1038,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to get the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1058,7 +1058,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to get the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1079,7 +1079,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to get the VMSS VM extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1099,7 +1099,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1131,7 +1131,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1141,7 +1141,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1174,7 +1174,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, expand,
@@ -1183,7 +1183,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1202,7 +1202,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1221,7 +1221,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.

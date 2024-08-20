@@ -79,7 +79,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Initializes an instance of VirtualMachinesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachinesClientImpl(ComputeManagementClientImpl client) {
@@ -366,7 +366,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which virtual machines under the subscription are queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -387,7 +387,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), location, apiVersion,
@@ -399,7 +399,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which virtual machines under the subscription are queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -421,7 +421,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -433,7 +433,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which virtual machines under the subscription are queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -449,7 +449,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which virtual machines under the subscription are queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -466,7 +466,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which virtual machines under the subscription are queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -481,7 +481,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which virtual machines under the subscription are queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -498,7 +498,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
      * VMs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -531,7 +531,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.capture(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -542,7 +542,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
      * VMs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -576,7 +576,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.capture(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -586,7 +586,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
      * VMs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -607,7 +607,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
      * VMs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -632,7 +632,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
      * VMs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -650,7 +650,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
      * VMs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -669,7 +669,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
      * VMs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -688,7 +688,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
      * VMs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -708,7 +708,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
      * VMs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -726,7 +726,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
      * VMs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -745,7 +745,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -781,7 +781,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -792,7 +792,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -829,7 +829,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -839,7 +839,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -864,7 +864,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -887,7 +887,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -915,7 +915,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -936,7 +936,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -961,7 +961,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -984,7 +984,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -1005,7 +1005,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -1029,7 +1029,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -1048,7 +1048,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
      * machine creation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -1070,7 +1070,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1106,7 +1106,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -1116,7 +1116,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1153,7 +1153,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -1162,7 +1162,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1186,7 +1186,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1208,7 +1208,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1234,7 +1234,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1253,7 +1253,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1276,7 +1276,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1298,7 +1298,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1318,7 +1318,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1341,7 +1341,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1359,7 +1359,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -1381,7 +1381,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
@@ -1408,7 +1408,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmName, forceDeletion,
@@ -1418,7 +1418,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
@@ -1446,7 +1446,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, vmName, forceDeletion, apiVersion,
@@ -1455,7 +1455,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
@@ -1474,7 +1474,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1492,7 +1492,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
@@ -1514,7 +1514,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1530,7 +1530,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
@@ -1548,7 +1548,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
@@ -1565,7 +1565,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1582,7 +1582,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
@@ -1600,7 +1600,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1615,7 +1615,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
@@ -1631,7 +1631,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
@@ -1661,7 +1661,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -1671,7 +1671,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
@@ -1702,7 +1702,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, vmName, expand, apiVersion,
@@ -1711,7 +1711,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1728,7 +1728,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
@@ -1749,7 +1749,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1765,7 +1765,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Retrieves information about the run-time state of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1792,7 +1792,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.instanceView(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -1802,7 +1802,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Retrieves information about the run-time state of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1830,7 +1830,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.instanceView(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -1839,7 +1839,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Retrieves information about the run-time state of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1855,7 +1855,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Retrieves information about the run-time state of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1872,7 +1872,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Retrieves information about the run-time state of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1888,7 +1888,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
      * invoking this operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1914,7 +1914,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.convertToManagedDisks(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -1925,7 +1925,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
      * invoking this operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1952,7 +1952,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.convertToManagedDisks(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -1962,7 +1962,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
      * invoking this operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1980,7 +1980,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
      * invoking this operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2002,7 +2002,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
      * invoking this operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2018,7 +2018,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
      * invoking this operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2036,7 +2036,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
      * invoking this operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2053,7 +2053,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
      * invoking this operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2071,7 +2071,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
      * invoking this operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2086,7 +2086,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
      * invoking this operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2102,7 +2102,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
@@ -2129,7 +2129,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deallocate(this.client.getEndpoint(), resourceGroupName, vmName, hibernate,
@@ -2140,7 +2140,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
@@ -2168,7 +2168,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deallocate(this.client.getEndpoint(), resourceGroupName, vmName, hibernate, apiVersion,
@@ -2178,7 +2178,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
@@ -2198,7 +2198,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2217,7 +2217,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
@@ -2240,7 +2240,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2257,7 +2257,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
@@ -2276,7 +2276,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
@@ -2294,7 +2294,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2312,7 +2312,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
@@ -2331,7 +2331,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2347,7 +2347,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
      * that this virtual machine uses.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param hibernate Optional parameter to hibernate a virtual machine.
@@ -2367,7 +2367,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource). For Linux, please refer
      * to [How to create an image of a virtual machine or
      * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2392,7 +2392,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generalize(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -2406,7 +2406,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource). For Linux, please refer
      * to [How to create an image of a virtual machine or
      * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2432,7 +2432,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.generalize(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -2445,7 +2445,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource). For Linux, please refer
      * to [How to create an image of a virtual machine or
      * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2464,7 +2464,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource). For Linux, please refer
      * to [How to create an image of a virtual machine or
      * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2484,7 +2484,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * Azure](https://docs.microsoft.com/azure/virtual-machines/windows/capture-image-resource). For Linux, please refer
      * to [How to create an image of a virtual machine or
      * VHD](https://docs.microsoft.com/azure/virtual-machines/linux/capture-image).
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2499,7 +2499,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
      * get the next page of virtual machines.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param filter The system query option to filter VMs returned in the response. Allowed value is
      * 'virtualMachineScaleSet/id' eq
@@ -2527,7 +2527,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, filter,
@@ -2540,7 +2540,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
      * get the next page of virtual machines.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param filter The system query option to filter VMs returned in the response. Allowed value is
      * 'virtualMachineScaleSet/id' eq
@@ -2569,7 +2569,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2582,7 +2582,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
      * get the next page of virtual machines.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param filter The system query option to filter VMs returned in the response. Allowed value is
      * 'virtualMachineScaleSet/id' eq
@@ -2604,7 +2604,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
      * get the next page of virtual machines.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2622,7 +2622,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
      * get the next page of virtual machines.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param filter The system query option to filter VMs returned in the response. Allowed value is
      * 'virtualMachineScaleSet/id' eq
@@ -2645,7 +2645,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
      * get the next page of virtual machines.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2662,7 +2662,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
      * get the next page of virtual machines.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param filter The system query option to filter VMs returned in the response. Allowed value is
      * 'virtualMachineScaleSet/id' eq
@@ -2684,7 +2684,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
      * the next page of virtual machines.
-     * 
+     *
      * @param statusOnly statusOnly=true enables fetching run time status of all Virtual Machines in the subscription.
      * @param filter The system query option to filter VMs returned in the response. Allowed value is
      * 'virtualMachineScaleSet/id' eq
@@ -2708,7 +2708,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2721,7 +2721,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
      * the next page of virtual machines.
-     * 
+     *
      * @param statusOnly statusOnly=true enables fetching run time status of all Virtual Machines in the subscription.
      * @param filter The system query option to filter VMs returned in the response. Allowed value is
      * 'virtualMachineScaleSet/id' eq
@@ -2746,7 +2746,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2759,7 +2759,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
      * the next page of virtual machines.
-     * 
+     *
      * @param statusOnly statusOnly=true enables fetching run time status of all Virtual Machines in the subscription.
      * @param filter The system query option to filter VMs returned in the response. Allowed value is
      * 'virtualMachineScaleSet/id' eq
@@ -2780,7 +2780,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
      * the next page of virtual machines.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
@@ -2797,7 +2797,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
      * the next page of virtual machines.
-     * 
+     *
      * @param statusOnly statusOnly=true enables fetching run time status of all Virtual Machines in the subscription.
      * @param filter The system query option to filter VMs returned in the response. Allowed value is
      * 'virtualMachineScaleSet/id' eq
@@ -2820,7 +2820,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
      * the next page of virtual machines.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
@@ -2836,7 +2836,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
      * the next page of virtual machines.
-     * 
+     *
      * @param statusOnly statusOnly=true enables fetching run time status of all Virtual Machines in the subscription.
      * @param filter The system query option to filter VMs returned in the response. Allowed value is
      * 'virtualMachineScaleSet/id' eq
@@ -2857,7 +2857,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2884,7 +2884,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableSizes(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -2896,7 +2896,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2924,7 +2924,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2936,7 +2936,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2951,7 +2951,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2968,7 +2968,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2983,7 +2983,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3001,7 +3001,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3029,7 +3029,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.powerOff(this.client.getEndpoint(), resourceGroupName, vmName, skipShutdown,
@@ -3040,7 +3040,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3069,7 +3069,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.powerOff(this.client.getEndpoint(), resourceGroupName, vmName, skipShutdown, apiVersion,
@@ -3079,7 +3079,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3100,7 +3100,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3119,7 +3119,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3143,7 +3143,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3160,7 +3160,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3180,7 +3180,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3199,7 +3199,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3217,7 +3217,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3237,7 +3237,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3253,7 +3253,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
      * provisioned resources. You are still charged for this virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3270,7 +3270,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3295,7 +3295,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reapply(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -3305,7 +3305,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3332,7 +3332,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reapply(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -3341,7 +3341,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3358,7 +3358,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3378,7 +3378,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3393,7 +3393,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3409,7 +3409,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3424,7 +3424,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3441,7 +3441,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3455,7 +3455,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3470,7 +3470,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3495,7 +3495,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.restart(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -3505,7 +3505,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3532,7 +3532,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.restart(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -3541,7 +3541,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3558,7 +3558,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3578,7 +3578,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3593,7 +3593,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3609,7 +3609,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3624,7 +3624,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3641,7 +3641,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3655,7 +3655,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3670,7 +3670,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3695,7 +3695,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -3705,7 +3705,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3732,7 +3732,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -3741,7 +3741,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3758,7 +3758,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3778,7 +3778,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3793,7 +3793,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3809,7 +3809,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3824,7 +3824,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3841,7 +3841,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3855,7 +3855,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3870,7 +3870,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3895,7 +3895,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.redeploy(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -3905,7 +3905,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3932,7 +3932,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.redeploy(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -3941,7 +3941,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3958,7 +3958,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -3978,7 +3978,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3993,7 +3993,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4009,7 +4009,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4024,7 +4024,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4041,7 +4041,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4055,7 +4055,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4074,7 +4074,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -4104,7 +4104,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reimage(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -4118,7 +4118,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -4149,7 +4149,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reimage(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -4162,7 +4162,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -4185,7 +4185,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4207,7 +4207,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -4233,7 +4233,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4253,7 +4253,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -4275,7 +4275,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -4297,7 +4297,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4318,7 +4318,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -4341,7 +4341,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4360,7 +4360,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * OS disk depends on the value of deleteOption of OS disk. If deleteOption is detach, the old OS disk will be
      * preserved after reimage. If deleteOption is delete, the old OS disk will be deleted after reimage. The
      * deleteOption of the OS disk should be updated accordingly before performing the reimage.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -4377,7 +4377,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
@@ -4407,7 +4407,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.retrieveBootDiagnosticsData(this.client.getEndpoint(), resourceGroupName,
@@ -4417,7 +4417,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
@@ -4448,7 +4448,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.retrieveBootDiagnosticsData(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -4457,7 +4457,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4475,7 +4475,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
@@ -4496,7 +4496,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4513,7 +4513,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4539,7 +4539,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.performMaintenance(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -4549,7 +4549,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4576,7 +4576,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.performMaintenance(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -4585,7 +4585,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4602,7 +4602,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4622,7 +4622,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4637,7 +4637,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4654,7 +4654,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4670,7 +4670,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4687,7 +4687,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4701,7 +4701,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4716,7 +4716,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to simulate the eviction of spot virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4741,7 +4741,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.simulateEviction(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -4751,7 +4751,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to simulate the eviction of spot virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4778,7 +4778,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.simulateEviction(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -4787,7 +4787,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to simulate the eviction of spot virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4802,7 +4802,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to simulate the eviction of spot virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4818,7 +4818,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * The operation to simulate the eviction of spot virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4832,7 +4832,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4858,7 +4858,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.assessPatches(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -4868,7 +4868,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4896,7 +4896,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.assessPatches(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -4905,7 +4905,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4924,7 +4924,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4945,7 +4945,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4961,7 +4961,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -4978,7 +4978,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4993,7 +4993,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -5011,7 +5011,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5026,7 +5026,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -5043,7 +5043,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Installs patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param installPatchesInput Input for InstallPatches as directly received by the API.
@@ -5077,7 +5077,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             installPatchesInput.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.installPatches(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -5087,7 +5087,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Installs patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param installPatchesInput Input for InstallPatches as directly received by the API.
@@ -5122,7 +5122,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             installPatchesInput.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.installPatches(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -5131,7 +5131,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Installs patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param installPatchesInput Input for InstallPatches as directly received by the API.
@@ -5154,7 +5154,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Installs patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param installPatchesInput Input for InstallPatches as directly received by the API.
@@ -5179,7 +5179,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Installs patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param installPatchesInput Input for InstallPatches as directly received by the API.
@@ -5197,7 +5197,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Installs patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param installPatchesInput Input for InstallPatches as directly received by the API.
@@ -5216,7 +5216,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Installs patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param installPatchesInput Input for InstallPatches as directly received by the API.
@@ -5234,7 +5234,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Installs patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param installPatchesInput Input for InstallPatches as directly received by the API.
@@ -5253,7 +5253,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Installs patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param installPatchesInput Input for InstallPatches as directly received by the API.
@@ -5270,7 +5270,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Installs patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param installPatchesInput Input for InstallPatches as directly received by the API.
@@ -5288,7 +5288,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Attach and detach data disks to/from the virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
@@ -5321,7 +5321,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.attachDetachDataDisks(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -5331,7 +5331,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Attach and detach data disks to/from the virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
@@ -5365,7 +5365,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.attachDetachDataDisks(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -5374,7 +5374,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Attach and detach data disks to/from the virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
@@ -5394,7 +5394,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Attach and detach data disks to/from the virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
@@ -5416,7 +5416,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Attach and detach data disks to/from the virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
@@ -5433,7 +5433,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Attach and detach data disks to/from the virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
@@ -5451,7 +5451,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Attach and detach data disks to/from the virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
@@ -5469,7 +5469,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Attach and detach data disks to/from the virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
@@ -5488,7 +5488,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Attach and detach data disks to/from the virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
@@ -5505,7 +5505,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Attach and detach data disks to/from the virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the attach and detach data disks operation on the virtual machine.
@@ -5523,7 +5523,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -5555,7 +5555,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.runCommand(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -5565,7 +5565,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -5598,7 +5598,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.runCommand(this.client.getEndpoint(), resourceGroupName, vmName, apiVersion,
@@ -5607,7 +5607,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -5627,7 +5627,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -5649,7 +5649,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -5666,7 +5666,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -5684,7 +5684,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -5702,7 +5702,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -5721,7 +5721,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -5737,7 +5737,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -5755,7 +5755,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -5782,7 +5782,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5810,7 +5810,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -5836,7 +5836,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5863,7 +5863,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -5890,7 +5890,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

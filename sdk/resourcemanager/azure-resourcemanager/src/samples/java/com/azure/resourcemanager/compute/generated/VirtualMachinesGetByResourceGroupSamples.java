@@ -12,12 +12,12 @@ import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 public final class VirtualMachinesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
      */
     /**
      * Sample code: Get a virtual machine with VM Size Properties.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAVirtualMachineWithVMSizeProperties(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -30,12 +30,12 @@ public final class VirtualMachinesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
      */
     /**
      * Sample code: Get a virtual machine placed on a dedicated host group through automatic placement.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement(
@@ -49,12 +49,12 @@ public final class VirtualMachinesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
      */
     /**
      * Sample code: Get a virtual machine with Disk Controller Type Properties.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -69,12 +69,12 @@ public final class VirtualMachinesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Get.json
      */
     /**
      * Sample code: Get a Virtual Machine.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -10,12 +10,12 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachinesInstanceViewSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Get_InstanceView.json
      */
     /**
      * Sample code: Get Virtual Machine Instance View.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualMachineInstanceView(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -28,12 +28,12 @@ public final class VirtualMachinesInstanceViewSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
      */
     /**
      * Sample code: Get instance view of a virtual machine placed on a dedicated host group through automatic placement.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getInstanceViewOfAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement(

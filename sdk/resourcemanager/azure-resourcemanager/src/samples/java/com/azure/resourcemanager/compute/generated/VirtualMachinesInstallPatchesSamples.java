@@ -17,12 +17,12 @@ import java.util.Arrays;
 public final class VirtualMachinesInstallPatchesSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_InstallPatches.json
      */
     /**
      * Sample code: Install patch state of a virtual machine.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void installPatchStateOfAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {

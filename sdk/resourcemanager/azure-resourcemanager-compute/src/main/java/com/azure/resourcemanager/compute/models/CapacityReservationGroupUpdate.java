@@ -31,7 +31,7 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
 
     /**
      * Get the innerProperties property: capacity reservation group Properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private CapacityReservationGroupProperties innerProperties() {
@@ -50,7 +50,7 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
     /**
      * Get the capacityReservations property: A list of all capacity reservation resource ids that belong to capacity
      * reservation group.
-     * 
+     *
      * @return the capacityReservations value.
      */
     public List<SubResourceReadOnly> capacityReservations() {
@@ -60,7 +60,7 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
     /**
      * Get the virtualMachinesAssociated property: A list of references to all virtual machines associated to the
      * capacity reservation group.
-     * 
+     *
      * @return the virtualMachinesAssociated value.
      */
     public List<SubResourceReadOnly> virtualMachinesAssociated() {
@@ -70,7 +70,7 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
     /**
      * Get the instanceView property: The capacity reservation group instance view which has the list of instance views
      * for all the capacity reservations that belong to the capacity reservation group.
-     * 
+     *
      * @return the instanceView value.
      */
     public CapacityReservationGroupInstanceView instanceView() {
@@ -81,9 +81,9 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
      * Get the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
      * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
+     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
-     * 
+     *
      * @return the sharingProfile value.
      */
     public ResourceSharingProfile sharingProfile() {
@@ -94,9 +94,9 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
      * Set the sharingProfile property: Specifies the settings to enable sharing across subscriptions for the capacity
      * reservation group resource. Pls. keep in mind the capacity reservation group resource generally can be shared
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
-     * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
+     * established between the AAD tenants. **Note:** Minimum api-version: 2023-09-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
-     * 
+     *
      * @param sharingProfile the sharingProfile value to set.
      * @return the CapacityReservationGroupUpdate object itself.
      */
@@ -110,7 +110,7 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -134,7 +134,7 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
 
     /**
      * Reads an instance of CapacityReservationGroupUpdate from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CapacityReservationGroupUpdate if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

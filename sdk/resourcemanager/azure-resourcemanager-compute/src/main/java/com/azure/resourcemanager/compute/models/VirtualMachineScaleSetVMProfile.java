@@ -115,9 +115,9 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     private SecurityPostureReference securityPostureReference;
 
     /*
-     * Specifies the time in which this VM profile for the Virtual Machine Scale Set was created. Minimum API version
-     * for this property is 2024-03-01. This value will be added to VMSS Flex VM tags when creating/updating the VMSS VM
-     * Profile with minimum api-version 2024-03-01.
+     * Specifies the time in which this VM profile for the Virtual Machine Scale Set was created. This value will be
+     * added to VMSS Flex VM tags when creating/updating the VMSS VM Profile. Minimum API version for this property is
+     * 2023-09-01.
      */
     private OffsetDateTime timeCreated;
 
@@ -129,7 +129,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the virtual machines in the scale set.
-     * 
+     *
      * @return the osProfile value.
      */
     public VirtualMachineScaleSetOSProfile osProfile() {
@@ -138,7 +138,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
 
     /**
      * Set the osProfile property: Specifies the operating system settings for the virtual machines in the scale set.
-     * 
+     *
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -149,7 +149,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
 
     /**
      * Get the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     * 
+     *
      * @return the storageProfile value.
      */
     public VirtualMachineScaleSetStorageProfile storageProfile() {
@@ -158,7 +158,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
 
     /**
      * Set the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     * 
+     *
      * @param storageProfile the storageProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -170,7 +170,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Get the networkProfile property: Specifies properties of the network interfaces of the virtual machines in the
      * scale set.
-     * 
+     *
      * @return the networkProfile value.
      */
     public VirtualMachineScaleSetNetworkProfile networkProfile() {
@@ -180,7 +180,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Set the networkProfile property: Specifies properties of the network interfaces of the virtual machines in the
      * scale set.
-     * 
+     *
      * @param networkProfile the networkProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -192,7 +192,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Get the securityProfile property: Specifies the Security related profile settings for the virtual machines in the
      * scale set.
-     * 
+     *
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -202,7 +202,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Set the securityProfile property: Specifies the Security related profile settings for the virtual machines in the
      * scale set.
-     * 
+     *
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -214,7 +214,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
      * 2015-06-15.
-     * 
+     *
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
@@ -224,7 +224,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
      * 2015-06-15.
-     * 
+     *
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -236,7 +236,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Get the extensionProfile property: Specifies a collection of settings for extensions installed on virtual
      * machines in the scale set.
-     * 
+     *
      * @return the extensionProfile value.
      */
     public VirtualMachineScaleSetExtensionProfile extensionProfile() {
@@ -246,7 +246,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Set the extensionProfile property: Specifies a collection of settings for extensions installed on virtual
      * machines in the scale set.
-     * 
+     *
      * @param extensionProfile the extensionProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -266,7 +266,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     * 
+     *
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -283,7 +283,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     * 
+     *
      * @param licenseType the licenseType value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -295,7 +295,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Get the priority property: Specifies the priority for the virtual machines in the scale set. Minimum api-version:
      * 2017-10-30-preview.
-     * 
+     *
      * @return the priority value.
      */
     public VirtualMachinePriorityTypes priority() {
@@ -305,7 +305,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Set the priority property: Specifies the priority for the virtual machines in the scale set. Minimum api-version:
      * 2017-10-30-preview.
-     * 
+     *
      * @param priority the priority value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -319,7 +319,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
      * scale set. For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum
      * api-version is 2019-03-01. For Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the
      * minimum api-version is 2017-10-30-preview.
-     * 
+     *
      * @return the evictionPolicy value.
      */
     public VirtualMachineEvictionPolicyTypes evictionPolicy() {
@@ -331,7 +331,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
      * scale set. For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum
      * api-version is 2019-03-01. For Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the
      * minimum api-version is 2017-10-30-preview.
-     * 
+     *
      * @param evictionPolicy the evictionPolicy value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -343,7 +343,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Get the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum api-version:
      * 2019-03-01.
-     * 
+     *
      * @return the billingProfile value.
      */
     public BillingProfile billingProfile() {
@@ -353,7 +353,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Set the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum api-version:
      * 2019-03-01.
-     * 
+     *
      * @param billingProfile the billingProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -364,7 +364,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
 
     /**
      * Get the scheduledEventsProfile property: Specifies Scheduled Event related configurations.
-     * 
+     *
      * @return the scheduledEventsProfile value.
      */
     public ScheduledEventsProfile scheduledEventsProfile() {
@@ -373,7 +373,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
 
     /**
      * Set the scheduledEventsProfile property: Specifies Scheduled Event related configurations.
-     * 
+     *
      * @param scheduledEventsProfile the scheduledEventsProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -385,7 +385,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Get the userData property: UserData for the virtual machines in the scale set, which must be base-64 encoded.
      * Customer should not pass any secrets in here. Minimum api-version: 2021-03-01.
-     * 
+     *
      * @return the userData value.
      */
     public String userData() {
@@ -395,7 +395,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Set the userData property: UserData for the virtual machines in the scale set, which must be base-64 encoded.
      * Customer should not pass any secrets in here. Minimum api-version: 2021-03-01.
-     * 
+     *
      * @param userData the userData value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -407,7 +407,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Get the capacityReservation property: Specifies the capacity reservation related details of a scale set. Minimum
      * api-version: 2021-04-01.
-     * 
+     *
      * @return the capacityReservation value.
      */
     public CapacityReservationProfile capacityReservation() {
@@ -417,7 +417,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Set the capacityReservation property: Specifies the capacity reservation related details of a scale set. Minimum
      * api-version: 2021-04-01.
-     * 
+     *
      * @param capacityReservation the capacityReservation value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -429,7 +429,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Get the applicationProfile property: Specifies the gallery applications that should be made available to the
      * VM/VMSS.
-     * 
+     *
      * @return the applicationProfile value.
      */
     public ApplicationProfile applicationProfile() {
@@ -439,7 +439,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Set the applicationProfile property: Specifies the gallery applications that should be made available to the
      * VM/VMSS.
-     * 
+     *
      * @param applicationProfile the applicationProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -451,7 +451,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Get the hardwareProfile property: Specifies the hardware profile related details of a scale set. Minimum
      * api-version: 2021-11-01.
-     * 
+     *
      * @return the hardwareProfile value.
      */
     public VirtualMachineScaleSetHardwareProfile hardwareProfile() {
@@ -461,7 +461,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Set the hardwareProfile property: Specifies the hardware profile related details of a scale set. Minimum
      * api-version: 2021-11-01.
-     * 
+     *
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -474,7 +474,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
      * Get the serviceArtifactReference property: Specifies the service artifact reference id used to set same image
      * version for all virtual machines in the scale set when using 'latest' image version. Minimum api-version:
      * 2022-11-01.
-     * 
+     *
      * @return the serviceArtifactReference value.
      */
     public ServiceArtifactReference serviceArtifactReference() {
@@ -485,7 +485,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
      * Set the serviceArtifactReference property: Specifies the service artifact reference id used to set same image
      * version for all virtual machines in the scale set when using 'latest' image version. Minimum api-version:
      * 2022-11-01.
-     * 
+     *
      * @param serviceArtifactReference the serviceArtifactReference value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -498,7 +498,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Get the securityPostureReference property: Specifies the security posture to be used in the scale set. Minimum
      * api-version: 2023-03-01.
-     * 
+     *
      * @return the securityPostureReference value.
      */
     public SecurityPostureReference securityPostureReference() {
@@ -508,7 +508,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     /**
      * Set the securityPostureReference property: Specifies the security posture to be used in the scale set. Minimum
      * api-version: 2023-03-01.
-     * 
+     *
      * @param securityPostureReference the securityPostureReference value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
@@ -520,9 +520,9 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
 
     /**
      * Get the timeCreated property: Specifies the time in which this VM profile for the Virtual Machine Scale Set was
-     * created. Minimum API version for this property is 2024-03-01. This value will be added to VMSS Flex VM tags when
-     * creating/updating the VMSS VM Profile with minimum api-version 2024-03-01.
-     * 
+     * created. This value will be added to VMSS Flex VM tags when creating/updating the VMSS VM Profile. Minimum API
+     * version for this property is 2023-09-01.
+     *
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -531,7 +531,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -605,7 +605,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
 
     /**
      * Reads an instance of VirtualMachineScaleSetVMProfile from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of VirtualMachineScaleSetVMProfile if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

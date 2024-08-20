@@ -10,12 +10,12 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineScaleSetVMsListSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVM_List_MinimumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineScaleSetVMListMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -28,12 +28,12 @@ public final class VirtualMachineScaleSetVMsListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVM_List_MaximumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineScaleSetVMListMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -52,7 +52,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * Initializes an instance of VirtualMachineExtensionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineExtensionsClientImpl(ComputeManagementClientImpl client) {
@@ -121,7 +121,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -160,7 +160,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -170,7 +170,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -210,7 +210,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmName, vmExtensionName, apiVersion,
@@ -219,7 +219,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -242,7 +242,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -267,7 +267,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -287,7 +287,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -308,7 +308,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -327,7 +327,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -347,7 +347,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -365,7 +365,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to create or update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -384,7 +384,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -423,7 +423,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -433,7 +433,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -473,7 +473,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, vmName, vmExtensionName, apiVersion,
@@ -482,7 +482,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -505,7 +505,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -530,7 +530,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -549,7 +549,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -570,7 +570,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -589,7 +589,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -609,7 +609,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -627,7 +627,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to update the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -646,7 +646,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -677,7 +677,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -687,7 +687,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -719,7 +719,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, vmName, vmExtensionName, apiVersion,
@@ -728,7 +728,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -747,7 +747,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -769,7 +769,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -786,7 +786,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -804,7 +804,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -821,7 +821,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -839,7 +839,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -854,7 +854,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to delete the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -870,7 +870,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to get the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -903,7 +903,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, vmName, vmExtensionName,
@@ -913,7 +913,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to get the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -947,7 +947,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, vmName, vmExtensionName, expand, apiVersion,
@@ -956,7 +956,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to get the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -975,7 +975,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to get the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -994,7 +994,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to get the extension.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
@@ -1011,7 +1011,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to get all extensions of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param expand The expand expression to apply on the operation.
@@ -1039,7 +1039,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, vmName, expand,
@@ -1049,7 +1049,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to get all extensions of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param expand The expand expression to apply on the operation.
@@ -1078,7 +1078,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceGroupName, vmName, expand, apiVersion,
@@ -1087,7 +1087,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to get all extensions of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1104,7 +1104,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to get all extensions of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param expand The expand expression to apply on the operation.
@@ -1122,7 +1122,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
     /**
      * The operation to get all extensions of a Virtual Machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -126,7 +126,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
     private VirtualMachineScaleSetVMProtectionPolicy protectionPolicy;
 
     /*
-     * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. <br><br>Minimum
+     * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. Minimum
      * api-version: 2021-03-01
      */
     private String userData;
@@ -144,7 +144,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the latestModelApplied property: Specifies whether the latest model has been applied to the virtual machine.
-     * 
+     *
      * @return the latestModelApplied value.
      */
     public Boolean latestModelApplied() {
@@ -153,7 +153,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the vmId property: Azure VM unique ID.
-     * 
+     *
      * @return the vmId value.
      */
     public String vmId() {
@@ -162,7 +162,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the instanceView property: The virtual machine instance view.
-     * 
+     *
      * @return the instanceView value.
      */
     public VirtualMachineScaleSetVMInstanceViewInner instanceView() {
@@ -171,7 +171,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the hardwareProfile property: Specifies the hardware settings for the virtual machine.
-     * 
+     *
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -180,7 +180,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Set the hardwareProfile property: Specifies the hardware settings for the virtual machine.
-     * 
+     *
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -191,7 +191,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     * 
+     *
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -200,7 +200,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Set the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     * 
+     *
      * @param storageProfile the storageProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -213,7 +213,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
      * Get the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the virtual
      * machine in the scale set. For instance: whether the virtual machine has the capability to support attaching
      * managed data disks with UltraSSD_LRS storage account type.
-     * 
+     *
      * @return the additionalCapabilities value.
      */
     public AdditionalCapabilities additionalCapabilities() {
@@ -224,7 +224,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
      * Set the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the virtual
      * machine in the scale set. For instance: whether the virtual machine has the capability to support attaching
      * managed data disks with UltraSSD_LRS storage account type.
-     * 
+     *
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -236,7 +236,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the virtual machine.
-     * 
+     *
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -245,7 +245,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Set the osProfile property: Specifies the operating system settings for the virtual machine.
-     * 
+     *
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -256,7 +256,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the securityProfile property: Specifies the Security related profile settings for the virtual machine.
-     * 
+     *
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -265,7 +265,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Set the securityProfile property: Specifies the Security related profile settings for the virtual machine.
-     * 
+     *
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -276,7 +276,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the networkProfile property: Specifies the network interfaces of the virtual machine.
-     * 
+     *
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -285,7 +285,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Set the networkProfile property: Specifies the network interfaces of the virtual machine.
-     * 
+     *
      * @param networkProfile the networkProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -296,7 +296,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the networkProfileConfiguration property: Specifies the network profile configuration of the virtual machine.
-     * 
+     *
      * @return the networkProfileConfiguration value.
      */
     public VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration() {
@@ -305,7 +305,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Set the networkProfileConfiguration property: Specifies the network profile configuration of the virtual machine.
-     * 
+     *
      * @param networkProfileConfiguration the networkProfileConfiguration value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -318,7 +318,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
     /**
      * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
      * 2015-06-15.
-     * 
+     *
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
@@ -328,7 +328,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
     /**
      * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
      * 2015-06-15.
-     * 
+     *
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -345,7 +345,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
      * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
      * added to availability set at creation time. An existing VM cannot be added to an availability set.
-     * 
+     *
      * @return the availabilitySet value.
      */
     public SubResource availabilitySet() {
@@ -360,7 +360,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
      * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
      * added to availability set at creation time. An existing VM cannot be added to an availability set.
-     * 
+     *
      * @param availabilitySet the availabilitySet value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -371,7 +371,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -388,7 +388,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     * 
+     *
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -405,7 +405,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     * 
+     *
      * @param licenseType the licenseType value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -417,7 +417,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
     /**
      * Get the modelDefinitionApplied property: Specifies whether the model applied to the virtual machine is the model
      * of the virtual machine scale set or the customized model for the virtual machine.
-     * 
+     *
      * @return the modelDefinitionApplied value.
      */
     public String modelDefinitionApplied() {
@@ -426,7 +426,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the protectionPolicy property: Specifies the protection policy of the virtual machine.
-     * 
+     *
      * @return the protectionPolicy value.
      */
     public VirtualMachineScaleSetVMProtectionPolicy protectionPolicy() {
@@ -435,7 +435,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Set the protectionPolicy property: Specifies the protection policy of the virtual machine.
-     * 
+     *
      * @param protectionPolicy the protectionPolicy value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -447,8 +447,8 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     * 
+     * secrets in here. Minimum api-version: 2021-03-01.
+     *
      * @return the userData value.
      */
     public String userData() {
@@ -457,8 +457,8 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     * 
+     * secrets in here. Minimum api-version: 2021-03-01.
+     *
      * @param userData the userData value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -469,7 +469,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Get the timeCreated property: Specifies the time at which the Virtual Machine resource was created.
-     * 
+     *
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -478,7 +478,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -537,7 +537,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
 
     /**
      * Reads an instance of VirtualMachineScaleSetVMPropertiesInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of VirtualMachineScaleSetVMPropertiesInner if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.

@@ -58,7 +58,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
 
     /**
      * Initializes an instance of CapacityReservationGroupsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     CapacityReservationGroupsClientImpl(ComputeManagementClientImpl client) {
@@ -157,7 +157,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * The operation to create or update a capacity reservation group. When updating a capacity reservation group, only
      * tags and sharing profile may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Create capacity reservation Group.
@@ -191,7 +191,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -202,7 +202,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * The operation to create or update a capacity reservation group. When updating a capacity reservation group, only
      * tags and sharing profile may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Create capacity reservation Group.
@@ -237,7 +237,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName,
@@ -247,7 +247,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * The operation to create or update a capacity reservation group. When updating a capacity reservation group, only
      * tags and sharing profile may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Create capacity reservation Group.
@@ -267,7 +267,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * The operation to create or update a capacity reservation group. When updating a capacity reservation group, only
      * tags and sharing profile may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Create capacity reservation Group.
@@ -288,7 +288,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * The operation to create or update a capacity reservation group. When updating a capacity reservation group, only
      * tags and sharing profile may be modified. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Create capacity reservation Group.
@@ -308,7 +308,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags and
      * sharing profile may be modified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Update capacity reservation Group operation.
@@ -342,7 +342,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName,
@@ -353,7 +353,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags and
      * sharing profile may be modified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Update capacity reservation Group operation.
@@ -388,7 +388,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName, apiVersion,
@@ -398,7 +398,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags and
      * sharing profile may be modified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Update capacity reservation Group operation.
@@ -418,7 +418,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags and
      * sharing profile may be modified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Update capacity reservation Group operation.
@@ -438,7 +438,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags and
      * sharing profile may be modified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param parameters Parameters supplied to the Update capacity reservation Group operation.
@@ -458,7 +458,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
      * resources are disassociated from the reservation group and all capacity reservations under the reservation group
      * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -484,7 +484,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -496,7 +496,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
      * resources are disassociated from the reservation group and all capacity reservations under the reservation group
      * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param context The context to associate with this operation.
@@ -524,7 +524,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName, apiVersion,
@@ -535,7 +535,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
      * resources are disassociated from the reservation group and all capacity reservations under the reservation group
      * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -553,7 +553,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
      * resources are disassociated from the reservation group and all capacity reservations under the reservation group
      * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param context The context to associate with this operation.
@@ -572,7 +572,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
      * resources are disassociated from the reservation group and all capacity reservations under the reservation group
      * have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -586,7 +586,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
 
     /**
      * The operation that retrieves information about a capacity reservation group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
@@ -618,7 +618,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -628,7 +628,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
 
     /**
      * The operation that retrieves information about a capacity reservation group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
@@ -661,7 +661,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName,
@@ -670,7 +670,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
 
     /**
      * The operation that retrieves information about a capacity reservation group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -689,7 +689,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
 
     /**
      * The operation that retrieves information about a capacity reservation group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
@@ -712,7 +712,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
 
     /**
      * The operation that retrieves information about a capacity reservation group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -732,7 +732,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
      * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
@@ -758,7 +758,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -771,7 +771,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
      * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
@@ -798,7 +798,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -811,7 +811,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
      * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
@@ -832,7 +832,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -850,7 +850,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
      * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
@@ -872,7 +872,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -889,7 +889,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the specified resource group. Use the nextLink property in the
      * response to get the next page of capacity reservation groups.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
      * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
@@ -910,7 +910,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     * 
+     *
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
      * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
      * in the response.
@@ -937,7 +937,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -950,7 +950,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     * 
+     *
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
      * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
      * in the response.
@@ -978,7 +978,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -991,7 +991,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     * 
+     *
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
      * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
      * in the response.
@@ -1016,7 +1016,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List capacity reservation group with resource group response as paginated response with
@@ -1033,7 +1033,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     * 
+     *
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
      * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
      * in the response.
@@ -1059,7 +1059,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List capacity reservation group with resource group response as paginated response with
@@ -1075,7 +1075,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
     /**
      * Lists all of the capacity reservation groups in the subscription. Use the nextLink property in the response to
      * get the next page of capacity reservation groups.
-     * 
+     *
      * @param expand The expand expression to apply on the operation. Based on the expand param(s) specified we return
      * Virtual Machine or ScaleSet VM Instance or both resource Ids which are associated to capacity reservation group
      * in the response.
@@ -1099,7 +1099,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1127,7 +1127,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1155,7 +1155,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1183,7 +1183,7 @@ public final class CapacityReservationGroupsClientImpl implements InnerSupportsG
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

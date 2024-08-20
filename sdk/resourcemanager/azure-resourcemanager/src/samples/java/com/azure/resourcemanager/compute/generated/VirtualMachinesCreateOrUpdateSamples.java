@@ -89,12 +89,12 @@ import java.util.Map;
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk provisioning in Cache disk using placement property.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithEphemeralOsDiskProvisioningInCacheDiskUsingPlacementProperty(
@@ -135,12 +135,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByOS.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByOS(
@@ -181,12 +181,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithEncryptionIdentity.json
      */
     /**
      * Sample code: Create a VM with encryption identity.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVMWithEncryptionIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -226,12 +226,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
      */
     /**
      * Sample code: Create a Windows vm with patch settings patchMode and assessmentMode set to AutomaticByPlatform.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAWindowsVmWithPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform(
@@ -271,12 +271,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
      */
     /**
      * Sample code: Create a vm with premium storage.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithPremiumStorage(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -311,12 +311,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
      */
     /**
      * Sample code: Create or update a VM with capacity reservation.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAVMWithCapacityReservation(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -357,12 +357,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
      */
     /**
      * Sample code: Create a Linux vm with a patch setting assessmentMode of ImageDefault.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createALinuxVmWithAPatchSettingAssessmentModeOfImageDefault(
@@ -402,12 +402,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
      */
     /**
      * Sample code: Create a custom-image vm from an unmanaged generalized os image.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -439,12 +439,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
      */
     /**
      * Sample code: Create a vm with Host Encryption using encryptionAtHost property.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -484,12 +484,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
      */
     /**
      * Sample code: Create a vm in an availability set.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmInAnAvailabilitySet(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -526,12 +526,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
      */
     /**
      * Sample code: Create a VM with network interface configuration.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -577,12 +577,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk provisioning in Nvme disk using placement property.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithEphemeralOsDiskProvisioningInNvmeDiskUsingPlacementProperty(
@@ -623,12 +623,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
      */
     /**
      * Sample code: Create a vm from a specialized shared image.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmFromASpecializedSharedImage(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -654,12 +654,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
      */
     /**
      * Sample code: Create a vm with password authentication.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithPasswordAuthentication(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -694,12 +694,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
      */
     /**
      * Sample code: Create a vm with Scheduled Events Profile.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithScheduledEventsProfile(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -747,12 +747,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk provisioning in Resource disk using placement property.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithEphemeralOsDiskProvisioningInResourceDiskUsingPlacementProperty(
@@ -793,12 +793,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithEphemeralOsDisk(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -837,12 +837,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
      */
     /**
      * Sample code: Create a VM with securityType ConfidentialVM with Customer Managed Keys.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVMWithSecurityTypeConfidentialVMWithCustomerManagedKeys(
@@ -883,12 +883,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
      */
     /**
      * Sample code: Create a vm with DiskEncryptionSet resource id in the os disk and data disk.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithDiskEncryptionSetResourceIdInTheOsDiskAndDataDisk(
@@ -937,12 +937,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
      */
     /**
      * Sample code: Create a VM with Disk Controller Type.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVMWithDiskControllerType(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -987,12 +987,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
      */
     /**
      * Sample code: Create a VM from a shared gallery image.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVMFromASharedGalleryImage(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1022,12 +1022,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithVMSizeProperties.json
      */
     /**
      * Sample code: Create a VM with VM Size Properties.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVMWithVMSizeProperties(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1067,12 +1067,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
      */
     /**
      * Sample code: Create a platform-image vm with unmanaged os and data disks.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -1115,12 +1115,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
      */
     /**
      * Sample code: Create a Linux vm with a patch settings patchMode and assessmentMode set to AutomaticByPlatform.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createALinuxVmWithAPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform(
@@ -1159,12 +1159,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
      */
     /**
      * Sample code: Create a VM with securityType ConfidentialVM with NonPersistedTPM securityEncryptionType.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVMWithSecurityTypeConfidentialVMWithNonPersistedTPMSecurityEncryptionType(
@@ -1206,12 +1206,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
      */
     /**
      * Sample code: Create a vm with a marketplace image plan.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithAMarketplaceImagePlan(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1249,12 +1249,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting assessmentMode of ImageDefault.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAWindowsVmWithAPatchSettingAssessmentModeOfImageDefault(
@@ -1295,14 +1295,14 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/
      * VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByPlatform and enableHotpatching set
      * to true.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndEnableHotpatchingSetToTrue(
@@ -1343,12 +1343,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
      */
     /**
      * Sample code: Create a vm with an extensions time budget.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithAnExtensionsTimeBudget(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1387,12 +1387,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
      */
     /**
      * Sample code: Create a vm with empty data disks.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithEmptyDataDisks(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1427,12 +1427,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
      */
     /**
      * Sample code: Create a VM with securityType ConfidentialVM with Platform Managed Keys.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVMWithSecurityTypeConfidentialVMWithPlatformManagedKeys(
@@ -1474,12 +1474,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithDataDisksFromSourceResource.json
      */
     /**
      * Sample code: Create a vm with data disks using 'Copy' and 'Restore' options.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -1527,12 +1527,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
      */
     /**
      * Sample code: Create a vm from a custom image.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmFromACustomImage(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1561,12 +1561,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
      */
     /**
      * Sample code: Create a VM with HibernationEnabled.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVMWithHibernationEnabled(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1605,12 +1605,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
      */
     /**
      * Sample code: Create a VM with Uefi Settings of secureBoot and vTPM.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -1648,12 +1648,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
      */
     /**
      * Sample code: Create a vm with Application Profile.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithApplicationProfile(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1699,12 +1699,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfigurationDnsSettings.json
      */
     /**
      * Sample code: Create a VM with network interface configuration with public ip address dns settings.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVMWithNetworkInterfaceConfigurationWithPublicIpAddressDnsSettings(
@@ -1753,12 +1753,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
      */
     /**
      * Sample code: Create a vm in a Virtual Machine Scale Set with customer assigned platformFaultDomain.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmInAVirtualMachineScaleSetWithCustomerAssignedPlatformFaultDomain(
@@ -1797,12 +1797,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
      */
     /**
      * Sample code: Create a vm with boot diagnostics.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithBootDiagnostics(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1840,12 +1840,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
      */
     /**
      * Sample code: Create a vm with ssh authentication.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithSshAuthentication(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1882,12 +1882,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
      */
     /**
      * Sample code: Create a VM from a community gallery image.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVMFromACommunityGalleryImage(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1917,12 +1917,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithUserData.json
      */
     /**
      * Sample code: Create a VM with UserData.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVMWithUserData(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1961,12 +1961,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
      */
     /**
      * Sample code: Create a vm from a generalized shared image.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmFromAGeneralizedSharedImage(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1995,13 +1995,13 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
      */
     /**
      * Sample code: Create a Linux vm with a patch setting patchMode of AutomaticByPlatform and
      * AutomaticByPlatformSettings.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createALinuxVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings(
@@ -2044,12 +2044,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of Manual.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -2089,12 +2089,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithProxyAgentSettings.json
      */
     /**
      * Sample code: Create a VM with ProxyAgent Settings of enabled and mode.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -2131,12 +2131,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
      */
     /**
      * Sample code: Create a Linux vm with a patch setting patchMode of ImageDefault.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -2176,12 +2176,12 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
      */
     /**
      * Sample code: Create a vm with managed boot diagnostics.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAVmWithManagedBootDiagnostics(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -2218,13 +2218,13 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByPlatform and
      * AutomaticByPlatformSettings.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings(

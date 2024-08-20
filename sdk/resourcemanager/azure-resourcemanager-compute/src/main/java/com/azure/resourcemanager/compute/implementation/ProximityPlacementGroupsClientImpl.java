@@ -55,7 +55,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Initializes an instance of ProximityPlacementGroupsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ProximityPlacementGroupsClientImpl(ComputeManagementClientImpl client) {
@@ -149,7 +149,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Create or update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
@@ -183,7 +183,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -193,7 +193,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Create or update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
@@ -228,7 +228,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, proximityPlacementGroupName,
@@ -237,7 +237,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Create or update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
@@ -255,7 +255,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Create or update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
@@ -274,7 +274,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Create or update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
@@ -292,7 +292,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
@@ -326,7 +326,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName,
@@ -336,7 +336,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
@@ -371,7 +371,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, proximityPlacementGroupName, apiVersion,
@@ -380,7 +380,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
@@ -398,7 +398,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
@@ -416,7 +416,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
@@ -433,7 +433,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Delete a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -459,7 +459,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -469,7 +469,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Delete a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param context The context to associate with this operation.
@@ -497,7 +497,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, proximityPlacementGroupName, apiVersion,
@@ -506,7 +506,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Delete a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -521,7 +521,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Delete a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param context The context to associate with this operation.
@@ -538,7 +538,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Delete a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -552,7 +552,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Retrieves information about a proximity placement group .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
@@ -582,7 +582,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -593,7 +593,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Retrieves information about a proximity placement group .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
@@ -624,7 +624,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, proximityPlacementGroupName,
@@ -633,7 +633,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Retrieves information about a proximity placement group .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -651,7 +651,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Retrieves information about a proximity placement group .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
@@ -671,7 +671,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Retrieves information about a proximity placement group .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -689,7 +689,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a subscription.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Proximity Placement Group operation response along with {@link PagedResponse} on successful
@@ -705,7 +705,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -717,7 +717,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -735,7 +735,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -745,7 +745,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a subscription.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Proximity Placement Group operation response as paginated response with {@link PagedFlux}.
@@ -758,7 +758,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -773,7 +773,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a subscription.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Proximity Placement Group operation response as paginated response with {@link PagedIterable}.
@@ -785,7 +785,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -799,7 +799,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -822,7 +822,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -834,7 +834,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -858,7 +858,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -870,7 +870,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -885,7 +885,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -902,7 +902,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -916,7 +916,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Lists all proximity placement groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -931,7 +931,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -959,7 +959,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -987,7 +987,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1015,7 +1015,7 @@ public final class ProximityPlacementGroupsClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

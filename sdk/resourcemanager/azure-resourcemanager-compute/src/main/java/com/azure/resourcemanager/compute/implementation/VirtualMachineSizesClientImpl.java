@@ -46,7 +46,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
 
     /**
      * Initializes an instance of VirtualMachineSizesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineSizesClientImpl(ComputeManagementClientImpl client) {
@@ -73,7 +73,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
 
     /**
      * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -94,7 +94,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), location, apiVersion,
@@ -106,7 +106,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
 
     /**
      * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,7 +128,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -139,7 +139,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
 
     /**
      * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -153,7 +153,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
 
     /**
      * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -168,7 +168,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
 
     /**
      * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -182,7 +182,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
 
     /**
      * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     * 
+     *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

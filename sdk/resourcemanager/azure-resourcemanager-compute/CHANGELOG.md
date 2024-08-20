@@ -12,6 +12,10 @@
 
 - Replaced `Jackson` with `azure-json` for serialization/deserialization.
 
+#### Dependency Updates
+
+- Updated `api-version` of ComputeRP to `2024-07-01`.
+
 ## 2.41.0 (2024-07-25)
 
 ### Breaking Changes

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.ComputeManagementTest;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -37,7 +38,9 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testVirtualMachineUpdate() {
+        // Management Long running operation is Failed or Cancelled
         final String vmname = "javavm1";
 
         final String mySqlInstallScript = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
@@ -47,15 +50,15 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
 
         VirtualMachine vm = computeManager.virtualMachines()
             .define(vmname)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withNewResourceGroup(rgName)
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.4-LTS")
+            .withLatestLinuxImage("Canonical", "UbuntuServer", "16.04.0-LTS")
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .create();
 
         VirtualMachine.Update vmUpdate = vm.update();

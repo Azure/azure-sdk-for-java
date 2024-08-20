@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import java.io.IOException;
 import java.util.List;
 
@@ -45,6 +46,12 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
      */
     private List<InstanceViewStatus> statuses;
 
+    /*
+     * Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations
+     * for the availability set.
+     */
+    private ScheduledEventsPolicy scheduledEventsPolicy;
+
     /**
      * Creates an instance of AvailabilitySetProperties class.
      */
@@ -53,7 +60,7 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
 
     /**
      * Get the platformUpdateDomainCount property: Update Domain count.
-     * 
+     *
      * @return the platformUpdateDomainCount value.
      */
     public Integer platformUpdateDomainCount() {
@@ -62,7 +69,7 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
 
     /**
      * Set the platformUpdateDomainCount property: Update Domain count.
-     * 
+     *
      * @param platformUpdateDomainCount the platformUpdateDomainCount value to set.
      * @return the AvailabilitySetProperties object itself.
      */
@@ -73,7 +80,7 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
 
     /**
      * Get the platformFaultDomainCount property: Fault Domain count.
-     * 
+     *
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
@@ -82,7 +89,7 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
 
     /**
      * Set the platformFaultDomainCount property: Fault Domain count.
-     * 
+     *
      * @param platformFaultDomainCount the platformFaultDomainCount value to set.
      * @return the AvailabilitySetProperties object itself.
      */
@@ -93,7 +100,7 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
 
     /**
      * Get the virtualMachines property: A list of references to all virtual machines in the availability set.
-     * 
+     *
      * @return the virtualMachines value.
      */
     public List<SubResource> virtualMachines() {
@@ -102,7 +109,7 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
 
     /**
      * Set the virtualMachines property: A list of references to all virtual machines in the availability set.
-     * 
+     *
      * @param virtualMachines the virtualMachines value to set.
      * @return the AvailabilitySetProperties object itself.
      */
@@ -114,7 +121,7 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
     /**
      * Get the proximityPlacementGroup property: Specifies information about the proximity placement group that the
      * availability set should be assigned to. Minimum api-version: 2018-04-01.
-     * 
+     *
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
@@ -124,7 +131,7 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
     /**
      * Set the proximityPlacementGroup property: Specifies information about the proximity placement group that the
      * availability set should be assigned to. Minimum api-version: 2018-04-01.
-     * 
+     *
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the AvailabilitySetProperties object itself.
      */
@@ -135,7 +142,7 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
 
     /**
      * Get the statuses property: The resource status information.
-     * 
+     *
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -143,13 +150,38 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
     }
 
     /**
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     *
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.scheduledEventsPolicy;
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     *
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the AvailabilitySetProperties object itself.
+     */
+    public AvailabilitySetProperties withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        this.scheduledEventsPolicy = scheduledEventsPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
+        }
+        if (scheduledEventsPolicy() != null) {
+            scheduledEventsPolicy().validate();
         }
     }
 
@@ -164,12 +196,13 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
         jsonWriter.writeArrayField("virtualMachines", this.virtualMachines,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("proximityPlacementGroup", this.proximityPlacementGroup);
+        jsonWriter.writeJsonField("scheduledEventsPolicy", this.scheduledEventsPolicy);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of AvailabilitySetProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AvailabilitySetProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
@@ -197,6 +230,9 @@ public final class AvailabilitySetProperties implements JsonSerializable<Availab
                     List<InstanceViewStatus> statuses
                         = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
                     deserializedAvailabilitySetProperties.statuses = statuses;
+                } else if ("scheduledEventsPolicy".equals(fieldName)) {
+                    deserializedAvailabilitySetProperties.scheduledEventsPolicy
+                        = ScheduledEventsPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

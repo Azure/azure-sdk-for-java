@@ -16,12 +16,12 @@ import java.util.Arrays;
 public final class VirtualMachineRunCommandsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/runCommandExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/runCommandExamples/
      * VirtualMachineRunCommand_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a run command.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateARunCommand(com.azure.resourcemanager.AzureResourceManager azure) {

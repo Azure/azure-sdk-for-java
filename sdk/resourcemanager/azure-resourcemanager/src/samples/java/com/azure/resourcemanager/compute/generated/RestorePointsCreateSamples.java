@@ -14,12 +14,12 @@ import java.util.Arrays;
 public final class RestorePointsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * restorePointExamples/RestorePoint_Copy_BetweenRegions.json
      */
     /**
      * Sample code: Copy a restore point to a different region.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void copyARestorePointToADifferentRegion(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -35,12 +35,12 @@ public final class RestorePointsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * restorePointExamples/RestorePoint_Create.json
      */
     /**
      * Sample code: Create a restore point.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createARestorePoint(com.azure.resourcemanager.AzureResourceManager azure) {

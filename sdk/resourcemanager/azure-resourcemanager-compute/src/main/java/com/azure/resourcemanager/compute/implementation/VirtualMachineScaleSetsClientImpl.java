@@ -74,7 +74,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Initializes an instance of VirtualMachineScaleSetsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineScaleSetsClientImpl(ComputeManagementClientImpl client) {
@@ -393,7 +393,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the VM scale sets under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which VM scale sets under the subscription are queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -414,7 +414,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), location, apiVersion,
@@ -426,7 +426,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the VM scale sets under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which VM scale sets under the subscription are queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -449,7 +449,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -461,7 +461,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the VM scale sets under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which VM scale sets under the subscription are queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -477,7 +477,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the VM scale sets under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which VM scale sets under the subscription are queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -494,7 +494,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the VM scale sets under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which VM scale sets under the subscription are queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -509,7 +509,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets all the VM scale sets under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which VM scale sets under the subscription are queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -525,7 +525,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -562,7 +562,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -572,7 +572,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -611,7 +611,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -620,7 +620,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -646,7 +646,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -669,7 +669,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -697,7 +697,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -717,7 +717,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -742,7 +742,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -764,7 +764,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -784,7 +784,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -808,7 +808,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -827,7 +827,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Create or update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -850,7 +850,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -887,7 +887,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -897,7 +897,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -935,7 +935,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -944,7 +944,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -970,7 +970,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -993,7 +993,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -1021,7 +1021,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -1041,7 +1041,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -1065,7 +1065,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -1087,7 +1087,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -1107,7 +1107,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -1130,7 +1130,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -1149,7 +1149,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Update a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set to create or update.
      * @param parameters The scale set object.
@@ -1171,7 +1171,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param forceDeletion Optional parameter to force delete a VM scale set. (Feature in Preview).
@@ -1198,7 +1198,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1208,7 +1208,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param forceDeletion Optional parameter to force delete a VM scale set. (Feature in Preview).
@@ -1236,7 +1236,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, forceDeletion, apiVersion,
@@ -1245,7 +1245,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param forceDeletion Optional parameter to force delete a VM scale set. (Feature in Preview).
@@ -1265,7 +1265,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1284,7 +1284,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param forceDeletion Optional parameter to force delete a VM scale set. (Feature in Preview).
@@ -1306,7 +1306,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1322,7 +1322,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param forceDeletion Optional parameter to force delete a VM scale set. (Feature in Preview).
@@ -1340,7 +1340,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param forceDeletion Optional parameter to force delete a VM scale set. (Feature in Preview).
@@ -1357,7 +1357,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1374,7 +1374,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param forceDeletion Optional parameter to force delete a VM scale set. (Feature in Preview).
@@ -1393,7 +1393,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1408,7 +1408,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param forceDeletion Optional parameter to force delete a VM scale set. (Feature in Preview).
@@ -1424,7 +1424,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Display information about a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param expand The expand expression to apply on the operation. 'UserData' retrieves the UserData property of the
@@ -1453,7 +1453,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1463,7 +1463,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Display information about a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param expand The expand expression to apply on the operation. 'UserData' retrieves the UserData property of the
@@ -1493,7 +1493,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -1502,7 +1502,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Display information about a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1519,7 +1519,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Display information about a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param expand The expand expression to apply on the operation. 'UserData' retrieves the UserData property of the
@@ -1538,7 +1538,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Display information about a virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1555,7 +1555,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param hibernate Optional parameter to hibernate a virtual machine from the VM scale set. (This feature is
@@ -1587,7 +1587,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deallocate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1598,7 +1598,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param hibernate Optional parameter to hibernate a virtual machine from the VM scale set. (This feature is
@@ -1631,7 +1631,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deallocate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, hibernate, apiVersion,
@@ -1641,7 +1641,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param hibernate Optional parameter to hibernate a virtual machine from the VM scale set. (This feature is
@@ -1664,7 +1664,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1685,7 +1685,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param hibernate Optional parameter to hibernate a virtual machine from the VM scale set. (This feature is
@@ -1710,7 +1710,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1728,7 +1728,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param hibernate Optional parameter to hibernate a virtual machine from the VM scale set. (This feature is
@@ -1750,7 +1750,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param hibernate Optional parameter to hibernate a virtual machine from the VM scale set. (This feature is
@@ -1771,7 +1771,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1790,7 +1790,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param hibernate Optional parameter to hibernate a virtual machine from the VM scale set. (This feature is
@@ -1812,7 +1812,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1829,7 +1829,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute
      * resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param hibernate Optional parameter to hibernate a virtual machine from the VM scale set. (This feature is
@@ -1848,7 +1848,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -1882,7 +1882,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1893,7 +1893,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -1929,7 +1929,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteInstances(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, forceDeletion,
@@ -1938,7 +1938,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -1960,7 +1960,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -1981,7 +1981,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -2006,7 +2006,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -2025,7 +2025,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -2046,7 +2046,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -2066,7 +2066,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -2085,7 +2085,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -2107,7 +2107,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -2124,7 +2124,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Deletes virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -2143,7 +2143,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets the status of a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2170,7 +2170,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getInstanceView(this.client.getEndpoint(), resourceGroupName,
@@ -2180,7 +2180,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets the status of a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -2208,7 +2208,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getInstanceView(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -2217,7 +2217,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets the status of a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2234,7 +2234,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets the status of a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -2251,7 +2251,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets the status of a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2266,7 +2266,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets a list of all VM scale sets under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2289,7 +2289,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -2301,7 +2301,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets a list of all VM scale sets under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2325,7 +2325,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2337,7 +2337,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets a list of all VM scale sets under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2352,7 +2352,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets a list of all VM scale sets under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2368,7 +2368,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets a list of all VM scale sets under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2382,7 +2382,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets a list of all VM scale sets under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2399,7 +2399,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of VM Scale Sets. Do this till nextLink is null to fetch all the VM
      * Scale Sets.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all VM Scale Sets in the subscription, regardless of the associated resource group along with
@@ -2415,7 +2415,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2429,7 +2429,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of VM Scale Sets. Do this till nextLink is null to fetch all the VM
      * Scale Sets.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2447,7 +2447,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -2459,7 +2459,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of VM Scale Sets. Do this till nextLink is null to fetch all the VM
      * Scale Sets.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all VM Scale Sets in the subscription, regardless of the associated resource group as paginated
@@ -2474,7 +2474,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of VM Scale Sets. Do this till nextLink is null to fetch all the VM
      * Scale Sets.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2492,7 +2492,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of VM Scale Sets. Do this till nextLink is null to fetch all the VM
      * Scale Sets.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all VM Scale Sets in the subscription, regardless of the associated resource group as paginated
@@ -2507,7 +2507,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of VM Scale Sets. Do this till nextLink is null to fetch all the VM
      * Scale Sets.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2523,7 +2523,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for
      * each SKU.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2550,7 +2550,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkus(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -2563,7 +2563,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for
      * each SKU.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -2591,7 +2591,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2604,7 +2604,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for
      * each SKU.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2622,7 +2622,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for
      * each SKU.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -2642,7 +2642,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for
      * each SKU.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2659,7 +2659,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for
      * each SKU.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -2677,7 +2677,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets list of OS upgrades on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2704,7 +2704,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getOSUpgradeHistory(this.client.getEndpoint(), resourceGroupName,
@@ -2717,7 +2717,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets list of OS upgrades on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -2745,7 +2745,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2757,7 +2757,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets list of OS upgrades on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2774,7 +2774,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets list of OS upgrades on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -2792,7 +2792,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets list of OS upgrades on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2808,7 +2808,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Gets list of OS upgrades on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -2826,7 +2826,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -2858,7 +2858,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.powerOff(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -2869,7 +2869,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -2902,7 +2902,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.powerOff(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, skipShutdown, apiVersion,
@@ -2912,7 +2912,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -2935,7 +2935,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2956,7 +2956,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -2981,7 +2981,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2999,7 +2999,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3021,7 +3021,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3042,7 +3042,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3061,7 +3061,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3083,7 +3083,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3100,7 +3100,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -3119,7 +3119,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3149,7 +3149,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.restart(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -3159,7 +3159,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3190,7 +3190,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.restart(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -3199,7 +3199,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3219,7 +3219,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3238,7 +3238,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3260,7 +3260,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3276,7 +3276,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3294,7 +3294,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3312,7 +3312,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3329,7 +3329,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3348,7 +3348,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3363,7 +3363,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Restarts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3380,7 +3380,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3410,7 +3410,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -3420,7 +3420,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3451,7 +3451,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -3460,7 +3460,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3480,7 +3480,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3499,7 +3499,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3521,7 +3521,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3537,7 +3537,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3555,7 +3555,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3573,7 +3573,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3590,7 +3590,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3609,7 +3609,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3624,7 +3624,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Starts one or more virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3641,7 +3641,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Reapplies the Virtual Machine Scale Set Virtual Machine Profile to the Virtual Machine Instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3666,7 +3666,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reapply(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -3676,7 +3676,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Reapplies the Virtual Machine Scale Set Virtual Machine Profile to the Virtual Machine Instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -3703,7 +3703,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reapply(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -3712,7 +3712,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Reapplies the Virtual Machine Scale Set Virtual Machine Profile to the Virtual Machine Instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3729,7 +3729,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Reapplies the Virtual Machine Scale Set Virtual Machine Profile to the Virtual Machine Instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -3749,7 +3749,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Reapplies the Virtual Machine Scale Set Virtual Machine Profile to the Virtual Machine Instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3764,7 +3764,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Reapplies the Virtual Machine Scale Set Virtual Machine Profile to the Virtual Machine Instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -3781,7 +3781,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Reapplies the Virtual Machine Scale Set Virtual Machine Profile to the Virtual Machine Instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3797,7 +3797,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Reapplies the Virtual Machine Scale Set Virtual Machine Profile to the Virtual Machine Instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -3814,7 +3814,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Reapplies the Virtual Machine Scale Set Virtual Machine Profile to the Virtual Machine Instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3828,7 +3828,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Reapplies the Virtual Machine Scale Set Virtual Machine Profile to the Virtual Machine Instances.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -3844,7 +3844,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3874,7 +3874,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.redeploy(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -3885,7 +3885,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3916,7 +3916,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.redeploy(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -3926,7 +3926,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3947,7 +3947,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3967,7 +3967,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -3990,7 +3990,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4007,7 +4007,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4026,7 +4026,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4045,7 +4045,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4063,7 +4063,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4083,7 +4083,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4099,7 +4099,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them
      * back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4118,7 +4118,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4148,7 +4148,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.performMaintenance(this.client.getEndpoint(), resourceGroupName,
@@ -4160,7 +4160,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4191,7 +4191,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.performMaintenance(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -4202,7 +4202,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4224,7 +4224,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4246,7 +4246,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4270,7 +4270,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4288,7 +4288,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4309,7 +4309,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4329,7 +4329,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4348,7 +4348,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4369,7 +4369,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4386,7 +4386,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not
      * eligible for perform maintenance will be failed. Please refer to best practices for more details:
      * https://docs.microsoft.com/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4403,7 +4403,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4435,7 +4435,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateInstances(this.client.getEndpoint(), resourceGroupName,
@@ -4445,7 +4445,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4478,7 +4478,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateInstances(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -4487,7 +4487,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4507,7 +4507,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4529,7 +4529,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4546,7 +4546,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4565,7 +4565,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4583,7 +4583,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4602,7 +4602,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4618,7 +4618,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4637,7 +4637,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmScaleSetReimageInput Parameters for Reimaging VM ScaleSet.
@@ -4667,7 +4667,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetReimageInput != null) {
             vmScaleSetReimageInput.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reimage(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -4679,7 +4679,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmScaleSetReimageInput Parameters for Reimaging VM ScaleSet.
@@ -4710,7 +4710,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetReimageInput != null) {
             vmScaleSetReimageInput.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reimage(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -4721,7 +4721,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmScaleSetReimageInput Parameters for Reimaging VM ScaleSet.
@@ -4743,7 +4743,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4764,7 +4764,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmScaleSetReimageInput Parameters for Reimaging VM ScaleSet.
@@ -4788,7 +4788,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4806,7 +4806,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmScaleSetReimageInput Parameters for Reimaging VM ScaleSet.
@@ -4827,7 +4827,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmScaleSetReimageInput Parameters for Reimaging VM ScaleSet.
@@ -4847,7 +4847,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4866,7 +4866,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmScaleSetReimageInput Parameters for Reimaging VM ScaleSet.
@@ -4887,7 +4887,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4904,7 +4904,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a
      * ephemeral OS disk, for virtual machines who have a ephemeral OS disk the virtual machine is reset to initial
      * state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmScaleSetReimageInput Parameters for Reimaging VM ScaleSet.
@@ -4922,7 +4922,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4952,7 +4952,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reimageAll(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -4963,7 +4963,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -4994,7 +4994,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reimageAll(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -5004,7 +5004,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5025,7 +5025,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5045,7 +5045,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5068,7 +5068,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5085,7 +5085,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5104,7 +5104,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5123,7 +5123,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5141,7 +5141,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5161,7 +5161,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5177,7 +5177,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only
      * supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5194,7 +5194,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5224,7 +5224,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.approveRollingUpgrade(this.client.getEndpoint(), resourceGroupName,
@@ -5234,7 +5234,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5265,7 +5265,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.approveRollingUpgrade(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -5274,7 +5274,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5294,7 +5294,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5314,7 +5314,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5336,7 +5336,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5353,7 +5353,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5372,7 +5372,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5390,7 +5390,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5407,7 +5407,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5426,7 +5426,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5441,7 +5441,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Approve upgrade on deferred rolling upgrades for OS disks in the virtual machines in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param vmInstanceIDs A list of virtual machine instance IDs from the VM scale set.
@@ -5458,7 +5458,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Manual platform update domain walk to update virtual machines in a service fabric virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param platformUpdateDomain The platform update domain for which a manual recovery walk is requested.
@@ -5489,7 +5489,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.forceRecoveryServiceFabricPlatformUpdateDomainWalk(
@@ -5500,7 +5500,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Manual platform update domain walk to update virtual machines in a service fabric virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param platformUpdateDomain The platform update domain for which a manual recovery walk is requested.
@@ -5532,7 +5532,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.forceRecoveryServiceFabricPlatformUpdateDomainWalk(this.client.getEndpoint(), resourceGroupName,
@@ -5542,7 +5542,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Manual platform update domain walk to update virtual machines in a service fabric virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param platformUpdateDomain The platform update domain for which a manual recovery walk is requested.
@@ -5562,7 +5562,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Manual platform update domain walk to update virtual machines in a service fabric virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param platformUpdateDomain The platform update domain for which a manual recovery walk is requested.
@@ -5584,7 +5584,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Manual platform update domain walk to update virtual machines in a service fabric virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param platformUpdateDomain The platform update domain for which a manual recovery walk is requested.
@@ -5604,7 +5604,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Converts SinglePlacementGroup property to false for a existing virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for ConvertToSinglePlacementGroup API.
@@ -5636,7 +5636,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.convertToSinglePlacementGroup(this.client.getEndpoint(), resourceGroupName,
@@ -5646,7 +5646,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Converts SinglePlacementGroup property to false for a existing virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for ConvertToSinglePlacementGroup API.
@@ -5679,7 +5679,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.convertToSinglePlacementGroup(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -5688,7 +5688,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Converts SinglePlacementGroup property to false for a existing virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for ConvertToSinglePlacementGroup API.
@@ -5706,7 +5706,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Converts SinglePlacementGroup property to false for a existing virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for ConvertToSinglePlacementGroup API.
@@ -5725,7 +5725,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Converts SinglePlacementGroup property to false for a existing virtual machine scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for ConvertToSinglePlacementGroup API.
@@ -5741,7 +5741,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Changes ServiceState property for a given service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for SetOrchestrationServiceState API.
@@ -5773,7 +5773,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.setOrchestrationServiceState(this.client.getEndpoint(), resourceGroupName,
@@ -5783,7 +5783,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Changes ServiceState property for a given service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for SetOrchestrationServiceState API.
@@ -5816,7 +5816,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.setOrchestrationServiceState(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -5825,7 +5825,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Changes ServiceState property for a given service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for SetOrchestrationServiceState API.
@@ -5845,7 +5845,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Changes ServiceState property for a given service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for SetOrchestrationServiceState API.
@@ -5867,7 +5867,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Changes ServiceState property for a given service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for SetOrchestrationServiceState API.
@@ -5885,7 +5885,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Changes ServiceState property for a given service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for SetOrchestrationServiceState API.
@@ -5904,7 +5904,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Changes ServiceState property for a given service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for SetOrchestrationServiceState API.
@@ -5922,7 +5922,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Changes ServiceState property for a given service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for SetOrchestrationServiceState API.
@@ -5941,7 +5941,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Changes ServiceState property for a given service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for SetOrchestrationServiceState API.
@@ -5957,7 +5957,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Changes ServiceState property for a given service.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set to create or update.
      * @param parameters The input object for SetOrchestrationServiceState API.
@@ -5974,7 +5974,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -6001,7 +6001,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6029,7 +6029,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -6055,7 +6055,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6082,7 +6082,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -6109,7 +6109,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6137,7 +6137,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -6164,7 +6164,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6192,7 +6192,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -6222,7 +6222,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -50,7 +50,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * Initializes an instance of RestorePointsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     RestorePointsClientImpl(ComputeManagementClientImpl client) {
@@ -104,7 +104,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -142,7 +142,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -153,7 +153,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -192,7 +192,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -201,7 +201,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -222,7 +222,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -245,7 +245,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -264,7 +264,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -285,7 +285,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -304,7 +304,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -325,7 +325,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -343,7 +343,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -363,7 +363,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to delete the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the Restore Point Collection.
      * @param restorePointName The name of the restore point.
@@ -395,7 +395,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -405,7 +405,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to delete the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the Restore Point Collection.
      * @param restorePointName The name of the restore point.
@@ -438,7 +438,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -447,7 +447,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to delete the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the Restore Point Collection.
      * @param restorePointName The name of the restore point.
@@ -467,7 +467,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to delete the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the Restore Point Collection.
      * @param restorePointName The name of the restore point.
@@ -489,7 +489,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to delete the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the Restore Point Collection.
      * @param restorePointName The name of the restore point.
@@ -506,7 +506,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to delete the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the Restore Point Collection.
      * @param restorePointName The name of the restore point.
@@ -525,7 +525,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to delete the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the Restore Point Collection.
      * @param restorePointName The name of the restore point.
@@ -543,7 +543,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to delete the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the Restore Point Collection.
      * @param restorePointName The name of the restore point.
@@ -562,7 +562,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to delete the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the Restore Point Collection.
      * @param restorePointName The name of the restore point.
@@ -577,7 +577,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to delete the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the Restore Point Collection.
      * @param restorePointName The name of the restore point.
@@ -594,7 +594,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to get the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -628,7 +628,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -638,7 +638,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to get the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -673,7 +673,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -682,7 +682,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to get the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -701,7 +701,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to get the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
@@ -722,7 +722,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
     /**
      * The operation to get the restore point.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.

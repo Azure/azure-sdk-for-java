@@ -10,12 +10,12 @@ package com.azure.resourcemanager.compute.generated;
 public final class ProximityPlacementGroupsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
      */
     /**
      * Sample code: Delete a proximity placement group.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAProximityPlacementGroup(com.azure.resourcemanager.AzureResourceManager azure) {

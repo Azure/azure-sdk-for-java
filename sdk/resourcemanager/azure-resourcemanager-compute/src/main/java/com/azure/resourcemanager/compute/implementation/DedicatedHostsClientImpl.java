@@ -59,7 +59,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Initializes an instance of DedicatedHostsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     DedicatedHostsClientImpl(ComputeManagementClientImpl client) {
@@ -163,7 +163,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -200,7 +200,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hostGroupName,
@@ -210,7 +210,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -248,7 +248,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion,
@@ -257,7 +257,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -278,7 +278,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -302,7 +302,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -320,7 +320,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -340,7 +340,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -359,7 +359,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -379,7 +379,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -397,7 +397,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -416,7 +416,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -453,7 +453,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, hostGroupName,
@@ -463,7 +463,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -501,7 +501,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion,
@@ -510,7 +510,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -531,7 +531,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -554,7 +554,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -572,7 +572,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -591,7 +591,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -610,7 +610,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -630,7 +630,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -648,7 +648,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -667,7 +667,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -697,7 +697,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, hostGroupName,
@@ -707,7 +707,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -738,7 +738,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion,
@@ -747,7 +747,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -766,7 +766,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -788,7 +788,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -805,7 +805,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -823,7 +823,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -840,7 +840,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -858,7 +858,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -873,7 +873,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -889,7 +889,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Retrieves information about a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -922,7 +922,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname,
@@ -932,7 +932,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Retrieves information about a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -966,7 +966,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, expand, apiVersion,
@@ -975,7 +975,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Retrieves information about a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -993,7 +993,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Retrieves information about a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1013,7 +1013,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Retrieves information about a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1031,7 +1031,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
      * to get the next page of dedicated hosts.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1058,7 +1058,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHostGroup(this.client.getEndpoint(), resourceGroupName, hostGroupName,
@@ -1071,7 +1071,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
      * to get the next page of dedicated hosts.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param context The context to associate with this operation.
@@ -1099,7 +1099,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1112,7 +1112,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
      * to get the next page of dedicated hosts.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1129,7 +1129,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
      * to get the next page of dedicated hosts.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param context The context to associate with this operation.
@@ -1148,7 +1148,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
      * to get the next page of dedicated hosts.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1164,7 +1164,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
      * to get the next page of dedicated hosts.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param context The context to associate with this operation.
@@ -1184,7 +1184,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1214,7 +1214,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.restart(this.client.getEndpoint(), resourceGroupName, hostGroupName,
@@ -1227,7 +1227,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1258,7 +1258,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.restart(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion,
@@ -1270,7 +1270,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1292,7 +1292,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1317,7 +1317,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1337,7 +1337,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1358,7 +1358,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1378,7 +1378,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1399,7 +1399,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1417,7 +1417,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1436,7 +1436,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1466,7 +1466,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.redeploy(this.client.getEndpoint(), resourceGroupName, hostGroupName,
@@ -1479,7 +1479,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1510,7 +1510,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.redeploy(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion,
@@ -1522,7 +1522,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1544,7 +1544,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1569,7 +1569,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1589,7 +1589,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1610,7 +1610,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1630,7 +1630,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1651,7 +1651,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1669,7 +1669,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * new node and is running. To determine the health of VMs deployed on the dedicated host after the redeploy check
      * the Resource Health Center in the Azure Portal. Please refer to
      * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1686,7 +1686,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
      * dedicated host sizes provided can be used to only scale up the existing dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1717,7 +1717,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableSizes(this.client.getEndpoint(), resourceGroupName,
@@ -1730,7 +1730,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
      * dedicated host sizes provided can be used to only scale up the existing dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1762,7 +1762,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1775,7 +1775,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
      * dedicated host sizes provided can be used to only scale up the existing dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1792,7 +1792,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
      * dedicated host sizes provided can be used to only scale up the existing dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1812,7 +1812,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
      * dedicated host sizes provided can be used to only scale up the existing dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1829,7 +1829,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     /**
      * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
      * dedicated host sizes provided can be used to only scale up the existing dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -1847,7 +1847,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1874,7 +1874,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

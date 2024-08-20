@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_WEST;
+    private Region region = Region.US_WEST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -217,7 +217,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
+                .withLatestLinuxImage("Canonical", "UbuntuServer", "16.04.0-LTS")
                 .withRootUsername(uname)
                 .withSsh(sshPublicKey())
                 .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
@@ -226,7 +226,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
                 .withNewUnmanagedDataDisk(100)
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .withNewStorageAccount(storageAccountName)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
@@ -370,7 +370,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withNewVhd(60)
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();

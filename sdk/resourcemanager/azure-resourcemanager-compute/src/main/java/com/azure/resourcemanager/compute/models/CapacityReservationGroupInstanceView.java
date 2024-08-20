@@ -25,7 +25,7 @@ public final class CapacityReservationGroupInstanceView
 
     /*
      * List of the subscriptions that the capacity reservation group is shared with. **Note:** Minimum api-version:
-     * 2024-03-01. Please refer to https://aka.ms/computereservationsharing for more details.
+     * 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
      */
     private List<SubResourceReadOnly> sharedSubscriptionIds;
 
@@ -38,7 +38,7 @@ public final class CapacityReservationGroupInstanceView
     /**
      * Get the capacityReservations property: List of instance view of the capacity reservations under the capacity
      * reservation group.
-     * 
+     *
      * @return the capacityReservations value.
      */
     public List<CapacityReservationInstanceViewWithName> capacityReservations() {
@@ -47,9 +47,9 @@ public final class CapacityReservationGroupInstanceView
 
     /**
      * Get the sharedSubscriptionIds property: List of the subscriptions that the capacity reservation group is shared
-     * with. **Note:** Minimum api-version: 2024-03-01. Please refer to https://aka.ms/computereservationsharing for
+     * with. **Note:** Minimum api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for
      * more details.
-     * 
+     *
      * @return the sharedSubscriptionIds value.
      */
     public List<SubResourceReadOnly> sharedSubscriptionIds() {
@@ -58,7 +58,7 @@ public final class CapacityReservationGroupInstanceView
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -81,7 +81,7 @@ public final class CapacityReservationGroupInstanceView
 
     /**
      * Reads an instance of CapacityReservationGroupInstanceView from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CapacityReservationGroupInstanceView if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.

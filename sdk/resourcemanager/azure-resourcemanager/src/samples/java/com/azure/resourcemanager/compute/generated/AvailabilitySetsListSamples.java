@@ -10,12 +10,12 @@ package com.azure.resourcemanager.compute.generated;
 public final class AvailabilitySetsListSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * availabilitySetExamples/AvailabilitySet_ListBySubscription.json
      */
     /**
      * Sample code: List availability sets in a subscription.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAvailabilitySetsInASubscription(com.azure.resourcemanager.AzureResourceManager azure) {

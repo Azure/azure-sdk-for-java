@@ -13,12 +13,12 @@ import java.util.Arrays;
 public final class VirtualMachineScaleSetVMsRunCommandSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/runCommandExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/runCommandExamples/
      * VirtualMachineScaleSetVMRunCommand.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_RunCommand.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineScaleSetVMsRunCommand(com.azure.resourcemanager.AzureResourceManager azure) {

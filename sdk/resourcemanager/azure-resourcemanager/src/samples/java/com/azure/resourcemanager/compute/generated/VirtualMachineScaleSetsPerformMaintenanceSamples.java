@@ -13,12 +13,12 @@ import java.util.Arrays;
 public final class VirtualMachineScaleSetsPerformMaintenanceSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_PerformMaintenance_MinimumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -32,12 +32,12 @@ public final class VirtualMachineScaleSetsPerformMaintenanceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_PerformMaintenance_MaximumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

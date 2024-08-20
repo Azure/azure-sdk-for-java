@@ -27,12 +27,12 @@ import java.util.Arrays;
 public final class VirtualMachinesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
      */
     /**
      * Sample code: Update a VM by detaching data disk.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAVMByDetachingDataDisk(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -76,12 +76,12 @@ public final class VirtualMachinesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
      */
     /**
      * Sample code: Update a VM by force-detaching data disk.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAVMByForceDetachingDataDisk(com.azure.resourcemanager.AzureResourceManager azure) {

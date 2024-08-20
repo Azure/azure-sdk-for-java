@@ -16,12 +16,12 @@ import java.util.Map;
 public final class ImagesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/imageExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/imageExamples/
      * Image_Update.json
      */
     /**
      * Sample code: Updates tags of an Image.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updatesTagsOfAnImage(com.azure.resourcemanager.AzureResourceManager azure) {

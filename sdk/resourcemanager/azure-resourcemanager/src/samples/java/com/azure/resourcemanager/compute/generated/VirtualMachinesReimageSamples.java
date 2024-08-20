@@ -13,12 +13,12 @@ import com.azure.resourcemanager.compute.models.VirtualMachineReimageParameters;
 public final class VirtualMachinesReimageSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Reimage.json
      */
     /**
      * Sample code: Reimage a Virtual Machine.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void reimageAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -32,12 +32,12 @@ public final class VirtualMachinesReimageSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Reimage_NonEphemeralVMs.json
      */
     /**
      * Sample code: Reimage a Non-Ephemeral Virtual Machine.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void reimageANonEphemeralVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -49,7 +49,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Initializes an instance of VirtualMachineScaleSetRollingUpgradesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineScaleSetRollingUpgradesClientImpl(ComputeManagementClientImpl client) {
@@ -104,7 +104,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +129,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.cancel(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -139,7 +139,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -166,7 +166,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.cancel(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -175,7 +175,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +192,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -212,7 +212,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,7 +227,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -244,7 +244,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -260,7 +260,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -277,7 +277,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,7 +291,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -307,7 +307,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -333,7 +333,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startOSUpgrade(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -344,7 +344,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -371,7 +371,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startOSUpgrade(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -381,7 +381,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,7 +400,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -422,7 +422,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -438,7 +438,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -456,7 +456,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -473,7 +473,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -491,7 +491,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -506,7 +506,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
      * OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -522,7 +522,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -548,7 +548,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startExtensionUpgrade(this.client.getEndpoint(), resourceGroupName,
@@ -559,7 +559,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -586,7 +586,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startExtensionUpgrade(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -596,7 +596,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -616,7 +616,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -638,7 +638,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -655,7 +655,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -673,7 +673,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -690,7 +690,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -708,7 +708,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -723,7 +723,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
     /**
      * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
      * available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -738,7 +738,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -765,7 +765,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getLatest(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -775,7 +775,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -803,7 +803,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getLatest(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, apiVersion,
@@ -812,7 +812,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -829,7 +829,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -846,7 +846,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

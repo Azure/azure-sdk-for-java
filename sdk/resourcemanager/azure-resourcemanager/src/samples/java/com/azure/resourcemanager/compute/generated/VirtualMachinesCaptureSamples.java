@@ -12,12 +12,12 @@ import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
 public final class VirtualMachinesCaptureSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Capture_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_Capture_MinimumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineCaptureMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -34,12 +34,12 @@ public final class VirtualMachinesCaptureSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Capture_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_Capture_MaximumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineCaptureMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -15,12 +15,12 @@ import java.util.Map;
 public final class RestorePointCollectionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * restorePointExamples/RestorePointCollection_CreateOrUpdate_ForCrossRegionCopy.json
      */
     /**
      * Sample code: Create or update a restore point collection for cross region copy.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -39,12 +39,12 @@ public final class RestorePointCollectionsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * restorePointExamples/RestorePointCollection_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a restore point collection.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateARestorePointCollection(com.azure.resourcemanager.AzureResourceManager azure) {

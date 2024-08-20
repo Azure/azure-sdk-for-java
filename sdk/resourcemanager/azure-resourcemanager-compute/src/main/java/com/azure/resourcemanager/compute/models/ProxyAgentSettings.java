@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2024-03-01.
+ * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2023-09-01.
  */
 @Fluent
 public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSettings> {
@@ -43,7 +43,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
     /**
      * Get the enabled property: Specifies whether ProxyAgent feature should be enabled on the virtual machine or
      * virtual machine scale set.
-     * 
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -53,7 +53,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
     /**
      * Set the enabled property: Specifies whether ProxyAgent feature should be enabled on the virtual machine or
      * virtual machine scale set.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the ProxyAgentSettings object itself.
      */
@@ -66,7 +66,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
      * Get the mode property: Specifies the mode that ProxyAgent will execute on if the feature is enabled. ProxyAgent
      * will start to audit or monitor but not enforce access control over requests to host endpoints in Audit mode,
      * while in Enforce mode it will enforce access control. The default value is Enforce mode.
-     * 
+     *
      * @return the mode value.
      */
     public Mode mode() {
@@ -77,7 +77,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
      * Set the mode property: Specifies the mode that ProxyAgent will execute on if the feature is enabled. ProxyAgent
      * will start to audit or monitor but not enforce access control over requests to host endpoints in Audit mode,
      * while in Enforce mode it will enforce access control. The default value is Enforce mode.
-     * 
+     *
      * @param mode the mode value to set.
      * @return the ProxyAgentSettings object itself.
      */
@@ -89,7 +89,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
     /**
      * Get the keyIncarnationId property: Increase the value of this property allows user to reset the key used for
      * securing communication channel between guest and host.
-     * 
+     *
      * @return the keyIncarnationId value.
      */
     public Integer keyIncarnationId() {
@@ -99,7 +99,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
     /**
      * Set the keyIncarnationId property: Increase the value of this property allows user to reset the key used for
      * securing communication channel between guest and host.
-     * 
+     *
      * @param keyIncarnationId the keyIncarnationId value to set.
      * @return the ProxyAgentSettings object itself.
      */
@@ -110,7 +110,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -130,7 +130,7 @@ public final class ProxyAgentSettings implements JsonSerializable<ProxyAgentSett
 
     /**
      * Reads an instance of ProxyAgentSettings from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ProxyAgentSettings if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

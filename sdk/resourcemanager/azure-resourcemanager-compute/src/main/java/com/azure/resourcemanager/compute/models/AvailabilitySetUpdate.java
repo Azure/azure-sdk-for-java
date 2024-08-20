@@ -38,7 +38,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the innerProperties property: The instance view of a resource.
-     * 
+     *
      * @return the innerProperties value.
      */
     private AvailabilitySetProperties innerProperties() {
@@ -47,7 +47,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the sku property: Sku of the availability set.
-     * 
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -56,7 +56,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the sku property: Sku of the availability set.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -76,7 +76,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the platformUpdateDomainCount property: Update Domain count.
-     * 
+     *
      * @return the platformUpdateDomainCount value.
      */
     public Integer platformUpdateDomainCount() {
@@ -85,7 +85,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the platformUpdateDomainCount property: Update Domain count.
-     * 
+     *
      * @param platformUpdateDomainCount the platformUpdateDomainCount value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -99,7 +99,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the platformFaultDomainCount property: Fault Domain count.
-     * 
+     *
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
@@ -108,7 +108,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the platformFaultDomainCount property: Fault Domain count.
-     * 
+     *
      * @param platformFaultDomainCount the platformFaultDomainCount value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -122,7 +122,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the virtualMachines property: A list of references to all virtual machines in the availability set.
-     * 
+     *
      * @return the virtualMachines value.
      */
     public List<SubResource> virtualMachines() {
@@ -131,7 +131,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the virtualMachines property: A list of references to all virtual machines in the availability set.
-     * 
+     *
      * @param virtualMachines the virtualMachines value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -146,7 +146,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     /**
      * Get the proximityPlacementGroup property: Specifies information about the proximity placement group that the
      * availability set should be assigned to. Minimum api-version: 2018-04-01.
-     * 
+     *
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
@@ -156,7 +156,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     /**
      * Set the proximityPlacementGroup property: Specifies information about the proximity placement group that the
      * availability set should be assigned to. Minimum api-version: 2018-04-01.
-     * 
+     *
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -170,7 +170,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the statuses property: The resource status information.
-     * 
+     *
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -178,8 +178,33 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     }
 
     /**
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     *
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledEventsPolicy();
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     *
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the AvailabilitySetUpdate object itself.
+     */
+    public AvailabilitySetUpdate withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
+        }
+        this.innerProperties().withScheduledEventsPolicy(scheduledEventsPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -207,7 +232,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Reads an instance of AvailabilitySetUpdate from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AvailabilitySetUpdate if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

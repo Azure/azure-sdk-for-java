@@ -10,12 +10,12 @@ package com.azure.resourcemanager.compute.generated;
 public final class RestorePointsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * restorePointExamples/RestorePoint_Get.json
      */
     /**
      * Sample code: Get a restore point.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getARestorePoint(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -28,12 +28,12 @@ public final class RestorePointsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * restorePointExamples/RestorePoint_Get_WithInstanceView.json
      */
     /**
      * Sample code: Get restore point with instance view.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getRestorePointWithInstanceView(com.azure.resourcemanager.AzureResourceManager azure) {

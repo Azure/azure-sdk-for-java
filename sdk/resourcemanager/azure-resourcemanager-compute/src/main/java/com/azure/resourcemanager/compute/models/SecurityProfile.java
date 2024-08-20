@@ -42,7 +42,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     private EncryptionIdentity encryptionIdentity;
 
     /*
-     * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2024-03-01.
+     * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2023-09-01.
      */
     private ProxyAgentSettings proxyAgentSettings;
 
@@ -55,7 +55,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     /**
      * Get the uefiSettings property: Specifies the security settings like secure boot and vTPM used while creating the
      * virtual machine. Minimum api-version: 2020-12-01.
-     * 
+     *
      * @return the uefiSettings value.
      */
     public UefiSettings uefiSettings() {
@@ -65,7 +65,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     /**
      * Set the uefiSettings property: Specifies the security settings like secure boot and vTPM used while creating the
      * virtual machine. Minimum api-version: 2020-12-01.
-     * 
+     *
      * @param uefiSettings the uefiSettings value to set.
      * @return the SecurityProfile object itself.
      */
@@ -79,7 +79,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the
      * disks including Resource/Temp disk at host itself. The default behavior is: The Encryption at host will be
      * disabled unless this property is set to true for the resource.
-     * 
+     *
      * @return the encryptionAtHost value.
      */
     public Boolean encryptionAtHost() {
@@ -91,7 +91,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the
      * disks including Resource/Temp disk at host itself. The default behavior is: The Encryption at host will be
      * disabled unless this property is set to true for the resource.
-     * 
+     *
      * @param encryptionAtHost the encryptionAtHost value to set.
      * @return the SecurityProfile object itself.
      */
@@ -104,7 +104,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * Get the securityType property: Specifies the SecurityType of the virtual machine. It has to be set to any
      * specified value to enable UefiSettings. The default behavior is: UefiSettings will not be enabled unless this
      * property is set.
-     * 
+     *
      * @return the securityType value.
      */
     public SecurityTypes securityType() {
@@ -115,7 +115,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * Set the securityType property: Specifies the SecurityType of the virtual machine. It has to be set to any
      * specified value to enable UefiSettings. The default behavior is: UefiSettings will not be enabled unless this
      * property is set.
-     * 
+     *
      * @param securityType the securityType value to set.
      * @return the SecurityProfile object itself.
      */
@@ -127,7 +127,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     /**
      * Get the encryptionIdentity property: Specifies the Managed Identity used by ADE to get access token for keyvault
      * operations.
-     * 
+     *
      * @return the encryptionIdentity value.
      */
     public EncryptionIdentity encryptionIdentity() {
@@ -137,7 +137,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     /**
      * Set the encryptionIdentity property: Specifies the Managed Identity used by ADE to get access token for keyvault
      * operations.
-     * 
+     *
      * @param encryptionIdentity the encryptionIdentity value to set.
      * @return the SecurityProfile object itself.
      */
@@ -148,8 +148,8 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
 
     /**
      * Get the proxyAgentSettings property: Specifies ProxyAgent settings while creating the virtual machine. Minimum
-     * api-version: 2024-03-01.
-     * 
+     * api-version: 2023-09-01.
+     *
      * @return the proxyAgentSettings value.
      */
     public ProxyAgentSettings proxyAgentSettings() {
@@ -158,8 +158,8 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
 
     /**
      * Set the proxyAgentSettings property: Specifies ProxyAgent settings while creating the virtual machine. Minimum
-     * api-version: 2024-03-01.
-     * 
+     * api-version: 2023-09-01.
+     *
      * @param proxyAgentSettings the proxyAgentSettings value to set.
      * @return the SecurityProfile object itself.
      */
@@ -170,7 +170,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -201,7 +201,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
 
     /**
      * Reads an instance of SecurityProfile from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecurityProfile if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

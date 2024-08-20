@@ -56,7 +56,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * Initializes an instance of VirtualMachineScaleSetVMRunCommandsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineScaleSetVMRunCommandsClientImpl(ComputeManagementClientImpl client) {
@@ -138,7 +138,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -179,7 +179,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -189,7 +189,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -232,7 +232,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -241,7 +241,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -265,7 +265,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -291,7 +291,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -312,7 +312,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -336,7 +336,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -357,7 +357,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -378,7 +378,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -397,7 +397,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -418,7 +418,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -459,7 +459,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -469,7 +469,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -511,7 +511,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, runCommandName,
@@ -520,7 +520,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -544,7 +544,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -570,7 +570,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -591,7 +591,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -613,7 +613,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -633,7 +633,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -655,7 +655,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -674,7 +674,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -694,7 +694,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -728,7 +728,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -738,7 +738,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -773,7 +773,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, runCommandName,
@@ -782,7 +782,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -803,7 +803,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -826,7 +826,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -844,7 +844,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -864,7 +864,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -883,7 +883,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -903,7 +903,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -919,7 +919,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -937,7 +937,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -973,7 +973,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -983,7 +983,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1020,7 +1020,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, runCommandName,
@@ -1029,7 +1029,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1049,7 +1049,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1070,7 +1070,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1090,7 +1090,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1122,7 +1122,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1134,7 +1134,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1167,7 +1167,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1179,7 +1179,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1198,7 +1198,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1217,7 +1217,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1238,7 +1238,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1256,7 +1256,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1275,7 +1275,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1301,7 +1301,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -58,7 +58,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Initializes an instance of SshPublicKeysClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     SshPublicKeysClientImpl(ComputeManagementClientImpl client) {
@@ -161,7 +161,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next
      * page of SSH public keys.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list SSH public keys operation response along with {@link PagedResponse} on successful completion of
@@ -177,7 +177,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -190,7 +190,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next
      * page of SSH public keys.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -208,7 +208,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -219,7 +219,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next
      * page of SSH public keys.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list SSH public keys operation response as paginated response with {@link PagedFlux}.
@@ -233,7 +233,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next
      * page of SSH public keys.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -249,7 +249,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next
      * page of SSH public keys.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list SSH public keys operation response as paginated response with {@link PagedIterable}.
@@ -262,7 +262,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next
      * page of SSH public keys.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -277,7 +277,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to
      * get the next page of SSH public keys.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -300,7 +300,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -313,7 +313,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to
      * get the next page of SSH public keys.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -337,7 +337,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -350,7 +350,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to
      * get the next page of SSH public keys.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -366,7 +366,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to
      * get the next page of SSH public keys.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -383,7 +383,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to
      * get the next page of SSH public keys.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -398,7 +398,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to
      * get the next page of SSH public keys.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -413,7 +413,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Creates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to create the SSH public key.
@@ -447,7 +447,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, sshPublicKeyName,
@@ -457,7 +457,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Creates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to create the SSH public key.
@@ -492,7 +492,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), resourceGroupName, sshPublicKeyName, apiVersion,
@@ -501,7 +501,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Creates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to create the SSH public key.
@@ -519,7 +519,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Creates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to create the SSH public key.
@@ -537,7 +537,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Creates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to create the SSH public key.
@@ -554,7 +554,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Updates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to update the SSH public key.
@@ -588,7 +588,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, sshPublicKeyName,
@@ -598,7 +598,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Updates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to update the SSH public key.
@@ -633,7 +633,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, sshPublicKeyName, apiVersion,
@@ -642,7 +642,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Updates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to update the SSH public key.
@@ -660,7 +660,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Updates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to update the SSH public key.
@@ -678,7 +678,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Updates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to update the SSH public key.
@@ -695,7 +695,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Delete an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -721,7 +721,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, sshPublicKeyName,
@@ -731,7 +731,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Delete an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param context The context to associate with this operation.
@@ -759,7 +759,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, sshPublicKeyName, apiVersion,
@@ -768,7 +768,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Delete an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -783,7 +783,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Delete an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param context The context to associate with this operation.
@@ -799,7 +799,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Delete an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -813,7 +813,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Retrieves information about an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -841,7 +841,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -851,7 +851,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Retrieves information about an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param context The context to associate with this operation.
@@ -880,7 +880,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, sshPublicKeyName, apiVersion,
@@ -889,7 +889,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Retrieves information about an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -905,7 +905,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Retrieves information about an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param context The context to associate with this operation.
@@ -922,7 +922,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Retrieves information about an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -938,7 +938,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Generates and returns a public/private key pair and populates the SSH public key resource with the public key.
      * The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to generate the SSH public key.
@@ -970,7 +970,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generateKeyPair(this.client.getEndpoint(), resourceGroupName,
@@ -981,7 +981,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Generates and returns a public/private key pair and populates the SSH public key resource with the public key.
      * The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to generate the SSH public key.
@@ -1015,7 +1015,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.generateKeyPair(this.client.getEndpoint(), resourceGroupName, sshPublicKeyName, apiVersion,
@@ -1025,7 +1025,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Generates and returns a public/private key pair and populates the SSH public key resource with the public key.
      * The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1044,7 +1044,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Generates and returns a public/private key pair and populates the SSH public key resource with the public key.
      * The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to generate the SSH public key.
@@ -1063,7 +1063,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
     /**
      * Generates and returns a public/private key pair and populates the SSH public key resource with the public key.
      * The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1079,7 +1079,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1107,7 +1107,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1135,7 +1135,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1163,7 +1163,7 @@ public final class SshPublicKeysClientImpl implements InnerSupportsGet<SshPublic
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

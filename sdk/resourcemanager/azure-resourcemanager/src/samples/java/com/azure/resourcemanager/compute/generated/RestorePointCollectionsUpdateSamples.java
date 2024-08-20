@@ -15,12 +15,12 @@ import java.util.Map;
 public final class RestorePointCollectionsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: RestorePointCollection_Update_MaximumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restorePointCollectionUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -37,12 +37,12 @@ public final class RestorePointCollectionsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: RestorePointCollection_Update_MinimumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restorePointCollectionUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {

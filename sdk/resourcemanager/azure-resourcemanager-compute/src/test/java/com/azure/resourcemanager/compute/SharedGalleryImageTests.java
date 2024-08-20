@@ -35,18 +35,19 @@ import java.util.Map;
 
 public class SharedGalleryImageTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_WEST_CENTRAL;
-    private final String vmName = "javavm";
+    private final Region region = Region.US_WEST3;
+    private String vmName = "";
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
+        vmName = generateRandomResourceName("javavm", 12);
         super.initializeClients(httpPipeline, profile);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -221,7 +222,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
@@ -315,7 +316,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
@@ -405,7 +406,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withSsh(sshPublicKey())
                 .withNewDataDisk(1)
                 .withNewDataDisk(1, 2, CachingTypes.READ_WRITE)
-                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withTrustedLaunch()
@@ -497,7 +498,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withNewVhd(60)
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
-                .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();

@@ -44,7 +44,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Initializes an instance of VirtualMachineImagesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineImagesClientImpl(ComputeManagementClientImpl client) {
@@ -119,7 +119,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a virtual machine image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -156,7 +156,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), location, publisherName, offer, skus,
@@ -166,7 +166,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a virtual machine image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -204,7 +204,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), location, publisherName, offer, skus, version, apiVersion,
@@ -213,7 +213,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a virtual machine image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -233,7 +233,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a virtual machine image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -253,7 +253,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a virtual machine image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -272,7 +272,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -309,7 +309,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), location, publisherName, offer, skus,
@@ -319,7 +319,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -357,7 +357,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), location, publisherName, offer, skus, expand, top, orderby,
@@ -366,7 +366,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -389,7 +389,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -412,7 +412,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -433,7 +433,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -459,7 +459,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listOffers(this.client.getEndpoint(), location, publisherName, apiVersion,
@@ -469,7 +469,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param context The context to associate with this operation.
@@ -496,7 +496,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listOffers(this.client.getEndpoint(), location, publisherName, apiVersion,
@@ -505,7 +505,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -521,7 +521,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param context The context to associate with this operation.
@@ -539,7 +539,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -554,7 +554,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -575,7 +575,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPublishers(this.client.getEndpoint(), location, apiVersion,
@@ -585,7 +585,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -608,7 +608,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listPublishers(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(),
@@ -617,7 +617,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -632,7 +632,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -648,7 +648,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -662,7 +662,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -692,7 +692,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkus(this.client.getEndpoint(), location, publisherName, offer,
@@ -702,7 +702,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -733,7 +733,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listSkus(this.client.getEndpoint(), location, publisherName, offer, apiVersion,
@@ -742,7 +742,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -761,7 +761,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -780,7 +780,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -796,7 +796,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of all virtual machine image versions for the specified edge zone.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -822,7 +822,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByEdgeZone(this.client.getEndpoint(), location, edgeZone, apiVersion,
@@ -832,7 +832,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of all virtual machine image versions for the specified edge zone.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param edgeZone The name of the edge zone.
      * @param context The context to associate with this operation.
@@ -859,7 +859,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByEdgeZone(this.client.getEndpoint(), location, edgeZone, apiVersion,
@@ -868,7 +868,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of all virtual machine image versions for the specified edge zone.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -884,7 +884,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of all virtual machine image versions for the specified edge zone.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param edgeZone The name of the edge zone.
      * @param context The context to associate with this operation.
@@ -901,7 +901,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
 
     /**
      * Gets a list of all virtual machine image versions for the specified edge zone.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

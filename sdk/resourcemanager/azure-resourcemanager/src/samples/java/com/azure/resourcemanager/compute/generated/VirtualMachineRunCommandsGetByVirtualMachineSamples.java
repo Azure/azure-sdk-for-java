@@ -10,12 +10,12 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineRunCommandsGetByVirtualMachineSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/runCommandExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/runCommandExamples/
      * VirtualMachineRunCommand_Get.json
      */
     /**
      * Sample code: Get a run command.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getARunCommand(com.azure.resourcemanager.AzureResourceManager azure) {

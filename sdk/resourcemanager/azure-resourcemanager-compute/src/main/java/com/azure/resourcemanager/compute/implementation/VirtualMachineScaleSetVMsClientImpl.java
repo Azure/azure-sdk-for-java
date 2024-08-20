@@ -64,7 +64,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Initializes an instance of VirtualMachineScaleSetVMsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineScaleSetVMsClientImpl(ComputeManagementClientImpl client) {
@@ -278,7 +278,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -312,7 +312,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         if (vmScaleSetVMReimageInput != null) {
             vmScaleSetVMReimageInput.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reimage(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -322,7 +322,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -357,7 +357,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         if (vmScaleSetVMReimageInput != null) {
             vmScaleSetVMReimageInput.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reimage(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -366,7 +366,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -387,7 +387,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -408,7 +408,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -431,7 +431,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -450,7 +450,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -470,7 +470,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -489,7 +489,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -507,7 +507,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -528,7 +528,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -544,7 +544,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -563,7 +563,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
      * only supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -593,7 +593,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reimageAll(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -604,7 +604,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
      * only supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -635,7 +635,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reimageAll(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -645,7 +645,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
      * only supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -666,7 +666,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
      * only supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -689,7 +689,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
      * only supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -707,7 +707,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
      * only supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -726,7 +726,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
      * only supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -744,7 +744,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
      * only supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -764,7 +764,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
      * only supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -780,7 +780,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
      * only supported for managed disks.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -796,7 +796,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -826,7 +826,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.approveRollingUpgrade(this.client.getEndpoint(), resourceGroupName,
@@ -836,7 +836,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -867,7 +867,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.approveRollingUpgrade(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -876,7 +876,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -896,7 +896,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -918,7 +918,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -935,7 +935,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -954,7 +954,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -971,7 +971,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -990,7 +990,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1005,7 +1005,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1023,7 +1023,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
      * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1053,7 +1053,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deallocate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1064,7 +1064,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
      * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1095,7 +1095,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deallocate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -1105,7 +1105,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
      * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1126,7 +1126,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
      * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1149,7 +1149,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
      * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1167,7 +1167,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
      * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1186,7 +1186,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
      * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1204,7 +1204,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
      * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1224,7 +1224,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
      * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1240,7 +1240,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
      * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1256,7 +1256,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1297,7 +1297,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1308,7 +1308,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1351,7 +1351,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -1360,7 +1360,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1387,7 +1387,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1411,7 +1411,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1440,7 +1440,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1461,7 +1461,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1487,7 +1487,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1510,7 +1510,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1531,7 +1531,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1556,7 +1556,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1576,7 +1576,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Updates a virtual machine of a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param instanceId The instance ID of the virtual machine.
@@ -1600,7 +1600,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1632,7 +1632,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1642,7 +1642,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1675,7 +1675,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, forceDeletion,
@@ -1684,7 +1684,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1706,7 +1706,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1727,7 +1727,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1751,7 +1751,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1769,7 +1769,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1790,7 +1790,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1810,7 +1810,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1828,7 +1828,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1849,7 +1849,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1865,7 +1865,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Deletes a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1884,7 +1884,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1917,7 +1917,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1927,7 +1927,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1961,7 +1961,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, expand, apiVersion,
@@ -1970,7 +1970,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1989,7 +1989,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2009,7 +2009,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2026,7 +2026,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets the status of a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2057,7 +2057,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getInstanceView(this.client.getEndpoint(), resourceGroupName,
@@ -2067,7 +2067,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets the status of a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2099,7 +2099,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getInstanceView(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -2108,7 +2108,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets the status of a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2126,7 +2126,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets the status of a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2144,7 +2144,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets the status of a virtual machine from a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2161,7 +2161,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a list of all virtual machines in a VM scale sets.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
      * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
@@ -2193,7 +2193,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2206,7 +2206,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a list of all virtual machines in a VM scale sets.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
      * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
@@ -2239,7 +2239,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2251,7 +2251,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a list of all virtual machines in a VM scale sets.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
      * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
@@ -2273,7 +2273,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a list of all virtual machines in a VM scale sets.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2294,7 +2294,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a list of all virtual machines in a VM scale sets.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
      * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
@@ -2317,7 +2317,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a list of all virtual machines in a VM scale sets.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2336,7 +2336,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Gets a list of all virtual machines in a VM scale sets.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
      * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
@@ -2359,7 +2359,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2391,7 +2391,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.powerOff(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -2402,7 +2402,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2435,7 +2435,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.powerOff(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, skipShutdown,
@@ -2445,7 +2445,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2468,7 +2468,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2490,7 +2490,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2515,7 +2515,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2534,7 +2534,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2556,7 +2556,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2577,7 +2577,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2596,7 +2596,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2618,7 +2618,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2635,7 +2635,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
      * charged for the resources. Instead, use deallocate to release resources and avoid charges.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2654,7 +2654,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Restarts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2684,7 +2684,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.restart(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -2694,7 +2694,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Restarts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2725,7 +2725,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.restart(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -2734,7 +2734,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Restarts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2753,7 +2753,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Restarts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2775,7 +2775,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Restarts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2792,7 +2792,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Restarts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2810,7 +2810,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Restarts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2827,7 +2827,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Restarts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2846,7 +2846,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Restarts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2861,7 +2861,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Restarts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2877,7 +2877,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Starts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2907,7 +2907,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -2917,7 +2917,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Starts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2948,7 +2948,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -2957,7 +2957,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Starts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2976,7 +2976,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Starts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -2998,7 +2998,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Starts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3015,7 +3015,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Starts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3033,7 +3033,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Starts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3050,7 +3050,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Starts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3068,7 +3068,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Starts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3083,7 +3083,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Starts a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3099,7 +3099,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3129,7 +3129,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.redeploy(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -3139,7 +3139,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3170,7 +3170,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.redeploy(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -3179,7 +3179,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3199,7 +3199,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3221,7 +3221,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3238,7 +3238,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3256,7 +3256,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3273,7 +3273,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3292,7 +3292,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3307,7 +3307,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3323,7 +3323,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3357,7 +3357,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.retrieveBootDiagnosticsData(this.client.getEndpoint(), resourceGroupName,
@@ -3368,7 +3368,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3404,7 +3404,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.retrieveBootDiagnosticsData(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -3413,7 +3413,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3432,7 +3432,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3455,7 +3455,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3474,7 +3474,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Performs maintenance on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3504,7 +3504,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.performMaintenance(this.client.getEndpoint(), resourceGroupName,
@@ -3514,7 +3514,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Performs maintenance on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3545,7 +3545,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.performMaintenance(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -3554,7 +3554,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Performs maintenance on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3574,7 +3574,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Performs maintenance on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3596,7 +3596,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Performs maintenance on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3613,7 +3613,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Performs maintenance on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3632,7 +3632,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Performs maintenance on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3649,7 +3649,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Performs maintenance on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3668,7 +3668,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Performs maintenance on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3683,7 +3683,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Performs maintenance on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3700,7 +3700,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * The operation to simulate the eviction of spot virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3730,7 +3730,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.simulateEviction(this.client.getEndpoint(), resourceGroupName,
@@ -3740,7 +3740,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * The operation to simulate the eviction of spot virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3771,7 +3771,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.simulateEviction(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -3780,7 +3780,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * The operation to simulate the eviction of spot virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3797,7 +3797,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * The operation to simulate the eviction of spot virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3815,7 +3815,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * The operation to simulate the eviction of spot virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3830,7 +3830,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3868,7 +3868,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.attachDetachDataDisks(this.client.getEndpoint(), resourceGroupName,
@@ -3878,7 +3878,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3917,7 +3917,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.attachDetachDataDisks(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -3926,7 +3926,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3948,7 +3948,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3973,7 +3973,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -3993,7 +3993,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4014,7 +4014,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4034,7 +4034,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4056,7 +4056,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4075,7 +4075,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4095,7 +4095,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Run command on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4131,7 +4131,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.runCommand(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -4141,7 +4141,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Run command on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4178,7 +4178,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.runCommand(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -4187,7 +4187,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Run command on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4209,7 +4209,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Run command on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4233,7 +4233,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Run command on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4251,7 +4251,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Run command on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4272,7 +4272,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Run command on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4291,7 +4291,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Run command on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4311,7 +4311,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Run command on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4329,7 +4329,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Run command on a virtual machine in a VM scale set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -4348,7 +4348,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -4374,7 +4374,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

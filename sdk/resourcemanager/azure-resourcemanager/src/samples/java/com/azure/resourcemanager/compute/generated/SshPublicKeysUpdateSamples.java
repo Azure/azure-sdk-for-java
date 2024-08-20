@@ -14,12 +14,12 @@ import java.util.Map;
 public final class SshPublicKeysUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * sshPublicKeyExamples/SshPublicKey_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKey_Update_MinimumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void sshPublicKeyUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -33,12 +33,12 @@ public final class SshPublicKeysUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * sshPublicKeyExamples/SshPublicKey_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKey_Update_MaximumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void sshPublicKeyUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {

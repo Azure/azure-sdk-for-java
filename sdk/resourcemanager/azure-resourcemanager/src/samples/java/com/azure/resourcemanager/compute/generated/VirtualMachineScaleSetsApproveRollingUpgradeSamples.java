@@ -13,12 +13,12 @@ import java.util.Arrays;
 public final class VirtualMachineScaleSetsApproveRollingUpgradeSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_ApproveRollingUpgrade.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_ApproveRollingUpgrade.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void

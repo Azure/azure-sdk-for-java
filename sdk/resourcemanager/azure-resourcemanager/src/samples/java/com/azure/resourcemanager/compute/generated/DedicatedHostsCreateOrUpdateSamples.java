@@ -15,12 +15,12 @@ import java.util.Map;
 public final class DedicatedHostsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a dedicated host .
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateADedicatedHost(com.azure.resourcemanager.AzureResourceManager azure) {

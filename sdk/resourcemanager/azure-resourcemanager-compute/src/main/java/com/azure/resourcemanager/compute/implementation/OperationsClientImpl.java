@@ -45,7 +45,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(ComputeManagementClientImpl client) {
@@ -71,7 +71,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets a list of compute operations.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of compute operations along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -82,7 +82,7 @@ public final class OperationsClientImpl implements OperationsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
             .<PagedResponse<ComputeOperationValueInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -92,7 +92,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets a list of compute operations.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -105,7 +105,7 @@ public final class OperationsClientImpl implements OperationsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, accept, context)
@@ -115,7 +115,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets a list of compute operations.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of compute operations as paginated response with {@link PagedFlux}.
@@ -127,7 +127,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets a list of compute operations.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -141,7 +141,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets a list of compute operations.
-     * 
+     *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of compute operations as paginated response with {@link PagedIterable}.
@@ -153,7 +153,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets a list of compute operations.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
