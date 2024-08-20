@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.management.validationstests;
+package com.azure.spring.cloud.feature.management;
 
-import com.azure.spring.cloud.feature.management.FeatureManager;
 import com.azure.spring.cloud.feature.management.filters.TargetingFilter;
 import com.azure.spring.cloud.feature.management.filters.TargetingFilterTestContextAccessor;
 import com.azure.spring.cloud.feature.management.filters.TimeWindowFilter;
