@@ -3,15 +3,16 @@
 
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.resourcemanager.compute.models.EncryptionStatus;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.MissingNode;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 class LinuxEncryptionExtensionUtil {
     /**
@@ -35,15 +36,15 @@ class LinuxEncryptionExtensionUtil {
      * @return os disk status
      */
     static EncryptionStatus osDiskStatus(VirtualMachineExtensionInstanceView instanceView) {
-        final JsonNode subStatusNode = instanceViewFirstSubStatus(instanceView);
-        if (subStatusNode == null) {
+        final Map<String, Object> subStatus = instanceViewFirstSubStatus(instanceView);
+        if (subStatus == null) {
             return EncryptionStatus.UNKNOWN;
         }
-        JsonNode diskNode = subStatusNode.path("os");
-        if (diskNode instanceof MissingNode) {
+        Object disk = subStatus.get("os");
+        if (disk == null) {
             return EncryptionStatus.UNKNOWN;
         }
-        return EncryptionStatus.fromString(diskNode.asText());
+        return EncryptionStatus.fromString(disk.toString());
     }
 
     /**
@@ -53,15 +54,15 @@ class LinuxEncryptionExtensionUtil {
      * @return data disk status
      */
     static EncryptionStatus dataDiskStatus(VirtualMachineExtensionInstanceView instanceView) {
-        final JsonNode subStatusNode = instanceViewFirstSubStatus(instanceView);
-        if (subStatusNode == null) {
+        final Map<String, Object> subStatus = instanceViewFirstSubStatus(instanceView);
+        if (subStatus == null) {
             return EncryptionStatus.UNKNOWN;
         }
-        JsonNode diskNode = subStatusNode.path("data");
-        if (diskNode instanceof MissingNode) {
+        Object disk = subStatus.get("data");
+        if (disk == null) {
             return EncryptionStatus.UNKNOWN;
         }
-        return EncryptionStatus.fromString(diskNode.asText());
+        return EncryptionStatus.fromString(disk.toString());
     }
 
     /**
@@ -83,7 +84,7 @@ class LinuxEncryptionExtensionUtil {
      * @param instanceView the extension instance view
      * @return the first sub-status
      */
-    static JsonNode instanceViewFirstSubStatus(VirtualMachineExtensionInstanceView instanceView) {
+    static Map<String, Object> instanceViewFirstSubStatus(VirtualMachineExtensionInstanceView instanceView) {
         if (instanceView == null || instanceView.substatuses() == null) {
             return null;
         }
@@ -91,13 +92,12 @@ class LinuxEncryptionExtensionUtil {
         if (instanceViewSubStatuses.size() == 0) {
             return null;
         }
-        ObjectMapper mapper = new ObjectMapper();
-        final JsonNode rootNode;
-        try {
-            rootNode = mapper.readTree(instanceViewSubStatuses.get(0).message());
-        } catch (IOException exception) {
+
+        try (JsonReader jsonReader = JsonProviders.createReader(instanceViewSubStatuses.get(0).message())) {
+            Map<String, Object> result = jsonReader.readMap(JsonReader::readUntyped);
+            return result;
+        } catch (IOException e) {
             return null;
         }
-        return rootNode;
     }
 }

@@ -140,8 +140,9 @@ public final class LogsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> List<T> queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
-        LogsQueryResult logsQueryResult = queryWorkspaceWithResponse(workspaceId, query, timeInterval, new LogsQueryOptions(), Context.NONE)
-            .getValue();
+        LogsQueryResult logsQueryResult
+            = queryWorkspaceWithResponse(workspaceId, query, timeInterval, new LogsQueryOptions(), Context.NONE)
+                .getValue();
         if (logsQueryResult != null) {
             return LogsQueryHelper.toObject(logsQueryResult.getTable(), type);
         }
@@ -161,10 +162,10 @@ public final class LogsQueryClient {
      * @throws NullPointerException if {@code workspaceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> List<T> queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval,
-                                      Class<T> type, LogsQueryOptions options) {
-        LogsQueryResult logsQueryResult = queryWorkspaceWithResponse(workspaceId, query, timeInterval, options, Context.NONE)
-                .getValue();
+    public <T> List<T> queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval, Class<T> type,
+        LogsQueryOptions options) {
+        LogsQueryResult logsQueryResult
+            = queryWorkspaceWithResponse(workspaceId, query, timeInterval, options, Context.NONE).getValue();
         if (logsQueryResult != null) {
             return LogsQueryHelper.toObject(logsQueryResult.getTable(), type);
         }
@@ -203,8 +204,8 @@ public final class LogsQueryClient {
      * @throws NullPointerException if {@code workspaceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogsQueryResult> queryWorkspaceWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
-                                                                LogsQueryOptions options, Context context) {
+    public Response<LogsQueryResult> queryWorkspaceWithResponse(String workspaceId, String query,
+        QueryTimeInterval timeInterval, LogsQueryOptions options, Context context) {
         return queryWorkspaceWithResponseInternal(workspaceId, query, timeInterval, options, context);
     }
 
@@ -224,15 +225,16 @@ public final class LogsQueryClient {
      * @throws NullPointerException if {@code workspaceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Response<List<T>> queryWorkspaceWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
-                                                            Class<T> type, LogsQueryOptions options, Context context) {
-        Response<LogsQueryResult> response = queryWorkspaceWithResponseInternal(workspaceId, query, timeInterval, options, context);
-        return new SimpleResponse<>(response.getRequest(),
-            response.getStatusCode(), response.getHeaders(),
+    public <T> Response<List<T>> queryWorkspaceWithResponse(String workspaceId, String query,
+        QueryTimeInterval timeInterval, Class<T> type, LogsQueryOptions options, Context context) {
+        Response<LogsQueryResult> response
+            = queryWorkspaceWithResponseInternal(workspaceId, query, timeInterval, options, context);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             LogsQueryHelper.toObject(response.getValue().getTable(), type));
     }
 
-    Response<LogsQueryResult> queryWorkspaceWithResponseInternal(String workspaceId, String query, QueryTimeInterval timeInterval, LogsQueryOptions options, Context context) {
+    Response<LogsQueryResult> queryWorkspaceWithResponseInternal(String workspaceId, String query,
+        QueryTimeInterval timeInterval, LogsQueryOptions options, Context context) {
 
         Objects.requireNonNull(workspaceId, "'workspaceId' cannot be null.");
         Objects.requireNonNull(query, "'query' cannot be null.");
@@ -244,10 +246,10 @@ public final class LogsQueryClient {
             queryBody.setTimespan(LogsQueryHelper.toIso8601Format(timeInterval));
         }
         queryBody.setWorkspaces(getAllWorkspaces(options));
-        Response<QueryResults> queryResultsResponse = serviceClient.getQueries().executeWithResponse(workspaceId, queryBody, preferHeader, context);
+        Response<QueryResults> queryResultsResponse
+            = serviceClient.getQueries().executeWithResponse(workspaceId, queryBody, preferHeader, context);
         return convertToLogQueryResult(queryResultsResponse);
     }
-
 
     /**
      * Returns all the Azure Monitor logs matching the given batch of queries.
@@ -283,7 +285,6 @@ public final class LogsQueryClient {
         return queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
     }
 
-
     /**
      * Returns all the Azure Monitor logs matching the given batch of queries.
      *
@@ -294,11 +295,13 @@ public final class LogsQueryClient {
      * @throws NullPointerException if {@code logsBatchQuery} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogsBatchQueryResultCollection> queryBatchWithResponse(LogsBatchQuery logsBatchQuery, Context context) {
+    public Response<LogsBatchQueryResultCollection> queryBatchWithResponse(LogsBatchQuery logsBatchQuery,
+        Context context) {
         return queryBatchWithResponseInternal(logsBatchQuery, context);
     }
 
-    private Response<LogsBatchQueryResultCollection> queryBatchWithResponseInternal(LogsBatchQuery logsBatchQuery, Context context) {
+    private Response<LogsBatchQueryResultCollection> queryBatchWithResponseInternal(LogsBatchQuery logsBatchQuery,
+        Context context) {
         Objects.requireNonNull(logsBatchQuery, "'logsBatchQuery' cannot be null.");
         List<BatchQueryRequest> requests = LogsQueryHelper.getBatchQueries(logsBatchQuery);
         Duration maxServerTimeout = LogsQueryHelper.getMaxServerTimeout(logsBatchQuery);
@@ -308,7 +311,8 @@ public final class LogsQueryClient {
 
         BatchRequest batchRequest = new BatchRequest(requests);
 
-        Response<BatchResponse> batchResponseResponse = serviceClient.getQueries().batchWithResponse(batchRequest, context);
+        Response<BatchResponse> batchResponseResponse
+            = serviceClient.getQueries().batchWithResponse(batchRequest, context);
         return convertToLogQueryBatchResult(batchResponseResponse);
     }
 
@@ -337,7 +341,8 @@ public final class LogsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogsQueryResult queryResource(String resourceId, String query, QueryTimeInterval timeInterval) {
-        return queryResourceWithResponse(resourceId, query, timeInterval, new LogsQueryOptions(), Context.NONE).getValue();
+        return queryResourceWithResponse(resourceId, query, timeInterval, new LogsQueryOptions(), Context.NONE)
+            .getValue();
     }
 
     /**
@@ -372,10 +377,10 @@ public final class LogsQueryClient {
      * @throws NullPointerException if {@code resourceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> List<T> queryResource(String resourceId, String query, QueryTimeInterval timeInterval,
-                                      Class<T> type, LogsQueryOptions options) {
-        LogsQueryResult logsQueryResult = queryResourceWithResponse(resourceId, query, timeInterval, options, Context.NONE)
-            .getValue();
+    public <T> List<T> queryResource(String resourceId, String query, QueryTimeInterval timeInterval, Class<T> type,
+        LogsQueryOptions options) {
+        LogsQueryResult logsQueryResult
+            = queryResourceWithResponse(resourceId, query, timeInterval, options, Context.NONE).getValue();
         if (logsQueryResult != null) {
             return LogsQueryHelper.toObject(logsQueryResult.getTable(), type);
         }
@@ -414,8 +419,8 @@ public final class LogsQueryClient {
      * @throws NullPointerException if {@code resourceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogsQueryResult> queryResourceWithResponse(String resourceId, String query, QueryTimeInterval timeInterval,
-                                                                LogsQueryOptions options, Context context) {
+    public Response<LogsQueryResult> queryResourceWithResponse(String resourceId, String query,
+        QueryTimeInterval timeInterval, LogsQueryOptions options, Context context) {
         return queryResourceWithResponseInternal(resourceId, query, timeInterval, options, context);
     }
 
@@ -435,16 +440,16 @@ public final class LogsQueryClient {
      * @throws NullPointerException if {@code resourceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Response<List<T>> queryResourceWithResponse(String resourceId, String query, QueryTimeInterval timeInterval,
-                                                            Class<T> type, LogsQueryOptions options, Context context) {
-        Response<LogsQueryResult> response = queryResourceWithResponseInternal(resourceId, query, timeInterval, options, context);
-        return new SimpleResponse<>(response.getRequest(),
-            response.getStatusCode(), response.getHeaders(),
+    public <T> Response<List<T>> queryResourceWithResponse(String resourceId, String query,
+        QueryTimeInterval timeInterval, Class<T> type, LogsQueryOptions options, Context context) {
+        Response<LogsQueryResult> response
+            = queryResourceWithResponseInternal(resourceId, query, timeInterval, options, context);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             LogsQueryHelper.toObject(response.getValue().getTable(), type));
     }
 
-    private Response<LogsQueryResult> queryResourceWithResponseInternal(String resourceId, String query, QueryTimeInterval timeInterval,
-                                                                        LogsQueryOptions options, Context context) {
+    private Response<LogsQueryResult> queryResourceWithResponseInternal(String resourceId, String query,
+        QueryTimeInterval timeInterval, LogsQueryOptions options, Context context) {
         Objects.requireNonNull(resourceId, "'resourceId' cannot be null.");
         Objects.requireNonNull(query, "'query' cannot be null.");
 
@@ -460,7 +465,8 @@ public final class LogsQueryClient {
             queryBody.setTimespan(LogsQueryHelper.toIso8601Format(timeInterval));
         }
         queryBody.setWorkspaces(getAllWorkspaces(options));
-        Response<QueryResults> queryResultsResponse = serviceClient.getQueries().resourceExecuteWithResponse(resourceId, queryBody, preferHeader, context);
+        Response<QueryResults> queryResultsResponse
+            = serviceClient.getQueries().resourceExecuteWithResponse(resourceId, queryBody, preferHeader, context);
         return convertToLogQueryResult(queryResultsResponse);
     }
 

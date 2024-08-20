@@ -5,32 +5,31 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Additional workflow properties.
  */
 @Fluent
-public final class WorkflowEnvelopeProperties {
+public final class WorkflowEnvelopeProperties implements JsonSerializable<WorkflowEnvelopeProperties> {
     /*
      * Gets or sets the files.
      */
-    @JsonProperty(value = "files")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> files;
 
     /*
      * Gets or sets the state of the workflow.
      */
-    @JsonProperty(value = "flowState")
     private WorkflowState flowState;
 
     /*
      * Gets or sets workflow health.
      */
-    @JsonProperty(value = "health")
     private WorkflowHealth health;
 
     /**
@@ -108,5 +107,48 @@ public final class WorkflowEnvelopeProperties {
         if (health() != null) {
             health().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("files", this.files, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("flowState", this.flowState == null ? null : this.flowState.toString());
+        jsonWriter.writeJsonField("health", this.health);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowEnvelopeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowEnvelopeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowEnvelopeProperties.
+     */
+    public static WorkflowEnvelopeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowEnvelopeProperties deserializedWorkflowEnvelopeProperties = new WorkflowEnvelopeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("files".equals(fieldName)) {
+                    Map<String, Object> files = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedWorkflowEnvelopeProperties.files = files;
+                } else if ("flowState".equals(fieldName)) {
+                    deserializedWorkflowEnvelopeProperties.flowState = WorkflowState.fromString(reader.getString());
+                } else if ("health".equals(fieldName)) {
+                    deserializedWorkflowEnvelopeProperties.health = WorkflowHealth.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowEnvelopeProperties;
+        });
     }
 }

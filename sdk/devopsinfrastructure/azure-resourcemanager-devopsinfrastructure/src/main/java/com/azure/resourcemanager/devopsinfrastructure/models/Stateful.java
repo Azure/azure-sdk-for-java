@@ -114,7 +114,12 @@ public final class Stateful extends AgentProfile {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (resourcePredictions() != null) {
+            resourcePredictions().validate();
+        }
+        if (resourcePredictionsProfile() != null) {
+            resourcePredictionsProfile().validate();
+        }
     }
 
     /**

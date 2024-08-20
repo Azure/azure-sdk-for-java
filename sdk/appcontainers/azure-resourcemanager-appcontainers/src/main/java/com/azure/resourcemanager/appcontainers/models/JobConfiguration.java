@@ -60,12 +60,6 @@ public final class JobConfiguration implements JsonSerializable<JobConfiguration
      */
     private List<RegistryCredentials> registries;
 
-    /*
-     * Optional settings for Managed Identities that are assigned to the Container App Job. If a Managed Identity is not
-     * specified here, default settings will be used.
-     */
-    private List<IdentitySettings> identitySettings;
-
     /**
      * Creates an instance of JobConfiguration class.
      */
@@ -237,28 +231,6 @@ public final class JobConfiguration implements JsonSerializable<JobConfiguration
     }
 
     /**
-     * Get the identitySettings property: Optional settings for Managed Identities that are assigned to the Container
-     * App Job. If a Managed Identity is not specified here, default settings will be used.
-     * 
-     * @return the identitySettings value.
-     */
-    public List<IdentitySettings> identitySettings() {
-        return this.identitySettings;
-    }
-
-    /**
-     * Set the identitySettings property: Optional settings for Managed Identities that are assigned to the Container
-     * App Job. If a Managed Identity is not specified here, default settings will be used.
-     * 
-     * @param identitySettings the identitySettings value to set.
-     * @return the JobConfiguration object itself.
-     */
-    public JobConfiguration withIdentitySettings(List<IdentitySettings> identitySettings) {
-        this.identitySettings = identitySettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -283,9 +255,6 @@ public final class JobConfiguration implements JsonSerializable<JobConfiguration
         if (registries() != null) {
             registries().forEach(e -> e.validate());
         }
-        if (identitySettings() != null) {
-            identitySettings().forEach(e -> e.validate());
-        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobConfiguration.class);
@@ -304,8 +273,6 @@ public final class JobConfiguration implements JsonSerializable<JobConfiguration
         jsonWriter.writeJsonField("scheduleTriggerConfig", this.scheduleTriggerConfig);
         jsonWriter.writeJsonField("eventTriggerConfig", this.eventTriggerConfig);
         jsonWriter.writeArrayField("registries", this.registries, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("identitySettings", this.identitySettings,
-            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -347,10 +314,6 @@ public final class JobConfiguration implements JsonSerializable<JobConfiguration
                     List<RegistryCredentials> registries
                         = reader.readArray(reader1 -> RegistryCredentials.fromJson(reader1));
                     deserializedJobConfiguration.registries = registries;
-                } else if ("identitySettings".equals(fieldName)) {
-                    List<IdentitySettings> identitySettings
-                        = reader.readArray(reader1 -> IdentitySettings.fromJson(reader1));
-                    deserializedJobConfiguration.identitySettings = identitySettings;
                 } else {
                     reader.skipChildren();
                 }

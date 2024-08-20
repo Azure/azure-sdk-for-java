@@ -4,8 +4,8 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Description of the field semantic schema using a JSON Schema style syntax.
  */
-@Immutable
+@Fluent
 public final class DocumentFieldSchema implements JsonSerializable<DocumentFieldSchema> {
     /*
      * Semantic data type of the field value.
@@ -54,7 +54,7 @@ public final class DocumentFieldSchema implements JsonSerializable<DocumentField
      * @param type the type value to set.
      */
     @Generated
-    private DocumentFieldSchema(DocumentFieldType type) {
+    public DocumentFieldSchema(DocumentFieldType type) {
         this.type = type;
     }
 
@@ -79,6 +79,18 @@ public final class DocumentFieldSchema implements JsonSerializable<DocumentField
     }
 
     /**
+     * Set the description property: Field description.
+     * 
+     * @param description the description value to set.
+     * @return the DocumentFieldSchema object itself.
+     */
+    @Generated
+    public DocumentFieldSchema setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
      * Get the example property: Example field content.
      * 
      * @return the example value.
@@ -86,6 +98,18 @@ public final class DocumentFieldSchema implements JsonSerializable<DocumentField
     @Generated
     public String getExample() {
         return this.example;
+    }
+
+    /**
+     * Set the example property: Example field content.
+     * 
+     * @param example the example value to set.
+     * @return the DocumentFieldSchema object itself.
+     */
+    @Generated
+    public DocumentFieldSchema setExample(String example) {
+        this.example = example;
+        return this;
     }
 
     /**
@@ -99,6 +123,18 @@ public final class DocumentFieldSchema implements JsonSerializable<DocumentField
     }
 
     /**
+     * Set the items property: Field type schema of each array element.
+     * 
+     * @param items the items value to set.
+     * @return the DocumentFieldSchema object itself.
+     */
+    @Generated
+    public DocumentFieldSchema setItems(DocumentFieldSchema items) {
+        this.items = items;
+        return this;
+    }
+
+    /**
      * Get the properties property: Named sub-fields of the object field.
      * 
      * @return the properties value.
@@ -106,6 +142,18 @@ public final class DocumentFieldSchema implements JsonSerializable<DocumentField
     @Generated
     public Map<String, DocumentFieldSchema> getProperties() {
         return this.properties;
+    }
+
+    /**
+     * Set the properties property: Named sub-fields of the object field.
+     * 
+     * @param properties the properties value to set.
+     * @return the DocumentFieldSchema object itself.
+     */
+    @Generated
+    public DocumentFieldSchema setProperties(Map<String, DocumentFieldSchema> properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**

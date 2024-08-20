@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.OriginUpdatePropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Origin properties needed for origin update.
  */
 @Fluent
-public final class OriginUpdateParameters {
+public final class OriginUpdateParameters implements JsonSerializable<OriginUpdateParameters> {
     /*
      * The JSON object that contains the properties of the origin.
      */
-    @JsonProperty(value = "properties")
     private OriginUpdatePropertiesParameters innerProperties;
 
     /**
@@ -316,5 +319,42 @@ public final class OriginUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OriginUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OriginUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OriginUpdateParameters.
+     */
+    public static OriginUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OriginUpdateParameters deserializedOriginUpdateParameters = new OriginUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedOriginUpdateParameters.innerProperties
+                        = OriginUpdatePropertiesParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOriginUpdateParameters;
+        });
     }
 }

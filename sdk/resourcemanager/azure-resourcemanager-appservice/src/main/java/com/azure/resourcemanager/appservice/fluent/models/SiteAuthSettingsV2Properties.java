@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AuthPlatform;
 import com.azure.resourcemanager.appservice.models.GlobalValidation;
 import com.azure.resourcemanager.appservice.models.HttpSettings;
 import com.azure.resourcemanager.appservice.models.IdentityProviders;
 import com.azure.resourcemanager.appservice.models.Login;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * SiteAuthSettingsV2 resource specific properties.
  */
 @Fluent
-public final class SiteAuthSettingsV2Properties {
+public final class SiteAuthSettingsV2Properties implements JsonSerializable<SiteAuthSettingsV2Properties> {
     /*
      * The configuration settings of the platform of App Service Authentication/Authorization.
      */
-    @JsonProperty(value = "platform")
     private AuthPlatform platform;
 
     /*
-     * The configuration settings that determines the validation flow of users using App Service Authentication/Authorization.
+     * The configuration settings that determines the validation flow of users using App Service
+     * Authentication/Authorization.
      */
-    @JsonProperty(value = "globalValidation")
     private GlobalValidation globalValidation;
 
     /*
-     * The configuration settings of each of the identity providers used to configure App Service Authentication/Authorization.
+     * The configuration settings of each of the identity providers used to configure App Service
+     * Authentication/Authorization.
      */
-    @JsonProperty(value = "identityProviders")
     private IdentityProviders identityProviders;
 
     /*
      * The configuration settings of the login flow of users using App Service Authentication/Authorization.
      */
-    @JsonProperty(value = "login")
     private Login login;
 
     /*
-     * The configuration settings of the HTTP requests for authentication and authorization requests made against App Service Authentication/Authorization.
+     * The configuration settings of the HTTP requests for authentication and authorization requests made against App
+     * Service Authentication/Authorization.
      */
-    @JsonProperty(value = "httpSettings")
     private HttpSettings httpSettings;
 
     /**
@@ -184,5 +186,53 @@ public final class SiteAuthSettingsV2Properties {
         if (httpSettings() != null) {
             httpSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("platform", this.platform);
+        jsonWriter.writeJsonField("globalValidation", this.globalValidation);
+        jsonWriter.writeJsonField("identityProviders", this.identityProviders);
+        jsonWriter.writeJsonField("login", this.login);
+        jsonWriter.writeJsonField("httpSettings", this.httpSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteAuthSettingsV2Properties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteAuthSettingsV2Properties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteAuthSettingsV2Properties.
+     */
+    public static SiteAuthSettingsV2Properties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteAuthSettingsV2Properties deserializedSiteAuthSettingsV2Properties = new SiteAuthSettingsV2Properties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("platform".equals(fieldName)) {
+                    deserializedSiteAuthSettingsV2Properties.platform = AuthPlatform.fromJson(reader);
+                } else if ("globalValidation".equals(fieldName)) {
+                    deserializedSiteAuthSettingsV2Properties.globalValidation = GlobalValidation.fromJson(reader);
+                } else if ("identityProviders".equals(fieldName)) {
+                    deserializedSiteAuthSettingsV2Properties.identityProviders = IdentityProviders.fromJson(reader);
+                } else if ("login".equals(fieldName)) {
+                    deserializedSiteAuthSettingsV2Properties.login = Login.fromJson(reader);
+                } else if ("httpSettings".equals(fieldName)) {
+                    deserializedSiteAuthSettingsV2Properties.httpSettings = HttpSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteAuthSettingsV2Properties;
+        });
     }
 }

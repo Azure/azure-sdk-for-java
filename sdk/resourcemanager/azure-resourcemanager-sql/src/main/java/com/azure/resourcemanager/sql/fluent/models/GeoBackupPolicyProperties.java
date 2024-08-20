@@ -6,31 +6,37 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.GeoBackupPolicyState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of the geo backup policy. */
+/**
+ * The properties of the geo backup policy.
+ */
 @Fluent
-public final class GeoBackupPolicyProperties {
+public final class GeoBackupPolicyProperties implements JsonSerializable<GeoBackupPolicyProperties> {
     /*
      * The state of the geo backup policy.
      */
-    @JsonProperty(value = "state", required = true)
     private GeoBackupPolicyState state;
 
     /*
      * The storage type of the geo backup policy.
      */
-    @JsonProperty(value = "storageType", access = JsonProperty.Access.WRITE_ONLY)
     private String storageType;
 
-    /** Creates an instance of GeoBackupPolicyProperties class. */
+    /**
+     * Creates an instance of GeoBackupPolicyProperties class.
+     */
     public GeoBackupPolicyProperties() {
     }
 
     /**
      * Get the state property: The state of the geo backup policy.
-     *
+     * 
      * @return the state value.
      */
     public GeoBackupPolicyState state() {
@@ -39,7 +45,7 @@ public final class GeoBackupPolicyProperties {
 
     /**
      * Set the state property: The state of the geo backup policy.
-     *
+     * 
      * @param state the state value to set.
      * @return the GeoBackupPolicyProperties object itself.
      */
@@ -50,7 +56,7 @@ public final class GeoBackupPolicyProperties {
 
     /**
      * Get the storageType property: The storage type of the geo backup policy.
-     *
+     * 
      * @return the storageType value.
      */
     public String storageType() {
@@ -59,16 +65,55 @@ public final class GeoBackupPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property state in model GeoBackupPolicyProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GeoBackupPolicyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GeoBackupPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GeoBackupPolicyProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GeoBackupPolicyProperties.
+     */
+    public static GeoBackupPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GeoBackupPolicyProperties deserializedGeoBackupPolicyProperties = new GeoBackupPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedGeoBackupPolicyProperties.state = GeoBackupPolicyState.fromString(reader.getString());
+                } else if ("storageType".equals(fieldName)) {
+                    deserializedGeoBackupPolicyProperties.storageType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGeoBackupPolicyProperties;
+        });
+    }
 }

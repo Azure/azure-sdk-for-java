@@ -5,9 +5,14 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.CapacityReservationInstanceView;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -15,12 +20,11 @@ import java.util.List;
  * Properties of the Capacity reservation.
  */
 @Immutable
-public final class CapacityReservationProperties {
+public final class CapacityReservationProperties implements JsonSerializable<CapacityReservationProperties> {
     /*
      * A unique id generated and assigned to the capacity reservation by the platform which does not change throughout
      * the lifetime of the resource.
      */
-    @JsonProperty(value = "reservationId", access = JsonProperty.Access.WRITE_ONLY)
     private String reservationId;
 
     /*
@@ -28,37 +32,31 @@ public final class CapacityReservationProperties {
      * fault domain count specified for a resource (like virtual machines scale set) must be less than or equal to this
      * value if it deploys using capacity reservation. Minimum api-version: 2022-08-01.
      */
-    @JsonProperty(value = "platformFaultDomainCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer platformFaultDomainCount;
 
     /*
      * A list of all virtual machine resource ids that are associated with the capacity reservation.
      */
-    @JsonProperty(value = "virtualMachinesAssociated", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> virtualMachinesAssociated;
 
     /*
      * The date time when the capacity reservation was last updated.
      */
-    @JsonProperty(value = "provisioningTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime provisioningTime;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The Capacity reservation instance view.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private CapacityReservationInstanceView instanceView;
 
     /*
      * Specifies the time at which the Capacity Reservation resource was created. Minimum api-version: 2021-11-01.
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /**
@@ -148,5 +146,59 @@ public final class CapacityReservationProperties {
         if (instanceView() != null) {
             instanceView().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapacityReservationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapacityReservationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapacityReservationProperties.
+     */
+    public static CapacityReservationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapacityReservationProperties deserializedCapacityReservationProperties
+                = new CapacityReservationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reservationId".equals(fieldName)) {
+                    deserializedCapacityReservationProperties.reservationId = reader.getString();
+                } else if ("platformFaultDomainCount".equals(fieldName)) {
+                    deserializedCapacityReservationProperties.platformFaultDomainCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("virtualMachinesAssociated".equals(fieldName)) {
+                    List<SubResourceReadOnly> virtualMachinesAssociated
+                        = reader.readArray(reader1 -> SubResourceReadOnly.fromJson(reader1));
+                    deserializedCapacityReservationProperties.virtualMachinesAssociated = virtualMachinesAssociated;
+                } else if ("provisioningTime".equals(fieldName)) {
+                    deserializedCapacityReservationProperties.provisioningTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCapacityReservationProperties.provisioningState = reader.getString();
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedCapacityReservationProperties.instanceView
+                        = CapacityReservationInstanceView.fromJson(reader);
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedCapacityReservationProperties.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapacityReservationProperties;
+        });
     }
 }

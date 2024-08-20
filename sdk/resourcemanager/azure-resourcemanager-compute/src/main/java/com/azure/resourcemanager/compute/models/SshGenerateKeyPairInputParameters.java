@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters for GenerateSshKeyPair.
  */
 @Fluent
-public final class SshGenerateKeyPairInputParameters {
+public final class SshGenerateKeyPairInputParameters implements JsonSerializable<SshGenerateKeyPairInputParameters> {
     /*
      * The encryption type of the SSH keys to be generated. See SshEncryptionTypes for possible set of values. If not
      * provided, will default to RSA
      */
-    @JsonProperty(value = "encryptionType")
     private SshEncryptionTypes encryptionType;
 
     /**
@@ -53,5 +56,44 @@ public final class SshGenerateKeyPairInputParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("encryptionType",
+            this.encryptionType == null ? null : this.encryptionType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SshGenerateKeyPairInputParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SshGenerateKeyPairInputParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SshGenerateKeyPairInputParameters.
+     */
+    public static SshGenerateKeyPairInputParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SshGenerateKeyPairInputParameters deserializedSshGenerateKeyPairInputParameters
+                = new SshGenerateKeyPairInputParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encryptionType".equals(fieldName)) {
+                    deserializedSshGenerateKeyPairInputParameters.encryptionType
+                        = SshEncryptionTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSshGenerateKeyPairInputParameters;
+        });
     }
 }

@@ -45,8 +45,7 @@ public final class RequestTelemetryBuilder extends AbstractTelemetryBuilder {
     }
 
     public void setResponseCode(String responseCode) {
-        data.setResponseCode(
-            truncateTelemetry(responseCode, MAX_RESPONSE_CODE_LENGTH, "Request.responseCode"));
+        data.setResponseCode(truncateTelemetry(responseCode, MAX_RESPONSE_CODE_LENGTH, "Request.responseCode"));
     }
 
     public void setSource(String source) {

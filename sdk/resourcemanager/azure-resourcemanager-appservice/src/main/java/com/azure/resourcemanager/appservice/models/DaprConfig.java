@@ -5,53 +5,51 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * App Dapr configuration.
  */
 @Fluent
-public final class DaprConfig {
+public final class DaprConfig implements JsonSerializable<DaprConfig> {
     /*
      * Boolean indicating if the Dapr side car is enabled
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Dapr application identifier
      */
-    @JsonProperty(value = "appId")
     private String appId;
 
     /*
      * Tells Dapr which port your application is listening on
      */
-    @JsonProperty(value = "appPort")
     private Integer appPort;
 
     /*
      * Dapr max size of http header read buffer in KB to handle when sending multi-KB headers. Default is 65KB.
      */
-    @JsonProperty(value = "httpReadBufferSize")
     private Integer httpReadBufferSize;
 
     /*
-     * Increasing max size of request body http servers parameter in MB to handle uploading of big files. Default is 4 MB.
+     * Increasing max size of request body http servers parameter in MB to handle uploading of big files. Default is 4
+     * MB.
      */
-    @JsonProperty(value = "httpMaxRequestSize")
     private Integer httpMaxRequestSize;
 
     /*
      * Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error. Default is info.
      */
-    @JsonProperty(value = "logLevel")
     private DaprLogLevel logLevel;
 
     /*
      * Enables API logging for the Dapr sidecar
      */
-    @JsonProperty(value = "enableApiLogging")
     private Boolean enableApiLogging;
 
     /**
@@ -212,5 +210,59 @@ public final class DaprConfig {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("appId", this.appId);
+        jsonWriter.writeNumberField("appPort", this.appPort);
+        jsonWriter.writeNumberField("httpReadBufferSize", this.httpReadBufferSize);
+        jsonWriter.writeNumberField("httpMaxRequestSize", this.httpMaxRequestSize);
+        jsonWriter.writeStringField("logLevel", this.logLevel == null ? null : this.logLevel.toString());
+        jsonWriter.writeBooleanField("enableApiLogging", this.enableApiLogging);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DaprConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DaprConfig if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the DaprConfig.
+     */
+    public static DaprConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DaprConfig deserializedDaprConfig = new DaprConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedDaprConfig.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appId".equals(fieldName)) {
+                    deserializedDaprConfig.appId = reader.getString();
+                } else if ("appPort".equals(fieldName)) {
+                    deserializedDaprConfig.appPort = reader.getNullable(JsonReader::getInt);
+                } else if ("httpReadBufferSize".equals(fieldName)) {
+                    deserializedDaprConfig.httpReadBufferSize = reader.getNullable(JsonReader::getInt);
+                } else if ("httpMaxRequestSize".equals(fieldName)) {
+                    deserializedDaprConfig.httpMaxRequestSize = reader.getNullable(JsonReader::getInt);
+                } else if ("logLevel".equals(fieldName)) {
+                    deserializedDaprConfig.logLevel = DaprLogLevel.fromString(reader.getString());
+                } else if ("enableApiLogging".equals(fieldName)) {
+                    deserializedDaprConfig.enableApiLogging = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDaprConfig;
+        });
     }
 }

@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.CanMigrateDefaultSku;
 import com.azure.resourcemanager.cdn.models.MigrationErrorType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Result for canMigrate operation.
  */
 @Fluent
-public final class CanMigrateResultInner {
+public final class CanMigrateResultInner implements JsonSerializable<CanMigrateResultInner> {
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private CanMigrateProperties innerProperties;
 
     /**
@@ -116,5 +117,45 @@ public final class CanMigrateResultInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CanMigrateResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CanMigrateResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CanMigrateResultInner.
+     */
+    public static CanMigrateResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CanMigrateResultInner deserializedCanMigrateResultInner = new CanMigrateResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCanMigrateResultInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCanMigrateResultInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCanMigrateResultInner.innerProperties = CanMigrateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCanMigrateResultInner;
+        });
     }
 }

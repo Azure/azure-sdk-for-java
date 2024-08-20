@@ -6,8 +6,11 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -18,14 +21,27 @@ public final class AppServiceCertificateResourceInner extends Resource {
     /*
      * Core resource properties
      */
-    @JsonProperty(value = "properties")
     private AppServiceCertificateInner innerProperties;
 
     /*
      * Kind of resource.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of AppServiceCertificateResourceInner class.
@@ -60,6 +76,36 @@ public final class AppServiceCertificateResourceInner extends Resource {
     public AppServiceCertificateResourceInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -144,5 +190,60 @@ public final class AppServiceCertificateResourceInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServiceCertificateResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServiceCertificateResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppServiceCertificateResourceInner.
+     */
+    public static AppServiceCertificateResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServiceCertificateResourceInner deserializedAppServiceCertificateResourceInner
+                = new AppServiceCertificateResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAppServiceCertificateResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAppServiceCertificateResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAppServiceCertificateResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAppServiceCertificateResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAppServiceCertificateResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAppServiceCertificateResourceInner.innerProperties
+                        = AppServiceCertificateInner.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAppServiceCertificateResourceInner.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServiceCertificateResourceInner;
+        });
     }
 }

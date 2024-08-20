@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.ManagedServerDnsAliasInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of managed server DNS aliases. */
+/**
+ * A list of managed server DNS aliases.
+ */
 @Immutable
-public final class ManagedServerDnsAliasListResult {
+public final class ManagedServerDnsAliasListResult implements JsonSerializable<ManagedServerDnsAliasListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedServerDnsAliasInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedServerDnsAliasListResult class. */
+    /**
+     * Creates an instance of ManagedServerDnsAliasListResult class.
+     */
     public ManagedServerDnsAliasListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedServerDnsAliasInner> value() {
@@ -39,7 +45,7 @@ public final class ManagedServerDnsAliasListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,52 @@ public final class ManagedServerDnsAliasListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedServerDnsAliasListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedServerDnsAliasListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedServerDnsAliasListResult.
+     */
+    public static ManagedServerDnsAliasListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedServerDnsAliasListResult deserializedManagedServerDnsAliasListResult
+                = new ManagedServerDnsAliasListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ManagedServerDnsAliasInner> value
+                        = reader.readArray(reader1 -> ManagedServerDnsAliasInner.fromJson(reader1));
+                    deserializedManagedServerDnsAliasListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedManagedServerDnsAliasListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedServerDnsAliasListResult;
+        });
     }
 }

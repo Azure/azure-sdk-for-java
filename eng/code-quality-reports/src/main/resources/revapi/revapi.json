@@ -268,34 +268,6 @@
           "justification": "support configuration of Service Bus domain name."
         },
         {
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration::withId(java.lang.String)",
-          "justification": "Break by service. 'id' is previously not used in runtime."
-        },
-        {
-          "code": "java.class.noLongerInheritsFromClass",
-          "old": "class com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration",
-          "new": "class com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration",
-          "justification": "Break by service. 'id' is previously not used in runtime. And customer unlikely to use this class as subclass of 'SubResource'."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfiguration com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfiguration::withId(java.lang.String)",
-          "justification": "Break by service. 'id' is previously not used in runtime."
-        },
-        {
-          "code": "java.class.noLongerInheritsFromClass",
-          "old": "class com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfiguration",
-          "new": "class com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfiguration",
-          "justification": "Break by service. 'id' is previously not used in runtime. And customer unlikely to use this class as subclass of 'SubResource'."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.resourcemanager.network.models.ManagedServiceIdentity",
-          "new": "class com.azure.resourcemanager.network.models.ManagedServiceIdentity",
-          "justification": "Make the class final. User is unlikely to inherit from this class."
-        },
-        {
           "ignore": true,
           "code": "java.field.constantValueChanged",
           "old": "field com.azure.messaging.eventgrid.SystemEventNames.SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER",
@@ -473,36 +445,6 @@
           "justification": "Jackson annotation changed."
         },
         {
-          "code": "java.method.removed",
-          "old": "method java.lang.Integer com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::instanceCount()",
-          "justification": "The property flatten disabled due to model changed to polymorphic."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.cosmos.models.ServiceSize com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::instanceSize()",
-          "justification": "The property flatten disabled due to model changed to polymorphic."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.cosmos.models.ServiceType com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::serviceType()",
-          "justification": "The property flatten disabled due to model changed to polymorphic."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withInstanceCount(java.lang.Integer)",
-          "justification": "The property flatten disabled due to model changed to polymorphic."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withInstanceSize(com.azure.resourcemanager.cosmos.models.ServiceSize)",
-          "justification": "The property flatten disabled due to model changed to polymorphic."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withServiceType(com.azure.resourcemanager.cosmos.models.ServiceType)",
-          "justification": "The property flatten disabled due to model changed to polymorphic."
-        },
-        {
           "regex": true,
           "code" : "java\\.annotation\\.removed",
           "old" : ".*? com\\.azure\\.communication\\.phonenumbers\\.models.*",
@@ -512,8 +454,8 @@
         {
           "regex": true,
           "code" : "java\\.annotation\\.removed",
-          "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
-          "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
+          "old" : ".*? com\\.azure\\.digitaltwins\\.core(\\.models)?.*",
+          "new" : ".*? com\\.azure\\.digitaltwins\\.core(\\.models)?.*",
           "justification": "Migration to azure-json"
         },
         {
@@ -521,6 +463,13 @@
           "code" : "java\\.annotation\\.removed",
           "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
           "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
+          "new": ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
           "justification": "Migration to azure-json"
         },
         {
@@ -552,43 +501,18 @@
           "justification": "Migration to azure-json"
         },
         {
+          "regex": true,
           "code": "java.class.nowFinal",
-          "old" : "class com.azure.resourcemanager.eventhubs.models.Identity",
-          "new" : "class com.azure.resourcemanager.eventhubs.models.Identity",
+          "old" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.Identity",
+          "new" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.Identity",
           "justification": "Class is now final."
         },
         {
+          "regex": true,
           "code": "java.class.nowFinal",
-          "old" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
-          "new" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
+          "old" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.UserAssignedIdentity",
+          "new" : "class com.azure.resourcemanager.(eventhubs|servicebus).models.UserAssignedIdentity",
           "justification": "Class is now final."
-        },
-        {
-          "code" : "java.method.returnTypeTypeParametersChanged",
-          "old" : "method java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
-          "new" : "method java.util.List<java.lang.String> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
-          "justification": "Service breaks but no customer onboard."
-        },
-        {
-          "code" : "java.method.parameterTypeParameterChanged",
-          "old" : "parameter com.azure.resourcemanager.compute.models.SecurityPostureReference com.azure.resourcemanager.compute.models.SecurityPostureReference::withExcludeExtensions(===java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner>===)",
-          "new" : "parameter com.azure.resourcemanager.compute.models.SecurityPostureReference com.azure.resourcemanager.compute.models.SecurityPostureReference::withExcludeExtensions(===java.util.List<java.lang.String>===)",
-          "justification": "Service breaks but no customer onboard."
-        },
-        {
-          "code" : "java.class.removed",
-          "old" : "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
-          "justification": "Removed non-functional API `getOsOptions` and related models `OSOptionProperty`"
-        },
-        {
-          "code": "java.method.removed",
-          "old" : "method com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters::withId(java.lang.String)",
-          "justification": "service bug fix."
-        },
-        {
-          "code": "java.missing.oldSuperType",
-          "old": "class com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters",
-          "justification": "service bug fix."
         },
         {
           "ignore": true,
@@ -616,6 +540,99 @@
           "old" : "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.DeviceCodeCredentialBuilder",
           "new" : "method com.azure.identity.DeviceCodeCredentialBuilder com.azure.identity.DeviceCodeCredentialBuilder::clientId(java.lang.String)",
           "justification": "Override flags this as a potential binary breaking change, but it isn't."
+        },
+        {
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.compute\\.batch\\.models.*",
+          "justification": "Removing Jackson annotations from Azure Batch in transition to stream-style."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::instanceCount()",
+          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::instanceCount()",
+          "justification": "Service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::withInstanceCount(===java.lang.Float===)",
+          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::withInstanceCount(===java.lang.Integer===)",
+          "parameterIndex": "0",
+          "justification": "Service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::instanceMemoryMB()",
+          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::instanceMemoryMB()",
+          "justification": "Service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::maximumInstanceCount()",
+          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::maximumInstanceCount()",
+          "justification": "Service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withInstanceMemoryMB(===java.lang.Float===)",
+          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withInstanceMemoryMB(===java.lang.Integer===)",
+          "parameterIndex": "0",
+          "justification": "Service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withMaximumInstanceCount(===java.lang.Float===)",
+          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withMaximumInstanceCount(===java.lang.Integer===)",
+          "parameterIndex": "0",
+          "justification": "Service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::perInstanceConcurrency()",
+          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::perInstanceConcurrency()",
+          "justification": "Service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::withPerInstanceConcurrency(===java.lang.Float===)",
+          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::withPerInstanceConcurrency(===java.lang.Integer===)",
+          "parameterIndex": "0",
+          "justification": "Service bug fix."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.nowFinal",
+          "old": "class com.azure.resourcemanager.sql.models.DatabaseIdentity",
+          "new": "class com.azure.resourcemanager.sql.models.DatabaseIdentity",
+          "justification": "Customer unlikely to subclass this class."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.nowFinal",
+          "old": "class com.azure.resourcemanager.sql.models.DatabaseUserIdentity",
+          "new": "class com.azure.resourcemanager.sql.models.DatabaseUserIdentity",
+          "justification": "Customer unlikely to subclass this class."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.nowFinal",
+          "old": "class com.azure.resourcemanager.sql.models.ResourceIdentity",
+          "new": "class com.azure.resourcemanager.sql.models.ResourceIdentity",
+          "justification": "Customer unlikely to subclass this class."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.nowFinal",
+          "old": "class com.azure.resourcemanager.sql.models.UserIdentity",
+          "new": "class com.azure.resourcemanager.sql.models.UserIdentity",
+          "justification": "Customer unlikely to subclass this class."
         }
       ]
     }

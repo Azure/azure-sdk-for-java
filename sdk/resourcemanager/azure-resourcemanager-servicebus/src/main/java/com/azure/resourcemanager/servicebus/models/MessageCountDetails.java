@@ -5,44 +5,51 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Message Count Details. */
+/**
+ * Message Count Details.
+ */
 @Immutable
-public final class MessageCountDetails {
+public final class MessageCountDetails implements JsonSerializable<MessageCountDetails> {
     /*
      * Number of active messages in the queue, topic, or subscription.
      */
-    @JsonProperty(value = "activeMessageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long activeMessageCount;
 
     /*
      * Number of messages that are dead lettered.
      */
-    @JsonProperty(value = "deadLetterMessageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long deadLetterMessageCount;
 
     /*
      * Number of scheduled messages.
      */
-    @JsonProperty(value = "scheduledMessageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long scheduledMessageCount;
 
     /*
      * Number of messages transferred to another queue, topic, or subscription.
      */
-    @JsonProperty(value = "transferMessageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long transferMessageCount;
 
     /*
      * Number of messages transferred into dead letters.
      */
-    @JsonProperty(value = "transferDeadLetterMessageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long transferDeadLetterMessageCount;
 
     /**
+     * Creates an instance of MessageCountDetails class.
+     */
+    public MessageCountDetails() {
+    }
+
+    /**
      * Get the activeMessageCount property: Number of active messages in the queue, topic, or subscription.
-     *
+     * 
      * @return the activeMessageCount value.
      */
     public Long activeMessageCount() {
@@ -51,7 +58,7 @@ public final class MessageCountDetails {
 
     /**
      * Get the deadLetterMessageCount property: Number of messages that are dead lettered.
-     *
+     * 
      * @return the deadLetterMessageCount value.
      */
     public Long deadLetterMessageCount() {
@@ -60,7 +67,7 @@ public final class MessageCountDetails {
 
     /**
      * Get the scheduledMessageCount property: Number of scheduled messages.
-     *
+     * 
      * @return the scheduledMessageCount value.
      */
     public Long scheduledMessageCount() {
@@ -69,7 +76,7 @@ public final class MessageCountDetails {
 
     /**
      * Get the transferMessageCount property: Number of messages transferred to another queue, topic, or subscription.
-     *
+     * 
      * @return the transferMessageCount value.
      */
     public Long transferMessageCount() {
@@ -78,7 +85,7 @@ public final class MessageCountDetails {
 
     /**
      * Get the transferDeadLetterMessageCount property: Number of messages transferred into dead letters.
-     *
+     * 
      * @return the transferDeadLetterMessageCount value.
      */
     public Long transferDeadLetterMessageCount() {
@@ -87,9 +94,53 @@ public final class MessageCountDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageCountDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageCountDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MessageCountDetails.
+     */
+    public static MessageCountDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MessageCountDetails deserializedMessageCountDetails = new MessageCountDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("activeMessageCount".equals(fieldName)) {
+                    deserializedMessageCountDetails.activeMessageCount = reader.getNullable(JsonReader::getLong);
+                } else if ("deadLetterMessageCount".equals(fieldName)) {
+                    deserializedMessageCountDetails.deadLetterMessageCount = reader.getNullable(JsonReader::getLong);
+                } else if ("scheduledMessageCount".equals(fieldName)) {
+                    deserializedMessageCountDetails.scheduledMessageCount = reader.getNullable(JsonReader::getLong);
+                } else if ("transferMessageCount".equals(fieldName)) {
+                    deserializedMessageCountDetails.transferMessageCount = reader.getNullable(JsonReader::getLong);
+                } else if ("transferDeadLetterMessageCount".equals(fieldName)) {
+                    deserializedMessageCountDetails.transferDeadLetterMessageCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMessageCountDetails;
+        });
     }
 }

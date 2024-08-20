@@ -1,5 +1,21 @@
 # Release History
 
+## 1.0.0-beta.29 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.28 (2024-08-08)
+
+### Other Changes
+- [Migrate LiveMetric and VM metadata data models to azure-json](https://github.com/Azure/azure-sdk-for-java/pull/41458)
+- [Enable spotless code formatting](https://github.com/Azure/azure-sdk-for-java/pull/41462)
+
 ## 1.0.0-beta.27 (2024-08-05)
 
 ### Other Changes

@@ -5,83 +5,85 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.Encryption;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties of the namespace. */
+/**
+ * Properties of the namespace.
+ */
 @Fluent
-public final class SBNamespaceProperties {
+public final class SBNamespaceProperties implements JsonSerializable<SBNamespaceProperties> {
     /*
      * Provisioning state of the namespace.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Status of the namespace.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * The time the namespace was created
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
     /*
      * The time the namespace was updated.
      */
-    @JsonProperty(value = "updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedAt;
 
     /*
      * Endpoint you can use to perform Service Bus operations.
      */
-    @JsonProperty(value = "serviceBusEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceBusEndpoint;
 
     /*
      * Identifier for Azure Insights metrics
      */
-    @JsonProperty(value = "metricId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricId;
 
     /*
      * Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.
      */
-    @JsonProperty(value = "zoneRedundant")
     private Boolean zoneRedundant;
 
     /*
      * Properties of BYOK Encryption description
      */
-    @JsonProperty(value = "encryption")
     private Encryption encryption;
 
     /*
      * List of private endpoint connections.
      */
-    @JsonProperty(value = "privateEndpointConnections")
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * This property disables SAS authentication for the Service Bus namespace.
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
      * Alternate name for namespace
      */
-    @JsonProperty(value = "alternateName")
     private String alternateName;
 
     /**
+     * Creates an instance of SBNamespaceProperties class.
+     */
+    public SBNamespaceProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the namespace.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -90,7 +92,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Get the status property: Status of the namespace.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -99,7 +101,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Get the createdAt property: The time the namespace was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -108,7 +110,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Get the updatedAt property: The time the namespace was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -117,7 +119,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
-     *
+     * 
      * @return the serviceBusEndpoint value.
      */
     public String serviceBusEndpoint() {
@@ -126,7 +128,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Get the metricId property: Identifier for Azure Insights metrics.
-     *
+     * 
      * @return the metricId value.
      */
     public String metricId() {
@@ -136,7 +138,7 @@ public final class SBNamespaceProperties {
     /**
      * Get the zoneRedundant property: Enabling this property creates a Premium Service Bus Namespace in regions
      * supported availability zones.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -146,7 +148,7 @@ public final class SBNamespaceProperties {
     /**
      * Set the zoneRedundant property: Enabling this property creates a Premium Service Bus Namespace in regions
      * supported availability zones.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the SBNamespaceProperties object itself.
      */
@@ -157,7 +159,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Get the encryption property: Properties of BYOK Encryption description.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -166,7 +168,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Set the encryption property: Properties of BYOK Encryption description.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the SBNamespaceProperties object itself.
      */
@@ -177,7 +179,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -186,19 +188,19 @@ public final class SBNamespaceProperties {
 
     /**
      * Set the privateEndpointConnections property: List of private endpoint connections.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the SBNamespaceProperties object itself.
      */
-    public SBNamespaceProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public SBNamespaceProperties
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
 
     /**
      * Get the disableLocalAuth property: This property disables SAS authentication for the Service Bus namespace.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -207,7 +209,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Set the disableLocalAuth property: This property disables SAS authentication for the Service Bus namespace.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the SBNamespaceProperties object itself.
      */
@@ -218,7 +220,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Get the alternateName property: Alternate name for namespace.
-     *
+     * 
      * @return the alternateName value.
      */
     public String alternateName() {
@@ -227,7 +229,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Set the alternateName property: Alternate name for namespace.
-     *
+     * 
      * @param alternateName the alternateName value to set.
      * @return the SBNamespaceProperties object itself.
      */
@@ -238,7 +240,7 @@ public final class SBNamespaceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -248,5 +250,70 @@ public final class SBNamespaceProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("zoneRedundant", this.zoneRedundant);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeArrayField("privateEndpointConnections", this.privateEndpointConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeStringField("alternateName", this.alternateName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBNamespaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBNamespaceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SBNamespaceProperties.
+     */
+    public static SBNamespaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBNamespaceProperties deserializedSBNamespaceProperties = new SBNamespaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedSBNamespaceProperties.provisioningState = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedSBNamespaceProperties.status = reader.getString();
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedSBNamespaceProperties.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedAt".equals(fieldName)) {
+                    deserializedSBNamespaceProperties.updatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("serviceBusEndpoint".equals(fieldName)) {
+                    deserializedSBNamespaceProperties.serviceBusEndpoint = reader.getString();
+                } else if ("metricId".equals(fieldName)) {
+                    deserializedSBNamespaceProperties.metricId = reader.getString();
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedSBNamespaceProperties.zoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedSBNamespaceProperties.encryption = Encryption.fromJson(reader);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedSBNamespaceProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedSBNamespaceProperties.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("alternateName".equals(fieldName)) {
+                    deserializedSBNamespaceProperties.alternateName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBNamespaceProperties;
+        });
     }
 }

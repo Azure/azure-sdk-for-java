@@ -5,70 +5,68 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The AssetSecurityPolicy model.
  */
 @Immutable
-public final class AssetSecurityPolicy {
+public final class AssetSecurityPolicy implements JsonSerializable<AssetSecurityPolicy> {
 
     /*
      * The policyName property.
      */
     @Generated
-    @JsonProperty(value = "policyName")
     private String policyName;
 
     /*
      * The isAffected property.
      */
     @Generated
-    @JsonProperty(value = "isAffected")
     private Boolean isAffected;
 
     /*
      * The description property.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The recent property.
      */
     @Generated
-    @JsonProperty(value = "recent")
     private Boolean recent;
 
     /*
      * The sources property.
      */
     @Generated
-    @JsonProperty(value = "sources")
     private List<Source> sources;
 
     /**
@@ -156,5 +154,67 @@ public final class AssetSecurityPolicy {
     @Generated
     public List<Source> getSources() {
         return this.sources;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyName", this.policyName);
+        jsonWriter.writeBooleanField("isAffected", this.isAffected);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeBooleanField("recent", this.recent);
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssetSecurityPolicy from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssetSecurityPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AssetSecurityPolicy.
+     */
+    @Generated
+    public static AssetSecurityPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssetSecurityPolicy deserializedAssetSecurityPolicy = new AssetSecurityPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("policyName".equals(fieldName)) {
+                    deserializedAssetSecurityPolicy.policyName = reader.getString();
+                } else if ("isAffected".equals(fieldName)) {
+                    deserializedAssetSecurityPolicy.isAffected = reader.getNullable(JsonReader::getBoolean);
+                } else if ("description".equals(fieldName)) {
+                    deserializedAssetSecurityPolicy.description = reader.getString();
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedAssetSecurityPolicy.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedAssetSecurityPolicy.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedAssetSecurityPolicy.count = reader.getNullable(JsonReader::getLong);
+                } else if ("recent".equals(fieldName)) {
+                    deserializedAssetSecurityPolicy.recent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sources".equals(fieldName)) {
+                    List<Source> sources = reader.readArray(reader1 -> Source.fromJson(reader1));
+                    deserializedAssetSecurityPolicy.sources = sources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAssetSecurityPolicy;
+        });
     }
 }

@@ -5,69 +5,64 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AzureResourceType;
 import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;
 import com.azure.resourcemanager.appservice.models.HostnameType;
 import com.azure.resourcemanager.appservice.models.SslState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * HostNameBinding resource specific properties.
  */
 @Fluent
-public final class HostnameBindingProperties {
+public final class HostnameBindingProperties implements JsonSerializable<HostnameBindingProperties> {
     /*
      * App Service app name.
      */
-    @JsonProperty(value = "siteName")
     private String siteName;
 
     /*
      * Fully qualified ARM domain resource URI.
      */
-    @JsonProperty(value = "domainId")
     private String domainId;
 
     /*
      * Azure resource name.
      */
-    @JsonProperty(value = "azureResourceName")
     private String azureResourceName;
 
     /*
      * Azure resource type.
      */
-    @JsonProperty(value = "azureResourceType")
     private AzureResourceType azureResourceType;
 
     /*
      * Custom DNS record type.
      */
-    @JsonProperty(value = "customHostNameDnsRecordType")
     private CustomHostnameDnsRecordType customHostnameDnsRecordType;
 
     /*
      * Hostname type.
      */
-    @JsonProperty(value = "hostNameType")
     private HostnameType hostnameType;
 
     /*
      * SSL type
      */
-    @JsonProperty(value = "sslState")
     private SslState sslState;
 
     /*
      * SSL certificate thumbprint
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
      * Virtual IP address assigned to the hostname if IP based SSL is enabled.
      */
-    @JsonProperty(value = "virtualIP", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualIp;
 
     /**
@@ -252,5 +247,68 @@ public final class HostnameBindingProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("siteName", this.siteName);
+        jsonWriter.writeStringField("domainId", this.domainId);
+        jsonWriter.writeStringField("azureResourceName", this.azureResourceName);
+        jsonWriter.writeStringField("azureResourceType",
+            this.azureResourceType == null ? null : this.azureResourceType.toString());
+        jsonWriter.writeStringField("customHostNameDnsRecordType",
+            this.customHostnameDnsRecordType == null ? null : this.customHostnameDnsRecordType.toString());
+        jsonWriter.writeStringField("hostNameType", this.hostnameType == null ? null : this.hostnameType.toString());
+        jsonWriter.writeStringField("sslState", this.sslState == null ? null : this.sslState.toString());
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostnameBindingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostnameBindingProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HostnameBindingProperties.
+     */
+    public static HostnameBindingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostnameBindingProperties deserializedHostnameBindingProperties = new HostnameBindingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("siteName".equals(fieldName)) {
+                    deserializedHostnameBindingProperties.siteName = reader.getString();
+                } else if ("domainId".equals(fieldName)) {
+                    deserializedHostnameBindingProperties.domainId = reader.getString();
+                } else if ("azureResourceName".equals(fieldName)) {
+                    deserializedHostnameBindingProperties.azureResourceName = reader.getString();
+                } else if ("azureResourceType".equals(fieldName)) {
+                    deserializedHostnameBindingProperties.azureResourceType
+                        = AzureResourceType.fromString(reader.getString());
+                } else if ("customHostNameDnsRecordType".equals(fieldName)) {
+                    deserializedHostnameBindingProperties.customHostnameDnsRecordType
+                        = CustomHostnameDnsRecordType.fromString(reader.getString());
+                } else if ("hostNameType".equals(fieldName)) {
+                    deserializedHostnameBindingProperties.hostnameType = HostnameType.fromString(reader.getString());
+                } else if ("sslState".equals(fieldName)) {
+                    deserializedHostnameBindingProperties.sslState = SslState.fromString(reader.getString());
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedHostnameBindingProperties.thumbprint = reader.getString();
+                } else if ("virtualIP".equals(fieldName)) {
+                    deserializedHostnameBindingProperties.virtualIp = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHostnameBindingProperties;
+        });
     }
 }

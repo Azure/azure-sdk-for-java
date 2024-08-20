@@ -20,6 +20,11 @@ import java.io.IOException;
 @Fluent
 public final class ReplicationInner implements JsonSerializable<ReplicationInner> {
     /*
+     * UUID v4 used to identify the replication.
+     */
+    private String replicationId;
+
+    /*
      * Indicates whether the local volume is the source or destination for the Volume Replication
      */
     private EndpointType endpointType;
@@ -43,6 +48,15 @@ public final class ReplicationInner implements JsonSerializable<ReplicationInner
      * Creates an instance of ReplicationInner class.
      */
     public ReplicationInner() {
+    }
+
+    /**
+     * Get the replicationId property: UUID v4 used to identify the replication.
+     * 
+     * @return the replicationId value.
+     */
+    public String replicationId() {
+        return this.replicationId;
     }
 
     /**
@@ -174,6 +188,8 @@ public final class ReplicationInner implements JsonSerializable<ReplicationInner
 
                 if ("remoteVolumeResourceId".equals(fieldName)) {
                     deserializedReplicationInner.remoteVolumeResourceId = reader.getString();
+                } else if ("replicationId".equals(fieldName)) {
+                    deserializedReplicationInner.replicationId = reader.getString();
                 } else if ("endpointType".equals(fieldName)) {
                     deserializedReplicationInner.endpointType = EndpointType.fromString(reader.getString());
                 } else if ("replicationSchedule".equals(fieldName)) {
