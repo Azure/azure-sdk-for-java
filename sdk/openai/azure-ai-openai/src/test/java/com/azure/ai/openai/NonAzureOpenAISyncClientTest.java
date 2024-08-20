@@ -1075,7 +1075,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             byte[] fileContent = client.getFileContent(outputFileId);
             assertNotNull(fileContent);
 
-            // Get file by purpose
+            // List batches
             PageableList<Batch> batchPageableList = client.listBatches();
             assertNotNull(batchPageableList);
             assertFalse(CoreUtils.isNullOrEmpty(batchPageableList.getData()));

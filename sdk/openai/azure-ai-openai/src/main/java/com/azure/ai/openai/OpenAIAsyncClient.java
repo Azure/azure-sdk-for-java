@@ -1855,6 +1855,7 @@ public final class OpenAIAsyncClient {
         if (openAIServiceClient != null) {
             return this.openAIServiceClient.listBatchesWithResponseAsync(requestOptions);
         }
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listBatchesWithResponseAsync(requestOptions);
     }
 
@@ -1932,6 +1933,7 @@ public final class OpenAIAsyncClient {
         if (openAIServiceClient != null) {
             return this.openAIServiceClient.createBatchWithResponseAsync(createBatchRequest, requestOptions);
         }
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createBatchWithResponseAsync(createBatchRequest, requestOptions);
     }
 
@@ -1994,6 +1996,7 @@ public final class OpenAIAsyncClient {
         if (openAIServiceClient != null) {
             return this.openAIServiceClient.getBatchWithResponseAsync(batchId, requestOptions);
         }
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getBatchWithResponseAsync(batchId, requestOptions);
     }
 
@@ -2056,6 +2059,7 @@ public final class OpenAIAsyncClient {
         if (openAIServiceClient != null) {
             return this.openAIServiceClient.cancelBatchWithResponseAsync(batchId, requestOptions);
         }
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.cancelBatchWithResponseAsync(batchId, requestOptions);
     }
 

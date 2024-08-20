@@ -39,19 +39,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1254,101 +1251,87 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testBatchOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         uploadBatchFileRunner(((fileDetails, filePurpose) -> {
-            Mono<OpenAIFile> fileMono = client.uploadFile(fileDetails, filePurpose)
-                .doOnNext(file -> {
-                    assertNotNull(file);
-                    assertNotNull(file.getId());
-                });
-
-
-            StepVerifier.create(fileMono)
-                .expectComplete()
-                .verify();
-
-
-//            Mono<OpenAIFile> fileWithStatusMono = fileMono.flatMap(file -> {
-//                return Mono.defer(() -> {
-//                    if (file.getStatus() == FileState.PENDING) {
-//                        return Mono.delay(Duration.ofSeconds(1))
-//                            .then(client.getFile(file.getId()));
-//                    } else {
-//                        return Mono.just(file);
-//                    }
-//                });
-//            });
-//
-//            StepVerifier.create(fileWithStatusMono)
-//                .expectComplete()
-//                .verify();
-
-//            Mono<Batch> batchMono = fileWithStatusMono.flatMap(file -> {
-//                return client.createBatch("/v1/chat/completions", file.getId(), "24h")
-//                    .doOnNext(batch -> assertNotNull(batch));
-//            });
-//
-//            Mono<Batch> batchWithStatusMono = batchMono.flatMap(batch -> {
-//                    return Mono.defer(() -> {
-//                        return Mono.just(batch)
-//                            .expand(currentBatch -> {
-//                                if (currentBatch.getStatus() == BatchStatus.VALIDATING
-//                                    || currentBatch.getStatus() == BatchStatus.IN_PROGRESS
-//                                    || currentBatch.getStatus() == BatchStatus.FINALIZING) {
-//                                    return Mono.delay(Duration.ofSeconds(1))
-//                                        .then(client.getBatch(currentBatch.getId()));
-//                                } else {
-//                                    return Mono.empty();
-//                                }
-//                            })
-//                            .last();
-//                    });
-//                });
-//
-//            Mono<byte[]> fileContentMono = batchWithStatusMono.flatMap(batch -> {
-//                String outputFileId = batch.getOutputFileId();
-//                assertNotNull(outputFileId);
-//                return client.getFileContent(outputFileId)
-//                    .doOnNext(fileContent -> {
-//                        assertNotNull(fileContent);
-//                    })
-//                    .doOnNext(fileContent -> {
-//                        assertNotNull(fileContent);
-//                    })
-//                    .doOnNext(fileContent -> {
-//                        assertNotNull(fileContent);
-//                    });
-//            });
-//
-////            Mono<FileDeletionStatus> deletionStatusMono = batchWithStatusMono.then(fileWithStatusMono.flatMap(file -> {
-////                return client.deleteFile(file.getId())
-////                    .doOnNext(deletionStatus -> {
-////                        assertTrue(deletionStatus.isDeleted());
-////                        assertEquals(deletionStatus.getId(), file.getId());
-////                    });
-////            }));
-//
-//            StepVerifier.create(fileContentMono)
-//                .expectComplete()
-//                .verify();
-
-//            // List files
-//            Mono<List<Batch>> allBatchesMono = client.listBatches()
-//                .expand(batchPageableList -> {
-//                    if (batchPageableList.isHasMore()) {
-//                        return client.listBatches(batchPageableList.getLastId(), 100);
-//                    } else {
-//                        return Mono.empty();
-//                    }
-//                })
-//                .flatMap(batchPageableList -> {
-//                    assertNotNull(batchPageableList);
-//                    assertFalse(CoreUtils.isNullOrEmpty(batchPageableList.getData()));
-//                    return Flux.fromIterable(batchPageableList.getData());
-//                })
-//                .collectList();
-//            StepVerifier.create(allBatchesMono)
-//                .expectComplete()
-//                .verify();
-
+            StepVerifier.create(
+                client.uploadFile(fileDetails, filePurpose)
+                    // Upload file
+                    .flatMap(uploadedFile -> {
+                        assertNotNull(uploadedFile);
+                        assertNotNull(uploadedFile.getId());
+                        return client.getFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
+                    })
+                    // Compare uploaded file with file from backend
+                    .flatMap(tuple -> {
+                        OpenAIFile fileFromBackend = tuple.getT1();
+                        OpenAIFile uploadedFile = tuple.getT2();
+                        assertNotNull(uploadedFile);
+                        assertNotNull(fileFromBackend);
+                        assertFileEquals(uploadedFile, fileFromBackend);
+                        return Mono.defer(() -> {
+                            if (fileFromBackend.getStatus() == FileState.PENDING) {
+                                return Mono.delay(Duration.ofSeconds(5))
+                                    .then(client.getFile(fileFromBackend.getId())).zipWith(Mono.just(uploadedFile));
+                            } else {
+                                return Mono.just(fileFromBackend).zipWith(Mono.just(uploadedFile));
+                            }
+                        });
+                    })
+                    // Create batch with file
+                    .flatMap(tuple -> {
+                        OpenAIFile fileFromBackend = tuple.getT1();
+                        OpenAIFile uploadedFile = tuple.getT2();
+                        return client.createBatch("/v1/chat/completions", fileFromBackend.getId(), "24h")
+                            .zipWith(Mono.just(uploadedFile));
+                    })
+                    // Looping getBatch until it's completed
+                    .flatMap(tuple -> {
+                        Batch batch = tuple.getT1();
+                        OpenAIFile uploadedFile = tuple.getT2();
+                        assertNotNull(batch);
+                        assertNotNull(batch.getId());
+                        // TODO: make it to while loop
+                        return Mono.defer(() -> {
+                            if (batch.getStatus() == BatchStatus.VALIDATING
+                                || batch.getStatus() == BatchStatus.IN_PROGRESS
+                                || batch.getStatus() == BatchStatus.FINALIZING) {
+                                return Mono.delay(Duration.ofSeconds(20))
+                                    .then(client.getBatch(batch.getId())).zipWith(Mono.just(uploadedFile));
+                            } else {
+                                return Mono.just(batch).zipWith(Mono.just(uploadedFile));
+                            }
+                        });
+                    })
+                    // Get output file content
+                    .flatMap(tuple -> {
+                        Batch batch = tuple.getT1();
+                        OpenAIFile uploadedFile = tuple.getT2();
+                        assertNotNull(batch);
+                        assertEquals(BatchStatus.COMPLETED, batch.getStatus());
+                        return client.getFileContent(batch.getOutputFileId()).zipWith(Mono.just(uploadedFile));
+                    })
+                    .flatMapMany(tuple -> {
+                        byte[] outputFile = tuple.getT1();
+                        OpenAIFile uploadedFile = tuple.getT2();
+                        assertNotNull(outputFile);
+                        return client.listBatches().zipWith(Mono.just(uploadedFile));
+                    })
+                    // Delete uploaded file
+                    .flatMap(tuple -> {
+                        PageableList<Batch> batchPageableList = tuple.getT1();
+                        OpenAIFile uploadedFile = tuple.getT2();
+                        assertNotNull(batchPageableList);
+                        assertFalse(CoreUtils.isNullOrEmpty(batchPageableList.getData()));
+                        return client.deleteFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
+                    }))
+                // File deletion
+                .assertNext(tuple -> {
+                    FileDeletionStatus deletionStatus = tuple.getT1();
+                    OpenAIFile file = tuple.getT2();
+                    assertNotNull(deletionStatus);
+                    assertNotNull(deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                    assertEquals(file.getId(), deletionStatus.getId());
+                })
+                .verifyComplete();
         }));
     }
 
@@ -1357,39 +1340,64 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testCancelBatch(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         uploadBatchFileRunner(((fileDetails, filePurpose) -> {
-//            // Upload file
-//            OpenAIFile file = client.uploadFile(fileDetails, filePurpose);
-//            assertNotNull(file);
-//            assertNotNull(file.getId());
-//
-//            while (file.getStatus() == FileState.PENDING) {
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//                file = client.getFile(file.getId());
-//            }
-//
-//            // Create a batch
-//            Batch batch = client.createBatch("/v1/chat/completions", file.getId(), "24h");
-//            assertNotNull(batch);
-//
-//            // Cancel the batch
-//            if (batch.getStatus() == BatchStatus.VALIDATING
-//                || batch.getStatus() == BatchStatus.IN_PROGRESS
-//                || batch.getStatus() == BatchStatus.FINALIZING) {
-//                batch = client.cancelBatch(batch.getId());
-//                OffsetDateTime cancellingAt = batch.getCancellingAt();
-//                assertNotNull(cancellingAt);
-//                BatchStatus status = batch.getStatus();
-//                assertTrue(status == BatchStatus.CANCELLED || status == BatchStatus.CANCELLING);
-//            }
-//
-//            // Delete file
-//            FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
-//            assertTrue(deletionStatus.isDeleted());
-//            assertEquals(deletionStatus.getId(), file.getId());
+            StepVerifier.create(
+                client.uploadFile(fileDetails, filePurpose)
+                    // Upload file
+                    .flatMap(uploadedFile -> {
+                        assertNotNull(uploadedFile);
+                        assertNotNull(uploadedFile.getId());
+                        return client.getFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
+                    })
+                    // Compare uploaded file with file from backend
+                    .flatMap(tuple -> {
+                        OpenAIFile fileFromBackend = tuple.getT1();
+                        OpenAIFile uploadedFile = tuple.getT2();
+                        assertNotNull(uploadedFile);
+                        assertNotNull(fileFromBackend);
+                        assertFileEquals(uploadedFile, fileFromBackend);
+                        return Mono.defer(() -> {
+                            if (fileFromBackend.getStatus() == FileState.PENDING) {
+                                return Mono.delay(Duration.ofSeconds(5))
+                                    .then(client.getFile(fileFromBackend.getId())).zipWith(Mono.just(uploadedFile));
+                            } else {
+                                return Mono.just(fileFromBackend).zipWith(Mono.just(uploadedFile));
+                            }
+                        });
+                    })
+                    // Create batch with file
+                    .flatMap(tuple -> {
+                        OpenAIFile fileFromBackend = tuple.getT1();
+                        OpenAIFile uploadedFile = tuple.getT2();
+                        return client.createBatch("/v1/chat/completions", fileFromBackend.getId(), "24h")
+                            .zipWith(Mono.just(uploadedFile));
+                    })
+                    // Cancel batch
+                    .flatMap(tuple -> {
+                        Batch batch = tuple.getT1();
+                        OpenAIFile uploadedFile = tuple.getT2();
+                        assertNotNull(batch);
+                        assertNotNull(batch.getId());
+                        return client.cancelBatch(batch.getId()).zipWith(Mono.just(uploadedFile));
+                    })
+                    // Delete uploaded file
+                    .flatMap(tuple -> {
+                        Batch cancelledBatch = tuple.getT1();
+                        OpenAIFile uploadedFile = tuple.getT2();
+                        assertNotNull(cancelledBatch);
+                        BatchStatus status = cancelledBatch.getStatus();
+                        assertTrue(status == BatchStatus.CANCELLED || status == BatchStatus.CANCELLING);
+                        return client.deleteFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
+                    }))
+                // File deletion
+                .assertNext(tuple -> {
+                    FileDeletionStatus deletionStatus = tuple.getT1();
+                    OpenAIFile file = tuple.getT2();
+                    assertNotNull(deletionStatus);
+                    assertNotNull(deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                    assertEquals(file.getId(), deletionStatus.getId());
+                })
+                .verifyComplete();
         }));
     }
 }
