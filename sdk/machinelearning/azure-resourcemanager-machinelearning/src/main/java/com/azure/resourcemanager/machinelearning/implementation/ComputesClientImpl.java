@@ -45,241 +45,179 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ComputesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ComputesClient.
+ */
 public final class ComputesClientImpl implements ComputesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ComputesService service;
 
-    /** The service client containing this operation class. */
-    private final AzureMachineLearningWorkspacesImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final AzureMachineLearningServicesImpl client;
 
     /**
      * Initializes an instance of ComputesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    ComputesClientImpl(AzureMachineLearningWorkspacesImpl client) {
+    ComputesClientImpl(AzureMachineLearningServicesImpl client) {
         this.service = RestProxy.create(ComputesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMachineLearningWorkspacesComputes to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AzureMachineLearningServicesComputes to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
     public interface ComputesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PaginatedComputeResourcesList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PaginatedComputeResourcesList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skip") String skip,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$skip") String skip,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ComputeResourceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("computeName") String computeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("computeName") String computeName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ComputeResourceInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ComputeResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("computeName") String computeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("computeName") String computeName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ClusterUpdateParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("computeName") String computeName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ComputeResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("computeName") String computeName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ClusterUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("computeName") String computeName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("computeName") String computeName, @QueryParam("api-version") String apiVersion,
             @QueryParam("underlyingResourceAction") UnderlyingResourceAction underlyingResourceAction,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listNodes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listNodes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AmlComputeNodesInformation>> listNodes(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AmlComputeNodesInformation>> listNodes(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("computeName") String computeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("computeName") String computeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listKeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ComputeSecretsInner>> listKeys(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ComputeSecretsInner>> listKeys(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("computeName") String computeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("computeName") String computeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/start")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/start")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> start(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("computeName") String computeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("computeName") String computeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/stop")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/stop")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> stop(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("computeName") String computeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("computeName") String computeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/restart")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/restart")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> restart(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> restart(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("computeName") String computeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("computeName") String computeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PaginatedComputeResourcesList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AmlComputeNodesInformation>> listNodesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets computes in specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return computes in specified workspace along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return computes in specified workspace along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ComputeResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String skip) {
+    private Mono<PagedResponse<ComputeResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -290,33 +228,16 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            this.client.getApiVersion(),
-                            skip,
-                            accept,
-                            context))
-            .<PagedResponse<ComputeResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, this.client.getApiVersion(), skip, accept, context))
+            .<PagedResponse<ComputeResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets computes in specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -324,23 +245,19 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return computes in specified workspace along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return computes in specified workspace along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ComputeResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String skip, Context context) {
+    private Mono<PagedResponse<ComputeResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -352,29 +269,15 @@ public final class ComputesClientImpl implements ComputesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                this.client.getApiVersion(),
-                skip,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+                this.client.getApiVersion(), skip, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets computes in specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -385,14 +288,13 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ComputeResourceInner> listAsync(String resourceGroupName, String workspaceName, String skip) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, skip),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, skip),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets computes in specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -403,14 +305,13 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ComputeResourceInner> listAsync(String resourceGroupName, String workspaceName) {
         final String skip = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, skip),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, skip),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets computes in specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -421,16 +322,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return computes in specified workspace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ComputeResourceInner> listAsync(
-        String resourceGroupName, String workspaceName, String skip, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, context),
+    private PagedFlux<ComputeResourceInner> listAsync(String resourceGroupName, String workspaceName, String skip,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, skip, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets computes in specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -446,7 +346,7 @@ public final class ComputesClientImpl implements ComputesClient {
 
     /**
      * Gets computes in specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -457,15 +357,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return computes in specified workspace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ComputeResourceInner> list(
-        String resourceGroupName, String workspaceName, String skip, Context context) {
+    public PagedIterable<ComputeResourceInner> list(String resourceGroupName, String workspaceName, String skip,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skip, context));
     }
 
     /**
      * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
      * 'keys' nested resource to get them.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -475,19 +375,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return compute definition by its name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComputeResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName) {
+    private Mono<Response<ComputeResourceInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -501,25 +397,15 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            computeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, computeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
      * 'keys' nested resource to get them.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -530,19 +416,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return compute definition by its name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComputeResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    private Mono<Response<ComputeResourceInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -556,22 +438,14 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                computeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+            computeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
      * 'keys' nested resource to get them.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -589,7 +463,7 @@ public final class ComputesClientImpl implements ComputesClient {
     /**
      * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
      * 'keys' nested resource to get them.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -600,15 +474,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return compute definition by its name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ComputeResourceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    public Response<ComputeResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, computeName, context).block();
     }
 
     /**
      * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
      * 'keys' nested resource to get them.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -625,7 +499,7 @@ public final class ComputesClientImpl implements ComputesClient {
     /**
      * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
      * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -634,22 +508,18 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return machine Learning compute object wrapped into ARM resource envelope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String computeName, ComputeResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -668,26 +538,16 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            computeName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, computeName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
      * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -697,26 +557,18 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return machine Learning compute object wrapped into ARM resource envelope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ComputeResourceInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String computeName, ComputeResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -735,23 +587,14 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                computeName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, computeName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
      * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -764,22 +607,16 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ComputeResourceInner>, ComputeResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, computeName, parameters);
-        return this
-            .client
-            .<ComputeResourceInner, ComputeResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ComputeResourceInner.class,
-                ComputeResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, computeName, parameters);
+        return this.client.<ComputeResourceInner, ComputeResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ComputeResourceInner.class, ComputeResourceInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
      * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -792,24 +629,19 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ComputeResourceInner>, ComputeResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ComputeResourceInner parameters,
+        String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, computeName, parameters, context);
-        return this
-            .client
-            .<ComputeResourceInner, ComputeResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ComputeResourceInner.class, ComputeResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, computeName, parameters, context);
+        return this.client.<ComputeResourceInner, ComputeResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ComputeResourceInner.class, ComputeResourceInner.class, context);
     }
 
     /**
      * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
      * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -828,7 +660,7 @@ public final class ComputesClientImpl implements ComputesClient {
     /**
      * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
      * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -841,20 +673,16 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ComputeResourceInner parameters,
+        String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
      * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -862,21 +690,20 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning compute object wrapped into ARM resource envelope on successful completion of {@link
-     *     Mono}.
+     * @return machine Learning compute object wrapped into ARM resource envelope on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ComputeResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters)
-            .last()
+    private Mono<ComputeResourceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String computeName, ComputeResourceInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
      * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -885,25 +712,20 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning compute object wrapped into ARM resource envelope on successful completion of {@link
-     *     Mono}.
+     * @return machine Learning compute object wrapped into ARM resource envelope on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ComputeResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ComputeResourceInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
-            .last()
+    private Mono<ComputeResourceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String computeName, ComputeResourceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
      * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -914,15 +736,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComputeResourceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters) {
+    public ComputeResourceInner createOrUpdate(String resourceGroupName, String workspaceName, String computeName,
+        ComputeResourceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).block();
     }
 
     /**
      * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
      * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -934,19 +756,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComputeResourceInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ComputeResourceInner parameters,
-        Context context) {
+    public ComputeResourceInner createOrUpdate(String resourceGroupName, String workspaceName, String computeName,
+        ComputeResourceInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context).block();
     }
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
      * operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -955,22 +773,18 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return machine Learning compute object wrapped into ARM resource envelope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName, ClusterUpdateParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName, ClusterUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -990,25 +804,15 @@ public final class ComputesClientImpl implements ComputesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            computeName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workspaceName, computeName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
      * operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1018,26 +822,18 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return machine Learning compute object wrapped into ARM resource envelope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ClusterUpdateParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName, ClusterUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1056,23 +852,14 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                computeName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, computeName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
      * operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1085,22 +872,16 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdateAsync(
         String resourceGroupName, String workspaceName, String computeName, ClusterUpdateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, computeName, parameters);
-        return this
-            .client
-            .<ComputeResourceInner, ComputeResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ComputeResourceInner.class,
-                ComputeResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, computeName, parameters);
+        return this.client.<ComputeResourceInner, ComputeResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ComputeResourceInner.class, ComputeResourceInner.class, this.client.getContext());
     }
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
      * operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1113,24 +894,19 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ClusterUpdateParameters parameters,
+        String resourceGroupName, String workspaceName, String computeName, ClusterUpdateParameters parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, computeName, parameters, context);
-        return this
-            .client
-            .<ComputeResourceInner, ComputeResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ComputeResourceInner.class, ComputeResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, computeName, parameters, context);
+        return this.client.<ComputeResourceInner, ComputeResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ComputeResourceInner.class, ComputeResourceInner.class, context);
     }
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
      * operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1141,15 +917,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link SyncPoller} for polling of machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(
-        String resourceGroupName, String workspaceName, String computeName, ClusterUpdateParameters parameters) {
+    public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String computeName, ClusterUpdateParameters parameters) {
         return this.beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).getSyncPoller();
     }
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
      * operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1161,21 +937,16 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link SyncPoller} for polling of machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ClusterUpdateParameters parameters,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
+    public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String computeName, ClusterUpdateParameters parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
      * operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1183,21 +954,20 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning compute object wrapped into ARM resource envelope on successful completion of {@link
-     *     Mono}.
+     * @return machine Learning compute object wrapped into ARM resource envelope on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ComputeResourceInner> updateAsync(
-        String resourceGroupName, String workspaceName, String computeName, ClusterUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters)
-            .last()
+    private Mono<ComputeResourceInner> updateAsync(String resourceGroupName, String workspaceName, String computeName,
+        ClusterUpdateParameters parameters) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
      * operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1206,25 +976,20 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning compute object wrapped into ARM resource envelope on successful completion of {@link
-     *     Mono}.
+     * @return machine Learning compute object wrapped into ARM resource envelope on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ComputeResourceInner> updateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ClusterUpdateParameters parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context)
-            .last()
+    private Mono<ComputeResourceInner> updateAsync(String resourceGroupName, String workspaceName, String computeName,
+        ClusterUpdateParameters parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, computeName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
      * operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1235,15 +1000,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComputeResourceInner update(
-        String resourceGroupName, String workspaceName, String computeName, ClusterUpdateParameters parameters) {
+    public ComputeResourceInner update(String resourceGroupName, String workspaceName, String computeName,
+        ClusterUpdateParameters parameters) {
         return updateAsync(resourceGroupName, workspaceName, computeName, parameters).block();
     }
 
     /**
      * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
      * operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1255,45 +1020,34 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return machine Learning compute object wrapped into ARM resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComputeResourceInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        ClusterUpdateParameters parameters,
-        Context context) {
+    public ComputeResourceInner update(String resourceGroupName, String workspaceName, String computeName,
+        ClusterUpdateParameters parameters, Context context) {
         return updateAsync(resourceGroupName, workspaceName, computeName, parameters, context).block();
     }
 
     /**
      * Deletes specified Machine Learning compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     *     workspace if 'Detach'.
+     * workspace if 'Detach'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName, UnderlyingResourceAction underlyingResourceAction) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1306,36 +1060,25 @@ public final class ComputesClientImpl implements ComputesClient {
             return Mono.error(new IllegalArgumentException("Parameter computeName is required and cannot be null."));
         }
         if (underlyingResourceAction == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter underlyingResourceAction is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter underlyingResourceAction is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            computeName,
-                            this.client.getApiVersion(),
-                            underlyingResourceAction,
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workspaceName, computeName, this.client.getApiVersion(), underlyingResourceAction, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes specified Machine Learning compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     *     workspace if 'Detach'.
+     * workspace if 'Detach'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1343,23 +1086,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName, UnderlyingResourceAction underlyingResourceAction, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1372,60 +1107,45 @@ public final class ComputesClientImpl implements ComputesClient {
             return Mono.error(new IllegalArgumentException("Parameter computeName is required and cannot be null."));
         }
         if (underlyingResourceAction == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter underlyingResourceAction is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter underlyingResourceAction is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                computeName,
-                this.client.getApiVersion(),
-                underlyingResourceAction,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, computeName, this.client.getApiVersion(), underlyingResourceAction, accept, context);
     }
 
     /**
      * Deletes specified Machine Learning compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     *     workspace if 'Detach'.
+     * workspace if 'Detach'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String computeName, UnderlyingResourceAction underlyingResourceAction) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes specified Machine Learning compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     *     workspace if 'Detach'.
+     * workspace if 'Detach'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1433,52 +1153,43 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String computeName, UnderlyingResourceAction underlyingResourceAction, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes specified Machine Learning compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     *     workspace if 'Detach'.
+     * workspace if 'Detach'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction) {
-        return this
-            .beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String computeName, UnderlyingResourceAction underlyingResourceAction) {
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction)
             .getSyncPoller();
     }
 
     /**
      * Deletes specified Machine Learning compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     *     workspace if 'Detach'.
+     * workspace if 'Detach'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1486,49 +1197,40 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction,
-        Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String computeName, UnderlyingResourceAction underlyingResourceAction, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes specified Machine Learning compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     *     workspace if 'Detach'.
+     * workspace if 'Detach'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String computeName,
         UnderlyingResourceAction underlyingResourceAction) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction)
-            .last()
+        return beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes specified Machine Learning compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     *     workspace if 'Detach'.
+     * workspace if 'Detach'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1536,87 +1238,71 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String computeName,
+        UnderlyingResourceAction underlyingResourceAction, Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes specified Machine Learning compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     *     workspace if 'Detach'.
+     * workspace if 'Detach'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
+    public void delete(String resourceGroupName, String workspaceName, String computeName,
         UnderlyingResourceAction underlyingResourceAction) {
         deleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction).block();
     }
 
     /**
      * Deletes specified Machine Learning compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     *     workspace if 'Detach'.
+     * workspace if 'Detach'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String computeName,
-        UnderlyingResourceAction underlyingResourceAction,
-        Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String computeName,
+        UnderlyingResourceAction underlyingResourceAction, Context context) {
         deleteAsync(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context).block();
     }
 
     /**
      * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details (e.g IP address, port etc) of all the compute nodes in the compute along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the details (e.g IP address, port etc) of all the compute nodes in the compute along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AmlComputeNodeInformation>> listNodesSinglePageAsync(
-        String resourceGroupName, String workspaceName, String computeName) {
+    private Mono<PagedResponse<AmlComputeNodeInformation>> listNodesSinglePageAsync(String resourceGroupName,
+        String workspaceName, String computeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1630,33 +1316,16 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listNodes(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            computeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AmlComputeNodeInformation>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().nodes(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listNodes(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, computeName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AmlComputeNodeInformation>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().nodes(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1664,23 +1333,19 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details (e.g IP address, port etc) of all the compute nodes in the compute along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the details (e.g IP address, port etc) of all the compute nodes in the compute along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AmlComputeNodeInformation>> listNodesSinglePageAsync(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    private Mono<PagedResponse<AmlComputeNodeInformation>> listNodesSinglePageAsync(String resourceGroupName,
+        String workspaceName, String computeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1695,29 +1360,15 @@ public final class ComputesClientImpl implements ComputesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNodes(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                computeName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().nodes(),
-                        res.getValue().nextLink(),
-                        null));
+            .listNodes(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+                computeName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().nodes(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1725,19 +1376,18 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details (e.g IP address, port etc) of all the compute nodes in the compute as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AmlComputeNodeInformation> listNodesAsync(
-        String resourceGroupName, String workspaceName, String computeName) {
-        return new PagedFlux<>(
-            () -> listNodesSinglePageAsync(resourceGroupName, workspaceName, computeName),
+    private PagedFlux<AmlComputeNodeInformation> listNodesAsync(String resourceGroupName, String workspaceName,
+        String computeName) {
+        return new PagedFlux<>(() -> listNodesSinglePageAsync(resourceGroupName, workspaceName, computeName),
             nextLink -> listNodesNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1746,19 +1396,18 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details (e.g IP address, port etc) of all the compute nodes in the compute as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AmlComputeNodeInformation> listNodesAsync(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
-        return new PagedFlux<>(
-            () -> listNodesSinglePageAsync(resourceGroupName, workspaceName, computeName, context),
+    private PagedFlux<AmlComputeNodeInformation> listNodesAsync(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
+        return new PagedFlux<>(() -> listNodesSinglePageAsync(resourceGroupName, workspaceName, computeName, context),
             nextLink -> listNodesNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1766,17 +1415,17 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details (e.g IP address, port etc) of all the compute nodes in the compute as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AmlComputeNodeInformation> listNodes(
-        String resourceGroupName, String workspaceName, String computeName) {
+    public PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
+        String computeName) {
         return new PagedIterable<>(listNodesAsync(resourceGroupName, workspaceName, computeName));
     }
 
     /**
      * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1785,40 +1434,36 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details (e.g IP address, port etc) of all the compute nodes in the compute as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AmlComputeNodeInformation> listNodes(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    public PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         return new PagedIterable<>(listNodesAsync(resourceGroupName, workspaceName, computeName, context));
     }
 
     /**
      * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc) along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc) along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComputeSecretsInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName) {
+    private Mono<Response<ComputeSecretsInner>> listKeysWithResponseAsync(String resourceGroupName,
+        String workspaceName, String computeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1832,24 +1477,14 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeys(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            computeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listKeys(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, computeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1857,23 +1492,19 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc) along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc) along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComputeSecretsInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    private Mono<Response<ComputeSecretsInner>> listKeysWithResponseAsync(String resourceGroupName,
+        String workspaceName, String computeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1887,21 +1518,13 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listKeys(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                computeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listKeys(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, computeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1909,18 +1532,18 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return secrets related to Machine Learning compute (storage keys, service credentials, etc) on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ComputeSecretsInner> listKeysAsync(
-        String resourceGroupName, String workspaceName, String computeName) {
+    private Mono<ComputeSecretsInner> listKeysAsync(String resourceGroupName, String workspaceName,
+        String computeName) {
         return listKeysWithResponseAsync(resourceGroupName, workspaceName, computeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1928,18 +1551,18 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc) along with {@link
-     *     Response}.
+     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc) along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ComputeSecretsInner> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    public Response<ComputeSecretsInner> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, workspaceName, computeName, context).block();
     }
 
     /**
      * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1955,7 +1578,7 @@ public final class ComputesClientImpl implements ComputesClient {
 
     /**
      * Posts a start action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -1965,19 +1588,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName) {
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1991,24 +1610,14 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .start(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            computeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.start(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, computeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Posts a start action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2019,19 +1628,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2045,21 +1650,13 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .start(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                computeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.start(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, computeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Posts a start action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2069,18 +1666,16 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String workspaceName, String computeName) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String workspaceName,
+        String computeName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, workspaceName, computeName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Posts a start action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2091,19 +1686,18 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startWithResponseAsync(resourceGroupName, workspaceName, computeName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startWithResponseAsync(resourceGroupName, workspaceName, computeName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Posts a start action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2113,14 +1707,14 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String workspaceName, String computeName) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String workspaceName,
+        String computeName) {
         return this.beginStartAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
     }
 
     /**
      * Posts a start action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2131,14 +1725,14 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         return this.beginStartAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
     }
 
     /**
      * Posts a start action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2149,14 +1743,13 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String resourceGroupName, String workspaceName, String computeName) {
-        return beginStartAsync(resourceGroupName, workspaceName, computeName)
-            .last()
+        return beginStartAsync(resourceGroupName, workspaceName, computeName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Posts a start action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2168,14 +1761,13 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String resourceGroupName, String workspaceName, String computeName, Context context) {
-        return beginStartAsync(resourceGroupName, workspaceName, computeName, context)
-            .last()
+        return beginStartAsync(resourceGroupName, workspaceName, computeName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Posts a start action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2190,7 +1782,7 @@ public final class ComputesClientImpl implements ComputesClient {
 
     /**
      * Posts a start action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2206,7 +1798,7 @@ public final class ComputesClientImpl implements ComputesClient {
 
     /**
      * Posts a stop action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2216,19 +1808,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName) {
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2242,24 +1830,14 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stop(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            computeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, computeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Posts a stop action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2270,19 +1848,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2296,21 +1870,13 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .stop(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                computeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, computeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Posts a stop action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2320,18 +1886,16 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String workspaceName, String computeName) {
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String workspaceName,
+        String computeName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, workspaceName, computeName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Posts a stop action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2342,19 +1906,18 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, workspaceName, computeName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopWithResponseAsync(resourceGroupName, workspaceName, computeName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Posts a stop action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2364,14 +1927,14 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String workspaceName, String computeName) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String workspaceName,
+        String computeName) {
         return this.beginStopAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
     }
 
     /**
      * Posts a stop action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2382,14 +1945,14 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         return this.beginStopAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
     }
 
     /**
      * Posts a stop action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2400,14 +1963,13 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(String resourceGroupName, String workspaceName, String computeName) {
-        return beginStopAsync(resourceGroupName, workspaceName, computeName)
-            .last()
+        return beginStopAsync(resourceGroupName, workspaceName, computeName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Posts a stop action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2419,14 +1981,13 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(String resourceGroupName, String workspaceName, String computeName, Context context) {
-        return beginStopAsync(resourceGroupName, workspaceName, computeName, context)
-            .last()
+        return beginStopAsync(resourceGroupName, workspaceName, computeName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Posts a stop action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2441,7 +2002,7 @@ public final class ComputesClientImpl implements ComputesClient {
 
     /**
      * Posts a stop action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2457,7 +2018,7 @@ public final class ComputesClientImpl implements ComputesClient {
 
     /**
      * Posts a restart action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2467,19 +2028,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName) {
+    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2493,24 +2050,14 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .restart(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            computeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.restart(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, computeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Posts a restart action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2521,19 +2068,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2547,21 +2090,13 @@ public final class ComputesClientImpl implements ComputesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .restart(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                computeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.restart(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, computeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Posts a restart action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2571,18 +2106,16 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String resourceGroupName, String workspaceName, String computeName) {
+    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String workspaceName,
+        String computeName) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, workspaceName, computeName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Posts a restart action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2593,19 +2126,18 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restartWithResponseAsync(resourceGroupName, workspaceName, computeName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = restartWithResponseAsync(resourceGroupName, workspaceName, computeName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Posts a restart action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2615,14 +2147,14 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String workspaceName, String computeName) {
+    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String workspaceName,
+        String computeName) {
         return this.beginRestartAsync(resourceGroupName, workspaceName, computeName).getSyncPoller();
     }
 
     /**
      * Posts a restart action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2633,14 +2165,14 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String workspaceName,
+        String computeName, Context context) {
         return this.beginRestartAsync(resourceGroupName, workspaceName, computeName, context).getSyncPoller();
     }
 
     /**
      * Posts a restart action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2651,14 +2183,13 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> restartAsync(String resourceGroupName, String workspaceName, String computeName) {
-        return beginRestartAsync(resourceGroupName, workspaceName, computeName)
-            .last()
+        return beginRestartAsync(resourceGroupName, workspaceName, computeName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Posts a restart action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2669,16 +2200,15 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartAsync(
-        String resourceGroupName, String workspaceName, String computeName, Context context) {
-        return beginRestartAsync(resourceGroupName, workspaceName, computeName, context)
-            .last()
+    private Mono<Void> restartAsync(String resourceGroupName, String workspaceName, String computeName,
+        Context context) {
+        return beginRestartAsync(resourceGroupName, workspaceName, computeName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Posts a restart action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2693,7 +2223,7 @@ public final class ComputesClientImpl implements ComputesClient {
 
     /**
      * Posts a restart action to a compute instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param computeName Name of the Azure Machine Learning compute.
@@ -2709,14 +2239,13 @@ public final class ComputesClientImpl implements ComputesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paginated list of Machine Learning compute objects wrapped in ARM resource envelope along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return paginated list of Machine Learning compute objects wrapped in ARM resource envelope along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ComputeResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -2724,37 +2253,26 @@ public final class ComputesClientImpl implements ComputesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ComputeResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ComputeResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paginated list of Machine Learning compute objects wrapped in ARM resource envelope along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return paginated list of Machine Learning compute objects wrapped in ARM resource envelope along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ComputeResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2762,31 +2280,20 @@ public final class ComputesClientImpl implements ComputesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2798,31 +2305,21 @@ public final class ComputesClientImpl implements ComputesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNodesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AmlComputeNodeInformation>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().nodes(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AmlComputeNodeInformation>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().nodes(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2830,29 +2327,19 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return result of AmlCompute Nodes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AmlComputeNodeInformation>> listNodesNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AmlComputeNodeInformation>> listNodesNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNodesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().nodes(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNodesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().nodes(), res.getValue().nextLink(), null));
     }
 }

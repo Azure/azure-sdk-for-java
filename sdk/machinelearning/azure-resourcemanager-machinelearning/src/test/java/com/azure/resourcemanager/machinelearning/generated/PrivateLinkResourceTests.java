@@ -19,59 +19,47 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResource model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"groupId\":\"yngudivk\",\"requiredMembers\":[\"wbxqzvszjfau\",\"j\"],\"requiredZoneNames\":[\"xivetvt\",\"qaqtdoqmcbxvwvxy\"]},\"identity\":{\"principalId\":\"5fc3592b-d219-44be-b65a-2e2b3de76d9f\",\"tenantId\":\"712bd8ad-1151-45f2-bf61-d3e7de7dee99\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"blytk\":{\"principalId\":\"a95d1cdd-f7ed-4f87-a472-8a4bf616620d\",\"clientId\":\"f6f8621d-afad-499a-badb-6ecb26a9f3bb\"},\"pe\":{\"principalId\":\"fca7d1ee-b91d-42ac-9117-8d0ab41ca837\",\"clientId\":\"02cc4e93-4a44-44b6-a4b9-9f73d769c0c8\"},\"fbkrvrnsvs\":{\"principalId\":\"6434654b-4b63-4930-a988-6c07d2c784db\",\"clientId\":\"52f29274-c586-42d1-b67f-e1d18d5fb113\"}}},\"location\":\"johxcrsb\",\"tags\":{\"wbhsqfsub\":\"asrru\",\"rxbpyb\":\"gjb\",\"twss\":\"rfbjf\"},\"sku\":{\"name\":\"ftpvjzbexil\",\"tier\":\"Basic\",\"size\":\"qqnvwpmq\",\"family\":\"ruoujmk\",\"capacity\":1426920839},\"id\":\"qytjrybnwjewgd\",\"name\":\"jervnaenqpehi\",\"type\":\"doy\"}")
-                .toObject(PrivateLinkResource.class);
+        PrivateLinkResource model = BinaryData.fromString(
+            "{\"properties\":{\"groupId\":\"wwtppj\",\"requiredMembers\":[\"xogaokonzmnsikv\",\"kqze\",\"qkdltfz\"],\"requiredZoneNames\":[\"hvhgureod\"]},\"identity\":{\"principalId\":\"174786d8-53cf-4b26-9408-87ec3d88a23b\",\"tenantId\":\"a1244d3e-f1b3-47d3-93ea-f0f5c85396e0\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ibqdxbxwakbogqx\":{\"principalId\":\"423ad672-c25a-4318-b136-9299a6d1f52b\",\"clientId\":\"22280508-41ec-4335-abb0-fe8f51b842ec\"},\"kzgxhurip\":{\"principalId\":\"724df376-cbe2-490f-800f-80ca33c7eb47\",\"clientId\":\"249f5a14-7573-43ae-aa24-07995d561aba\"},\"odxun\":{\"principalId\":\"f05a65d3-bc92-4535-95a9-9bcc3345618c\",\"clientId\":\"93dc6136-437f-4c15-b3af-2a23f977a3dc\"}}},\"location\":\"ebxmubyynt\",\"tags\":{\"ltmuwlauwzizx\":\"bqtkoievseotgqr\",\"d\":\"mpgcjefuzmuvpbt\"},\"sku\":{\"name\":\"orppxebmnzbtb\",\"tier\":\"Basic\",\"size\":\"lkfg\",\"family\":\"dneu\",\"capacity\":2052379315},\"id\":\"hsd\",\"name\":\"htozfikdow\",\"type\":\"quuvxzxcl\"}")
+            .toObject(PrivateLinkResource.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("johxcrsb", model.location());
-        Assertions.assertEquals("asrru", model.tags().get("wbhsqfsub"));
-        Assertions.assertEquals("ftpvjzbexil", model.sku().name());
+        Assertions.assertEquals("ebxmubyynt", model.location());
+        Assertions.assertEquals("bqtkoievseotgqr", model.tags().get("ltmuwlauwzizx"));
+        Assertions.assertEquals("orppxebmnzbtb", model.sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("qqnvwpmq", model.sku().size());
-        Assertions.assertEquals("ruoujmk", model.sku().family());
-        Assertions.assertEquals(1426920839, model.sku().capacity());
-        Assertions.assertEquals("xivetvt", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("lkfg", model.sku().size());
+        Assertions.assertEquals("dneu", model.sku().family());
+        Assertions.assertEquals(2052379315, model.sku().capacity());
+        Assertions.assertEquals("hvhgureod", model.requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResource model =
-            new PrivateLinkResource()
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "blytk",
-                                new UserAssignedIdentity(),
-                                "pe",
-                                new UserAssignedIdentity(),
-                                "fbkrvrnsvs",
-                                new UserAssignedIdentity())))
-                .withLocation("johxcrsb")
-                .withTags(mapOf("wbhsqfsub", "asrru", "rxbpyb", "gjb", "twss", "rfbjf"))
-                .withSku(
-                    new Sku()
-                        .withName("ftpvjzbexil")
-                        .withTier(SkuTier.BASIC)
-                        .withSize("qqnvwpmq")
-                        .withFamily("ruoujmk")
-                        .withCapacity(1426920839))
-                .withRequiredZoneNames(Arrays.asList("xivetvt", "qaqtdoqmcbxvwvxy"));
+        PrivateLinkResource model = new PrivateLinkResource()
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ibqdxbxwakbogqx", new UserAssignedIdentity(), "kzgxhurip",
+                    new UserAssignedIdentity(), "odxun", new UserAssignedIdentity())))
+            .withLocation("ebxmubyynt")
+            .withTags(mapOf("ltmuwlauwzizx", "bqtkoievseotgqr", "d", "mpgcjefuzmuvpbt"))
+            .withSku(new Sku().withName("orppxebmnzbtb")
+                .withTier(SkuTier.BASIC)
+                .withSize("lkfg")
+                .withFamily("dneu")
+                .withCapacity(2052379315))
+            .withRequiredZoneNames(Arrays.asList("hvhgureod"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResource.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("johxcrsb", model.location());
-        Assertions.assertEquals("asrru", model.tags().get("wbhsqfsub"));
-        Assertions.assertEquals("ftpvjzbexil", model.sku().name());
+        Assertions.assertEquals("ebxmubyynt", model.location());
+        Assertions.assertEquals("bqtkoievseotgqr", model.tags().get("ltmuwlauwzizx"));
+        Assertions.assertEquals("orppxebmnzbtb", model.sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("qqnvwpmq", model.sku().size());
-        Assertions.assertEquals("ruoujmk", model.sku().family());
-        Assertions.assertEquals(1426920839, model.sku().capacity());
-        Assertions.assertEquals("xivetvt", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("lkfg", model.sku().size());
+        Assertions.assertEquals("dneu", model.sku().family());
+        Assertions.assertEquals(2052379315, model.sku().capacity());
+        Assertions.assertEquals("hvhgureod", model.requiredZoneNames().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -40,160 +40,125 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobsClient.
+ */
 public final class JobsClientImpl implements JobsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JobsService service;
 
-    /** The service client containing this operation class. */
-    private final AzureMachineLearningWorkspacesImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final AzureMachineLearningServicesImpl client;
 
     /**
      * Initializes an instance of JobsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    JobsClientImpl(AzureMachineLearningWorkspacesImpl client) {
+    JobsClientImpl(AzureMachineLearningServicesImpl client) {
         this.service = RestProxy.create(JobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMachineLearningWorkspacesJobs to be used by the proxy service to
+     * The interface defining all the services for AzureMachineLearningServicesJobs to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
     public interface JobsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobBaseResourceArmPaginatedResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobBaseResourceArmPaginatedResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skip") String skip,
-            @QueryParam("jobType") String jobType,
-            @QueryParam("tag") String tag,
-            @QueryParam("listViewType") ListViewType listViewType,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$skip") String skip,
+            @QueryParam("jobType") String jobType, @QueryParam("tag") String tag,
+            @QueryParam("listViewType") ListViewType listViewType, @QueryParam("properties") String properties,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs/{id}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs/{id}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("id") String id,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs/{id}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs/{id}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobBaseInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobBaseInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("id") String id,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs/{id}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs/{id}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobBaseInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobBaseInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("id") String id,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") JobBaseInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") JobBaseInner body, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs/{id}/cancel")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs/{id}/cancel")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> cancel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> cancel(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("id") String id,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobBaseResourceArmPaginatedResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists Jobs in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
      * @param jobType Type of job to be returned.
      * @param tag Jobs returned will have this tag key.
      * @param listViewType View type for including/excluding (for example) archived entities.
+     * @param properties Comma-separated list of user property names (and optionally values). Example:
+     * prop1,prop2=value2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of JobBase entities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a paginated list of JobBase entities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobBaseInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String jobType,
-        String tag,
-        ListViewType listViewType) {
+    private Mono<PagedResponse<JobBaseInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String skip, String jobType, String tag, ListViewType listViewType, String properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -204,69 +169,42 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            this.client.getApiVersion(),
-                            skip,
-                            jobType,
-                            tag,
-                            listViewType,
-                            accept,
-                            context))
-            .<PagedResponse<JobBaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, this.client.getApiVersion(), skip, jobType, tag, listViewType,
+                properties, accept, context))
+            .<PagedResponse<JobBaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists Jobs in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
      * @param jobType Type of job to be returned.
      * @param tag Jobs returned will have this tag key.
      * @param listViewType View type for including/excluding (for example) archived entities.
+     * @param properties Comma-separated list of user property names (and optionally values). Example:
+     * prop1,prop2=value2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of JobBase entities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a paginated list of JobBase entities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobBaseInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String jobType,
-        String tag,
-        ListViewType listViewType,
-        Context context) {
+    private Mono<PagedResponse<JobBaseInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String skip, String jobType, String tag, ListViewType listViewType, String properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -278,59 +216,39 @@ public final class JobsClientImpl implements JobsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                this.client.getApiVersion(),
-                skip,
-                jobType,
-                tag,
-                listViewType,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+                this.client.getApiVersion(), skip, jobType, tag, listViewType, properties, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists Jobs in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
      * @param jobType Type of job to be returned.
      * @param tag Jobs returned will have this tag key.
      * @param listViewType View type for including/excluding (for example) archived entities.
+     * @param properties Comma-separated list of user property names (and optionally values). Example:
+     * prop1,prop2=value2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of JobBase entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobBaseInner> listAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String jobType,
-        String tag,
-        ListViewType listViewType) {
+    private PagedFlux<JobBaseInner> listAsync(String resourceGroupName, String workspaceName, String skip,
+        String jobType, String tag, ListViewType listViewType, String properties) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, jobType, tag, listViewType),
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, jobType, tag, listViewType, properties),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists Jobs in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -344,20 +262,23 @@ public final class JobsClientImpl implements JobsClient {
         final String jobType = null;
         final String tag = null;
         final ListViewType listViewType = null;
+        final String properties = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, jobType, tag, listViewType),
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, jobType, tag, listViewType, properties),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists Jobs in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
      * @param jobType Type of job to be returned.
      * @param tag Jobs returned will have this tag key.
      * @param listViewType View type for including/excluding (for example) archived entities.
+     * @param properties Comma-separated list of user property names (and optionally values). Example:
+     * prop1,prop2=value2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -365,22 +286,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a paginated list of JobBase entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobBaseInner> listAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String jobType,
-        String tag,
-        ListViewType listViewType,
-        Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, jobType, tag, listViewType, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<JobBaseInner> listAsync(String resourceGroupName, String workspaceName, String skip,
+        String jobType, String tag, ListViewType listViewType, String properties, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, skip, jobType, tag,
+            listViewType, properties, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists Jobs in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -394,18 +308,22 @@ public final class JobsClientImpl implements JobsClient {
         final String jobType = null;
         final String tag = null;
         final ListViewType listViewType = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skip, jobType, tag, listViewType));
+        final String properties = null;
+        return new PagedIterable<>(
+            listAsync(resourceGroupName, workspaceName, skip, jobType, tag, listViewType, properties));
     }
 
     /**
      * Lists Jobs in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
      * @param jobType Type of job to be returned.
      * @param tag Jobs returned will have this tag key.
      * @param listViewType View type for including/excluding (for example) archived entities.
+     * @param properties Comma-separated list of user property names (and optionally values). Example:
+     * prop1,prop2=value2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -413,21 +331,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a paginated list of JobBase entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobBaseInner> list(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String jobType,
-        String tag,
-        ListViewType listViewType,
-        Context context) {
+    public PagedIterable<JobBaseInner> list(String resourceGroupName, String workspaceName, String skip, String jobType,
+        String tag, ListViewType listViewType, String properties, Context context) {
         return new PagedIterable<>(
-            listAsync(resourceGroupName, workspaceName, skip, jobType, tag, listViewType, context));
+            listAsync(resourceGroupName, workspaceName, skip, jobType, tag, listViewType, properties, context));
     }
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -437,19 +349,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String id) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String id) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -463,24 +371,14 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            id,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, id, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -491,19 +389,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String id, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String id, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -517,21 +411,13 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                id,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, id, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -541,18 +427,16 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String id) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String id) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName, id);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -563,18 +447,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String id, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String id, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName, id, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -590,7 +473,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -601,14 +484,14 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String id, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String id,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, workspaceName, id, context).getSyncPoller();
     }
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -619,14 +502,13 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String id) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, id)
-            .last()
+        return beginDeleteAsync(resourceGroupName, workspaceName, id).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -638,14 +520,13 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String id, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, id, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, workspaceName, id, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -660,7 +541,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -676,7 +557,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Gets a Job by name/id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -686,19 +567,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job by name/id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobBaseInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String id) {
+    private Mono<Response<JobBaseInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String id) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -712,24 +589,14 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            id,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, id, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Job by name/id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -740,19 +607,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job by name/id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobBaseInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String id, Context context) {
+    private Mono<Response<JobBaseInner>> getWithResponseAsync(String resourceGroupName, String workspaceName, String id,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -766,21 +629,13 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                id,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+            id, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a Job by name/id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -797,7 +652,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Gets a Job by name/id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -808,14 +663,14 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job by name/id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobBaseInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String id, Context context) {
+    public Response<JobBaseInner> getWithResponse(String resourceGroupName, String workspaceName, String id,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, id, context).block();
     }
 
     /**
      * Gets a Job by name/id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -831,7 +686,8 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Creates and executes a Job.
-     *
+     * For update case, the Tags in the definition passed in will replace Tags in the existing job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -839,23 +695,19 @@ public final class JobsClientImpl implements JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return azure Resource Manager resource envelope along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobBaseInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String id, JobBaseInner body) {
+    private Mono<Response<JobBaseInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String id, JobBaseInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -874,25 +726,15 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            id,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, id, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates and executes a Job.
-     *
+     * For update case, the Tags in the definition passed in will replace Tags in the existing job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -901,23 +743,19 @@ public final class JobsClientImpl implements JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return azure Resource Manager resource envelope along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobBaseInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String id, JobBaseInner body, Context context) {
+    private Mono<Response<JobBaseInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String id, JobBaseInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -936,22 +774,14 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                id,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, id, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Creates and executes a Job.
-     *
+     * For update case, the Tags in the definition passed in will replace Tags in the existing job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -962,15 +792,16 @@ public final class JobsClientImpl implements JobsClient {
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobBaseInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String id, JobBaseInner body) {
+    private Mono<JobBaseInner> createOrUpdateAsync(String resourceGroupName, String workspaceName, String id,
+        JobBaseInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, id, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates and executes a Job.
-     *
+     * For update case, the Tags in the definition passed in will replace Tags in the existing job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -982,14 +813,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobBaseInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String id, JobBaseInner body, Context context) {
+    public Response<JobBaseInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String id,
+        JobBaseInner body, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, id, body, context).block();
     }
 
     /**
      * Creates and executes a Job.
-     *
+     * For update case, the Tags in the definition passed in will replace Tags in the existing job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -1006,7 +838,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -1016,19 +848,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
-        String resourceGroupName, String workspaceName, String id) {
+    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String workspaceName,
+        String id) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1042,24 +870,14 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancel(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            id,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, id, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -1070,19 +888,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
-        String resourceGroupName, String workspaceName, String id, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String workspaceName,
+        String id, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1096,21 +910,13 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancel(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                id,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, id, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -1120,18 +926,16 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(
-        String resourceGroupName, String workspaceName, String id) {
+    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String workspaceName,
+        String id) {
         Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, workspaceName, id);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -1142,18 +946,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(
-        String resourceGroupName, String workspaceName, String id, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String workspaceName,
+        String id, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, workspaceName, id, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -1169,7 +972,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -1180,14 +983,14 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCancel(
-        String resourceGroupName, String workspaceName, String id, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String workspaceName, String id,
+        Context context) {
         return this.beginCancelAsync(resourceGroupName, workspaceName, id, context).getSyncPoller();
     }
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -1198,14 +1001,13 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String workspaceName, String id) {
-        return beginCancelAsync(resourceGroupName, workspaceName, id)
-            .last()
+        return beginCancelAsync(resourceGroupName, workspaceName, id).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -1217,14 +1019,13 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String workspaceName, String id, Context context) {
-        return beginCancelAsync(resourceGroupName, workspaceName, id, context)
-            .last()
+        return beginCancelAsync(resourceGroupName, workspaceName, id, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -1239,7 +1040,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -1255,14 +1056,13 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of JobBase entities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a paginated list of JobBase entities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobBaseInner>> listNextSinglePageAsync(String nextLink) {
@@ -1270,37 +1070,26 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JobBaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<JobBaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of JobBase entities along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a paginated list of JobBase entities along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobBaseInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1308,23 +1097,13 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

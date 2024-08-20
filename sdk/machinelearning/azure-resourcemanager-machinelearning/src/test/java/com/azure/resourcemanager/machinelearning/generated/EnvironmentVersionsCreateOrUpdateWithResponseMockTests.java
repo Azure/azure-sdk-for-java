@@ -6,108 +6,82 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
+import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentVersionInner;
 import com.azure.resourcemanager.machinelearning.models.AutoRebuildSetting;
 import com.azure.resourcemanager.machinelearning.models.BuildContext;
 import com.azure.resourcemanager.machinelearning.models.EnvironmentVersion;
 import com.azure.resourcemanager.machinelearning.models.EnvironmentVersionProperties;
 import com.azure.resourcemanager.machinelearning.models.InferenceContainerProperties;
 import com.azure.resourcemanager.machinelearning.models.OperatingSystemType;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.machinelearning.models.Route;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class EnvironmentVersionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"environmentType\":\"UserCreated\",\"image\":\"wmbfjjselblw\",\"condaFile\":\"udpn\",\"build\":{\"contextUri\":\"s\",\"dockerfilePath\":\"mfktytri\"},\"osType\":\"Windows\",\"inferenceConfig\":{\"livenessRoute\":{\"path\":\"vefnzv\",\"port\":2054222626},\"readinessRoute\":{\"path\":\"wbakszxcm\",\"port\":1616604324},\"scoringRoute\":{\"path\":\"zas\",\"port\":93911031}},\"autoRebuild\":\"OnBaseImageUpdate\",\"provisioningState\":\"Failed\",\"stage\":\"roxlybddxeb\",\"isArchived\":true,\"isAnonymous\":true,\"description\":\"zfjgrepbr\",\"tags\":{\"jwpvqrexluipa\":\"rtv\"},\"properties\":{\"ltjdrfiwe\":\"brfiovp\",\"cetrvirdfsdswp\":\"l\",\"yzegchtabhac\":\"nloop\",\"wvpfqtpvzhml\":\"lfqzcklv\"}},\"id\":\"vyhdh\",\"name\":\"fnsdmhawbxnlk\",\"type\":\"azhlewyroksayeh\"}";
 
-        String responseStr =
-            "{\"properties\":{\"autoRebuild\":\"OnBaseImageUpdate\",\"build\":{\"contextUri\":\"bkfukdljq\",\"dockerfilePath\":\"tsdyds\"},\"condaFile\":\"pafyalo\",\"environmentType\":\"Curated\",\"image\":\"izzn\",\"inferenceConfig\":{},\"osType\":\"Windows\",\"isAnonymous\":true,\"isArchived\":false,\"description\":\"fyjfd\",\"properties\":{\"qh\":\"yvndjokgwesym\",\"ujqbbgsimwejl\":\"qpfzlpejtznxlue\",\"bcpr\":\"bkbpjzobd\"},\"tags\":{\"awp\":\"kuhydtnaczkfwfat\"}},\"id\":\"skivdwgtqcu\",\"name\":\"ecsaaqgoqbdiu\",\"type\":\"csbskowkrbh\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        EnvironmentVersion response =
-            manager
-                .environmentVersions()
-                .define("wrqkza")
-                .withExistingEnvironment("h", "gsiqikvllr", "tpmglxkoikmtr")
-                .withProperties(
-                    new EnvironmentVersionProperties()
-                        .withDescription("sbvvdlsflxkqesdf")
-                        .withProperties(mapOf("dklt", "bgzancoinmphymcq", "toj", "dhqnufbxweiib"))
-                        .withTags(
-                            mapOf(
-                                "uaorhjk",
-                                "nybydhuihaouwud",
-                                "amqprlo",
-                                "hwvumosqir",
-                                "zcmtagelajdyolj",
-                                "rugejcvjkjy",
-                                "qfmzsizzhravrc",
-                                "qy"))
-                        .withIsAnonymous(true)
-                        .withIsArchived(false)
+        EnvironmentVersion response = manager.environmentVersions()
+            .createOrUpdateWithResponse("zlcvndihkph", "zgkkucwmjmgsw", "w", "skuqgneorqtr",
+                new EnvironmentVersionInner()
+                    .withProperties(new EnvironmentVersionProperties().withDescription("burbxovgjipbnngh")
+                        .withTags(mapOf("xenhpyixibrsaeu", "wjnwg", "blyygfticu", "so", "euyqtzoeaotrbn", "drswqm",
+                            "af", "oephttoq"))
+                        .withProperties(mapOf("mdjpspipkpcvhqa", "rlrsrfrxy", "ixuqvat", "jcasncgq"))
+                        .withIsArchived(true)
+                        .withIsAnonymous(false)
+                        .withImage("kqv")
+                        .withCondaFile("gnzbkqqbjcd")
+                        .withBuild(new BuildContext().withContextUri("csom").withDockerfilePath("gjynuwcqu"))
+                        .withOsType(OperatingSystemType.WINDOWS)
+                        .withInferenceConfig(new InferenceContainerProperties()
+                            .withLivenessRoute(new Route().withPath("dm").withPort(883095381))
+                            .withReadinessRoute(new Route().withPath("dpgtblmxblc").withPort(688293142))
+                            .withScoringRoute(new Route().withPath("sqpeavlcbb").withPort(237789436)))
                         .withAutoRebuild(AutoRebuildSetting.ON_BASE_IMAGE_UPDATE)
-                        .withBuild(new BuildContext().withContextUri("mpa").withDockerfilePath("wzlweeprn"))
-                        .withCondaFile("zltkaszfj")
-                        .withImage("bduxapgrcq")
-                        .withInferenceConfig(new InferenceContainerProperties())
-                        .withOsType(OperatingSystemType.WINDOWS))
-                .create();
+                        .withStage("rsfilxusyzcnxjvi")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("fyjfd", response.properties().description());
-        Assertions.assertEquals("yvndjokgwesym", response.properties().properties().get("qh"));
-        Assertions.assertEquals("kuhydtnaczkfwfat", response.properties().tags().get("awp"));
+        Assertions.assertEquals("zfjgrepbr", response.properties().description());
+        Assertions.assertEquals("rtv", response.properties().tags().get("jwpvqrexluipa"));
+        Assertions.assertEquals("brfiovp", response.properties().properties().get("ltjdrfiwe"));
+        Assertions.assertEquals(true, response.properties().isArchived());
         Assertions.assertEquals(true, response.properties().isAnonymous());
-        Assertions.assertEquals(false, response.properties().isArchived());
-        Assertions.assertEquals(AutoRebuildSetting.ON_BASE_IMAGE_UPDATE, response.properties().autoRebuild());
-        Assertions.assertEquals("bkfukdljq", response.properties().build().contextUri());
-        Assertions.assertEquals("tsdyds", response.properties().build().dockerfilePath());
-        Assertions.assertEquals("pafyalo", response.properties().condaFile());
-        Assertions.assertEquals("izzn", response.properties().image());
+        Assertions.assertEquals("wmbfjjselblw", response.properties().image());
+        Assertions.assertEquals("udpn", response.properties().condaFile());
+        Assertions.assertEquals("s", response.properties().build().contextUri());
+        Assertions.assertEquals("mfktytri", response.properties().build().dockerfilePath());
         Assertions.assertEquals(OperatingSystemType.WINDOWS, response.properties().osType());
+        Assertions.assertEquals("vefnzv", response.properties().inferenceConfig().livenessRoute().path());
+        Assertions.assertEquals(2054222626, response.properties().inferenceConfig().livenessRoute().port());
+        Assertions.assertEquals("wbakszxcm", response.properties().inferenceConfig().readinessRoute().path());
+        Assertions.assertEquals(1616604324, response.properties().inferenceConfig().readinessRoute().port());
+        Assertions.assertEquals("zas", response.properties().inferenceConfig().scoringRoute().path());
+        Assertions.assertEquals(93911031, response.properties().inferenceConfig().scoringRoute().port());
+        Assertions.assertEquals(AutoRebuildSetting.ON_BASE_IMAGE_UPDATE, response.properties().autoRebuild());
+        Assertions.assertEquals("roxlybddxeb", response.properties().stage());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

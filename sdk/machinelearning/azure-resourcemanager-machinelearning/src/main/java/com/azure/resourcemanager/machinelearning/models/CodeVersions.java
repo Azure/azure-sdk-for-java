@@ -7,12 +7,15 @@ package com.azure.resourcemanager.machinelearning.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.machinelearning.fluent.models.CodeVersionInner;
 
-/** Resource collection API of CodeVersions. */
+/**
+ * Resource collection API of CodeVersions.
+ */
 public interface CodeVersions {
     /**
      * List versions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -25,31 +28,27 @@ public interface CodeVersions {
 
     /**
      * List versions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
      * @param orderBy Ordering of list.
      * @param top Maximum number of records to return.
      * @param skip Continuation token for pagination.
+     * @param hash If specified, return CodeVersion assets with specified content hash value, regardless of name.
+     * @param hashVersion Hash algorithm version when listing by hash.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of CodeVersion entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<CodeVersion> list(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        String orderBy,
-        Integer top,
-        String skip,
-        Context context);
+    PagedIterable<CodeVersion> list(String resourceGroupName, String workspaceName, String name, String orderBy,
+        Integer top, String skip, String hash, String hashVersion, Context context);
 
     /**
      * Delete version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -60,12 +59,12 @@ public interface CodeVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name, String version,
+        Context context);
 
     /**
      * Delete version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -78,7 +77,7 @@ public interface CodeVersions {
 
     /**
      * Get version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -89,12 +88,12 @@ public interface CodeVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<CodeVersion> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context);
+    Response<CodeVersion> getWithResponse(String resourceGroupName, String workspaceName, String name, String version,
+        Context context);
 
     /**
      * Get version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -107,55 +106,98 @@ public interface CodeVersions {
     CodeVersion get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
-     * Get version.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version along with {@link Response}.
-     */
-    CodeVersion getById(String id);
-
-    /**
-     * Get version.
-     *
-     * @param id the resource ID.
+     * Create or update version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param version Version identifier. This is case-sensitive.
+     * @param body Version entity to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version along with {@link Response}.
+     * @return azure Resource Manager resource envelope along with {@link Response}.
      */
-    Response<CodeVersion> getByIdWithResponse(String id, Context context);
+    Response<CodeVersion> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String name,
+        String version, CodeVersionInner body, Context context);
 
     /**
-     * Delete version.
-     *
-     * @param id the resource ID.
+     * Create or update version.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param version Version identifier. This is case-sensitive.
+     * @param body Version entity to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Resource Manager resource envelope.
+     */
+    CodeVersion createOrUpdate(String resourceGroupName, String workspaceName, String name, String version,
+        CodeVersionInner body);
+
+    /**
+     * Publish version asset into registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param body Destination registry info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteById(String id);
+    void publish(String resourceGroupName, String workspaceName, String name, String version, DestinationAsset body);
 
     /**
-     * Delete version.
-     *
-     * @param id the resource ID.
+     * Publish version asset into registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param body Destination registry info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void publish(String resourceGroupName, String workspaceName, String name, String version, DestinationAsset body,
+        Context context);
 
     /**
-     * Begins definition for a new CodeVersion resource.
-     *
-     * @param name resource name.
-     * @return the first stage of the new CodeVersion definition.
+     * Generate a storage location and credential for the client to upload a code asset to.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param version Version identifier. This is case-sensitive.
+     * @param body Pending upload request object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
      */
-    CodeVersion.DefinitionStages.Blank define(String name);
+    Response<PendingUploadResponseDto> createOrGetStartPendingUploadWithResponse(String resourceGroupName,
+        String workspaceName, String name, String version, PendingUploadRequestDto body, Context context);
+
+    /**
+     * Generate a storage location and credential for the client to upload a code asset to.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param version Version identifier. This is case-sensitive.
+     * @param body Pending upload request object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    PendingUploadResponseDto createOrGetStartPendingUpload(String resourceGroupName, String workspaceName, String name,
+        String version, PendingUploadRequestDto body);
 }

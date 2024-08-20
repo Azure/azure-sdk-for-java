@@ -4,36 +4,38 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
+import com.azure.resourcemanager.machinelearning.fluent.models.DataVersionBaseInner;
 import com.azure.resourcemanager.machinelearning.models.UriFileDataVersion;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DataVersions CreateOrUpdate. */
+/**
+ * Samples for DataVersions CreateOrUpdate.
+ */
 public final class DataVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/DataVersionBase/createOrUpdate.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/DataVersionBase/createOrUpdate.json
      */
     /**
-     * Sample code: CreateOrUpdate Data Version Base.
-     *
+     * Sample code: CreateOrUpdate Workspace Data Version Base.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void createOrUpdateDataVersionBase(
+    public static void createOrUpdateWorkspaceDataVersionBase(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .dataVersions()
-            .define("string")
-            .withExistingData("test-rg", "my-aml-workspace", "string")
-            .withProperties(
-                new UriFileDataVersion()
-                    .withDescription("string")
-                    .withProperties(mapOf("string", "string"))
+        manager.dataVersions()
+            .createOrUpdateWithResponse("test-rg", "my-aml-workspace", "string", "string",
+                new DataVersionBaseInner().withProperties(new UriFileDataVersion().withDescription("string")
                     .withTags(mapOf("string", "string"))
+                    .withProperties(mapOf("string", "string"))
                     .withIsAnonymous(false)
-                    .withDataUri("string"))
-            .create();
+                    .withDataUri("string")),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -4,39 +4,41 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
+import com.azure.resourcemanager.machinelearning.fluent.models.ModelVersionInner;
 import com.azure.resourcemanager.machinelearning.models.FlavorData;
 import com.azure.resourcemanager.machinelearning.models.ModelVersionProperties;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ModelVersions CreateOrUpdate. */
+/**
+ * Samples for ModelVersions CreateOrUpdate.
+ */
 public final class ModelVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ModelVersion/createOrUpdate.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/ModelVersion/createOrUpdate.json
      */
     /**
-     * Sample code: CreateOrUpdate Model Version.
-     *
+     * Sample code: CreateOrUpdate Workspace Model Version.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void createOrUpdateModelVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .modelVersions()
-            .define("string")
-            .withExistingModel("test-rg", "my-aml-workspace", "string")
-            .withProperties(
-                new ModelVersionProperties()
-                    .withDescription("string")
-                    .withProperties(mapOf("string", "string"))
+    public static void
+        createOrUpdateWorkspaceModelVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.modelVersions()
+            .createOrUpdateWithResponse("test-rg", "my-aml-workspace", "string", "string",
+                new ModelVersionInner().withProperties(new ModelVersionProperties().withDescription("string")
                     .withTags(mapOf("string", "string"))
+                    .withProperties(mapOf("string", "string"))
                     .withIsAnonymous(false)
                     .withFlavors(mapOf("string", new FlavorData().withData(mapOf("string", "string"))))
                     .withModelType("CustomModel")
-                    .withModelUri("string"))
-            .create();
+                    .withModelUri("string")),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

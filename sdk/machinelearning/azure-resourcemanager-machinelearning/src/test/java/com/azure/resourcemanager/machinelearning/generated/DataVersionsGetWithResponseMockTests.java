@@ -6,70 +6,39 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.DataVersionBase;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DataVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"dataType\":\"DataVersionBaseProperties\",\"dataUri\":\"vrljlhejcccp\",\"isArchived\":false,\"isAnonymous\":true,\"description\":\"afjjevpt\",\"tags\":{\"ftq\":\"ghzqwvkparskpl\",\"cykgulellfwrmsux\":\"xqmbsu\"},\"properties\":{\"qoymsdlraduhg\":\"mqoubxlpkdsn\"}},\"id\":\"xzyrppoy\",\"name\":\"ijribeskkopbksri\",\"type\":\"mbtmorikcze\"}";
 
-        String responseStr =
-            "{\"properties\":{\"dataType\":\"DataVersionBaseProperties\",\"dataUri\":\"mtznpaxwfqtyyqi\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"ngbso\",\"properties\":{\"zbkuckgkdsksw\":\"kmii\",\"woykdnonaaxwm\":\"iiqqcqikclsmalns\"},\"tags\":{\"q\":\"ujlqcwnynlle\"}},\"id\":\"bgvsbtsertoxadh\",\"name\":\"uvjhxmnrqstjc\",\"type\":\"etwmlgicvnp\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        DataVersionBase response = manager.dataVersions()
+            .getWithResponse("ctgljopiz", "qihvbkufqiqddjy", "pgom", "mkjpajlfp", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DataVersionBase response =
-            manager
-                .dataVersions()
-                .getWithResponse("x", "mdbgi", "ehfgsm", "rjuqbpxtokl", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("ngbso", response.properties().description());
-        Assertions.assertEquals("kmii", response.properties().properties().get("zbkuckgkdsksw"));
-        Assertions.assertEquals("ujlqcwnynlle", response.properties().tags().get("q"));
+        Assertions.assertEquals("afjjevpt", response.properties().description());
+        Assertions.assertEquals("ghzqwvkparskpl", response.properties().tags().get("ftq"));
+        Assertions.assertEquals("mqoubxlpkdsn", response.properties().properties().get("qoymsdlraduhg"));
+        Assertions.assertEquals(false, response.properties().isArchived());
         Assertions.assertEquals(true, response.properties().isAnonymous());
-        Assertions.assertEquals(true, response.properties().isArchived());
-        Assertions.assertEquals("mtznpaxwfqtyyqi", response.properties().dataUri());
+        Assertions.assertEquals("vrljlhejcccp", response.properties().dataUri());
     }
 }

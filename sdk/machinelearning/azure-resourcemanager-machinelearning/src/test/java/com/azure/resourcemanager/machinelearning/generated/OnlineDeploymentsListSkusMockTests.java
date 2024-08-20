@@ -6,72 +6,42 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.SkuResource;
 import com.azure.resourcemanager.machinelearning.models.SkuScaleType;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class OnlineDeploymentsListSkusMockTests {
     @Test
     public void testListSkus() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"resourceType\":\"ofshda\",\"sku\":{\"name\":\"x\",\"tier\":\"Premium\"},\"capacity\":{\"minimum\":179860651,\"maximum\":1207864921,\"default\":1218022012,\"scaleType\":\"None\"}}]}";
 
-        String responseStr =
-            "{\"value\":[{\"capacity\":{\"default\":535751545,\"maximum\":1856017180,\"minimum\":1547287008,\"scaleType\":\"Automatic\"},\"resourceType\":\"iv\",\"sku\":{\"name\":\"jybsrwz\",\"tier\":\"Free\"}}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<SkuResource> response = manager.onlineDeployments()
+            .listSkus("xewcscuveljfarin", "fziztgddahymvk", "jtdhmig", "waoex", 1355101501, "enylsijq",
+                com.azure.core.util.Context.NONE);
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<SkuResource> response =
-            manager
-                .onlineDeployments()
-                .listSkus("anydsc", "k", "w", "pwjc", 1694569219, "aahntofelfh", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(535751545, response.iterator().next().capacity().defaultProperty());
-        Assertions.assertEquals(1856017180, response.iterator().next().capacity().maximum());
-        Assertions.assertEquals(1547287008, response.iterator().next().capacity().minimum());
-        Assertions.assertEquals(SkuScaleType.AUTOMATIC, response.iterator().next().capacity().scaleType());
-        Assertions.assertEquals("jybsrwz", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
+        Assertions.assertEquals("x", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().sku().tier());
+        Assertions.assertEquals(179860651, response.iterator().next().capacity().minimum());
+        Assertions.assertEquals(1207864921, response.iterator().next().capacity().maximum());
+        Assertions.assertEquals(1218022012, response.iterator().next().capacity().defaultProperty());
+        Assertions.assertEquals(SkuScaleType.NONE, response.iterator().next().capacity().scaleType());
     }
 }

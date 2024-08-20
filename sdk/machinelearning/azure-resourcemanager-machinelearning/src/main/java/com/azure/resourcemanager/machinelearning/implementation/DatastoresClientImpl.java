@@ -38,134 +38,104 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatastoresClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatastoresClient.
+ */
 public final class DatastoresClientImpl implements DatastoresClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DatastoresService service;
 
-    /** The service client containing this operation class. */
-    private final AzureMachineLearningWorkspacesImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final AzureMachineLearningServicesImpl client;
 
     /**
      * Initializes an instance of DatastoresClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    DatastoresClientImpl(AzureMachineLearningWorkspacesImpl client) {
-        this.service =
-            RestProxy.create(DatastoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    DatastoresClientImpl(AzureMachineLearningServicesImpl client) {
+        this.service
+            = RestProxy.create(DatastoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMachineLearningWorkspacesDatastores to be used by the proxy
+     * The interface defining all the services for AzureMachineLearningServicesDatastores to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
     public interface DatastoresService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatastoreResourceArmPaginatedResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatastoreResourceArmPaginatedResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skip") String skip,
-            @QueryParam("count") Integer count,
-            @QueryParam("isDefault") Boolean isDefault,
-            @QueryParam("names") String names,
-            @QueryParam("searchText") String searchText,
-            @QueryParam("orderBy") String orderBy,
-            @QueryParam("orderByAsc") Boolean orderByAsc,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$skip") String skip,
+            @QueryParam("count") Integer count, @QueryParam("isDefault") Boolean isDefault,
+            @QueryParam("names") String names, @QueryParam("searchText") String searchText,
+            @QueryParam("orderBy") String orderBy, @QueryParam("orderByAsc") Boolean orderByAsc,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores/{name}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores/{name}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatastoreInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatastoreInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores/{name}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatastoreInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatastoreInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("skipValidation") Boolean skipValidation,
-            @BodyParam("application/json") DatastoreInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @QueryParam("skipValidation") Boolean skipValidation, @BodyParam("application/json") DatastoreInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores/{name}/listSecrets")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores/{name}/listSecrets")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatastoreSecretsInner>> listSecrets(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatastoreSecretsInner>> listSecrets(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatastoreResourceArmPaginatedResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List datastores.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -179,30 +149,19 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of Datastore entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatastoreInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        Integer count,
-        Boolean isDefault,
-        List<String> names,
-        String searchText,
-        String orderBy,
+    private Mono<PagedResponse<DatastoreInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String skip, Integer count, Boolean isDefault, List<String> names, String searchText, String orderBy,
         Boolean orderByAsc) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -212,44 +171,23 @@ public final class DatastoresClientImpl implements DatastoresClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        String namesConverted =
-            (names == null)
-                ? null
-                : names.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String namesConverted = (names == null)
+            ? null
+            : names.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            this.client.getApiVersion(),
-                            skip,
-                            count,
-                            isDefault,
-                            namesConverted,
-                            searchText,
-                            orderBy,
-                            orderByAsc,
-                            accept,
-                            context))
-            .<PagedResponse<DatastoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, this.client.getApiVersion(), skip, count, isDefault, namesConverted,
+                searchText, orderBy, orderByAsc, accept, context))
+            .<PagedResponse<DatastoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List datastores.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -264,31 +202,19 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of Datastore entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatastoreInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        Integer count,
-        Boolean isDefault,
-        List<String> names,
-        String searchText,
-        String orderBy,
-        Boolean orderByAsc,
-        Context context) {
+    private Mono<PagedResponse<DatastoreInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String skip, Integer count, Boolean isDefault, List<String> names, String searchText, String orderBy,
+        Boolean orderByAsc, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -298,41 +224,23 @@ public final class DatastoresClientImpl implements DatastoresClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        String namesConverted =
-            (names == null)
-                ? null
-                : names.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        String namesConverted = (names == null)
+            ? null
+            : names.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                this.client.getApiVersion(),
-                skip,
-                count,
-                isDefault,
-                namesConverted,
-                searchText,
-                orderBy,
-                orderByAsc,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+                this.client.getApiVersion(), skip, count, isDefault, namesConverted, searchText, orderBy, orderByAsc,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List datastores.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -348,26 +256,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatastoreInner> listAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        Integer count,
-        Boolean isDefault,
-        List<String> names,
-        String searchText,
-        String orderBy,
-        Boolean orderByAsc) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    resourceGroupName, workspaceName, skip, count, isDefault, names, searchText, orderBy, orderByAsc),
-            nextLink -> listNextSinglePageAsync(nextLink));
+    private PagedFlux<DatastoreInner> listAsync(String resourceGroupName, String workspaceName, String skip,
+        Integer count, Boolean isDefault, List<String> names, String searchText, String orderBy, Boolean orderByAsc) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, skip, count, isDefault,
+            names, searchText, orderBy, orderByAsc), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List datastores.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -384,16 +281,13 @@ public final class DatastoresClientImpl implements DatastoresClient {
         final String searchText = null;
         final String orderBy = null;
         final Boolean orderByAsc = null;
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    resourceGroupName, workspaceName, skip, count, isDefault, names, searchText, orderBy, orderByAsc),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, skip, count, isDefault,
+            names, searchText, orderBy, orderByAsc), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List datastores.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -410,36 +304,16 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatastoreInner> listAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        Integer count,
-        Boolean isDefault,
-        List<String> names,
-        String searchText,
-        String orderBy,
-        Boolean orderByAsc,
+    private PagedFlux<DatastoreInner> listAsync(String resourceGroupName, String workspaceName, String skip,
+        Integer count, Boolean isDefault, List<String> names, String searchText, String orderBy, Boolean orderByAsc,
         Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    resourceGroupName,
-                    workspaceName,
-                    skip,
-                    count,
-                    isDefault,
-                    names,
-                    searchText,
-                    orderBy,
-                    orderByAsc,
-                    context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, skip, count, isDefault,
+            names, searchText, orderBy, orderByAsc, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List datastores.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -456,14 +330,13 @@ public final class DatastoresClientImpl implements DatastoresClient {
         final String searchText = null;
         final String orderBy = null;
         final Boolean orderByAsc = null;
-        return new PagedIterable<>(
-            listAsync(
-                resourceGroupName, workspaceName, skip, count, isDefault, names, searchText, orderBy, orderByAsc));
+        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skip, count, isDefault, names,
+            searchText, orderBy, orderByAsc));
     }
 
     /**
      * List datastores.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -480,34 +353,16 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatastoreInner> list(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        Integer count,
-        Boolean isDefault,
-        List<String> names,
-        String searchText,
-        String orderBy,
-        Boolean orderByAsc,
+    public PagedIterable<DatastoreInner> list(String resourceGroupName, String workspaceName, String skip,
+        Integer count, Boolean isDefault, List<String> names, String searchText, String orderBy, Boolean orderByAsc,
         Context context) {
-        return new PagedIterable<>(
-            listAsync(
-                resourceGroupName,
-                workspaceName,
-                skip,
-                count,
-                isDefault,
-                names,
-                searchText,
-                orderBy,
-                orderByAsc,
-                context));
+        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skip, count, isDefault, names,
+            searchText, orderBy, orderByAsc, context));
     }
 
     /**
      * Delete datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -519,16 +374,12 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -542,24 +393,14 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            name,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, name, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -570,19 +411,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName, String name,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -596,21 +433,13 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                name,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, name, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -626,7 +455,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Delete datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -637,14 +466,14 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
     }
 
     /**
      * Delete datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -659,7 +488,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Get datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -669,19 +498,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return datastore along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name) {
+    private Mono<Response<DatastoreInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -695,24 +520,14 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            name,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, name, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -723,19 +538,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return datastore along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, Context context) {
+    private Mono<Response<DatastoreInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -749,21 +560,13 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                name,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+            name, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -780,7 +583,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Get datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -791,14 +594,14 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return datastore along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatastoreInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context) {
+    public Response<DatastoreInner> getWithResponse(String resourceGroupName, String workspaceName, String name,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
     }
 
     /**
      * Get datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -814,7 +617,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Create or update datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -823,23 +626,19 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return azure Resource Manager resource envelope along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, DatastoreInner body, Boolean skipValidation) {
+    private Mono<Response<DatastoreInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String name, DatastoreInner body, Boolean skipValidation) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -858,26 +657,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            name,
-                            this.client.getApiVersion(),
-                            skipValidation,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, name, this.client.getApiVersion(), skipValidation, body, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -887,28 +675,19 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return azure Resource Manager resource envelope along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        DatastoreInner body,
-        Boolean skipValidation,
-        Context context) {
+    private Mono<Response<DatastoreInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String name, DatastoreInner body, Boolean skipValidation, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -927,23 +706,13 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                name,
-                this.client.getApiVersion(),
-                skipValidation,
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, name, this.client.getApiVersion(), skipValidation, body, accept, context);
     }
 
     /**
      * Create or update datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -954,8 +723,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatastoreInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String name, DatastoreInner body) {
+    private Mono<DatastoreInner> createOrUpdateAsync(String resourceGroupName, String workspaceName, String name,
+        DatastoreInner body) {
         final Boolean skipValidation = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body, skipValidation)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -963,7 +732,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Create or update datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -976,20 +745,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatastoreInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        DatastoreInner body,
-        Boolean skipValidation,
-        Context context) {
+    public Response<DatastoreInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String name, DatastoreInner body, Boolean skipValidation, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body, skipValidation, context)
             .block();
     }
 
     /**
      * Create or update datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -1000,8 +764,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatastoreInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, DatastoreInner body) {
+    public DatastoreInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
+        DatastoreInner body) {
         final Boolean skipValidation = null;
         return createOrUpdateWithResponse(resourceGroupName, workspaceName, name, body, skipValidation, Context.NONE)
             .getValue();
@@ -1009,7 +773,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Get datastore secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -1019,19 +783,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return datastore secrets along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreSecretsInner>> listSecretsWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name) {
+    private Mono<Response<DatastoreSecretsInner>> listSecretsWithResponseAsync(String resourceGroupName,
+        String workspaceName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1045,24 +805,14 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSecrets(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            name,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listSecrets(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, name, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get datastore secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -1073,19 +823,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return datastore secrets along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreSecretsInner>> listSecretsWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, Context context) {
+    private Mono<Response<DatastoreSecretsInner>> listSecretsWithResponseAsync(String resourceGroupName,
+        String workspaceName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1099,21 +845,13 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSecrets(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                name,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listSecrets(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, name, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get datastore secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -1130,7 +868,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Get datastore secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -1141,14 +879,14 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return datastore secrets along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatastoreSecretsInner> listSecretsWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context) {
+    public Response<DatastoreSecretsInner> listSecretsWithResponse(String resourceGroupName, String workspaceName,
+        String name, Context context) {
         return listSecretsWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
     }
 
     /**
      * Get datastore secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -1164,14 +902,13 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of Datastore entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatastoreInner>> listNextSinglePageAsync(String nextLink) {
@@ -1179,37 +916,26 @@ public final class DatastoresClientImpl implements DatastoresClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DatastoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DatastoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of Datastore entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatastoreInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1217,23 +943,13 @@ public final class DatastoresClientImpl implements DatastoresClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

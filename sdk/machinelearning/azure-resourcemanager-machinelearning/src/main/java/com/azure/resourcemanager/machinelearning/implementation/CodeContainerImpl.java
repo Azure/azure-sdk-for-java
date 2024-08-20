@@ -49,40 +49,34 @@ public final class CodeContainerImpl implements CodeContainer, CodeContainer.Def
 
     private String resourceGroupName;
 
-    private String workspaceName;
+    private String registryName;
 
-    private String name;
+    private String codeName;
 
-    public CodeContainerImpl withExistingWorkspace(String resourceGroupName, String workspaceName) {
+    public CodeContainerImpl withExistingRegistry(String resourceGroupName, String registryName) {
         this.resourceGroupName = resourceGroupName;
-        this.workspaceName = workspaceName;
+        this.registryName = registryName;
         return this;
     }
 
     public CodeContainer create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryCodeContainers()
+            .createOrUpdate(resourceGroupName, registryName, codeName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CodeContainer create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryCodeContainers()
+            .createOrUpdate(resourceGroupName, registryName, codeName, this.innerModel(), context);
         return this;
     }
 
     CodeContainerImpl(String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new CodeContainerInner();
         this.serviceManager = serviceManager;
-        this.name = name;
+        this.codeName = name;
     }
 
     public CodeContainerImpl update() {
@@ -90,52 +84,41 @@ public final class CodeContainerImpl implements CodeContainer, CodeContainer.Def
     }
 
     public CodeContainer apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryCodeContainers()
+            .createOrUpdate(resourceGroupName, registryName, codeName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CodeContainer apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryCodeContainers()
+            .createOrUpdate(resourceGroupName, registryName, codeName, this.innerModel(), context);
         return this;
     }
 
-    CodeContainerImpl(
-        CodeContainerInner innerObject,
+    CodeContainerImpl(CodeContainerInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "codes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.registryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "registries");
+        this.codeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "codes");
     }
 
     public CodeContainer refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryCodeContainers()
+            .getWithResponse(resourceGroupName, registryName, codeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CodeContainer refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .getWithResponse(resourceGroupName, workspaceName, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryCodeContainers()
+            .getWithResponse(resourceGroupName, registryName, codeName, context)
+            .getValue();
         return this;
     }
 

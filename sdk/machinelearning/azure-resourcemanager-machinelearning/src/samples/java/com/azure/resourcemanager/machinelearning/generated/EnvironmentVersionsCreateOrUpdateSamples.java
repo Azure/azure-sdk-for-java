@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
+import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentVersionInner;
 import com.azure.resourcemanager.machinelearning.models.BuildContext;
 import com.azure.resourcemanager.machinelearning.models.EnvironmentVersionProperties;
 import com.azure.resourcemanager.machinelearning.models.InferenceContainerProperties;
@@ -11,43 +12,42 @@ import com.azure.resourcemanager.machinelearning.models.Route;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for EnvironmentVersions CreateOrUpdate. */
+/**
+ * Samples for EnvironmentVersions CreateOrUpdate.
+ */
 public final class EnvironmentVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/EnvironmentVersion/createOrUpdate.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/EnvironmentVersion/createOrUpdate.json
      */
     /**
-     * Sample code: CreateOrUpdate Environment Version.
-     *
+     * Sample code: CreateOrUpdate Workspace Environment Version.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void createOrUpdateEnvironmentVersion(
+    public static void createOrUpdateWorkspaceEnvironmentVersion(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .environmentVersions()
-            .define("string")
-            .withExistingEnvironment("test-rg", "my-aml-workspace", "string")
-            .withProperties(
-                new EnvironmentVersionProperties()
+        manager.environmentVersions()
+            .createOrUpdateWithResponse("test-rg", "my-aml-workspace", "string", "string",
+                new EnvironmentVersionInner().withProperties(new EnvironmentVersionProperties()
                     .withDescription("string")
-                    .withProperties(mapOf("string", "string"))
                     .withTags(mapOf("string", "string"))
+                    .withProperties(mapOf("string", "string"))
                     .withIsAnonymous(false)
-                    .withBuild(
-                        new BuildContext()
-                            .withContextUri(
-                                "https://storage-account.blob.core.windows.net/azureml/DockerBuildContext/95ddede6b9b8c4e90472db3acd0a8d28/")
-                            .withDockerfilePath("prod/Dockerfile"))
-                    .withCondaFile("string")
                     .withImage("docker.io/tensorflow/serving:latest")
+                    .withCondaFile("string")
+                    .withBuild(new BuildContext().withContextUri(
+                        "https://storage-account.blob.core.windows.net/azureml/DockerBuildContext/95ddede6b9b8c4e90472db3acd0a8d28/")
+                        .withDockerfilePath("prod/Dockerfile"))
                     .withInferenceConfig(
-                        new InferenceContainerProperties()
-                            .withLivenessRoute(new Route().withPath("string").withPort(1))
+                        new InferenceContainerProperties().withLivenessRoute(new Route().withPath("string").withPort(1))
                             .withReadinessRoute(new Route().withPath("string").withPort(1))
-                            .withScoringRoute(new Route().withPath("string").withPort(1))))
-            .create();
+                            .withScoringRoute(new Route().withPath("string").withPort(1)))),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

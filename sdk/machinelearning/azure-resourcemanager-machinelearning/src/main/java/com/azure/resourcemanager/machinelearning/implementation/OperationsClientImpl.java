@@ -25,153 +25,149 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.machinelearning.fluent.OperationsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.AmlOperationInner;
-import com.azure.resourcemanager.machinelearning.models.AmlOperationListResult;
+import com.azure.resourcemanager.machinelearning.fluent.models.OperationInner;
+import com.azure.resourcemanager.machinelearning.models.OperationListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public final class OperationsClientImpl implements OperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsService service;
 
-    /** The service client containing this operation class. */
-    private final AzureMachineLearningWorkspacesImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final AzureMachineLearningServicesImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(AzureMachineLearningWorkspacesImpl client) {
-        this.service =
-            RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    OperationsClientImpl(AzureMachineLearningServicesImpl client) {
+        this.service
+            = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMachineLearningWorkspacesOperations to be used by the proxy
+     * The interface defining all the services for AzureMachineLearningServicesOperations to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
     public interface OperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.MachineLearningServices/operations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AmlOperationListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the available Azure Machine Learning Workspaces REST API operations.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of operations supported by the resource provider along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AmlOperationInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .<PagedResponse<AmlOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .<PagedResponse<OperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the available Azure Machine Learning Workspaces REST API operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of operations supported by the resource provider along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AmlOperationInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists all of the available Azure Machine Learning Workspaces REST API operations.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of operations supported by the resource provider as paginated response with {@link PagedFlux}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AmlOperationInner> listAsync() {
+    private PagedFlux<OperationInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync());
     }
 
     /**
      * Lists all of the available Azure Machine Learning Workspaces REST API operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of operations supported by the resource provider as paginated response with {@link PagedFlux}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AmlOperationInner> listAsync(Context context) {
+    private PagedFlux<OperationInner> listAsync(Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(context));
     }
 
     /**
      * Lists all of the available Azure Machine Learning Workspaces REST API operations.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of operations supported by the resource provider as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AmlOperationInner> list() {
+    public PagedIterable<OperationInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
     /**
      * Lists all of the available Azure Machine Learning Workspaces REST API operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of operations supported by the resource provider as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AmlOperationInner> list(Context context) {
+    public PagedIterable<OperationInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 }

@@ -49,40 +49,34 @@ public final class ModelContainerImpl implements ModelContainer, ModelContainer.
 
     private String resourceGroupName;
 
-    private String workspaceName;
+    private String registryName;
 
-    private String name;
+    private String modelName;
 
-    public ModelContainerImpl withExistingWorkspace(String resourceGroupName, String workspaceName) {
+    public ModelContainerImpl withExistingRegistry(String resourceGroupName, String registryName) {
         this.resourceGroupName = resourceGroupName;
-        this.workspaceName = workspaceName;
+        this.registryName = registryName;
         return this;
     }
 
     public ModelContainer create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryModelContainers()
+            .createOrUpdate(resourceGroupName, registryName, modelName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ModelContainer create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryModelContainers()
+            .createOrUpdate(resourceGroupName, registryName, modelName, this.innerModel(), context);
         return this;
     }
 
     ModelContainerImpl(String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new ModelContainerInner();
         this.serviceManager = serviceManager;
-        this.name = name;
+        this.modelName = name;
     }
 
     public ModelContainerImpl update() {
@@ -90,52 +84,41 @@ public final class ModelContainerImpl implements ModelContainer, ModelContainer.
     }
 
     public ModelContainer apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryModelContainers()
+            .createOrUpdate(resourceGroupName, registryName, modelName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ModelContainer apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryModelContainers()
+            .createOrUpdate(resourceGroupName, registryName, modelName, this.innerModel(), context);
         return this;
     }
 
-    ModelContainerImpl(
-        ModelContainerInner innerObject,
+    ModelContainerImpl(ModelContainerInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "models");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.registryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "registries");
+        this.modelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "models");
     }
 
     public ModelContainer refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelContainers()
-                .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryModelContainers()
+            .getWithResponse(resourceGroupName, registryName, modelName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ModelContainer refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelContainers()
-                .getWithResponse(resourceGroupName, workspaceName, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryModelContainers()
+            .getWithResponse(resourceGroupName, registryName, modelName, context)
+            .getValue();
         return this;
     }
 

@@ -40,140 +40,104 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BatchDeploymentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BatchDeploymentsClient.
+ */
 public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BatchDeploymentsService service;
 
-    /** The service client containing this operation class. */
-    private final AzureMachineLearningWorkspacesImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final AzureMachineLearningServicesImpl client;
 
     /**
      * Initializes an instance of BatchDeploymentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    BatchDeploymentsClientImpl(AzureMachineLearningWorkspacesImpl client) {
-        this.service =
-            RestProxy.create(BatchDeploymentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    BatchDeploymentsClientImpl(AzureMachineLearningServicesImpl client) {
+        this.service
+            = RestProxy.create(BatchDeploymentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMachineLearningWorkspacesBatchDeployments to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureMachineLearningServicesBatchDeployments to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
     public interface BatchDeploymentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{endpointName}"
-                + "/deployments")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{endpointName}/deployments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BatchDeploymentTrackedResourceArmPaginatedResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<BatchDeploymentTrackedResourceArmPaginatedResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$orderBy") String orderBy,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") String skip,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$orderBy") String orderBy, @QueryParam("$top") Integer top, @QueryParam("$skip") String skip,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{endpointName}"
-                + "/deployments/{deploymentName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{endpointName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @PathParam("deploymentName") String deploymentName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{endpointName}"
-                + "/deployments/{deploymentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{endpointName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BatchDeploymentInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<BatchDeploymentInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @PathParam("deploymentName") String deploymentName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{endpointName}"
-                + "/deployments/{deploymentName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{endpointName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("deploymentName") String deploymentName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{endpointName}"
-                + "/deployments/{deploymentName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{endpointName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BatchDeploymentInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("endpointName") String endpointName, @PathParam("deploymentName") String deploymentName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BatchDeploymentInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BatchDeploymentTrackedResourceArmPaginatedResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists Batch inference deployments in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -184,22 +148,18 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchDeployment entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BatchDeploymentInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String orderBy, Integer top, String skip) {
+    private Mono<PagedResponse<BatchDeploymentInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String endpointName, String orderBy, Integer top, String skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -214,35 +174,16 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            this.client.getApiVersion(),
-                            orderBy,
-                            top,
-                            skip,
-                            accept,
-                            context))
-            .<PagedResponse<BatchDeploymentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workspaceName, endpointName, this.client.getApiVersion(), orderBy, top, skip, accept, context))
+            .<PagedResponse<BatchDeploymentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists Batch inference deployments in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -254,28 +195,18 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchDeployment entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BatchDeploymentInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String orderBy,
-        Integer top,
-        String skip,
-        Context context) {
+    private Mono<PagedResponse<BatchDeploymentInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String endpointName, String orderBy, Integer top, String skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -290,32 +221,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                this.client.getApiVersion(),
-                orderBy,
-                top,
-                skip,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+                endpointName, this.client.getApiVersion(), orderBy, top, skip, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists Batch inference deployments in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -328,8 +242,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BatchDeploymentInner> listAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String orderBy, Integer top, String skip) {
+    private PagedFlux<BatchDeploymentInner> listAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String orderBy, Integer top, String skip) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, endpointName, orderBy, top, skip),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -337,7 +251,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
 
     /**
      * Lists Batch inference deployments in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -347,8 +261,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BatchDeploymentInner> listAsync(
-        String resourceGroupName, String workspaceName, String endpointName) {
+    private PagedFlux<BatchDeploymentInner> listAsync(String resourceGroupName, String workspaceName,
+        String endpointName) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
@@ -359,7 +273,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
 
     /**
      * Lists Batch inference deployments in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -373,14 +287,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BatchDeploymentInner> listAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String orderBy,
-        Integer top,
-        String skip,
-        Context context) {
+    private PagedFlux<BatchDeploymentInner> listAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String orderBy, Integer top, String skip, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -388,7 +296,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
 
     /**
      * Lists Batch inference deployments in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -398,8 +306,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchDeploymentInner> list(
-        String resourceGroupName, String workspaceName, String endpointName) {
+    public PagedIterable<BatchDeploymentInner> list(String resourceGroupName, String workspaceName,
+        String endpointName) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
@@ -408,7 +316,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
 
     /**
      * Lists Batch inference deployments in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -422,21 +330,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchDeploymentInner> list(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String orderBy,
-        Integer top,
-        String skip,
-        Context context) {
+    public PagedIterable<BatchDeploymentInner> list(String resourceGroupName, String workspaceName, String endpointName,
+        String orderBy, Integer top, String skip, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, context));
     }
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -447,19 +349,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -477,24 +375,14 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workspaceName, endpointName, deploymentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -506,19 +394,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -535,22 +419,13 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                deploymentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, endpointName, deploymentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -561,19 +436,17 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -585,19 +458,18 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -608,14 +480,14 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName) {
         return this.beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName).getSyncPoller();
     }
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -627,16 +499,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context)
             .getSyncPoller();
     }
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -647,16 +518,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -668,16 +538,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -693,7 +562,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
 
     /**
      * Delete Batch Inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -704,14 +573,14 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
+        Context context) {
         deleteAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context).block();
     }
 
     /**
      * Gets a batch inference deployment by id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -722,19 +591,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a batch inference deployment by id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BatchDeploymentInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    private Mono<Response<BatchDeploymentInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -752,24 +617,14 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workspaceName, endpointName, deploymentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a batch inference deployment by id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -781,19 +636,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a batch inference deployment by id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BatchDeploymentInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
+    private Mono<Response<BatchDeploymentInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -810,22 +661,13 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                deploymentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+            endpointName, deploymentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a batch inference deployment by id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -836,15 +678,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a batch inference deployment by id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchDeploymentInner> getAsync(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    private Mono<BatchDeploymentInner> getAsync(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a batch inference deployment by id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -856,14 +698,14 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a batch inference deployment by id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BatchDeploymentInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context) {
+    public Response<BatchDeploymentInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, context).block();
     }
 
     /**
      * Gets a batch inference deployment by id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Endpoint name.
@@ -874,14 +716,14 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return a batch inference deployment by id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchDeploymentInner get(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
+    public BatchDeploymentInner get(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName) {
         return getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE).getValue();
     }
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -893,23 +735,16 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName,
         PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -932,25 +767,14 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workspaceName, endpointName, deploymentName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -963,24 +787,16 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName,
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1002,23 +818,13 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                deploymentName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, endpointName, deploymentName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1031,26 +837,17 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
         PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
-        return this
-            .client
-            .<BatchDeploymentInner, BatchDeploymentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BatchDeploymentInner.class,
-                BatchDeploymentInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
+        return this.client.<BatchDeploymentInner, BatchDeploymentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BatchDeploymentInner.class, BatchDeploymentInner.class, this.client.getContext());
     }
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1064,24 +861,18 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
-        Context context) {
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context);
-        return this
-            .client
-            .<BatchDeploymentInner, BatchDeploymentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BatchDeploymentInner.class, BatchDeploymentInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context);
+        return this.client.<BatchDeploymentInner, BatchDeploymentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BatchDeploymentInner.class, BatchDeploymentInner.class, context);
     }
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1093,20 +884,16 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
+    public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName,
         PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
-        return this
-            .beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .getSyncPoller();
     }
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1119,21 +906,16 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
+    public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName,
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1145,20 +927,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchDeploymentInner> updateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
-            .last()
+    private Mono<BatchDeploymentInner> updateAsync(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1171,21 +948,16 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchDeploymentInner> updateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
+    private Mono<BatchDeploymentInner> updateAsync(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
-            .last()
+        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1197,18 +969,14 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchDeploymentInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
+    public BatchDeploymentInner update(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).block();
     }
 
     /**
      * Update a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1221,19 +989,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchDeploymentInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
+    public BatchDeploymentInner update(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
         Context context) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context).block();
     }
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1245,23 +1009,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName, BatchDeploymentInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1283,26 +1039,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            endpointName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, endpointName, deploymentName, this.client.getApiVersion(), body,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1315,24 +1060,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String endpointName, String deploymentName, BatchDeploymentInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1354,23 +1090,13 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                endpointName,
-                deploymentName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, endpointName, deploymentName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1383,26 +1109,17 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
         BatchDeploymentInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
-        return this
-            .client
-            .<BatchDeploymentInner, BatchDeploymentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BatchDeploymentInner.class,
-                BatchDeploymentInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body);
+        return this.client.<BatchDeploymentInner, BatchDeploymentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BatchDeploymentInner.class, BatchDeploymentInner.class, this.client.getContext());
     }
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1416,25 +1133,18 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body,
-        Context context) {
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
+        BatchDeploymentInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, endpointName, deploymentName, body, context);
-        return this
-            .client
-            .<BatchDeploymentInner, BatchDeploymentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BatchDeploymentInner.class, BatchDeploymentInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            endpointName, deploymentName, body, context);
+        return this.client.<BatchDeploymentInner, BatchDeploymentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BatchDeploymentInner.class, BatchDeploymentInner.class, context);
     }
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1447,19 +1157,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
         BatchDeploymentInner body) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
             .getSyncPoller();
     }
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1473,12 +1179,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body,
-        Context context) {
+        String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
+        BatchDeploymentInner body, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .getSyncPoller();
@@ -1486,7 +1188,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1498,20 +1200,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchDeploymentInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body)
-            .last()
+    private Mono<BatchDeploymentInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, BatchDeploymentInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1524,13 +1221,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchDeploymentInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body,
-        Context context) {
+    private Mono<BatchDeploymentInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String endpointName, String deploymentName, BatchDeploymentInner body, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1538,7 +1230,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1550,18 +1242,14 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchDeploymentInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body) {
+    public BatchDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, BatchDeploymentInner body) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body).block();
     }
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -1574,27 +1262,21 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchDeploymentInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        BatchDeploymentInner body,
-        Context context) {
+    public BatchDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, BatchDeploymentInner body, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
             .block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchDeployment entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BatchDeploymentInner>> listNextSinglePageAsync(String nextLink) {
@@ -1602,37 +1284,26 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BatchDeploymentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<BatchDeploymentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchDeployment entities along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BatchDeploymentInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1640,23 +1311,13 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

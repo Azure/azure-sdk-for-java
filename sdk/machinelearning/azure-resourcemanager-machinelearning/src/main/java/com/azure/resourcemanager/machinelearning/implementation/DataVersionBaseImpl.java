@@ -4,11 +4,14 @@
 
 package com.azure.resourcemanager.machinelearning.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.fluent.models.DataVersionBaseInner;
 import com.azure.resourcemanager.machinelearning.models.DataVersionBase;
 import com.azure.resourcemanager.machinelearning.models.DataVersionBaseProperties;
+import com.azure.resourcemanager.machinelearning.models.PendingUploadRequestDto;
+import com.azure.resourcemanager.machinelearning.models.PendingUploadResponseDto;
 
 public final class DataVersionBaseImpl implements DataVersionBase, DataVersionBase.Definition, DataVersionBase.Update {
     private DataVersionBaseInner innerObject;
@@ -49,37 +52,30 @@ public final class DataVersionBaseImpl implements DataVersionBase, DataVersionBa
 
     private String resourceGroupName;
 
-    private String workspaceName;
+    private String registryName;
 
     private String name;
 
     private String version;
 
-    public DataVersionBaseImpl withExistingData(String resourceGroupName, String workspaceName, String name) {
+    public DataVersionBaseImpl withExistingData(String resourceGroupName, String registryName, String name) {
         this.resourceGroupName = resourceGroupName;
-        this.workspaceName = workspaceName;
+        this.registryName = registryName;
         this.name = name;
         return this;
     }
 
     public DataVersionBase create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataVersions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryDataVersions()
+            .createOrUpdate(resourceGroupName, registryName, name, version, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DataVersionBase create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataVersions()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryDataVersions()
+            .createOrUpdate(resourceGroupName, registryName, name, version, this.innerModel(), context);
         return this;
     }
 
@@ -94,55 +90,54 @@ public final class DataVersionBaseImpl implements DataVersionBase, DataVersionBa
     }
 
     public DataVersionBase apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataVersions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryDataVersions()
+            .createOrUpdate(resourceGroupName, registryName, name, version, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DataVersionBase apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataVersions()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryDataVersions()
+            .createOrUpdate(resourceGroupName, registryName, name, version, this.innerModel(), context);
         return this;
     }
 
-    DataVersionBaseImpl(
-        DataVersionBaseInner innerObject,
+    DataVersionBaseImpl(DataVersionBaseInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "data");
-        this.version = Utils.getValueFromIdByName(innerObject.id(), "versions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.registryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "registries");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "data");
+        this.version = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
     }
 
     public DataVersionBase refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataVersions()
-                .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryDataVersions()
+            .getWithResponse(resourceGroupName, registryName, name, version, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataVersionBase refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataVersions()
-                .getWithResponse(resourceGroupName, workspaceName, name, version, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistryDataVersions()
+            .getWithResponse(resourceGroupName, registryName, name, version, context)
+            .getValue();
         return this;
+    }
+
+    public Response<PendingUploadResponseDto> createOrGetStartPendingUploadWithResponse(PendingUploadRequestDto body,
+        Context context) {
+        return serviceManager.registryDataVersions()
+            .createOrGetStartPendingUploadWithResponse(resourceGroupName, registryName, name, version, body, context);
+    }
+
+    public PendingUploadResponseDto createOrGetStartPendingUpload(PendingUploadRequestDto body) {
+        return serviceManager.registryDataVersions()
+            .createOrGetStartPendingUpload(resourceGroupName, registryName, name, version, body);
     }
 
     public DataVersionBaseImpl withProperties(DataVersionBaseProperties properties) {

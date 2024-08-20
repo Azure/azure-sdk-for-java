@@ -6,25 +6,27 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.resourcemanager.machinelearning.fluent.models.ListNotebookKeysResultInner;
 
-/** An immutable client-side representation of ListNotebookKeysResult. */
+/**
+ * An immutable client-side representation of ListNotebookKeysResult.
+ */
 public interface ListNotebookKeysResult {
     /**
      * Gets the primaryAccessKey property: The primaryAccessKey property.
-     *
+     * 
      * @return the primaryAccessKey value.
      */
     String primaryAccessKey();
 
     /**
      * Gets the secondaryAccessKey property: The secondaryAccessKey property.
-     *
+     * 
      * @return the secondaryAccessKey value.
      */
     String secondaryAccessKey();
 
     /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.ListNotebookKeysResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     ListNotebookKeysResultInner innerModel();

@@ -4,33 +4,36 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
+import com.azure.resourcemanager.machinelearning.fluent.models.ModelContainerInner;
 import com.azure.resourcemanager.machinelearning.models.ModelContainerProperties;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ModelContainers CreateOrUpdate. */
+/**
+ * Samples for ModelContainers CreateOrUpdate.
+ */
 public final class ModelContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/ModelContainer/createOrUpdate.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/ModelContainer/createOrUpdate.json
      */
     /**
-     * Sample code: CreateOrUpdate Model Container.
-     *
+     * Sample code: CreateOrUpdate Workspace Model Container.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void createOrUpdateModelContainer(
+    public static void createOrUpdateWorkspaceModelContainer(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .modelContainers()
-            .define("testContainer")
-            .withExistingWorkspace("testrg123", "workspace123")
-            .withProperties(
-                new ModelContainerProperties()
-                    .withDescription("Model container description")
-                    .withTags(mapOf("tag1", "value1", "tag2", "value2")))
-            .create();
+        manager.modelContainers()
+            .createOrUpdateWithResponse("testrg123", "workspace123", "testContainer",
+                new ModelContainerInner()
+                    .withProperties(new ModelContainerProperties().withDescription("Model container description")
+                        .withTags(mapOf("tag1", "value1", "tag2", "value2"))),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

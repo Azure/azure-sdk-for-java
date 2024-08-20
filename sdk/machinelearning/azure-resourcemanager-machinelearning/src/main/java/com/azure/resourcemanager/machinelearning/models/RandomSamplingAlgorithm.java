@@ -5,54 +5,51 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines a Sampling Algorithm that generates values randomly. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "samplingAlgorithmType")
-@JsonTypeName("Random")
+/**
+ * Defines a Sampling Algorithm that generates values randomly.
+ */
 @Fluent
 public final class RandomSamplingAlgorithm extends SamplingAlgorithm {
     /*
-     * The specific type of random algorithm
+     * [Required] The algorithm used for generating hyperparameter values, along with configuration properties
      */
-    @JsonProperty(value = "rule")
-    private RandomSamplingAlgorithmRule rule;
+    private SamplingAlgorithmType samplingAlgorithmType = SamplingAlgorithmType.RANDOM;
 
     /*
      * An optional integer to use as the seed for random number generation
      */
-    @JsonProperty(value = "seed")
     private Integer seed;
 
-    /** Creates an instance of RandomSamplingAlgorithm class. */
+    /*
+     * The specific type of random algorithm
+     */
+    private RandomSamplingAlgorithmRule rule;
+
+    /**
+     * Creates an instance of RandomSamplingAlgorithm class.
+     */
     public RandomSamplingAlgorithm() {
     }
 
     /**
-     * Get the rule property: The specific type of random algorithm.
-     *
-     * @return the rule value.
+     * Get the samplingAlgorithmType property: [Required] The algorithm used for generating hyperparameter values, along
+     * with configuration properties.
+     * 
+     * @return the samplingAlgorithmType value.
      */
-    public RandomSamplingAlgorithmRule rule() {
-        return this.rule;
-    }
-
-    /**
-     * Set the rule property: The specific type of random algorithm.
-     *
-     * @param rule the rule value to set.
-     * @return the RandomSamplingAlgorithm object itself.
-     */
-    public RandomSamplingAlgorithm withRule(RandomSamplingAlgorithmRule rule) {
-        this.rule = rule;
-        return this;
+    @Override
+    public SamplingAlgorithmType samplingAlgorithmType() {
+        return this.samplingAlgorithmType;
     }
 
     /**
      * Get the seed property: An optional integer to use as the seed for random number generation.
-     *
+     * 
      * @return the seed value.
      */
     public Integer seed() {
@@ -61,7 +58,7 @@ public final class RandomSamplingAlgorithm extends SamplingAlgorithm {
 
     /**
      * Set the seed property: An optional integer to use as the seed for random number generation.
-     *
+     * 
      * @param seed the seed value to set.
      * @return the RandomSamplingAlgorithm object itself.
      */
@@ -71,12 +68,77 @@ public final class RandomSamplingAlgorithm extends SamplingAlgorithm {
     }
 
     /**
+     * Get the rule property: The specific type of random algorithm.
+     * 
+     * @return the rule value.
+     */
+    public RandomSamplingAlgorithmRule rule() {
+        return this.rule;
+    }
+
+    /**
+     * Set the rule property: The specific type of random algorithm.
+     * 
+     * @param rule the rule value to set.
+     * @return the RandomSamplingAlgorithm object itself.
+     */
+    public RandomSamplingAlgorithm withRule(RandomSamplingAlgorithmRule rule) {
+        this.rule = rule;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("samplingAlgorithmType",
+            this.samplingAlgorithmType == null ? null : this.samplingAlgorithmType.toString());
+        jsonWriter.writeNumberField("seed", this.seed);
+        jsonWriter.writeStringField("rule", this.rule == null ? null : this.rule.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RandomSamplingAlgorithm from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RandomSamplingAlgorithm if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RandomSamplingAlgorithm.
+     */
+    public static RandomSamplingAlgorithm fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RandomSamplingAlgorithm deserializedRandomSamplingAlgorithm = new RandomSamplingAlgorithm();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("samplingAlgorithmType".equals(fieldName)) {
+                    deserializedRandomSamplingAlgorithm.samplingAlgorithmType
+                        = SamplingAlgorithmType.fromString(reader.getString());
+                } else if ("seed".equals(fieldName)) {
+                    deserializedRandomSamplingAlgorithm.seed = reader.getNullable(JsonReader::getInt);
+                } else if ("rule".equals(fieldName)) {
+                    deserializedRandomSamplingAlgorithm.rule
+                        = RandomSamplingAlgorithmRule.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRandomSamplingAlgorithm;
+        });
     }
 }

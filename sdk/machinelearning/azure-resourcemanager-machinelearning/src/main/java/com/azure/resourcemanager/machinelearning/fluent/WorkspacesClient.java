@@ -19,14 +19,16 @@ import com.azure.resourcemanager.machinelearning.fluent.models.ListWorkspaceKeys
 import com.azure.resourcemanager.machinelearning.fluent.models.NotebookAccessTokenResultInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.NotebookResourceInfoInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.WorkspaceInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.WorkspaceUpdateParametersInner;
 import com.azure.resourcemanager.machinelearning.models.DiagnoseWorkspaceParameters;
-import com.azure.resourcemanager.machinelearning.models.WorkspaceUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in WorkspacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspacesClient.
+ */
 public interface WorkspacesClient {
     /**
      * Gets the properties of the specified machine learning workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -36,12 +38,12 @@ public interface WorkspacesClient {
      * @return the properties of the specified machine learning workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<WorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets the properties of the specified machine learning workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,7 +56,7 @@ public interface WorkspacesClient {
 
     /**
      * Creates or updates a workspace with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param parameters The parameters for creating or updating a machine learning workspace.
@@ -64,12 +66,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of an object that represents a machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner parameters);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, WorkspaceInner parameters);
 
     /**
      * Creates or updates a workspace with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param parameters The parameters for creating or updating a machine learning workspace.
@@ -80,12 +82,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of an object that represents a machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner parameters, Context context);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, WorkspaceInner parameters, Context context);
 
     /**
      * Creates or updates a workspace with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param parameters The parameters for creating or updating a machine learning workspace.
@@ -99,7 +101,7 @@ public interface WorkspacesClient {
 
     /**
      * Creates or updates a workspace with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param parameters The parameters for creating or updating a machine learning workspace.
@@ -110,12 +112,12 @@ public interface WorkspacesClient {
      * @return an object that represents a machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner parameters, Context context);
+    WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner parameters,
+        Context context);
 
     /**
      * Deletes a machine learning workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,9 +130,10 @@ public interface WorkspacesClient {
 
     /**
      * Deletes a machine learning workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param forceToPurge Flag to indicate delete is a purge request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -138,11 +141,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, Boolean forceToPurge,
+        Context context);
 
     /**
      * Deletes a machine learning workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,20 +158,21 @@ public interface WorkspacesClient {
 
     /**
      * Deletes a machine learning workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param forceToPurge Flag to indicate delete is a purge request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, Context context);
+    void delete(String resourceGroupName, String workspaceName, Boolean forceToPurge, Context context);
 
     /**
      * Updates a machine learning workspace with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param parameters The parameters for updating a machine learning workspace.
@@ -177,12 +182,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of an object that represents a machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceUpdateParameters parameters);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceUpdateParametersInner parameters);
 
     /**
      * Updates a machine learning workspace with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param parameters The parameters for updating a machine learning workspace.
@@ -193,12 +198,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of an object that represents a machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceUpdateParameters parameters, Context context);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceUpdateParametersInner parameters, Context context);
 
     /**
      * Updates a machine learning workspace with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param parameters The parameters for updating a machine learning workspace.
@@ -208,11 +213,11 @@ public interface WorkspacesClient {
      * @return an object that represents a machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspaceUpdateParameters parameters);
+    WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspaceUpdateParametersInner parameters);
 
     /**
      * Updates a machine learning workspace with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param parameters The parameters for updating a machine learning workspace.
@@ -223,40 +228,40 @@ public interface WorkspacesClient {
      * @return an object that represents a machine learning workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceInner update(
-        String resourceGroupName, String workspaceName, WorkspaceUpdateParameters parameters, Context context);
+    WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspaceUpdateParametersInner parameters,
+        Context context);
 
     /**
      * Lists all the available machine learning workspaces under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list machine learning workspaces as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list machine learning workspaces as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all the available machine learning workspaces under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skip Continuation token for pagination.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list machine learning workspaces as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list machine learning workspaces as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName, String skip, Context context);
 
     /**
      * Diagnose workspace setup issue.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,12 +270,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DiagnoseResponseResultInner>, DiagnoseResponseResultInner> beginDiagnose(
-        String resourceGroupName, String workspaceName);
+    SyncPoller<PollResult<DiagnoseResponseResultInner>, DiagnoseResponseResultInner>
+        beginDiagnose(String resourceGroupName, String workspaceName);
 
     /**
      * Diagnose workspace setup issue.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param parameters The parameter of diagnosing workspace health.
@@ -286,7 +291,7 @@ public interface WorkspacesClient {
 
     /**
      * Diagnose workspace setup issue.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,7 +304,7 @@ public interface WorkspacesClient {
 
     /**
      * Diagnose workspace setup issue.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param parameters The parameter of diagnosing workspace health.
@@ -310,13 +315,13 @@ public interface WorkspacesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnoseResponseResultInner diagnose(
-        String resourceGroupName, String workspaceName, DiagnoseWorkspaceParameters parameters, Context context);
+    DiagnoseResponseResultInner diagnose(String resourceGroupName, String workspaceName,
+        DiagnoseWorkspaceParameters parameters, Context context);
 
     /**
      * Lists all the keys associated with this workspace. This includes keys for the storage account, app insights and
      * password for container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -326,13 +331,13 @@ public interface WorkspacesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListWorkspaceKeysResultInner> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListWorkspaceKeysResultInner> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Lists all the keys associated with this workspace. This includes keys for the storage account, app insights and
      * password for container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -346,7 +351,7 @@ public interface WorkspacesClient {
     /**
      * Resync all the keys associated with this workspace. This includes keys for the storage account, app insights and
      * password for container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -360,7 +365,7 @@ public interface WorkspacesClient {
     /**
      * Resync all the keys associated with this workspace. This includes keys for the storage account, app insights and
      * password for container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -375,7 +380,7 @@ public interface WorkspacesClient {
     /**
      * Resync all the keys associated with this workspace. This includes keys for the storage account, app insights and
      * password for container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -388,7 +393,7 @@ public interface WorkspacesClient {
     /**
      * Resync all the keys associated with this workspace. This includes keys for the storage account, app insights and
      * password for container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -401,32 +406,32 @@ public interface WorkspacesClient {
 
     /**
      * Lists all the available machine learning workspaces under the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list machine learning workspaces as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list machine learning workspaces as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkspaceInner> list();
 
     /**
      * Lists all the available machine learning workspaces under the specified subscription.
-     *
+     * 
      * @param skip Continuation token for pagination.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list machine learning workspaces as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list machine learning workspaces as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkspaceInner> list(String skip, Context context);
 
     /**
      * return notebook access token and refresh token.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -436,12 +441,12 @@ public interface WorkspacesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotebookAccessTokenResultInner> listNotebookAccessTokenWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<NotebookAccessTokenResultInner> listNotebookAccessTokenWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
      * return notebook access token and refresh token.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -454,7 +459,7 @@ public interface WorkspacesClient {
 
     /**
      * Prepare a notebook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,12 +468,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepareNotebook(
-        String resourceGroupName, String workspaceName);
+    SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner>
+        beginPrepareNotebook(String resourceGroupName, String workspaceName);
 
     /**
      * Prepare a notebook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -478,12 +483,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner> beginPrepareNotebook(
-        String resourceGroupName, String workspaceName, Context context);
+    SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner>
+        beginPrepareNotebook(String resourceGroupName, String workspaceName, Context context);
 
     /**
      * Prepare a notebook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -496,7 +501,7 @@ public interface WorkspacesClient {
 
     /**
      * Prepare a notebook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -510,7 +515,7 @@ public interface WorkspacesClient {
 
     /**
      * List storage account keys of a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -520,12 +525,12 @@ public interface WorkspacesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListStorageAccountKeysResultInner> listStorageAccountKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListStorageAccountKeysResultInner> listStorageAccountKeysWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
      * List storage account keys of a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -538,7 +543,7 @@ public interface WorkspacesClient {
 
     /**
      * List keys of a notebook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -548,12 +553,12 @@ public interface WorkspacesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListNotebookKeysResultInner> listNotebookKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListNotebookKeysResultInner> listNotebookKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * List keys of a notebook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -566,7 +571,7 @@ public interface WorkspacesClient {
 
     /**
      * Called by Client (Portal, CLI, etc) to get a list of all external outbound dependencies (FQDNs) programmatically.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -576,12 +581,12 @@ public interface WorkspacesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExternalFqdnResponseInner> listOutboundNetworkDependenciesEndpointsWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ExternalFqdnResponseInner> listOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
      * Called by Client (Portal, CLI, etc) to get a list of all external outbound dependencies (FQDNs) programmatically.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
