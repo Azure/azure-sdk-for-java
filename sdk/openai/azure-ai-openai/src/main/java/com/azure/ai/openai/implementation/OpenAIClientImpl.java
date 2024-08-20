@@ -522,7 +522,7 @@ public final class OpenAIClientImpl {
         Response<BinaryData> getBatchSync(@HostParam("endpoint") String endpoint, @PathParam("batchId") String batchId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/batches/{batchId}/cancel")
+        @Post("/batches/{batchId}/cancel")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -532,7 +532,7 @@ public final class OpenAIClientImpl {
             @PathParam("batchId") String batchId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
-        @Get("/batches/{batchId}/cancel")
+        @Post("/batches/{batchId}/cancel")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -970,7 +970,7 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                     URL: String (Optional)
-     *                     license: String (Required)
+     *                     license: String (Optional)
      *                 }
      *             }
      *             logprobs (Required): {
@@ -1120,7 +1120,7 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                     URL: String (Optional)
-     *                     license: String (Required)
+     *                     license: String (Optional)
      *                 }
      *             }
      *             logprobs (Required): {
@@ -1347,7 +1347,7 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                     URL: String (Optional)
-     *                     license: String (Required)
+     *                     license: String (Optional)
      *                 }
      *             }
      *             enhancements (Optional): {
@@ -1598,7 +1598,7 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                     URL: String (Optional)
-     *                     license: String (Required)
+     *                     license: String (Optional)
      *                 }
      *             }
      *             enhancements (Optional): {
@@ -2357,7 +2357,7 @@ public final class OpenAIClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>after</td><td>String</td><td>No</td><td>Identifier for the last event from the previous pagination
      * request.</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The number of batches to retrieve. The default is 20.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>Number of batches to retrieve. Defaults to 20.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2365,11 +2365,11 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
+     *     data (Optional): [
+     *          (Optional){
      *             id: String (Required)
      *             object: String (Required)
-     *             endpoint: String (Required)
+     *             endpoint: String (Optional)
      *             errors (Optional): {
      *                 object: String (Required)
      *                 data (Optional): [
@@ -2382,11 +2382,11 @@ public final class OpenAIClientImpl {
      *                 ]
      *             }
      *             input_file_id: String (Required)
-     *             completion_window: String (Required)
-     *             status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *             completion_window: String (Optional)
+     *             status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *             output_file_id: String (Optional)
      *             error_file_id: String (Optional)
-     *             created_at: long (Required)
+     *             created_at: Long (Optional)
      *             in_progress_at: Long (Optional)
      *             expires_at: Long (Optional)
      *             finalizing_at: Long (Optional)
@@ -2396,18 +2396,18 @@ public final class OpenAIClientImpl {
      *             cancelling_at: Long (Optional)
      *             cancelled_at: Long (Optional)
      *             request_counts (Optional): {
-     *                 total: int (Required)
-     *                 completed: int (Required)
-     *                 failed: int (Required)
+     *                 total: Integer (Optional)
+     *                 completed: Integer (Optional)
+     *                 failed: Integer (Optional)
      *             }
      *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
      *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
+     *     first_id: String (Optional)
+     *     last_id: String (Optional)
+     *     has_more: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -2434,7 +2434,7 @@ public final class OpenAIClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>after</td><td>String</td><td>No</td><td>Identifier for the last event from the previous pagination
      * request.</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The number of batches to retrieve. The default is 20.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>Number of batches to retrieve. Defaults to 20.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2442,11 +2442,11 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
+     *     data (Optional): [
+     *          (Optional){
      *             id: String (Required)
      *             object: String (Required)
-     *             endpoint: String (Required)
+     *             endpoint: String (Optional)
      *             errors (Optional): {
      *                 object: String (Required)
      *                 data (Optional): [
@@ -2459,11 +2459,11 @@ public final class OpenAIClientImpl {
      *                 ]
      *             }
      *             input_file_id: String (Required)
-     *             completion_window: String (Required)
-     *             status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *             completion_window: String (Optional)
+     *             status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *             output_file_id: String (Optional)
      *             error_file_id: String (Optional)
-     *             created_at: long (Required)
+     *             created_at: Long (Optional)
      *             in_progress_at: Long (Optional)
      *             expires_at: Long (Optional)
      *             finalizing_at: Long (Optional)
@@ -2473,18 +2473,18 @@ public final class OpenAIClientImpl {
      *             cancelling_at: Long (Optional)
      *             cancelled_at: Long (Optional)
      *             request_counts (Optional): {
-     *                 total: int (Required)
-     *                 completed: int (Required)
-     *                 failed: int (Required)
+     *                 total: Integer (Optional)
+     *                 completed: Integer (Optional)
+     *                 failed: Integer (Optional)
      *             }
      *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
      *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
+     *     first_id: String (Optional)
+     *     last_id: String (Optional)
+     *     has_more: Boolean (Optional)
      * }
      * }</pre>
      * 
@@ -2524,7 +2524,7 @@ public final class OpenAIClientImpl {
      * {
      *     id: String (Required)
      *     object: String (Required)
-     *     endpoint: String (Required)
+     *     endpoint: String (Optional)
      *     errors (Optional): {
      *         object: String (Required)
      *         data (Optional): [
@@ -2537,11 +2537,11 @@ public final class OpenAIClientImpl {
      *         ]
      *     }
      *     input_file_id: String (Required)
-     *     completion_window: String (Required)
-     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *     output_file_id: String (Optional)
      *     error_file_id: String (Optional)
-     *     created_at: long (Required)
+     *     created_at: Long (Optional)
      *     in_progress_at: Long (Optional)
      *     expires_at: Long (Optional)
      *     finalizing_at: Long (Optional)
@@ -2551,9 +2551,9 @@ public final class OpenAIClientImpl {
      *     cancelling_at: Long (Optional)
      *     cancelled_at: Long (Optional)
      *     request_counts (Optional): {
-     *         total: int (Required)
-     *         completed: int (Required)
-     *         failed: int (Required)
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
      *     }
      *     metadata (Optional): {
      *         String: String (Required)
@@ -2561,7 +2561,7 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param createBatchRequest The createBatchRequest parameter.
+     * @param createBatchRequest The specification of the batch to create and execute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2600,7 +2600,7 @@ public final class OpenAIClientImpl {
      * {
      *     id: String (Required)
      *     object: String (Required)
-     *     endpoint: String (Required)
+     *     endpoint: String (Optional)
      *     errors (Optional): {
      *         object: String (Required)
      *         data (Optional): [
@@ -2613,11 +2613,11 @@ public final class OpenAIClientImpl {
      *         ]
      *     }
      *     input_file_id: String (Required)
-     *     completion_window: String (Required)
-     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *     output_file_id: String (Optional)
      *     error_file_id: String (Optional)
-     *     created_at: long (Required)
+     *     created_at: Long (Optional)
      *     in_progress_at: Long (Optional)
      *     expires_at: Long (Optional)
      *     finalizing_at: Long (Optional)
@@ -2627,9 +2627,9 @@ public final class OpenAIClientImpl {
      *     cancelling_at: Long (Optional)
      *     cancelled_at: Long (Optional)
      *     request_counts (Optional): {
-     *         total: int (Required)
-     *         completed: int (Required)
-     *         failed: int (Required)
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
      *     }
      *     metadata (Optional): {
      *         String: String (Required)
@@ -2637,7 +2637,7 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param createBatchRequest The createBatchRequest parameter.
+     * @param createBatchRequest The specification of the batch to create and execute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2659,7 +2659,7 @@ public final class OpenAIClientImpl {
      * {
      *     id: String (Required)
      *     object: String (Required)
-     *     endpoint: String (Required)
+     *     endpoint: String (Optional)
      *     errors (Optional): {
      *         object: String (Required)
      *         data (Optional): [
@@ -2672,11 +2672,11 @@ public final class OpenAIClientImpl {
      *         ]
      *     }
      *     input_file_id: String (Required)
-     *     completion_window: String (Required)
-     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *     output_file_id: String (Optional)
      *     error_file_id: String (Optional)
-     *     created_at: long (Required)
+     *     created_at: Long (Optional)
      *     in_progress_at: Long (Optional)
      *     expires_at: Long (Optional)
      *     finalizing_at: Long (Optional)
@@ -2686,9 +2686,9 @@ public final class OpenAIClientImpl {
      *     cancelling_at: Long (Optional)
      *     cancelled_at: Long (Optional)
      *     request_counts (Optional): {
-     *         total: int (Required)
-     *         completed: int (Required)
-     *         failed: int (Required)
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
      *     }
      *     metadata (Optional): {
      *         String: String (Required)
@@ -2720,7 +2720,7 @@ public final class OpenAIClientImpl {
      * {
      *     id: String (Required)
      *     object: String (Required)
-     *     endpoint: String (Required)
+     *     endpoint: String (Optional)
      *     errors (Optional): {
      *         object: String (Required)
      *         data (Optional): [
@@ -2733,11 +2733,11 @@ public final class OpenAIClientImpl {
      *         ]
      *     }
      *     input_file_id: String (Required)
-     *     completion_window: String (Required)
-     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *     output_file_id: String (Optional)
      *     error_file_id: String (Optional)
-     *     created_at: long (Required)
+     *     created_at: Long (Optional)
      *     in_progress_at: Long (Optional)
      *     expires_at: Long (Optional)
      *     finalizing_at: Long (Optional)
@@ -2747,9 +2747,9 @@ public final class OpenAIClientImpl {
      *     cancelling_at: Long (Optional)
      *     cancelled_at: Long (Optional)
      *     request_counts (Optional): {
-     *         total: int (Required)
-     *         completed: int (Required)
-     *         failed: int (Required)
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
      *     }
      *     metadata (Optional): {
      *         String: String (Required)
@@ -2779,7 +2779,7 @@ public final class OpenAIClientImpl {
      * {
      *     id: String (Required)
      *     object: String (Required)
-     *     endpoint: String (Required)
+     *     endpoint: String (Optional)
      *     errors (Optional): {
      *         object: String (Required)
      *         data (Optional): [
@@ -2792,11 +2792,11 @@ public final class OpenAIClientImpl {
      *         ]
      *     }
      *     input_file_id: String (Required)
-     *     completion_window: String (Required)
-     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *     output_file_id: String (Optional)
      *     error_file_id: String (Optional)
-     *     created_at: long (Required)
+     *     created_at: Long (Optional)
      *     in_progress_at: Long (Optional)
      *     expires_at: Long (Optional)
      *     finalizing_at: Long (Optional)
@@ -2806,9 +2806,9 @@ public final class OpenAIClientImpl {
      *     cancelling_at: Long (Optional)
      *     cancelled_at: Long (Optional)
      *     request_counts (Optional): {
-     *         total: int (Required)
-     *         completed: int (Required)
-     *         failed: int (Required)
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
      *     }
      *     metadata (Optional): {
      *         String: String (Required)
@@ -2840,7 +2840,7 @@ public final class OpenAIClientImpl {
      * {
      *     id: String (Required)
      *     object: String (Required)
-     *     endpoint: String (Required)
+     *     endpoint: String (Optional)
      *     errors (Optional): {
      *         object: String (Required)
      *         data (Optional): [
@@ -2853,11 +2853,11 @@ public final class OpenAIClientImpl {
      *         ]
      *     }
      *     input_file_id: String (Required)
-     *     completion_window: String (Required)
-     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *     output_file_id: String (Optional)
      *     error_file_id: String (Optional)
-     *     created_at: long (Required)
+     *     created_at: Long (Optional)
      *     in_progress_at: Long (Optional)
      *     expires_at: Long (Optional)
      *     finalizing_at: Long (Optional)
@@ -2867,9 +2867,9 @@ public final class OpenAIClientImpl {
      *     cancelling_at: Long (Optional)
      *     cancelled_at: Long (Optional)
      *     request_counts (Optional): {
-     *         total: int (Required)
-     *         completed: int (Required)
-     *         failed: int (Required)
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
      *     }
      *     metadata (Optional): {
      *         String: String (Required)

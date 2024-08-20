@@ -5,7 +5,6 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
-import com.azure.ai.openai.implementation.models.CreateBatchRequest;
 import com.azure.ai.openai.implementation.models.FileListResponse;
 import com.azure.ai.openai.implementation.models.OpenAIPageableListOfBatch;
 import com.azure.ai.openai.implementation.models.UploadFileRequest;
@@ -14,6 +13,7 @@ import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.Batch;
+import com.azure.ai.openai.models.BatchCreateRequest;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.Completions;
@@ -40,7 +40,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import com.azure.ai.openai.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.models.PageableList;
@@ -1724,7 +1723,7 @@ public final class OpenAIClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>after</td><td>String</td><td>No</td><td>Identifier for the last event from the previous pagination
      * request.</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The number of batches to retrieve. The default is 20.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>Number of batches to retrieve. Defaults to 20.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1732,11 +1731,11 @@ public final class OpenAIClient {
      * <pre>{@code
      * {
      *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
+     *     data (Optional): [
+     *          (Optional){
      *             id: String (Required)
      *             object: String (Required)
-     *             endpoint: String (Required)
+     *             endpoint: String (Optional)
      *             errors (Optional): {
      *                 object: String (Required)
      *                 data (Optional): [
@@ -1749,11 +1748,11 @@ public final class OpenAIClient {
      *                 ]
      *             }
      *             input_file_id: String (Required)
-     *             completion_window: String (Required)
-     *             status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *             completion_window: String (Optional)
+     *             status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *             output_file_id: String (Optional)
      *             error_file_id: String (Optional)
-     *             created_at: long (Required)
+     *             created_at: Long (Optional)
      *             in_progress_at: Long (Optional)
      *             expires_at: Long (Optional)
      *             finalizing_at: Long (Optional)
@@ -1763,18 +1762,18 @@ public final class OpenAIClient {
      *             cancelling_at: Long (Optional)
      *             cancelled_at: Long (Optional)
      *             request_counts (Optional): {
-     *                 total: int (Required)
-     *                 completed: int (Required)
-     *                 failed: int (Required)
+     *                 total: Integer (Optional)
+     *                 completed: Integer (Optional)
+     *                 failed: Integer (Optional)
      *             }
      *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
      *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
+     *     first_id: String (Optional)
+     *     last_id: String (Optional)
+     *     has_more: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -1814,7 +1813,7 @@ public final class OpenAIClient {
      * {
      *     id: String (Required)
      *     object: String (Required)
-     *     endpoint: String (Required)
+     *     endpoint: String (Optional)
      *     errors (Optional): {
      *         object: String (Required)
      *         data (Optional): [
@@ -1827,11 +1826,11 @@ public final class OpenAIClient {
      *         ]
      *     }
      *     input_file_id: String (Required)
-     *     completion_window: String (Required)
-     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *     output_file_id: String (Optional)
      *     error_file_id: String (Optional)
-     *     created_at: long (Required)
+     *     created_at: Long (Optional)
      *     in_progress_at: Long (Optional)
      *     expires_at: Long (Optional)
      *     finalizing_at: Long (Optional)
@@ -1841,9 +1840,9 @@ public final class OpenAIClient {
      *     cancelling_at: Long (Optional)
      *     cancelled_at: Long (Optional)
      *     request_counts (Optional): {
-     *         total: int (Required)
-     *         completed: int (Required)
-     *         failed: int (Required)
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
      *     }
      *     metadata (Optional): {
      *         String: String (Required)
@@ -1851,7 +1850,7 @@ public final class OpenAIClient {
      * }
      * }</pre>
      *
-     * @param createBatchRequest The createBatchRequest parameter.
+     * @param createBatchRequest The specification of the batch to create and execute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1873,7 +1872,7 @@ public final class OpenAIClient {
      * {
      *     id: String (Required)
      *     object: String (Required)
-     *     endpoint: String (Required)
+     *     endpoint: String (Optional)
      *     errors (Optional): {
      *         object: String (Required)
      *         data (Optional): [
@@ -1886,11 +1885,11 @@ public final class OpenAIClient {
      *         ]
      *     }
      *     input_file_id: String (Required)
-     *     completion_window: String (Required)
-     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *     output_file_id: String (Optional)
      *     error_file_id: String (Optional)
-     *     created_at: long (Required)
+     *     created_at: Long (Optional)
      *     in_progress_at: Long (Optional)
      *     expires_at: Long (Optional)
      *     finalizing_at: Long (Optional)
@@ -1900,9 +1899,9 @@ public final class OpenAIClient {
      *     cancelling_at: Long (Optional)
      *     cancelled_at: Long (Optional)
      *     request_counts (Optional): {
-     *         total: int (Required)
-     *         completed: int (Required)
-     *         failed: int (Required)
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
      *     }
      *     metadata (Optional): {
      *         String: String (Required)
@@ -1932,7 +1931,7 @@ public final class OpenAIClient {
      * {
      *     id: String (Required)
      *     object: String (Required)
-     *     endpoint: String (Required)
+     *     endpoint: String (Optional)
      *     errors (Optional): {
      *         object: String (Required)
      *         data (Optional): [
@@ -1945,11 +1944,11 @@ public final class OpenAIClient {
      *         ]
      *     }
      *     input_file_id: String (Required)
-     *     completion_window: String (Required)
-     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Required)
+     *     completion_window: String (Optional)
+     *     status: String(validating/failed/in_progress/finalizing/completed/expired/cancelling/cancelled) (Optional)
      *     output_file_id: String (Optional)
      *     error_file_id: String (Optional)
-     *     created_at: long (Required)
+     *     created_at: Long (Optional)
      *     in_progress_at: Long (Optional)
      *     expires_at: Long (Optional)
      *     finalizing_at: Long (Optional)
@@ -1959,9 +1958,9 @@ public final class OpenAIClient {
      *     cancelling_at: Long (Optional)
      *     cancelled_at: Long (Optional)
      *     request_counts (Optional): {
-     *         total: int (Required)
-     *         completed: int (Required)
-     *         failed: int (Required)
+     *         total: Integer (Optional)
+     *         completed: Integer (Optional)
+     *         failed: Integer (Optional)
      *     }
      *     metadata (Optional): {
      *         String: String (Required)
@@ -2233,11 +2232,7 @@ public final class OpenAIClient {
      * Response includes details of the enqueued job including job status.
      * The ID of the result file is added to the response once complete.
      *
-     * @param endpoint The API endpoint used by the batch.
-     * @param inputFileId The ID of the input file for the batch.
-     * @param completionWindow The time frame within which the batch should be processed.
-     * @param metadata A set of key-value pairs that can be attached to the batch. This can be useful for storing
-     * additional information about the batch in a structured format.
+     * @param createBatchRequest The specification of the batch to create and execute.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2248,39 +2243,10 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Batch createBatch(String endpoint, String inputFileId, String completionWindow,
-        Map<String, String> metadata) {
+    public Batch createBatch(BatchCreateRequest createBatchRequest) {
         // Generated convenience method for createBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateBatchRequest createBatchRequestObj
-            = new CreateBatchRequest(endpoint, inputFileId, completionWindow).setMetadata(metadata);
-        BinaryData createBatchRequest = BinaryData.fromObject(createBatchRequestObj);
-        return createBatchWithResponse(createBatchRequest, requestOptions).getValue().toObject(Batch.class);
-    }
-
-    /**
-     * Creates and executes a batch from an uploaded file of requests.
-     * Response includes details of the enqueued job including job status.
-     * The ID of the result file is added to the response once complete.
-     *
-     * @param endpoint The API endpoint used by the batch.
-     * @param inputFileId The ID of the input file for the batch.
-     * @param completionWindow The time frame within which the batch should be processed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch object.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Batch createBatch(String endpoint, String inputFileId, String completionWindow) {
-        // Generated convenience method for createBatchWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateBatchRequest createBatchRequestObj = new CreateBatchRequest(endpoint, inputFileId, completionWindow);
-        BinaryData createBatchRequest = BinaryData.fromObject(createBatchRequestObj);
-        return createBatchWithResponse(createBatchRequest, requestOptions).getValue().toObject(Batch.class);
+        return createBatchWithResponse(BinaryData.fromObject(createBatchRequest), requestOptions).getValue()
+            .toObject(Batch.class);
     }
 }
