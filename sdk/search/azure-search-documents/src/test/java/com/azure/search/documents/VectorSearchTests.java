@@ -3,6 +3,8 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -325,7 +327,9 @@ public class VectorSearchTests extends SearchTestBase {
                     .setSearchable(true)
                     .setFilterable(true));
 
-        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildAsyncClient();
         searchIndexClient.createIndex(searchIndex).block();
         indexesToDelete.add(indexName);
 
@@ -334,7 +338,9 @@ public class VectorSearchTests extends SearchTestBase {
         document.put("Id", "1");
         document.put("Name", "Countryside Hotel");
 
-        SearchAsyncClient searchClient = searchIndexClient.getSearchAsyncClient(indexName);
+        SearchAsyncClient searchClient = getSearchClientBuilder(indexName, false)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildAsyncClient();
         searchClient.uploadDocuments(Collections.singletonList(document)).block();
 
         waitForIndexing();
@@ -396,8 +402,7 @@ public class VectorSearchTests extends SearchTestBase {
                     return searchClient.getDocument("1", SearchDocument.class);
                 } else {
                     waitForIndexing();
-                    return searchClient.getDocument("1", SearchDocument.class)
-                        .delayElement(Duration.ofSeconds(5));
+                    return searchClient.getDocument("1", SearchDocument.class);
                 }
             });
 
@@ -406,6 +411,7 @@ public class VectorSearchTests extends SearchTestBase {
             .assertNext(response -> {
                 assertEquals(document.get("Id"), response.get("Id"));
                 assertEquals(document.get("Name"), response.get("Name"));
+                assertNotNull(response.get("DescriptionVector"));
                 compareFloatListToDeserializedFloatList(VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION,
                     (List<Number>) response.get("DescriptionVector"));
             })
@@ -424,7 +430,9 @@ public class VectorSearchTests extends SearchTestBase {
                     .setSearchable(true)
                     .setFilterable(true));
 
-        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
         searchIndexClient.createIndex(searchIndex);
         indexesToDelete.add(indexName);
         // Upload data
@@ -432,7 +440,9 @@ public class VectorSearchTests extends SearchTestBase {
         document.put("Id", "1");
         document.put("Name", "Countryside Hotel");
 
-        SearchClient searchClient = searchIndexClient.getSearchClient(indexName);
+        SearchClient searchClient = getSearchClientBuilder(indexName, true)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
         searchClient.uploadDocuments(Collections.singletonList(document));
 
         waitForIndexing();
