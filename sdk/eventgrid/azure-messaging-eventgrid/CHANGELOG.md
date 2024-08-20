@@ -10,7 +10,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
-- Upgraded `azure-core` from `1.50.0` to version `1.50.1`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 
 ## 4.23.0 (2024-07-30)
 
