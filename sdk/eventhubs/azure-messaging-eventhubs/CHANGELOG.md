@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Enabling V2 stack support for Event Hubs, which can be opt-in using the configuration ` com.azure.messaging.eventhubs.v2`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
