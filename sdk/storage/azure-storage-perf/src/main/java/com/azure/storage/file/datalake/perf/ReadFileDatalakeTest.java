@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 import java.io.OutputStream;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
+import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
 
 public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     private static final String FILE_NAME = "perfstress-filev11-" + CoreUtils.randomUuid();
@@ -37,11 +38,19 @@ public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
+    @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
             .then(dataLakeFileAsyncClient.create())
             .then(dataLakeFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null, true))
             .then();
+    }
+
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+        dataLakeFileClient.create();
+        dataLakeFileClient.upload(createRandomInputStream(options.getSize()), options.getSize(), true);
     }
 
     // Perform the API call to be tested here
@@ -66,9 +75,16 @@ public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
+    @Override
     public Mono<Void> globalCleanupAsync() {
         return dataLakeFileAsyncClient.delete()
             .then(super.globalCleanupAsync())
             .then();
+    }
+
+    @Override
+    public void globalCleanup() {
+        dataLakeFileClient.delete();
+        super.globalCleanup();
     }
 }

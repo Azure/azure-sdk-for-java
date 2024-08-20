@@ -111,7 +111,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      * @param documentSize The size of the documents.
      * @return An asynchronous response that only indicates completion.
      */
-    protected Mono<Void> populateIndex(int documentCount, String documentSize) {
+    protected Mono<Void> populateIndexAsync(int documentCount, String documentSize) {
         /*
          * Generate the count of documents using the given size. Then, upload the documents in batches of 100, this
          * prevents the batch from triggering the services request size limit to fail. Finally, continuously poll the
@@ -130,5 +130,34 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             .filter(count -> count == documentCount)
             .repeatWhenEmpty(Flux::repeat)
             .then()));
+    }
+
+    /**
+     * Populates a Search service index with documents.
+     *
+     * @param documentCount The number of documents.
+     * @param documentSize The size of the documents.
+     */
+    protected void populateIndex(int documentCount, String documentSize) {
+        /*
+         * Generate the count of documents using the given size. Then, upload the documents in batches of 100, this
+         * prevents the batch from triggering the services request size limit to fail. Finally, continuously poll the
+         * index for its document count until it is equal to the count passed.
+         */
+        List<Hotel> hotels = DocumentGenerator.generateHotels(documentCount, DocumentSize.valueOf(documentSize));
+        for (int i = 0; i < (int) Math.ceil(hotels.size() / 100D); i++) {
+            searchClient.indexDocuments(new IndexDocumentsBatch<Hotel>()
+                .addUploadActions(hotels.subList(i * 100, Math.min((i + 1) * 100, hotels.size()))));
+        }
+
+        long count;
+        do {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            count = searchClient.getDocumentCount();
+        } while (count != documentCount);
     }
 }

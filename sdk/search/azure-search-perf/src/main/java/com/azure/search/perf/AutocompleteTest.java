@@ -28,7 +28,13 @@ public class AutocompleteTest extends ServiceTest<SearchPerfStressOptions> {
          * First, run the global setup in the super class. That will create the index to be used for performance
          * testing. Then populate the index with a given number of documents.
          */
-        return super.globalSetupAsync().then(populateIndex(options.getCount(), options.getDocumentSize()));
+        return super.globalSetupAsync().then(populateIndexAsync(options.getCount(), options.getDocumentSize()));
+    }
+
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+        populateIndex(options.getCount(), options.getDocumentSize());
     }
 
     @Override

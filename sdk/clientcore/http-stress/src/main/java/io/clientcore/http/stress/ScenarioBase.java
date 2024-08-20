@@ -33,8 +33,20 @@ public abstract class ScenarioBase<TOptions extends StressOptions> extends PerfS
     }
 
     @Override
+    public void globalSetup() {
+        telemetryHelper.recordStart(options);
+        super.globalSetup();
+    }
+
+    @Override
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
         return super.globalCleanupAsync();
+    }
+
+    @Override
+    public void globalCleanup() {
+        telemetryHelper.recordEnd(startTime);
+        super.globalCleanup();
     }
 }

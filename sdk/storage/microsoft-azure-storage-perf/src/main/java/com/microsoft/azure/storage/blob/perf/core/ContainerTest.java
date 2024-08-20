@@ -6,7 +6,6 @@ package com.microsoft.azure.storage.blob.perf.core;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
-
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -14,7 +13,7 @@ import java.net.URISyntaxException;
 import java.util.UUID;
 
 public abstract class ContainerTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
-    protected static final String CONTAINER_NAME = "perfstress-" + UUID.randomUUID().toString();
+    protected static final String CONTAINER_NAME = "perfstress-" + UUID.randomUUID();
 
     protected final CloudBlobContainer cloudBlobContainer;
 
@@ -39,6 +38,16 @@ public abstract class ContainerTest<TOptions extends PerfStressOptions> extends 
     }
 
     @Override
+    public void globalSetup() {
+        super.globalSetup();
+        try {
+            cloudBlobContainer.create();
+        } catch (StorageException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Mono<Void> globalCleanupAsync() {
         return Mono.empty()
             .publishOn(Schedulers.boundedElastic())
@@ -47,5 +56,15 @@ public abstract class ContainerTest<TOptions extends PerfStressOptions> extends 
                 return 1;
             }))
             .then(super.globalCleanupAsync());
+    }
+
+    @Override
+    public void globalCleanup() {
+        super.globalCleanup();
+        try {
+            cloudBlobContainer.delete();
+        } catch (StorageException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

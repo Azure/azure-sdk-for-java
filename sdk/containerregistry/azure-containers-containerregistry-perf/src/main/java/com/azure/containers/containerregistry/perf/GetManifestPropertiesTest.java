@@ -40,6 +40,12 @@ public class GetManifestPropertiesTest extends ServiceTest<PerfStressOptions> {
     }
 
     @Override
+    public void globalSetup() {
+        super.globalSetup();
+        importImageAsync(REPOSITORY_NAME, tags).block();
+    }
+
+    @Override
     public void run() {
         registryArtifact.getManifestProperties();
     }

@@ -15,6 +15,7 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
         super(options);
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
         // Perform blob uploading in parallel.
         //

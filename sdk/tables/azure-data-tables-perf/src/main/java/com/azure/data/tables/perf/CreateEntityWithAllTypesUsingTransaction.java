@@ -20,17 +20,23 @@ public class CreateEntityWithAllTypesUsingTransaction extends TableTestBase<Perf
 
         String partitionKey = UUID.randomUUID().toString();
         allTransactionActions = Flux.range(0, options.getCount())
-            .map(i ->
-                new TableTransactionAction(TableTransactionActionType.UPSERT_MERGE,
-                    generateEntityWithAllTypes(partitionKey, Integer.toString(i))))
+            .map(i -> new TableTransactionAction(TableTransactionActionType.UPSERT_MERGE,
+                generateEntityWithAllTypes(partitionKey, Integer.toString(i))))
             .buffer(100)
             .collectList()
             .block();
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
         return tableAsyncClient.createTable()
             .then(super.globalSetupAsync());
+    }
+
+    @Override
+    public void globalSetup() {
+        tableClient.createTable();
+        super.globalSetup();
     }
 
     @Override

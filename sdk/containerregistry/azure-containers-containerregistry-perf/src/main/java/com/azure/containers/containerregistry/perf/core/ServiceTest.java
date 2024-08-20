@@ -139,6 +139,25 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
                 .withTargetTags(tags));
     }
 
+    protected void importImage(String repositoryName, List<String> tags) {
+        String rgName = getConfigurationValue(PROPERTY_AZURE_RESOURCE_GROUP);
+        String registryName = getConfigurationValue("CONTAINERREGISTRY_REGISTRY_NAME");
+        // to check if env var is set and output if missing
+        // needed for AzureProfile.
+        getConfigurationValue(PROPERTY_AZURE_SUBSCRIPTION_ID);
+
+        tags = tags.stream().map(tag -> repositoryName + ":" + tag).collect(Collectors.toList());
+
+        ContainerRegistryManager manager = ContainerRegistryManager.authenticate(tokenCredential,
+            new AzureProfile(AzureEnvironment.AZURE));
+
+        manager.serviceClient().getRegistries().importImage(rgName, registryName, new ImportImageParameters()
+            .withMode(ImportMode.FORCE)
+            .withSource(new ImportSource().withSourceImage(repositoryName)
+                .withRegistryUri(REGISTRY_URI))
+            .withTargetTags(tags));
+    }
+
     protected static Flux<ByteBuffer> generateAsyncStream(long size) {
         RepeatingInputStream input = new RepeatingInputStream(size);
         byte[] chunk = new byte[CHUNK_SIZE];

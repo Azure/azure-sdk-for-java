@@ -71,9 +71,23 @@ public class UploadRangeFromUrl extends ShareScenarioBase<StorageStressOptions> 
     }
 
     @Override
+    public void setup() {
+        super.setup();
+        destinationFileNoFaultClient.create(options.getSize());
+        originalContent.setupFile(sourceFileClient, options.getSize()).block();
+    }
+
+    @Override
     public Mono<Void> cleanupAsync() {
         return destinationFileAsyncNoFaultClient.deleteIfExists()
             .then(sourceFileClient.deleteIfExists())
             .then(super.cleanupAsync());
+    }
+
+    @Override
+    public void cleanup() {
+        destinationFileNoFaultClient.deleteIfExists();
+        sourceFileClient.deleteIfExists().block();
+        super.cleanup();
     }
 }

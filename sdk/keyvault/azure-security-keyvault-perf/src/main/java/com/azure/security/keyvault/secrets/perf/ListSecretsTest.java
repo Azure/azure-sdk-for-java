@@ -21,32 +21,65 @@ public class ListSecretsTest extends SecretsTest<PerfStressOptions> {
         return super.globalSetupAsync().then(Mono.defer(() -> {
             // Validate that vault contains 0 secrets (including soft-deleted secrets), since additional secrets
             // (including soft-deleted) impact performance.
-            if (secretClient.listPropertiesOfSecrets().iterator().hasNext() ||
-                secretClient.listDeletedSecrets().iterator().hasNext()) {
+            if (secretClient.listPropertiesOfSecrets().iterator().hasNext() || secretClient.listDeletedSecrets()
+                .iterator()
+                .hasNext()) {
 
-                return Mono.error(new Exception("KeyVault " + secretClient.getVaultUrl() + "must contain 0 " +
-                    "secrets (including soft-deleted) before starting perf test"));
+                return Mono.error(new Exception("KeyVault " + secretClient.getVaultUrl() + "must contain 0 "
+                    + "secrets (including soft-deleted) before starting perf test"));
             }
 
             secretNames = new String[options.getCount()];
-            for (int i=0; i < secretNames.length; i++) {
+            for (int i = 0; i < secretNames.length; i++) {
                 secretNames[i] = "listSecretsPerfTest-" + UUID.randomUUID();
             }
 
             return Flux.fromArray(secretNames)
-                    .flatMap(secretName -> secretAsyncClient.setSecret(secretName, secretName))
-                    .then();
-            }));
+                .flatMap(secretName -> secretAsyncClient.setSecret(secretName, secretName))
+                .then();
+        }));
+    }
+
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+
+        // Validate that vault contains 0 secrets (including soft-deleted secrets), since additional secrets
+        // (including soft-deleted) impact performance.
+        if (secretClient.listPropertiesOfSecrets().iterator().hasNext() || secretClient.listDeletedSecrets()
+            .iterator()
+            .hasNext()) {
+
+            throw new RuntimeException("KeyVault " + secretClient.getVaultUrl() + "must contain 0 "
+                + "secrets (including soft-deleted) before starting perf test");
+        }
+
+        secretNames = new String[options.getCount()];
+        for (int i = 0; i < secretNames.length; i++) {
+            secretNames[i] = "listSecretsPerfTest-" + UUID.randomUUID();
+        }
+
+        for (String secretName : secretNames) {
+            secretClient.setSecret(secretName, secretName);
+        }
     }
 
     @Override
     public Mono<Void> globalCleanupAsync() {
         if (secretNames != null) {
             return deleteAndPurgeSecretsAsync(secretNames).then(super.globalCleanupAsync());
-        }
-        else {
+        } else {
             return super.globalCleanupAsync();
         }
+    }
+
+    @Override
+    public void globalCleanup() {
+        if (secretNames != null) {
+            deleteAndPurgeSecrets(secretNames);
+        }
+
+        super.globalCleanup();
     }
 
     @Override
@@ -57,7 +90,6 @@ public class ListSecretsTest extends SecretsTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return secretAsyncClient.listPropertiesOfSecrets()
-            .then();
+        return secretAsyncClient.listPropertiesOfSecrets().then();
     }
 }

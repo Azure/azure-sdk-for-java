@@ -23,9 +23,21 @@ public class GetSecretTest extends SecretsTest<PerfStressOptions> {
     }
 
     @Override
+    public void globalSetup() {
+        super.globalSetup();
+        secretClient.setSecret(SECRET_NAME, SECRET_NAME);
+    }
+
+    @Override
     public Mono<Void> globalCleanupAsync() {
         return deleteAndPurgeSecretsAsync(SECRET_NAME)
             .then(super.globalCleanupAsync());
+    }
+
+    @Override
+    public void globalCleanup() {
+        deleteAndPurgeSecrets(SECRET_NAME);
+        super.globalCleanup();
     }
 
     @Override

@@ -31,11 +31,11 @@ public class CorePerfIntegrationTest {
     @ParameterizedTest
     @MethodSource("providePerfTests")
     public void testSync(PerfStressTest<? extends CorePerfStressOptions> perfTest) {
-        perfTest.globalSetupAsync().then(Mono.defer(perfTest::setupAsync)).block();
-
+        perfTest.globalSetup();
+        perfTest.setup();
         perfTest.run();
-
-        perfTest.cleanupAsync().then(Mono.defer(perfTest::globalCleanupAsync)).block();
+        perfTest.cleanup();
+        perfTest.globalCleanup();
     }
 
     @ParameterizedTest

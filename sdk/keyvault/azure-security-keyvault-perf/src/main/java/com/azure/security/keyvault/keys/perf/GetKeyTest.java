@@ -18,10 +18,17 @@ public class GetKeyTest extends KeysTest<PerfStressOptions> {
         keyName = "getKeyPerfTest-" + UUID.randomUUID();
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
             .then(keyAsyncClient.createKey(keyName, KeyType.RSA))
             .then();
+    }
+
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+        keyClient.createKey(keyName, KeyType.RSA);
     }
 
     @Override

@@ -3,16 +3,15 @@
 
 package com.microsoft.azure.storage.blob.perf;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.storage.StorageException;
-
 import com.microsoft.azure.storage.blob.perf.core.BlobTestBase;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
@@ -34,25 +33,33 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync().then(createTempFile());
+        return super.globalSetupAsync().then(Mono.fromRunnable(this::createTempFile));
+    }
+
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+        createTempFile();
     }
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return deleteTempFile().then(super.globalCleanupAsync());
+        return Mono.fromRunnable(this::deleteTempFile).then(super.globalCleanupAsync());
     }
 
-    private Mono<Void> createTempFile() {
-        return Mono.fromCallable(() -> {
-            TestDataCreationHelper.writeToFile(TEMP_FILE_PATH, options.getSize(), DEFAULT_BUFFER_SIZE);
-            return 1;
-        }).then();
+    @Override
+    public void globalCleanup() {
+        deleteTempFile();
+        super.globalCleanup();
     }
 
-    private Mono<Void> deleteTempFile() {
+    private void createTempFile() {
+        TestDataCreationHelper.writeToFile(TEMP_FILE_PATH, options.getSize(), DEFAULT_BUFFER_SIZE);
+    }
+
+    private void deleteTempFile() {
         try {
             Files.delete(TEMP_FILE);
-            return Mono.empty();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

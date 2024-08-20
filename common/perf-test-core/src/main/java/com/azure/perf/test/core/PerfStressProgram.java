@@ -138,25 +138,18 @@ public class PerfStressProgram {
         }
 
         try {
-            tests[0].globalSetupAsync().block();
+            globalSetup(tests[0], options.isSync());
 
             boolean startedPlayback = false;
 
             try {
-                Flux.just(tests).flatMap(PerfTestBase::setupAsync).blockLast();
+                setup(tests, options.isSync());
                 setupStatus.cancel();
 
                 if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
                     Timer recordStatus = printStatus("=== Record and Start Playback ===", () -> ".", false, false);
 
-                    int parallel = tests.length;
-                    Flux.range(0, parallel)
-                        .parallel(parallel)
-                        .runOn(Schedulers.parallel())
-                        .flatMap(i -> tests[i].postSetupAsync())
-                        .sequential()
-                        .then()
-                        .block();
+                    postSetup(tests, options.isSync());
 
                     startedPlayback = true;
                     recordStatus.cancel();
@@ -177,20 +170,14 @@ public class PerfStressProgram {
                 try {
                     if (startedPlayback) {
                         Timer playbackStatus = printStatus("=== Stop Playback ===", () -> ".", false, false);
-                        Flux.just(tests).flatMap(perfTestBase -> {
-                            if (perfTestBase instanceof ApiPerfTestBase) {
-                                return ((ApiPerfTestBase<?>) perfTestBase).stopPlaybackAsync();
-                            } else {
-                                return Mono.error(new IllegalStateException("Test Proxy not supported."));
-                            }
-                        }).blockLast();
+                        stopPlayback(tests, options.isSync());
                         playbackStatus.cancel();
                     }
                 } finally {
                     if (!options.isNoCleanup()) {
                         cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
 
-                        Flux.just(tests).flatMap(PerfTestBase::cleanupAsync).blockLast();
+                        cleanup(tests, options.isSync());
                     }
                 }
             }
@@ -200,12 +187,72 @@ public class PerfStressProgram {
                     cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
                 }
 
-                tests[0].globalCleanupAsync().block();
+                globalCleanup(tests[0], options.isSync());
             }
         }
 
         if (cleanupStatus != null) {
             cleanupStatus.cancel();
+        }
+    }
+
+    private static void globalSetup(PerfTestBase<?> test, boolean isSync) {
+        if (isSync) {
+            test.globalSetup();
+        } else {
+            test.globalSetupAsync().block();
+        }
+    }
+
+    private static void setup(PerfTestBase<?>[] tests, boolean isSync) {
+        if (isSync) {
+            Arrays.stream(tests).forEach(PerfTestBase::setup);
+        } else {
+            Flux.just(tests).flatMap(PerfTestBase::setupAsync).blockLast();
+        }
+    }
+
+    private static void postSetup(PerfTestBase<?>[] tests, boolean isSync) {
+        if (isSync) {
+            Arrays.stream(tests).forEach(PerfTestBase::postSetup);
+        } else {
+            Flux.just(tests).flatMap(PerfTestBase::postSetupAsync).blockLast();
+        }
+    }
+
+    private static void stopPlayback(PerfTestBase<?>[] tests, boolean isSync) {
+        if (isSync) {
+            for (PerfTestBase<?> test : tests) {
+                if (test instanceof ApiPerfTestBase) {
+                    ((ApiPerfTestBase<?>) test).stopPlayback();
+                } else {
+                    throw new IllegalStateException("Test Proxy not supported.");
+                }
+            }
+        } else {
+            Flux.just(tests).flatMap(perfTestBase -> {
+                if (perfTestBase instanceof ApiPerfTestBase) {
+                    return ((ApiPerfTestBase<?>) perfTestBase).stopPlaybackAsync();
+                } else {
+                    return Mono.error(new IllegalStateException("Test Proxy not supported."));
+                }
+            }).blockLast();
+        }
+    }
+
+    private static void cleanup(PerfTestBase<?>[] tests, boolean isSync) {
+        if (isSync) {
+            Arrays.stream(tests).forEach(PerfTestBase::cleanup);
+        } else {
+            Flux.just(tests).flatMap(PerfTestBase::cleanupAsync).blockLast();
+        }
+    }
+
+    private static void globalCleanup(PerfTestBase<?> test, boolean isSync) {
+        if (isSync) {
+            test.globalCleanup();
+        } else {
+            test.globalCleanupAsync().block();
         }
     }
 

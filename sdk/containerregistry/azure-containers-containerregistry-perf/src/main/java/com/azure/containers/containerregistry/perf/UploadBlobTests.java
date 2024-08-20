@@ -23,6 +23,12 @@ public class UploadBlobTests extends ServiceTest<PerfStressOptions> {
     }
 
     @Override
+    public void globalSetup() {
+        super.globalSetup();
+        importImage(REPOSITORY_NAME, Arrays.asList("latest"));
+    }
+
+    @Override
     public void run() {
         RepeatingInputStream input = new RepeatingInputStream(options.getSize());
         blobClient.uploadBlob(BinaryData.fromStream(input), Context.NONE);

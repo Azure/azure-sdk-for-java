@@ -1,7 +1,12 @@
 package com.azure.messaging.eventhubs.perf.core;
 
 import com.azure.core.util.CoreUtils;
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventDataBatch;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.PartitionSender;
+import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -116,8 +121,7 @@ public class Util {
     }
 
     public static EventData createEvent(byte[] eventDataBytes) {
-        EventData eventData = EventData.create(eventDataBytes);
-        return eventData;
+        return EventData.create(eventDataBytes);
     }
 
     public static String generateString(int targetLength) {
@@ -125,10 +129,9 @@ public class Util {
         int rightLimit = 122; // letter 'z'
         Random random = new Random();
 
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
+        return random.ints(leftLimit, rightLimit + 1)
             .limit(targetLength)
             .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
             .toString();
-        return generatedString;
     }
 }

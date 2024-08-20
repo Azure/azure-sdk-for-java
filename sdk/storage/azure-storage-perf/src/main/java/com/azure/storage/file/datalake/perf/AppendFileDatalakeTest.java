@@ -34,10 +34,17 @@ public class AppendFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
+    @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
             .then(dataLakeFileAsyncClient.create())
             .then();
+    }
+
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+        dataLakeFileClient.create();
     }
 
     // Perform the API call to be tested here
@@ -54,9 +61,16 @@ public class AppendFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
+    @Override
     public Mono<Void> globalCleanupAsync() {
         return dataLakeFileAsyncClient.delete()
             .then(super.globalCleanupAsync())
             .then();
+    }
+
+    @Override
+    public void globalCleanup() {
+        dataLakeFileClient.delete();
+        super.globalCleanup();
     }
 }

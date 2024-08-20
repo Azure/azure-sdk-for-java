@@ -41,11 +41,23 @@ public class MockEventProcessorTest extends EventPerfTest<MockEventProcessorTest
     }
 
     @Override
+    public void setup() {
+        super.setup();
+        mockEventProcessor.start();
+    }
+
+    @Override
     public Mono<Void> cleanupAsync() {
         return Mono.defer(() -> {
             mockEventProcessor.stop();
             return Mono.empty();
         }).then(super.cleanupAsync());
+    }
+
+    @Override
+    public void cleanup() {
+        mockEventProcessor.stop();
+        super.cleanup();
     }
 
     /**

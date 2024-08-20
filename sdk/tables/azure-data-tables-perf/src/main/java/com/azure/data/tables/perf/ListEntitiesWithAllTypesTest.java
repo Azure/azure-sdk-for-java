@@ -20,6 +20,7 @@ public class ListEntitiesWithAllTypesTest extends TableTestBase<PerfStressOption
         partitionKey = UUID.randomUUID().toString();
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
         return tableAsyncClient.createTable()
             .then(super.globalSetupAsync())
@@ -30,6 +31,20 @@ public class ListEntitiesWithAllTypesTest extends TableTestBase<PerfStressOption
                 .buffer(100)
                 .flatMap(tableAsyncClient::submitTransaction)
                 .then());
+    }
+
+    @Override
+    public void globalSetup() {
+        tableClient.createTable();
+        super.globalSetup();
+
+        Flux.range(0, options.getCount())
+            .map(i ->
+                new TableTransactionAction(TableTransactionActionType.UPSERT_MERGE,
+                    generateEntityWithAllTypes(partitionKey, Integer.toString(i))))
+            .buffer(100)
+            .map(tableClient::submitTransaction)
+            .blockLast();
     }
 
     @Override

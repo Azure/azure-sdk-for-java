@@ -5,7 +5,6 @@ package com.azure.perf.test.core;
 
 import reactor.core.publisher.Mono;
 
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -34,7 +33,7 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
      */
     public EventPerfTest(TOptions options) {
         super(options);
-        if (options.getTestProxies() != null && options.getTestProxies().size() > 0) {
+        if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
             throw new IllegalStateException("Test Proxies are not supported for Event Perf Tests.");
         }
         completedOps = new AtomicLong(0);
@@ -69,7 +68,7 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
         synchronized (this) {
             try {
                 wait((endNanoTime - startTime) / 1000000);
-            } catch (InterruptedException e) { }
+            } catch (InterruptedException ignored) { }
             if (errorRaised) {
                 throw new RuntimeException(throwable);
             }

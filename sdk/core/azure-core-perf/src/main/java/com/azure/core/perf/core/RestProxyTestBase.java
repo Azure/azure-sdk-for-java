@@ -4,6 +4,7 @@
 package com.azure.core.perf.core;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -104,6 +105,14 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
         }));
     }
 
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        if (wireMockServer != null) {
+            wireMockServer.shutdown();
+        }
+    }
+
     private HttpPipelinePolicy[] createPipelinePolicies(TOptions options) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (options.getBackendType() == CorePerfStressOptions.BackendType.BLOBS) {
@@ -144,7 +153,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
             server.stubFor(any(urlPathMatching("/(RawData|UserDatabase|BinaryData).*"))
                 .willReturn(aResponse().withBody(response.getBodyAsByteArray().block())
                     .withStatus(response.getStatusCode())
-                    .withHeader("Content-Type", response.getHeaderValue("Content-Type"))));
+                    .withHeader("Content-Type", response.getHeaderValue(HttpHeaderName.CONTENT_TYPE))));
         }
 
         server.start();
@@ -152,9 +161,8 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     }
 
     public static HttpResponse createMockResponse(HttpRequest httpRequest, String contentType, byte[] bodyBytes) {
-        HttpHeaders headers = new HttpHeaders().set("Content-Type", contentType);
-        HttpResponse res = new MockHttpResponse(httpRequest, 200, headers, bodyBytes);
-        return res;
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);
+        return new MockHttpResponse(httpRequest, 200, headers, bodyBytes);
     }
 
     public static byte[] serializeData(Object object, ObjectMapper objectMapper) {

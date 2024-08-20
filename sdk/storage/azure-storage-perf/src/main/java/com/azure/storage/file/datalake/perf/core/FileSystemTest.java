@@ -28,9 +28,21 @@ public abstract class FileSystemTest<TOptions extends PerfStressOptions> extends
         return super.globalSetupAsync().then(dataLakeFileSystemAsyncClient.create()).then();
     }
 
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+        dataLakeFileSystemClient.create();
+    }
+
     // NOTE: the pattern, cleanup yourself, then the parent.
     @Override
     public Mono<Void> globalCleanupAsync() {
         return dataLakeFileSystemAsyncClient.delete().then(super.globalCleanupAsync());
+    }
+
+    @Override
+    public void globalCleanup() {
+        dataLakeFileSystemClient.delete();
+        super.globalCleanup();
     }
 }

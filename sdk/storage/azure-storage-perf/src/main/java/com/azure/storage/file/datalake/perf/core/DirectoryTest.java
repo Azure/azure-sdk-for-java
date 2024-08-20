@@ -27,4 +27,10 @@ public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends 
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync().then(dataLakeDirectoryAsyncClient.create()).then();
     }
+
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+        dataLakeDirectoryClient.create();
+    }
 }

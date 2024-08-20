@@ -14,14 +14,13 @@ import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
-import com.azure.storage.stress.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.StorageStressOptions;
+import com.azure.storage.stress.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
@@ -71,22 +70,37 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
     }
 
     @Override
+    public void globalSetup() {
+        startTime = Instant.now();
+        telemetryHelper.recordStart(options);
+        super.globalSetup();
+        syncNoFaultFileSystemClient.createIfNotExists();
+    }
+
+    @Override
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
         return asyncNoFaultFileSystemClient.deleteIfExists()
             .then(super.globalCleanupAsync());
     }
 
+    @Override
+    public void globalCleanup() {
+        telemetryHelper.recordEnd(startTime);
+        syncNoFaultFileSystemClient.deleteIfExists();
+        super.globalCleanup();
+    }
+
     @SuppressWarnings("try")
     @Override
     public void run() {
-        telemetryHelper.instrumentRun(ctx -> runInternal(ctx));
+        telemetryHelper.instrumentRun(this::runInternal);
     }
 
     @SuppressWarnings("try")
     @Override
     public Mono<Void> runAsync() {
-        return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
+        return telemetryHelper.instrumentRunAsync(this::runInternalAsync)
             .onErrorResume(e -> Mono.empty());
     }
 

@@ -9,10 +9,6 @@ import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 public abstract class FileTestBase<TOptions extends PerfStressOptions> extends DirectoryTest<TOptions> {
 
     public static final int DEFAULT_BUFFER_SIZE = 8192;
@@ -33,14 +29,9 @@ public abstract class FileTestBase<TOptions extends PerfStressOptions> extends D
         return dataLakeFileAsyncClient.create().then(super.cleanupAsync());
     }
 
-    public long copyStream(InputStream input, OutputStream out) throws IOException {
-        long transferred = 0;
-        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-        int read;
-        while ((read = input.read(buffer, 0, DEFAULT_BUFFER_SIZE)) >= 0) {
-            out.write(buffer, 0, read);
-            transferred += read;
-        }
-        return transferred;
+    @Override
+    public void setup() {
+        dataLakeFileClient.create();
+        super.cleanup(); // This doesn't seem right...
     }
 }

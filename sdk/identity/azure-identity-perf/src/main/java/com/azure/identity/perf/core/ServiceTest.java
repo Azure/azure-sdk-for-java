@@ -15,7 +15,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     protected static final TokenRequestContext ARM_TOKEN_REQUEST_CONTEXT = new TokenRequestContext()
             .addScopes("https://management.azure.com/.default");
 
-    private InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
+    private final InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
             .port(8765)
             .clientId(CLI_CLIENT_ID)
             .build();
@@ -30,5 +30,11 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         return super.globalSetupAsync()
                 .then(interactiveBrowserCredential.getToken(ARM_TOKEN_REQUEST_CONTEXT))
                 .then();
+    }
+
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+        interactiveBrowserCredential.getTokenSync(ARM_TOKEN_REQUEST_CONTEXT);
     }
 }

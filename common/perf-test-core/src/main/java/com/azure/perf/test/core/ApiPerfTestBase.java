@@ -28,7 +28,6 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.JDK;
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.NETTY;
@@ -263,14 +262,39 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             .then();
     }
 
+    /**
+     * Stops playback tests.
+     */
+    public void stopPlayback() {
+        recordPlaybackHttpClient
+            .headers(h -> {
+                // The Recording id to track the recording session on the Test Proxy Server.
+                h.set("x-recording-id", recordingId);
+                // Indicates Test Proxy Server to purge the cached recording.
+                h.set("x-purge-inmemory-recording", Boolean.toString(true));
+            })
+            .post()
+            .uri(testProxy.resolve("/playback/stop"))
+            .response()
+            .doOnSuccess(response -> {
+                testProxyPolicy.setMode(null);
+                testProxyPolicy.setRecordingId(null);
+            }).block();
+    }
+
     private Mono<Void> startRecordingAsync() {
         return Mono.defer(() -> recordPlaybackHttpClient
             .post()
             .uri(testProxy.resolve("/record/start"))
             .response()
-            .doOnNext(response -> {
-                recordingId = response.responseHeaders().get("x-recording-id");
-            }).then());
+            .doOnNext(response -> recordingId = response.responseHeaders().get("x-recording-id")).then());
+    }
+
+    private void startRecording() {
+        recordPlaybackHttpClient.post()
+            .uri(testProxy.resolve("/record/start"))
+            .response()
+            .doOnNext(response -> recordingId = response.responseHeaders().get("x-recording-id")).block();
     }
 
     private Mono<Void> stopRecordingAsync() {
@@ -282,22 +306,36 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             .then());
     }
 
+    private void stopRecording() {
+        recordPlaybackHttpClient.headers(h -> h.set("x-recording-id", recordingId))
+            .post()
+            .uri(testProxy.resolve("/record/stop"))
+            .response()
+            .block();
+    }
+
     private Mono<Void> startPlaybackAsync() {
         return Mono.defer(() -> recordPlaybackHttpClient
             .headers(h -> h.set("x-recording-id", recordingId))
             .post()
             .uri(testProxy.resolve("/playback/start"))
             .response()
-            .doOnNext(response -> {
-                recordingId = response.responseHeaders().get("x-recording-id");
-            }).then());
+            .doOnNext(response -> recordingId = response.responseHeaders().get("x-recording-id")).then());
     }
 
+    private void startPlayback() {
+        recordPlaybackHttpClient
+            .headers(h -> h.set("x-recording-id", recordingId))
+            .post()
+            .uri(testProxy.resolve("/playback/start"))
+            .response()
+            .doOnNext(response -> recordingId = response.responseHeaders().get("x-recording-id")).block();
+    }
 
     /**
      * Records responses and starts tests in playback mode.
      *
-     * @return
+     * @return An empty {@link Mono}.
      */
     @Override
     Mono<Void> postSetupAsync() {
@@ -323,14 +361,29 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         return Mono.empty();
     }
 
+    @Override
+    void postSetup() {
+        if (testProxyPolicy != null) {
+            // Make one call to Run() before starting recording, to avoid capturing one-time setup like authorization
+            // requests.
+            runSync();
+            startRecording();
+            testProxyPolicy.setRecordingId(recordingId);
+            testProxyPolicy.setMode("record");
+            runSync();
+            stopRecording();
+            startPlayback();
+            testProxyPolicy.setRecordingId(recordingId);
+            testProxyPolicy.setMode("playback");
+        }
+    }
+
     private Mono<Void> runSyncOrAsync() {
-        return Mono.defer(() -> {
-            if (options.isSync()) {
-                return Mono.fromFuture(CompletableFuture.supplyAsync(() -> runTest())).then();
-            } else {
-                return runTestAsync().then();
-            }
-        });
+        return Mono.defer(() -> runTestAsync().then());
+    }
+
+    private void runSync() {
+        runTest();
     }
 
     @Override

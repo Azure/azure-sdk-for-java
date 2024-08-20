@@ -37,11 +37,25 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
     }
 
     /**
+     * Runs the setup required prior to running the performance test.
+     */
+    public void globalSetup() {
+        globalSetupAsync().block();
+    }
+
+    /**
      * Runs the setup required prior to running an individual thread in the performance test.
      * @return An empty {@link Mono}
      */
     public Mono<Void> setupAsync() {
         return Mono.empty();
+    }
+
+    /**
+     * Runs the setup required prior to running an individual thread in the performance test.
+     */
+    public void setup() {
+        setupAsync().block();
     }
 
     /**
@@ -67,6 +81,13 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
     }
 
     /**
+     * Runs before cleanup stage.
+     */
+    void preCleanup() {
+        preCleanupAsync().block();
+    }
+
+    /**
      * Runs after performance test finishes.
      * @return A {@link Mono} containing void.
      */
@@ -75,15 +96,33 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
     }
 
     /**
-     * Runs before performance test is triggered.
+     * Runs after performance test finishes.
+     */
+    public void cleanup() {
+        cleanupAsync().block();
+    }
+
+    /**
+     * Runs after performance test is triggered.
      * @return A {@link Mono} containing void.
      */
     public Mono<Void> globalCleanupAsync() {
         return Mono.empty();
     }
 
+    /**
+     * Runs after performance test is triggered.
+     */
+    public void globalCleanup() {
+        globalCleanupAsync().block();
+    }
+
     Mono<Void> postSetupAsync() {
         return Mono.empty();
+    }
+
+    void postSetup() {
+        postSetupAsync().block();
     }
 
     /**

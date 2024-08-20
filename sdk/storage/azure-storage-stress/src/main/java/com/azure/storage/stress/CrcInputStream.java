@@ -4,8 +4,8 @@
 package com.azure.storage.stress;
 
 import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.RepeatingInputStream;
 import reactor.core.publisher.Flux;

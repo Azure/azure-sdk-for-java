@@ -48,6 +48,17 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
             })).then();
     }
 
+    @Override
+    public void setup() {
+        super.setup();
+        try {
+            cloudFile.create(options.getSize());
+            cloudFile.upload(TestDataCreationHelper.createRandomInputStream(options.getSize()), options.getSize());
+        } catch (URISyntaxException | StorageException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Perform the API call to be tested here
     @Override
     public void run() {
@@ -64,6 +75,12 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
             targetFile.delete();
             return 1;
         }).then(super.cleanupAsync());
+    }
+
+    @Override
+    public void cleanup() {
+        targetFile.delete();
+        super.cleanup();
     }
 
     @Override

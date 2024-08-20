@@ -30,6 +30,12 @@ public class ListRepositoryTests extends ServiceTest<PerfStressOptions> {
     }
 
     @Override
+    public void globalSetup() {
+        super.globalSetup();
+        importImage(REPOSITORY_NAME, Arrays.asList(TEST_PERF_TAG1_NAME, TEST_PERF_TAG2_NAME, TEST_PERF_TAG3_NAME, TEST_PERF_TAG4_NAME));
+    }
+
+    @Override
     public void run() {
         containerRegistryClient.listRepositoryNames();
     }

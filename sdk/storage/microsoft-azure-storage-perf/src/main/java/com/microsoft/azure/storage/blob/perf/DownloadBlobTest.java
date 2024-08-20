@@ -3,18 +3,17 @@
 
 package com.microsoft.azure.storage.blob.perf;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URISyntaxException;
-
 import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
-
 import com.microsoft.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
 
 public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
     private final CloudBlockBlob cloudBlockBlob;
@@ -30,6 +29,7 @@ public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
         }
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync().then(Mono.fromCallable(() -> {
             try {
@@ -40,6 +40,16 @@ public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
             }
             return 1;
         })).then();
+    }
+
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+        try {
+            cloudBlockBlob.upload(TestDataCreationHelper.createRandomInputStream(options.getSize()), options.getSize());
+        } catch (StorageException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

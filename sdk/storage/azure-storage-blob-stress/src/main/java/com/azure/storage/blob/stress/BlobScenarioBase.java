@@ -14,14 +14,13 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.stress.TelemetryHelper;
-import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
+import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.StorageStressOptions;
+import com.azure.storage.stress.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
@@ -71,10 +70,25 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     }
 
     @Override
+    public void globalSetup() {
+        startTime = Instant.now();
+        telemetryHelper.recordStart(options);
+        super.globalSetup();
+        syncNoFaultContainerClient.createIfNotExists();
+    }
+
+    @Override
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
         return asyncNoFaultContainerClient.deleteIfExists()
             .then(super.globalCleanupAsync());
+    }
+
+    @Override
+    public void globalCleanup() {
+        telemetryHelper.recordEnd(startTime);
+        syncNoFaultContainerClient.deleteIfExists();
+        super.globalCleanup();
     }
 
     @SuppressWarnings("try")

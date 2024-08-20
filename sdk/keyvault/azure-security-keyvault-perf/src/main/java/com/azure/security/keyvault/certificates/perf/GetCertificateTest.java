@@ -16,10 +16,17 @@ public class GetCertificateTest extends CertificatesTest<PerfStressOptions> {
         certificateName = "getCertificatePerfTest-" + UUID.randomUUID();
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
             .then(certificateAsyncClient.beginCreateCertificate(certificateName, CertificatePolicy.getDefault()).then())
             .then();
+    }
+
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+        certificateClient.beginCreateCertificate(certificateName, CertificatePolicy.getDefault()).waitForCompletion();
     }
 
     @Override

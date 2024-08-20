@@ -29,7 +29,19 @@ public abstract class ShareTest<TOptions extends PerfStressOptions> extends Serv
     }
 
     @Override
+    public void setup() {
+        super.setup();
+        shareClient.create();
+    }
+
+    @Override
     public Mono<Void> cleanupAsync() {
         return shareAsyncClient.delete().then(super.cleanupAsync());
+    }
+
+    @Override
+    public void cleanup() {
+        shareClient.delete();
+        super.cleanup();
     }
 }

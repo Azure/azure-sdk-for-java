@@ -18,9 +18,16 @@ public class CreateEntityWithStringsOnly extends TableTestBase<PerfStressOptions
         tableEntity = generateEntityWithStringsOnly(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
         return tableAsyncClient.createTable()
             .then(super.globalSetupAsync());
+    }
+
+    @Override
+    public void globalSetup() {
+        tableClient.createTable();
+        super.globalSetup();
     }
 
     @Override

@@ -14,14 +14,13 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.stress.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.StorageStressOptions;
+import com.azure.storage.stress.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
@@ -31,6 +30,7 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
     private final BlobContainerClient syncContainerClient;
     private final BlobContainerAsyncClient asyncContainerClient;
     private final BlobContainerAsyncClient asyncNoFaultContainerClient;
+    private final BlobContainerClient syncNoFaultContainerClient;
     private Instant startTime;
 
     public PageBlobScenarioBase(TOptions options) {
@@ -56,6 +56,7 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
         BlobServiceClient syncClient = clientBuilder.buildClient();
         BlobServiceAsyncClient asyncClient = clientBuilder.buildAsyncClient();
         asyncNoFaultContainerClient = asyncNoFaultClient.getBlobContainerAsyncClient(CONTAINER_NAME);
+        syncNoFaultContainerClient = noFaultServiceClient.getBlobContainerClient(CONTAINER_NAME);
         syncContainerClient = syncClient.getBlobContainerClient(CONTAINER_NAME);
         asyncContainerClient = asyncClient.getBlobContainerAsyncClient(CONTAINER_NAME);
     }
@@ -70,22 +71,37 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
     }
 
     @Override
+    public void globalSetup() {
+        startTime = Instant.now();
+        telemetryHelper.recordStart(options);
+        super.globalSetup();
+        syncNoFaultContainerClient.createIfNotExists();
+    }
+
+    @Override
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
         return asyncNoFaultContainerClient.deleteIfExists()
             .then(super.globalCleanupAsync());
     }
 
+    @Override
+    public void globalCleanup() {
+        telemetryHelper.recordEnd(startTime);
+        syncNoFaultContainerClient.deleteIfExists();
+        super.globalCleanup();
+    }
+
     @SuppressWarnings("try")
     @Override
     public void run() {
-        telemetryHelper.instrumentRun(ctx -> runInternal(ctx));
+        telemetryHelper.instrumentRun(this::runInternal);
     }
 
     @SuppressWarnings("try")
     @Override
     public Mono<Void> runAsync() {
-        return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
+        return telemetryHelper.instrumentRunAsync(this::runInternalAsync)
             .onErrorResume(e -> Mono.empty());
     }
 
