@@ -8,12 +8,7 @@ package com.azure.ai.inference;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
-import com.azure.ai.inference.models.ChatChoice;
-import com.azure.ai.inference.models.ChatCompletions;
-import com.azure.ai.inference.models.ChatRequestMessage;
-import com.azure.ai.inference.models.ChatRequestUserMessage;
-import com.azure.ai.inference.models.ChatRequestSystemMessage;
-import com.azure.ai.inference.models.ChatRequestAssistantMessage;
+import com.azure.ai.inference.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
@@ -22,27 +17,23 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static com.azure.ai.inference.TestUtils.FAKE_API_KEY;
+import static org.junit.jupiter.api.Assertions.*;
 
-public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
-    protected ChatCompletionsClient chatCompletionsClient;
+public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
     protected EmbeddingsClient embeddingsClient;
     protected ImageEmbeddingsClient imageEmbeddingsClient;
     private boolean sanitizersRemoved = false;
 
-    ChatCompletionsClientBuilder getChatCompletionsClientBuilder(HttpClient httpClient) {
-        ChatCompletionsClientBuilder builder = new ChatCompletionsClientBuilder()
+    EmbeddingsClientBuilder getEmbeddingsClientBuilder(HttpClient httpClient) {
+        EmbeddingsClientBuilder builder = new EmbeddingsClientBuilder()
                 .httpClient(httpClient);
         TestMode testMode = getTestMode();
         if (testMode != TestMode.LIVE) {
@@ -62,12 +53,43 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
         } else if (testMode == TestMode.RECORD) {
             builder
                     .addPolicy(interceptorManager.getRecordPolicy())
-                    .endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
+                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
         } else {
             builder
-                    .endpoint(Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_API_KEY")));
+                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+        }
+        return builder;
+    }
+
+    ImageEmbeddingsClientBuilder getImageEmbeddingsClientBuilder(HttpClient httpClient) {
+        ImageEmbeddingsClientBuilder builder = new ImageEmbeddingsClientBuilder()
+                .httpClient(httpClient);
+        TestMode testMode = getTestMode();
+        if (testMode != TestMode.LIVE) {
+            addTestRecordCustomSanitizers();
+            addCustomMatchers();
+            // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
+            if (!sanitizersRemoved) {
+                interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+                sanitizersRemoved = true;
+            }
+        }
+
+        if (testMode == TestMode.PLAYBACK) {
+            builder
+                    .endpoint("https://localhost:8080")
+                    .credential(new AzureKeyCredential(FAKE_API_KEY));
+        } else if (testMode == TestMode.RECORD) {
+            builder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+        } else {
+            builder
+                    .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
         }
         return builder;
     }
@@ -86,14 +108,10 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
     }
 
     @Test
-    public abstract void testGetChatCompletions(HttpClient httpClient);
+    public abstract void testGetEmbeddings(HttpClient httpClient);
 
-    void getChatCompletionsRunner(Consumer<String> testRunner) {
-        testRunner.accept("Say this is a test");
-    }
-
-    void getStreamingChatCompletionsRunner(Consumer<List<ChatRequestMessage>> testRunner) {
-        testRunner.accept(getChatMessages());
+    void getEmbeddingsRunner(Consumer<List<String>> testRunner) {
+        testRunner.accept(getPrompts());
     }
 
     static void assertCompletionsStream(ChatCompletions chatCompletions) {
@@ -105,32 +123,23 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
         }
     }
 
-    static void assertCompletions(int choicesPerPrompt, ChatCompletions actual) {
-        assertNotNull(actual);
-        assertInstanceOf(ChatCompletions.class, actual);
-        assertChoices(choicesPerPrompt, actual.getChoices());
+    static void assertEmbeddings(EmbeddingsResult actual) {
+        List<EmbeddingItem> data = actual.getData();
+        assertNotNull(data);
+        assertFalse(data.isEmpty());
+
+        for (EmbeddingItem item : data) {
+            List<Float> embedding = item.getEmbedding();
+            assertNotNull(embedding);
+            assertFalse(embedding.isEmpty());
+        }
         assertNotNull(actual.getUsage());
     }
 
-    static void assertChoices(int choicesPerPrompt, List<ChatChoice> actual) {
-        assertEquals(choicesPerPrompt, actual.size());
-        for (int i = 0; i < actual.size(); i++) {
-            assertChoice(i, actual.get(i));
-        }
-    }
-
-    static void assertChoice(int index, ChatChoice actual) {
-        assertNotNull(actual.getMessage().getContent());
-        assertEquals(index, actual.getIndex());
-        assertNotNull(actual.getFinishReason());
-    }
-
-    private List<ChatRequestMessage> getChatMessages() {
-        List<ChatRequestMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(ChatRequestUserMessage.fromString("Can you help me?"));
-        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(ChatRequestUserMessage.fromString("What's the best way to train a parrot?"));
-        return chatMessages;
+    private List<String> getPrompts() {
+        List<String> prompts = new ArrayList<>();
+        prompts.add("Can you help me?");
+        prompts.add("What's the best way to train a parrot?");
+        return prompts;
     }
 }
