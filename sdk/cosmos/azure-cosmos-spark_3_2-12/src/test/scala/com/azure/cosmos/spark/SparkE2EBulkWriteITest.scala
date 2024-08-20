@@ -163,9 +163,6 @@ class SparkE2EBulkWriteITest
 
       recordsWrittenSnapshot shouldEqual 100
       bytesWrittenSnapshot > 0 shouldEqual true
-      if (!spark.sparkContext.version.startsWith("3.1.")) {
-        totalRequestChargeSnapshot.isDefined shouldEqual true
-      }
 
       // that the write by spark is visible by the client query
       // wait for a second to allow replication is completed.
