@@ -371,7 +371,7 @@ public class VectorSearchTests extends SearchTestBase {
             });
 
         // Update index
-        StepVerifier.create(getAndUpdateIndex).thenAwait(Duration.ofSeconds(3))
+        StepVerifier.create(getAndUpdateIndex).thenAwait(Duration.ofSeconds(10))
             .assertNext(response -> {
                 assertEquals(indexName, response.getName());
                 assertEquals(3, response.getFields().size());
@@ -397,12 +397,12 @@ public class VectorSearchTests extends SearchTestBase {
                 } else {
                     waitForIndexing();
                     return searchClient.getDocument("1", SearchDocument.class)
-                        .delaySubscription(Duration.ofSeconds(5));
+                        .delayElement(Duration.ofSeconds(5));
                 }
             });
 
         // Get the document
-        StepVerifier.create(getAndUpdateDocument.delaySubscription(Duration.ofSeconds(5)))
+        StepVerifier.create(getAndUpdateDocument.delayElement(Duration.ofSeconds(5)))
             .assertNext(response -> {
                 assertEquals(document.get("Id"), response.get("Id"));
                 assertEquals(document.get("Name"), response.get("Name"));
