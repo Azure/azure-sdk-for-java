@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -76,8 +78,13 @@ public class ValidationsTest {
     private File[] getFileList(String fileNameFilter) {
         final URL folderUrl = Thread.currentThread().getContextClassLoader().getResource(testCaseFolderPath);
         assert folderUrl != null;
+
         final File folderFile = new File(folderUrl.getFile());
-        return folderFile.listFiles(pathname -> pathname.getName().toLowerCase().contains(fileNameFilter));
+        final File[] filteredFiles = folderFile.listFiles(pathname -> pathname.getName().toLowerCase().contains(fileNameFilter));
+        assert filteredFiles != null;
+
+        Arrays.sort(filteredFiles, Comparator.comparing(File::getName));
+        return filteredFiles;
     }
 
     private List<ValidationTestCase> readTestcasesFromFile(File testFile) throws IOException {
