@@ -1,6 +1,6 @@
 # Release History
 
-## 4.24.0 (2024-08-19)
+## 4.24.0 (2024-08-20)
 
 ### Features Added
 - Added `StorageBlobAccessTier` metadata to `StorageBlobCreatedEventData` and `StorageBlobTierChangedEventData` [#41398](https://github.com/Azure/azure-sdk-for-java/pull/41398)
