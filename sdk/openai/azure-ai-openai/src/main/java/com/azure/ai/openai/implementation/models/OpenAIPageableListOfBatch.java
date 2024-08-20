@@ -29,41 +29,25 @@ public final class OpenAIPageableListOfBatch implements JsonSerializable<OpenAIP
      * The requested list of items.
      */
     @Generated
-    private final List<Batch> data;
+    private List<Batch> data;
 
     /*
      * The first ID represented in this list.
      */
     @Generated
-    private final String firstId;
+    private String firstId;
 
     /*
      * The last ID represented in this list.
      */
     @Generated
-    private final String lastId;
+    private String lastId;
 
     /*
      * A value indicating whether there are additional values available not captured in this list.
      */
     @Generated
-    private final boolean hasMore;
-
-    /**
-     * Creates an instance of OpenAIPageableListOfBatch class.
-     *
-     * @param data the data value to set.
-     * @param firstId the firstId value to set.
-     * @param lastId the lastId value to set.
-     * @param hasMore the hasMore value to set.
-     */
-    @Generated
-    private OpenAIPageableListOfBatch(List<Batch> data, String firstId, String lastId, boolean hasMore) {
-        this.data = data;
-        this.firstId = firstId;
-        this.lastId = lastId;
-        this.hasMore = hasMore;
-    }
+    private Boolean hasMore;
 
     /**
      * Get the object property: The object type, which is always list.
@@ -112,7 +96,7 @@ public final class OpenAIPageableListOfBatch implements JsonSerializable<OpenAIP
      * @return the hasMore value.
      */
     @Generated
-    public boolean isHasMore() {
+    public Boolean isHasMore() {
         return this.hasMore;
     }
 
@@ -143,26 +127,31 @@ public final class OpenAIPageableListOfBatch implements JsonSerializable<OpenAIP
     @Generated
     public static OpenAIPageableListOfBatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<Batch> data = null;
-            String firstId = null;
-            String lastId = null;
-            boolean hasMore = false;
+            OpenAIPageableListOfBatch deserializedOpenAIPageableListOfBatch = new OpenAIPageableListOfBatch();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("data".equals(fieldName)) {
-                    data = reader.readArray(reader1 -> Batch.fromJson(reader1));
+                    List<Batch> data = reader.readArray(reader1 -> Batch.fromJson(reader1));
+                    deserializedOpenAIPageableListOfBatch.data = data;
                 } else if ("first_id".equals(fieldName)) {
-                    firstId = reader.getString();
+                    deserializedOpenAIPageableListOfBatch.firstId = reader.getString();
                 } else if ("last_id".equals(fieldName)) {
-                    lastId = reader.getString();
+                    deserializedOpenAIPageableListOfBatch.lastId = reader.getString();
                 } else if ("has_more".equals(fieldName)) {
-                    hasMore = reader.getBoolean();
+                    deserializedOpenAIPageableListOfBatch.hasMore = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new OpenAIPageableListOfBatch(data, firstId, lastId, hasMore);
+            return deserializedOpenAIPageableListOfBatch;
         });
+    }
+
+    /**
+     * Creates an instance of OpenAIPageableListOfBatch class.
+     */
+    @Generated
+    private OpenAIPageableListOfBatch() {
     }
 }

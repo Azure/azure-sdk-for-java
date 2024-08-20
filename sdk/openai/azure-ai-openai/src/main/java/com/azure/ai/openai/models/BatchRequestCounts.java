@@ -21,33 +21,19 @@ public final class BatchRequestCounts implements JsonSerializable<BatchRequestCo
      * Total number of requests in the batch.
      */
     @Generated
-    private final int total;
+    private Integer total;
 
     /*
      * Number of requests that have been completed successfully.
      */
     @Generated
-    private final int completed;
+    private Integer completed;
 
     /*
      * Number of requests that have failed.
      */
     @Generated
-    private final int failed;
-
-    /**
-     * Creates an instance of BatchRequestCounts class.
-     *
-     * @param total the total value to set.
-     * @param completed the completed value to set.
-     * @param failed the failed value to set.
-     */
-    @Generated
-    private BatchRequestCounts(int total, int completed, int failed) {
-        this.total = total;
-        this.completed = completed;
-        this.failed = failed;
-    }
+    private Integer failed;
 
     /**
      * Get the total property: Total number of requests in the batch.
@@ -55,7 +41,7 @@ public final class BatchRequestCounts implements JsonSerializable<BatchRequestCo
      * @return the total value.
      */
     @Generated
-    public int getTotal() {
+    public Integer getTotal() {
         return this.total;
     }
 
@@ -65,7 +51,7 @@ public final class BatchRequestCounts implements JsonSerializable<BatchRequestCo
      * @return the completed value.
      */
     @Generated
-    public int getCompleted() {
+    public Integer getCompleted() {
         return this.completed;
     }
 
@@ -75,7 +61,7 @@ public final class BatchRequestCounts implements JsonSerializable<BatchRequestCo
      * @return the failed value.
      */
     @Generated
-    public int getFailed() {
+    public Integer getFailed() {
         return this.failed;
     }
 
@@ -86,9 +72,9 @@ public final class BatchRequestCounts implements JsonSerializable<BatchRequestCo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("total", this.total);
-        jsonWriter.writeIntField("completed", this.completed);
-        jsonWriter.writeIntField("failed", this.failed);
+        jsonWriter.writeNumberField("total", this.total);
+        jsonWriter.writeNumberField("completed", this.completed);
+        jsonWriter.writeNumberField("failed", this.failed);
         return jsonWriter.writeEndObject();
     }
 
@@ -98,29 +84,33 @@ public final class BatchRequestCounts implements JsonSerializable<BatchRequestCo
      * @param jsonReader The JsonReader being read.
      * @return An instance of BatchRequestCounts if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchRequestCounts.
      */
     @Generated
     public static BatchRequestCounts fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int total = 0;
-            int completed = 0;
-            int failed = 0;
+            BatchRequestCounts deserializedBatchRequestCounts = new BatchRequestCounts();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("total".equals(fieldName)) {
-                    total = reader.getInt();
+                    deserializedBatchRequestCounts.total = reader.getNullable(JsonReader::getInt);
                 } else if ("completed".equals(fieldName)) {
-                    completed = reader.getInt();
+                    deserializedBatchRequestCounts.completed = reader.getNullable(JsonReader::getInt);
                 } else if ("failed".equals(fieldName)) {
-                    failed = reader.getInt();
+                    deserializedBatchRequestCounts.failed = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new BatchRequestCounts(total, completed, failed);
+            return deserializedBatchRequestCounts;
         });
+    }
+
+    /**
+     * Creates an instance of BatchRequestCounts class.
+     */
+    @Generated
+    private BatchRequestCounts() {
     }
 }

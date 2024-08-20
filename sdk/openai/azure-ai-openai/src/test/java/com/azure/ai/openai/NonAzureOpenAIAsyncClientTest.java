@@ -9,6 +9,7 @@ import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
 import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.Batch;
+import com.azure.ai.openai.models.BatchCreateRequest;
 import com.azure.ai.openai.models.BatchStatus;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -1278,7 +1279,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     .flatMap(tuple -> {
                         OpenAIFile fileFromBackend = tuple.getT1();
                         OpenAIFile uploadedFile = tuple.getT2();
-                        return client.createBatch("/v1/chat/completions", fileFromBackend.getId(), "24h")
+                        return client.createBatch(new BatchCreateRequest("/v1/chat/completions", fileFromBackend.getId(), "24h"))
                             .zipWith(Mono.just(uploadedFile));
                     })
                     // Looping getBatch until it's completed
@@ -1367,7 +1368,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     .flatMap(tuple -> {
                         OpenAIFile fileFromBackend = tuple.getT1();
                         OpenAIFile uploadedFile = tuple.getT2();
-                        return client.createBatch("/v1/chat/completions", fileFromBackend.getId(), "24h")
+                        return client.createBatch(new BatchCreateRequest("/v1/chat/completions", fileFromBackend.getId(), "24h"))
                             .zipWith(Mono.just(uploadedFile));
                     })
                     // Cancel batch

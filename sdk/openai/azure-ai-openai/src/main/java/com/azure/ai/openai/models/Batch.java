@@ -37,7 +37,7 @@ public final class Batch implements JsonSerializable<Batch> {
      * The OpenAI API endpoint used by the batch.
      */
     @Generated
-    private final String endpoint;
+    private String endpoint;
 
     /*
      * The list of Batch errors.
@@ -55,13 +55,13 @@ public final class Batch implements JsonSerializable<Batch> {
      * The time frame within which the batch should be processed.
      */
     @Generated
-    private final String completionWindow;
+    private String completionWindow;
 
     /*
      * The current status of the batch.
      */
     @Generated
-    private final BatchStatus status;
+    private BatchStatus status;
 
     /*
      * The ID of the file containing the outputs of successfully executed requests.
@@ -79,7 +79,7 @@ public final class Batch implements JsonSerializable<Batch> {
      * The Unix timestamp (in seconds) for when the batch was created.
      */
     @Generated
-    private final long createdAt;
+    private Long createdAt;
 
     /*
      * The Unix timestamp (in seconds) for when the batch started processing.
@@ -141,31 +141,6 @@ public final class Batch implements JsonSerializable<Batch> {
      */
     @Generated
     private Map<String, String> metadata;
-
-    /**
-     * Creates an instance of Batch class.
-     *
-     * @param id the id value to set.
-     * @param endpoint the endpoint value to set.
-     * @param inputFileId the inputFileId value to set.
-     * @param completionWindow the completionWindow value to set.
-     * @param status the status value to set.
-     * @param createdAt the createdAt value to set.
-     */
-    @Generated
-    private Batch(String id, String endpoint, String inputFileId, String completionWindow, BatchStatus status,
-        OffsetDateTime createdAt) {
-        this.id = id;
-        this.endpoint = endpoint;
-        this.inputFileId = inputFileId;
-        this.completionWindow = completionWindow;
-        this.status = status;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-    }
 
     /**
      * Get the id property: The id assigned to the Batch.
@@ -264,6 +239,9 @@ public final class Batch implements JsonSerializable<Batch> {
      */
     @Generated
     public OffsetDateTime getCreatedAt() {
+        if (this.createdAt == null) {
+            return null;
+        }
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
     }
 
@@ -401,14 +379,14 @@ public final class Batch implements JsonSerializable<Batch> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("object", this.object);
-        jsonWriter.writeStringField("endpoint", this.endpoint);
         jsonWriter.writeStringField("input_file_id", this.inputFileId);
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeJsonField("errors", this.errors);
         jsonWriter.writeStringField("completion_window", this.completionWindow);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeLongField("created_at", this.createdAt);
-        jsonWriter.writeJsonField("errors", this.errors);
         jsonWriter.writeStringField("output_file_id", this.outputFileId);
         jsonWriter.writeStringField("error_file_id", this.errorFileId);
+        jsonWriter.writeNumberField("created_at", this.createdAt);
         jsonWriter.writeNumberField("in_progress_at", this.inProgressAt);
         jsonWriter.writeNumberField("expires_at", this.expiresAt);
         jsonWriter.writeNumberField("finalizing_at", this.finalizingAt);
@@ -435,14 +413,14 @@ public final class Batch implements JsonSerializable<Batch> {
     public static Batch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            String endpoint = null;
             String inputFileId = null;
+            String endpoint = null;
+            BatchErrorList errors = null;
             String completionWindow = null;
             BatchStatus status = null;
-            OffsetDateTime createdAt = null;
-            BatchErrorList errors = null;
             String outputFileId = null;
             String errorFileId = null;
+            Long createdAt = null;
             Long inProgressAt = null;
             Long expiresAt = null;
             Long finalizingAt = null;
@@ -458,22 +436,22 @@ public final class Batch implements JsonSerializable<Batch> {
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("endpoint".equals(fieldName)) {
-                    endpoint = reader.getString();
                 } else if ("input_file_id".equals(fieldName)) {
                     inputFileId = reader.getString();
+                } else if ("endpoint".equals(fieldName)) {
+                    endpoint = reader.getString();
+                } else if ("errors".equals(fieldName)) {
+                    errors = BatchErrorList.fromJson(reader);
                 } else if ("completion_window".equals(fieldName)) {
                     completionWindow = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     status = BatchStatus.fromString(reader.getString());
-                } else if ("created_at".equals(fieldName)) {
-                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
-                } else if ("errors".equals(fieldName)) {
-                    errors = BatchErrorList.fromJson(reader);
                 } else if ("output_file_id".equals(fieldName)) {
                     outputFileId = reader.getString();
                 } else if ("error_file_id".equals(fieldName)) {
                     errorFileId = reader.getString();
+                } else if ("created_at".equals(fieldName)) {
+                    createdAt = reader.getNullable(JsonReader::getLong);
                 } else if ("in_progress_at".equals(fieldName)) {
                     inProgressAt = reader.getNullable(JsonReader::getLong);
                 } else if ("expires_at".equals(fieldName)) {
@@ -498,10 +476,14 @@ public final class Batch implements JsonSerializable<Batch> {
                     reader.skipChildren();
                 }
             }
-            Batch deserializedBatch = new Batch(id, endpoint, inputFileId, completionWindow, status, createdAt);
+            Batch deserializedBatch = new Batch(id, inputFileId);
+            deserializedBatch.endpoint = endpoint;
             deserializedBatch.errors = errors;
+            deserializedBatch.completionWindow = completionWindow;
+            deserializedBatch.status = status;
             deserializedBatch.outputFileId = outputFileId;
             deserializedBatch.errorFileId = errorFileId;
+            deserializedBatch.createdAt = createdAt;
             deserializedBatch.inProgressAt = inProgressAt;
             deserializedBatch.expiresAt = expiresAt;
             deserializedBatch.finalizingAt = finalizingAt;
@@ -514,5 +496,17 @@ public final class Batch implements JsonSerializable<Batch> {
             deserializedBatch.metadata = metadata;
             return deserializedBatch;
         });
+    }
+
+    /**
+     * Creates an instance of Batch class.
+     *
+     * @param id the id value to set.
+     * @param inputFileId the inputFileId value to set.
+     */
+    @Generated
+    private Batch(String id, String inputFileId) {
+        this.id = id;
+        this.inputFileId = inputFileId;
     }
 }
