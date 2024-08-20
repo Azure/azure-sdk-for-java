@@ -26,6 +26,7 @@ import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSet;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
+import com.azure.resourcemanager.compute.models.DiskSkuTypes;
 import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.EncryptionType;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
@@ -60,6 +61,7 @@ import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -1281,6 +1283,53 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .apply();
 
         Assertions.assertFalse(vm.isHibernationEnabled());
+    }
+
+    @Test
+    public void canEnableUltraSsdVirtualMachine() {
+        Disk dataDisk = computeManager.disks().define("data_disk")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withData()
+            .withSizeInGB(4)
+            .withSku(DiskSkuTypes.ULTRA_SSD_LRS)
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+            .create();
+
+        // create VM and enable ultra SSD
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
+            .withExistingDataDisk(dataDisk)
+            .withDataDiskDefaultCachingType(CachingTypes.NONE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+            .enableUltraSsd()
+            .create();
+
+        Assertions.assertTrue(vm.isUltraSsdEnabled());
+
+        // disable ultra SSD
+        vm.deallocate();
+
+        int lun = vm.dataDisks().get(0).lun();
+
+        vm.update()
+            .withoutDataDisk(lun)
+            .apply();
+
+        vm.update()
+            .disableUltraSsd()
+            .apply();
+
+        Assertions.assertFalse(vm.isUltraSsdEnabled());
     }
 
     @Test
