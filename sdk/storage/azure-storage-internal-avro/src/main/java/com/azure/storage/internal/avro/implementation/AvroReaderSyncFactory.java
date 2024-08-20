@@ -47,6 +47,12 @@ public class AvroReaderSyncFactory {
 
     /**
      * Gets a new instance of {@link AvroSyncReader} with support for offset and thresholdIndex.
+     *
+     * @param avroHeader The {@link ByteBuffer} containing Avro header.
+     * @param avroBody The {@link ByteBuffer} containing Avro body.
+     * @param offset The body offset.
+     * @param thresholdIndex The inclusive index after which to start returning objects.
+     * @return An {@link AvroSyncReader}.
      */
     public AvroSyncReader getAvroReader(ByteBuffer avroHeader, ByteBuffer avroBody, long offset, long thresholdIndex) {
         AvroSyncParser parser = new AvroSyncParser(true);
@@ -55,6 +61,9 @@ public class AvroReaderSyncFactory {
 
     /**
      * Gets a new instance of {@link AvroSyncReader}.
+     *
+     * @param data The {@link ByteBuffer} containing Avro data.
+     * @return An {@link AvroSyncReader}.
      */
     public AvroSyncReader getAvroReader(ByteBuffer data) {
         AvroSyncParser parser = new AvroSyncParser(false);
