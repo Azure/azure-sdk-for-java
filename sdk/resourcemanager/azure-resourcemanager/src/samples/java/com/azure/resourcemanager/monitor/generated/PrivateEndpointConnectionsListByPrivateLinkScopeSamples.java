@@ -20,7 +20,10 @@ public final class PrivateEndpointConnectionsListByPrivateLinkScopeSamples {
      */
     public static void
         getsListOfPrivateEndpointConnectionsOnAPrivateLinkScope(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateEndpointConnections()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpointConnections()
             .listByPrivateLinkScopeWithResponse("MyResourceGroup", "MyPrivateLinkScope",
                 com.azure.core.util.Context.NONE);
     }
