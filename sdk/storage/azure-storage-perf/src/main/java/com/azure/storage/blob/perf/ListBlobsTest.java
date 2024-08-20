@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.perf;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.perf.core.ContainerTest;
@@ -34,6 +35,16 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
                     .upload(Flux.empty(), 0L), false, parallel, 1)
                 .sequential()
                 .then());
+    }
+
+    @Override
+    public void globalSetup() {
+        super.globalSetup();
+        for (int i = 0; i < options.getCount(); i++) {
+            blobContainerClient.getBlobClient("getblobstest-" + CoreUtils.randomUuid())
+                .getBlockBlobClient()
+                .upload(BinaryData.fromBytes(new byte[0]));
+        }
     }
 
     @Override

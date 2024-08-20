@@ -5,14 +5,14 @@ Project: sdk/storage/azure-storage-perf
 PrimaryPackage: 'com.azure:azure-storage-file-datalake'
 
 PackageVersions:
-- 'com.azure:azure-storage-common': 12.24.1 # {x-version-update;com.azure:azure-storage-common;dependency}
-  'com.azure:azure-storage-blob': 12.25.1 # {x-version-update;com.azure:azure-storage-blob;dependency}
-  'com.azure:azure-storage-blob-cryptography': 12.24.1 # {x-version-update;com.azure:azure-storage-blob-cryptography;dependency}
-  'com.azure:azure-storage-file-share': 12.21.1 # {x-version-update;com.azure:azure-storage-file-share;dependency}
-  'com.azure:azure-storage-file-datalake': 12.18.1 # {x-version-update;com.azure:azure-storage-file-datalake;dependency}
-  'com.azure:azure-core': 1.46.0 # {x-version-update;com.azure:azure-core;dependency}
-  'com.azure:azure-core-http-netty': 1.14.0 # {x-version-update;com.azure:azure-core-http-netty;dependency}
-  'com.azure:azure-core-http-okhttp': 1.11.18 # {x-version-update;com.azure:azure-core-http-okhttp;dependency}
+- 'com.azure:azure-storage-common': 12.26.0 # {x-version-update;com.azure:azure-storage-common;dependency}
+  'com.azure:azure-storage-blob': 12.27.0 # {x-version-update;com.azure:azure-storage-blob;dependency}
+  'com.azure:azure-storage-blob-cryptography': 12.26.0 # {x-version-update;com.azure:azure-storage-blob-cryptography;dependency}
+  'com.azure:azure-storage-file-share': 12.23.0 # {x-version-update;com.azure:azure-storage-file-share;dependency}
+  'com.azure:azure-storage-file-datalake': 12.20.0 # {x-version-update;com.azure:azure-storage-file-datalake;dependency}
+  'com.azure:azure-core': 1.51.0 # {x-version-update;com.azure:azure-core;dependency}
+  'com.azure:azure-core-http-netty': 1.15.3 # {x-version-update;com.azure:azure-core-http-netty;dependency}
+  'com.azure:azure-core-http-okhttp': 1.12.2 # {x-version-update;com.azure:azure-core-http-okhttp;dependency}
 - 'com.azure:azure-storage-common': source
   'com.azure:azure-storage-blob': source
   'com.azure:azure-storage-blob-cryptography': source
