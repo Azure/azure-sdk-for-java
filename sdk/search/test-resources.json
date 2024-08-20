@@ -86,7 +86,7 @@
       },
       "properties": {
         "replicaCount": 3,
-        "partitionCount": 2,
+        "partitionCount": 3,
         "hostingMode": "Default",
         "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('searchIndexDataContributorRoleId'))]",
         "principalId": "[parameters('testApplicationOid')]",
