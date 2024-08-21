@@ -4,6 +4,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.Batch;
+import com.azure.ai.openai.models.BatchCreateRequest;
 import com.azure.ai.openai.models.BatchStatus;
 import com.azure.ai.openai.models.FileDeletionStatus;
 import com.azure.ai.openai.models.FileDetails;
@@ -53,7 +54,7 @@ public class BatchOperationsSample {
             file = client.getFile(file.getId());
         }
 
-        Batch batch = client.createBatch("/chat/completions", file.getId(), "24h");
+        Batch batch = client.createBatch(new BatchCreateRequest("/chat/completions", file.getId(), "24h"));
 
         // Get single file
         while (batch.getStatus() == BatchStatus.VALIDATING

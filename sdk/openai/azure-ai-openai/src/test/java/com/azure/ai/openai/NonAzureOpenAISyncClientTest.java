@@ -11,6 +11,7 @@ import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.Batch;
+import com.azure.ai.openai.models.BatchCreateRequest;
 import com.azure.ai.openai.models.BatchStatus;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -1052,7 +1053,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 file = client.getFile(file.getId());
             }
 
-            Batch batch = client.createBatch("/v1/chat/completions", file.getId(), "24h");
+            Batch batch = client.createBatch(new BatchCreateRequest("/v1/chat/completions", file.getId(), "24h"));
             assertNotNull(batch);
 
             // Get single file
@@ -1106,7 +1107,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             }
 
             // Create a batch
-            Batch batch = client.createBatch("/v1/chat/completions", file.getId(), "24h");
+            Batch batch = client.createBatch(new BatchCreateRequest("/v1/chat/completions", file.getId(), "24h"));
             assertNotNull(batch);
 
             // Cancel the batch

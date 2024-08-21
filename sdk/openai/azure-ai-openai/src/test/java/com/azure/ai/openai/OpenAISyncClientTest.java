@@ -13,6 +13,7 @@ import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.AzureSearchChatExtensionConfiguration;
 import com.azure.ai.openai.models.AzureSearchChatExtensionParameters;
 import com.azure.ai.openai.models.Batch;
+import com.azure.ai.openai.models.BatchCreateRequest;
 import com.azure.ai.openai.models.BatchStatus;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -1212,8 +1213,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 file = client.getFile(file.getId());
             }
 
-            Batch batch = client.createBatch("/chat/completions",
-                file.getId(), "24h");
+            Batch batch = client.createBatch(new BatchCreateRequest("/chat/completions",
+                file.getId(), "24h"));
             assertNotNull(batch);
 
             // Get single file
@@ -1267,7 +1268,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             }
 
             // Create a batch
-            Batch batch = client.createBatch("/chat/completions", file.getId(), "24h");
+            Batch batch = client.createBatch(new BatchCreateRequest("/chat/completions", file.getId(), "24h"));
             assertNotNull(batch);
 
             // Cancel the batch
