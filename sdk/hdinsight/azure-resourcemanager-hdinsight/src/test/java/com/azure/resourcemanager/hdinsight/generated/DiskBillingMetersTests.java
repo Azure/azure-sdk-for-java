@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskBillingMetersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskBillingMeters model =
-            BinaryData
-                .fromString("{\"diskRpMeter\":\"ydfce\",\"sku\":\"vlhv\",\"tier\":\"Premium\"}")
+        DiskBillingMeters model
+            = BinaryData.fromString("{\"diskRpMeter\":\"ydfce\",\"sku\":\"vlhv\",\"tier\":\"Premium\"}")
                 .toObject(DiskBillingMeters.class);
         Assertions.assertEquals("ydfce", model.diskRpMeter());
         Assertions.assertEquals("vlhv", model.sku());
@@ -23,8 +22,8 @@ public final class DiskBillingMetersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskBillingMeters model =
-            new DiskBillingMeters().withDiskRpMeter("ydfce").withSku("vlhv").withTier(Tier.PREMIUM);
+        DiskBillingMeters model
+            = new DiskBillingMeters().withDiskRpMeter("ydfce").withSku("vlhv").withTier(Tier.PREMIUM);
         model = BinaryData.fromObject(model).toObject(DiskBillingMeters.class);
         Assertions.assertEquals("ydfce", model.diskRpMeter());
         Assertions.assertEquals("vlhv", model.sku());
