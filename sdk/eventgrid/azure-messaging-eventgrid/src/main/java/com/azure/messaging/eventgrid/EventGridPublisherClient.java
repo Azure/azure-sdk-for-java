@@ -16,7 +16,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
-import com.fasterxml.jackson.databind.util.RawValue;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -210,7 +209,6 @@ public final class EventGridPublisherClient<T> {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }
         List<Object> objectEvents = StreamSupport.stream(events.spliterator(), false)
-            .map(event -> (Object) new RawValue(event.toString()))
             .collect(Collectors.toList());
         this.impl.publishCustomEventEvents(this.hostname, objectEvents);
     }
@@ -277,7 +275,6 @@ public final class EventGridPublisherClient<T> {
             throw logger.logExceptionAsError(new NullPointerException("'events' cannot be null."));
         }
         List<Object> objectEvents = StreamSupport.stream(events.spliterator(), false)
-            .map(event -> (Object) new RawValue(event.toString()))
             .collect(Collectors.toList());
         return this.impl.publishCustomEventEventsWithResponse(this.hostname, objectEvents, context);
     }
