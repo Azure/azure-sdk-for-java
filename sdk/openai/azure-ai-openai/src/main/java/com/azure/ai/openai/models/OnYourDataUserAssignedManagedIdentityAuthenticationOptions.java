@@ -30,6 +30,7 @@ public final class OnYourDataUserAssignedManagedIdentityAuthenticationOptions ex
     @Generated
     public OnYourDataUserAssignedManagedIdentityAuthenticationOptions(String managedIdentityResourceId) {
         this.managedIdentityResourceId = managedIdentityResourceId;
+        this.type = OnYourDataAuthenticationType.USER_ASSIGNED_MANAGED_IDENTITY;
     }
 
     /**
@@ -43,23 +44,6 @@ public final class OnYourDataUserAssignedManagedIdentityAuthenticationOptions ex
         return this.managedIdentityResourceId;
     }
 
-    /*
-     * The authentication type.
-     */
-    @Generated
-    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.USER_ASSIGNED_MANAGED_IDENTITY;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -67,8 +51,8 @@ public final class OnYourDataUserAssignedManagedIdentityAuthenticationOptions ex
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("managed_identity_resource_id", this.managedIdentityResourceId);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

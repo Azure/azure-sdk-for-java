@@ -30,6 +30,7 @@ public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourData
     @Generated
     public OnYourDataAccessTokenAuthenticationOptions(String accessToken) {
         this.accessToken = accessToken;
+        this.type = OnYourDataAuthenticationType.ACCESS_TOKEN;
     }
 
     /**
@@ -42,23 +43,6 @@ public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourData
         return this.accessToken;
     }
 
-    /*
-     * The authentication type.
-     */
-    @Generated
-    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.ACCESS_TOKEN;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -66,8 +50,8 @@ public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("access_token", this.accessToken);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

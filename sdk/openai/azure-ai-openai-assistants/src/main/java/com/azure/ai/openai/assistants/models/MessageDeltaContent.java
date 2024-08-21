@@ -21,7 +21,7 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
      * The type of content for this content part.
      */
     @Generated
-    private String type = "MessageDeltaContent";
+    String type;
 
     /*
      * The index of the content part of the message.
@@ -37,6 +37,7 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
     @Generated
     protected MessageDeltaContent(int index) {
         this.index = index;
+        this.type = "MessageDeltaContent";
     }
 
     /**
@@ -66,8 +67,7 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", this.index);
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -129,5 +129,10 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
             deserializedMessageDeltaContent.type = type;
             return deserializedMessageDeltaContent;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeIntField("index", this.index);
+        jsonWriter.writeStringField("type", this.type);
     }
 }

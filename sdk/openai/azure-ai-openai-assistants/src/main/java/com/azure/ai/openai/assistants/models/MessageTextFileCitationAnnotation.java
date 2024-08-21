@@ -43,9 +43,8 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", getText());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("file_citation", this.fileCitation);
-        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeNumberField("start_index", this.startIndex);
         jsonWriter.writeNumberField("end_index", this.endIndex);
         return jsonWriter.writeEndObject();
@@ -95,23 +94,6 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
     }
 
     /*
-     * The object type.
-     */
-    @Generated
-    private String type = "file_citation";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
-    }
-
-    /*
      * The first text index associated with this text annotation.
      */
     @Generated
@@ -133,6 +115,7 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
     public MessageTextFileCitationAnnotation(String text, MessageTextFileCitationDetails fileCitation) {
         super(text);
         this.fileCitation = fileCitation;
+        this.type = "file_citation";
     }
 
     /**

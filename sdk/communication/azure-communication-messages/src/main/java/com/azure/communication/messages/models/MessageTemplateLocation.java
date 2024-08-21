@@ -18,12 +18,6 @@ import com.azure.core.models.GeoPosition;
 public final class MessageTemplateLocation extends MessageTemplateValue {
 
     /*
-     * The type discriminator describing a template parameter type.
-     */
-    @Generated
-    private MessageTemplateValueKind kind = MessageTemplateValueKind.LOCATION;
-
-    /*
      * The [Optional] name of the location.
      */
     @Generated
@@ -59,17 +53,7 @@ public final class MessageTemplateLocation extends MessageTemplateValue {
         super(refValue);
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a template parameter type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public MessageTemplateValueKind getKind() {
-        return this.kind;
+        this.kind = MessageTemplateValueKind.LOCATION;
     }
 
     /**
@@ -123,10 +107,9 @@ public final class MessageTemplateLocation extends MessageTemplateValue {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getRefValue());
+        toJsonShared(jsonWriter);
         jsonWriter.writeDoubleField("latitude", this.latitude);
         jsonWriter.writeDoubleField("longitude", this.longitude);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("locationName", this.locationName);
         jsonWriter.writeStringField("address", this.address);
         return jsonWriter.writeEndObject();

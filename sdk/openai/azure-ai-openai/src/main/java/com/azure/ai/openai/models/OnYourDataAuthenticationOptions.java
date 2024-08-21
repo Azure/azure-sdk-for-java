@@ -22,14 +22,14 @@ public class OnYourDataAuthenticationOptions implements JsonSerializable<OnYourD
      */
     @Generated
     public OnYourDataAuthenticationOptions() {
+        this.type = OnYourDataAuthenticationType.fromString("OnYourDataAuthenticationOptions");
     }
 
     /*
      * The authentication type.
      */
     @Generated
-    private OnYourDataAuthenticationType type
-        = OnYourDataAuthenticationType.fromString("OnYourDataAuthenticationOptions");
+    OnYourDataAuthenticationType type;
 
     /**
      * Get the type property: The authentication type.
@@ -48,7 +48,7 @@ public class OnYourDataAuthenticationOptions implements JsonSerializable<OnYourD
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -107,14 +107,27 @@ public class OnYourDataAuthenticationOptions implements JsonSerializable<OnYourD
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedOnYourDataAuthenticationOptions.type
-                        = OnYourDataAuthenticationType.fromString(reader.getString());
-                } else {
+                if (!OnYourDataAuthenticationOptions.fromJsonShared(reader, fieldName,
+                    deserializedOnYourDataAuthenticationOptions)) {
                     reader.skipChildren();
                 }
             }
             return deserializedOnYourDataAuthenticationOptions;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        OnYourDataAuthenticationOptions deserializedOnYourDataAuthenticationOptions) throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedOnYourDataAuthenticationOptions.type
+                = OnYourDataAuthenticationType.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

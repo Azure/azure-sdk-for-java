@@ -22,6 +22,7 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
      */
     @Generated
     protected RunStepDetails() {
+        this.type = RunStepType.fromString("RunStepDetails");
     }
 
     static RunStepDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
@@ -40,7 +41,7 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
      * The object type.
      */
     @Generated
-    private RunStepType type = RunStepType.fromString("RunStepDetails");
+    RunStepType type;
 
     /**
      * Get the type property: The object type.
@@ -59,7 +60,7 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -98,5 +99,19 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
                 }
             }
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName, RunStepDetails deserializedRunStepDetails)
+        throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedRunStepDetails.type = RunStepType.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

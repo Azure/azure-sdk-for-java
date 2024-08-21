@@ -20,12 +20,6 @@ import java.util.Set;
 public final class WebhookRouterRule extends RouterRule {
 
     /*
-     * The type discriminator describing a sub-type of RouterRule
-     */
-    @Generated
-    private RouterRuleKind kind = RouterRuleKind.WEBHOOK;
-
-    /*
      * Uri for Authorization Server.
      */
     @Generated
@@ -55,17 +49,7 @@ public final class WebhookRouterRule extends RouterRule {
      */
     @Generated
     public WebhookRouterRule() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of RouterRule.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RouterRuleKind getKind() {
-        return this.kind;
+        this.kind = RouterRuleKind.WEBHOOK;
     }
 
     /**
@@ -204,8 +188,8 @@ public final class WebhookRouterRule extends RouterRule {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedWebhookRouterRule.kind = RouterRuleKind.fromString(reader.getString());
+                if (RouterRule.fromJsonShared(reader, fieldName, deserializedWebhookRouterRule)) {
+                    continue;
                 } else if ("authorizationServerUri".equals(fieldName)) {
                     deserializedWebhookRouterRule.authorizationServerUri = reader.getString();
                 } else if ("clientCredential".equals(fieldName)) {

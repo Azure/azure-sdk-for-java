@@ -21,7 +21,7 @@ public class RunStepDeltaToolCall implements JsonSerializable<RunStepDeltaToolCa
      * The type of the tool call detail item in a streaming run step's details.
      */
     @Generated
-    private String type = "RunStepDeltaToolCall";
+    String type;
 
     /*
      * The index of the tool call detail in the run step's tool_calls array.
@@ -45,6 +45,7 @@ public class RunStepDeltaToolCall implements JsonSerializable<RunStepDeltaToolCa
     protected RunStepDeltaToolCall(int index, String id) {
         this.index = index;
         this.id = id;
+        this.type = "RunStepDeltaToolCall";
     }
 
     /**
@@ -84,9 +85,7 @@ public class RunStepDeltaToolCall implements JsonSerializable<RunStepDeltaToolCa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", this.index);
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -153,5 +152,11 @@ public class RunStepDeltaToolCall implements JsonSerializable<RunStepDeltaToolCa
             deserializedRunStepDeltaToolCall.type = type;
             return deserializedRunStepDeltaToolCall;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeIntField("index", this.index);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
     }
 }

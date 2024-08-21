@@ -22,13 +22,14 @@ public class ChatRequestMessage implements JsonSerializable<ChatRequestMessage> 
      */
     @Generated
     public ChatRequestMessage() {
+        this.role = ChatRole.fromString("ChatRequestMessage");
     }
 
     /*
      * The chat role associated with this message.
      */
     @Generated
-    private ChatRole role = ChatRole.fromString("ChatRequestMessage");
+    ChatRole role;
 
     /**
      * Get the role property: The chat role associated with this message.
@@ -47,7 +48,7 @@ public class ChatRequestMessage implements JsonSerializable<ChatRequestMessage> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -101,13 +102,25 @@ public class ChatRequestMessage implements JsonSerializable<ChatRequestMessage> 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("role".equals(fieldName)) {
-                    deserializedChatRequestMessage.role = ChatRole.fromString(reader.getString());
-                } else {
+                if (!ChatRequestMessage.fromJsonShared(reader, fieldName, deserializedChatRequestMessage)) {
                     reader.skipChildren();
                 }
             }
             return deserializedChatRequestMessage;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        ChatRequestMessage deserializedChatRequestMessage) throws IOException {
+        if ("role".equals(fieldName)) {
+            deserializedChatRequestMessage.role = ChatRole.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }
