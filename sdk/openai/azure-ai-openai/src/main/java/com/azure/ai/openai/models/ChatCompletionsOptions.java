@@ -719,9 +719,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
      *
      * @return the toolChoice value.
      */
-    @Generated
-    public BinaryData getToolChoice() {
-        return this.toolChoice;
+    public ChatCompletionsToolSelection getToolChoice() {
+        return ChatCompletionsToolSelection.fromBinaryData(this.toolChoice);
     }
 
     /**
@@ -731,9 +730,14 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
      * @param toolChoice the toolChoice value to set.
      * @return the ChatCompletionsOptions object itself.
      */
-    @Generated
-    public ChatCompletionsOptions setToolChoice(BinaryData toolChoice) {
-        this.toolChoice = toolChoice;
+    public ChatCompletionsOptions setToolChoice(ChatCompletionsToolSelection toolChoice) {
+        if (toolChoice.getPreset() != null) {
+            this.toolChoice = BinaryData.fromObject(toolChoice.getPreset());
+        } else if (toolChoice.getNamedToolSelection() != null) {
+            this.toolChoice = BinaryData.fromObject(toolChoice);
+        } else {
+            this.toolChoice = null;
+        }
         return this;
     }
 
