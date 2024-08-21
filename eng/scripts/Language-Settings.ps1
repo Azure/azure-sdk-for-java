@@ -487,23 +487,46 @@ function Update-java-GeneratedSdks([string]$PackageDirectoriesFile) {
   foreach ($directory in $packageDirectories) {
     Push-Location $RepoRoot
     try {
-        $tspLocationFile = Get-Item -Path "sdk/$directory/tsp-location.yaml" -ErrorAction SilentlyContinue
-        $updateScript = Get-Item -Path "sdk/$directory/swagger/Update-CodeGeneration.ps1" -ErrorAction SilentlyContinue
+      $tspLocationFile = Get-Item -Path "sdk/$directory/tsp-location.yaml" -ErrorAction SilentlyContinue
+      $updateScript = Get-Item -Path "sdk/$directory/swagger/Update-CodeGeneration.ps1" -ErrorAction SilentlyContinue
 
-        if ($tspLocationFile) {
-            Write-Host "Found tsp-location.yaml in $directory, using typespec to generate projects"
-            ./eng/common/scripts/TypeSpec-Project-Sync.ps1 "sdk/$directory"
-            ./eng/common/scripts/TypeSpec-Project-Generate.ps1 "sdk/$directory"
-        } elseif ($updateScript) {
-            Write-Host "Using $updateScript to generate projects"
-            & $updateScript.FullName
-        } else {
-            Write-Host "No tsp-location.yaml or swagger/Update-Codegeneration.ps1 found in $directory, skipping"
+      if ($tspLocationFile) {
+        Write-Host "Found tsp-location.yaml in $directory, using typespec to generate projects"
+
+        $directoriesWithErrors = @()
+
+        Push-Location "sdk/$directory"
+        try {
+          npx tsp-client update
         }
+        catch {
+          Write-Host "##[error]Error generating project under directory $directory"
+          Write-Host $_.Exception.Message
+          $directoriesWithErrors += $directory
+        }
+        finally {
+          Pop-Location
+        }
+      } elseif ($updateScript) {
+        Write-Host "Using $updateScript to generate projects"
+        & $updateScript.FullName
+      } else {
+        Write-Host "No tsp-location.yaml or swagger/Update-Codegeneration.ps1 found in $directory, skipping"
+      }
     }
     finally {
       Pop-Location
     }
+  }
+
+  if($directoriesWithErrors.Count -gt 0) {
+    Write-Host "##[error]Generation errors found in $($directoriesWithErrors.Count) directories:"
+
+    foreach ($directory in $directoriesWithErrors) {
+      Write-Host "  $directory"
+    }
+
+    exit 1
   }
 }
 
