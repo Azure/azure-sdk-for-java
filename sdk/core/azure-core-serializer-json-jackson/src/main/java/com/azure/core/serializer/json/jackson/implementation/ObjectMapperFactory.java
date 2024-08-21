@@ -3,7 +3,10 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
+import com.azure.core.serializer.json.jackson.JacksonAdapter;
 import com.azure.core.serializer.json.jackson.JacksonJsonProvider;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializer;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -102,6 +105,7 @@ final class ObjectMapperFactory {
             .addModule(HttpHeadersSerializer.getModule())
             .addModule(GeoJsonSerializer.getModule())
             .addModule(GeoJsonDeserializer.getModule())
+            .addModule(JacksonJsonProvider.getJsonSerializableDatabindModule())
             .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
