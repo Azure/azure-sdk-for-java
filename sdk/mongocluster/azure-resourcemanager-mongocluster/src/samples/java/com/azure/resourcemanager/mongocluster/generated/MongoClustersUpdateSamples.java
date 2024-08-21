@@ -16,8 +16,7 @@ import java.util.Arrays;
  */
 public final class MongoClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/
-     * MongoClusters_PatchDiskSize.json
+     * x-ms-original-file: 2024-03-01-preview/MongoClusters_PatchDiskSize.json
      */
     /**
      * Sample code: Updates the disk size on a Mongo Cluster resource.
@@ -36,8 +35,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/
-     * MongoClusters_PatchPrivateNetworkAccess.json
+     * x-ms-original-file: 2024-03-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
      */
     /**
      * Sample code: Disables public network access on a Mongo Cluster resource with a private endpoint connection.
@@ -55,9 +53,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/MongoClusters_Update.
-     * json
+     * x-ms-original-file: 2024-03-01-preview/MongoClusters_Update.json
      */
     /**
      * Sample code: Updates a Mongo Cluster resource.
