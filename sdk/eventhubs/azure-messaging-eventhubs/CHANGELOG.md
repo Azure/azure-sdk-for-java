@@ -1,16 +1,17 @@
 # Release History
 
-## 5.19.0-beta.2 (Unreleased)
+## 5.19.0-beta.2 (2024-08-20)
 
 ### Features Added
 
 - Enabling V2 stack support for Event Hubs, which can be opt-in using the configuration ` com.azure.messaging.eventhubs.v2`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-amqp` from `2.9.7` to version `2.9.8`.
 
 ## 5.18.6 (2024-07-26)
 
