@@ -492,12 +492,14 @@ function Update-java-GeneratedSdks([string]$PackageDirectoriesFile) {
 
       if ($tspLocationFile) {
         Write-Host "Found tsp-location.yaml in $directory, using typespec to generate projects"
+        Write-Host "Installing tsp-client."
+        Invoke-Expression "npm install -g @azure-tools/typespec-client-generator-cli"
 
         $directoriesWithErrors = @()
 
         Push-Location "sdk/$directory"
         try {
-          npx tsp-client update
+          Invoke-Expression "npx tsp-client update"
         }
         catch {
           Write-Host "##[error]Error generating project under directory $directory"
