@@ -734,7 +734,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
         if (toolChoice.getPreset() != null) {
             this.toolChoice = BinaryData.fromObject(toolChoice.getPreset());
         } else if (toolChoice.getNamedToolSelection() != null) {
-            this.toolChoice = BinaryData.fromObject(toolChoice);
+            this.toolChoice = BinaryData.fromObject(toolChoice.getNamedToolSelection());
         } else {
             this.toolChoice = null;
         }

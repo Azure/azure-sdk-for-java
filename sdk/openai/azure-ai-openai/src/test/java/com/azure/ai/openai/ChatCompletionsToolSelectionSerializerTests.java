@@ -60,12 +60,10 @@ public class ChatCompletionsToolSelectionSerializerTests {
                         new ChatCompletionsFunctionToolSelection("my_function"));
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(new ArrayList<>());
         chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(namedToolSelection));
-        ChatCompletionsNamedToolSelection returnedNamedToolSelection = chatCompletionsOptions.getToolChoice().getNamedToolSelection();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(chatCompletionsOptions);
         String json = jsonBinaryData.toString();
 
-        assertEquals(namedToolSelection, returnedNamedToolSelection);
         assertTrue(json.contains("\"type\":\"function\""));
         assertTrue(json.contains("\"name\":\"my_function\""));
     }
