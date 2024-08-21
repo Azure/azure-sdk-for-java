@@ -124,6 +124,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -208,7 +209,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobDeletedEventData);
+        assertInstanceOf(StorageBlobDeletedEventData.class, toSystemEventData(events[0]));
         StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) toSystemEventData(events[0]);
         assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
     }
@@ -223,7 +224,7 @@ public class DeserializationTests {
 
         assertNotNull(events);
         assertEquals(1, events.length);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobDeletedEventData);
+        assertInstanceOf(StorageBlobDeletedEventData.class, toSystemEventData(events[0]));
         StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) toSystemEventData(events[0]);
         assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
     }
@@ -311,15 +312,15 @@ public class DeserializationTests {
         assertNotNull(events);
         assertEquals(2, events.length);
 
-        ContosoItemSentEventData eventData0 = events[0].getData().toObject(TypeReference.createInstance(ContosoItemSentEventData.class));
-        ContosoItemSentEventData eventData1 = events[1].getData().toObject(TypeReference.createInstance(ContosoItemSentEventData.class));
+        ContosoItemSentEventData eventData0 = events[0].getData().toObject(ContosoItemSentEventData.class);
+        ContosoItemSentEventData eventData1 = events[1].getData().toObject(ContosoItemSentEventData.class);
 
         assertNotNull(eventData0);
         assertNotNull(eventData1);
 
-        assertTrue(eventData0.getShippingInfo() instanceof DroneShippingInfo);
+        assertInstanceOf(DroneShippingInfo.class, eventData0.getShippingInfo());
 
-        assertTrue(eventData1.getShippingInfo() instanceof RocketShippingInfo);
+        assertInstanceOf(RocketShippingInfo.class, eventData1.getShippingInfo());
     }
 
 
@@ -332,10 +333,10 @@ public class DeserializationTests {
 
         assertNotNull(events);
         assertEquals(4, events.length);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobCreatedEventData);
-        assertTrue(toSystemEventData(events[1]) instanceof StorageBlobDeletedEventData);
-        assertTrue(toSystemEventData(events[2]) instanceof StorageBlobDeletedEventData);
-        assertTrue(toSystemEventData(events[3]) instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
+        assertInstanceOf(StorageBlobCreatedEventData.class, toSystemEventData(events[0]));
+        assertInstanceOf(StorageBlobDeletedEventData.class, toSystemEventData(events[1]));
+        assertInstanceOf(StorageBlobDeletedEventData.class, toSystemEventData(events[2]));
+        assertInstanceOf(ServiceBusDeadletterMessagesAvailableWithNoListenersEventData.class, toSystemEventData(events[3]));
         StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) toSystemEventData(events[2]);
         assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
     }
@@ -349,7 +350,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof AppConfigurationKeyValueDeletedEventData);
+        assertInstanceOf(AppConfigurationKeyValueDeletedEventData.class, toSystemEventData(events[0]));
         AppConfigurationKeyValueDeletedEventData eventData = (AppConfigurationKeyValueDeletedEventData) toSystemEventData(events[0]);
         assertEquals("key1", eventData.getKey());
     }
@@ -362,7 +363,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof AppConfigurationKeyValueModifiedEventData);
+        assertInstanceOf(AppConfigurationKeyValueModifiedEventData.class, toSystemEventData(events[0]));
         AppConfigurationKeyValueModifiedEventData eventData = (AppConfigurationKeyValueModifiedEventData) toSystemEventData(events[0]);
         assertEquals("key1", eventData.getKey());
     }
@@ -376,7 +377,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ContainerRegistryImagePushedEventData);
+        assertInstanceOf(ContainerRegistryImagePushedEventData.class, toSystemEventData(events[0]));
         ContainerRegistryImagePushedEventData eventData = (ContainerRegistryImagePushedEventData) toSystemEventData(events[0]);
         assertEquals("127.0.0.1", eventData.getRequest().getAddr());
     }
@@ -389,7 +390,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ContainerRegistryImageDeletedEventData);
+        assertInstanceOf(ContainerRegistryImageDeletedEventData.class, toSystemEventData(events[0]));
         ContainerRegistryImageDeletedEventData eventData = (ContainerRegistryImageDeletedEventData) toSystemEventData(events[0]);
         assertEquals("testactor", eventData.getActor().getName());
     }
@@ -402,7 +403,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ContainerRegistryChartDeletedEventData);
+        assertInstanceOf(ContainerRegistryChartDeletedEventData.class, toSystemEventData(events[0]));
         ContainerRegistryChartDeletedEventData eventData = (ContainerRegistryChartDeletedEventData) toSystemEventData(events[0]);
         assertEquals("mediatype1", eventData.getTarget().getMediaType());
     }
@@ -415,7 +416,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ContainerRegistryChartPushedEventData);
+        assertInstanceOf(ContainerRegistryChartPushedEventData.class, toSystemEventData(events[0]));
         ContainerRegistryChartPushedEventData eventData = (ContainerRegistryChartPushedEventData) toSystemEventData(events[0]);
         assertEquals("mediatype1", eventData.getTarget().getMediaType());
     }
@@ -429,7 +430,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof IotHubDeviceCreatedEventData);
+        assertInstanceOf(IotHubDeviceCreatedEventData.class, toSystemEventData(events[0]));
         IotHubDeviceCreatedEventData eventData = (IotHubDeviceCreatedEventData) toSystemEventData(events[0]);
         assertEquals("enabled", eventData.getTwin().getStatus());
     }
@@ -442,7 +443,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof IotHubDeviceDeletedEventData);
+        assertInstanceOf(IotHubDeviceDeletedEventData.class, toSystemEventData(events[0]));
         IotHubDeviceDeletedEventData eventData = (IotHubDeviceDeletedEventData) toSystemEventData(events[0]);
         assertEquals("AAAAAAAAAAE=", eventData.getTwin().getEtag());
     }
@@ -455,7 +456,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof IotHubDeviceConnectedEventData);
+        assertInstanceOf(IotHubDeviceConnectedEventData.class, toSystemEventData(events[0]));
         IotHubDeviceConnectedEventData eventData = (IotHubDeviceConnectedEventData) toSystemEventData(events[0]);
         assertEquals("EGTESTHUB1", eventData.getHubName());
     }
@@ -468,7 +469,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof IotHubDeviceDisconnectedEventData);
+        assertInstanceOf(IotHubDeviceDisconnectedEventData.class, toSystemEventData(events[0]));
         IotHubDeviceDisconnectedEventData eventData = (IotHubDeviceDisconnectedEventData) toSystemEventData(events[0]);
         assertEquals("000000000000000001D4132452F67CE200000002000000000000000000000002", eventData.getDeviceConnectionStateEventInfo().getSequenceNumber());
     }
@@ -481,7 +482,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof IotHubDeviceTelemetryEventData);
+        assertInstanceOf(IotHubDeviceTelemetryEventData.class, toSystemEventData(events[0]));
         IotHubDeviceTelemetryEventData eventData = (IotHubDeviceTelemetryEventData) toSystemEventData(events[0]);
         assertEquals("Active", eventData.getProperties().get("Status"));
     }
@@ -495,7 +496,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof SubscriptionValidationEventData);
+        assertInstanceOf(SubscriptionValidationEventData.class, toSystemEventData(events[0]));
         SubscriptionValidationEventData eventData = (SubscriptionValidationEventData) toSystemEventData(events[0]);
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.getValidationCode());
     }
@@ -508,7 +509,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof SubscriptionDeletedEventData);
+        assertInstanceOf(SubscriptionDeletedEventData.class, toSystemEventData(events[0]));
         SubscriptionDeletedEventData eventData = (SubscriptionDeletedEventData) toSystemEventData(events[0]);
         assertEquals("/subscriptions/id/resourceGroups/rg/providers/Microsoft.EventGrid/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/eventsubscription1", eventData.getEventSubscriptionId());
     }
@@ -522,7 +523,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof EventHubCaptureFileCreatedEventData);
+        assertInstanceOf(EventHubCaptureFileCreatedEventData.class, toSystemEventData(events[0]));
         EventHubCaptureFileCreatedEventData eventData = (EventHubCaptureFileCreatedEventData) toSystemEventData(events[0]);
         assertEquals("AzureBlockBlob", eventData.getFileType());
     }
@@ -536,7 +537,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MapsGeofenceEnteredEventData);
+        assertInstanceOf(MapsGeofenceEnteredEventData.class, toSystemEventData(events[0]));
         MapsGeofenceEnteredEventData eventData = (MapsGeofenceEnteredEventData) toSystemEventData(events[0]);
         assertEquals(true, eventData.isEventPublished());
     }
@@ -549,7 +550,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MapsGeofenceExitedEventData);
+        assertInstanceOf(MapsGeofenceExitedEventData.class, toSystemEventData(events[0]));
         MapsGeofenceExitedEventData eventData = (MapsGeofenceExitedEventData) toSystemEventData(events[0]);
         assertEquals(true, eventData.isEventPublished());
     }
@@ -562,7 +563,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MapsGeofenceResultEventData);
+        assertInstanceOf(MapsGeofenceResultEventData.class, toSystemEventData(events[0]));
         MapsGeofenceResultEventData eventData = (MapsGeofenceResultEventData) toSystemEventData(events[0]);
         assertEquals(true, eventData.isEventPublished());
     }
@@ -576,12 +577,12 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobCanceledEventData);
+        assertInstanceOf(MediaJobCanceledEventData.class, toSystemEventData(events[0]));
         MediaJobCanceledEventData eventData = (MediaJobCanceledEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.CANCELING, eventData.getPreviousState());
         assertEquals(MediaJobState.CANCELED, eventData.getState());
         assertEquals(1, eventData.getOutputs().size());
-        assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutputs().get(0));
 
         MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutputs().get(0);
 
@@ -599,7 +600,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobCancelingEventData);
+        assertInstanceOf(MediaJobCancelingEventData.class, toSystemEventData(events[0]));
         MediaJobCancelingEventData eventData = (MediaJobCancelingEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.CANCELING, eventData.getState());
@@ -613,7 +614,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobProcessingEventData);
+        assertInstanceOf(MediaJobProcessingEventData.class, toSystemEventData(events[0]));
         MediaJobProcessingEventData eventData = (MediaJobProcessingEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
         assertEquals(MediaJobState.PROCESSING, eventData.getState());
@@ -626,12 +627,12 @@ public class DeserializationTests {
 
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobFinishedEventData);
+        assertInstanceOf(MediaJobFinishedEventData.class, toSystemEventData(events[0]));
         MediaJobFinishedEventData eventData = (MediaJobFinishedEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.FINISHED, eventData.getState());
         assertEquals(1, eventData.getOutputs().size());
-        assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutputs().get(0));
         MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutputs().get(0);
 
         assertEquals(MediaJobState.FINISHED, outputAsset.getState());
@@ -648,12 +649,12 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobErroredEventData);
+        assertInstanceOf(MediaJobErroredEventData.class, toSystemEventData(events[0]));
         MediaJobErroredEventData eventData = (MediaJobErroredEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.ERROR, eventData.getState());
         assertEquals(1, eventData.getOutputs().size());
-        assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutputs().get(0));
 
         assertEquals(MediaJobState.ERROR, eventData.getOutputs().get(0).getState());
         assertNotNull(eventData.getOutputs().get(0).getError());
@@ -669,11 +670,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputStateChangeEventData);
+        assertInstanceOf(MediaJobOutputStateChangeEventData.class, toSystemEventData(events[0]));
         MediaJobOutputStateChangeEventData eventData = (MediaJobOutputStateChangeEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
         assertEquals(MediaJobState.PROCESSING, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
         MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutput();
         assertEquals("output-2ac2fe75-6557-4de5-ab25-5713b74a6901", outputAsset.getAssetName());
     }
@@ -686,7 +687,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobScheduledEventData);
+        assertInstanceOf(MediaJobScheduledEventData.class, toSystemEventData(events[0]));
         MediaJobScheduledEventData eventData = (MediaJobScheduledEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.QUEUED, eventData.getPreviousState());
         assertEquals(MediaJobState.SCHEDULED, eventData.getState());
@@ -700,11 +701,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputCanceledEventData);
+        assertInstanceOf(MediaJobOutputCanceledEventData.class, toSystemEventData(events[0]));
         MediaJobOutputCanceledEventData eventData = (MediaJobOutputCanceledEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.CANCELING, eventData.getPreviousState());
         assertEquals(MediaJobState.CANCELED, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
     }
 
     @Test
@@ -715,11 +716,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputCancelingEventData);
+        assertInstanceOf(MediaJobOutputCancelingEventData.class, toSystemEventData(events[0]));
         MediaJobOutputCancelingEventData eventData = (MediaJobOutputCancelingEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.CANCELING, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
     }
 
     @Test
@@ -730,11 +731,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputErroredEventData);
+        assertInstanceOf(MediaJobOutputErroredEventData.class, toSystemEventData(events[0]));
         MediaJobOutputErroredEventData eventData = (MediaJobOutputErroredEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.ERROR, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
         assertNotNull(eventData.getOutput().getError());
         assertEquals(MediaJobErrorCategory.SERVICE, eventData.getOutput().getError().getCategory());
         assertEquals(MediaJobErrorCode.SERVICE_ERROR, eventData.getOutput().getError().getCode());
@@ -748,11 +749,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputFinishedEventData);
+        assertInstanceOf(MediaJobOutputFinishedEventData.class, toSystemEventData(events[0]));
         MediaJobOutputFinishedEventData eventData = (MediaJobOutputFinishedEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.FINISHED, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
         assertEquals(100, eventData.getOutput().getProgress());
 
         MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutput();
@@ -767,11 +768,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputProcessingEventData);
+        assertInstanceOf(MediaJobOutputProcessingEventData.class, toSystemEventData(events[0]));
         MediaJobOutputProcessingEventData eventData = (MediaJobOutputProcessingEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
         assertEquals(MediaJobState.PROCESSING, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
     }
 
     @Test
@@ -782,11 +783,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputScheduledEventData);
+        assertInstanceOf(MediaJobOutputScheduledEventData.class, toSystemEventData(events[0]));
         MediaJobOutputScheduledEventData eventData = (MediaJobOutputScheduledEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.QUEUED, eventData.getPreviousState());
         assertEquals(MediaJobState.SCHEDULED, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
     }
 
     @Test
@@ -797,7 +798,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputProgressEventData);
+        assertInstanceOf(MediaJobOutputProgressEventData.class, toSystemEventData(events[0]));
         MediaJobOutputProgressEventData eventData = (MediaJobOutputProgressEventData) toSystemEventData(events[0]);
         assertEquals("TestLabel", eventData.getLabel());
         assertTrue(eventData.getJobCorrelationData().containsKey("Field1"));
@@ -814,7 +815,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobStateChangeEventData);
+        assertInstanceOf(MediaJobStateChangeEventData.class, toSystemEventData(events[0]));
         MediaJobStateChangeEventData eventData = (MediaJobStateChangeEventData) toSystemEventData(events[0]);
         assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
         assertEquals(MediaJobState.PROCESSING, eventData.getState());
@@ -828,7 +829,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventEncoderConnectedEventData);
+        assertInstanceOf(MediaLiveEventEncoderConnectedEventData.class, toSystemEventData(events[0]));
         MediaLiveEventEncoderConnectedEventData eventData = (MediaLiveEventEncoderConnectedEventData) toSystemEventData(events[0]);
         assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
         assertEquals("Mystream1", eventData.getStreamId());
@@ -844,7 +845,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventConnectionRejectedEventData);
+        assertInstanceOf(MediaLiveEventConnectionRejectedEventData.class, toSystemEventData(events[0]));
         MediaLiveEventConnectionRejectedEventData eventData = (MediaLiveEventConnectionRejectedEventData) toSystemEventData(events[0]);
         assertEquals("Mystream1", eventData.getStreamId());
     }
@@ -857,7 +858,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventEncoderDisconnectedEventData);
+        assertInstanceOf(MediaLiveEventEncoderDisconnectedEventData.class, toSystemEventData(events[0]));
         MediaLiveEventEncoderDisconnectedEventData eventData = (MediaLiveEventEncoderDisconnectedEventData) toSystemEventData(events[0]);
         assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
         assertEquals("Mystream1", eventData.getStreamId());
@@ -873,7 +874,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIncomingStreamReceivedEventData);
+        assertInstanceOf(MediaLiveEventIncomingStreamReceivedEventData.class, toSystemEventData(events[0]));
         MediaLiveEventIncomingStreamReceivedEventData eventData = (MediaLiveEventIncomingStreamReceivedEventData) toSystemEventData(events[0]);
         assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
         assertEquals("<ip address>", eventData.getEncoderIp());
@@ -894,7 +895,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIncomingStreamsOutOfSyncEventData);
+        assertInstanceOf(MediaLiveEventIncomingStreamsOutOfSyncEventData.class, toSystemEventData(events[0]));
         MediaLiveEventIncomingStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingStreamsOutOfSyncEventData) toSystemEventData(events[0]);
         assertEquals("10999", eventData.getMinLastTimestamp());
         assertEquals("video", eventData.getTypeOfStreamWithMinLastTimestamp());
@@ -912,7 +913,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIncomingVideoStreamsOutOfSyncEventData);
+        assertInstanceOf(MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class, toSystemEventData(events[0]));
         MediaLiveEventIncomingVideoStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingVideoStreamsOutOfSyncEventData) toSystemEventData(events[0]);
         assertEquals("10999", eventData.getFirstTimestamp());
         assertEquals("2000", eventData.getFirstDuration());
@@ -929,7 +930,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIncomingDataChunkDroppedEventData);
+        assertInstanceOf(MediaLiveEventIncomingDataChunkDroppedEventData.class, toSystemEventData(events[0]));
         MediaLiveEventIncomingDataChunkDroppedEventData eventData = (MediaLiveEventIncomingDataChunkDroppedEventData) toSystemEventData(events[0]);
         assertEquals("8999", eventData.getTimestamp());
         assertEquals("video", eventData.getTrackType());
@@ -946,7 +947,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIngestHeartbeatEventData);
+        assertInstanceOf(MediaLiveEventIngestHeartbeatEventData.class, toSystemEventData(events[0]));
         MediaLiveEventIngestHeartbeatEventData eventData = (MediaLiveEventIngestHeartbeatEventData) toSystemEventData(events[0]);
         assertEquals("video", eventData.getTrackType());
         assertEquals("video", eventData.getTrackName());
@@ -965,7 +966,7 @@ public class DeserializationTests {
 
         assertNotNull(events);
 
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIngestHeartbeatEventData);
+        assertInstanceOf(MediaLiveEventIngestHeartbeatEventData.class, toSystemEventData(events[0]));
         eventData = (MediaLiveEventIngestHeartbeatEventData) toSystemEventData(events[0]);
         // n/a should be translated to null IngestDriftValue
         assertNull(eventData.getIngestDriftValue());
@@ -979,7 +980,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventTrackDiscontinuityDetectedEventData);
+        assertInstanceOf(MediaLiveEventTrackDiscontinuityDetectedEventData.class, toSystemEventData(events[0]));
         MediaLiveEventTrackDiscontinuityDetectedEventData eventData = (MediaLiveEventTrackDiscontinuityDetectedEventData) toSystemEventData(events[0]);
         assertEquals("video", eventData.getTrackType());
         assertEquals("video", eventData.getTrackName());
@@ -995,7 +996,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventChannelArchiveHeartbeatEventData);
+        assertInstanceOf(MediaLiveEventChannelArchiveHeartbeatEventData.class, toSystemEventData(events[0]));
         MediaLiveEventChannelArchiveHeartbeatEventData eventData = (MediaLiveEventChannelArchiveHeartbeatEventData) toSystemEventData(events[0]);
 
         assertEquals(Duration.ofMillis(10), eventData.getChannelLatency());
@@ -1006,7 +1007,7 @@ public class DeserializationTests {
         events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventChannelArchiveHeartbeatEventData);
+        assertInstanceOf(MediaLiveEventChannelArchiveHeartbeatEventData.class, toSystemEventData(events[0]));
         eventData = (MediaLiveEventChannelArchiveHeartbeatEventData) toSystemEventData(events[0]);
 
         // n/a should be translated to null ChannelLatency
@@ -1022,7 +1023,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceWriteFailureEventData);
+        assertInstanceOf(ResourceWriteFailureEventData.class, toSystemEventData(events[0]));
         ResourceWriteFailureEventData eventData = (ResourceWriteFailureEventData) toSystemEventData(events[0]);
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
@@ -1035,7 +1036,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceWriteCancelEventData);
+        assertInstanceOf(ResourceWriteCancelEventData.class, toSystemEventData(events[0]));
         ResourceWriteCancelEventData eventData = (ResourceWriteCancelEventData) toSystemEventData(events[0]);
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
@@ -1048,7 +1049,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceDeleteSuccessEventData);
+        assertInstanceOf(ResourceDeleteSuccessEventData.class, toSystemEventData(events[0]));
         ResourceDeleteSuccessEventData eventData = (ResourceDeleteSuccessEventData) toSystemEventData(events[0]);
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
@@ -1061,7 +1062,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceDeleteFailureEventData);
+        assertInstanceOf(ResourceDeleteFailureEventData.class, toSystemEventData(events[0]));
         ResourceDeleteFailureEventData eventData = (ResourceDeleteFailureEventData) toSystemEventData(events[0]);
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
@@ -1074,7 +1075,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceDeleteCancelEventData);
+        assertInstanceOf(ResourceDeleteCancelEventData.class, toSystemEventData(events[0]));
         ResourceDeleteCancelEventData eventData = (ResourceDeleteCancelEventData) toSystemEventData(events[0]);
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
@@ -1087,7 +1088,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceActionSuccessEventData);
+        assertInstanceOf(ResourceActionSuccessEventData.class, toSystemEventData(events[0]));
         ResourceActionSuccessEventData eventData = (ResourceActionSuccessEventData) toSystemEventData(events[0]);
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
@@ -1100,7 +1101,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceActionFailureEventData);
+        assertInstanceOf(ResourceActionFailureEventData.class, toSystemEventData(events[0]));
         ResourceActionFailureEventData eventData = (ResourceActionFailureEventData) toSystemEventData(events[0]);
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
@@ -1113,7 +1114,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceActionCancelEventData);
+        assertInstanceOf(ResourceActionCancelEventData.class, toSystemEventData(events[0]));
         ResourceActionCancelEventData eventData = (ResourceActionCancelEventData) toSystemEventData(events[0]);
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
@@ -1127,7 +1128,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ServiceBusActiveMessagesAvailableWithNoListenersEventData);
+        assertInstanceOf(ServiceBusActiveMessagesAvailableWithNoListenersEventData.class, toSystemEventData(events[0]));
         ServiceBusActiveMessagesAvailableWithNoListenersEventData eventData = (ServiceBusActiveMessagesAvailableWithNoListenersEventData) toSystemEventData(events[0]);
         assertEquals("testns1", eventData.getNamespaceName());
     }
@@ -1140,7 +1141,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
+        assertInstanceOf(ServiceBusDeadletterMessagesAvailableWithNoListenersEventData.class, toSystemEventData(events[0]));
         ServiceBusDeadletterMessagesAvailableWithNoListenersEventData eventData = (ServiceBusDeadletterMessagesAvailableWithNoListenersEventData) toSystemEventData(events[0]);
         assertEquals("testns1", eventData.getNamespaceName());
     }
@@ -1154,7 +1155,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobCreatedEventData);
+        assertInstanceOf(StorageBlobCreatedEventData.class, toSystemEventData(events[0]));
         StorageBlobCreatedEventData eventData = (StorageBlobCreatedEventData) toSystemEventData(events[0]);
         assertEquals("https://myaccount.blob.core.windows.net/testcontainer/file1.txt", eventData.getUrl());
     }
@@ -1167,7 +1168,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobDeletedEventData);
+        assertInstanceOf(StorageBlobDeletedEventData.class, toSystemEventData(events[0]));
         StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) toSystemEventData(events[0]);
         assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
     }
@@ -1179,7 +1180,7 @@ public class DeserializationTests {
         CloudEvent[] events = CloudEvent.fromString(jsonData).toArray(new CloudEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobRenamedEventData);
+        assertInstanceOf(StorageBlobRenamedEventData.class, toSystemEventData(events[0]));
         StorageBlobRenamedEventData eventData = (StorageBlobRenamedEventData) toSystemEventData(events[0]);
         assertEquals("https://myaccount.blob.core.windows.net/testcontainer/testfile.txt", eventData.getDestinationUrl());
     }
@@ -1224,7 +1225,7 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceWriteSuccessEventData);
+        assertInstanceOf(ResourceWriteSuccessEventData.class, toSystemEventData(events[0]));
         ResourceWriteSuccessEventData eventData = (ResourceWriteSuccessEventData) toSystemEventData(events[0]);
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
@@ -1241,10 +1242,10 @@ public class DeserializationTests {
         assertEquals("sklearn_regression_model", eventData.getModelName());
         assertEquals("3", eventData.getModelVersion());
 
-        assertTrue(eventData.getModelTags() instanceof Map);
+        assertInstanceOf(Map.class, eventData.getModelTags());
         assertEquals("regression", ((Map<?, ?>) eventData.getModelTags()).get("type"));
 
-        assertTrue(eventData.getModelProperties() instanceof Map);
+        assertInstanceOf(Map.class, eventData.getModelProperties());
         assertEquals("test", ((Map<?, ?>) eventData.getModelProperties()).get("area"));
     }
 
