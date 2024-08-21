@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-netapp</artifactId>
-  <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-netapp;current} -->
+  <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-netapp;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for NetAppFiles Management</name>
-  <description>This package contains Microsoft Azure SDK for NetAppFiles Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2023-11-01.</description>
+  <description>This package contains Microsoft Azure SDK for NetAppFiles Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-2024-03.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

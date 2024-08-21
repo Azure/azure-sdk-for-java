@@ -5,48 +5,40 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Ssis Package.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SsisPackage.class, visible = true)
-@JsonTypeName("Package")
 @Fluent
 public final class SsisPackage extends SsisObjectMetadata {
     /*
      * Type of metadata.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private SsisObjectMetadataType type = SsisObjectMetadataType.PACKAGE;
 
     /*
      * Folder id which contains package.
      */
-    @JsonProperty(value = "folderId")
     private Long folderId;
 
     /*
      * Project version which contains package.
      */
-    @JsonProperty(value = "projectVersion")
     private Long projectVersion;
 
     /*
      * Project id which contains package.
      */
-    @JsonProperty(value = "projectId")
     private Long projectId;
 
     /*
      * Parameters in package
      */
-    @JsonProperty(value = "parameters")
     private List<SsisParameter> parameters;
 
     /**
@@ -183,5 +175,63 @@ public final class SsisPackage extends SsisObjectMetadata {
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", id());
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNumberField("folderId", this.folderId);
+        jsonWriter.writeNumberField("projectVersion", this.projectVersion);
+        jsonWriter.writeNumberField("projectId", this.projectId);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisPackage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisPackage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisPackage.
+     */
+    public static SsisPackage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisPackage deserializedSsisPackage = new SsisPackage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSsisPackage.withId(reader.getNullable(JsonReader::getLong));
+                } else if ("name".equals(fieldName)) {
+                    deserializedSsisPackage.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSsisPackage.withDescription(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSsisPackage.type = SsisObjectMetadataType.fromString(reader.getString());
+                } else if ("folderId".equals(fieldName)) {
+                    deserializedSsisPackage.folderId = reader.getNullable(JsonReader::getLong);
+                } else if ("projectVersion".equals(fieldName)) {
+                    deserializedSsisPackage.projectVersion = reader.getNullable(JsonReader::getLong);
+                } else if ("projectId".equals(fieldName)) {
+                    deserializedSsisPackage.projectId = reader.getNullable(JsonReader::getLong);
+                } else if ("parameters".equals(fieldName)) {
+                    List<SsisParameter> parameters = reader.readArray(reader1 -> SsisParameter.fromJson(reader1));
+                    deserializedSsisPackage.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisPackage;
+        });
     }
 }

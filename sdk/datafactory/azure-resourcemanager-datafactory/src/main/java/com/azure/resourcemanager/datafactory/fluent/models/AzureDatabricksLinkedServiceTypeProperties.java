@@ -6,56 +6,54 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Azure Databricks linked service properties.
  */
 @Fluent
-public final class AzureDatabricksLinkedServiceTypeProperties {
+public final class AzureDatabricksLinkedServiceTypeProperties
+    implements JsonSerializable<AzureDatabricksLinkedServiceTypeProperties> {
     /*
      * <REGION>.azuredatabricks.net, domain name of your Databricks deployment. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "domain", required = true)
     private Object domain;
 
     /*
      * Access token for databricks REST API. Refer to https://docs.azuredatabricks.net/api/latest/authentication.html.
      * Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "accessToken")
     private SecretBase accessToken;
 
     /*
      * Required to specify MSI, if using Workspace resource id for databricks REST API. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "authentication")
     private Object authentication;
 
     /*
      * Workspace resource id for databricks REST API. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "workspaceResourceId")
     private Object workspaceResourceId;
 
     /*
      * The id of an existing interactive cluster that will be used for all runs of this activity. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "existingClusterId")
     private Object existingClusterId;
 
     /*
      * The id of an existing instance pool that will be used for all runs of this activity. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "instancePoolId")
     private Object instancePoolId;
 
     /*
@@ -63,7 +61,6 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
      * pool nodes created for each run of this activity. Required if instancePoolId is specified. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "newClusterVersion")
     private Object newClusterVersion;
 
     /*
@@ -73,7 +70,6 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
      * only specify a fixed number of worker nodes, such as '2'. Required if newClusterVersion is specified. Type:
      * string (or Expression with resultType string).
      */
-    @JsonProperty(value = "newClusterNumOfWorker")
     private Object newClusterNumOfWorker;
 
     /*
@@ -81,76 +77,62 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
      * instancePoolId is not specified. If instancePoolId is specified, this property is ignored. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "newClusterNodeType")
     private Object newClusterNodeType;
 
     /*
      * A set of optional, user-specified Spark configuration key-value pairs.
      */
-    @JsonProperty(value = "newClusterSparkConf")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> newClusterSparkConf;
 
     /*
      * A set of optional, user-specified Spark environment variables key-value pairs.
      */
-    @JsonProperty(value = "newClusterSparkEnvVars")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> newClusterSparkEnvVars;
 
     /*
      * Additional tags for cluster resources. This property is ignored in instance pool configurations.
      */
-    @JsonProperty(value = "newClusterCustomTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> newClusterCustomTags;
 
     /*
      * Specify a location to deliver Spark driver, worker, and event logs. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "newClusterLogDestination")
     private Object newClusterLogDestination;
 
     /*
      * The driver node type for the new job cluster. This property is ignored in instance pool configurations. Type:
      * string (or Expression with resultType string).
      */
-    @JsonProperty(value = "newClusterDriverNodeType")
     private Object newClusterDriverNodeType;
 
     /*
      * User-defined initialization scripts for the new cluster. Type: array of strings (or Expression with resultType
      * array of strings).
      */
-    @JsonProperty(value = "newClusterInitScripts")
     private Object newClusterInitScripts;
 
     /*
      * Enable the elastic disk on the new cluster. This property is now ignored, and takes the default elastic disk
      * behavior in Databricks (elastic disks are always enabled). Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "newClusterEnableElasticDisk")
     private Object newClusterEnableElasticDisk;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * The policy id for limiting the ability to configure clusters based on a user defined set of rules. Type: string
      * (or Expression with resultType string).
      */
-    @JsonProperty(value = "policyId")
     private Object policyId;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /**
@@ -610,4 +592,107 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureDatabricksLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("domain", this.domain);
+        jsonWriter.writeJsonField("accessToken", this.accessToken);
+        jsonWriter.writeUntypedField("authentication", this.authentication);
+        jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
+        jsonWriter.writeUntypedField("existingClusterId", this.existingClusterId);
+        jsonWriter.writeUntypedField("instancePoolId", this.instancePoolId);
+        jsonWriter.writeUntypedField("newClusterVersion", this.newClusterVersion);
+        jsonWriter.writeUntypedField("newClusterNumOfWorker", this.newClusterNumOfWorker);
+        jsonWriter.writeUntypedField("newClusterNodeType", this.newClusterNodeType);
+        jsonWriter.writeMapField("newClusterSparkConf", this.newClusterSparkConf,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("newClusterSparkEnvVars", this.newClusterSparkEnvVars,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("newClusterCustomTags", this.newClusterCustomTags,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeUntypedField("newClusterLogDestination", this.newClusterLogDestination);
+        jsonWriter.writeUntypedField("newClusterDriverNodeType", this.newClusterDriverNodeType);
+        jsonWriter.writeUntypedField("newClusterInitScripts", this.newClusterInitScripts);
+        jsonWriter.writeUntypedField("newClusterEnableElasticDisk", this.newClusterEnableElasticDisk);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeUntypedField("policyId", this.policyId);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDatabricksLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDatabricksLinkedServiceTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureDatabricksLinkedServiceTypeProperties.
+     */
+    public static AzureDatabricksLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDatabricksLinkedServiceTypeProperties deserializedAzureDatabricksLinkedServiceTypeProperties
+                = new AzureDatabricksLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domain".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.domain = reader.readUntyped();
+                } else if ("accessToken".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.accessToken = SecretBase.fromJson(reader);
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.authentication = reader.readUntyped();
+                } else if ("workspaceResourceId".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.workspaceResourceId = reader.readUntyped();
+                } else if ("existingClusterId".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.existingClusterId = reader.readUntyped();
+                } else if ("instancePoolId".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.instancePoolId = reader.readUntyped();
+                } else if ("newClusterVersion".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.newClusterVersion = reader.readUntyped();
+                } else if ("newClusterNumOfWorker".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.newClusterNumOfWorker = reader.readUntyped();
+                } else if ("newClusterNodeType".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.newClusterNodeType = reader.readUntyped();
+                } else if ("newClusterSparkConf".equals(fieldName)) {
+                    Map<String, Object> newClusterSparkConf = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.newClusterSparkConf = newClusterSparkConf;
+                } else if ("newClusterSparkEnvVars".equals(fieldName)) {
+                    Map<String, Object> newClusterSparkEnvVars = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.newClusterSparkEnvVars
+                        = newClusterSparkEnvVars;
+                } else if ("newClusterCustomTags".equals(fieldName)) {
+                    Map<String, Object> newClusterCustomTags = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.newClusterCustomTags = newClusterCustomTags;
+                } else if ("newClusterLogDestination".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.newClusterLogDestination
+                        = reader.readUntyped();
+                } else if ("newClusterDriverNodeType".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.newClusterDriverNodeType
+                        = reader.readUntyped();
+                } else if ("newClusterInitScripts".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.newClusterInitScripts = reader.readUntyped();
+                } else if ("newClusterEnableElasticDisk".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.newClusterEnableElasticDisk
+                        = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.policyId = reader.readUntyped();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedServiceTypeProperties.credential
+                        = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDatabricksLinkedServiceTypeProperties;
+        });
+    }
 }

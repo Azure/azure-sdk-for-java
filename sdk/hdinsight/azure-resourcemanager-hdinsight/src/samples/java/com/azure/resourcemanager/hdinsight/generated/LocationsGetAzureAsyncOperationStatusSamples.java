@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-/** Samples for Locations GetAzureAsyncOperationStatus. */
+/**
+ * Samples for Locations GetAzureAsyncOperationStatus.
+ */
 public final class LocationsGetAzureAsyncOperationStatusSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/HDI_Locations_GetAsyncOperationStatus.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * HDI_Locations_GetAsyncOperationStatus.json
      */
     /**
      * Sample code: Gets the azure async operation status.
-     *
+     * 
      * @param manager Entry point to HDInsightManager.
      */
     public static void getsTheAzureAsyncOperationStatus(com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
-        manager
-            .locations()
-            .getAzureAsyncOperationStatusWithResponse(
-                "East US 2", "8a0348f4-8a85-4ec2-abe0-03b26104a9a0-0", com.azure.core.util.Context.NONE);
+        manager.locations()
+            .getAzureAsyncOperationStatusWithResponse("East US 2", "8a0348f4-8a85-4ec2-abe0-03b26104a9a0-0",
+                com.azure.core.util.Context.NONE);
     }
 }

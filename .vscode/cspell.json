@@ -1156,7 +1156,10 @@
         "xsom",
         "yasson",
         "yugabytedb",
-        "zaxxer"
+        "zaxxer",
+        "LINUXVMIMAGE",
+        "LINUXPOOL",
+        "OSVmImage"
       ]
     },
     {

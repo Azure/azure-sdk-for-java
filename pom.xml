@@ -173,6 +173,7 @@
     <module>sdk/recoveryservicesbackup</module>
     <module>sdk/recoveryservicesdatareplication</module>
     <module>sdk/recoveryservicessiterecovery</module>
+    <module>sdk/redhatopenshift</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>

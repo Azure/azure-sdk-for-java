@@ -31,8 +31,8 @@ public class LogsQueryResult {
      * @param visualization The visualization information for the logs query.
      * @param error The error details if there was an error executing the query.
      */
-    public LogsQueryResult(List<LogsTable> logsTables, BinaryData statistics,
-                           BinaryData visualization, ResponseError error) {
+    public LogsQueryResult(List<LogsTable> logsTables, BinaryData statistics, BinaryData visualization,
+        ResponseError error) {
         this.logsTables = logsTables;
         this.statistics = statistics;
         this.error = error;
@@ -66,8 +66,8 @@ public class LogsQueryResult {
         }
 
         if (logsTables.size() > 1) {
-            throw logger.logExceptionAsError(new IllegalStateException("The query result contains more than one table."
-                    + " Use getAllTables() method instead."));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "The query result contains more than one table." + " Use getAllTables() method instead."));
         }
         return logsTables.get(0);
     }
@@ -84,14 +84,10 @@ public class LogsQueryResult {
     <T> List<T> toObject(Class<T> type) {
         if (this.logsTables.size() != 1) {
             throw logger.logExceptionAsError(
-                    new IllegalStateException("Cannot map result to object if the response contains multiple tables."));
+                new IllegalStateException("Cannot map result to object if the response contains multiple tables."));
         }
 
-        return logsTables.get(0)
-                .getRows()
-                .stream()
-                .map(row -> row.toObject(type))
-                .collect(Collectors.toList());
+        return logsTables.get(0).getRows().stream().map(row -> row.toObject(type)).collect(Collectors.toList());
     }
 
     /**

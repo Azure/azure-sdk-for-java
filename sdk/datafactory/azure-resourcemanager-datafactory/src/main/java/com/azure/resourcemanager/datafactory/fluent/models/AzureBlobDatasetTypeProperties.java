@@ -5,55 +5,52 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Azure Blob dataset properties.
  */
 @Fluent
-public final class AzureBlobDatasetTypeProperties {
+public final class AzureBlobDatasetTypeProperties implements JsonSerializable<AzureBlobDatasetTypeProperties> {
     /*
      * The path of the Azure Blob storage. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
      * The root of blob path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "tableRootLocation")
     private Object tableRootLocation;
 
     /*
      * The name of the Azure Blob. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileName")
     private Object fileName;
 
     /*
      * The start of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
      * The end of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
     /*
      * The format of the Azure Blob storage.
      */
-    @JsonProperty(value = "format")
     private DatasetStorageFormat format;
 
     /*
      * The data compression method used for the blob storage.
      */
-    @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
     /**
@@ -220,5 +217,60 @@ public final class AzureBlobDatasetTypeProperties {
         if (compression() != null) {
             compression().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        jsonWriter.writeUntypedField("tableRootLocation", this.tableRootLocation);
+        jsonWriter.writeUntypedField("fileName", this.fileName);
+        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeJsonField("compression", this.compression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobDatasetTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBlobDatasetTypeProperties.
+     */
+    public static AzureBlobDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobDatasetTypeProperties deserializedAzureBlobDatasetTypeProperties
+                = new AzureBlobDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedAzureBlobDatasetTypeProperties.folderPath = reader.readUntyped();
+                } else if ("tableRootLocation".equals(fieldName)) {
+                    deserializedAzureBlobDatasetTypeProperties.tableRootLocation = reader.readUntyped();
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedAzureBlobDatasetTypeProperties.fileName = reader.readUntyped();
+                } else if ("modifiedDatetimeStart".equals(fieldName)) {
+                    deserializedAzureBlobDatasetTypeProperties.modifiedDatetimeStart = reader.readUntyped();
+                } else if ("modifiedDatetimeEnd".equals(fieldName)) {
+                    deserializedAzureBlobDatasetTypeProperties.modifiedDatetimeEnd = reader.readUntyped();
+                } else if ("format".equals(fieldName)) {
+                    deserializedAzureBlobDatasetTypeProperties.format = DatasetStorageFormat.fromJson(reader);
+                } else if ("compression".equals(fieldName)) {
+                    deserializedAzureBlobDatasetTypeProperties.compression = DatasetCompression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBlobDatasetTypeProperties;
+        });
     }
 }

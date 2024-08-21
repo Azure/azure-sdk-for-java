@@ -24,8 +24,10 @@ public final class CoreToCodegenBridgeUtils {
      */
     public static JsonWriter responseErrorToJson(JsonWriter jsonWriter, ResponseError responseError)
         throws IOException {
-        return jsonWriter.writeStartObject().writeStringField("code", responseError.getCode())
-            .writeStringField("message", responseError.getMessage()).writeEndObject();
+        return jsonWriter.writeStartObject()
+            .writeStringField("code", responseError.getCode())
+            .writeStringField("message", responseError.getMessage())
+            .writeEndObject();
     }
 
     /**
