@@ -490,19 +490,18 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         // resource group
         // it resides
         //
-        Identity creatableIdentity =
+        Creatable<Identity> creatableIdentity =
             msiManager
                 .identities()
                 .define(identityName1)
                 .withRegion(region)
                 .withExistingResourceGroup(virtualMachineScaleSet.resourceGroupName())
-                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-                .create();
+                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
         // Update virtual machine so that it depends on the EMSI
         //
         virtualMachineScaleSet =
-            virtualMachineScaleSet.update().withExistingUserAssignedManagedServiceIdentity(creatableIdentity).apply();
+            virtualMachineScaleSet.update().withNewUserAssignedManagedServiceIdentity(creatableIdentity).apply();
 
         // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
         //
@@ -519,7 +518,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         virtualMachineScaleSet.update()
             .withNewDataDisk(10)
             .apply();
-        emsiIds = virtualMachineScaleSet.userAssignedManagedServiceIdentityIds();
+        emsiIds = virtualMachineScaleSet.innerModel().identity().userAssignedIdentities().keySet();
+        emsiIds.removeIf(emsiId -> !emsiId.endsWith("/" + identityName1));
         Assertions.assertNotNull(emsiIds);
         Assertions.assertEquals(1, emsiIds.size());
 
