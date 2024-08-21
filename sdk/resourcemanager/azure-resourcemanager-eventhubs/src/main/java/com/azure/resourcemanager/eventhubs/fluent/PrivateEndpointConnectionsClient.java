@@ -14,10 +14,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventhubs.fluent.models.PrivateEndpointConnectionInner;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
@@ -25,7 +24,7 @@ import java.nio.ByteBuffer;
 public interface PrivateEndpointConnectionsClient {
     /**
      * Gets the available PrivateEndpointConnections within a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +37,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the available PrivateEndpointConnections within a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,7 +51,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the available PrivateEndpointConnections within a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param context The context to associate with this operation.
@@ -67,7 +66,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Creates or updates PrivateEndpointConnections of service namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -84,7 +83,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Creates or updates PrivateEndpointConnections of service namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -100,7 +99,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Creates or updates PrivateEndpointConnections of service namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -117,7 +116,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Creates or updates PrivateEndpointConnections of service namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -133,7 +132,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -148,7 +147,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -163,7 +162,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -178,7 +177,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -194,7 +193,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -208,7 +207,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -221,7 +220,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -235,7 +234,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets a description for the specified Private Endpoint Connection name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -251,7 +250,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets a description for the specified Private Endpoint Connection name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -267,7 +266,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets a description for the specified Private Endpoint Connection name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -283,7 +282,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets a description for the specified Private Endpoint Connection name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.

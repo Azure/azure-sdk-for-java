@@ -5,23 +5,27 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Options for retrieving the list of top level domain legal agreements.
  */
 @Fluent
-public final class TopLevelDomainAgreementOption {
+public final class TopLevelDomainAgreementOption implements JsonSerializable<TopLevelDomainAgreementOption> {
     /*
-     * If <code>true</code>, then the list of agreements will include agreements for domain privacy as well; otherwise, <code>false</code>.
+     * If <code>true</code>, then the list of agreements will include agreements for domain privacy as well; otherwise,
+     * <code>false</code>.
      */
-    @JsonProperty(value = "includePrivacy")
     private Boolean includePrivacy;
 
     /*
-     * If <code>true</code>, then the list of agreements will include agreements for domain transfer as well; otherwise, <code>false</code>.
+     * If <code>true</code>, then the list of agreements will include agreements for domain transfer as well; otherwise,
+     * <code>false</code>.
      */
-    @JsonProperty(value = "forTransfer")
     private Boolean forTransfer;
 
     /**
@@ -80,5 +84,46 @@ public final class TopLevelDomainAgreementOption {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("includePrivacy", this.includePrivacy);
+        jsonWriter.writeBooleanField("forTransfer", this.forTransfer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopLevelDomainAgreementOption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopLevelDomainAgreementOption if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopLevelDomainAgreementOption.
+     */
+    public static TopLevelDomainAgreementOption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopLevelDomainAgreementOption deserializedTopLevelDomainAgreementOption
+                = new TopLevelDomainAgreementOption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("includePrivacy".equals(fieldName)) {
+                    deserializedTopLevelDomainAgreementOption.includePrivacy
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("forTransfer".equals(fieldName)) {
+                    deserializedTopLevelDomainAgreementOption.forTransfer = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopLevelDomainAgreementOption;
+        });
     }
 }

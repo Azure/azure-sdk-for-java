@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * For schedules like: 'recur every day' or 'recur every 3 days'.
  */
 @Fluent
-public final class DailySchedule {
+public final class DailySchedule implements JsonSerializable<DailySchedule> {
     /*
      * Specifies the number of days between each set of occurrences.
      */
-    @JsonProperty(value = "intervalDays", required = true)
     private int intervalDays;
 
     /**
@@ -50,5 +53,42 @@ public final class DailySchedule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("intervalDays", this.intervalDays);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DailySchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DailySchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DailySchedule.
+     */
+    public static DailySchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DailySchedule deserializedDailySchedule = new DailySchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("intervalDays".equals(fieldName)) {
+                    deserializedDailySchedule.intervalDays = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDailySchedule;
+        });
     }
 }

@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The type of change that occurred.
  */
@@ -41,7 +38,6 @@ public enum ResourcePropertyChangeType {
      * @param value the serialized value to parse.
      * @return the parsed ResourcePropertyChangeType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourcePropertyChangeType fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum ResourcePropertyChangeType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

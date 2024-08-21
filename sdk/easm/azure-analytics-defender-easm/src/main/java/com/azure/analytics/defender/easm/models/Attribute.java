@@ -5,63 +5,62 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The Attribute model.
  */
 @Immutable
-public final class Attribute {
+public final class Attribute implements JsonSerializable<Attribute> {
 
     /*
      * The attributeType property.
      */
     @Generated
-    @JsonProperty(value = "attributeType")
     private String attributeType;
 
     /*
      * The attributeValue property.
      */
     @Generated
-    @JsonProperty(value = "attributeValue")
     private String attributeValue;
 
     /*
      * The sources property.
      */
     @Generated
-    @JsonProperty(value = "sources")
     private List<Source> sources;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The recent property.
      */
     @Generated
-    @JsonProperty(value = "recent")
     private Boolean recent;
 
     /**
@@ -139,5 +138,64 @@ public final class Attribute {
     @Generated
     public Boolean isRecent() {
         return this.recent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("attributeType", this.attributeType);
+        jsonWriter.writeStringField("attributeValue", this.attributeValue);
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeBooleanField("recent", this.recent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Attribute from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Attribute if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Attribute.
+     */
+    @Generated
+    public static Attribute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Attribute deserializedAttribute = new Attribute();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("attributeType".equals(fieldName)) {
+                    deserializedAttribute.attributeType = reader.getString();
+                } else if ("attributeValue".equals(fieldName)) {
+                    deserializedAttribute.attributeValue = reader.getString();
+                } else if ("sources".equals(fieldName)) {
+                    List<Source> sources = reader.readArray(reader1 -> Source.fromJson(reader1));
+                    deserializedAttribute.sources = sources;
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedAttribute.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedAttribute.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedAttribute.count = reader.getNullable(JsonReader::getLong);
+                } else if ("recent".equals(fieldName)) {
+                    deserializedAttribute.recent = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAttribute;
+        });
     }
 }

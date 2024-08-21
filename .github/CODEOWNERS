@@ -341,7 +341,7 @@
 # ServiceOwners:                                     @kushagraThapar @TheovanKraay @pjohari-ms
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                         @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995 @Pilchie
+/sdk/cosmos/                                         @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors
 
 # ServiceLabel: %Cost Management - Billing
 # ServiceOwners:                                     @ccmbpxpcrew
@@ -728,8 +728,15 @@
 # ServiceLabel:  %Service Fabric
 # ServiceOwners:                                     @QingChenmsft @vaishnavk @juhacket
 
+# PRLabel: %WebPubSub
+/sdk/webpubsub/azure-messaging-webpubsub-client/     @vicancy @chenkennt @zackliu
+/sdk/webpubsub/azure-messaging-webpubsub/            @vicancy @chenkennt 
+
+# ServiceLabel:  %WebPubSub
+# ServiceOwners:                                     @vicancy @chenkennt
+
 # ServiceLabel:  %SignalR
-# ServiceOwners:                                     @sffamily @chenkennt
+# ServiceOwners:                                     @vicancy @chenkennt
 
 # ServiceLabel:  %SQL
 # ServiceOwners:                                     @azureSQLGitHub
@@ -753,10 +760,10 @@
 # ServiceOwners:                                     @azureSQLGitHub
 
 # PRLabel: %Storage
-/sdk/storage/                                        @ibrahimrabab @seanmcc-msft @ibrandes @alzimmermsft
+/sdk/storage/                                        @ibrahimrabab @seanmcc-msft @ibrandes @kyleknap @alzimmermsft
 
 # ServiceLabel:  %Storage
-# AzureSdkOwners:                                    @ibrahimrabab @seanmcc-msft @ibrandes
+# AzureSdkOwners:                                    @ibrahimrabab @seanmcc-msft @ibrandes @kyleknap
 # ServiceOwners:                                     @xgithubtriage
 
 # ServiceLabel:  %Storsimple
@@ -842,7 +849,7 @@
 /sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @trande4884 @TheovanKraay @xinlian12 @rujche @netyyyy @saragluna @moarychan @aayush3011 @simorenoh @jeet1995 @Pilchie
+/sdk/spring/azure-spring-data-cosmos/                @rujche @netyyyy @saragluna @moarychan @Azure/azure-cosmos-java-sdk-connectors
 
 # ######## End-to-end tests ########
 
@@ -897,4 +904,4 @@
 /eng/common/pipelines/codeowners-linter.yml          @alzimmermsft @srnagar @lmolkova
 
 # Add Cosmos source owners as the owners of their specialized matrix
-/eng/pipelines/templates/stages/cosmos-emulator-matrix.json   @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995 @Pilchie
+/eng/pipelines/templates/stages/cosmos-emulator-matrix.json   @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors

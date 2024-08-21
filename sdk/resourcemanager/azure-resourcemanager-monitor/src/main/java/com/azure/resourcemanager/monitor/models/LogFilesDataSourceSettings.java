@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The log files specific settings.
@@ -34,5 +38,41 @@ public final class LogFilesDataSourceSettings extends LogFileSettings {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("text", text());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogFilesDataSourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogFilesDataSourceSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogFilesDataSourceSettings.
+     */
+    public static LogFilesDataSourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogFilesDataSourceSettings deserializedLogFilesDataSourceSettings = new LogFilesDataSourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("text".equals(fieldName)) {
+                    deserializedLogFilesDataSourceSettings.withText(LogFileSettingsText.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogFilesDataSourceSettings;
+        });
     }
 }

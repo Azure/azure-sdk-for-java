@@ -26,12 +26,16 @@ public final class PrivateLinkScopesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void privateLinkScopeCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateLinkScopes().createOrUpdateWithResponse(
-            "my-resource-group", "my-privatelinkscope",
-            new AzureMonitorPrivateLinkScopeInner().withLocation("Global")
-                .withAccessModeSettings(new AccessModeSettings().withQueryAccessMode(AccessMode.OPEN)
-                    .withIngestionAccessMode(AccessMode.OPEN).withExclusions(Arrays.asList())),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkScopes()
+            .createOrUpdateWithResponse("my-resource-group", "my-privatelinkscope",
+                new AzureMonitorPrivateLinkScopeInner().withLocation("Global")
+                    .withAccessModeSettings(new AccessModeSettings().withQueryAccessMode(AccessMode.OPEN)
+                        .withIngestionAccessMode(AccessMode.OPEN)
+                        .withExclusions(Arrays.asList())),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -45,12 +49,17 @@ public final class PrivateLinkScopesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void privateLinkScopeUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateLinkScopes().createOrUpdateWithResponse(
-            "my-resource-group", "my-privatelinkscope",
-            new AzureMonitorPrivateLinkScopeInner().withLocation("Global").withTags(mapOf("Tag1", "Value1"))
-                .withAccessModeSettings(new AccessModeSettings().withQueryAccessMode(AccessMode.OPEN)
-                    .withIngestionAccessMode(AccessMode.OPEN).withExclusions(Arrays.asList())),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkScopes()
+            .createOrUpdateWithResponse("my-resource-group", "my-privatelinkscope",
+                new AzureMonitorPrivateLinkScopeInner().withLocation("Global")
+                    .withTags(mapOf("Tag1", "Value1"))
+                    .withAccessModeSettings(new AccessModeSettings().withQueryAccessMode(AccessMode.OPEN)
+                        .withIngestionAccessMode(AccessMode.OPEN)
+                        .withExclusions(Arrays.asList())),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

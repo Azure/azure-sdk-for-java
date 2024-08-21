@@ -5,55 +5,58 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * A specific date-time for the profile.
  */
 @Fluent
-public final class TimeWindow {
+public final class TimeWindow implements JsonSerializable<TimeWindow> {
     /*
-     * the timezone of the start and end times for the profile. Some examples of valid time zones are: Dateline
-     * Standard Time, UTC-11, Hawaiian Standard Time, Alaskan Standard Time, Pacific Standard Time (Mexico), Pacific
-     * Standard Time, US Mountain Standard Time, Mountain Standard Time (Mexico), Mountain Standard Time, Central
-     * America Standard Time, Central Standard Time, Central Standard Time (Mexico), Canada Central Standard Time, SA
-     * Pacific Standard Time, Eastern Standard Time, US Eastern Standard Time, Venezuela Standard Time, Paraguay
-     * Standard Time, Atlantic Standard Time, Central Brazilian Standard Time, SA Western Standard Time, Pacific SA
-     * Standard Time, Newfoundland Standard Time, E. South America Standard Time, Argentina Standard Time, SA Eastern
-     * Standard Time, Greenland Standard Time, Montevideo Standard Time, Bahia Standard Time, UTC-02, Mid-Atlantic
-     * Standard Time, Azores Standard Time, Cape Verde Standard Time, Morocco Standard Time, UTC, GMT Standard Time,
-     * Greenwich Standard Time, W. Europe Standard Time, Central Europe Standard Time, Romance Standard Time, Central
-     * European Standard Time, W. Central Africa Standard Time, Namibia Standard Time, Jordan Standard Time, GTB
-     * Standard Time, Middle East Standard Time, Egypt Standard Time, Syria Standard Time, E. Europe Standard Time,
-     * South Africa Standard Time, FLE Standard Time, Turkey Standard Time, Israel Standard Time, Kaliningrad Standard
-     * Time, Libya Standard Time, Arabic Standard Time, Arab Standard Time, Belarus Standard Time, Russian Standard
-     * Time, E. Africa Standard Time, Iran Standard Time, Arabian Standard Time, Azerbaijan Standard Time, Russia Time
-     * Zone 3, Mauritius Standard Time, Georgian Standard Time, Caucasus Standard Time, Afghanistan Standard Time, West
-     * Asia Standard Time, Ekaterinburg Standard Time, Pakistan Standard Time, India Standard Time, Sri Lanka Standard
-     * Time, Nepal Standard Time, Central Asia Standard Time, Bangladesh Standard Time, N. Central Asia Standard Time,
-     * Myanmar Standard Time, SE Asia Standard Time, North Asia Standard Time, China Standard Time, North Asia East
-     * Standard Time, Singapore Standard Time, W. Australia Standard Time, Taipei Standard Time, Ulaanbaatar Standard
-     * Time, Tokyo Standard Time, Korea Standard Time, Yakutsk Standard Time, Cen. Australia Standard Time, AUS Central
-     * Standard Time, E. Australia Standard Time, AUS Eastern Standard Time, West Pacific Standard Time, Tasmania
-     * Standard Time, Magadan Standard Time, Vladivostok Standard Time, Russia Time Zone 10, Central Pacific Standard
-     * Time, Russia Time Zone 11, New Zealand Standard Time, UTC+12, Fiji Standard Time, Kamchatka Standard Time, Tonga
-     * Standard Time, Samoa Standard Time, Line Islands Standard Time
+     * the timezone of the start and end times for the profile. Some examples of valid time zones are: Dateline Standard
+     * Time, UTC-11, Hawaiian Standard Time, Alaskan Standard Time, Pacific Standard Time (Mexico), Pacific Standard
+     * Time, US Mountain Standard Time, Mountain Standard Time (Mexico), Mountain Standard Time, Central America
+     * Standard Time, Central Standard Time, Central Standard Time (Mexico), Canada Central Standard Time, SA Pacific
+     * Standard Time, Eastern Standard Time, US Eastern Standard Time, Venezuela Standard Time, Paraguay Standard Time,
+     * Atlantic Standard Time, Central Brazilian Standard Time, SA Western Standard Time, Pacific SA Standard Time,
+     * Newfoundland Standard Time, E. South America Standard Time, Argentina Standard Time, SA Eastern Standard Time,
+     * Greenland Standard Time, Montevideo Standard Time, Bahia Standard Time, UTC-02, Mid-Atlantic Standard Time,
+     * Azores Standard Time, Cape Verde Standard Time, Morocco Standard Time, UTC, GMT Standard Time, Greenwich Standard
+     * Time, W. Europe Standard Time, Central Europe Standard Time, Romance Standard Time, Central European Standard
+     * Time, W. Central Africa Standard Time, Namibia Standard Time, Jordan Standard Time, GTB Standard Time, Middle
+     * East Standard Time, Egypt Standard Time, Syria Standard Time, E. Europe Standard Time, South Africa Standard
+     * Time, FLE Standard Time, Turkey Standard Time, Israel Standard Time, Kaliningrad Standard Time, Libya Standard
+     * Time, Arabic Standard Time, Arab Standard Time, Belarus Standard Time, Russian Standard Time, E. Africa Standard
+     * Time, Iran Standard Time, Arabian Standard Time, Azerbaijan Standard Time, Russia Time Zone 3, Mauritius Standard
+     * Time, Georgian Standard Time, Caucasus Standard Time, Afghanistan Standard Time, West Asia Standard Time,
+     * Ekaterinburg Standard Time, Pakistan Standard Time, India Standard Time, Sri Lanka Standard Time, Nepal Standard
+     * Time, Central Asia Standard Time, Bangladesh Standard Time, N. Central Asia Standard Time, Myanmar Standard Time,
+     * SE Asia Standard Time, North Asia Standard Time, China Standard Time, North Asia East Standard Time, Singapore
+     * Standard Time, W. Australia Standard Time, Taipei Standard Time, Ulaanbaatar Standard Time, Tokyo Standard Time,
+     * Korea Standard Time, Yakutsk Standard Time, Cen. Australia Standard Time, AUS Central Standard Time, E. Australia
+     * Standard Time, AUS Eastern Standard Time, West Pacific Standard Time, Tasmania Standard Time, Magadan Standard
+     * Time, Vladivostok Standard Time, Russia Time Zone 10, Central Pacific Standard Time, Russia Time Zone 11, New
+     * Zealand Standard Time, UTC+12, Fiji Standard Time, Kamchatka Standard Time, Tonga Standard Time, Samoa Standard
+     * Time, Line Islands Standard Time
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * the start time for the profile in ISO 8601 format.
      */
-    @JsonProperty(value = "start", required = true)
     private OffsetDateTime start;
 
     /*
      * the end time for the profile in ISO 8601 format.
      */
-    @JsonProperty(value = "end", required = true)
     private OffsetDateTime end;
 
     /**
@@ -69,8 +72,8 @@ public final class TimeWindow {
      * Time, Central America Standard Time, Central Standard Time, Central Standard Time (Mexico), Canada Central
      * Standard Time, SA Pacific Standard Time, Eastern Standard Time, US Eastern Standard Time, Venezuela Standard
      * Time, Paraguay Standard Time, Atlantic Standard Time, Central Brazilian Standard Time, SA Western Standard Time,
-     * Pacific SA Standard Time, Newfoundland Standard Time, E. South America Standard Time, Argentina Standard Time,
-     * SA Eastern Standard Time, Greenland Standard Time, Montevideo Standard Time, Bahia Standard Time, UTC-02,
+     * Pacific SA Standard Time, Newfoundland Standard Time, E. South America Standard Time, Argentina Standard Time, SA
+     * Eastern Standard Time, Greenland Standard Time, Montevideo Standard Time, Bahia Standard Time, UTC-02,
      * Mid-Atlantic Standard Time, Azores Standard Time, Cape Verde Standard Time, Morocco Standard Time, UTC, GMT
      * Standard Time, Greenwich Standard Time, W. Europe Standard Time, Central Europe Standard Time, Romance Standard
      * Time, Central European Standard Time, W. Central Africa Standard Time, Namibia Standard Time, Jordan Standard
@@ -78,16 +81,16 @@ public final class TimeWindow {
      * Time, South Africa Standard Time, FLE Standard Time, Turkey Standard Time, Israel Standard Time, Kaliningrad
      * Standard Time, Libya Standard Time, Arabic Standard Time, Arab Standard Time, Belarus Standard Time, Russian
      * Standard Time, E. Africa Standard Time, Iran Standard Time, Arabian Standard Time, Azerbaijan Standard Time,
-     * Russia Time Zone 3, Mauritius Standard Time, Georgian Standard Time, Caucasus Standard Time, Afghanistan
-     * Standard Time, West Asia Standard Time, Ekaterinburg Standard Time, Pakistan Standard Time, India Standard Time,
-     * Sri Lanka Standard Time, Nepal Standard Time, Central Asia Standard Time, Bangladesh Standard Time, N. Central
-     * Asia Standard Time, Myanmar Standard Time, SE Asia Standard Time, North Asia Standard Time, China Standard Time,
-     * North Asia East Standard Time, Singapore Standard Time, W. Australia Standard Time, Taipei Standard Time,
-     * Ulaanbaatar Standard Time, Tokyo Standard Time, Korea Standard Time, Yakutsk Standard Time, Cen. Australia
-     * Standard Time, AUS Central Standard Time, E. Australia Standard Time, AUS Eastern Standard Time, West Pacific
-     * Standard Time, Tasmania Standard Time, Magadan Standard Time, Vladivostok Standard Time, Russia Time Zone 10,
-     * Central Pacific Standard Time, Russia Time Zone 11, New Zealand Standard Time, UTC+12, Fiji Standard Time,
-     * Kamchatka Standard Time, Tonga Standard Time, Samoa Standard Time, Line Islands Standard Time.
+     * Russia Time Zone 3, Mauritius Standard Time, Georgian Standard Time, Caucasus Standard Time, Afghanistan Standard
+     * Time, West Asia Standard Time, Ekaterinburg Standard Time, Pakistan Standard Time, India Standard Time, Sri Lanka
+     * Standard Time, Nepal Standard Time, Central Asia Standard Time, Bangladesh Standard Time, N. Central Asia
+     * Standard Time, Myanmar Standard Time, SE Asia Standard Time, North Asia Standard Time, China Standard Time, North
+     * Asia East Standard Time, Singapore Standard Time, W. Australia Standard Time, Taipei Standard Time, Ulaanbaatar
+     * Standard Time, Tokyo Standard Time, Korea Standard Time, Yakutsk Standard Time, Cen. Australia Standard Time, AUS
+     * Central Standard Time, E. Australia Standard Time, AUS Eastern Standard Time, West Pacific Standard Time,
+     * Tasmania Standard Time, Magadan Standard Time, Vladivostok Standard Time, Russia Time Zone 10, Central Pacific
+     * Standard Time, Russia Time Zone 11, New Zealand Standard Time, UTC+12, Fiji Standard Time, Kamchatka Standard
+     * Time, Tonga Standard Time, Samoa Standard Time, Line Islands Standard Time.
      * 
      * @return the timeZone value.
      */
@@ -102,8 +105,8 @@ public final class TimeWindow {
      * Time, Central America Standard Time, Central Standard Time, Central Standard Time (Mexico), Canada Central
      * Standard Time, SA Pacific Standard Time, Eastern Standard Time, US Eastern Standard Time, Venezuela Standard
      * Time, Paraguay Standard Time, Atlantic Standard Time, Central Brazilian Standard Time, SA Western Standard Time,
-     * Pacific SA Standard Time, Newfoundland Standard Time, E. South America Standard Time, Argentina Standard Time,
-     * SA Eastern Standard Time, Greenland Standard Time, Montevideo Standard Time, Bahia Standard Time, UTC-02,
+     * Pacific SA Standard Time, Newfoundland Standard Time, E. South America Standard Time, Argentina Standard Time, SA
+     * Eastern Standard Time, Greenland Standard Time, Montevideo Standard Time, Bahia Standard Time, UTC-02,
      * Mid-Atlantic Standard Time, Azores Standard Time, Cape Verde Standard Time, Morocco Standard Time, UTC, GMT
      * Standard Time, Greenwich Standard Time, W. Europe Standard Time, Central Europe Standard Time, Romance Standard
      * Time, Central European Standard Time, W. Central Africa Standard Time, Namibia Standard Time, Jordan Standard
@@ -111,16 +114,16 @@ public final class TimeWindow {
      * Time, South Africa Standard Time, FLE Standard Time, Turkey Standard Time, Israel Standard Time, Kaliningrad
      * Standard Time, Libya Standard Time, Arabic Standard Time, Arab Standard Time, Belarus Standard Time, Russian
      * Standard Time, E. Africa Standard Time, Iran Standard Time, Arabian Standard Time, Azerbaijan Standard Time,
-     * Russia Time Zone 3, Mauritius Standard Time, Georgian Standard Time, Caucasus Standard Time, Afghanistan
-     * Standard Time, West Asia Standard Time, Ekaterinburg Standard Time, Pakistan Standard Time, India Standard Time,
-     * Sri Lanka Standard Time, Nepal Standard Time, Central Asia Standard Time, Bangladesh Standard Time, N. Central
-     * Asia Standard Time, Myanmar Standard Time, SE Asia Standard Time, North Asia Standard Time, China Standard Time,
-     * North Asia East Standard Time, Singapore Standard Time, W. Australia Standard Time, Taipei Standard Time,
-     * Ulaanbaatar Standard Time, Tokyo Standard Time, Korea Standard Time, Yakutsk Standard Time, Cen. Australia
-     * Standard Time, AUS Central Standard Time, E. Australia Standard Time, AUS Eastern Standard Time, West Pacific
-     * Standard Time, Tasmania Standard Time, Magadan Standard Time, Vladivostok Standard Time, Russia Time Zone 10,
-     * Central Pacific Standard Time, Russia Time Zone 11, New Zealand Standard Time, UTC+12, Fiji Standard Time,
-     * Kamchatka Standard Time, Tonga Standard Time, Samoa Standard Time, Line Islands Standard Time.
+     * Russia Time Zone 3, Mauritius Standard Time, Georgian Standard Time, Caucasus Standard Time, Afghanistan Standard
+     * Time, West Asia Standard Time, Ekaterinburg Standard Time, Pakistan Standard Time, India Standard Time, Sri Lanka
+     * Standard Time, Nepal Standard Time, Central Asia Standard Time, Bangladesh Standard Time, N. Central Asia
+     * Standard Time, Myanmar Standard Time, SE Asia Standard Time, North Asia Standard Time, China Standard Time, North
+     * Asia East Standard Time, Singapore Standard Time, W. Australia Standard Time, Taipei Standard Time, Ulaanbaatar
+     * Standard Time, Tokyo Standard Time, Korea Standard Time, Yakutsk Standard Time, Cen. Australia Standard Time, AUS
+     * Central Standard Time, E. Australia Standard Time, AUS Eastern Standard Time, West Pacific Standard Time,
+     * Tasmania Standard Time, Magadan Standard Time, Vladivostok Standard Time, Russia Time Zone 10, Central Pacific
+     * Standard Time, Russia Time Zone 11, New Zealand Standard Time, UTC+12, Fiji Standard Time, Kamchatka Standard
+     * Time, Tonga Standard Time, Samoa Standard Time, Line Islands Standard Time.
      * 
      * @param timeZone the timeZone value to set.
      * @return the TimeWindow object itself.
@@ -177,14 +180,61 @@ public final class TimeWindow {
      */
     public void validate() {
         if (start() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property start in model TimeWindow"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property start in model TimeWindow"));
         }
         if (end() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property end in model TimeWindow"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property end in model TimeWindow"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TimeWindow.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("start",
+            this.start == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.start));
+        jsonWriter.writeStringField("end",
+            this.end == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.end));
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeWindow from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeWindow if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TimeWindow.
+     */
+    public static TimeWindow fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeWindow deserializedTimeWindow = new TimeWindow();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("start".equals(fieldName)) {
+                    deserializedTimeWindow.start = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("end".equals(fieldName)) {
+                    deserializedTimeWindow.end = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedTimeWindow.timeZone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeWindow;
+        });
+    }
 }

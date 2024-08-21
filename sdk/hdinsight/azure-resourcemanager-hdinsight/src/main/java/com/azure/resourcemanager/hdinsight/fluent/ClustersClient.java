@@ -24,11 +24,13 @@ import com.azure.resourcemanager.hdinsight.models.RoleName;
 import com.azure.resourcemanager.hdinsight.models.UpdateClusterIdentityCertificateParameters;
 import com.azure.resourcemanager.hdinsight.models.UpdateGatewaySettingsParameters;
 
-/** An instance of this class provides access to all the operations defined in ClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClustersClient.
+ */
 public interface ClustersClient {
     /**
      * Creates a new HDInsight cluster with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster create request.
@@ -38,12 +40,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the HDInsight cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName, String clusterName, ClusterCreateParametersExtended parameters);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName, String clusterName,
+        ClusterCreateParametersExtended parameters);
 
     /**
      * Creates a new HDInsight cluster with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster create request.
@@ -54,12 +56,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the HDInsight cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName, String clusterName, ClusterCreateParametersExtended parameters, Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName, String clusterName,
+        ClusterCreateParametersExtended parameters, Context context);
 
     /**
      * Creates a new HDInsight cluster with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster create request.
@@ -73,7 +75,7 @@ public interface ClustersClient {
 
     /**
      * Creates a new HDInsight cluster with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster create request.
@@ -84,12 +86,12 @@ public interface ClustersClient {
      * @return the HDInsight cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner create(
-        String resourceGroupName, String clusterName, ClusterCreateParametersExtended parameters, Context context);
+    ClusterInner create(String resourceGroupName, String clusterName, ClusterCreateParametersExtended parameters,
+        Context context);
 
     /**
      * Patch HDInsight cluster with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster patch request.
@@ -100,12 +102,12 @@ public interface ClustersClient {
      * @return the HDInsight cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> updateWithResponse(
-        String resourceGroupName, String clusterName, ClusterPatchParameters parameters, Context context);
+    Response<ClusterInner> updateWithResponse(String resourceGroupName, String clusterName,
+        ClusterPatchParameters parameters, Context context);
 
     /**
      * Patch HDInsight cluster with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster patch request.
@@ -119,7 +121,7 @@ public interface ClustersClient {
 
     /**
      * Deletes the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,7 +134,7 @@ public interface ClustersClient {
 
     /**
      * Deletes the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -146,7 +148,7 @@ public interface ClustersClient {
 
     /**
      * Deletes the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,7 +160,7 @@ public interface ClustersClient {
 
     /**
      * Deletes the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -171,7 +173,7 @@ public interface ClustersClient {
 
     /**
      * Gets the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -181,12 +183,12 @@ public interface ClustersClient {
      * @return the specified cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Gets the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,7 +201,7 @@ public interface ClustersClient {
 
     /**
      * Lists the HDInsight clusters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -211,7 +213,7 @@ public interface ClustersClient {
 
     /**
      * Lists the HDInsight clusters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,7 +226,7 @@ public interface ClustersClient {
 
     /**
      * Resizes the specified HDInsight cluster to the specified size.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param roleName The constant value for the roleName.
@@ -235,12 +237,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResize(
-        String resourceGroupName, String clusterName, RoleName roleName, ClusterResizeParameters parameters);
+    SyncPoller<PollResult<Void>, Void> beginResize(String resourceGroupName, String clusterName, RoleName roleName,
+        ClusterResizeParameters parameters);
 
     /**
      * Resizes the specified HDInsight cluster to the specified size.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param roleName The constant value for the roleName.
@@ -252,16 +254,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResize(
-        String resourceGroupName,
-        String clusterName,
-        RoleName roleName,
-        ClusterResizeParameters parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginResize(String resourceGroupName, String clusterName, RoleName roleName,
+        ClusterResizeParameters parameters, Context context);
 
     /**
      * Resizes the specified HDInsight cluster to the specified size.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param roleName The constant value for the roleName.
@@ -275,7 +273,7 @@ public interface ClustersClient {
 
     /**
      * Resizes the specified HDInsight cluster to the specified size.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param roleName The constant value for the roleName.
@@ -286,16 +284,12 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resize(
-        String resourceGroupName,
-        String clusterName,
-        RoleName roleName,
-        ClusterResizeParameters parameters,
+    void resize(String resourceGroupName, String clusterName, RoleName roleName, ClusterResizeParameters parameters,
         Context context);
 
     /**
      * Updates the Autoscale Configuration for HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param roleName The constant value for the roleName.
@@ -306,15 +300,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateAutoScaleConfiguration(
-        String resourceGroupName,
-        String clusterName,
-        RoleName roleName,
-        AutoscaleConfigurationUpdateParameter parameters);
+    SyncPoller<PollResult<Void>, Void> beginUpdateAutoScaleConfiguration(String resourceGroupName, String clusterName,
+        RoleName roleName, AutoscaleConfigurationUpdateParameter parameters);
 
     /**
      * Updates the Autoscale Configuration for HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param roleName The constant value for the roleName.
@@ -326,16 +317,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateAutoScaleConfiguration(
-        String resourceGroupName,
-        String clusterName,
-        RoleName roleName,
-        AutoscaleConfigurationUpdateParameter parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpdateAutoScaleConfiguration(String resourceGroupName, String clusterName,
+        RoleName roleName, AutoscaleConfigurationUpdateParameter parameters, Context context);
 
     /**
      * Updates the Autoscale Configuration for HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param roleName The constant value for the roleName.
@@ -345,15 +332,12 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateAutoScaleConfiguration(
-        String resourceGroupName,
-        String clusterName,
-        RoleName roleName,
+    void updateAutoScaleConfiguration(String resourceGroupName, String clusterName, RoleName roleName,
         AutoscaleConfigurationUpdateParameter parameters);
 
     /**
      * Updates the Autoscale Configuration for HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param roleName The constant value for the roleName.
@@ -364,16 +348,12 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateAutoScaleConfiguration(
-        String resourceGroupName,
-        String clusterName,
-        RoleName roleName,
-        AutoscaleConfigurationUpdateParameter parameters,
-        Context context);
+    void updateAutoScaleConfiguration(String resourceGroupName, String clusterName, RoleName roleName,
+        AutoscaleConfigurationUpdateParameter parameters, Context context);
 
     /**
      * Lists all the HDInsight clusters under the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Cluster operation response as paginated response with {@link PagedIterable}.
@@ -383,7 +363,7 @@ public interface ClustersClient {
 
     /**
      * Lists all the HDInsight clusters under the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -395,7 +375,7 @@ public interface ClustersClient {
 
     /**
      * Rotate disk encryption key of the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for the disk encryption operation.
@@ -405,12 +385,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRotateDiskEncryptionKey(
-        String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters);
+    SyncPoller<PollResult<Void>, Void> beginRotateDiskEncryptionKey(String resourceGroupName, String clusterName,
+        ClusterDiskEncryptionParameters parameters);
 
     /**
      * Rotate disk encryption key of the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for the disk encryption operation.
@@ -421,12 +401,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRotateDiskEncryptionKey(
-        String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRotateDiskEncryptionKey(String resourceGroupName, String clusterName,
+        ClusterDiskEncryptionParameters parameters, Context context);
 
     /**
      * Rotate disk encryption key of the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for the disk encryption operation.
@@ -435,12 +415,12 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void rotateDiskEncryptionKey(
-        String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters);
+    void rotateDiskEncryptionKey(String resourceGroupName, String clusterName,
+        ClusterDiskEncryptionParameters parameters);
 
     /**
      * Rotate disk encryption key of the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for the disk encryption operation.
@@ -450,12 +430,12 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void rotateDiskEncryptionKey(
-        String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters, Context context);
+    void rotateDiskEncryptionKey(String resourceGroupName, String clusterName,
+        ClusterDiskEncryptionParameters parameters, Context context);
 
     /**
      * Gets the gateway settings for the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -465,12 +445,12 @@ public interface ClustersClient {
      * @return the gateway settings for the specified cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewaySettingsInner> getGatewaySettingsWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<GatewaySettingsInner> getGatewaySettingsWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Gets the gateway settings for the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,7 +463,7 @@ public interface ClustersClient {
 
     /**
      * Configures the gateway settings on the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster configurations.
@@ -493,12 +473,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateGatewaySettings(
-        String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters);
+    SyncPoller<PollResult<Void>, Void> beginUpdateGatewaySettings(String resourceGroupName, String clusterName,
+        UpdateGatewaySettingsParameters parameters);
 
     /**
      * Configures the gateway settings on the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster configurations.
@@ -509,12 +489,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateGatewaySettings(
-        String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpdateGatewaySettings(String resourceGroupName, String clusterName,
+        UpdateGatewaySettingsParameters parameters, Context context);
 
     /**
      * Configures the gateway settings on the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster configurations.
@@ -523,12 +503,12 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateGatewaySettings(
-        String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters);
+    void updateGatewaySettings(String resourceGroupName, String clusterName,
+        UpdateGatewaySettingsParameters parameters);
 
     /**
      * Configures the gateway settings on the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster configurations.
@@ -538,12 +518,12 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateGatewaySettings(
-        String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters, Context context);
+    void updateGatewaySettings(String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters,
+        Context context);
 
     /**
      * The the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param operationId The long running operation id.
@@ -554,12 +534,12 @@ public interface ClustersClient {
      * @return the azure async operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AsyncOperationResultInner> getAzureAsyncOperationStatusWithResponse(
-        String resourceGroupName, String clusterName, String operationId, Context context);
+    Response<AsyncOperationResultInner> getAzureAsyncOperationStatusWithResponse(String resourceGroupName,
+        String clusterName, String operationId, Context context);
 
     /**
      * The the async operation status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param operationId The long running operation id.
@@ -569,12 +549,12 @@ public interface ClustersClient {
      * @return the azure async operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AsyncOperationResultInner getAzureAsyncOperationStatus(
-        String resourceGroupName, String clusterName, String operationId);
+    AsyncOperationResultInner getAzureAsyncOperationStatus(String resourceGroupName, String clusterName,
+        String operationId);
 
     /**
      * Updates the cluster identity certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster configurations.
@@ -584,12 +564,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateIdentityCertificate(
-        String resourceGroupName, String clusterName, UpdateClusterIdentityCertificateParameters parameters);
+    SyncPoller<PollResult<Void>, Void> beginUpdateIdentityCertificate(String resourceGroupName, String clusterName,
+        UpdateClusterIdentityCertificateParameters parameters);
 
     /**
      * Updates the cluster identity certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster configurations.
@@ -600,15 +580,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateIdentityCertificate(
-        String resourceGroupName,
-        String clusterName,
-        UpdateClusterIdentityCertificateParameters parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpdateIdentityCertificate(String resourceGroupName, String clusterName,
+        UpdateClusterIdentityCertificateParameters parameters, Context context);
 
     /**
      * Updates the cluster identity certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster configurations.
@@ -617,12 +594,12 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateIdentityCertificate(
-        String resourceGroupName, String clusterName, UpdateClusterIdentityCertificateParameters parameters);
+    void updateIdentityCertificate(String resourceGroupName, String clusterName,
+        UpdateClusterIdentityCertificateParameters parameters);
 
     /**
      * Updates the cluster identity certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The cluster configurations.
@@ -632,32 +609,29 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateIdentityCertificate(
-        String resourceGroupName,
-        String clusterName,
-        UpdateClusterIdentityCertificateParameters parameters,
-        Context context);
+    void updateIdentityCertificate(String resourceGroupName, String clusterName,
+        UpdateClusterIdentityCertificateParameters parameters, Context context);
 
     /**
      * Executes script actions on the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for executing script actions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 404.
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginExecuteScriptActions(
-        String resourceGroupName, String clusterName, ExecuteScriptActionParameters parameters);
+    SyncPoller<PollResult<Void>, Void> beginExecuteScriptActions(String resourceGroupName, String clusterName,
+        ExecuteScriptActionParameters parameters);
 
     /**
      * Executes script actions on the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for executing script actions.
@@ -665,24 +639,24 @@ public interface ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 404.
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginExecuteScriptActions(
-        String resourceGroupName, String clusterName, ExecuteScriptActionParameters parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginExecuteScriptActions(String resourceGroupName, String clusterName,
+        ExecuteScriptActionParameters parameters, Context context);
 
     /**
      * Executes script actions on the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for executing script actions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 404.
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -690,7 +664,7 @@ public interface ClustersClient {
 
     /**
      * Executes script actions on the specified HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for executing script actions.
@@ -698,10 +672,10 @@ public interface ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 404.
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void executeScriptActions(
-        String resourceGroupName, String clusterName, ExecuteScriptActionParameters parameters, Context context);
+    void executeScriptActions(String resourceGroupName, String clusterName, ExecuteScriptActionParameters parameters,
+        Context context);
 }

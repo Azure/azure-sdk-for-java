@@ -5,61 +5,62 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The edition capability. */
+/**
+ * The edition capability.
+ */
 @Fluent
-public final class EditionCapability {
+public final class EditionCapability implements JsonSerializable<EditionCapability> {
     /*
      * The database edition name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The list of supported service objectives for the edition.
      */
-    @JsonProperty(value = "supportedServiceLevelObjectives", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceObjectiveCapability> supportedServiceLevelObjectives;
 
     /*
      * Whether or not zone redundancy is supported for the edition.
      */
-    @JsonProperty(value = "zoneRedundant", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean zoneRedundant;
 
     /*
      * The read scale capability for the edition.
      */
-    @JsonProperty(value = "readScale", access = JsonProperty.Access.WRITE_ONLY)
     private ReadScaleCapability readScale;
 
     /*
      * The list of supported storage capabilities for this edition
      */
-    @JsonProperty(value = "supportedStorageCapabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageCapability> supportedStorageCapabilities;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of EditionCapability class. */
+    /**
+     * Creates an instance of EditionCapability class.
+     */
     public EditionCapability() {
     }
 
     /**
      * Get the name property: The database edition name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +69,7 @@ public final class EditionCapability {
 
     /**
      * Get the supportedServiceLevelObjectives property: The list of supported service objectives for the edition.
-     *
+     * 
      * @return the supportedServiceLevelObjectives value.
      */
     public List<ServiceObjectiveCapability> supportedServiceLevelObjectives() {
@@ -77,7 +78,7 @@ public final class EditionCapability {
 
     /**
      * Get the zoneRedundant property: Whether or not zone redundancy is supported for the edition.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -86,7 +87,7 @@ public final class EditionCapability {
 
     /**
      * Get the readScale property: The read scale capability for the edition.
-     *
+     * 
      * @return the readScale value.
      */
     public ReadScaleCapability readScale() {
@@ -95,7 +96,7 @@ public final class EditionCapability {
 
     /**
      * Get the supportedStorageCapabilities property: The list of supported storage capabilities for this edition.
-     *
+     * 
      * @return the supportedStorageCapabilities value.
      */
     public List<StorageCapability> supportedStorageCapabilities() {
@@ -104,7 +105,7 @@ public final class EditionCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -113,7 +114,7 @@ public final class EditionCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -122,7 +123,7 @@ public final class EditionCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the EditionCapability object itself.
      */
@@ -133,7 +134,7 @@ public final class EditionCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -146,5 +147,57 @@ public final class EditionCapability {
         if (supportedStorageCapabilities() != null) {
             supportedStorageCapabilities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EditionCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EditionCapability if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EditionCapability.
+     */
+    public static EditionCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EditionCapability deserializedEditionCapability = new EditionCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedEditionCapability.name = reader.getString();
+                } else if ("supportedServiceLevelObjectives".equals(fieldName)) {
+                    List<ServiceObjectiveCapability> supportedServiceLevelObjectives
+                        = reader.readArray(reader1 -> ServiceObjectiveCapability.fromJson(reader1));
+                    deserializedEditionCapability.supportedServiceLevelObjectives = supportedServiceLevelObjectives;
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedEditionCapability.zoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("readScale".equals(fieldName)) {
+                    deserializedEditionCapability.readScale = ReadScaleCapability.fromJson(reader);
+                } else if ("supportedStorageCapabilities".equals(fieldName)) {
+                    List<StorageCapability> supportedStorageCapabilities
+                        = reader.readArray(reader1 -> StorageCapability.fromJson(reader1));
+                    deserializedEditionCapability.supportedStorageCapabilities = supportedStorageCapabilities;
+                } else if ("status".equals(fieldName)) {
+                    deserializedEditionCapability.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedEditionCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEditionCapability;
+        });
     }
 }

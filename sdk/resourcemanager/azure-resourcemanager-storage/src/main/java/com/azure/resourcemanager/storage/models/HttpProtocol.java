@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The protocol permitted for a request made with the account SAS.
  */
@@ -36,7 +33,6 @@ public enum HttpProtocol {
      * @param value the serialized value to parse.
      * @return the parsed HttpProtocol object, or null if unable to parse.
      */
-    @JsonCreator
     public static HttpProtocol fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum HttpProtocol {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

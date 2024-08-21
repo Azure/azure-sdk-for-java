@@ -18,7 +18,10 @@ public final class BuildServiceBuilderDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildServiceBuilderDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBuildServiceBuilders().delete("myResourceGroup",
-            "myservice", "default", "mybuilder", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBuildServiceBuilders()
+            .delete("myResourceGroup", "myservice", "default", "mybuilder", com.azure.core.util.Context.NONE);
     }
 }

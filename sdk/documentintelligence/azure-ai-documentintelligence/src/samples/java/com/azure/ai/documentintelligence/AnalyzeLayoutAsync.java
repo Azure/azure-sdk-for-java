@@ -50,6 +50,7 @@ public class AnalyzeLayoutAsync {
                 null,
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =

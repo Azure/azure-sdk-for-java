@@ -12,23 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupRestoreFiles model = BinaryData
-            .fromString(
-                "{\"fileList\":[\"zfvazi\"],\"restoreFilePath\":\"l\",\"destinationVolumeId\":\"rqttbajlkatnw\"}")
+        BackupRestoreFiles model = BinaryData.fromString(
+            "{\"fileList\":[\"tcubiipuipwoqonm\",\"cje\"],\"restoreFilePath\":\"izsh\",\"destinationVolumeId\":\"vcimpev\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("zfvazi", model.fileList().get(0));
-        Assertions.assertEquals("l", model.restoreFilePath());
-        Assertions.assertEquals("rqttbajlkatnw", model.destinationVolumeId());
+        Assertions.assertEquals("tcubiipuipwoqonm", model.fileList().get(0));
+        Assertions.assertEquals("izsh", model.restoreFilePath());
+        Assertions.assertEquals("vcimpev", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("zfvazi"))
-            .withRestoreFilePath("l")
-            .withDestinationVolumeId("rqttbajlkatnw");
+        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("tcubiipuipwoqonm", "cje"))
+            .withRestoreFilePath("izsh")
+            .withDestinationVolumeId("vcimpev");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("zfvazi", model.fileList().get(0));
-        Assertions.assertEquals("l", model.restoreFilePath());
-        Assertions.assertEquals("rqttbajlkatnw", model.destinationVolumeId());
+        Assertions.assertEquals("tcubiipuipwoqonm", model.fileList().get(0));
+        Assertions.assertEquals("izsh", model.restoreFilePath());
+        Assertions.assertEquals("vcimpev", model.destinationVolumeId());
     }
 }

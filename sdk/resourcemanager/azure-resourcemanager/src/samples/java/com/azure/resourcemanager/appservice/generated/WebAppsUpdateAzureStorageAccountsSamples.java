@@ -7,7 +7,6 @@ package com.azure.resourcemanager.appservice.generated;
 import com.azure.resourcemanager.appservice.fluent.models.AzureStoragePropertyDictionaryResourceInner;
 import com.azure.resourcemanager.appservice.models.AzureStorageInfoValue;
 import com.azure.resourcemanager.appservice.models.AzureStorageType;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,11 +15,12 @@ import java.util.Map;
  */
 public final class WebAppsUpdateAzureStorageAccountsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAzureStorageAccounts.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAzureStorageAccounts.json
      */
     /**
      * Sample code: Update Azure Storage Accounts.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAzureStorageAccounts(com.azure.resourcemanager.AzureResourceManager azure) {

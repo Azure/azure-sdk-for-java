@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,17 +17,15 @@ import java.util.List;
  * are empty, then the packet capture will run on all instances of AzureVMSS.
  */
 @Fluent
-public final class PacketCaptureMachineScope {
+public final class PacketCaptureMachineScope implements JsonSerializable<PacketCaptureMachineScope> {
     /*
      * List of AzureVMSS instances to run packet capture on.
      */
-    @JsonProperty(value = "include")
     private List<String> include;
 
     /*
      * List of AzureVMSS instances which has to be excluded from the AzureVMSS from running packet capture.
      */
-    @JsonProperty(value = "exclude")
     private List<String> exclude;
 
     /**
@@ -80,5 +82,46 @@ public final class PacketCaptureMachineScope {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("include", this.include, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("exclude", this.exclude, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCaptureMachineScope from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCaptureMachineScope if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PacketCaptureMachineScope.
+     */
+    public static PacketCaptureMachineScope fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCaptureMachineScope deserializedPacketCaptureMachineScope = new PacketCaptureMachineScope();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("include".equals(fieldName)) {
+                    List<String> include = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPacketCaptureMachineScope.include = include;
+                } else if ("exclude".equals(fieldName)) {
+                    List<String> exclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPacketCaptureMachineScope.exclude = exclude;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCaptureMachineScope;
+        });
     }
 }

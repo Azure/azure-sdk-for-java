@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Object level immutability properties of the container.
  */
 @Fluent
-public final class ImmutableStorageWithVersioning {
+public final class ImmutableStorageWithVersioning implements JsonSerializable<ImmutableStorageWithVersioning> {
     /*
      * This is an immutable property, when set to true it enables object level immutability at the container level.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Returns the date and time the object level immutability was enabled.
      */
-    @JsonProperty(value = "timeStamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * This property denotes the container level immutability to object level immutability migration state.
      */
-    @JsonProperty(value = "migrationState", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState migrationState;
 
     /**
@@ -84,5 +86,48 @@ public final class ImmutableStorageWithVersioning {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImmutableStorageWithVersioning from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImmutableStorageWithVersioning if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImmutableStorageWithVersioning.
+     */
+    public static ImmutableStorageWithVersioning fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImmutableStorageWithVersioning deserializedImmutableStorageWithVersioning
+                = new ImmutableStorageWithVersioning();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedImmutableStorageWithVersioning.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("timeStamp".equals(fieldName)) {
+                    deserializedImmutableStorageWithVersioning.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("migrationState".equals(fieldName)) {
+                    deserializedImmutableStorageWithVersioning.migrationState
+                        = MigrationState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImmutableStorageWithVersioning;
+        });
     }
 }

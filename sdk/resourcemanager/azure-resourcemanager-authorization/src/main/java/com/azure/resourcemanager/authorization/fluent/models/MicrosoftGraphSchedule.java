@@ -5,143 +5,128 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** schedule. */
+/**
+ * schedule.
+ */
 @Fluent
 public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
     /*
      * Indicates whether the schedule is enabled for the team. Required.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Indicates whether offer shift requests are enabled for the schedule.
      */
-    @JsonProperty(value = "offerShiftRequestsEnabled")
     private Boolean offerShiftRequestsEnabled;
 
     /*
      * Indicates whether open shifts are enabled for the schedule.
      */
-    @JsonProperty(value = "openShiftsEnabled")
     private Boolean openShiftsEnabled;
 
     /*
      * operationStatus
      */
-    @JsonProperty(value = "provisionStatus")
     private MicrosoftGraphOperationStatus provisionStatus;
 
     /*
      * Additional information about why schedule provisioning failed.
      */
-    @JsonProperty(value = "provisionStatusCode")
     private String provisionStatusCode;
 
     /*
      * Indicates whether swap shifts requests are enabled for the schedule.
      */
-    @JsonProperty(value = "swapShiftsRequestsEnabled")
     private Boolean swapShiftsRequestsEnabled;
 
     /*
      * Indicates whether time clock is enabled for the schedule.
      */
-    @JsonProperty(value = "timeClockEnabled")
     private Boolean timeClockEnabled;
 
     /*
      * Indicates whether time off requests are enabled for the schedule.
      */
-    @JsonProperty(value = "timeOffRequestsEnabled")
     private Boolean timeOffRequestsEnabled;
 
     /*
      * Indicates the time zone of the schedule team using tz database format. Required.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * The workforceIntegrationIds property.
      */
-    @JsonProperty(value = "workforceIntegrationIds")
     private List<String> workforceIntegrationIds;
 
     /*
      * The offerShiftRequests property.
      */
-    @JsonProperty(value = "offerShiftRequests")
     private List<MicrosoftGraphOfferShiftRequest> offerShiftRequests;
 
     /*
      * The openShiftChangeRequests property.
      */
-    @JsonProperty(value = "openShiftChangeRequests")
     private List<MicrosoftGraphOpenShiftChangeRequest> openShiftChangeRequests;
 
     /*
      * The openShifts property.
      */
-    @JsonProperty(value = "openShifts")
     private List<MicrosoftGraphOpenShift> openShifts;
 
     /*
      * The logical grouping of users in the schedule (usually by role).
      */
-    @JsonProperty(value = "schedulingGroups")
     private List<MicrosoftGraphSchedulingGroup> schedulingGroups;
 
     /*
      * The shifts in the schedule.
      */
-    @JsonProperty(value = "shifts")
     private List<MicrosoftGraphShift> shifts;
 
     /*
      * The swapShiftsChangeRequests property.
      */
-    @JsonProperty(value = "swapShiftsChangeRequests")
     private List<MicrosoftGraphSwapShiftsChangeRequest> swapShiftsChangeRequests;
 
     /*
      * The set of reasons for a time off in the schedule.
      */
-    @JsonProperty(value = "timeOffReasons")
     private List<MicrosoftGraphTimeOffReason> timeOffReasons;
 
     /*
      * The timeOffRequests property.
      */
-    @JsonProperty(value = "timeOffRequests")
     private List<MicrosoftGraphTimeOffRequest> timeOffRequests;
 
     /*
      * The instances of times off in the schedule.
      */
-    @JsonProperty(value = "timesOff")
     private List<MicrosoftGraphTimeOff> timesOff;
 
     /*
      * schedule
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSchedule class. */
+    /**
+     * Creates an instance of MicrosoftGraphSchedule class.
+     */
     public MicrosoftGraphSchedule() {
     }
 
     /**
      * Get the enabled property: Indicates whether the schedule is enabled for the team. Required.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -150,7 +135,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the enabled property: Indicates whether the schedule is enabled for the team. Required.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -161,7 +146,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the offerShiftRequestsEnabled property: Indicates whether offer shift requests are enabled for the schedule.
-     *
+     * 
      * @return the offerShiftRequestsEnabled value.
      */
     public Boolean offerShiftRequestsEnabled() {
@@ -170,7 +155,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the offerShiftRequestsEnabled property: Indicates whether offer shift requests are enabled for the schedule.
-     *
+     * 
      * @param offerShiftRequestsEnabled the offerShiftRequestsEnabled value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -181,7 +166,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the openShiftsEnabled property: Indicates whether open shifts are enabled for the schedule.
-     *
+     * 
      * @return the openShiftsEnabled value.
      */
     public Boolean openShiftsEnabled() {
@@ -190,7 +175,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the openShiftsEnabled property: Indicates whether open shifts are enabled for the schedule.
-     *
+     * 
      * @param openShiftsEnabled the openShiftsEnabled value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -201,7 +186,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the provisionStatus property: operationStatus.
-     *
+     * 
      * @return the provisionStatus value.
      */
     public MicrosoftGraphOperationStatus provisionStatus() {
@@ -210,7 +195,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the provisionStatus property: operationStatus.
-     *
+     * 
      * @param provisionStatus the provisionStatus value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -221,7 +206,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the provisionStatusCode property: Additional information about why schedule provisioning failed.
-     *
+     * 
      * @return the provisionStatusCode value.
      */
     public String provisionStatusCode() {
@@ -230,7 +215,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the provisionStatusCode property: Additional information about why schedule provisioning failed.
-     *
+     * 
      * @param provisionStatusCode the provisionStatusCode value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -241,7 +226,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the swapShiftsRequestsEnabled property: Indicates whether swap shifts requests are enabled for the schedule.
-     *
+     * 
      * @return the swapShiftsRequestsEnabled value.
      */
     public Boolean swapShiftsRequestsEnabled() {
@@ -250,7 +235,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the swapShiftsRequestsEnabled property: Indicates whether swap shifts requests are enabled for the schedule.
-     *
+     * 
      * @param swapShiftsRequestsEnabled the swapShiftsRequestsEnabled value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -261,7 +246,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the timeClockEnabled property: Indicates whether time clock is enabled for the schedule.
-     *
+     * 
      * @return the timeClockEnabled value.
      */
     public Boolean timeClockEnabled() {
@@ -270,7 +255,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the timeClockEnabled property: Indicates whether time clock is enabled for the schedule.
-     *
+     * 
      * @param timeClockEnabled the timeClockEnabled value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -281,7 +266,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the timeOffRequestsEnabled property: Indicates whether time off requests are enabled for the schedule.
-     *
+     * 
      * @return the timeOffRequestsEnabled value.
      */
     public Boolean timeOffRequestsEnabled() {
@@ -290,7 +275,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the timeOffRequestsEnabled property: Indicates whether time off requests are enabled for the schedule.
-     *
+     * 
      * @param timeOffRequestsEnabled the timeOffRequestsEnabled value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -301,7 +286,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the timeZone property: Indicates the time zone of the schedule team using tz database format. Required.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -310,7 +295,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the timeZone property: Indicates the time zone of the schedule team using tz database format. Required.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -321,7 +306,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the workforceIntegrationIds property: The workforceIntegrationIds property.
-     *
+     * 
      * @return the workforceIntegrationIds value.
      */
     public List<String> workforceIntegrationIds() {
@@ -330,7 +315,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the workforceIntegrationIds property: The workforceIntegrationIds property.
-     *
+     * 
      * @param workforceIntegrationIds the workforceIntegrationIds value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -341,7 +326,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the offerShiftRequests property: The offerShiftRequests property.
-     *
+     * 
      * @return the offerShiftRequests value.
      */
     public List<MicrosoftGraphOfferShiftRequest> offerShiftRequests() {
@@ -350,7 +335,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the offerShiftRequests property: The offerShiftRequests property.
-     *
+     * 
      * @param offerShiftRequests the offerShiftRequests value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -361,7 +346,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the openShiftChangeRequests property: The openShiftChangeRequests property.
-     *
+     * 
      * @return the openShiftChangeRequests value.
      */
     public List<MicrosoftGraphOpenShiftChangeRequest> openShiftChangeRequests() {
@@ -370,19 +355,19 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the openShiftChangeRequests property: The openShiftChangeRequests property.
-     *
+     * 
      * @param openShiftChangeRequests the openShiftChangeRequests value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
-    public MicrosoftGraphSchedule withOpenShiftChangeRequests(
-        List<MicrosoftGraphOpenShiftChangeRequest> openShiftChangeRequests) {
+    public MicrosoftGraphSchedule
+        withOpenShiftChangeRequests(List<MicrosoftGraphOpenShiftChangeRequest> openShiftChangeRequests) {
         this.openShiftChangeRequests = openShiftChangeRequests;
         return this;
     }
 
     /**
      * Get the openShifts property: The openShifts property.
-     *
+     * 
      * @return the openShifts value.
      */
     public List<MicrosoftGraphOpenShift> openShifts() {
@@ -391,7 +376,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the openShifts property: The openShifts property.
-     *
+     * 
      * @param openShifts the openShifts value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -402,7 +387,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the schedulingGroups property: The logical grouping of users in the schedule (usually by role).
-     *
+     * 
      * @return the schedulingGroups value.
      */
     public List<MicrosoftGraphSchedulingGroup> schedulingGroups() {
@@ -411,7 +396,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the schedulingGroups property: The logical grouping of users in the schedule (usually by role).
-     *
+     * 
      * @param schedulingGroups the schedulingGroups value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -422,7 +407,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the shifts property: The shifts in the schedule.
-     *
+     * 
      * @return the shifts value.
      */
     public List<MicrosoftGraphShift> shifts() {
@@ -431,7 +416,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the shifts property: The shifts in the schedule.
-     *
+     * 
      * @param shifts the shifts value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -442,7 +427,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the swapShiftsChangeRequests property: The swapShiftsChangeRequests property.
-     *
+     * 
      * @return the swapShiftsChangeRequests value.
      */
     public List<MicrosoftGraphSwapShiftsChangeRequest> swapShiftsChangeRequests() {
@@ -451,19 +436,19 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the swapShiftsChangeRequests property: The swapShiftsChangeRequests property.
-     *
+     * 
      * @param swapShiftsChangeRequests the swapShiftsChangeRequests value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
-    public MicrosoftGraphSchedule withSwapShiftsChangeRequests(
-        List<MicrosoftGraphSwapShiftsChangeRequest> swapShiftsChangeRequests) {
+    public MicrosoftGraphSchedule
+        withSwapShiftsChangeRequests(List<MicrosoftGraphSwapShiftsChangeRequest> swapShiftsChangeRequests) {
         this.swapShiftsChangeRequests = swapShiftsChangeRequests;
         return this;
     }
 
     /**
      * Get the timeOffReasons property: The set of reasons for a time off in the schedule.
-     *
+     * 
      * @return the timeOffReasons value.
      */
     public List<MicrosoftGraphTimeOffReason> timeOffReasons() {
@@ -472,7 +457,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the timeOffReasons property: The set of reasons for a time off in the schedule.
-     *
+     * 
      * @param timeOffReasons the timeOffReasons value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -483,7 +468,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the timeOffRequests property: The timeOffRequests property.
-     *
+     * 
      * @return the timeOffRequests value.
      */
     public List<MicrosoftGraphTimeOffRequest> timeOffRequests() {
@@ -492,7 +477,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the timeOffRequests property: The timeOffRequests property.
-     *
+     * 
      * @param timeOffRequests the timeOffRequests value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -503,7 +488,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the timesOff property: The instances of times off in the schedule.
-     *
+     * 
      * @return the timesOff value.
      */
     public List<MicrosoftGraphTimeOff> timesOff() {
@@ -512,7 +497,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Set the timesOff property: The instances of times off in the schedule.
-     *
+     * 
      * @param timesOff the timesOff value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -523,17 +508,16 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: schedule.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: schedule.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSchedule object itself.
      */
@@ -542,15 +526,9 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSchedule withId(String id) {
         super.withId(id);
@@ -559,7 +537,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -592,5 +570,140 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
         if (timesOff() != null) {
             timesOff().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeBooleanField("offerShiftRequestsEnabled", this.offerShiftRequestsEnabled);
+        jsonWriter.writeBooleanField("openShiftsEnabled", this.openShiftsEnabled);
+        jsonWriter.writeStringField("provisionStatus",
+            this.provisionStatus == null ? null : this.provisionStatus.toString());
+        jsonWriter.writeStringField("provisionStatusCode", this.provisionStatusCode);
+        jsonWriter.writeBooleanField("swapShiftsRequestsEnabled", this.swapShiftsRequestsEnabled);
+        jsonWriter.writeBooleanField("timeClockEnabled", this.timeClockEnabled);
+        jsonWriter.writeBooleanField("timeOffRequestsEnabled", this.timeOffRequestsEnabled);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeArrayField("workforceIntegrationIds", this.workforceIntegrationIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("offerShiftRequests", this.offerShiftRequests,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("openShiftChangeRequests", this.openShiftChangeRequests,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("openShifts", this.openShifts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("schedulingGroups", this.schedulingGroups,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("shifts", this.shifts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("swapShiftsChangeRequests", this.swapShiftsChangeRequests,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("timeOffReasons", this.timeOffReasons,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("timeOffRequests", this.timeOffRequests,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("timesOff", this.timesOff, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSchedule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSchedule.
+     */
+    public static MicrosoftGraphSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSchedule deserializedMicrosoftGraphSchedule = new MicrosoftGraphSchedule();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedule.withId(reader.getString());
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedule.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("offerShiftRequestsEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedule.offerShiftRequestsEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("openShiftsEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedule.openShiftsEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisionStatus".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedule.provisionStatus
+                        = MicrosoftGraphOperationStatus.fromString(reader.getString());
+                } else if ("provisionStatusCode".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedule.provisionStatusCode = reader.getString();
+                } else if ("swapShiftsRequestsEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedule.swapShiftsRequestsEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("timeClockEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedule.timeClockEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("timeOffRequestsEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedule.timeOffRequestsEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedMicrosoftGraphSchedule.timeZone = reader.getString();
+                } else if ("workforceIntegrationIds".equals(fieldName)) {
+                    List<String> workforceIntegrationIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphSchedule.workforceIntegrationIds = workforceIntegrationIds;
+                } else if ("offerShiftRequests".equals(fieldName)) {
+                    List<MicrosoftGraphOfferShiftRequest> offerShiftRequests
+                        = reader.readArray(reader1 -> MicrosoftGraphOfferShiftRequest.fromJson(reader1));
+                    deserializedMicrosoftGraphSchedule.offerShiftRequests = offerShiftRequests;
+                } else if ("openShiftChangeRequests".equals(fieldName)) {
+                    List<MicrosoftGraphOpenShiftChangeRequest> openShiftChangeRequests
+                        = reader.readArray(reader1 -> MicrosoftGraphOpenShiftChangeRequest.fromJson(reader1));
+                    deserializedMicrosoftGraphSchedule.openShiftChangeRequests = openShiftChangeRequests;
+                } else if ("openShifts".equals(fieldName)) {
+                    List<MicrosoftGraphOpenShift> openShifts
+                        = reader.readArray(reader1 -> MicrosoftGraphOpenShift.fromJson(reader1));
+                    deserializedMicrosoftGraphSchedule.openShifts = openShifts;
+                } else if ("schedulingGroups".equals(fieldName)) {
+                    List<MicrosoftGraphSchedulingGroup> schedulingGroups
+                        = reader.readArray(reader1 -> MicrosoftGraphSchedulingGroup.fromJson(reader1));
+                    deserializedMicrosoftGraphSchedule.schedulingGroups = schedulingGroups;
+                } else if ("shifts".equals(fieldName)) {
+                    List<MicrosoftGraphShift> shifts
+                        = reader.readArray(reader1 -> MicrosoftGraphShift.fromJson(reader1));
+                    deserializedMicrosoftGraphSchedule.shifts = shifts;
+                } else if ("swapShiftsChangeRequests".equals(fieldName)) {
+                    List<MicrosoftGraphSwapShiftsChangeRequest> swapShiftsChangeRequests
+                        = reader.readArray(reader1 -> MicrosoftGraphSwapShiftsChangeRequest.fromJson(reader1));
+                    deserializedMicrosoftGraphSchedule.swapShiftsChangeRequests = swapShiftsChangeRequests;
+                } else if ("timeOffReasons".equals(fieldName)) {
+                    List<MicrosoftGraphTimeOffReason> timeOffReasons
+                        = reader.readArray(reader1 -> MicrosoftGraphTimeOffReason.fromJson(reader1));
+                    deserializedMicrosoftGraphSchedule.timeOffReasons = timeOffReasons;
+                } else if ("timeOffRequests".equals(fieldName)) {
+                    List<MicrosoftGraphTimeOffRequest> timeOffRequests
+                        = reader.readArray(reader1 -> MicrosoftGraphTimeOffRequest.fromJson(reader1));
+                    deserializedMicrosoftGraphSchedule.timeOffRequests = timeOffRequests;
+                } else if ("timesOff".equals(fieldName)) {
+                    List<MicrosoftGraphTimeOff> timesOff
+                        = reader.readArray(reader1 -> MicrosoftGraphTimeOff.fromJson(reader1));
+                    deserializedMicrosoftGraphSchedule.timesOff = timesOff;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSchedule.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSchedule;
+        });
     }
 }

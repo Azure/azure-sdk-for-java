@@ -5,66 +5,61 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the network rule.
  */
 @Fluent
-public final class AzureFirewallNetworkRule {
+public final class AzureFirewallNetworkRule implements JsonSerializable<AzureFirewallNetworkRule> {
     /*
      * Name of the network rule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Description of the rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Array of AzureFirewallNetworkRuleProtocols.
      */
-    @JsonProperty(value = "protocols")
     private List<AzureFirewallNetworkRuleProtocol> protocols;
 
     /*
      * List of source IP addresses for this rule.
      */
-    @JsonProperty(value = "sourceAddresses")
     private List<String> sourceAddresses;
 
     /*
      * List of destination IP addresses.
      */
-    @JsonProperty(value = "destinationAddresses")
     private List<String> destinationAddresses;
 
     /*
      * List of destination ports.
      */
-    @JsonProperty(value = "destinationPorts")
     private List<String> destinationPorts;
 
     /*
      * List of destination FQDNs.
      */
-    @JsonProperty(value = "destinationFqdns")
     private List<String> destinationFqdns;
 
     /*
      * List of source IpGroups for this rule.
      */
-    @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
 
     /*
      * List of destination IpGroups for this rule.
      */
-    @JsonProperty(value = "destinationIpGroups")
     private List<String> destinationIpGroups;
 
     /**
@@ -259,5 +254,80 @@ public final class AzureFirewallNetworkRule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("protocols", this.protocols,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("sourceAddresses", this.sourceAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationAddresses", this.destinationAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationPorts", this.destinationPorts,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationFqdns", this.destinationFqdns,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sourceIpGroups", this.sourceIpGroups,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationIpGroups", this.destinationIpGroups,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFirewallNetworkRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFirewallNetworkRule if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFirewallNetworkRule.
+     */
+    public static AzureFirewallNetworkRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFirewallNetworkRule deserializedAzureFirewallNetworkRule = new AzureFirewallNetworkRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureFirewallNetworkRule.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureFirewallNetworkRule.description = reader.getString();
+                } else if ("protocols".equals(fieldName)) {
+                    List<AzureFirewallNetworkRuleProtocol> protocols
+                        = reader.readArray(reader1 -> AzureFirewallNetworkRuleProtocol.fromString(reader1.getString()));
+                    deserializedAzureFirewallNetworkRule.protocols = protocols;
+                } else if ("sourceAddresses".equals(fieldName)) {
+                    List<String> sourceAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallNetworkRule.sourceAddresses = sourceAddresses;
+                } else if ("destinationAddresses".equals(fieldName)) {
+                    List<String> destinationAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallNetworkRule.destinationAddresses = destinationAddresses;
+                } else if ("destinationPorts".equals(fieldName)) {
+                    List<String> destinationPorts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallNetworkRule.destinationPorts = destinationPorts;
+                } else if ("destinationFqdns".equals(fieldName)) {
+                    List<String> destinationFqdns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallNetworkRule.destinationFqdns = destinationFqdns;
+                } else if ("sourceIpGroups".equals(fieldName)) {
+                    List<String> sourceIpGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallNetworkRule.sourceIpGroups = sourceIpGroups;
+                } else if ("destinationIpGroups".equals(fieldName)) {
+                    List<String> destinationIpGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallNetworkRule.destinationIpGroups = destinationIpGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFirewallNetworkRule;
+        });
     }
 }

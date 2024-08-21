@@ -29,9 +29,8 @@ public class AksResourceAttributesTest {
 
     @Test
     void testDefault() {
-        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
-                "otel.resource.attributes",
-                "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java"));
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap("otel.resource.attributes",
+            "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
 
         new ResourceParser().updateRoleNameAndInstance(builder, resource);
@@ -43,100 +42,85 @@ public class AksResourceAttributesTest {
 
     @Test
     void testServiceNameAndK8sPodName() {
-        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
-                "otel.resource.attributes",
-                "cloud.provider=Azure,cloud.platform=azure_aks,service.name=test-service-name,k8s.pod.name=test-pod-name"));
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap("otel.resource.attributes",
+            "cloud.provider=Azure,cloud.platform=azure_aks,service.name=test-service-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
 
         new ResourceParser().updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("test-service-name");
-        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
-            .isEqualTo("test-pod-name");
+        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())).isEqualTo("test-pod-name");
     }
 
     @Test
     void testK8sDeploymentName() {
-        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
-                "otel.resource.attributes",
-                "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.deployment.name=test-deployment-name,k8s.pod.name=test-pod-name"));
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap("otel.resource.attributes",
+            "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.deployment.name=test-deployment-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
 
         new ResourceParser().updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("test-deployment-name");
-        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
-            .isEqualTo("test-pod-name");
+        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())).isEqualTo("test-pod-name");
     }
 
     @Test
     void testK8sReplicaSetName() {
-        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
-                "otel.resource.attributes",
-                "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.replicaset.name=test-replicaset-name,k8s.pod.name=test-pod-name"));
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap("otel.resource.attributes",
+            "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.replicaset.name=test-replicaset-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
 
         new ResourceParser().updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("test-replicaset-name");
-        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
-            .isEqualTo("test-pod-name");
+        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())).isEqualTo("test-pod-name");
     }
 
     @Test
     void testK8sStatefulSetName() {
-        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
-                "otel.resource.attributes",
-                "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.statefulset.name=test-statefulset-name,k8s.pod.name=test-pod-name"));
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap("otel.resource.attributes",
+            "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.statefulset.name=test-statefulset-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
 
         new ResourceParser().updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
-        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
-            .isEqualTo("test-statefulset-name");
-        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
-            .isEqualTo("test-pod-name");
+        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("test-statefulset-name");
+        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())).isEqualTo("test-pod-name");
     }
 
     @Test
     void testKsJobName() {
-        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
-                "otel.resource.attributes",
-                "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.job.name=test-job-name,k8s.pod.name=test-pod-name"));
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap("otel.resource.attributes",
+            "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.job.name=test-job-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
 
         new ResourceParser().updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("test-job-name");
-        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
-            .isEqualTo("test-pod-name");
+        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())).isEqualTo("test-pod-name");
     }
 
     @Test
     void testK8sCronJobName() {
-        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
-                "otel.resource.attributes",
-                "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.cronjob.name=test-cronjob-name,k8s.pod.name=test-pod-name"));
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap("otel.resource.attributes",
+            "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.cronjob.name=test-cronjob-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
 
         new ResourceParser().updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("test-cronjob-name");
-        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
-            .isEqualTo("test-pod-name");
+        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())).isEqualTo("test-pod-name");
     }
 
     @Test
     void testK8sDaemonSetName() {
-        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
-                "otel.resource.attributes",
-                "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.daemonset.name=test-daemonset-name,k8s.pod.name=test-pod-name"));
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap("otel.resource.attributes",
+            "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.daemonset.name=test-daemonset-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
 
         new ResourceParser().updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("test-daemonset-name");
-        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
-            .isEqualTo("test-pod-name");
+        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())).isEqualTo("test-pod-name");
     }
 }

@@ -96,8 +96,9 @@ public interface Volume {
 
     /**
      * Gets the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-     * LargeVolume on exceptional basis. Specified in bytes.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -594,12 +595,14 @@ public interface Volume {
         interface WithUsageThreshold {
             /**
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
-             * a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for
-             * LargeVolume or 2400Tib for LargeVolume on exceptional basis. Specified in bytes..
+             * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
-             * for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-             * LargeVolume on exceptional basis. Specified in bytes.
+             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
             WithSubnetId withUsageThreshold(long usageThreshold);
@@ -1272,12 +1275,14 @@ public interface Volume {
         interface WithUsageThreshold {
             /**
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
-             * a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for
-             * LargeVolume or 2400Tib for LargeVolume on exceptional basis. Specified in bytes..
+             * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
-             * for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-             * LargeVolume on exceptional basis. Specified in bytes.
+             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
             Update withUsageThreshold(Long usageThreshold);

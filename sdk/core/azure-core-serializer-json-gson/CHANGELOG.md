@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2024-07-31)
+
+### Features Added
+
+- Added implementations of `azure-json`'s `JsonElement` that wrap `JsonArray` and `JsonObject` to simplify combining
+  GSON functionality with `azure-json` functionality.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to `1.51.0`.
 
 ## 1.2.14 (2024-07-12)
 ### Other Changes

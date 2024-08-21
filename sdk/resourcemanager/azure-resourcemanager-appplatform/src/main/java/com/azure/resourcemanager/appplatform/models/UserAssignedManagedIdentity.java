@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The details of the user-assigned managed identity assigned to an App.
  */
 @Immutable
-public final class UserAssignedManagedIdentity {
+public final class UserAssignedManagedIdentity implements JsonSerializable<UserAssignedManagedIdentity> {
     /*
      * Principal Id of user-assigned managed identity.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * Client Id of user-assigned managed identity.
      */
-    @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
     /**
@@ -54,5 +56,42 @@ public final class UserAssignedManagedIdentity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAssignedManagedIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAssignedManagedIdentity if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserAssignedManagedIdentity.
+     */
+    public static UserAssignedManagedIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAssignedManagedIdentity deserializedUserAssignedManagedIdentity = new UserAssignedManagedIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedUserAssignedManagedIdentity.principalId = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedUserAssignedManagedIdentity.clientId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAssignedManagedIdentity;
+        });
     }
 }

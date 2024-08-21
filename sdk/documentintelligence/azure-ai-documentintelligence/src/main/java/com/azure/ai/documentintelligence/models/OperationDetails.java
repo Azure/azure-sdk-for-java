@@ -311,6 +311,8 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
                     return DocumentModelComposeOperationDetails.fromJson(readerToUse.reset());
                 } else if ("documentModelCopyTo".equals(discriminatorValue)) {
                     return DocumentModelCopyToOperationDetails.fromJson(readerToUse.reset());
+                } else if ("documentClassifierCopyTo".equals(discriminatorValue)) {
+                    return DocumentClassifierCopyToOperationDetails.fromJson(readerToUse.reset());
                 } else if ("documentClassifierBuild".equals(discriminatorValue)) {
                     return DocumentClassifierBuildOperationDetails.fromJson(readerToUse.reset());
                 } else if ("documentModelBuild".equals(discriminatorValue)) {

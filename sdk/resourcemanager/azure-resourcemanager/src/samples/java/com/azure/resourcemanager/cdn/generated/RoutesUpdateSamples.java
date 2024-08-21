@@ -31,9 +31,13 @@ public final class RoutesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routesUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getRoutes().update("RG", "profile1", "endpoint1", "route1",
-            new RouteUpdateParameters().withCustomDomains(Arrays.asList(new ActivatedResourceReference().withId(
-                "/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1")))
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getRoutes()
+            .update("RG", "profile1", "endpoint1", "route1", new RouteUpdateParameters()
+                .withCustomDomains(Arrays.asList(new ActivatedResourceReference().withId(
+                    "/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/customDomains/domain1")))
                 .withOriginGroup(new ResourceReference().withId(
                     "/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/originGroups/originGroup1"))
                 .withRuleSets(Arrays.asList(new ResourceReference().withId(
@@ -46,8 +50,8 @@ public final class RoutesUpdateSamples {
                         .withContentTypesToCompress(Arrays.asList("text/html", "application/octet-stream"))
                         .withIsCompressionEnabled(true)))
                 .withForwardingProtocol(ForwardingProtocol.MATCH_REQUEST)
-                .withLinkToDefaultDomain(LinkToDefaultDomain.ENABLED).withHttpsRedirect(HttpsRedirect.ENABLED)
-                .withEnabledState(EnabledState.ENABLED),
-            com.azure.core.util.Context.NONE);
+                .withLinkToDefaultDomain(LinkToDefaultDomain.ENABLED)
+                .withHttpsRedirect(HttpsRedirect.ENABLED)
+                .withEnabledState(EnabledState.ENABLED), com.azure.core.util.Context.NONE);
     }
 }

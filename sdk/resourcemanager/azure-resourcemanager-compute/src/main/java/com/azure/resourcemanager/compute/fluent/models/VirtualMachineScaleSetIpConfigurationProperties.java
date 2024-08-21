@@ -6,40 +6,41 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.IpVersion;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAddressConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a virtual machine scale set network profile's IP configuration properties.
  */
 @Fluent
-public final class VirtualMachineScaleSetIpConfigurationProperties {
+public final class VirtualMachineScaleSetIpConfigurationProperties
+    implements JsonSerializable<VirtualMachineScaleSetIpConfigurationProperties> {
     /*
      * Specifies the identifier of the subnet.
      */
-    @JsonProperty(value = "subnet")
     private ApiEntityReference subnet;
 
     /*
      * Specifies the primary network interface in case the virtual machine has more than 1 network interface.
      */
-    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
      * The publicIPAddressConfiguration.
      */
-    @JsonProperty(value = "publicIPAddressConfiguration")
     private VirtualMachineScaleSetPublicIpAddressConfiguration publicIpAddressConfiguration;
 
     /*
      * Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or
      * IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      */
-    @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
 
     /*
@@ -47,13 +48,11 @@ public final class VirtualMachineScaleSetIpConfigurationProperties {
      * backend address pools of multiple application gateways. Multiple scale sets cannot use the same application
      * gateway.
      */
-    @JsonProperty(value = "applicationGatewayBackendAddressPools")
     private List<SubResource> applicationGatewayBackendAddressPools;
 
     /*
      * Specifies an array of references to application security group.
      */
-    @JsonProperty(value = "applicationSecurityGroups")
     private List<SubResource> applicationSecurityGroups;
 
     /*
@@ -61,7 +60,6 @@ public final class VirtualMachineScaleSetIpConfigurationProperties {
      * address pools of one public and one internal load balancer. Multiple scale sets cannot use the same basic sku
      * load balancer.
      */
-    @JsonProperty(value = "loadBalancerBackendAddressPools")
     private List<SubResource> loadBalancerBackendAddressPools;
 
     /*
@@ -69,7 +67,6 @@ public final class VirtualMachineScaleSetIpConfigurationProperties {
      * nat pools of one public and one internal load balancer. Multiple scale sets cannot use the same basic sku load
      * balancer.
      */
-    @JsonProperty(value = "loadBalancerInboundNatPools")
     private List<SubResource> loadBalancerInboundNatPools;
 
     /**
@@ -272,5 +269,84 @@ public final class VirtualMachineScaleSetIpConfigurationProperties {
         if (publicIpAddressConfiguration() != null) {
             publicIpAddressConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeBooleanField("primary", this.primary);
+        jsonWriter.writeJsonField("publicIPAddressConfiguration", this.publicIpAddressConfiguration);
+        jsonWriter.writeStringField("privateIPAddressVersion",
+            this.privateIpAddressVersion == null ? null : this.privateIpAddressVersion.toString());
+        jsonWriter.writeArrayField("applicationGatewayBackendAddressPools", this.applicationGatewayBackendAddressPools,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("applicationSecurityGroups", this.applicationSecurityGroups,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancerBackendAddressPools", this.loadBalancerBackendAddressPools,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancerInboundNatPools", this.loadBalancerInboundNatPools,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetIpConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetIpConfigurationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetIpConfigurationProperties.
+     */
+    public static VirtualMachineScaleSetIpConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetIpConfigurationProperties deserializedVirtualMachineScaleSetIpConfigurationProperties
+                = new VirtualMachineScaleSetIpConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnet".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetIpConfigurationProperties.subnet
+                        = ApiEntityReference.fromJson(reader);
+                } else if ("primary".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetIpConfigurationProperties.primary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicIPAddressConfiguration".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetIpConfigurationProperties.publicIpAddressConfiguration
+                        = VirtualMachineScaleSetPublicIpAddressConfiguration.fromJson(reader);
+                } else if ("privateIPAddressVersion".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetIpConfigurationProperties.privateIpAddressVersion
+                        = IpVersion.fromString(reader.getString());
+                } else if ("applicationGatewayBackendAddressPools".equals(fieldName)) {
+                    List<SubResource> applicationGatewayBackendAddressPools
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetIpConfigurationProperties.applicationGatewayBackendAddressPools
+                        = applicationGatewayBackendAddressPools;
+                } else if ("applicationSecurityGroups".equals(fieldName)) {
+                    List<SubResource> applicationSecurityGroups
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetIpConfigurationProperties.applicationSecurityGroups
+                        = applicationSecurityGroups;
+                } else if ("loadBalancerBackendAddressPools".equals(fieldName)) {
+                    List<SubResource> loadBalancerBackendAddressPools
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetIpConfigurationProperties.loadBalancerBackendAddressPools
+                        = loadBalancerBackendAddressPools;
+                } else if ("loadBalancerInboundNatPools".equals(fieldName)) {
+                    List<SubResource> loadBalancerInboundNatPools
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetIpConfigurationProperties.loadBalancerInboundNatPools
+                        = loadBalancerInboundNatPools;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetIpConfigurationProperties;
+        });
     }
 }

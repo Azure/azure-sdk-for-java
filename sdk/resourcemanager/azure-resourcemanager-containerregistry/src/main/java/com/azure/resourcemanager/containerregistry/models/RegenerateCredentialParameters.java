@@ -6,17 +6,20 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The parameters used to regenerate the login credential.
  */
 @Fluent
-public final class RegenerateCredentialParameters {
+public final class RegenerateCredentialParameters implements JsonSerializable<RegenerateCredentialParameters> {
     /*
      * Specifies name of the password which should be regenerated -- password or password2.
      */
-    @JsonProperty(value = "name", required = true)
     private PasswordName name;
 
     /**
@@ -52,10 +55,49 @@ public final class RegenerateCredentialParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model RegenerateCredentialParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model RegenerateCredentialParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RegenerateCredentialParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegenerateCredentialParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegenerateCredentialParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RegenerateCredentialParameters.
+     */
+    public static RegenerateCredentialParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegenerateCredentialParameters deserializedRegenerateCredentialParameters
+                = new RegenerateCredentialParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRegenerateCredentialParameters.name = PasswordName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegenerateCredentialParameters;
+        });
+    }
 }

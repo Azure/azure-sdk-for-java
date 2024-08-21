@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of an outbound firewall rule. */
+/**
+ * The properties of an outbound firewall rule.
+ */
 @Immutable
-public final class OutboundFirewallRuleProperties {
+public final class OutboundFirewallRuleProperties implements JsonSerializable<OutboundFirewallRuleProperties> {
     /*
      * The state of the outbound rule.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /** Creates an instance of OutboundFirewallRuleProperties class. */
+    /**
+     * Creates an instance of OutboundFirewallRuleProperties class.
+     */
     public OutboundFirewallRuleProperties() {
     }
 
     /**
      * Get the provisioningState property: The state of the outbound rule.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -31,9 +38,45 @@ public final class OutboundFirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutboundFirewallRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutboundFirewallRuleProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OutboundFirewallRuleProperties.
+     */
+    public static OutboundFirewallRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutboundFirewallRuleProperties deserializedOutboundFirewallRuleProperties
+                = new OutboundFirewallRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedOutboundFirewallRuleProperties.provisioningState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutboundFirewallRuleProperties;
+        });
     }
 }

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class DeploymentStacksDeleteSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeploymentStackResourceGroupDelete.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * DeploymentStackResourceGroupDelete.json
      */
     /**
      * Sample code: DeploymentStacksResourceGroupDelete.

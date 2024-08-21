@@ -3,10 +3,6 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
-    <Bug pattern="DCN_NULLPOINTER_EXCEPTION" />
-    <Class name="com.azure.storage.file.share.ShareFileAsyncClient" />
-  </Match>
-  <Match>
     <Bug pattern="EI_EXPOSE_REP" />
     <Or>
       <Class name="com.azure.storage.file.share.FileSmbProperties" />
@@ -34,9 +30,11 @@
       <Class name="com.azure.storage.file.share.models.ShareServiceProperties" />
       <Class name="com.azure.storage.file.share.options.ShareCreateOptions" />
       <Class name="com.azure.storage.file.share.options.ShareDirectoryCreateOptions" />
+      <Class name="com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions" />
       <Class name="com.azure.storage.file.share.options.ShareFileCopyOptions" />
       <Class name="com.azure.storage.file.share.options.ShareFileCreateOptions" />
       <Class name="com.azure.storage.file.share.options.ShareFileRenameOptions" />
+      <Class name="com.azure.storage.file.share.options.ShareFileSetPropertiesOptions" />
     </Or>
   </Match>
   <Match>
@@ -69,9 +67,11 @@
       <Class name="com.azure.storage.file.share.models.ShareServiceProperties" />
       <Class name="com.azure.storage.file.share.options.ShareCreateOptions" />
       <Class name="com.azure.storage.file.share.options.ShareDirectoryCreateOptions" />
+      <Class name="com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions" />
       <Class name="com.azure.storage.file.share.options.ShareFileCopyOptions" />
       <Class name="com.azure.storage.file.share.options.ShareFileCreateOptions" />
       <Class name="com.azure.storage.file.share.options.ShareFileRenameOptions" />
+      <Class name="com.azure.storage.file.share.options.ShareFileSetPropertiesOptions" />
     </Or>
   </Match>
   <Match>
@@ -88,9 +88,5 @@
   <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" />
     <Class name="com.azure.storage.file.share.StorageFileInputStream" />
-  </Match>
-  <Match>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD" />
-    <Class name="com.azure.storage.file.share.models.HandleItem" />
   </Match>
 </FindBugsFilter>

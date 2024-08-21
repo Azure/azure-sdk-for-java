@@ -5,37 +5,38 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.VnetValidationTestFailure;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * VnetValidationFailureDetails resource specific properties.
  */
 @Fluent
-public final class VnetValidationFailureDetailsProperties {
+public final class VnetValidationFailureDetailsProperties
+    implements JsonSerializable<VnetValidationFailureDetailsProperties> {
     /*
      * Text describing the validation outcome.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * A flag describing whether or not validation failed.
      */
-    @JsonProperty(value = "failed")
     private Boolean failed;
 
     /*
      * A list of tests that failed in the validation.
      */
-    @JsonProperty(value = "failedTests")
     private List<VnetValidationTestFailure> failedTests;
 
     /*
      * A list of warnings generated during validation.
      */
-    @JsonProperty(value = "warnings")
     private List<VnetValidationTestFailure> warnings;
 
     /**
@@ -136,5 +137,56 @@ public final class VnetValidationFailureDetailsProperties {
         if (warnings() != null) {
             warnings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeBooleanField("failed", this.failed);
+        jsonWriter.writeArrayField("failedTests", this.failedTests, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VnetValidationFailureDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VnetValidationFailureDetailsProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VnetValidationFailureDetailsProperties.
+     */
+    public static VnetValidationFailureDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VnetValidationFailureDetailsProperties deserializedVnetValidationFailureDetailsProperties
+                = new VnetValidationFailureDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedVnetValidationFailureDetailsProperties.message = reader.getString();
+                } else if ("failed".equals(fieldName)) {
+                    deserializedVnetValidationFailureDetailsProperties.failed
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("failedTests".equals(fieldName)) {
+                    List<VnetValidationTestFailure> failedTests
+                        = reader.readArray(reader1 -> VnetValidationTestFailure.fromJson(reader1));
+                    deserializedVnetValidationFailureDetailsProperties.failedTests = failedTests;
+                } else if ("warnings".equals(fieldName)) {
+                    List<VnetValidationTestFailure> warnings
+                        = reader.readArray(reader1 -> VnetValidationTestFailure.fromJson(reader1));
+                    deserializedVnetValidationFailureDetailsProperties.warnings = warnings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVnetValidationFailureDetailsProperties;
+        });
     }
 }

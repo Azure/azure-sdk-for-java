@@ -12,6 +12,7 @@ import com.azure.monitor.applicationinsights.spring.selfdiagnostics.SelfDiagnost
 import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import io.opentelemetry.sdk.common.internal.OtelVersion;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
+// TODO (jean) do you want to reconsider this test since azure-sdk CI build will always use the source version of azure-monitor-opentelemetry-exporter not the one from maven central
 @SpringBootTest(
     classes = {Application.class, SpringMonitorTest.TestConfig.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -69,6 +71,7 @@ class SpringMonitorTest {
         }
     }
 
+    @Disabled
     @Test
     public void shouldMonitor() throws InterruptedException, MalformedURLException {
 
@@ -103,6 +106,7 @@ class SpringMonitorTest {
         while (!found && System.currentTimeMillis() - start < SECONDS.toMillis(10));
 
         // Log telemetry
+        assertThat(logs.size()).isGreaterThan(0);
         TelemetryItem firstLogTelemetry = logs.get(0);
         MonitorDomain logBaseData = firstLogTelemetry.getData().getBaseData();
         MessageData logData = (MessageData) logBaseData;
@@ -110,6 +114,7 @@ class SpringMonitorTest {
         assertThat(logData.getSeverityLevel()).isEqualTo(SeverityLevel.INFORMATION);
 
         // SQL telemetry
+        assertThat(remoteDependencies.size()).isGreaterThan(0);
         TelemetryItem remoteDependency = remoteDependencies.get(0);
         MonitorDomain remoteBaseData = remoteDependency.getData().getBaseData();
         RemoteDependencyData remoteDependencyData = (RemoteDependencyData) remoteBaseData;
@@ -118,6 +123,7 @@ class SpringMonitorTest {
             .isEqualTo("create table test_table (id bigint not null, primary key (id))");
 
         // HTTP telemetry
+        assertThat(requests.size()).isGreaterThan(0);
         TelemetryItem request = requests.get(0);
         MonitorDomain requestBaseData = request.getData().getBaseData();
         RequestData requestData = (RequestData) requestBaseData;

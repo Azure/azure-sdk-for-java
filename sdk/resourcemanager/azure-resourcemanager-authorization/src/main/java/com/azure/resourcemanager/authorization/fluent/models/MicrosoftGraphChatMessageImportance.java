@@ -5,27 +5,36 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** chatMessageImportance. */
+/**
+ * chatMessageImportance.
+ */
 public final class MicrosoftGraphChatMessageImportance
     extends ExpandableStringEnum<MicrosoftGraphChatMessageImportance> {
-    /** Static value normal for MicrosoftGraphChatMessageImportance. */
+    /**
+     * Static value normal for MicrosoftGraphChatMessageImportance.
+     */
     public static final MicrosoftGraphChatMessageImportance NORMAL = fromString("normal");
 
-    /** Static value high for MicrosoftGraphChatMessageImportance. */
+    /**
+     * Static value high for MicrosoftGraphChatMessageImportance.
+     */
     public static final MicrosoftGraphChatMessageImportance HIGH = fromString("high");
 
-    /** Static value urgent for MicrosoftGraphChatMessageImportance. */
+    /**
+     * Static value urgent for MicrosoftGraphChatMessageImportance.
+     */
     public static final MicrosoftGraphChatMessageImportance URGENT = fromString("urgent");
 
-    /** Static value unknownFutureValue for MicrosoftGraphChatMessageImportance. */
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphChatMessageImportance.
+     */
     public static final MicrosoftGraphChatMessageImportance UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphChatMessageImportance value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +43,17 @@ public final class MicrosoftGraphChatMessageImportance
 
     /**
      * Creates or finds a MicrosoftGraphChatMessageImportance from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphChatMessageImportance.
      */
-    @JsonCreator
     public static MicrosoftGraphChatMessageImportance fromString(String name) {
         return fromString(name, MicrosoftGraphChatMessageImportance.class);
     }
 
     /**
      * Gets known MicrosoftGraphChatMessageImportance values.
-     *
+     * 
      * @return known MicrosoftGraphChatMessageImportance values.
      */
     public static Collection<MicrosoftGraphChatMessageImportance> values() {

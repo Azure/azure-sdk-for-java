@@ -5,41 +5,43 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The ScanMetadata model.
  */
 @Immutable
-public final class ScanMetadata {
+public final class ScanMetadata implements JsonSerializable<ScanMetadata> {
 
     /*
      * The port property.
      */
     @Generated
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * The bannerMetadata property.
      */
     @Generated
-    @JsonProperty(value = "bannerMetadata")
     private String bannerMetadata;
 
     /*
      * The startScan property.
      */
     @Generated
-    @JsonProperty(value = "startScan")
     private OffsetDateTime startScan;
 
     /*
      * The endScan property.
      */
     @Generated
-    @JsonProperty(value = "endScan")
     private OffsetDateTime endScan;
 
     /**
@@ -87,5 +89,54 @@ public final class ScanMetadata {
     @Generated
     public OffsetDateTime getEndScan() {
         return this.endScan;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeStringField("bannerMetadata", this.bannerMetadata);
+        jsonWriter.writeStringField("startScan",
+            this.startScan == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startScan));
+        jsonWriter.writeStringField("endScan",
+            this.endScan == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endScan));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScanMetadata from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScanMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScanMetadata.
+     */
+    @Generated
+    public static ScanMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScanMetadata deserializedScanMetadata = new ScanMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("port".equals(fieldName)) {
+                    deserializedScanMetadata.port = reader.getNullable(JsonReader::getInt);
+                } else if ("bannerMetadata".equals(fieldName)) {
+                    deserializedScanMetadata.bannerMetadata = reader.getString();
+                } else if ("startScan".equals(fieldName)) {
+                    deserializedScanMetadata.startScan = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endScan".equals(fieldName)) {
+                    deserializedScanMetadata.endScan = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedScanMetadata;
+        });
     }
 }

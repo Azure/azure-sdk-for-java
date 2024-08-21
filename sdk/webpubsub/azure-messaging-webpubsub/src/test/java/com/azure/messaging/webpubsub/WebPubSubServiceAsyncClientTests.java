@@ -276,7 +276,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     @LiveOnly
     public void testGetMqttAuthenticationToken() {
         GetClientAccessTokenOptions options = new GetClientAccessTokenOptions();
-        options.setWebPubSubClientAccess(WebPubSubClientProtocol.MQTT);
+        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.MQTT);
         StepVerifier.create(client.getClientAccessToken(options))
             .assertNext(token -> {
                 Assertions.assertNotNull(token);
@@ -345,25 +345,16 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
         String filter = "userId eq 'user 1'";
         // Expect no error
         StepVerifier
-            .create(client.addConnectionsToGroups(TestUtils.HUB_NAME, groupList, filter))
+            .create(client.addConnectionsToGroups(groupList, filter))
             .expectComplete()
             .verify(TIMEOUT);
-    }
-
-    @Test
-    public void testAddConnectionsToGroupsThrowErrorWhenHubIsNull() {
-        List<String> groupList = Arrays.asList("group1", "group2");
-        String filter = "userId eq 'user 1'";
-        StepVerifier.create(
-            client.addConnectionsToGroups(null, groupList, filter)
-        ).expectError(IllegalArgumentException.class);
     }
 
     @Test
     public void testAddConnectionsToGroupsThrowErrorWhenGroupsToAddIsNull() {
         String filter = "userId eq 'user 1'";
         StepVerifier.create(
-            client.addConnectionsToGroups(TestUtils.HUB_NAME, null, filter)
+            client.addConnectionsToGroups(null, filter)
         ).expectError(HttpResponseException.class);
     }
 

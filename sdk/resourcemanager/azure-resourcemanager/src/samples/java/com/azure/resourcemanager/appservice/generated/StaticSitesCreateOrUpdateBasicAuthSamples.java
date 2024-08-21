@@ -12,7 +12,9 @@ import com.azure.resourcemanager.appservice.models.BasicAuthName;
  */
 public final class StaticSitesCreateOrUpdateBasicAuthSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateStaticSiteBasicAuth.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateStaticSiteBasicAuth.
+     * json
      */
     /**
      * Sample code: Creates or updates basic auth properties for a static site.
