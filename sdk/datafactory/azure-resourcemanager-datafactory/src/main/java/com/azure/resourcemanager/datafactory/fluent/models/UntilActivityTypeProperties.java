@@ -6,20 +6,23 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.Expression;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Until activity properties.
  */
 @Fluent
-public final class UntilActivityTypeProperties {
+public final class UntilActivityTypeProperties implements JsonSerializable<UntilActivityTypeProperties> {
     /*
      * An expression that would evaluate to Boolean. The loop will continue until this expression evaluates to true
      */
-    @JsonProperty(value = "expression", required = true)
     private Expression expression;
 
     /*
@@ -27,13 +30,11 @@ public final class UntilActivityTypeProperties {
      * TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "timeout")
     private Object timeout;
 
     /*
      * List of activities to execute.
      */
-    @JsonProperty(value = "activities", required = true)
     private List<Activity> activities;
 
     /**
@@ -131,4 +132,48 @@ public final class UntilActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UntilActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("expression", this.expression);
+        jsonWriter.writeArrayField("activities", this.activities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeUntypedField("timeout", this.timeout);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UntilActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UntilActivityTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UntilActivityTypeProperties.
+     */
+    public static UntilActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UntilActivityTypeProperties deserializedUntilActivityTypeProperties = new UntilActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expression".equals(fieldName)) {
+                    deserializedUntilActivityTypeProperties.expression = Expression.fromJson(reader);
+                } else if ("activities".equals(fieldName)) {
+                    List<Activity> activities = reader.readArray(reader1 -> Activity.fromJson(reader1));
+                    deserializedUntilActivityTypeProperties.activities = activities;
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedUntilActivityTypeProperties.timeout = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUntilActivityTypeProperties;
+        });
+    }
 }

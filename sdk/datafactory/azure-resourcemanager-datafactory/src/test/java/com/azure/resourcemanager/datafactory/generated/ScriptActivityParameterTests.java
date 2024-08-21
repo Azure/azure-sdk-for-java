@@ -14,23 +14,23 @@ public final class ScriptActivityParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActivityParameter model = BinaryData.fromString(
-            "{\"name\":\"dataobw\",\"type\":\"Single\",\"value\":\"datalorinwtvsb\",\"direction\":\"Output\",\"size\":1070675833}")
+            "{\"name\":\"datawtxtetwqklz\",\"type\":\"Boolean\",\"value\":\"datazwlrhrvkneozpl\",\"direction\":\"InputOutput\",\"size\":1399462246}")
             .toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.SINGLE, model.type());
-        Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());
-        Assertions.assertEquals(1070675833, model.size());
+        Assertions.assertEquals(ScriptActivityParameterType.BOOLEAN, model.type());
+        Assertions.assertEquals(ScriptActivityParameterDirection.INPUT_OUTPUT, model.direction());
+        Assertions.assertEquals(1399462246, model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActivityParameter model = new ScriptActivityParameter().withName("dataobw")
-            .withType(ScriptActivityParameterType.SINGLE)
-            .withValue("datalorinwtvsb")
-            .withDirection(ScriptActivityParameterDirection.OUTPUT)
-            .withSize(1070675833);
+        ScriptActivityParameter model = new ScriptActivityParameter().withName("datawtxtetwqklz")
+            .withType(ScriptActivityParameterType.BOOLEAN)
+            .withValue("datazwlrhrvkneozpl")
+            .withDirection(ScriptActivityParameterDirection.INPUT_OUTPUT)
+            .withSize(1399462246);
         model = BinaryData.fromObject(model).toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.SINGLE, model.type());
-        Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());
-        Assertions.assertEquals(1070675833, model.size());
+        Assertions.assertEquals(ScriptActivityParameterType.BOOLEAN, model.type());
+        Assertions.assertEquals(ScriptActivityParameterDirection.INPUT_OUTPUT, model.direction());
+        Assertions.assertEquals(1399462246, model.size());
     }
 }
