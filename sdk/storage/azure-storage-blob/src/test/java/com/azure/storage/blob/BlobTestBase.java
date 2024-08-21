@@ -268,9 +268,9 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected Mono<String> setupBlobMatchConditionAsync(BlobAsyncClientBase bac, String match) {
         if (Objects.equals(match, RECEIVED_ETAG)) {
-            return Objects.requireNonNull(bac.getProperties().map(BlobProperties::getETag));
+            return bac.getProperties().map(BlobProperties::getETag);
         } else {
-            return Mono.just(match == null ? "null" : match);
+            return Mono.justOrEmpty(match).defaultIfEmpty("null");
         }
     }
 
@@ -324,7 +324,7 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         if (responseLeaseId == null) {
-            return Mono.just(leaseID == null ? "null" : leaseID);
+            return Mono.justOrEmpty(leaseID).defaultIfEmpty("null");
         }
 
         return responseLeaseId.map(returnedLeaseId -> Objects.equals(RECEIVED_LEASE_ID, leaseID)
@@ -352,7 +352,7 @@ public class BlobTestBase extends TestProxyTestBase {
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
             return createLeaseAsyncClient(cu).acquireLease(-1);
         } else {
-            return Mono.just(leaseID == null ? "null" : leaseID);
+            return Mono.justOrEmpty(leaseID).defaultIfEmpty("null");
         }
     }
 

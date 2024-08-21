@@ -41,6 +41,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.io.File;
 import java.io.IOException;
@@ -211,12 +212,12 @@ public class SasAsyncClientTests extends BlobTestBase {
         BlobServiceSasSignatureValues sasValues = generateValues(permissions);
 
         Mono<Tuple2<String, String>> snapshotIDAndSasTuple = sasClient.createSnapshot()
-            .flatMap(r -> {
+            .map(r -> {
                 BlockBlobAsyncClient snapshotBlob = new SpecializedBlobClientBuilder()
                     .blobAsyncClient(r).buildBlockBlobAsyncClient();
                 String snapshotId = snapshotBlob.getSnapshotId();
                 String sas = snapshotBlob.generateSas(sasValues);
-                return Mono.zip(Mono.just(snapshotId), Mono.just(sas));
+                return Tuples.of(snapshotId, sas);
             });
 
         Flux<ByteBuffer> baseBlobWithSnapshotSasResponse = snapshotIDAndSasTuple.flatMapMany(tuple -> {
