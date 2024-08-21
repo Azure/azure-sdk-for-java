@@ -1179,6 +1179,10 @@ public class CosmosClientBuilder implements
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
 
+        if (Configs.shouldOptInDefaultCircuitBreakerConfig()) {
+            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
+        }
+
         this.resetSessionCapturingType();
         validateConfig();
         buildConnectionPolicy();
@@ -1214,6 +1218,10 @@ public class CosmosClientBuilder implements
     public CosmosClient buildClient() {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
+
+        if (Configs.shouldOptInDefaultCircuitBreakerConfig()) {
+            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
+        }
 
         this.resetSessionCapturingType();
         validateConfig();
