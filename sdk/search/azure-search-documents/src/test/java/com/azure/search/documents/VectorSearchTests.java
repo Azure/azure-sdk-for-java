@@ -327,9 +327,7 @@ public class VectorSearchTests extends SearchTestBase {
                     .setSearchable(true)
                     .setFilterable(true));
 
-        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildAsyncClient();
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         searchIndexClient.createIndex(searchIndex).block();
         indexesToDelete.add(indexName);
 
@@ -338,9 +336,7 @@ public class VectorSearchTests extends SearchTestBase {
         document.put("Id", "1");
         document.put("Name", "Countryside Hotel");
 
-        SearchAsyncClient searchClient = getSearchClientBuilder(indexName, false)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .buildAsyncClient();
+        SearchAsyncClient searchClient = searchIndexClient.getSearchAsyncClient(indexName);
         searchClient.uploadDocuments(Collections.singletonList(document)).block();
 
         waitForIndexing();
@@ -377,13 +373,12 @@ public class VectorSearchTests extends SearchTestBase {
             });
 
         // Update index
-        StepVerifier.create(getAndUpdateIndex).thenAwait(Duration.ofSeconds(10))
+        StepVerifier.create(getAndUpdateIndex)
             .assertNext(response -> {
                 assertEquals(indexName, response.getName());
                 assertEquals(3, response.getFields().size());
             })
             .verifyComplete();
-        waitForIndexing();
 
         // Update document to add vector field's data
 
@@ -407,7 +402,7 @@ public class VectorSearchTests extends SearchTestBase {
             });
 
         // Get the document
-        StepVerifier.create(getAndUpdateDocument.delayElement(Duration.ofSeconds(5)))
+        StepVerifier.create(getAndUpdateDocument)
             .assertNext(response -> {
                 assertEquals(document.get("Id"), response.get("Id"));
                 assertEquals(document.get("Name"), response.get("Name"));
@@ -430,9 +425,7 @@ public class VectorSearchTests extends SearchTestBase {
                     .setSearchable(true)
                     .setFilterable(true));
 
-        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         searchIndexClient.createIndex(searchIndex);
         indexesToDelete.add(indexName);
         // Upload data
@@ -440,9 +433,7 @@ public class VectorSearchTests extends SearchTestBase {
         document.put("Id", "1");
         document.put("Name", "Countryside Hotel");
 
-        SearchClient searchClient = getSearchClientBuilder(indexName, true)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
+        SearchClient searchClient = searchIndexClient.getSearchClient(indexName);
         searchClient.uploadDocuments(Collections.singletonList(document));
 
         waitForIndexing();
@@ -457,8 +448,6 @@ public class VectorSearchTests extends SearchTestBase {
 
         // Get created index
         SearchIndex createdIndex = searchIndexClient.getIndex(indexName);
-
-        waitForIndexing();
 
         // Add vector
         SearchField vectorField = new SearchField("DescriptionVector",
@@ -478,8 +467,6 @@ public class VectorSearchTests extends SearchTestBase {
         // Update index
         SearchIndex responseIndex = searchIndexClient.createOrUpdateIndex(createdIndex);
 
-        waitForIndexing();
-
         assertEquals(indexName, responseIndex.getName());
         assertEquals(3, responseIndex.getFields().size());
 
@@ -496,8 +483,6 @@ public class VectorSearchTests extends SearchTestBase {
 
         // Get the document
         responseDocument = searchClient.getDocument("1", SearchDocument.class);
-
-        waitForIndexing();
 
         assertEquals(document.get("Id"), responseDocument.get("Id"));
         assertEquals(document.get("Name"), responseDocument.get("Name"));

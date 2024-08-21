@@ -298,7 +298,7 @@ public final class TestHelpers {
 
     public static void waitForIndexing() {
         // Wait 2 seconds to allow index request to finish.
-        sleepIfRunningAgainstService(5000);
+        sleepIfRunningAgainstService(2000);
     }
 
     public static void sleepIfRunningAgainstService(long millis) {
