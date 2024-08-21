@@ -24,7 +24,7 @@ public class DistributionMode implements JsonSerializable<DistributionMode> {
      * The type discriminator describing a sub-type of DistributionMode.
      */
     @Generated
-    private DistributionModeKind kind = DistributionModeKind.fromString("DistributionMode");
+    DistributionModeKind kind;
 
     /*
      * Governs the minimum desired number of active concurrent offers a job can have.
@@ -51,6 +51,7 @@ public class DistributionMode implements JsonSerializable<DistributionMode> {
      */
     @Generated
     public DistributionMode() {
+        this.kind = DistributionModeKind.fromString("DistributionMode");
     }
 
     /**
@@ -276,19 +277,30 @@ public class DistributionMode implements JsonSerializable<DistributionMode> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedDistributionMode.kind = DistributionModeKind.fromString(reader.getString());
-                } else if ("minConcurrentOffers".equals(fieldName)) {
-                    deserializedDistributionMode.minConcurrentOffers = reader.getNullable(JsonReader::getInt);
-                } else if ("maxConcurrentOffers".equals(fieldName)) {
-                    deserializedDistributionMode.maxConcurrentOffers = reader.getNullable(JsonReader::getInt);
-                } else if ("bypassSelectors".equals(fieldName)) {
-                    deserializedDistributionMode.bypassSelectors = reader.getNullable(JsonReader::getBoolean);
-                } else {
+                if (!DistributionMode.fromJsonShared(reader, fieldName, deserializedDistributionMode)) {
                     reader.skipChildren();
                 }
             }
             return deserializedDistributionMode;
         });
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName, DistributionMode deserializedDistributionMode)
+        throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedDistributionMode.kind = DistributionModeKind.fromString(reader.getString());
+            return true;
+        } else if ("minConcurrentOffers".equals(fieldName)) {
+            deserializedDistributionMode.minConcurrentOffers = reader.getNullable(JsonReader::getInt);
+            return true;
+        } else if ("maxConcurrentOffers".equals(fieldName)) {
+            deserializedDistributionMode.maxConcurrentOffers = reader.getNullable(JsonReader::getInt);
+            return true;
+        } else if ("bypassSelectors".equals(fieldName)) {
+            deserializedDistributionMode.bypassSelectors = reader.getNullable(JsonReader::getBoolean);
+            return true;
+        }
+        return false;
     }
 }

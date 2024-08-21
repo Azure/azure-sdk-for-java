@@ -33,6 +33,7 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
     private RunStepCodeInterpreterToolCall(String id, RunStepCodeInterpreterToolCallDetails codeInterpreter) {
         super(id);
         this.codeInterpreter = codeInterpreter;
+        this.type = "code_interpreter";
     }
 
     /**
@@ -45,23 +46,6 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
         return this.codeInterpreter;
     }
 
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "code_interpreter";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -69,9 +53,8 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("code_interpreter", this.codeInterpreter);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

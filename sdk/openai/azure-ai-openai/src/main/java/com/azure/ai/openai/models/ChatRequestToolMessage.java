@@ -38,6 +38,7 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     public ChatRequestToolMessage(String content, String toolCallId) {
         this.content = content;
         this.toolCallId = toolCallId;
+        this.role = ChatRole.TOOL;
     }
 
     /**
@@ -60,23 +61,6 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
         return this.toolCallId;
     }
 
-    /*
-     * The chat role associated with this message.
-     */
-    @Generated
-    private ChatRole role = ChatRole.TOOL;
-
-    /**
-     * Get the role property: The chat role associated with this message.
-     *
-     * @return the role value.
-     */
-    @Generated
-    @Override
-    public ChatRole getRole() {
-        return this.role;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -84,9 +68,9 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("content", this.content);
         jsonWriter.writeStringField("tool_call_id", this.toolCallId);
-        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         return jsonWriter.writeEndObject();
     }
 

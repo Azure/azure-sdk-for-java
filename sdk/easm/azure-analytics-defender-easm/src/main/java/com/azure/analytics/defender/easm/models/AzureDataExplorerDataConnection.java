@@ -19,12 +19,6 @@ import java.time.OffsetDateTime;
 public final class AzureDataExplorerDataConnection extends DataConnection {
 
     /*
-     * Discriminator property for DataConnection.
-     */
-    @Generated
-    private String kind = "azureDataExplorer";
-
-    /*
      * properties
      */
     @Generated
@@ -98,17 +92,7 @@ public final class AzureDataExplorerDataConnection extends DataConnection {
     @Generated
     private AzureDataExplorerDataConnection(AzureDataExplorerDataConnectionProperties properties) {
         this.properties = properties;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for DataConnection.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public String getKind() {
-        return this.kind;
+        this.kind = "azureDataExplorer";
     }
 
     /**
@@ -238,14 +222,8 @@ public final class AzureDataExplorerDataConnection extends DataConnection {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeStringField("displayName", getDisplayName());
-        jsonWriter.writeStringField("content", getContent() == null ? null : getContent().toString());
-        jsonWriter.writeStringField("frequency", getFrequency() == null ? null : getFrequency().toString());
-        jsonWriter.writeNumberField("frequencyOffset", getFrequencyOffset());
-        jsonWriter.writeBooleanField("active", isActive());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 

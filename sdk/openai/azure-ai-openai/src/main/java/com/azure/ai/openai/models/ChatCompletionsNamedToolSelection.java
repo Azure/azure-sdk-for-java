@@ -22,13 +22,14 @@ public class ChatCompletionsNamedToolSelection implements JsonSerializable<ChatC
      */
     @Generated
     public ChatCompletionsNamedToolSelection() {
+        this.type = "ChatCompletionsNamedToolSelection";
     }
 
     /*
      * The object type.
      */
     @Generated
-    private String type = "ChatCompletionsNamedToolSelection";
+    String type;
 
     /**
      * Get the type property: The object type.
@@ -47,7 +48,7 @@ public class ChatCompletionsNamedToolSelection implements JsonSerializable<ChatC
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -94,13 +95,26 @@ public class ChatCompletionsNamedToolSelection implements JsonSerializable<ChatC
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedChatCompletionsNamedToolSelection.type = reader.getString();
-                } else {
+                if (!ChatCompletionsNamedToolSelection.fromJsonShared(reader, fieldName,
+                    deserializedChatCompletionsNamedToolSelection)) {
                     reader.skipChildren();
                 }
             }
             return deserializedChatCompletionsNamedToolSelection;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        ChatCompletionsNamedToolSelection deserializedChatCompletionsNamedToolSelection) throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedChatCompletionsNamedToolSelection.type = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

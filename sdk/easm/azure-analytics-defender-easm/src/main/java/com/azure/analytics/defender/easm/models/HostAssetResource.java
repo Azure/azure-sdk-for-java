@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -19,12 +18,6 @@ import java.util.List;
  */
 @Immutable
 public final class HostAssetResource extends AssetResource {
-
-    /*
-     * Discriminator property for AssetResource.
-     */
-    @Generated
-    private String kind = "host";
 
     /*
      * asset
@@ -112,17 +105,7 @@ public final class HostAssetResource extends AssetResource {
     @Generated
     private HostAssetResource(HostAsset asset) {
         this.asset = asset;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for AssetResource.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public String getKind() {
-        return this.kind;
+        this.kind = "host";
     }
 
     /**
@@ -276,22 +259,8 @@ public final class HostAssetResource extends AssetResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("displayName", getDisplayName());
-        jsonWriter.writeStringField("uuid", getUuid());
-        jsonWriter.writeStringField("createdDate",
-            getCreatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDate()));
-        jsonWriter.writeStringField("updatedDate",
-            getUpdatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getUpdatedDate()));
-        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
-        jsonWriter.writeStringField("externalId", getExternalId());
-        jsonWriter.writeArrayField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("wildcard", isWildcard());
-        jsonWriter.writeStringField("discoGroupName", getDiscoGroupName());
-        jsonWriter.writeArrayField("auditTrail", getAuditTrail(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("reason", getReason());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("asset", this.asset);
-        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 

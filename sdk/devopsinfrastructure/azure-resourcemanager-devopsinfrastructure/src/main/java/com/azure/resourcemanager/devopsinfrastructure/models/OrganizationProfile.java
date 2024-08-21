@@ -19,12 +19,13 @@ public class OrganizationProfile implements JsonSerializable<OrganizationProfile
     /*
      * Discriminator property for OrganizationProfile.
      */
-    private String kind = "OrganizationProfile";
+    String kind;
 
     /**
      * Creates an instance of OrganizationProfile class.
      */
     public OrganizationProfile() {
+        this.kind = "OrganizationProfile";
     }
 
     /**
@@ -50,8 +51,12 @@ public class OrganizationProfile implements JsonSerializable<OrganizationProfile
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("kind", this.kind);
     }
 
     /**
@@ -96,14 +101,21 @@ public class OrganizationProfile implements JsonSerializable<OrganizationProfile
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("kind".equals(fieldName)) {
-                    deserializedOrganizationProfile.kind = reader.getString();
-                } else {
+                if (!OrganizationProfile.fromJsonShared(reader, fieldName, deserializedOrganizationProfile)) {
                     reader.skipChildren();
                 }
             }
 
             return deserializedOrganizationProfile;
         });
+    }
+
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        OrganizationProfile deserializedOrganizationProfile) throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedOrganizationProfile.kind = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

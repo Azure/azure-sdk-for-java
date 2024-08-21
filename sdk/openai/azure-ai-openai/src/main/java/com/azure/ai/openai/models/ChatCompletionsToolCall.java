@@ -28,7 +28,7 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
      * The object type.
      */
     @Generated
-    private String type = "ChatCompletionsToolCall";
+    String type;
 
     /**
      * Get the id property: The ID of the tool call.
@@ -57,8 +57,7 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -130,5 +129,11 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
     @Generated
     public ChatCompletionsToolCall(String id) {
         this.id = id;
+        this.type = "ChatCompletionsToolCall";
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
     }
 }

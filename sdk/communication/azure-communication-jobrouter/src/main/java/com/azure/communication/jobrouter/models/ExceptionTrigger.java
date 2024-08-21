@@ -24,7 +24,7 @@ public class ExceptionTrigger implements JsonSerializable<ExceptionTrigger> {
      * The type discriminator describing a sub-type of ExceptionTrigger.
      */
     @Generated
-    private ExceptionTriggerKind kind = ExceptionTriggerKind.fromString("ExceptionTrigger");
+    ExceptionTriggerKind kind;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -62,6 +62,7 @@ public class ExceptionTrigger implements JsonSerializable<ExceptionTrigger> {
      */
     @Generated
     public ExceptionTrigger() {
+        this.kind = ExceptionTriggerKind.fromString("ExceptionTrigger");
     }
 
     /**
@@ -140,13 +141,21 @@ public class ExceptionTrigger implements JsonSerializable<ExceptionTrigger> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedExceptionTrigger.kind = ExceptionTriggerKind.fromString(reader.getString());
-                } else {
+                if (!ExceptionTrigger.fromJsonShared(reader, fieldName, deserializedExceptionTrigger)) {
                     reader.skipChildren();
                 }
             }
             return deserializedExceptionTrigger;
         });
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName, ExceptionTrigger deserializedExceptionTrigger)
+        throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedExceptionTrigger.kind = ExceptionTriggerKind.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

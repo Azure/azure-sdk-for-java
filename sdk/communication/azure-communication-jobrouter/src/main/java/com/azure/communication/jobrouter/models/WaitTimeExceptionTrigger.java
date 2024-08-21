@@ -22,12 +22,6 @@ import com.azure.communication.jobrouter.implementation.utils.CustomizationHelpe
 public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
 
     /*
-     * The type discriminator describing a sub-type of ExceptionTrigger.
-     */
-    @Generated
-    private ExceptionTriggerKind kind = ExceptionTriggerKind.WAIT_TIME;
-
-    /*
      * Threshold for wait time for this trigger.
      */
     @Generated
@@ -44,17 +38,7 @@ public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
      */
     @Generated
     public WaitTimeExceptionTrigger() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of ExceptionTrigger.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public ExceptionTriggerKind getKind() {
-        return this.kind;
+        this.kind = ExceptionTriggerKind.WAIT_TIME;
     }
 
     /**
@@ -98,8 +82,8 @@ public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedWaitTimeExceptionTrigger.kind = ExceptionTriggerKind.fromString(reader.getString());
+                if (ExceptionTrigger.fromJsonShared(reader, fieldName, deserializedWaitTimeExceptionTrigger)) {
+                    continue;
                 } else if ("thresholdSeconds".equals(fieldName)) {
                     deserializedWaitTimeExceptionTrigger.thresholdSeconds
                         = CustomizationHelper.deserializeDurationFromSeconds(reader);

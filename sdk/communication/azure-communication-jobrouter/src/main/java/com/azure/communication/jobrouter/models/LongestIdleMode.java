@@ -19,12 +19,6 @@ import java.util.Set;
 @Fluent
 public final class LongestIdleMode extends DistributionMode {
 
-    /*
-     * The type discriminator describing a sub-type of DistributionMode.
-     */
-    @Generated
-    private DistributionModeKind kind = DistributionModeKind.LONGEST_IDLE;
-
     /**
      * Stores updated model property, the value is property name, not serialized name.
      */
@@ -36,17 +30,7 @@ public final class LongestIdleMode extends DistributionMode {
      */
     @Generated
     public LongestIdleMode() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of DistributionMode.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public DistributionModeKind getKind() {
-        return this.kind;
+        this.kind = DistributionModeKind.LONGEST_IDLE;
     }
 
     /**
@@ -143,17 +127,8 @@ public final class LongestIdleMode extends DistributionMode {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("minConcurrentOffers".equals(fieldName)) {
-                    JsonMergePatchHelper.getDistributionModeAccessor()
-                        .setMinConcurrentOffers(deserializedLongestIdleMode, reader.getNullable(JsonReader::getInt));
-                } else if ("maxConcurrentOffers".equals(fieldName)) {
-                    JsonMergePatchHelper.getDistributionModeAccessor()
-                        .setMaxConcurrentOffers(deserializedLongestIdleMode, reader.getNullable(JsonReader::getInt));
-                } else if ("bypassSelectors".equals(fieldName)) {
-                    JsonMergePatchHelper.getDistributionModeAccessor()
-                        .setBypassSelectors(deserializedLongestIdleMode, reader.getNullable(JsonReader::getBoolean));
-                } else if ("kind".equals(fieldName)) {
-                    deserializedLongestIdleMode.kind = DistributionModeKind.fromString(reader.getString());
+                if (DistributionMode.fromJsonShared(reader, fieldName, deserializedLongestIdleMode)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

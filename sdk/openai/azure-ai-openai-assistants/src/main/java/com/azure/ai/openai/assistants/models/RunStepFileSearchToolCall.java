@@ -19,12 +19,6 @@ import java.util.Map;
 public final class RunStepFileSearchToolCall extends RunStepToolCall {
 
     /*
-     * The object type.
-     */
-    @Generated
-    private String type = "file_search";
-
-    /*
      * Reserved for future use.
      */
     @Generated
@@ -40,17 +34,7 @@ public final class RunStepFileSearchToolCall extends RunStepToolCall {
     private RunStepFileSearchToolCall(String id, Map<String, String> fileSearch) {
         super(id);
         this.fileSearch = fileSearch;
-    }
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "file_search";
     }
 
     /**
@@ -70,9 +54,8 @@ public final class RunStepFileSearchToolCall extends RunStepToolCall {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
+        toJsonShared(jsonWriter);
         jsonWriter.writeMapField("file_search", this.fileSearch, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

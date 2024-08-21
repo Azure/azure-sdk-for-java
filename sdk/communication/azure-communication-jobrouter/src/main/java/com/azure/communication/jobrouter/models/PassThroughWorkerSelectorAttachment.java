@@ -22,12 +22,6 @@ import com.azure.communication.jobrouter.implementation.utils.CustomizationHelpe
 public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAttachment {
 
     /*
-     * The type discriminator describing a sub-type of WorkerSelectorAttachment.
-     */
-    @Generated
-    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.PASS_THROUGH;
-
-    /*
      * The label key to query against.
      */
     @Generated
@@ -50,17 +44,7 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      */
     @Generated
     public PassThroughWorkerSelectorAttachment() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public WorkerSelectorAttachmentKind getKind() {
-        return this.kind;
+        this.kind = WorkerSelectorAttachmentKind.PASS_THROUGH;
     }
 
     /**
@@ -175,9 +159,9 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedPassThroughWorkerSelectorAttachment.kind
-                        = WorkerSelectorAttachmentKind.fromString(reader.getString());
+                if (WorkerSelectorAttachment.fromJsonShared(reader, fieldName,
+                    deserializedPassThroughWorkerSelectorAttachment)) {
+                    continue;
                 } else if ("key".equals(fieldName)) {
                     deserializedPassThroughWorkerSelectorAttachment.key = reader.getString();
                 } else if ("labelOperator".equals(fieldName)) {

@@ -23,7 +23,7 @@ public class DataConnection implements JsonSerializable<DataConnection> {
      * Discriminator property for DataConnection.
      */
     @Generated
-    private String kind = "DataConnection";
+    String kind;
 
     /*
      * The system generated unique id for the resource.
@@ -96,6 +96,7 @@ public class DataConnection implements JsonSerializable<DataConnection> {
      */
     @Generated
     protected DataConnection() {
+        this.kind = "DataConnection";
     }
 
     /**
@@ -357,13 +358,7 @@ public class DataConnection implements JsonSerializable<DataConnection> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind);
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeStringField("content", this.content == null ? null : this.content.toString());
-        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
-        jsonWriter.writeNumberField("frequencyOffset", this.frequencyOffset);
-        jsonWriter.writeBooleanField("active", this.active);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -412,38 +407,67 @@ public class DataConnection implements JsonSerializable<DataConnection> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    deserializedDataConnection.name = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedDataConnection.kind = reader.getString();
-                } else if ("id".equals(fieldName)) {
-                    deserializedDataConnection.id = reader.getString();
-                } else if ("displayName".equals(fieldName)) {
-                    deserializedDataConnection.displayName = reader.getString();
-                } else if ("content".equals(fieldName)) {
-                    deserializedDataConnection.content = DataConnectionContent.fromString(reader.getString());
-                } else if ("createdDate".equals(fieldName)) {
-                    deserializedDataConnection.createdDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("frequency".equals(fieldName)) {
-                    deserializedDataConnection.frequency = DataConnectionFrequency.fromString(reader.getString());
-                } else if ("frequencyOffset".equals(fieldName)) {
-                    deserializedDataConnection.frequencyOffset = reader.getNullable(JsonReader::getInt);
-                } else if ("updatedDate".equals(fieldName)) {
-                    deserializedDataConnection.updatedDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("userUpdatedAt".equals(fieldName)) {
-                    deserializedDataConnection.userUpdatedAt = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("active".equals(fieldName)) {
-                    deserializedDataConnection.active = reader.getNullable(JsonReader::getBoolean);
-                } else if ("inactiveMessage".equals(fieldName)) {
-                    deserializedDataConnection.inactiveMessage = reader.getString();
-                } else {
+                if (!DataConnection.fromJsonShared(reader, fieldName, deserializedDataConnection)) {
                     reader.skipChildren();
                 }
             }
             return deserializedDataConnection;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("content", this.content == null ? null : this.content.toString());
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeNumberField("frequencyOffset", this.frequencyOffset);
+        jsonWriter.writeBooleanField("active", this.active);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName, DataConnection deserializedDataConnection)
+        throws IOException {
+        if ("name".equals(fieldName)) {
+            deserializedDataConnection.name = reader.getString();
+            return true;
+        } else if ("kind".equals(fieldName)) {
+            deserializedDataConnection.kind = reader.getString();
+            return true;
+        } else if ("id".equals(fieldName)) {
+            deserializedDataConnection.id = reader.getString();
+            return true;
+        } else if ("displayName".equals(fieldName)) {
+            deserializedDataConnection.displayName = reader.getString();
+            return true;
+        } else if ("content".equals(fieldName)) {
+            deserializedDataConnection.content = DataConnectionContent.fromString(reader.getString());
+            return true;
+        } else if ("createdDate".equals(fieldName)) {
+            deserializedDataConnection.createdDate
+                = reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+            return true;
+        } else if ("frequency".equals(fieldName)) {
+            deserializedDataConnection.frequency = DataConnectionFrequency.fromString(reader.getString());
+            return true;
+        } else if ("frequencyOffset".equals(fieldName)) {
+            deserializedDataConnection.frequencyOffset = reader.getNullable(JsonReader::getInt);
+            return true;
+        } else if ("updatedDate".equals(fieldName)) {
+            deserializedDataConnection.updatedDate
+                = reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+            return true;
+        } else if ("userUpdatedAt".equals(fieldName)) {
+            deserializedDataConnection.userUpdatedAt
+                = reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+            return true;
+        } else if ("active".equals(fieldName)) {
+            deserializedDataConnection.active = reader.getNullable(JsonReader::getBoolean);
+            return true;
+        } else if ("inactiveMessage".equals(fieldName)) {
+            deserializedDataConnection.inactiveMessage = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

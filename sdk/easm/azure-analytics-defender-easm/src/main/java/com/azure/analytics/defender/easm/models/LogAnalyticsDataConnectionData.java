@@ -17,12 +17,6 @@ import java.io.IOException;
 public final class LogAnalyticsDataConnectionData extends DataConnectionData {
 
     /*
-     * Discriminator property for DataConnectionData.
-     */
-    @Generated
-    private String kind = "logAnalytics";
-
-    /*
      * properties
      */
     @Generated
@@ -36,17 +30,7 @@ public final class LogAnalyticsDataConnectionData extends DataConnectionData {
     @Generated
     public LogAnalyticsDataConnectionData(LogAnalyticsDataConnectionProperties properties) {
         this.properties = properties;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for DataConnectionData.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public String getKind() {
-        return this.kind;
+        this.kind = "logAnalytics";
     }
 
     /**
@@ -106,12 +90,8 @@ public final class LogAnalyticsDataConnectionData extends DataConnectionData {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("content", getContent() == null ? null : getContent().toString());
-        jsonWriter.writeStringField("frequency", getFrequency() == null ? null : getFrequency().toString());
-        jsonWriter.writeNumberField("frequencyOffset", getFrequencyOffset());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 

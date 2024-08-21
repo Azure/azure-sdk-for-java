@@ -17,12 +17,6 @@ import java.io.IOException;
 public final class MessageDeltaTextFilePathAnnotationObject extends MessageDeltaTextAnnotation {
 
     /*
-     * The type of the text content annotation.
-     */
-    @Generated
-    private String type = "file_path";
-
-    /*
      * The file path information.
      */
     @Generated
@@ -48,17 +42,7 @@ public final class MessageDeltaTextFilePathAnnotationObject extends MessageDelta
     @Generated
     private MessageDeltaTextFilePathAnnotationObject(int index) {
         super(index);
-    }
-
-    /**
-     * Get the type property: The type of the text content annotation.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "file_path";
     }
 
     /**
@@ -98,8 +82,7 @@ public final class MessageDeltaTextFilePathAnnotationObject extends MessageDelta
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", getIndex());
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("file_path", this.filePath);
         jsonWriter.writeNumberField("start_index", this.startIndex);
         jsonWriter.writeNumberField("end_index", this.endIndex);

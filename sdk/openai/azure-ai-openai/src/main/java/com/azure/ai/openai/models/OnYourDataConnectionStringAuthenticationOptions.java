@@ -30,6 +30,7 @@ public final class OnYourDataConnectionStringAuthenticationOptions extends OnYou
     @Generated
     public OnYourDataConnectionStringAuthenticationOptions(String connectionString) {
         this.connectionString = connectionString;
+        this.type = OnYourDataAuthenticationType.CONNECTION_STRING;
     }
 
     /**
@@ -42,23 +43,6 @@ public final class OnYourDataConnectionStringAuthenticationOptions extends OnYou
         return this.connectionString;
     }
 
-    /*
-     * The authentication type.
-     */
-    @Generated
-    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.CONNECTION_STRING;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -66,8 +50,8 @@ public final class OnYourDataConnectionStringAuthenticationOptions extends OnYou
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("connection_string", this.connectionString);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

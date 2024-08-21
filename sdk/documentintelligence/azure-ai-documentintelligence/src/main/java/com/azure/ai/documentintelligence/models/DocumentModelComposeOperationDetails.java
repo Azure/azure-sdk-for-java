@@ -12,7 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
@@ -20,12 +19,6 @@ import java.util.Map;
  */
 @Immutable
 public final class DocumentModelComposeOperationDetails extends OperationDetails {
-    /*
-     * Type of operation.
-     */
-    @Generated
-    private OperationKind kind = OperationKind.DOCUMENT_MODEL_COMPOSE;
-
     /*
      * Operation result upon success.
      */
@@ -68,17 +61,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     private DocumentModelComposeOperationDetails(OperationStatus status, OffsetDateTime createdDateTime,
         OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
         super(status, createdDateTime, lastUpdatedDateTime, resourceLocation);
-    }
-
-    /**
-     * Get the kind property: Type of operation.
-     * 
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public OperationKind getKind() {
-        return this.kind;
+        this.kind = OperationKind.DOCUMENT_MODEL_COMPOSE;
     }
 
     /**
@@ -142,19 +125,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
-        jsonWriter.writeStringField("createdDateTime",
-            getCreatedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDateTime()));
-        jsonWriter.writeStringField("lastUpdatedDateTime",
-            getLastUpdatedDateTime() == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedDateTime()));
-        jsonWriter.writeStringField("resourceLocation", getResourceLocation());
-        jsonWriter.writeNumberField("percentCompleted", getPercentCompleted());
-        jsonWriter.writeStringField("apiVersion", getApiVersion());
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("error", getError());
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("result", this.result);
         return jsonWriter.writeEndObject();
     }

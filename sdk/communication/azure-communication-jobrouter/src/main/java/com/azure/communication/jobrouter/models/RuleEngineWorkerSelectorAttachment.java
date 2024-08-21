@@ -20,12 +20,6 @@ import java.util.Set;
 public final class RuleEngineWorkerSelectorAttachment extends WorkerSelectorAttachment {
 
     /*
-     * The type discriminator describing a sub-type of WorkerSelectorAttachment.
-     */
-    @Generated
-    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.RULE_ENGINE;
-
-    /*
      * A RouterRule that resolves a collection of worker selectors to attach.
      */
     @Generated
@@ -42,17 +36,7 @@ public final class RuleEngineWorkerSelectorAttachment extends WorkerSelectorAtta
      */
     @Generated
     public RuleEngineWorkerSelectorAttachment() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public WorkerSelectorAttachmentKind getKind() {
-        return this.kind;
+        this.kind = WorkerSelectorAttachmentKind.RULE_ENGINE;
     }
 
     /**
@@ -127,9 +111,9 @@ public final class RuleEngineWorkerSelectorAttachment extends WorkerSelectorAtta
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedRuleEngineWorkerSelectorAttachment.kind
-                        = WorkerSelectorAttachmentKind.fromString(reader.getString());
+                if (WorkerSelectorAttachment.fromJsonShared(reader, fieldName,
+                    deserializedRuleEngineWorkerSelectorAttachment)) {
+                    continue;
                 } else if ("rule".equals(fieldName)) {
                     deserializedRuleEngineWorkerSelectorAttachment.rule = RouterRule.fromJson(reader);
                 } else {

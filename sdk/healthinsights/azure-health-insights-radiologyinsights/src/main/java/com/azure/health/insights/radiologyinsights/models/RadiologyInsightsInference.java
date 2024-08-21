@@ -51,8 +51,7 @@ public class RadiologyInsightsInference {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind
-        = RadiologyInsightsInferenceType.fromString("RadiologyInsightsInference");
+    RadiologyInsightsInferenceType kind;
 
     /*
      * Additional Content defined by implementations
@@ -66,6 +65,7 @@ public class RadiologyInsightsInference {
      */
     @Generated
     protected RadiologyInsightsInference() {
+        this.kind = RadiologyInsightsInferenceType.fromString("RadiologyInsightsInference");
     }
 
     /**

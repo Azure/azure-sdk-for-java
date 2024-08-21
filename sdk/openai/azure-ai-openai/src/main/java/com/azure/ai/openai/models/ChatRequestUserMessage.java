@@ -111,23 +111,6 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
         return this;
     }
 
-    /*
-     * The chat role associated with this message.
-     */
-    @Generated
-    private ChatRole role = ChatRole.USER;
-
-    /**
-     * Get the role property: The chat role associated with this message.
-     *
-     * @return the role value.
-     */
-    @Generated
-    @Override
-    public ChatRole getRole() {
-        return this.role;
-    }
-
     /**
      * {@inheritDoc}
      */

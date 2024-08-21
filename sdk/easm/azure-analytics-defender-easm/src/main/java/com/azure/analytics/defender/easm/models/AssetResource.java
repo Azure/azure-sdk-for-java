@@ -25,7 +25,7 @@ public class AssetResource implements JsonSerializable<AssetResource> {
      * Discriminator property for AssetResource.
      */
     @Generated
-    private String kind = "AssetResource";
+    String kind;
 
     /*
      * The system generated unique id for the resource.
@@ -110,6 +110,7 @@ public class AssetResource implements JsonSerializable<AssetResource> {
      */
     @Generated
     protected AssetResource() {
+        this.kind = "AssetResource";
     }
 
     /**
@@ -419,21 +420,7 @@ public class AssetResource implements JsonSerializable<AssetResource> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeStringField("uuid", this.uuid);
-        jsonWriter.writeStringField("createdDate",
-            this.createdDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDate));
-        jsonWriter.writeStringField("updatedDate",
-            this.updatedDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedDate));
-        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
-        jsonWriter.writeStringField("externalId", this.externalId);
-        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("wildcard", this.wildcard);
-        jsonWriter.writeStringField("discoGroupName", this.discoGroupName);
-        jsonWriter.writeArrayField("auditTrail", this.auditTrail, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("reason", this.reason);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -494,43 +481,82 @@ public class AssetResource implements JsonSerializable<AssetResource> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    deserializedAssetResource.id = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedAssetResource.kind = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedAssetResource.name = reader.getString();
-                } else if ("displayName".equals(fieldName)) {
-                    deserializedAssetResource.displayName = reader.getString();
-                } else if ("uuid".equals(fieldName)) {
-                    deserializedAssetResource.uuid = reader.getString();
-                } else if ("createdDate".equals(fieldName)) {
-                    deserializedAssetResource.createdDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("updatedDate".equals(fieldName)) {
-                    deserializedAssetResource.updatedDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("state".equals(fieldName)) {
-                    deserializedAssetResource.state = AssetState.fromString(reader.getString());
-                } else if ("externalId".equals(fieldName)) {
-                    deserializedAssetResource.externalId = reader.getString();
-                } else if ("labels".equals(fieldName)) {
-                    List<String> labels = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAssetResource.labels = labels;
-                } else if ("wildcard".equals(fieldName)) {
-                    deserializedAssetResource.wildcard = reader.getNullable(JsonReader::getBoolean);
-                } else if ("discoGroupName".equals(fieldName)) {
-                    deserializedAssetResource.discoGroupName = reader.getString();
-                } else if ("auditTrail".equals(fieldName)) {
-                    List<AuditTrailItem> auditTrail = reader.readArray(reader1 -> AuditTrailItem.fromJson(reader1));
-                    deserializedAssetResource.auditTrail = auditTrail;
-                } else if ("reason".equals(fieldName)) {
-                    deserializedAssetResource.reason = reader.getString();
-                } else {
+                if (!AssetResource.fromJsonShared(reader, fieldName, deserializedAssetResource)) {
                     reader.skipChildren();
                 }
             }
             return deserializedAssetResource;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("uuid", this.uuid);
+        jsonWriter.writeStringField("createdDate",
+            this.createdDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDate));
+        jsonWriter.writeStringField("updatedDate",
+            this.updatedDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedDate));
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("externalId", this.externalId);
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("wildcard", this.wildcard);
+        jsonWriter.writeStringField("discoGroupName", this.discoGroupName);
+        jsonWriter.writeArrayField("auditTrail", this.auditTrail, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("reason", this.reason);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName, AssetResource deserializedAssetResource)
+        throws IOException {
+        if ("id".equals(fieldName)) {
+            deserializedAssetResource.id = reader.getString();
+            return true;
+        } else if ("kind".equals(fieldName)) {
+            deserializedAssetResource.kind = reader.getString();
+            return true;
+        } else if ("name".equals(fieldName)) {
+            deserializedAssetResource.name = reader.getString();
+            return true;
+        } else if ("displayName".equals(fieldName)) {
+            deserializedAssetResource.displayName = reader.getString();
+            return true;
+        } else if ("uuid".equals(fieldName)) {
+            deserializedAssetResource.uuid = reader.getString();
+            return true;
+        } else if ("createdDate".equals(fieldName)) {
+            deserializedAssetResource.createdDate
+                = reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+            return true;
+        } else if ("updatedDate".equals(fieldName)) {
+            deserializedAssetResource.updatedDate
+                = reader.getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+            return true;
+        } else if ("state".equals(fieldName)) {
+            deserializedAssetResource.state = AssetState.fromString(reader.getString());
+            return true;
+        } else if ("externalId".equals(fieldName)) {
+            deserializedAssetResource.externalId = reader.getString();
+            return true;
+        } else if ("labels".equals(fieldName)) {
+            List<String> labels = reader.readArray(reader1 -> reader1.getString());
+            deserializedAssetResource.labels = labels;
+            return true;
+        } else if ("wildcard".equals(fieldName)) {
+            deserializedAssetResource.wildcard = reader.getNullable(JsonReader::getBoolean);
+            return true;
+        } else if ("discoGroupName".equals(fieldName)) {
+            deserializedAssetResource.discoGroupName = reader.getString();
+            return true;
+        } else if ("auditTrail".equals(fieldName)) {
+            List<AuditTrailItem> auditTrail = reader.readArray(reader1 -> AuditTrailItem.fromJson(reader1));
+            deserializedAssetResource.auditTrail = auditTrail;
+            return true;
+        } else if ("reason".equals(fieldName)) {
+            deserializedAssetResource.reason = reader.getString();
+            return true;
+        }
+        return false;
     }
 }
