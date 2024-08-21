@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-hdinsight</artifactId>
-  <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-hdinsight;current} -->
+  <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-hdinsight;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for HDInsight Management</name>
