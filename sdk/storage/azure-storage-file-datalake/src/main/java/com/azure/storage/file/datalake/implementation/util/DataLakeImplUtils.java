@@ -4,7 +4,9 @@
 package com.azure.storage.file.datalake.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.models.BlobStorageError;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.file.datalake.models.DataLakeStorageError;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import reactor.core.Exceptions;
 
@@ -43,8 +45,15 @@ public class DataLakeImplUtils {
     }
 
     private static DataLakeStorageException transformSingleBlobStorageException(BlobStorageException ex) {
+        BlobStorageError blobError = ex.getValue();
+        DataLakeStorageError dataLakeError = null;
+        if (blobError != null) {
+            dataLakeError = new DataLakeStorageError().setErrorCode(blobError.getErrorCode())
+                .setMessage(blobError.getMessage());
+        }
+
         return new DataLakeStorageException(ex.getServiceMessage(), ex.getResponse(),
-            ex.getValue());
+            dataLakeError);
     }
 
     public static <T> T returnOrConvertException(Supplier<T> supplier, ClientLogger logger) {

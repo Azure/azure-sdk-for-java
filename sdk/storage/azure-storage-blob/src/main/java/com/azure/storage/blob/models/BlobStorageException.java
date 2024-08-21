@@ -30,8 +30,17 @@ public final class BlobStorageException extends HttpResponseException {
      * @param response the HTTP response.
      * @param value the error code of the exception.
      */
-    public BlobStorageException(String message, HttpResponse response, Object value) {
+    public BlobStorageException(String message, HttpResponse response, BlobStorageError value) {
         super(StorageImplUtils.convertStorageExceptionMessage(message, response), response, value);
+    }
+
+    /**
+     * Gets the decoded error response returned by the service.
+     *
+     * @return The decoded error response returned by the service.
+     */
+    public BlobStorageError getValue() {
+        return (BlobStorageError) super.getValue();
     }
 
     /**

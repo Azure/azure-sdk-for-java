@@ -336,8 +336,7 @@ public class ShareDirectoryAsyncClient {
      * shareDirectoryAsyncClient.createWithResponse&#40;options&#41;
      *         .subscribe&#40;response -&gt;
      *             System.out.println&#40;&quot;Completed creating the directory with status code:&quot; + response.getStatusCode&#40;&#41;&#41;,
-     *             error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;
-     * &#41;;
+     *             error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions -->
      *

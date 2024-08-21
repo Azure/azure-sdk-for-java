@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.batch;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -11,11 +12,14 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.models.BlobStorageError;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.xml.XmlReader;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.xml.stream.XMLStreamException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -61,7 +65,7 @@ class BlobBatchHelper {
          * Content-Type will contain the boundary for each batch response. The expected format is:
          * "Content-Type: multipart/mixed; boundary=batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"
          */
-        String contentType = rawResponse.getHeaders().getValue(Constants.HeaderConstants.CONTENT_TYPE);
+        String contentType = rawResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
 
         // Split on the boundary [ "multipart/mixed; boundary", "batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"]
         String[] boundaryPieces = contentType.split("=", 2);
@@ -93,9 +97,14 @@ class BlobBatchHelper {
                     int statusCode = getStatusCode(exceptionSections[1], logger);
                     HttpHeaders headers = getHttpHeaders(exceptionSections[1]);
 
-                    sink.error(logger.logExceptionAsError(new BlobStorageException(
-                        headers.getValue(Constants.HeaderConstants.ERROR_CODE),
-                        createHttpResponse(rawResponse.getRequest(), statusCode, headers, body), body)));
+                    try (XmlReader xmlReader = XmlReader.fromString(exceptionSections[2])) {
+                        sink.error(logger.logExceptionAsError(
+                            new BlobStorageException(headers.getValue(Constants.HeaderConstants.ERROR_CODE),
+                                createHttpResponse(rawResponse.getRequest(), statusCode, headers, body),
+                                BlobStorageError.fromXml(xmlReader))));
+                    } catch (XMLStreamException ex) {
+                        sink.error(ex);
+                    }
                 }
 
                 // Split the batch response body into batch operation responses.
@@ -123,7 +132,7 @@ class BlobBatchHelper {
                     }
                 }
 
-                if (throwOnAnyFailure && exceptions.size() != 0) {
+                if (throwOnAnyFailure && !exceptions.isEmpty()) {
                     sink.error(logger.logExceptionAsError(new BlobBatchStorageException("Batch had operation failures.",
                         createHttpResponse(rawResponse), exceptions)));
                 }
@@ -190,11 +199,15 @@ class BlobBatchHelper {
          * Currently, no batching operations will return a success body, they will only return a body on an exception.
          * For now this will only construct the exception and throw if it should throw on an error.
          */
-        BlobStorageException exception = new BlobStorageException(responseBody,
-            batchOperationResponse.asHttpResponse(responseBody), responseBody);
-        logger.logExceptionAsError(exception);
-        batchOperationResponse.setException(exception);
-        exceptions.add(exception);
+        try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
+            BlobStorageException exception = new BlobStorageException(responseBody,
+                batchOperationResponse.asHttpResponse(responseBody), BlobStorageError.fromXml(xmlReader));
+            logger.logExceptionAsError(exception);
+            batchOperationResponse.setException(exception);
+            exceptions.add(exception);
+        } catch (XMLStreamException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     static HttpResponse createHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, String body) {

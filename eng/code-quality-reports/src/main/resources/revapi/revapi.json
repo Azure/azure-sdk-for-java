@@ -633,6 +633,20 @@
           "old": "class com.azure.resourcemanager.sql.models.UserIdentity",
           "new": "class com.azure.resourcemanager.sql.models.UserIdentity",
           "justification": "Customer unlikely to subclass this class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.storage.blob.models.BlobStorageException::<init>(java.lang.String, com.azure.core.http.HttpResponse, ===java.lang.Object===)",
+          "new": "parameter void com.azure.storage.blob.models.BlobStorageException::<init>(java.lang.String, com.azure.core.http.HttpResponse, ===com.azure.storage.blob.models.BlobStorageError===)",
+          "justification": "Previous parameter conveyed no meaning to the customer and this is a type customers aren't expected to instantiate."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.storage.file.datalake.models.DataLakeStorageException::<init>(java.lang.String, com.azure.core.http.HttpResponse, ===java.lang.Object===)",
+          "new": "parameter void com.azure.storage.file.datalake.models.DataLakeStorageException::<init>(java.lang.String, com.azure.core.http.HttpResponse, ===com.azure.storage.file.datalake.models.DataLakeStorageError===)",
+          "justification": "Previous parameter conveyed no meaning to the customer and this is a type customers aren't expected to instantiate."
         }
       ]
     }
