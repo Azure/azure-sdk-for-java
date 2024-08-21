@@ -41,8 +41,8 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
     private final EmailRecipients recipients;
 
     /*
-     * List of attachments. Please note that we limit the total size of an email request (which includes attachments) to
-     * 10MB.
+     * List of attachments. Please note that we limit the total size of an email request (which includes both regular
+     * and inline attachments) to 10MB.
      */
     private List<EmailAttachment> attachments;
 
@@ -119,7 +119,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Get the attachments property: List of attachments. Please note that we limit the total size of an email request
-     * (which includes attachments) to 10MB.
+     * (which includes both regular and inline attachments) to 10MB.
      * 
      * @return the attachments value.
      */
@@ -129,7 +129,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Set the attachments property: List of attachments. Please note that we limit the total size of an email request
-     * (which includes attachments) to 10MB.
+     * (which includes both regular and inline attachments) to 10MB.
      * 
      * @param attachments the attachments value to set.
      * @return the EmailMessage object itself.

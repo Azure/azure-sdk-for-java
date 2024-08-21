@@ -87,4 +87,30 @@ public class EmailAsyncClientTests extends EmailTestBase {
             })
             .verifyComplete();
     }
+
+    @ParameterizedTest
+    @MethodSource("getTestParameters")
+    public void sendEmailWithInlineAttachment(HttpClient httpClient) {
+        emailAsyncClient = getEmailAsyncClient(httpClient);
+
+        EmailAttachment attachment = new EmailAttachment(
+            "inlineimage.jpg",
+            "image/jpeg",
+            BinaryData.fromString("test")
+        );
+        attachment.contentId = "inline_image";
+
+        EmailMessage message = new EmailMessage()
+            .setSenderAddress(SENDER_ADDRESS)
+            .setToRecipients(RECIPIENT_ADDRESS)
+            .setSubject("test subject")
+            .setBodyHtml("<h1>test message<img src=\"cid:inline_image\"></h1>")
+            .setAttachments(attachment);
+
+        StepVerifier.create(emailAsyncClient.beginSend(message).last())
+            .assertNext(response -> {
+                assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
+            })
+            .verifyComplete();
+    }
 }
