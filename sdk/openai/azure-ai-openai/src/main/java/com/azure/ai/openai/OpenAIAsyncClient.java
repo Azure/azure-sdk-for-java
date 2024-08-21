@@ -35,11 +35,8 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
@@ -47,6 +44,9 @@ import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.ai.openai.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.implementation.CompletionsUtils;
@@ -57,7 +57,6 @@ import com.azure.core.util.logging.ClientLogger;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-
 import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscription;
 import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscriptionText;
 import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslation;
@@ -1690,7 +1689,6 @@ public final class OpenAIAsyncClient {
             return this.openAIServiceClient.uploadFileWithResponseAsync(uploadFileRequest, requestOptions);
         }
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-
         return this.serviceClient.uploadFileWithResponseAsync(uploadFileRequest, requestOptions)
             .onErrorResume(HttpResponseException.class,
                 (Function<Throwable, Mono<ResponseBase<HttpHeaders, BinaryData>>>) throwable -> {
@@ -1698,7 +1696,8 @@ public final class OpenAIAsyncClient {
                     HttpResponse httpResponse = ex.getResponse();
                     if (httpResponse.getStatusCode() == 201) {
                         return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
-                            httpResponse.getStatusCode(), httpResponse.getHeaders(), BinaryData.fromObject(ex.getValue()), null));
+                            httpResponse.getStatusCode(), httpResponse.getHeaders(),
+                            BinaryData.fromObject(ex.getValue()), null));
                     }
                     return Mono.error(throwable);
                 });
@@ -1965,7 +1964,8 @@ public final class OpenAIAsyncClient {
                     HttpResponse httpResponse = ex.getResponse();
                     if (httpResponse.getStatusCode() == 200) {
                         return Mono.just(new ResponseBase<HttpHeaders, BinaryData>(httpResponse.getRequest(),
-                            httpResponse.getStatusCode(), httpResponse.getHeaders(), BinaryData.fromObject(ex.getValue()), null));
+                            httpResponse.getStatusCode(), httpResponse.getHeaders(),
+                            BinaryData.fromObject(ex.getValue()), null));
                     }
                     return Mono.error(throwable);
                 });
