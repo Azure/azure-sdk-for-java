@@ -63,7 +63,7 @@ public class FeatureFlagClient {
      *
      */
     public List<FeatureFlags> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
-        String[] labelFilter) {
+        String[] labelFilter, boolean isRefresh) {
         List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
@@ -78,7 +78,7 @@ public class FeatureFlagClient {
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
 
-            FeatureFlags features = replicaClient.listFeatureFlags(settingSelector);
+            FeatureFlags features = replicaClient.listFeatureFlags(settingSelector, isRefresh);
             loadedFeatureFlags.addAll(proccessFeatureFlags(features, keyFilter));
         }
         return loadedFeatureFlags;
