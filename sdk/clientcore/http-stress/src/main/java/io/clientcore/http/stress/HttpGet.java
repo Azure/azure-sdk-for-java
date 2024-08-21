@@ -25,6 +25,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 import reactor.core.publisher.Mono;
 
@@ -37,6 +39,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(HttpGet.class);
     private final HttpPipeline pipeline;
     private final URL url;
+    final ExecutorService executorService = Executors.newFixedThreadPool(options.getConcurrentTaskLimit());
 
     // This is almost-unique-id generator. We could use UUID, but it's a bit more expensive to use.
     private final AtomicLong clientRequestId = new AtomicLong(Instant.now().getEpochSecond());
@@ -115,7 +118,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
                 LOGGER.logThrowableAsError(e);
             }
             return null;
-        });
+        }, executorService);
     }
 
     // Method to run using ExecutorService

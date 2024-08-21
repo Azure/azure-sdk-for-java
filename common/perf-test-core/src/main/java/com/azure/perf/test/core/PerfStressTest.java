@@ -3,10 +3,8 @@
 
 package com.azure.perf.test.core;
 
-import java.util.concurrent.ExecutorService;
-import reactor.core.publisher.Mono;
-
 import java.util.concurrent.CompletableFuture;
+import reactor.core.publisher.Mono;
 
 /**
  * Represents the abstraction of a Performance test class.

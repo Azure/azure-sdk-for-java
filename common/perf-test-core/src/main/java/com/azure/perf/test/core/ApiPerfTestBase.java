@@ -267,19 +267,17 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     public Runnable runAllAsyncWithExecutorService(long endNanoTime) {
         completedOperations = 0;
         lastCompletionNanoTime = 0;
-
-        // Create the ExecutorService here and pass it down to the other methods
         final ExecutorService executor = Executors.newFixedThreadPool(options.getConcurrentTaskLimit());
 
         return () -> {
             try {
                 while (System.nanoTime() < endNanoTime) {
-                    long startNanoTime = System.nanoTime(); // Reset startNanoTime before each task
+                    long startNanoTime = System.nanoTime();
 
                     try {
-                        Runnable task = runTestAsyncWithExecutorService(); // Get the Runnable task
+                        Runnable task = runTestAsyncWithExecutorService();
                         executor.submit(() -> {
-                            task.run(); // Execute the task's run() method
+                            task.run();
                             completedOperations++;
                             lastCompletionNanoTime = System.nanoTime() - startNanoTime;
                         }).get(); // Wait for the task to complete
