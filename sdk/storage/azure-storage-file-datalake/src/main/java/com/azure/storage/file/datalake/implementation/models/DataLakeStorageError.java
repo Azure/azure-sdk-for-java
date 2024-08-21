@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 public final class DataLakeStorageError
     implements JsonSerializable<DataLakeStorageError>, XmlSerializable<DataLakeStorageError> {
-    private String errorCode;
+    private String code;
     private String message;
     private String queryParameterName;
     private String queryParameterValue;
@@ -36,8 +36,8 @@ public final class DataLakeStorageError
      *
      * @return The error code.
      */
-    public String getErrorCode() {
-        return errorCode;
+    public String getCode() {
+        return code;
     }
 
     /**
@@ -52,7 +52,7 @@ public final class DataLakeStorageError
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeStartObject("Error")
-            .writeStringField("Code", errorCode)
+            .writeStringField("Code", code)
             .writeStringField("Message", this.message)
             .writeStringField("QueryParameterName", this.queryParameterName)
             .writeStringField("QueryParameterValue", this.queryParameterValue)
@@ -103,7 +103,7 @@ public final class DataLakeStorageError
                 reader.nextToken();
 
                 if ("code".equals(fieldName)) {
-                    deserializedStorageError.errorCode = reader.getString();
+                    deserializedStorageError.code = reader.getString();
                 } else if ("message".equals(fieldName)) {
                     deserializedStorageError.message = reader.getString();
                 } else if ("queryParameterName".equals(fieldName)) {
@@ -127,7 +127,7 @@ public final class DataLakeStorageError
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Error" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeStringElement("Code", errorCode);
+        xmlWriter.writeStringElement("Code", code);
         xmlWriter.writeStringElement("Message", this.message);
         xmlWriter.writeStringElement("QueryParameterName", this.queryParameterName);
         xmlWriter.writeStringElement("QueryParameterValue", this.queryParameterValue);
@@ -166,7 +166,7 @@ public final class DataLakeStorageError
                 QName elementName = reader.getElementName();
 
                 if ("Code".equals(elementName.getLocalPart())) {
-                    deserializedStorageError.errorCode = reader.getStringElement();
+                    deserializedStorageError.code = reader.getStringElement();
                 } else if ("Message".equals(elementName.getLocalPart())) {
                     deserializedStorageError.message = reader.getStringElement();
                 } else if ("QueryParameterName".equals(elementName.getLocalPart())) {

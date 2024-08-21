@@ -44,11 +44,11 @@ import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyH
 import com.azure.storage.file.share.implementation.models.SharesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.ShareStats;
+import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
-import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +87,7 @@ public final class SharesImpl {
     public interface SharesService {
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesCreateHeaders, Void>> create(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata,
@@ -103,7 +103,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> createNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata,
@@ -119,7 +119,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesCreateHeaders, Void> createSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata,
@@ -135,7 +135,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> createNoCustomHeadersSync(@HostParam("url") String url, @PathParam("shareName") String shareName,
             @QueryParam("restype") String restype, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-share-quota") Integer quota,
@@ -151,7 +151,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesGetPropertiesHeaders, Void>> getProperties(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
@@ -161,7 +161,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> getPropertiesNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
@@ -171,7 +171,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesGetPropertiesHeaders, Void> getPropertiesSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
@@ -181,7 +181,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> getPropertiesNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
@@ -191,7 +191,7 @@ public final class SharesImpl {
 
         @Delete("/{shareName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesDeleteHeaders, Void>> delete(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
@@ -203,7 +203,7 @@ public final class SharesImpl {
 
         @Delete("/{shareName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> deleteNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
@@ -215,7 +215,7 @@ public final class SharesImpl {
 
         @Delete("/{shareName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesDeleteHeaders, Void> deleteSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
@@ -227,7 +227,7 @@ public final class SharesImpl {
 
         @Delete("/{shareName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> deleteNoCustomHeadersSync(@HostParam("url") String url, @PathParam("shareName") String shareName,
             @QueryParam("restype") String restype, @QueryParam("sharesnapshot") String sharesnapshot,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -238,7 +238,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesAcquireLeaseHeaders, Void>> acquireLease(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -250,7 +250,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> acquireLeaseNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -262,7 +262,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesAcquireLeaseHeaders, Void> acquireLeaseSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -274,7 +274,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> acquireLeaseNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -286,7 +286,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesReleaseLeaseHeaders, Void>> releaseLease(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -298,7 +298,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> releaseLeaseNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -310,7 +310,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesReleaseLeaseHeaders, Void> releaseLeaseSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -322,7 +322,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> releaseLeaseNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -334,7 +334,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesChangeLeaseHeaders, Void>> changeLease(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -346,7 +346,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> changeLeaseNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -358,7 +358,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesChangeLeaseHeaders, Void> changeLeaseSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -370,7 +370,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> changeLeaseNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -382,7 +382,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesRenewLeaseHeaders, Void>> renewLease(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -394,7 +394,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> renewLeaseNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -406,7 +406,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesRenewLeaseHeaders, Void> renewLeaseSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -418,7 +418,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> renewLeaseNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -430,7 +430,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesBreakLeaseHeaders, Void>> breakLease(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -442,7 +442,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> breakLeaseNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -454,7 +454,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesBreakLeaseHeaders, Void> breakLeaseSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -466,7 +466,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> breakLeaseNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype,
@@ -478,7 +478,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesCreateSnapshotHeaders, Void>> createSnapshot(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -488,7 +488,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> createSnapshotNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -498,7 +498,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesCreateSnapshotHeaders, Void> createSnapshotSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -508,7 +508,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> createSnapshotNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -518,7 +518,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesCreatePermissionHeaders, Void>> createPermission(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -529,7 +529,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> createPermissionNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -540,7 +540,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesCreatePermissionHeaders, Void> createPermissionSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -551,7 +551,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> createPermissionNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -562,7 +562,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>> getPermission(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
@@ -573,7 +573,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<SharePermission>> getPermissionNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
@@ -584,7 +584,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesGetPermissionHeaders, SharePermission> getPermissionSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
@@ -595,7 +595,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<SharePermission> getPermissionNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
@@ -606,7 +606,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setProperties(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -622,7 +622,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> setPropertiesNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -638,7 +638,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesSetPropertiesHeaders, Void> setPropertiesSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -654,7 +654,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> setPropertiesNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -670,7 +670,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesSetMetadataHeaders, Void>> setMetadata(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -681,7 +681,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> setMetadataNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -692,7 +692,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesSetMetadataHeaders, Void> setMetadataSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -703,7 +703,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> setMetadataNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -714,7 +714,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesGetAccessPolicyHeaders, ShareSignedIdentifierWrapper>> getAccessPolicy(
             @HostParam("url") String url, @PathParam("shareName") String shareName,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
@@ -725,7 +725,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<ShareSignedIdentifierWrapper>> getAccessPolicyNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -735,7 +735,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesGetAccessPolicyHeaders, ShareSignedIdentifierWrapper> getAccessPolicySync(
             @HostParam("url") String url, @PathParam("shareName") String shareName,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
@@ -746,7 +746,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<ShareSignedIdentifierWrapper> getAccessPolicyNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -756,7 +756,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesSetAccessPolicyHeaders, Void>> setAccessPolicy(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -767,7 +767,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> setAccessPolicyNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -778,7 +778,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesSetAccessPolicyHeaders, Void> setAccessPolicySync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -789,7 +789,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> setAccessPolicyNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -800,7 +800,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesGetStatisticsHeaders, ShareStats>> getStatistics(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -810,7 +810,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<ShareStats>> getStatisticsNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -820,7 +820,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesGetStatisticsHeaders, ShareStats> getStatisticsSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -830,7 +830,7 @@ public final class SharesImpl {
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<ShareStats> getStatisticsNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -840,7 +840,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<SharesRestoreHeaders, Void>> restore(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -852,7 +852,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> restoreNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -864,7 +864,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<SharesRestoreHeaders, Void> restoreSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -876,7 +876,7 @@ public final class SharesImpl {
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> restoreNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -908,7 +908,7 @@ public final class SharesImpl {
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -947,7 +947,7 @@ public final class SharesImpl {
      * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -985,7 +985,7 @@ public final class SharesImpl {
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1021,7 +1021,7 @@ public final class SharesImpl {
      * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1056,7 +1056,7 @@ public final class SharesImpl {
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1095,7 +1095,7 @@ public final class SharesImpl {
      * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1134,7 +1134,7 @@ public final class SharesImpl {
      * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -1172,7 +1172,7 @@ public final class SharesImpl {
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1207,7 +1207,7 @@ public final class SharesImpl {
      * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -1236,7 +1236,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1263,7 +1263,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1288,7 +1288,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1311,7 +1311,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1334,7 +1334,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1361,7 +1361,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1387,7 +1387,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -1412,7 +1412,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1433,7 +1433,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -1459,7 +1459,7 @@ public final class SharesImpl {
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1487,7 +1487,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1513,7 +1513,7 @@ public final class SharesImpl {
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1538,7 +1538,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1562,7 +1562,7 @@ public final class SharesImpl {
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1590,7 +1590,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1617,7 +1617,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -1643,7 +1643,7 @@ public final class SharesImpl {
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1666,7 +1666,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -1698,7 +1698,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1734,7 +1734,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1770,7 +1770,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1801,7 +1801,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1831,7 +1831,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1867,7 +1867,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1903,7 +1903,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -1938,7 +1938,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1967,7 +1967,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -1997,7 +1997,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2028,7 +2028,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2057,7 +2057,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2083,7 +2083,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2108,7 +2108,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2139,7 +2139,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2170,7 +2170,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2199,7 +2199,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2223,7 +2223,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -2256,7 +2256,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2290,7 +2290,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2324,7 +2324,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2353,7 +2353,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2381,7 +2381,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2415,7 +2415,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2449,7 +2449,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2482,7 +2482,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2509,7 +2509,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -2539,7 +2539,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2570,7 +2570,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2599,7 +2599,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2625,7 +2625,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2650,7 +2650,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2681,7 +2681,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2712,7 +2712,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2741,7 +2741,7 @@ public final class SharesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2764,7 +2764,7 @@ public final class SharesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -2800,7 +2800,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2837,7 +2837,7 @@ public final class SharesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2872,7 +2872,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2904,7 +2904,7 @@ public final class SharesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2935,7 +2935,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2972,7 +2972,7 @@ public final class SharesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3009,7 +3009,7 @@ public final class SharesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -3045,7 +3045,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3075,7 +3075,7 @@ public final class SharesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -3100,7 +3100,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3124,7 +3124,7 @@ public final class SharesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3147,7 +3147,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3166,7 +3166,7 @@ public final class SharesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3185,7 +3185,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3210,7 +3210,7 @@ public final class SharesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3234,7 +3234,7 @@ public final class SharesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -3257,7 +3257,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3275,7 +3275,7 @@ public final class SharesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -3298,7 +3298,7 @@ public final class SharesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3322,7 +3322,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3345,7 +3345,7 @@ public final class SharesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3364,7 +3364,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3384,7 +3384,7 @@ public final class SharesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3409,7 +3409,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3433,7 +3433,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -3456,7 +3456,7 @@ public final class SharesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3474,7 +3474,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -3502,7 +3502,7 @@ public final class SharesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a permission (a security descriptor) at the share level along with {@link ResponseBase} on successful
      * completion of {@link Mono}.
@@ -3533,7 +3533,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a permission (a security descriptor) at the share level along with {@link ResponseBase} on successful
      * completion of {@link Mono}.
@@ -3564,7 +3564,7 @@ public final class SharesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a permission (a security descriptor) at the share level on successful completion of {@link Mono}.
      */
@@ -3590,7 +3590,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a permission (a security descriptor) at the share level on successful completion of {@link Mono}.
      */
@@ -3615,7 +3615,7 @@ public final class SharesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a permission (a security descriptor) at the share level along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -3646,7 +3646,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a permission (a security descriptor) at the share level along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -3677,7 +3677,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a permission (a security descriptor) at the share level along with {@link ResponseBase}.
      */
@@ -3706,7 +3706,7 @@ public final class SharesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a permission (a security descriptor) at the share level.
      */
@@ -3732,7 +3732,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a permission (a security descriptor) at the share level along with {@link Response}.
      */
@@ -3766,7 +3766,7 @@ public final class SharesImpl {
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3804,7 +3804,7 @@ public final class SharesImpl {
      * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3840,7 +3840,7 @@ public final class SharesImpl {
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3873,7 +3873,7 @@ public final class SharesImpl {
      * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3905,7 +3905,7 @@ public final class SharesImpl {
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3943,7 +3943,7 @@ public final class SharesImpl {
      * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3981,7 +3981,7 @@ public final class SharesImpl {
      * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -4018,7 +4018,7 @@ public final class SharesImpl {
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4050,7 +4050,7 @@ public final class SharesImpl {
      * support. Current maximum for a file share is 102,400 IOPS.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -4078,7 +4078,7 @@ public final class SharesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4103,7 +4103,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4127,7 +4127,7 @@ public final class SharesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4148,7 +4148,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4169,7 +4169,7 @@ public final class SharesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4195,7 +4195,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4220,7 +4220,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -4244,7 +4244,7 @@ public final class SharesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4263,7 +4263,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -4286,7 +4286,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -4311,7 +4311,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -4335,7 +4335,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers on successful completion of {@link Mono}.
      */
@@ -4355,7 +4355,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers on successful completion of {@link Mono}.
      */
@@ -4375,7 +4375,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -4400,7 +4400,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -4424,7 +4424,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers along with {@link ResponseBase}.
      */
@@ -4447,7 +4447,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers.
      */
@@ -4466,7 +4466,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers along with {@link Response}.
      */
@@ -4490,7 +4490,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4517,7 +4517,7 @@ public final class SharesImpl {
      * @param shareAcl The ACL for the share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4542,7 +4542,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4563,7 +4563,7 @@ public final class SharesImpl {
      * @param shareAcl The ACL for the share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4584,7 +4584,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4611,7 +4611,7 @@ public final class SharesImpl {
      * @param shareAcl The ACL for the share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4637,7 +4637,7 @@ public final class SharesImpl {
      * @param shareAcl The ACL for the share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -4662,7 +4662,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4682,7 +4682,7 @@ public final class SharesImpl {
      * @param shareAcl The ACL for the share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -4706,7 +4706,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the share along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4730,7 +4730,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the share along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4753,7 +4753,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the share on successful completion of {@link Mono}.
      */
@@ -4773,7 +4773,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the share on successful completion of {@link Mono}.
      */
@@ -4792,7 +4792,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the share along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -4817,7 +4817,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the share along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -4841,7 +4841,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the share along with {@link ResponseBase}.
      */
@@ -4864,7 +4864,7 @@ public final class SharesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the share.
      */
@@ -4883,7 +4883,7 @@ public final class SharesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the share along with {@link Response}.
      */
@@ -4909,7 +4909,7 @@ public final class SharesImpl {
      * @param deletedShareName Specifies the name of the previously-deleted share.
      * @param deletedShareVersion Specifies the version of the previously-deleted share.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4937,7 +4937,7 @@ public final class SharesImpl {
      * @param deletedShareVersion Specifies the version of the previously-deleted share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4963,7 +4963,7 @@ public final class SharesImpl {
      * @param deletedShareName Specifies the name of the previously-deleted share.
      * @param deletedShareVersion Specifies the version of the previously-deleted share.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4987,7 +4987,7 @@ public final class SharesImpl {
      * @param deletedShareVersion Specifies the version of the previously-deleted share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -5010,7 +5010,7 @@ public final class SharesImpl {
      * @param deletedShareName Specifies the name of the previously-deleted share.
      * @param deletedShareVersion Specifies the version of the previously-deleted share.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -5038,7 +5038,7 @@ public final class SharesImpl {
      * @param deletedShareVersion Specifies the version of the previously-deleted share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -5066,7 +5066,7 @@ public final class SharesImpl {
      * @param deletedShareVersion Specifies the version of the previously-deleted share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -5092,7 +5092,7 @@ public final class SharesImpl {
      * @param deletedShareName Specifies the name of the previously-deleted share.
      * @param deletedShareVersion Specifies the version of the previously-deleted share.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5114,7 +5114,7 @@ public final class SharesImpl {
      * @param deletedShareVersion Specifies the version of the previously-deleted share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
