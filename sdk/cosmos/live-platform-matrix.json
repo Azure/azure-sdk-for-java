@@ -34,7 +34,7 @@
       },
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pmulti-master" ],
-      "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG=\"{\"isPartitionLevelCircuitBreakerEnabled\": true}\"\"",
+      "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG={\"isPartitionLevelCircuitBreakerEnabled\": true}\"",
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
