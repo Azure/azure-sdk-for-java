@@ -5,21 +5,24 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The AcsChatThreadMemberProperties model. */
 @Fluent
-public final class AcsChatThreadMemberProperties {
+public final class AcsChatThreadMemberProperties implements JsonSerializable<AcsChatThreadMemberProperties> {
     /*
      * The name of the user
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The MRI of the user
      */
-    @JsonProperty(value = "memberId")
     private String memberId;
 
     /**
@@ -67,5 +70,32 @@ public final class AcsChatThreadMemberProperties {
     public AcsChatThreadMemberProperties setMemberId(String memberId) {
         this.memberId = memberId;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("memberId", this.memberId);
+        jsonWriter.writeEndObject();
+        return jsonWriter;
+    }
+
+    public static AcsChatThreadMemberProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatThreadMemberProperties acsChatThreadMemberProperties = new AcsChatThreadMemberProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("displayName".equals(fieldName)) {
+                    acsChatThreadMemberProperties.setDisplayName(reader.getString());
+                } else if ("memberId".equals(fieldName)) {
+                    acsChatThreadMemberProperties.setMemberId(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return acsChatThreadMemberProperties;
+        });
     }
 }
