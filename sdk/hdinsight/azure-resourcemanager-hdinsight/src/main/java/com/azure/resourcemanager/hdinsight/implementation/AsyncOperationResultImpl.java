@@ -14,8 +14,8 @@ public final class AsyncOperationResultImpl implements AsyncOperationResult {
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    AsyncOperationResultImpl(
-        AsyncOperationResultInner innerObject, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
+    AsyncOperationResultImpl(AsyncOperationResultInner innerObject,
+        com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
