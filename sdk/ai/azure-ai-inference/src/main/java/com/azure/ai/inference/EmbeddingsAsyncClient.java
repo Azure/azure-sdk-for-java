@@ -37,7 +37,7 @@ public final class EmbeddingsAsyncClient {
 
     /**
      * Initializes an instance of EmbeddingsAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -59,7 +59,7 @@ public final class EmbeddingsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     input (Required): [
@@ -74,9 +74,9 @@ public final class EmbeddingsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     data (Required): [
@@ -92,7 +92,7 @@ public final class EmbeddingsAsyncClient {
      *     model: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param embedRequest The embedRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -114,7 +114,7 @@ public final class EmbeddingsAsyncClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     model_name: String (Required)
@@ -122,7 +122,7 @@ public final class EmbeddingsAsyncClient {
      *     model_provider_name: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -140,7 +140,7 @@ public final class EmbeddingsAsyncClient {
     /**
      * Return the embedding vectors for given text prompts.
      * The method makes a REST API call to the `/embeddings` route on the given endpoint.
-     * 
+     *
      * @param input Input text to embed, encoded as a string or array of tokens.
      * To embed multiple inputs in a single request, pass an array
      * of strings or array of token arrays.
@@ -185,7 +185,7 @@ public final class EmbeddingsAsyncClient {
     /**
      * Return the embedding vectors for given text prompts.
      * The method makes a REST API call to the `/embeddings` route on the given endpoint.
-     * 
+     *
      * @param input Input text to embed, encoded as a string or array of tokens.
      * To embed multiple inputs in a single request, pass an array
      * of strings or array of token arrays.
@@ -201,7 +201,7 @@ public final class EmbeddingsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<EmbeddingsResult> embed(List<String> input) {
+    public Mono<EmbeddingsResult> embed(List<String> input) {
         // Generated convenience method for embedWithResponse
         RequestOptions requestOptions = new RequestOptions();
         EmbedRequest embedRequestObj = new EmbedRequest(input);
@@ -213,7 +213,7 @@ public final class EmbeddingsAsyncClient {
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
