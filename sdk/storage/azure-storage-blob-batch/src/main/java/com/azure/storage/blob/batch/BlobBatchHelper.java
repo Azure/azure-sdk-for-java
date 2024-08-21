@@ -124,7 +124,7 @@ class BlobBatchHelper {
                     }
                 }
 
-                if (throwOnAnyFailure && exceptions.size() != 0) {
+                if (throwOnAnyFailure && !exceptions.isEmpty()) {
                     sink.error(logger.logExceptionAsError(new BlobBatchStorageException("Batch had operation failures.",
                         createHttpResponse(rawResponse), exceptions)));
                 }
