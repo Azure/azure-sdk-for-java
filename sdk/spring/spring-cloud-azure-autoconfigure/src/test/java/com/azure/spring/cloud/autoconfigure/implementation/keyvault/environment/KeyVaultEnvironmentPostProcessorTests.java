@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.logging.DeferredLog;
+import org.springframework.boot.logging.DeferredLogs;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
@@ -46,7 +46,7 @@ class KeyVaultEnvironmentPostProcessorTests {
 
     @BeforeEach
     void beforeEach() {
-        processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLog()));
+        processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), null));
         environment = new MockEnvironment();
         propertySources = environment.getPropertySources();
         SecretClient secretClient = mock(SecretClient.class);
@@ -55,7 +55,7 @@ class KeyVaultEnvironmentPostProcessorTests {
 
     @Test
     void postProcessorHasConfiguredOrder() {
-        final KeyVaultEnvironmentPostProcessor processor = new KeyVaultEnvironmentPostProcessor();
+        final KeyVaultEnvironmentPostProcessor processor = new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), null);
         assertEquals(processor.getOrder(), KeyVaultEnvironmentPostProcessor.ORDER);
     }
 
@@ -308,7 +308,7 @@ class KeyVaultEnvironmentPostProcessorTests {
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
         assertThrows(IllegalStateException.class,
-                () -> new KeyVaultEnvironmentPostProcessor().postProcessEnvironment(environment, application));
+                () -> new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), null).postProcessEnvironment(environment, application));
     }
 }
 
