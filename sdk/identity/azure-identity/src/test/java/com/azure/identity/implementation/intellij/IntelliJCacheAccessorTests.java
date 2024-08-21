@@ -26,7 +26,6 @@ public class IntelliJCacheAccessorTests {
 
         IntelliJCacheAccessor accessor = new IntelliJCacheAccessor();
 
-
         String secret = accessor.parseRefreshTokenFromJson(json);
 
         assertEquals("refresh_fake_secret", secret);
