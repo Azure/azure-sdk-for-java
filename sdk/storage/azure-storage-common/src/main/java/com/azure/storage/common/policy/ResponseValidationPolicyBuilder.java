@@ -46,6 +46,7 @@ public class ResponseValidationPolicyBuilder {
      * @return This policy.
      * @deprecated Use {@link  #addOptionalEcho(HttpHeaderName)} instead.
      */
+    @Deprecated
     public ResponseValidationPolicyBuilder addOptionalEcho(String headerName) {
         assertions.add((httpResponse, logger) -> {
             HttpHeaderName httpHeaderName = HttpHeaderName.fromString(headerName);
