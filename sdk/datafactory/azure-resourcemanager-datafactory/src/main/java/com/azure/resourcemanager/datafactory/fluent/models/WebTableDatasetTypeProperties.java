@@ -6,25 +6,27 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Web table dataset properties.
  */
 @Fluent
-public final class WebTableDatasetTypeProperties {
+public final class WebTableDatasetTypeProperties implements JsonSerializable<WebTableDatasetTypeProperties> {
     /*
      * The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer),
      * minimum: 0.
      */
-    @JsonProperty(value = "index", required = true)
     private Object index;
 
     /*
      * The relative URL to the web page from the linked service URL. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "path")
     private Object path;
 
     /**
@@ -91,4 +93,45 @@ public final class WebTableDatasetTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebTableDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("index", this.index);
+        jsonWriter.writeUntypedField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebTableDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebTableDatasetTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebTableDatasetTypeProperties.
+     */
+    public static WebTableDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebTableDatasetTypeProperties deserializedWebTableDatasetTypeProperties
+                = new WebTableDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("index".equals(fieldName)) {
+                    deserializedWebTableDatasetTypeProperties.index = reader.readUntyped();
+                } else if ("path".equals(fieldName)) {
+                    deserializedWebTableDatasetTypeProperties.path = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebTableDatasetTypeProperties;
+        });
+    }
 }

@@ -15,20 +15,21 @@ public final class AzureMLUpdateResourceActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMLUpdateResourceActivityTypeProperties model = BinaryData.fromString(
-            "{\"trainedModelName\":\"dataixxiukghxde\",\"trainedModelLinkedServiceName\":{\"referenceName\":\"qptvxibpzhkn\",\"parameters\":{\"ss\":\"datavzqawjnw\"}},\"trainedModelFilePath\":\"dataubpfe\"}")
+            "{\"trainedModelName\":\"dataoupksas\",\"trainedModelLinkedServiceName\":{\"referenceName\":\"jkrosqxvffrnc\",\"parameters\":{\"i\":\"datajgyjoklngjsglz\",\"gakkszz\":\"datawsqdnasjup\",\"likeuqvq\":\"datadtvrgyebvq\"}},\"trainedModelFilePath\":\"dataotvfcbgffdlff\"}")
             .toObject(AzureMLUpdateResourceActivityTypeProperties.class);
-        Assertions.assertEquals("qptvxibpzhkn", model.trainedModelLinkedServiceName().referenceName());
+        Assertions.assertEquals("jkrosqxvffrnc", model.trainedModelLinkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMLUpdateResourceActivityTypeProperties model
-            = new AzureMLUpdateResourceActivityTypeProperties().withTrainedModelName("dataixxiukghxde")
-                .withTrainedModelLinkedServiceName(new LinkedServiceReference().withReferenceName("qptvxibpzhkn")
-                    .withParameters(mapOf("ss", "datavzqawjnw")))
-                .withTrainedModelFilePath("dataubpfe");
+        AzureMLUpdateResourceActivityTypeProperties model = new AzureMLUpdateResourceActivityTypeProperties()
+            .withTrainedModelName("dataoupksas")
+            .withTrainedModelLinkedServiceName(new LinkedServiceReference().withReferenceName("jkrosqxvffrnc")
+                .withParameters(
+                    mapOf("i", "datajgyjoklngjsglz", "gakkszz", "datawsqdnasjup", "likeuqvq", "datadtvrgyebvq")))
+            .withTrainedModelFilePath("dataotvfcbgffdlff");
         model = BinaryData.fromObject(model).toObject(AzureMLUpdateResourceActivityTypeProperties.class);
-        Assertions.assertEquals("qptvxibpzhkn", model.trainedModelLinkedServiceName().referenceName());
+        Assertions.assertEquals("jkrosqxvffrnc", model.trainedModelLinkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

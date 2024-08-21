@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Impala Dataset Properties.
  */
 @Fluent
-public final class ImpalaDatasetTypeProperties {
+public final class ImpalaDatasetTypeProperties implements JsonSerializable<ImpalaDatasetTypeProperties> {
     /*
      * This property will be retired. Please consider using schema + table properties instead.
      */
-    @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
      * The table name of the Impala. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "table")
     private Object table;
 
     /*
      * The schema name of the Impala. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "schema")
     private Object schema;
 
     /**
@@ -104,5 +105,47 @@ public final class ImpalaDatasetTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("tableName", this.tableName);
+        jsonWriter.writeUntypedField("table", this.table);
+        jsonWriter.writeUntypedField("schema", this.schema);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImpalaDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImpalaDatasetTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImpalaDatasetTypeProperties.
+     */
+    public static ImpalaDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImpalaDatasetTypeProperties deserializedImpalaDatasetTypeProperties = new ImpalaDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedImpalaDatasetTypeProperties.tableName = reader.readUntyped();
+                } else if ("table".equals(fieldName)) {
+                    deserializedImpalaDatasetTypeProperties.table = reader.readUntyped();
+                } else if ("schema".equals(fieldName)) {
+                    deserializedImpalaDatasetTypeProperties.schema = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImpalaDatasetTypeProperties;
+        });
     }
 }

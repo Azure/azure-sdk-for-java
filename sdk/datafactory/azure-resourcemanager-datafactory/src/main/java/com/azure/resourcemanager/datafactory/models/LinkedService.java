@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,169 +18,42 @@ import java.util.Map;
  * The nested object which contains the information and credential which can be used to connect with related store or
  * compute resource.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = LinkedService.class, visible = true)
-@JsonTypeName("LinkedService")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureStorage", value = AzureStorageLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureBlobStorage", value = AzureBlobStorageLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureTableStorage", value = AzureTableStorageLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureSqlDW", value = AzureSqlDWLinkedService.class),
-    @JsonSubTypes.Type(name = "SqlServer", value = SqlServerLinkedService.class),
-    @JsonSubTypes.Type(name = "AmazonRdsForSqlServer", value = AmazonRdsForSqlServerLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureSqlDatabase", value = AzureSqlDatabaseLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureSqlMI", value = AzureSqlMILinkedService.class),
-    @JsonSubTypes.Type(name = "AzureBatch", value = AzureBatchLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureKeyVault", value = AzureKeyVaultLinkedService.class),
-    @JsonSubTypes.Type(name = "CosmosDb", value = CosmosDbLinkedService.class),
-    @JsonSubTypes.Type(name = "Dynamics", value = DynamicsLinkedService.class),
-    @JsonSubTypes.Type(name = "DynamicsCrm", value = DynamicsCrmLinkedService.class),
-    @JsonSubTypes.Type(name = "CommonDataServiceForApps", value = CommonDataServiceForAppsLinkedService.class),
-    @JsonSubTypes.Type(name = "HDInsight", value = HDInsightLinkedService.class),
-    @JsonSubTypes.Type(name = "FileServer", value = FileServerLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureFileStorage", value = AzureFileStorageLinkedService.class),
-    @JsonSubTypes.Type(name = "AmazonS3Compatible", value = AmazonS3CompatibleLinkedService.class),
-    @JsonSubTypes.Type(name = "OracleCloudStorage", value = OracleCloudStorageLinkedService.class),
-    @JsonSubTypes.Type(name = "GoogleCloudStorage", value = GoogleCloudStorageLinkedService.class),
-    @JsonSubTypes.Type(name = "Oracle", value = OracleLinkedService.class),
-    @JsonSubTypes.Type(name = "AmazonRdsForOracle", value = AmazonRdsForOracleLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureMySql", value = AzureMySqlLinkedService.class),
-    @JsonSubTypes.Type(name = "MySql", value = MySqlLinkedService.class),
-    @JsonSubTypes.Type(name = "PostgreSql", value = PostgreSqlLinkedService.class),
-    @JsonSubTypes.Type(name = "PostgreSqlV2", value = PostgreSqlV2LinkedService.class),
-    @JsonSubTypes.Type(name = "Sybase", value = SybaseLinkedService.class),
-    @JsonSubTypes.Type(name = "Db2", value = Db2LinkedService.class),
-    @JsonSubTypes.Type(name = "Teradata", value = TeradataLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureML", value = AzureMLLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureMLService", value = AzureMLServiceLinkedService.class),
-    @JsonSubTypes.Type(name = "Odbc", value = OdbcLinkedService.class),
-    @JsonSubTypes.Type(name = "Informix", value = InformixLinkedService.class),
-    @JsonSubTypes.Type(name = "MicrosoftAccess", value = MicrosoftAccessLinkedService.class),
-    @JsonSubTypes.Type(name = "Hdfs", value = HdfsLinkedService.class),
-    @JsonSubTypes.Type(name = "OData", value = ODataLinkedService.class),
-    @JsonSubTypes.Type(name = "Web", value = WebLinkedService.class),
-    @JsonSubTypes.Type(name = "Cassandra", value = CassandraLinkedService.class),
-    @JsonSubTypes.Type(name = "MongoDb", value = MongoDbLinkedService.class),
-    @JsonSubTypes.Type(name = "MongoDbAtlas", value = MongoDbAtlasLinkedService.class),
-    @JsonSubTypes.Type(name = "MongoDbV2", value = MongoDbV2LinkedService.class),
-    @JsonSubTypes.Type(name = "CosmosDbMongoDbApi", value = CosmosDbMongoDbApiLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureDataLakeStore", value = AzureDataLakeStoreLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureBlobFS", value = AzureBlobFSLinkedService.class),
-    @JsonSubTypes.Type(name = "Office365", value = Office365LinkedService.class),
-    @JsonSubTypes.Type(name = "Salesforce", value = SalesforceLinkedService.class),
-    @JsonSubTypes.Type(name = "SalesforceServiceCloud", value = SalesforceServiceCloudLinkedService.class),
-    @JsonSubTypes.Type(name = "SapCloudForCustomer", value = SapCloudForCustomerLinkedService.class),
-    @JsonSubTypes.Type(name = "SapEcc", value = SapEccLinkedService.class),
-    @JsonSubTypes.Type(name = "SapOpenHub", value = SapOpenHubLinkedService.class),
-    @JsonSubTypes.Type(name = "SapOdp", value = SapOdpLinkedService.class),
-    @JsonSubTypes.Type(name = "RestService", value = RestServiceLinkedService.class),
-    @JsonSubTypes.Type(name = "TeamDesk", value = TeamDeskLinkedService.class),
-    @JsonSubTypes.Type(name = "Quickbase", value = QuickbaseLinkedService.class),
-    @JsonSubTypes.Type(name = "Smartsheet", value = SmartsheetLinkedService.class),
-    @JsonSubTypes.Type(name = "Zendesk", value = ZendeskLinkedService.class),
-    @JsonSubTypes.Type(name = "Dataworld", value = DataworldLinkedService.class),
-    @JsonSubTypes.Type(name = "AppFigures", value = AppFiguresLinkedService.class),
-    @JsonSubTypes.Type(name = "Asana", value = AsanaLinkedService.class),
-    @JsonSubTypes.Type(name = "Twilio", value = TwilioLinkedService.class),
-    @JsonSubTypes.Type(name = "GoogleSheets", value = GoogleSheetsLinkedService.class),
-    @JsonSubTypes.Type(name = "AmazonS3", value = AmazonS3LinkedService.class),
-    @JsonSubTypes.Type(name = "AmazonRedshift", value = AmazonRedshiftLinkedService.class),
-    @JsonSubTypes.Type(name = "CustomDataSource", value = CustomDataSourceLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureSearch", value = AzureSearchLinkedService.class),
-    @JsonSubTypes.Type(name = "HttpServer", value = HttpLinkedService.class),
-    @JsonSubTypes.Type(name = "FtpServer", value = FtpServerLinkedService.class),
-    @JsonSubTypes.Type(name = "Sftp", value = SftpServerLinkedService.class),
-    @JsonSubTypes.Type(name = "SapBW", value = SapBWLinkedService.class),
-    @JsonSubTypes.Type(name = "SapHana", value = SapHanaLinkedService.class),
-    @JsonSubTypes.Type(name = "AmazonMWS", value = AmazonMwsLinkedService.class),
-    @JsonSubTypes.Type(name = "AzurePostgreSql", value = AzurePostgreSqlLinkedService.class),
-    @JsonSubTypes.Type(name = "Concur", value = ConcurLinkedService.class),
-    @JsonSubTypes.Type(name = "Couchbase", value = CouchbaseLinkedService.class),
-    @JsonSubTypes.Type(name = "Drill", value = DrillLinkedService.class),
-    @JsonSubTypes.Type(name = "Eloqua", value = EloquaLinkedService.class),
-    @JsonSubTypes.Type(name = "GoogleBigQuery", value = GoogleBigQueryLinkedService.class),
-    @JsonSubTypes.Type(name = "GoogleBigQueryV2", value = GoogleBigQueryV2LinkedService.class),
-    @JsonSubTypes.Type(name = "Greenplum", value = GreenplumLinkedService.class),
-    @JsonSubTypes.Type(name = "HBase", value = HBaseLinkedService.class),
-    @JsonSubTypes.Type(name = "Hive", value = HiveLinkedService.class),
-    @JsonSubTypes.Type(name = "Hubspot", value = HubspotLinkedService.class),
-    @JsonSubTypes.Type(name = "Impala", value = ImpalaLinkedService.class),
-    @JsonSubTypes.Type(name = "Jira", value = JiraLinkedService.class),
-    @JsonSubTypes.Type(name = "Magento", value = MagentoLinkedService.class),
-    @JsonSubTypes.Type(name = "MariaDB", value = MariaDBLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureMariaDB", value = AzureMariaDBLinkedService.class),
-    @JsonSubTypes.Type(name = "Marketo", value = MarketoLinkedService.class),
-    @JsonSubTypes.Type(name = "Paypal", value = PaypalLinkedService.class),
-    @JsonSubTypes.Type(name = "Phoenix", value = PhoenixLinkedService.class),
-    @JsonSubTypes.Type(name = "Presto", value = PrestoLinkedService.class),
-    @JsonSubTypes.Type(name = "QuickBooks", value = QuickBooksLinkedService.class),
-    @JsonSubTypes.Type(name = "ServiceNow", value = ServiceNowLinkedService.class),
-    @JsonSubTypes.Type(name = "Shopify", value = ShopifyLinkedService.class),
-    @JsonSubTypes.Type(name = "Spark", value = SparkLinkedService.class),
-    @JsonSubTypes.Type(name = "Square", value = SquareLinkedService.class),
-    @JsonSubTypes.Type(name = "Xero", value = XeroLinkedService.class),
-    @JsonSubTypes.Type(name = "Zoho", value = ZohoLinkedService.class),
-    @JsonSubTypes.Type(name = "Vertica", value = VerticaLinkedService.class),
-    @JsonSubTypes.Type(name = "Netezza", value = NetezzaLinkedService.class),
-    @JsonSubTypes.Type(name = "SalesforceMarketingCloud", value = SalesforceMarketingCloudLinkedService.class),
-    @JsonSubTypes.Type(name = "HDInsightOnDemand", value = HDInsightOnDemandLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureDataLakeAnalytics", value = AzureDataLakeAnalyticsLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureDatabricks", value = AzureDatabricksLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLake", value = AzureDatabricksDeltaLakeLinkedService.class),
-    @JsonSubTypes.Type(name = "Responsys", value = ResponsysLinkedService.class),
-    @JsonSubTypes.Type(name = "DynamicsAX", value = DynamicsAXLinkedService.class),
-    @JsonSubTypes.Type(name = "OracleServiceCloud", value = OracleServiceCloudLinkedService.class),
-    @JsonSubTypes.Type(name = "GoogleAdWords", value = GoogleAdWordsLinkedService.class),
-    @JsonSubTypes.Type(name = "SapTable", value = SapTableLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
-    @JsonSubTypes.Type(name = "Snowflake", value = SnowflakeLinkedService.class),
-    @JsonSubTypes.Type(name = "SnowflakeV2", value = SnowflakeV2LinkedService.class),
-    @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class),
-    @JsonSubTypes.Type(name = "AzureSynapseArtifacts", value = AzureSynapseArtifactsLinkedService.class),
-    @JsonSubTypes.Type(name = "LakeHouse", value = LakeHouseLinkedService.class),
-    @JsonSubTypes.Type(name = "SalesforceV2", value = SalesforceV2LinkedService.class),
-    @JsonSubTypes.Type(name = "SalesforceServiceCloudV2", value = SalesforceServiceCloudV2LinkedService.class),
-    @JsonSubTypes.Type(name = "Warehouse", value = WarehouseLinkedService.class),
-    @JsonSubTypes.Type(name = "ServiceNowV2", value = ServiceNowV2LinkedService.class) })
 @Fluent
-public class LinkedService {
+public class LinkedService implements JsonSerializable<LinkedService> {
     /*
      * Type of linked service.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "LinkedService";
+
+    /*
+     * Version of the linked service.
+     */
+    private String version;
 
     /*
      * The integration runtime reference.
      */
-    @JsonProperty(value = "connectVia")
     private IntegrationRuntimeReference connectVia;
 
     /*
      * Linked service description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Parameters for linked service.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterSpecification> parameters;
 
     /*
      * List of tags that can be used for describing the linked service.
      */
-    @JsonProperty(value = "annotations")
     private List<Object> annotations;
 
     /*
      * The nested object which contains the information and credential which can be used to connect with related store
      * or compute resource.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -200,6 +69,26 @@ public class LinkedService {
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the version property: Version of the linked service.
+     * 
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: Version of the linked service.
+     * 
+     * @param version the version value to set.
+     * @return the LinkedService object itself.
+     */
+    public LinkedService withVersion(String version) {
+        this.version = version;
+        return this;
     }
 
     /**
@@ -288,7 +177,6 @@ public class LinkedService {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -303,14 +191,6 @@ public class LinkedService {
     public LinkedService withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
-    }
-
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
     }
 
     /**
@@ -329,5 +209,335 @@ public class LinkedService {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeJsonField("connectVia", this.connectVia);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", this.annotations, (writer, element) -> writer.writeUntyped(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkedService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkedService.
+     */
+    public static LinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureStorage".equals(discriminatorValue)) {
+                    return AzureStorageLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureBlobStorage".equals(discriminatorValue)) {
+                    return AzureBlobStorageLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureTableStorage".equals(discriminatorValue)) {
+                    return AzureTableStorageLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureSqlDW".equals(discriminatorValue)) {
+                    return AzureSqlDWLinkedService.fromJson(readerToUse.reset());
+                } else if ("SqlServer".equals(discriminatorValue)) {
+                    return SqlServerLinkedService.fromJson(readerToUse.reset());
+                } else if ("AmazonRdsForSqlServer".equals(discriminatorValue)) {
+                    return AmazonRdsForSqlServerLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureSqlDatabase".equals(discriminatorValue)) {
+                    return AzureSqlDatabaseLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureSqlMI".equals(discriminatorValue)) {
+                    return AzureSqlMILinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureBatch".equals(discriminatorValue)) {
+                    return AzureBatchLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureKeyVault".equals(discriminatorValue)) {
+                    return AzureKeyVaultLinkedService.fromJson(readerToUse.reset());
+                } else if ("CosmosDb".equals(discriminatorValue)) {
+                    return CosmosDbLinkedService.fromJson(readerToUse.reset());
+                } else if ("Dynamics".equals(discriminatorValue)) {
+                    return DynamicsLinkedService.fromJson(readerToUse.reset());
+                } else if ("DynamicsCrm".equals(discriminatorValue)) {
+                    return DynamicsCrmLinkedService.fromJson(readerToUse.reset());
+                } else if ("CommonDataServiceForApps".equals(discriminatorValue)) {
+                    return CommonDataServiceForAppsLinkedService.fromJson(readerToUse.reset());
+                } else if ("HDInsight".equals(discriminatorValue)) {
+                    return HDInsightLinkedService.fromJson(readerToUse.reset());
+                } else if ("FileServer".equals(discriminatorValue)) {
+                    return FileServerLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureFileStorage".equals(discriminatorValue)) {
+                    return AzureFileStorageLinkedService.fromJson(readerToUse.reset());
+                } else if ("AmazonS3Compatible".equals(discriminatorValue)) {
+                    return AmazonS3CompatibleLinkedService.fromJson(readerToUse.reset());
+                } else if ("OracleCloudStorage".equals(discriminatorValue)) {
+                    return OracleCloudStorageLinkedService.fromJson(readerToUse.reset());
+                } else if ("GoogleCloudStorage".equals(discriminatorValue)) {
+                    return GoogleCloudStorageLinkedService.fromJson(readerToUse.reset());
+                } else if ("Oracle".equals(discriminatorValue)) {
+                    return OracleLinkedService.fromJson(readerToUse.reset());
+                } else if ("AmazonRdsForOracle".equals(discriminatorValue)) {
+                    return AmazonRdsForOracleLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureMySql".equals(discriminatorValue)) {
+                    return AzureMySqlLinkedService.fromJson(readerToUse.reset());
+                } else if ("MySql".equals(discriminatorValue)) {
+                    return MySqlLinkedService.fromJson(readerToUse.reset());
+                } else if ("PostgreSql".equals(discriminatorValue)) {
+                    return PostgreSqlLinkedService.fromJson(readerToUse.reset());
+                } else if ("PostgreSqlV2".equals(discriminatorValue)) {
+                    return PostgreSqlV2LinkedService.fromJson(readerToUse.reset());
+                } else if ("Sybase".equals(discriminatorValue)) {
+                    return SybaseLinkedService.fromJson(readerToUse.reset());
+                } else if ("Db2".equals(discriminatorValue)) {
+                    return Db2LinkedService.fromJson(readerToUse.reset());
+                } else if ("Teradata".equals(discriminatorValue)) {
+                    return TeradataLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureML".equals(discriminatorValue)) {
+                    return AzureMLLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureMLService".equals(discriminatorValue)) {
+                    return AzureMLServiceLinkedService.fromJson(readerToUse.reset());
+                } else if ("Odbc".equals(discriminatorValue)) {
+                    return OdbcLinkedService.fromJson(readerToUse.reset());
+                } else if ("Informix".equals(discriminatorValue)) {
+                    return InformixLinkedService.fromJson(readerToUse.reset());
+                } else if ("MicrosoftAccess".equals(discriminatorValue)) {
+                    return MicrosoftAccessLinkedService.fromJson(readerToUse.reset());
+                } else if ("Hdfs".equals(discriminatorValue)) {
+                    return HdfsLinkedService.fromJson(readerToUse.reset());
+                } else if ("OData".equals(discriminatorValue)) {
+                    return ODataLinkedService.fromJson(readerToUse.reset());
+                } else if ("Web".equals(discriminatorValue)) {
+                    return WebLinkedService.fromJson(readerToUse.reset());
+                } else if ("Cassandra".equals(discriminatorValue)) {
+                    return CassandraLinkedService.fromJson(readerToUse.reset());
+                } else if ("MongoDb".equals(discriminatorValue)) {
+                    return MongoDbLinkedService.fromJson(readerToUse.reset());
+                } else if ("MongoDbAtlas".equals(discriminatorValue)) {
+                    return MongoDbAtlasLinkedService.fromJson(readerToUse.reset());
+                } else if ("MongoDbV2".equals(discriminatorValue)) {
+                    return MongoDbV2LinkedService.fromJson(readerToUse.reset());
+                } else if ("CosmosDbMongoDbApi".equals(discriminatorValue)) {
+                    return CosmosDbMongoDbApiLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureDataLakeStore".equals(discriminatorValue)) {
+                    return AzureDataLakeStoreLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureBlobFS".equals(discriminatorValue)) {
+                    return AzureBlobFSLinkedService.fromJson(readerToUse.reset());
+                } else if ("Office365".equals(discriminatorValue)) {
+                    return Office365LinkedService.fromJson(readerToUse.reset());
+                } else if ("Salesforce".equals(discriminatorValue)) {
+                    return SalesforceLinkedService.fromJson(readerToUse.reset());
+                } else if ("SalesforceServiceCloud".equals(discriminatorValue)) {
+                    return SalesforceServiceCloudLinkedService.fromJson(readerToUse.reset());
+                } else if ("SapCloudForCustomer".equals(discriminatorValue)) {
+                    return SapCloudForCustomerLinkedService.fromJson(readerToUse.reset());
+                } else if ("SapEcc".equals(discriminatorValue)) {
+                    return SapEccLinkedService.fromJson(readerToUse.reset());
+                } else if ("SapOpenHub".equals(discriminatorValue)) {
+                    return SapOpenHubLinkedService.fromJson(readerToUse.reset());
+                } else if ("SapOdp".equals(discriminatorValue)) {
+                    return SapOdpLinkedService.fromJson(readerToUse.reset());
+                } else if ("RestService".equals(discriminatorValue)) {
+                    return RestServiceLinkedService.fromJson(readerToUse.reset());
+                } else if ("TeamDesk".equals(discriminatorValue)) {
+                    return TeamDeskLinkedService.fromJson(readerToUse.reset());
+                } else if ("Quickbase".equals(discriminatorValue)) {
+                    return QuickbaseLinkedService.fromJson(readerToUse.reset());
+                } else if ("Smartsheet".equals(discriminatorValue)) {
+                    return SmartsheetLinkedService.fromJson(readerToUse.reset());
+                } else if ("Zendesk".equals(discriminatorValue)) {
+                    return ZendeskLinkedService.fromJson(readerToUse.reset());
+                } else if ("Dataworld".equals(discriminatorValue)) {
+                    return DataworldLinkedService.fromJson(readerToUse.reset());
+                } else if ("AppFigures".equals(discriminatorValue)) {
+                    return AppFiguresLinkedService.fromJson(readerToUse.reset());
+                } else if ("Asana".equals(discriminatorValue)) {
+                    return AsanaLinkedService.fromJson(readerToUse.reset());
+                } else if ("Twilio".equals(discriminatorValue)) {
+                    return TwilioLinkedService.fromJson(readerToUse.reset());
+                } else if ("GoogleSheets".equals(discriminatorValue)) {
+                    return GoogleSheetsLinkedService.fromJson(readerToUse.reset());
+                } else if ("AmazonS3".equals(discriminatorValue)) {
+                    return AmazonS3LinkedService.fromJson(readerToUse.reset());
+                } else if ("AmazonRedshift".equals(discriminatorValue)) {
+                    return AmazonRedshiftLinkedService.fromJson(readerToUse.reset());
+                } else if ("CustomDataSource".equals(discriminatorValue)) {
+                    return CustomDataSourceLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureSearch".equals(discriminatorValue)) {
+                    return AzureSearchLinkedService.fromJson(readerToUse.reset());
+                } else if ("HttpServer".equals(discriminatorValue)) {
+                    return HttpLinkedService.fromJson(readerToUse.reset());
+                } else if ("FtpServer".equals(discriminatorValue)) {
+                    return FtpServerLinkedService.fromJson(readerToUse.reset());
+                } else if ("Sftp".equals(discriminatorValue)) {
+                    return SftpServerLinkedService.fromJson(readerToUse.reset());
+                } else if ("SapBW".equals(discriminatorValue)) {
+                    return SapBWLinkedService.fromJson(readerToUse.reset());
+                } else if ("SapHana".equals(discriminatorValue)) {
+                    return SapHanaLinkedService.fromJson(readerToUse.reset());
+                } else if ("AmazonMWS".equals(discriminatorValue)) {
+                    return AmazonMwsLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzurePostgreSql".equals(discriminatorValue)) {
+                    return AzurePostgreSqlLinkedService.fromJson(readerToUse.reset());
+                } else if ("Concur".equals(discriminatorValue)) {
+                    return ConcurLinkedService.fromJson(readerToUse.reset());
+                } else if ("Couchbase".equals(discriminatorValue)) {
+                    return CouchbaseLinkedService.fromJson(readerToUse.reset());
+                } else if ("Drill".equals(discriminatorValue)) {
+                    return DrillLinkedService.fromJson(readerToUse.reset());
+                } else if ("Eloqua".equals(discriminatorValue)) {
+                    return EloquaLinkedService.fromJson(readerToUse.reset());
+                } else if ("GoogleBigQuery".equals(discriminatorValue)) {
+                    return GoogleBigQueryLinkedService.fromJson(readerToUse.reset());
+                } else if ("GoogleBigQueryV2".equals(discriminatorValue)) {
+                    return GoogleBigQueryV2LinkedService.fromJson(readerToUse.reset());
+                } else if ("Greenplum".equals(discriminatorValue)) {
+                    return GreenplumLinkedService.fromJson(readerToUse.reset());
+                } else if ("HBase".equals(discriminatorValue)) {
+                    return HBaseLinkedService.fromJson(readerToUse.reset());
+                } else if ("Hive".equals(discriminatorValue)) {
+                    return HiveLinkedService.fromJson(readerToUse.reset());
+                } else if ("Hubspot".equals(discriminatorValue)) {
+                    return HubspotLinkedService.fromJson(readerToUse.reset());
+                } else if ("Impala".equals(discriminatorValue)) {
+                    return ImpalaLinkedService.fromJson(readerToUse.reset());
+                } else if ("Jira".equals(discriminatorValue)) {
+                    return JiraLinkedService.fromJson(readerToUse.reset());
+                } else if ("Magento".equals(discriminatorValue)) {
+                    return MagentoLinkedService.fromJson(readerToUse.reset());
+                } else if ("MariaDB".equals(discriminatorValue)) {
+                    return MariaDBLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureMariaDB".equals(discriminatorValue)) {
+                    return AzureMariaDBLinkedService.fromJson(readerToUse.reset());
+                } else if ("Marketo".equals(discriminatorValue)) {
+                    return MarketoLinkedService.fromJson(readerToUse.reset());
+                } else if ("Paypal".equals(discriminatorValue)) {
+                    return PaypalLinkedService.fromJson(readerToUse.reset());
+                } else if ("Phoenix".equals(discriminatorValue)) {
+                    return PhoenixLinkedService.fromJson(readerToUse.reset());
+                } else if ("Presto".equals(discriminatorValue)) {
+                    return PrestoLinkedService.fromJson(readerToUse.reset());
+                } else if ("QuickBooks".equals(discriminatorValue)) {
+                    return QuickBooksLinkedService.fromJson(readerToUse.reset());
+                } else if ("ServiceNow".equals(discriminatorValue)) {
+                    return ServiceNowLinkedService.fromJson(readerToUse.reset());
+                } else if ("Shopify".equals(discriminatorValue)) {
+                    return ShopifyLinkedService.fromJson(readerToUse.reset());
+                } else if ("Spark".equals(discriminatorValue)) {
+                    return SparkLinkedService.fromJson(readerToUse.reset());
+                } else if ("Square".equals(discriminatorValue)) {
+                    return SquareLinkedService.fromJson(readerToUse.reset());
+                } else if ("Xero".equals(discriminatorValue)) {
+                    return XeroLinkedService.fromJson(readerToUse.reset());
+                } else if ("Zoho".equals(discriminatorValue)) {
+                    return ZohoLinkedService.fromJson(readerToUse.reset());
+                } else if ("Vertica".equals(discriminatorValue)) {
+                    return VerticaLinkedService.fromJson(readerToUse.reset());
+                } else if ("Netezza".equals(discriminatorValue)) {
+                    return NetezzaLinkedService.fromJson(readerToUse.reset());
+                } else if ("SalesforceMarketingCloud".equals(discriminatorValue)) {
+                    return SalesforceMarketingCloudLinkedService.fromJson(readerToUse.reset());
+                } else if ("HDInsightOnDemand".equals(discriminatorValue)) {
+                    return HDInsightOnDemandLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureDataLakeAnalytics".equals(discriminatorValue)) {
+                    return AzureDataLakeAnalyticsLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureDatabricks".equals(discriminatorValue)) {
+                    return AzureDatabricksLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureDatabricksDeltaLake".equals(discriminatorValue)) {
+                    return AzureDatabricksDeltaLakeLinkedService.fromJson(readerToUse.reset());
+                } else if ("Responsys".equals(discriminatorValue)) {
+                    return ResponsysLinkedService.fromJson(readerToUse.reset());
+                } else if ("DynamicsAX".equals(discriminatorValue)) {
+                    return DynamicsAXLinkedService.fromJson(readerToUse.reset());
+                } else if ("OracleServiceCloud".equals(discriminatorValue)) {
+                    return OracleServiceCloudLinkedService.fromJson(readerToUse.reset());
+                } else if ("GoogleAdWords".equals(discriminatorValue)) {
+                    return GoogleAdWordsLinkedService.fromJson(readerToUse.reset());
+                } else if ("SapTable".equals(discriminatorValue)) {
+                    return SapTableLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureDataExplorer".equals(discriminatorValue)) {
+                    return AzureDataExplorerLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureFunction".equals(discriminatorValue)) {
+                    return AzureFunctionLinkedService.fromJson(readerToUse.reset());
+                } else if ("Snowflake".equals(discriminatorValue)) {
+                    return SnowflakeLinkedService.fromJson(readerToUse.reset());
+                } else if ("SnowflakeV2".equals(discriminatorValue)) {
+                    return SnowflakeV2LinkedService.fromJson(readerToUse.reset());
+                } else if ("SharePointOnlineList".equals(discriminatorValue)) {
+                    return SharePointOnlineListLinkedService.fromJson(readerToUse.reset());
+                } else if ("AzureSynapseArtifacts".equals(discriminatorValue)) {
+                    return AzureSynapseArtifactsLinkedService.fromJson(readerToUse.reset());
+                } else if ("LakeHouse".equals(discriminatorValue)) {
+                    return LakeHouseLinkedService.fromJson(readerToUse.reset());
+                } else if ("SalesforceV2".equals(discriminatorValue)) {
+                    return SalesforceV2LinkedService.fromJson(readerToUse.reset());
+                } else if ("SalesforceServiceCloudV2".equals(discriminatorValue)) {
+                    return SalesforceServiceCloudV2LinkedService.fromJson(readerToUse.reset());
+                } else if ("Warehouse".equals(discriminatorValue)) {
+                    return WarehouseLinkedService.fromJson(readerToUse.reset());
+                } else if ("ServiceNowV2".equals(discriminatorValue)) {
+                    return ServiceNowV2LinkedService.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static LinkedService fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkedService deserializedLinkedService = new LinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedLinkedService.type = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedLinkedService.version = reader.getString();
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedLinkedService.connectVia = IntegrationRuntimeReference.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedLinkedService.description = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedLinkedService.parameters = parameters;
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedLinkedService.annotations = annotations;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedLinkedService.additionalProperties = additionalProperties;
+
+            return deserializedLinkedService;
+        });
     }
 }

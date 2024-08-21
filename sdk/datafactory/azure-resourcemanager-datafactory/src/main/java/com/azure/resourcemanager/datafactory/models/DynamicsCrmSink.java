@@ -6,43 +6,38 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Dynamics CRM sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DynamicsCrmSink.class, visible = true)
-@JsonTypeName("DynamicsCrmSink")
 @Fluent
 public final class DynamicsCrmSink extends CopySink {
     /*
      * Copy sink type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "DynamicsCrmSink";
 
     /*
      * The write behavior for the operation.
      */
-    @JsonProperty(value = "writeBehavior", required = true)
     private DynamicsSinkWriteBehavior writeBehavior;
 
     /*
      * The flag indicating whether to ignore null values from input dataset (except key fields) during write operation.
      * Default is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
     /*
      * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
 
     /**
@@ -194,4 +189,80 @@ public final class DynamicsCrmSink extends CopySink {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DynamicsCrmSink.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
+        jsonWriter.writeUntypedField("alternateKeyName", this.alternateKeyName);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynamicsCrmSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynamicsCrmSink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DynamicsCrmSink.
+     */
+    public static DynamicsCrmSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynamicsCrmSink deserializedDynamicsCrmSink = new DynamicsCrmSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.writeBehavior
+                        = DynamicsSinkWriteBehavior.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.type = reader.getString();
+                } else if ("ignoreNullValues".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.ignoreNullValues = reader.readUntyped();
+                } else if ("alternateKeyName".equals(fieldName)) {
+                    deserializedDynamicsCrmSink.alternateKeyName = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDynamicsCrmSink.withAdditionalProperties(additionalProperties);
+
+            return deserializedDynamicsCrmSink;
+        });
+    }
 }

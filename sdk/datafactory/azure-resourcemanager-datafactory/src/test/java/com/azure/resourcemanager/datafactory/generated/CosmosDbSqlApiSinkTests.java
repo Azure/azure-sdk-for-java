@@ -11,19 +11,19 @@ public final class CosmosDbSqlApiSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbSqlApiSink model = BinaryData.fromString(
-            "{\"type\":\"CosmosDbSqlApiSink\",\"writeBehavior\":\"datantakr\",\"writeBatchSize\":\"dataku\",\"writeBatchTimeout\":\"datasuwcmzpwkcagfq\",\"sinkRetryCount\":\"dataqgmjjprd\",\"sinkRetryWait\":\"datablonlhtgexwjhicu\",\"maxConcurrentConnections\":\"dataavimxnhylwogtvl\",\"disableMetricsCollection\":\"datagd\",\"\":{\"k\":\"datanhdxlfntdc\"}}")
+            "{\"type\":\"CosmosDbSqlApiSink\",\"writeBehavior\":\"datato\",\"writeBatchSize\":\"dataxojijttsyrxynnfs\",\"writeBatchTimeout\":\"dataycissh\",\"sinkRetryCount\":\"dataxft\",\"sinkRetryWait\":\"datafcduqsdurfqaawr\",\"maxConcurrentConnections\":\"datatzslfrztpnry\",\"disableMetricsCollection\":\"dataxajr\",\"\":{\"esowbtnfqlwcaxj\":\"dataghlhddvno\",\"cmeuuuajiotl\":\"datahteho\",\"kqtiuve\":\"dataxofqjninrskq\"}}")
             .toObject(CosmosDbSqlApiSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbSqlApiSink model = new CosmosDbSqlApiSink().withWriteBatchSize("dataku")
-            .withWriteBatchTimeout("datasuwcmzpwkcagfq")
-            .withSinkRetryCount("dataqgmjjprd")
-            .withSinkRetryWait("datablonlhtgexwjhicu")
-            .withMaxConcurrentConnections("dataavimxnhylwogtvl")
-            .withDisableMetricsCollection("datagd")
-            .withWriteBehavior("datantakr");
+        CosmosDbSqlApiSink model = new CosmosDbSqlApiSink().withWriteBatchSize("dataxojijttsyrxynnfs")
+            .withWriteBatchTimeout("dataycissh")
+            .withSinkRetryCount("dataxft")
+            .withSinkRetryWait("datafcduqsdurfqaawr")
+            .withMaxConcurrentConnections("datatzslfrztpnry")
+            .withDisableMetricsCollection("dataxajr")
+            .withWriteBehavior("datato");
         model = BinaryData.fromObject(model).toObject(CosmosDbSqlApiSink.class);
     }
 }
