@@ -35,6 +35,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.Block;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
@@ -68,6 +69,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuple2;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -139,26 +141,31 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void stageBlockWithBinaryDataAsync() {
-        List<BinaryData> binaryDataList = Arrays.asList(
-            BinaryData.fromBytes(DATA.getDefaultBytes()),
-            BinaryData.fromString(DATA.getDefaultText()),
-            BinaryData.fromFile(DATA.getDefaultFile()),
-            BinaryData.fromFlux(DATA.getDefaultFlux(), (long) DATA.getDefaultDataSize(), false).block(),
-            BinaryData.fromStream(DATA.getDefaultInputStream(), (long) DATA.getDefaultDataSize()));
+        BinaryData.fromFlux(DATA.getDefaultFlux(), (long) DATA.getDefaultDataSize(), false)
+            .flatMap(flux -> {
+                List<BinaryData> binaryDataList = Arrays.asList(
+                    BinaryData.fromBytes(DATA.getDefaultBytes()),
+                    BinaryData.fromString(DATA.getDefaultText()),
+                    BinaryData.fromFile(DATA.getDefaultFile()),
+                    flux,
+                    BinaryData.fromStream(DATA.getDefaultInputStream(), (long) DATA.getDefaultDataSize()));
 
-        for (BinaryData binaryData : binaryDataList) {
-            StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(),
-                binaryData)))
-                .assertNext(it -> {
-                    HttpHeaders headers = it.getHeaders();
-                    assertResponseStatusCode(it, 201);
-                    assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
-                    assertNotNull(headers.getValue(X_MS_REQUEST_ID));
-                    assertNotNull(headers.getValue(X_MS_VERSION));
-                    assertNotNull(headers.getValue(HttpHeaderName.DATE));
-                    assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-                }).verifyComplete();
-        }
+                for (BinaryData binaryData : binaryDataList) {
+                    StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(),
+                            binaryData)))
+                        .assertNext(it -> {
+                            HttpHeaders headers = it.getHeaders();
+                            assertResponseStatusCode(it, 201);
+                            assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
+                            assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+                            assertNotNull(headers.getValue(X_MS_VERSION));
+                            assertNotNull(headers.getValue(HttpHeaderName.DATE));
+                            assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+                        }).verifyComplete();
+                }
+
+                return Mono.empty();
+            });
     }
 
     @Test
@@ -193,10 +200,11 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void stageBlockMinwithBinaryDataFromFlux() {
-        BinaryData binaryData = BinaryData.fromFlux(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong(),
-            false).block();
-        assertAsyncResponseStatusCode(blockBlobAsyncClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(
-            getBlockID(), binaryData)), 201);
+        Mono<Response<Void>> response = BinaryData.fromFlux(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong(),
+            false).flatMap(r -> blockBlobAsyncClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(
+                getBlockID(), r)));
+
+        assertAsyncResponseStatusCode(response, 201);
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
             .assertNext(r -> assertEquals(1, r.getUncommittedBlocks().size()))
@@ -314,27 +322,28 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void stageBlockLease() {
-        String leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, RECEIVED_LEASE_ID);
+        Mono<Response<Void>> response = setupBlobLeaseConditionAsync(blockBlobAsyncClient, RECEIVED_LEASE_ID)
+            .flatMap(r -> blockBlobAsyncClient.stageBlockWithResponse(getBlockID(), DATA.getDefaultFlux(),
+                DATA.getDefaultDataSize(), null, r));
 
-        assertAsyncResponseStatusCode(blockBlobAsyncClient.stageBlockWithResponse(getBlockID(), DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize(), null, leaseID), 201);
+        assertAsyncResponseStatusCode(response, 201);
     }
 
     @Test
     public void stageBlockLeaseBinaryData() {
-        String leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, RECEIVED_LEASE_ID);
+        Mono<Response<Void>> response = setupBlobLeaseConditionAsync(blockBlobAsyncClient, RECEIVED_LEASE_ID)
+            .flatMap(r -> blockBlobAsyncClient.stageBlockWithResponse(
+                new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(DATA.getDefaultBytes()))
+                    .setLeaseId(r)));
 
-        assertAsyncResponseStatusCode(blockBlobAsyncClient.stageBlockWithResponse(
-            new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(DATA.getDefaultBytes()))
-            .setLeaseId(leaseID)), 201);
+        assertAsyncResponseStatusCode(response, 201);
     }
 
     @Test
     public void stageBlockLeaseFail() {
-        setupBlobLeaseCondition(blockBlobAsyncClient, RECEIVED_LEASE_ID);
-
-        StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(getBlockID(), DATA.getDefaultFlux(),
-                DATA.getDefaultDataSize(), null, GARBAGE_LEASE_ID))
+        StepVerifier.create(setupBlobLeaseConditionAsync(blockBlobAsyncClient, RECEIVED_LEASE_ID)
+            .then(blockBlobAsyncClient.stageBlockWithResponse(getBlockID(), DATA.getDefaultFlux(),
+                DATA.getDefaultDataSize(), null, GARBAGE_LEASE_ID)))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
                 assertEquals(BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION, e.getErrorCode());
@@ -358,11 +367,12 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         byte[] data = getRandomByteArray(10);
         String blockId = getBlockID();
-        clientWithFailure.stageBlock(blockId, Flux.just(ByteBuffer.wrap(data)), data.length).block();
-        blobAsyncClient.getBlockBlobAsyncClient().commitBlockList(Collections.singletonList(blockId), true)
-            .block();
 
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.downloadStream()))
+        Mono<byte[]> response = clientWithFailure.stageBlock(blockId, Flux.just(ByteBuffer.wrap(data)), data.length)
+            .then(blobAsyncClient.getBlockBlobAsyncClient().commitBlockList(Collections.singletonList(blockId), true))
+            .then(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.downloadStream()));
+
+        StepVerifier.create(response)
             .assertNext(r -> TestUtils.assertArraysEqual(data, r))
             .verifyComplete();
     }
@@ -378,11 +388,12 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         for (BinaryData binaryData : binaryDataList) {
             String blockId = getBlockID();
-            clientWithFailure.stageBlock(blockId, binaryData).block();
-            blobAsyncClient.getBlockBlobAsyncClient().commitBlockList(Collections.singletonList(blockId), true)
-                .block();
 
-            StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.downloadStream()))
+            Mono<byte[]> response = clientWithFailure.stageBlock(blockId, binaryData)
+                .then(blobAsyncClient.getBlockBlobAsyncClient().commitBlockList(Collections.singletonList(blockId), true))
+                .then(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.downloadStream()));
+
+            StepVerifier.create(response)
                 .assertNext(r -> TestUtils.assertArraysEqual(binaryData.toBytes(), r))
                 .verifyComplete();
         }
@@ -414,9 +425,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             })
             .verifyComplete();
 
-        bu2.commitBlockList(Collections.singletonList(blockID)).block();
-
-        StepVerifier.create(bu2.downloadStream())
+        StepVerifier.create(bu2.commitBlockList(Collections.singletonList(blockID)).thenMany(bu2.downloadStream()))
             .assertNext(r -> assertEquals(DATA.getDefaultData(), r))
             .verifyComplete();
     }
@@ -469,10 +478,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         String sas = blockBlobAsyncClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        destURL.stageBlockFromUrl(getBlockID(), blockBlobAsyncClient.getBlobUrl() + "?" + sas,
-            new BlobRange(2L, 3L)).block();
 
-        StepVerifier.create(destURL.listBlocks(BlockListType.UNCOMMITTED))
+        StepVerifier.create(destURL.stageBlockFromUrl(getBlockID(), blockBlobAsyncClient.getBlobUrl() + "?" + sas,
+            new BlobRange(2L, 3L))
+            .then(destURL.listBlocks(BlockListType.UNCOMMITTED)))
             .assertNext(r -> {
                 assertEquals(0, r.getCommittedBlocks().size());
                 assertEquals(1, r.getUncommittedBlocks().size());
@@ -509,9 +518,13 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void stageBlockFromURLLease() {
         String sas = blockBlobAsyncClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        StepVerifier.create(blockBlobAsyncClient.stageBlockFromUrlWithResponse(getBlockID(),
+
+        Mono<Response<Void>> response = setupBlobLeaseConditionAsync(blockBlobAsyncClient, RECEIVED_LEASE_ID)
+            .flatMap(r -> blockBlobAsyncClient.stageBlockFromUrlWithResponse(getBlockID(),
                 blockBlobAsyncClient.getBlobUrl() + "?" + sas, null, null,
-                setupBlobLeaseCondition(blockBlobAsyncClient, RECEIVED_LEASE_ID), null))
+                r, null));
+
+        StepVerifier.create(response)
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -544,20 +557,27 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         String blockID = getBlockID();
 
         BlockBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-        sourceURL.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-
-        sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch);
-        BlobRequestConditions smac = new BlobRequestConditions()
-            .setIfModifiedSince(sourceIfModifiedSince)
-            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
-            .setIfMatch(sourceIfMatch)
-            .setIfNoneMatch(sourceIfNoneMatch);
-
         String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertAsyncResponseStatusCode(blockBlobAsyncClient.stageBlockFromUrlWithResponse(blockID,
-            sourceURL.getBlobUrl() + "?" + sas, null, null, null, smac),
-            201);
+
+        Mono<Response<Void>> response = sourceURL.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(setupBlobMatchConditionAsync(sourceURL, sourceIfMatch))
+            .flatMap(r -> {
+                String newMatch = r;
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                BlobRequestConditions smac = new BlobRequestConditions()
+                    .setIfModifiedSince(sourceIfModifiedSince)
+                    .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(sourceIfNoneMatch);
+                return blockBlobAsyncClient.stageBlockFromUrlWithResponse(blockID,
+                    sourceURL.getBlobUrl() + "?" + sas, null, null, null, smac);
+            });
+
+
+        assertAsyncResponseStatusCode(response, 201);
     }
 
     private static Stream<Arguments> stageBlockFromURLSourceACSupplier() {
@@ -574,20 +594,29 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
                                               OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
                                               String sourceIfNoneMatch) {
         String blockID = getBlockID();
-
         BlockBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-        sourceURL.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-
-        BlobRequestConditions smac = new BlobRequestConditions()
-            .setIfModifiedSince(sourceIfModifiedSince)
-            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
-            .setIfMatch(sourceIfMatch)
-            .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
-
         String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        StepVerifier.create(blockBlobAsyncClient.stageBlockFromUrlWithResponse(blockID,
-            sourceURL.getBlobUrl() + "?" + sas, null, null, null, smac))
+
+        Mono<Response<Void>> response = sourceURL.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(setupBlobMatchConditionAsync(sourceURL, sourceIfNoneMatch))
+            .flatMap(r -> {
+                String newNoneMatch = r;
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                BlobRequestConditions smac = new BlobRequestConditions()
+                    .setIfModifiedSince(sourceIfModifiedSince)
+                    .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+                    .setIfMatch(sourceIfMatch)
+                    .setIfNoneMatch(newNoneMatch);
+
+                return blockBlobAsyncClient.stageBlockFromUrlWithResponse(blockID,
+                    sourceURL.getBlobUrl() + "?" + sas, null, null, null, smac);
+            });
+
+
+        StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
     }
     private static Stream<Arguments> stageBlockFromURLSourceACFailSupplier() {
@@ -601,11 +630,11 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @Test
     public void commitBlockList() {
         String blockID = getBlockID();
-        blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
         List<String> ids = Collections.singletonList(blockID);
 
-        StepVerifier.create(blockBlobAsyncClient.commitBlockListWithResponse(ids, null, null, null,
-            null))
+        StepVerifier.create(blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(blockBlobAsyncClient.commitBlockListWithResponse(ids, null, null, null,
+            null)))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 HttpHeaders headers = r.getHeaders();
@@ -620,10 +649,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void commitBlockListmin() {
         blockBlobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
         String blockID = getBlockID();
-        blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
         List<String> ids = Collections.singletonList(blockID);
 
-        StepVerifier.create(blockBlobAsyncClient.commitBlockList(ids))
+        StepVerifier.create(blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(blockBlobAsyncClient.commitBlockList(ids)))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -655,7 +684,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void commitBlockListHeaders(String cacheControl, String contentDisposition, String contentEncoding,
                                        String contentLanguage, byte[] contentMD5, String contentType) {
         String blockID = getBlockID();
-        blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
         List<String> ids = Collections.singletonList(blockID);
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setCacheControl(cacheControl)
@@ -665,14 +693,16 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .setContentMd5(contentMD5)
             .setContentType(contentType);
 
-        blockBlobAsyncClient.commitBlockListWithResponse(ids, headers, null, null, null)
-            .block();
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
         String finalContentType = contentType;
 
-        StepVerifier.create(blockBlobAsyncClient.getPropertiesWithResponse(null))
+        Mono<Response<BlobProperties>> response = blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(blockBlobAsyncClient.commitBlockListWithResponse(ids, headers, null, null, null))
+            .then(blockBlobAsyncClient.getPropertiesWithResponse(null));
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 validateBlobProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                     contentMD5, finalContentType);
@@ -698,10 +728,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             metadata.put(key2, value2);
         }
 
-        blockBlobAsyncClient.commitBlockListWithResponse(null, null, metadata, null,
-            null).block();
-
-        StepVerifier.create(blockBlobAsyncClient.getPropertiesWithResponse(null))
+        StepVerifier.create(blockBlobAsyncClient.commitBlockListWithResponse(null, null, metadata, null,
+            null)
+            .then(blockBlobAsyncClient.getPropertiesWithResponse(null)))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
                 assertEquals(metadata, r.getValue().getMetadata());
@@ -727,10 +756,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             tags.put(key2, value2);
         }
 
-        blockBlobAsyncClient.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(null)
-            .setTags(tags)).block();
-
-        StepVerifier.create(blockBlobAsyncClient.getTagsWithResponse(new BlobGetTagsOptions()))
+        StepVerifier.create(blockBlobAsyncClient.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(null)
+            .setTags(tags))
+            .then(blockBlobAsyncClient.getTagsWithResponse(new BlobGetTagsOptions())))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
                 assertEquals(tags, r.getValue());
@@ -752,19 +780,32 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
                                   String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
-        blockBlobAsyncClient.setTags(t).block();
-        match = setupBlobMatchCondition(blockBlobAsyncClient, match);
-        leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, leaseID);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setTagsConditions(tags);
 
-        assertAsyncResponseStatusCode(blockBlobAsyncClient.commitBlockListWithResponse(null, null,
-            null, null, bac), 201);
+
+        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.setTags(t)
+            .then(Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, match)))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                BlobRequestConditions bac = new BlobRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setTagsConditions(tags);
+
+                return blockBlobAsyncClient.commitBlockListWithResponse(null, null,
+                    null, null, bac);
+            });
+
+        assertAsyncResponseStatusCode(response, 201);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -772,18 +813,26 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void commitBlockListACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                       String noneMatch, String leaseID, String tags) {
-        noneMatch = setupBlobMatchCondition(blockBlobAsyncClient, noneMatch);
-        setupBlobLeaseCondition(blockBlobAsyncClient, leaseID);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setTagsConditions(tags);
 
-        StepVerifier.create(blockBlobAsyncClient.commitBlockListWithResponse(null, null,
-            null, null, bac))
+        Mono<Response<BlockBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                BlobRequestConditions bac = new BlobRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setTagsConditions(tags);
+
+                return blockBlobAsyncClient.commitBlockListWithResponse(null, null,
+                    null, null, bac);
+            });
+
+        StepVerifier.create(response)
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
                 assertTrue(e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET
@@ -804,14 +853,15 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void commitBlockListColdTier() {
         blockBlobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
         String blockID = getBlockID();
-        blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
         List<String> ids = Collections.singletonList(blockID);
         BlockBlobCommitBlockListOptions commitOptions = new BlockBlobCommitBlockListOptions(ids)
             .setTier(AccessTier.COLD);
 
-        blockBlobAsyncClient.commitBlockListWithResponse(commitOptions).block();
+        Mono<BlobProperties> response = blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(blockBlobAsyncClient.commitBlockListWithResponse(commitOptions))
+            .then(blockBlobAsyncClient.getProperties());
 
-        StepVerifier.create(blockBlobAsyncClient.getProperties())
+        StepVerifier.create(response)
             .assertNext(r -> assertEquals(AccessTier.COLD, r.getAccessTier()))
             .verifyComplete();
     }
@@ -820,22 +870,23 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @Test
     public void getBlockList() {
         List<String> committedBlocks = Arrays.asList(getBlockID(), getBlockID());
-        blockBlobAsyncClient.stageBlock(committedBlocks.get(0), DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-        blockBlobAsyncClient.stageBlock(committedBlocks.get(1), DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-        blockBlobAsyncClient.commitBlockList(committedBlocks, true).block();
 
         List<String> uncommittedBlocks = Arrays.asList(getBlockID(), getBlockID());
-        blockBlobAsyncClient.stageBlock(uncommittedBlocks.get(0), DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-        blockBlobAsyncClient.stageBlock(uncommittedBlocks.get(1), DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
 
         uncommittedBlocks.sort(String::compareTo);
 
         Set<String> actualCommittedBlocks = new HashSet<>();
         Set<String> actualUncommittedBlocks = new HashSet<>();
 
-        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext(r -> {
+        Mono<BlockList> step = blockBlobAsyncClient.stageBlock(committedBlocks.get(0), DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(blockBlobAsyncClient.stageBlock(committedBlocks.get(1), DATA.getDefaultFlux(), DATA.getDefaultDataSize()))
+            .then(blockBlobAsyncClient.commitBlockList(committedBlocks, true))
+            .then(blockBlobAsyncClient.stageBlock(uncommittedBlocks.get(0), DATA.getDefaultFlux(), DATA.getDefaultDataSize()))
+            .then(blockBlobAsyncClient.stageBlock(uncommittedBlocks.get(1), DATA.getDefaultFlux(), DATA.getDefaultDataSize()))
+            .then(blockBlobAsyncClient.listBlocks(BlockListType.ALL));
 
+        StepVerifier.create(step)
+            .assertNext(r -> {
                 for (Block block : r.getCommittedBlocks()) {
                     actualCommittedBlocks.add(block.getName());
                     assertEquals(DATA.getDefaultDataSize(), block.getSize());
@@ -864,11 +915,13 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @MethodSource("getBlockListTypeSupplier")
     public void getBlockListType(BlockListType type, int committedCount, int uncommittedCount) {
         String blockID = getBlockID();
-        blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-        blockBlobAsyncClient.commitBlockList(Collections.singletonList(blockID), true).block();
-        blockBlobAsyncClient.stageBlock(getBlockID(), DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
 
-        StepVerifier.create(blockBlobAsyncClient.listBlocks(type))
+        Mono<BlockList> response = blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(blockBlobAsyncClient.commitBlockList(Collections.singletonList(blockID), true))
+            .then(blockBlobAsyncClient.stageBlock(getBlockID(), DATA.getDefaultFlux(), DATA.getDefaultDataSize()))
+            .then(blockBlobAsyncClient.listBlocks(type));
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertEquals(committedCount, r.getCommittedBlocks().size());
                 assertEquals(uncommittedCount, r.getUncommittedBlocks().size());
@@ -893,18 +946,18 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void getBlockListLease() {
-        String leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, RECEIVED_LEASE_ID);
+        Mono<Response<BlockList>> response = setupBlobLeaseConditionAsync(blockBlobAsyncClient, RECEIVED_LEASE_ID)
+            .flatMap(r -> blockBlobAsyncClient.listBlocksWithResponse(BlockListType.ALL, r));
 
-        StepVerifier.create(blockBlobAsyncClient.listBlocksWithResponse(BlockListType.ALL, leaseID))
+        StepVerifier.create(response)
             .expectNextCount(1)
             .verifyComplete();
     }
 
     @Test
     public void getBlockListLeaseFail() {
-        setupBlobLeaseCondition(blockBlobAsyncClient, GARBAGE_LEASE_ID);
-
-        StepVerifier.create(blockBlobAsyncClient.listBlocksWithResponse(BlockListType.ALL, GARBAGE_LEASE_ID))
+        StepVerifier.create(setupBlobLeaseConditionAsync(blockBlobAsyncClient, GARBAGE_LEASE_ID)
+            .then(blockBlobAsyncClient.listBlocksWithResponse(BlockListType.ALL, GARBAGE_LEASE_ID)))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
                 assertEquals(BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION, e.getErrorCode());
@@ -916,10 +969,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void getBlockListTags() {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
-        blockBlobAsyncClient.setTags(t).block();
 
-        StepVerifier.create(blockBlobAsyncClient.listBlocksWithResponse(
-            new BlockBlobListBlocksOptions(BlockListType.ALL).setIfTagsMatch("\"foo\" = 'bar'")))
+        StepVerifier.create(blockBlobAsyncClient.setTags(t)
+            .then(blockBlobAsyncClient.listBlocksWithResponse(
+                new BlockBlobListBlocksOptions(BlockListType.ALL).setIfTagsMatch("\"foo\" = 'bar'"))))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -963,28 +1016,32 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     // Override name to prevent BinaryData.toString() invocation by test framework.
     @Test
     public void uploadBinaryData() {
-        List<BinaryData> binaryDataList = Arrays.asList(
-            BinaryData.fromBytes(DATA.getDefaultBytes()),
-            BinaryData.fromString(DATA.getDefaultText()),
-            BinaryData.fromFile(DATA.getDefaultFile()),
-            BinaryData.fromFlux(DATA.getDefaultFlux(), (long) DATA.getDefaultDataSize(), false).block(),
-            BinaryData.fromStream(DATA.getDefaultInputStream(), (long) DATA.getDefaultDataSize()));
+        BinaryData.fromFlux(DATA.getDefaultFlux(), (long) DATA.getDefaultDataSize(), false)
+            .flatMap(flux -> {
+                List<BinaryData> binaryDataList = Arrays.asList(
+                    BinaryData.fromBytes(DATA.getDefaultBytes()),
+                    BinaryData.fromString(DATA.getDefaultText()),
+                    BinaryData.fromFile(DATA.getDefaultFile()),
+                    flux,
+                    BinaryData.fromStream(DATA.getDefaultInputStream(), (long) DATA.getDefaultDataSize()));
 
-        for (BinaryData binaryData : binaryDataList) {
-            BlockBlobSimpleUploadOptions uploadOptions = new BlockBlobSimpleUploadOptions(binaryData);
-            StepVerifier.create(blockBlobAsyncClient.uploadWithResponse(uploadOptions))
-                .assertNext(r -> {
-                    assertResponseStatusCode(r, 201);
-                    validateBasicHeaders(r.getHeaders());
-                    assertNotNull(r.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
-                    assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-                })
-                .verifyComplete();
+                for (BinaryData binaryData : binaryDataList) {
+                    BlockBlobSimpleUploadOptions uploadOptions = new BlockBlobSimpleUploadOptions(binaryData);
+                    StepVerifier.create(blockBlobAsyncClient.uploadWithResponse(uploadOptions))
+                        .assertNext(r -> {
+                            assertResponseStatusCode(r, 201);
+                            validateBasicHeaders(r.getHeaders());
+                            assertNotNull(r.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
+                            assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+                        })
+                        .verifyComplete();
 
-            StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blockBlobAsyncClient.downloadStream()))
-                .assertNext(r -> TestUtils.assertArraysEqual(r, DATA.getDefaultBytes()))
-                .verifyComplete();
-        }
+                    StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blockBlobAsyncClient.downloadStream()))
+                        .assertNext(r -> TestUtils.assertArraysEqual(r, DATA.getDefaultBytes()))
+                        .verifyComplete();
+                }
+                return Mono.empty();
+            });
     }
 
     // Override name to prevent BinaryData.toString() invocation by test framework.
@@ -1033,14 +1090,22 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         outFile.deleteOnExit();
         Files.deleteIfExists(outFile.toPath());
 
-        FileOutputStream outStream = new FileOutputStream(outFile);
-        outStream.write(Objects.requireNonNull(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.downloadStream())
-            .block()));
-        outStream.close();
 
-        compareFiles(file, outFile, 0, fileSize);
-        StepVerifier.create(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED))
-            .assertNext(it -> assertEquals(committedBlockCount, it.getCommittedBlocks().size()))
+        Mono<Tuple2<BlockList, byte[]>> tuple = Mono.zip(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED),
+            FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.downloadStream()));
+
+        StepVerifier.create(tuple)
+            .assertNext(r -> {
+                try {
+                    FileOutputStream outStream = new FileOutputStream(outFile);
+                    outStream.write(Objects.requireNonNull(r.getT2()));
+                    outStream.close();
+                    compareFiles(file, outFile, 0, fileSize);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                assertEquals(committedBlockCount, r.getT1().getCommittedBlocks().size());
+            })
             .verifyComplete();
     }
 
@@ -1067,10 +1132,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
-        blobAsyncClient.uploadFromFile(file.getAbsolutePath(), null, null, metadata, null,
-            null).block();
-
-        StepVerifier.create(blockBlobAsyncClient.getProperties())
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.getAbsolutePath(), null, null,
+            metadata, null, null)
+            .then(blockBlobAsyncClient.getProperties()))
             .assertNext(r -> assertEquals(metadata, r.getMetadata()))
             .verifyComplete();
 
@@ -1095,10 +1159,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
-        blobAsyncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(file.getAbsolutePath()).setTags(tags))
-            .block();
-
-        StepVerifier.create(blockBlobAsyncClient.getTags())
+        StepVerifier.create(blobAsyncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(file.getAbsolutePath()).setTags(tags))
+            .then(blockBlobAsyncClient.getTags()))
             .assertNext(r -> assertEquals(tags, r))
             .verifyComplete();
 
@@ -1220,11 +1282,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
-        blobAsyncClient.uploadFromFile(file.toPath().toString(),
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString(),
             new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize),
-            null, null, null, null).block();
-
-        StepVerifier.create(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED))
+            null, null, null, null)
+            .then(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED)))
             .assertNext(r -> assertEquals(expectedBlockCount, r.getCommittedBlocks().size()))
             .verifyComplete();
     }
@@ -1246,9 +1307,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void uploadMin() {
-        blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true).block();
-
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blockBlobAsyncClient.downloadStream()))
+        StepVerifier.create(blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+            .then(FluxUtil.collectBytesInByteBufferStream(blockBlobAsyncClient.downloadStream())))
             .assertNext(r -> TestUtils.assertArraysEqual(r, DATA.getDefaultBytes()))
             .verifyComplete();
     }
@@ -1256,19 +1316,23 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     // Override name to prevent BinaryData.toString() invocation by test framework.
     @Test
     public void uploadMinBinaryData() {
-        List<BinaryData> binaryDataList = Arrays.asList(
-            BinaryData.fromBytes(DATA.getDefaultBytes()),
-            BinaryData.fromString(DATA.getDefaultText()),
-            BinaryData.fromFile(DATA.getDefaultFile()),
-            BinaryData.fromFlux(DATA.getDefaultFlux(), (long) DATA.getDefaultDataSize(), false).block(),
-            BinaryData.fromStream(DATA.getDefaultInputStream(), (long) DATA.getDefaultDataSize()));
+        BinaryData.fromFlux(DATA.getDefaultFlux(), (long) DATA.getDefaultDataSize(), false)
+            .flatMap(flux -> {
+                List<BinaryData> binaryDataList = Arrays.asList(
+                    BinaryData.fromBytes(DATA.getDefaultBytes()),
+                    BinaryData.fromString(DATA.getDefaultText()),
+                    BinaryData.fromFile(DATA.getDefaultFile()),
+                    flux,
+                    BinaryData.fromStream(DATA.getDefaultInputStream(), (long) DATA.getDefaultDataSize()));
 
-        for (BinaryData binaryData : binaryDataList) {
-            blockBlobAsyncClient.upload(binaryData, true).block();
-            StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blockBlobAsyncClient.downloadStream()))
-                .assertNext(r -> TestUtils.assertArraysEqual(r, DATA.getDefaultBytes()))
-                .verifyComplete();
-        }
+                for (BinaryData binaryData : binaryDataList) {
+                    StepVerifier.create(blockBlobAsyncClient.upload(binaryData, true)
+                        .then(FluxUtil.collectBytesInByteBufferStream(blockBlobAsyncClient.downloadStream())))
+                        .assertNext(r -> TestUtils.assertArraysEqual(r, DATA.getDefaultBytes()))
+                        .verifyComplete();
+                }
+                return Mono.empty();
+            });
     }
 
     @ParameterizedTest
@@ -1328,17 +1392,15 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .setContentMd5(contentMD5)
             .setContentType(contentType);
 
-        blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), headers, null,
-            null, null, null).block();
-
         // If the value isn't set the service will automatically set it
-        contentMD5 =
-            (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes()) : contentMD5;
+        contentMD5 = (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes()) : contentMD5;
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
         String finalContentType = contentType;
         byte[] finalContentMD = contentMD5;
 
-        StepVerifier.create(blockBlobAsyncClient.getPropertiesWithResponse(null))
+        StepVerifier.create(blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
+            headers, null, null, null, null)
+            .then(blockBlobAsyncClient.getPropertiesWithResponse(null)))
             .assertNext(r -> {
                 validateBlobProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage, finalContentMD,
                     finalContentType);
@@ -1383,10 +1445,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             metadata.put(key2, value2);
         }
 
-        blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, metadata,
-            null, null, null).block();
-
-        StepVerifier.create(blockBlobAsyncClient.getPropertiesWithResponse(null))
+        StepVerifier.create(blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
+            null, metadata, null, null, null)
+            .then(blockBlobAsyncClient.getPropertiesWithResponse(null)))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
                 assertEquals(metadata, r.getValue().getMetadata());
@@ -1406,10 +1467,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             tags.put(key2, value2);
         }
 
-        blockBlobAsyncClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize()).setTags(tags)).block();
-
-        StepVerifier.create(blockBlobAsyncClient.getTagsWithResponse(new BlobGetTagsOptions()))
+        StepVerifier.create(blockBlobAsyncClient.uploadWithResponse(
+            new BlockBlobSimpleUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags))
+            .then(blockBlobAsyncClient.getTagsWithResponse(new BlobGetTagsOptions())))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
                 assertEquals(tags, r.getValue());
@@ -1424,19 +1484,31 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
                          String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
-        blockBlobAsyncClient.setTags(t).block();
-        match = setupBlobMatchCondition(blockBlobAsyncClient, match);
-        leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, leaseID);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setTagsConditions(tags);
 
-        assertAsyncResponseStatusCode(blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize(), null, null, null, null, bac), 201);
+        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.setTags(t)
+            .then(Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, match)))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                BlobRequestConditions bac = new BlobRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setTagsConditions(tags);
+
+                return blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(),
+                    DATA.getDefaultDataSize(), null, null, null, null, bac);
+            });
+
+        assertAsyncResponseStatusCode(response, 201);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -1444,23 +1516,26 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void uploadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID, String tags) {
-        noneMatch = setupBlobMatchCondition(blockBlobAsyncClient, noneMatch);
-        setupBlobLeaseCondition(blockBlobAsyncClient, leaseID);
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setTagsConditions(tags);
 
-        /*
-        * todo isbr: Something that we could make better in the future for debuggability, assertTrue (and assertFalse) will only tell you that
-        * the boolean didn't match the expected, these methods also have a parameter for a String or Supplier where we could
-        * have it say what the error code was when it doesn't match.
-        */
-        StepVerifier.create(blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
-            null, null, null, null, bac))
+        Mono<Response<BlockBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                BlobRequestConditions bac = new BlobRequestConditions()
+                    .setLeaseId(leaseID)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setTagsConditions(tags);
+
+                return blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
+                    null, null, null, null, bac);
+            });
+
+        StepVerifier.create(response)
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
                 assertTrue(e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET
@@ -1482,10 +1557,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadWithTier() {
         BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
-        bc.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null,
-            AccessTier.COOL, null, null).block();
-
-        StepVerifier.create(bc.getProperties())
+        StepVerifier.create(bc.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+            null, AccessTier.COOL, null, null)
+            .then(bc.getProperties()))
             .assertNext(r -> assertEquals(AccessTier.COOL, r.getAccessTier()))
             .verifyComplete();
     }
@@ -1495,10 +1569,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadWithAccessTierCold() {
         BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
-        bc.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null,
-            AccessTier.COLD, null, null).block();
-
-        StepVerifier.create(bc.getProperties())
+        StepVerifier.create(bc.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+            null, AccessTier.COLD, null, null)
+            .then(bc.getProperties()))
             .assertNext(r -> assertEquals(AccessTier.COLD, r.getAccessTier()))
             .verifyComplete();
     }
@@ -1579,6 +1652,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @MethodSource("asyncBufferedUploadSupplier")
     @LiveOnly
     public void asyncBufferedUpload(int dataSize, long bufferSize, int numBuffs, int blockCount) {
+        //todo isbr
         BlobAsyncClient asyncClient = getPrimaryServiceClientForWrites(bufferSize)
             .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
             .getBlobAsyncClient(blobAsyncClient.getBlobName());
@@ -1586,20 +1660,24 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         ByteBuffer data = getRandomData(dataSize);
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4L * Constants.MB);
-        asyncClient.upload(Flux.just(data), parallelTransferOptions, true).block();
         data.position(0);
 
         // Due to memory issues, this check only runs on small to medium sized data sets.
-        // todo isbr: allow comparison of huge blobs -  Instead of having to load everything into memory we can compare iteratively.
         if (dataSize < 100 * 1024 * 1024) {
-            StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.downloadStream()))
+            StepVerifier.create(asyncClient.upload(Flux.just(data), parallelTransferOptions, true)
+                .then(collectBytesInBuffer(blockBlobAsyncClient.downloadStream())))
                 .assertNext(it -> assertEquals(data, it))
                 .verifyComplete();
-        }
 
-        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext(it -> assertEquals(blockCount, it.getCommittedBlocks().size()))
-            .verifyComplete();
+            StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
+                .assertNext(it -> assertEquals(blockCount, it.getCommittedBlocks().size()))
+                .verifyComplete();
+        } else {
+            StepVerifier.create(asyncClient.upload(Flux.just(data), parallelTransferOptions, true)
+                .then(blockBlobAsyncClient.listBlocks(BlockListType.ALL)))
+                .assertNext(it -> assertEquals(blockCount, it.getCommittedBlocks().size()))
+                .verifyComplete();
+        }
     }
 
     private static Stream<Arguments> asyncBufferedUploadSupplier() {
@@ -1616,8 +1694,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void asyncUploadBinaryData() {
-        blobAsyncClient.upload(DATA.getDefaultBinaryData(), true).block();
-        StepVerifier.create(blockBlobAsyncClient.downloadContent())
+        StepVerifier.create(blobAsyncClient.upload(DATA.getDefaultBinaryData(), true)
+            .then(blockBlobAsyncClient.downloadContent()))
             .assertNext(it -> TestUtils.assertArraysEqual(it.toBytes(), DATA.getDefaultBinaryData().toBytes()))
             .verifyComplete();
     }
@@ -2038,12 +2116,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void bufferedUploadOptions(int dataSize, Long singleUploadSize, Long blockSize, int expectedBlockCount) {
         ByteBuffer data = getRandomData(dataSize);
 
-        blobAsyncClient.uploadWithResponse(Flux.just(data),
+        StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(data),
             new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize),
-            null, null, null, null).block();
-
-        StepVerifier.create(Objects.requireNonNull(blobAsyncClient.getBlockBlobAsyncClient()
-            .listBlocks(BlockListType.COMMITTED)))
+            null, null, null, null)
+            .then(Objects.requireNonNull(blobAsyncClient.getBlockBlobAsyncClient()).listBlocks(BlockListType.COMMITTED)))
             .assertNext(r -> assertEquals(expectedBlockCount, r.getCommittedBlocks().size()))
             .verifyComplete();
     }
@@ -2067,16 +2143,15 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @LiveOnly
     public void bufferedUploadWithLength(int dataSize, Long singleUploadSize, Long blockSize, int expectedBlockCount) {
         Flux<ByteBuffer> data = Flux.just(getRandomData(dataSize));
-        BinaryData binaryData = BinaryData.fromFlux(data, (long) dataSize).block();
-        BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(binaryData)
-            .setParallelTransferOptions(new ParallelTransferOptions()
-                .setBlockSizeLong(blockSize)
-                .setMaxSingleUploadSizeLong(singleUploadSize));
+        Mono<BlobParallelUploadOptions> parallelUploadOptions = BinaryData.fromFlux(data, (long) dataSize)
+            .flatMap(r -> Mono.just(new BlobParallelUploadOptions(r)
+                .setParallelTransferOptions(new ParallelTransferOptions()
+                    .setBlockSizeLong(blockSize)
+                    .setMaxSingleUploadSizeLong(singleUploadSize))));
 
-        blobAsyncClient.uploadWithResponse(parallelUploadOptions).block();
-
-        StepVerifier.create(Objects.requireNonNull(blobAsyncClient.getBlockBlobAsyncClient()
-            .listBlocks(BlockListType.COMMITTED)))
+        StepVerifier.create(parallelUploadOptions.flatMap(r -> blobAsyncClient.uploadWithResponse(r))
+            .then(Objects.requireNonNull(blobAsyncClient.getBlockBlobAsyncClient()
+            .listBlocks(BlockListType.COMMITTED))))
             .assertNext(r -> assertEquals(expectedBlockCount, r.getCommittedBlocks().size()))
             .verifyComplete();
     }
@@ -2091,21 +2166,30 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @LiveOnly
     public void bufferedUploadAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
-        blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true).block();
-        match = setupBlobMatchCondition(blockBlobAsyncClient, match);
-        leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, leaseID);
-        BlobRequestConditions requestConditions = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+            .then(Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, match)))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                BlobRequestConditions requestConditions = new BlobRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10L);
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10L);
-        StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)),
-                parallelTransferOptions, null, null, null, requestConditions))
-            .assertNext(it -> assertResponseStatusCode(it, 201))
-            .verifyComplete();
+                return blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)),
+                    parallelTransferOptions, null, null, null, requestConditions);
+            });
+
+        assertAsyncResponseStatusCode(response, 201);
     }
 
     private static Stream<Arguments> bufferedUploadACSupplier() {
@@ -2124,19 +2208,30 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @MethodSource("com.azure.storage.blob.BlobTestBase#fileACFailSupplier")
     public void bufferedUploadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
-        blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true).block();
-        noneMatch = setupBlobMatchCondition(blockBlobAsyncClient, noneMatch);
-        leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, leaseID);
-        BlobRequestConditions requestConditions = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10L);
+        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+            .then(Mono.zip(setupBlobLeaseConditionAsync(blockBlobAsyncClient, leaseID), setupBlobMatchConditionAsync(blockBlobAsyncClient, noneMatch)))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                BlobRequestConditions requestConditions = new BlobRequestConditions()
+                    .setLeaseId(newLease)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10L);
 
-        StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions,
-                null, null, null, requestConditions))
+                return blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions,
+                    null, null, null, requestConditions);
+            });
+
+        StepVerifier.create(response)
             .verifyErrorSatisfies(it -> {
                 assertInstanceOf(BlobStorageException.class, it);
                 BlobStorageException storageException = (BlobStorageException) it;
@@ -2151,16 +2246,19 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @CsvSource(value = {"16,7,2", "16,5,2"})
     @LiveOnly
     public void uploadBufferPoolLockThreeOrMoreBuffers(int dataLength, int blockSize, int numBuffers) {
-        blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true).block();
-        String leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, GARBAGE_LEASE_ID);
-        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseID);
-
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSizeLong((long) blockSize)
             .setMaxConcurrency(numBuffers);
 
-        StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(dataLength)),
-                parallelTransferOptions, null, null, null, requestConditions))
+        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+            .then(setupBlobLeaseConditionAsync(blockBlobAsyncClient, GARBAGE_LEASE_ID))
+            .flatMap(r -> {
+                BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(r);
+                return blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(dataLength)),
+                    parallelTransferOptions, null, null, null, requestConditions);
+            });
+
+        StepVerifier.create(response)
             .verifyErrorSatisfies(it -> assertInstanceOf(BlobStorageException.class, it));
     }
 
@@ -2171,7 +2269,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
          This test uses a Flowable that does not allow multiple subscriptions and therefore ensures that we are
          buffering properly to allow for retries even given this source behavior.
          */
-        blockBlobAsyncClient.upload(Flux.just(DATA.getDefaultData()), DATA.getDefaultDataSize(), true).block();
 
         // Mock a response that will always be retried.
         HttpResponse mockHttpResponse = new MockHttpResponse(new HttpRequest(HttpMethod.PUT, "https://www.fake.com"),
@@ -2198,8 +2295,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
 
         // A second subscription to a download stream will
-        StepVerifier.create(blobAsyncClient.upload(blockBlobAsyncClient.downloadStream(), parallelTransferOptions,
-            true))
+        StepVerifier.create(blockBlobAsyncClient.upload(Flux.just(DATA.getDefaultData()), DATA.getDefaultDataSize(), true)
+            .then(blobAsyncClient.upload(blockBlobAsyncClient.downloadStream(), parallelTransferOptions, true)))
             .verifyErrorSatisfies(it -> {
                 assertInstanceOf(BlobStorageException.class, it);
                 assertEquals(500, ((BlobStorageException) it).getStatusCode());
@@ -2244,9 +2341,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @Test
     public void bufferedUploadWithSpecifiedLength() {
         Flux<ByteBuffer> fluxData = Flux.just(getRandomData(DATA.getDefaultDataSize()));
-        BinaryData binaryData = BinaryData.fromFlux(fluxData, DATA.getDefaultDataSizeLong()).block();
-        BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(binaryData);
-        StepVerifier.create(blobAsyncClient.uploadWithResponse(parallelUploadOptions))
+        Mono<Response<BlockBlobItem>> response = BinaryData.fromFlux(fluxData, DATA.getDefaultDataSizeLong())
+            .flatMap(r -> blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(r)));
+
+        StepVerifier.create(response)
             .assertNext(it -> assertNotNull(it.getValue().getETag())).verifyComplete();
     }
 
@@ -2257,8 +2355,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
-        blobAsyncClient.uploadFromFile(file.toPath().toString(), true).block();
-        StepVerifier.create(blobAsyncClient.uploadFromFile(getRandomFile(50).toPath().toString(), true))
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString(), true)
+            .then(blobAsyncClient.uploadFromFile(getRandomFile(50).toPath().toString(), true)))
             .verifyComplete();
     }
 
@@ -2273,9 +2371,11 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         outFile.deleteOnExit();
         Files.deleteIfExists(outFile.toPath());
 
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.getPath(), true)
+            .then(blobAsyncClient.downloadToFile(outFile.toPath().toString(), true)))
+            .expectNextCount(1)
+            .verifyComplete();
 
-        blobAsyncClient.uploadFromFile(file.getPath(), true).block();
-        blobAsyncClient.downloadToFile(outFile.toPath().toString(), true).block();
         compareFiles(file, outFile, 0, file.length());
     }
 
@@ -2348,14 +2448,19 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadFromUrlMin() {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
             .getBlobAsyncClient(generateBlobName());
-        sourceBlob.upload(DATA.getDefaultFlux(), null).block();
         String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        if (blockBlobAsyncClient.exists().block()) {
-            blockBlobAsyncClient.delete().block();
-        }
 
-        StepVerifier.create(blockBlobAsyncClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas))
+        Mono<BlockBlobItem> response = sourceBlob.upload(DATA.getDefaultFlux(), null).then(blockBlobAsyncClient.exists())
+            .flatMap(r -> {
+                if (r) {
+                    return blockBlobAsyncClient.delete();
+                }
+                return Mono.empty();
+            })
+            .then(blockBlobAsyncClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas));
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertNotNull(r);
                 assertNotNull(r.getETag());
@@ -2387,12 +2492,14 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadFromUrlOverwrite() {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
             .getBlobAsyncClient(generateBlobName());
-        sourceBlob.upload(DATA.getDefaultFlux(), null).block();
         String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true).block();
 
-        StepVerifier.create(blockBlobAsyncClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, true))
+        Mono<BlockBlobItem> response = sourceBlob.upload(DATA.getDefaultFlux(), null)
+            .then(blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true))
+            .then(blockBlobAsyncClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, true));
+
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertNotNull(r);
                 assertNotNull(r.getETag());
@@ -2410,12 +2517,14 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadFromUrlOverwriteFailsOnExistingBlob() {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
             .getBlobAsyncClient(generateBlobName());
-        sourceBlob.upload(DATA.getDefaultFlux(), null).block();
         String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true).block();
 
-        StepVerifier.create(blockBlobAsyncClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, false))
+        Mono<BlockBlobItem> response = sourceBlob.upload(DATA.getDefaultFlux(), null)
+            .then(blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true))
+            .then(blockBlobAsyncClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, false));
+
+        StepVerifier.create(response)
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
                 assertEquals(BlobErrorCode.BLOB_ALREADY_EXISTS, e.getErrorCode());
@@ -2434,25 +2543,27 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadFromUrlMax() throws NoSuchAlgorithmException {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
             .getBlobAsyncClient(generateBlobName());
-        sourceBlob.upload(DATA.getDefaultFlux(), null).block();
-        sourceBlob.setHttpHeaders(new BlobHttpHeaders().setContentLanguage("en-GB")).block();
         byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes());
-        BlobProperties sourceProperties = sourceBlob.getProperties().block();
         String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true).block();
-        BlobProperties destinationPropertiesBefore = blockBlobAsyncClient.getProperties().block();
 
-        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
-            .setContentMd5(sourceBlobMD5)
-            .setCopySourceBlobProperties(true)
-            .setDestinationRequestConditions(new BlobRequestConditions()
-                .setIfMatch(destinationPropertiesBefore.getETag()))
-            .setSourceRequestConditions(new BlobRequestConditions().setIfMatch(sourceProperties.getETag()))
-            .setHeaders(new BlobHttpHeaders().setContentType("text"))
-            .setTier(AccessTier.COOL);
+        Mono<Response<BlockBlobItem>> response = sourceBlob.upload(DATA.getDefaultFlux(), null)
+            .then(sourceBlob.setHttpHeaders(new BlobHttpHeaders().setContentLanguage("en-GB")))
+            .then(blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true))
+            .then(Mono.zip(sourceBlob.getProperties(), blockBlobAsyncClient.getProperties()))
+            .flatMap(tuple -> {
+                BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+                    .setContentMd5(sourceBlobMD5)
+                    .setCopySourceBlobProperties(true)
+                    .setDestinationRequestConditions(new BlobRequestConditions()
+                        .setIfMatch(tuple.getT2().getETag()))
+                    .setSourceRequestConditions(new BlobRequestConditions().setIfMatch(tuple.getT1().getETag()))
+                    .setHeaders(new BlobHttpHeaders().setContentType("text"))
+                    .setTier(AccessTier.COOL);
+                return blockBlobAsyncClient.uploadFromUrlWithResponse(options);
+            });
 
-        StepVerifier.create(blockBlobAsyncClient.uploadFromUrlWithResponse(options))
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertNotNull(r);
                 assertNotNull(r.getRequest());
@@ -2482,17 +2593,18 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadFromWithInvalidSourceMD5() throws NoSuchAlgorithmException {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
             .getBlobAsyncClient(generateBlobName());
-        sourceBlob.upload(DATA.getDefaultFlux(), null).block();
         byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5")
             .digest("garbage".getBytes(StandardCharsets.UTF_8));
         String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true).block();
-
         BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
             .setContentMd5(sourceBlobMD5);
 
-        StepVerifier.create(blockBlobAsyncClient.uploadFromUrlWithResponse(options))
+        Mono<Response<BlockBlobItem>> response = sourceBlob.upload(DATA.getDefaultFlux(), null)
+            .then(blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true))
+            .then(blockBlobAsyncClient.uploadFromUrlWithResponse(options));
+
+        StepVerifier.create(response)
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
                 assertEquals(BlobErrorCode.MD5MISMATCH, e.getErrorCode());
@@ -2505,15 +2617,16 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadFromUrlSourceRequestConditions(BlobRequestConditions requestConditions, BlobErrorCode errorCode) {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
             .getBlobAsyncClient(generateBlobName());
-        sourceBlob.upload(DATA.getDefaultFlux(), null).block();
         String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true).block();
-
         BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
             .setSourceRequestConditions(requestConditions);
 
-        StepVerifier.create(blockBlobAsyncClient.uploadFromUrlWithResponse(options))
+        Mono<Response<BlockBlobItem>> response = sourceBlob.upload(DATA.getDefaultFlux(), null)
+            .then(blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true))
+            .then(blockBlobAsyncClient.uploadFromUrlWithResponse(options));
+
+        StepVerifier.create(response)
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
                 assertEquals(errorCode, e.getErrorCode());
@@ -2537,18 +2650,22 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
                                                           BlobErrorCode errorCode) {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
             .getBlobAsyncClient(generateBlobName());
-        sourceBlob.upload(DATA.getDefaultFlux(), null).block();
         String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true).block();
-        if (requestConditions.getLeaseId() != null) {
-            createLeaseAsyncClient(blobAsyncClient).acquireLease(60).block();
-        }
-
         BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
             .setDestinationRequestConditions(requestConditions);
 
-        StepVerifier.create(blockBlobAsyncClient.uploadFromUrlWithResponse(options))
+        Mono<Response<BlockBlobItem>> response = sourceBlob.upload(DATA.getDefaultFlux(), null)
+            .then(blockBlobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, true))
+            .flatMap(r -> {
+                if (requestConditions.getLeaseId() != null) {
+                    return createLeaseAsyncClient(blobAsyncClient).acquireLease(60);
+                }
+                return Mono.empty();
+            })
+            .then(blockBlobAsyncClient.uploadFromUrlWithResponse(options));
+
+        StepVerifier.create(response)
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
                 assertEquals(errorCode, e.getErrorCode());
@@ -2573,7 +2690,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadFromUrlCopySourceTags(BlobCopySourceTagsMode mode) {
         Map<String, String> sourceTags = Collections.singletonMap("foo", "bar");
         Map<String, String> destTags = Collections.singletonMap("fizz", "buzz");
-        blockBlobAsyncClient.setTags(sourceTags).block();
 
         String sas = blockBlobAsyncClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
@@ -2586,9 +2702,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             options.setTags(destTags);
         }
 
-        bc2.copyFromUrlWithResponse(options).block();
-
-        StepVerifier.create(bc2.getTags())
+        StepVerifier.create(blockBlobAsyncClient.setTags(sourceTags)
+            .then(bc2.copyFromUrlWithResponse(options))
+            .then(bc2.getTags()))
             .assertNext(r -> {
                 if (BlobCopySourceTagsMode.REPLACE == mode) {
                     assertEquals(destTags, r);
@@ -2611,18 +2727,23 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     public void uploadFromUrlAccessTierCold() {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
             .getBlobAsyncClient(generateBlobName());
-        sourceBlob.upload(DATA.getDefaultFlux(), null).block();
         String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        if (blockBlobAsyncClient.exists().block()) {
-            blockBlobAsyncClient.delete().block();
-        }
-
         BlobUploadFromUrlOptions uploadOptions = new BlobUploadFromUrlOptions(
             sourceBlob.getBlobUrl() + "?" + sas).setTier(AccessTier.COLD);
-        blockBlobAsyncClient.uploadFromUrlWithResponse(uploadOptions).block();
 
-        StepVerifier.create(blockBlobAsyncClient.getProperties())
+        Mono<BlobProperties> response = sourceBlob.upload(DATA.getDefaultFlux(), null)
+            .then(blockBlobAsyncClient.exists())
+            .flatMap(r -> {
+                if (r) {
+                    return blockBlobAsyncClient.delete();
+                }
+                return Mono.empty();
+            })
+            .then(blockBlobAsyncClient.uploadFromUrlWithResponse(uploadOptions))
+            .then(blockBlobAsyncClient.getProperties());
+
+        StepVerifier.create(response)
             .assertNext(r -> assertEquals(AccessTier.COLD, r.getAccessTier()))
             .verifyComplete();
     }
