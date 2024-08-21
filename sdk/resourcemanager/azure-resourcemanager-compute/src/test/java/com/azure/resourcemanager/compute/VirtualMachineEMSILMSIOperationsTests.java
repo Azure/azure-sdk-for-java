@@ -428,7 +428,8 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
 
         // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
         //
-        Set<String> emsiIds = virtualMachine.userAssignedManagedServiceIdentityIds();
+        Set<String> emsiIds = virtualMachine.innerModel().identity().userAssignedIdentities().keySet();
+        emsiIds.removeIf(emsiId -> !emsiId.endsWith("/" + identityName1));
         Assertions.assertNotNull(emsiIds);
         Assertions.assertEquals(1, emsiIds.size());
 
@@ -466,7 +467,8 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
 
         // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
         //
-        emsiIds = virtualMachine.userAssignedManagedServiceIdentityIds();
+        emsiIds = virtualMachine.innerModel().identity().userAssignedIdentities().keySet();
+        emsiIds.removeIf(emsiId -> !emsiId.endsWith("/" + identityName2));
         Assertions.assertNotNull(emsiIds);
         Assertions.assertEquals(1, emsiIds.size());
 
