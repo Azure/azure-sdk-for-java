@@ -633,6 +633,12 @@
           "old": "class com.azure.resourcemanager.sql.models.UserIdentity",
           "new": "class com.azure.resourcemanager.sql.models.UserIdentity",
           "justification": "Customer unlikely to subclass this class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.compute.models.WindowsConfiguration com.azure.resourcemanager.compute.models.WindowsConfiguration::withEnableVMAgentPlatformUpdates(java.lang.Boolean)",
+          "justification": "Fix method removed."
         }
       ]
     }
