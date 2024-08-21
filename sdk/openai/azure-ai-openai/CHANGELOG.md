@@ -5,6 +5,12 @@
 ### Features Added
 - Added a new overload `getImageGenerationsWithResponse` that takes `RequestOptions` to provide the flexibility to
   modify the HTTP request.
+- A new `required` keyword is added to `tool_choice` in the request options, which specifies that at least one tool must be called. This adds to the existing `auto` (default), `none`, and ability to specify a specific (function) tool by name
+- New operation paths: `/batches`, `/batches/{batch-id}` and `/batches/{batch-id}/cancel`
+- New request model: `BatchCreateRequest`
+- New response models: `Batch`, `BatchErrors`, etc.
+- Added `/files` operation from the Azure OpenAI Assistants SDK
+- New `batch` and `batch_output` files purposes
 
 ### Breaking Changes
 
