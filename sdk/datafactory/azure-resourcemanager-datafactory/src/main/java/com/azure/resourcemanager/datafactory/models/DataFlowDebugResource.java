@@ -6,7 +6,10 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Data flow debug resource.
@@ -16,7 +19,6 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
     /*
      * Data flow properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private DataFlow properties;
 
     /**
@@ -72,4 +74,44 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataFlowDebugResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowDebugResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowDebugResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataFlowDebugResource.
+     */
+    public static DataFlowDebugResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowDebugResource deserializedDataFlowDebugResource = new DataFlowDebugResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDataFlowDebugResource.withName(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataFlowDebugResource.properties = DataFlow.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFlowDebugResource;
+        });
+    }
 }

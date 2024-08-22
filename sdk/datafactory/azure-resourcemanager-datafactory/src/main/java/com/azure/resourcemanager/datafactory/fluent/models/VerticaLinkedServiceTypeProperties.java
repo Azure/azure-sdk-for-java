@@ -5,31 +5,52 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Vertica linked service properties.
  */
 @Fluent
-public final class VerticaLinkedServiceTypeProperties {
+public final class VerticaLinkedServiceTypeProperties implements JsonSerializable<VerticaLinkedServiceTypeProperties> {
     /*
      * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
+
+    /*
+     * Server name for connection. Type: string.
+     */
+    private Object server;
+
+    /*
+     * The port for the connection. Type: integer.
+     */
+    private Object port;
+
+    /*
+     * Username for authentication. Type: string.
+     */
+    private Object uid;
+
+    /*
+     * Database name for connection. Type: string.
+     */
+    private Object database;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "pwd")
     private AzureKeyVaultSecretReference pwd;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -57,6 +78,86 @@ public final class VerticaLinkedServiceTypeProperties {
      */
     public VerticaLinkedServiceTypeProperties withConnectionString(Object connectionString) {
         this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
+     * Get the server property: Server name for connection. Type: string.
+     * 
+     * @return the server value.
+     */
+    public Object server() {
+        return this.server;
+    }
+
+    /**
+     * Set the server property: Server name for connection. Type: string.
+     * 
+     * @param server the server value to set.
+     * @return the VerticaLinkedServiceTypeProperties object itself.
+     */
+    public VerticaLinkedServiceTypeProperties withServer(Object server) {
+        this.server = server;
+        return this;
+    }
+
+    /**
+     * Get the port property: The port for the connection. Type: integer.
+     * 
+     * @return the port value.
+     */
+    public Object port() {
+        return this.port;
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer.
+     * 
+     * @param port the port value to set.
+     * @return the VerticaLinkedServiceTypeProperties object itself.
+     */
+    public VerticaLinkedServiceTypeProperties withPort(Object port) {
+        this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the uid property: Username for authentication. Type: string.
+     * 
+     * @return the uid value.
+     */
+    public Object uid() {
+        return this.uid;
+    }
+
+    /**
+     * Set the uid property: Username for authentication. Type: string.
+     * 
+     * @param uid the uid value to set.
+     * @return the VerticaLinkedServiceTypeProperties object itself.
+     */
+    public VerticaLinkedServiceTypeProperties withUid(Object uid) {
+        this.uid = uid;
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string.
+     * 
+     * @return the database value.
+     */
+    public Object database() {
+        return this.database;
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string.
+     * 
+     * @param database the database value to set.
+     * @return the VerticaLinkedServiceTypeProperties object itself.
+     */
+    public VerticaLinkedServiceTypeProperties withDatabase(Object database) {
+        this.database = database;
         return this;
     }
 
@@ -111,5 +212,60 @@ public final class VerticaLinkedServiceTypeProperties {
         if (pwd() != null) {
             pwd().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeUntypedField("server", this.server);
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeUntypedField("uid", this.uid);
+        jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeJsonField("pwd", this.pwd);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VerticaLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VerticaLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VerticaLinkedServiceTypeProperties.
+     */
+    public static VerticaLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VerticaLinkedServiceTypeProperties deserializedVerticaLinkedServiceTypeProperties
+                = new VerticaLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedVerticaLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("server".equals(fieldName)) {
+                    deserializedVerticaLinkedServiceTypeProperties.server = reader.readUntyped();
+                } else if ("port".equals(fieldName)) {
+                    deserializedVerticaLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("uid".equals(fieldName)) {
+                    deserializedVerticaLinkedServiceTypeProperties.uid = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedVerticaLinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("pwd".equals(fieldName)) {
+                    deserializedVerticaLinkedServiceTypeProperties.pwd = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedVerticaLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVerticaLinkedServiceTypeProperties;
+        });
     }
 }

@@ -5,54 +5,50 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** TensorFlow distribution configuration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "distributionType")
-@JsonTypeName("TensorFlow")
+/**
+ * TensorFlow distribution configuration.
+ */
 @Fluent
 public final class TensorFlow extends DistributionConfiguration {
     /*
-     * Number of parameter server tasks.
+     * [Required] Specifies the type of distribution framework.
      */
-    @JsonProperty(value = "parameterServerCount")
-    private Integer parameterServerCount;
+    private DistributionType distributionType = DistributionType.TENSOR_FLOW;
 
     /*
      * Number of workers. If not specified, will default to the instance count.
      */
-    @JsonProperty(value = "workerCount")
     private Integer workerCount;
 
-    /** Creates an instance of TensorFlow class. */
+    /*
+     * Number of parameter server tasks.
+     */
+    private Integer parameterServerCount;
+
+    /**
+     * Creates an instance of TensorFlow class.
+     */
     public TensorFlow() {
     }
 
     /**
-     * Get the parameterServerCount property: Number of parameter server tasks.
-     *
-     * @return the parameterServerCount value.
+     * Get the distributionType property: [Required] Specifies the type of distribution framework.
+     * 
+     * @return the distributionType value.
      */
-    public Integer parameterServerCount() {
-        return this.parameterServerCount;
-    }
-
-    /**
-     * Set the parameterServerCount property: Number of parameter server tasks.
-     *
-     * @param parameterServerCount the parameterServerCount value to set.
-     * @return the TensorFlow object itself.
-     */
-    public TensorFlow withParameterServerCount(Integer parameterServerCount) {
-        this.parameterServerCount = parameterServerCount;
-        return this;
+    @Override
+    public DistributionType distributionType() {
+        return this.distributionType;
     }
 
     /**
      * Get the workerCount property: Number of workers. If not specified, will default to the instance count.
-     *
+     * 
      * @return the workerCount value.
      */
     public Integer workerCount() {
@@ -61,7 +57,7 @@ public final class TensorFlow extends DistributionConfiguration {
 
     /**
      * Set the workerCount property: Number of workers. If not specified, will default to the instance count.
-     *
+     * 
      * @param workerCount the workerCount value to set.
      * @return the TensorFlow object itself.
      */
@@ -71,12 +67,75 @@ public final class TensorFlow extends DistributionConfiguration {
     }
 
     /**
+     * Get the parameterServerCount property: Number of parameter server tasks.
+     * 
+     * @return the parameterServerCount value.
+     */
+    public Integer parameterServerCount() {
+        return this.parameterServerCount;
+    }
+
+    /**
+     * Set the parameterServerCount property: Number of parameter server tasks.
+     * 
+     * @param parameterServerCount the parameterServerCount value to set.
+     * @return the TensorFlow object itself.
+     */
+    public TensorFlow withParameterServerCount(Integer parameterServerCount) {
+        this.parameterServerCount = parameterServerCount;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("distributionType",
+            this.distributionType == null ? null : this.distributionType.toString());
+        jsonWriter.writeNumberField("workerCount", this.workerCount);
+        jsonWriter.writeNumberField("parameterServerCount", this.parameterServerCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TensorFlow from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TensorFlow if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TensorFlow.
+     */
+    public static TensorFlow fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TensorFlow deserializedTensorFlow = new TensorFlow();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("distributionType".equals(fieldName)) {
+                    deserializedTensorFlow.distributionType = DistributionType.fromString(reader.getString());
+                } else if ("workerCount".equals(fieldName)) {
+                    deserializedTensorFlow.workerCount = reader.getNullable(JsonReader::getInt);
+                } else if ("parameterServerCount".equals(fieldName)) {
+                    deserializedTensorFlow.parameterServerCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTensorFlow;
+        });
     }
 }

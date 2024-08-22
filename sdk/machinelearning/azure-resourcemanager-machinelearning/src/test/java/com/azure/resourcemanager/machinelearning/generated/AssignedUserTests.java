@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AssignedUserTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssignedUser model =
-            BinaryData
-                .fromString("{\"objectId\":\"mykyujxsglhs\",\"tenantId\":\"rryejylmbkzudnig\"}")
-                .toObject(AssignedUser.class);
-        Assertions.assertEquals("mykyujxsglhs", model.objectId());
-        Assertions.assertEquals("rryejylmbkzudnig", model.tenantId());
+        AssignedUser model = BinaryData.fromString("{\"objectId\":\"lmcskyk\",\"tenantId\":\"fuofixcnpcfykkp\"}")
+            .toObject(AssignedUser.class);
+        Assertions.assertEquals("lmcskyk", model.objectId());
+        Assertions.assertEquals("fuofixcnpcfykkp", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssignedUser model = new AssignedUser().withObjectId("mykyujxsglhs").withTenantId("rryejylmbkzudnig");
+        AssignedUser model = new AssignedUser().withObjectId("lmcskyk").withTenantId("fuofixcnpcfykkp");
         model = BinaryData.fromObject(model).toObject(AssignedUser.class);
-        Assertions.assertEquals("mykyujxsglhs", model.objectId());
-        Assertions.assertEquals("rryejylmbkzudnig", model.tenantId());
+        Assertions.assertEquals("lmcskyk", model.objectId());
+        Assertions.assertEquals("fuofixcnpcfykkp", model.tenantId());
     }
 }

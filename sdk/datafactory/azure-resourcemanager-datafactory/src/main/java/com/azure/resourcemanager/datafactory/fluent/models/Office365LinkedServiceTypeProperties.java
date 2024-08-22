@@ -6,44 +6,44 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Office365 linked service properties.
  */
 @Fluent
-public final class Office365LinkedServiceTypeProperties {
+public final class Office365LinkedServiceTypeProperties
+    implements JsonSerializable<Office365LinkedServiceTypeProperties> {
     /*
      * Azure tenant ID to which the Office 365 account belongs. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "office365TenantId", required = true)
     private Object office365TenantId;
 
     /*
      * Specify the tenant information under which your Azure AD web application resides. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalTenantId", required = true)
     private Object servicePrincipalTenantId;
 
     /*
      * Specify the application's client ID. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId", required = true)
     private Object servicePrincipalId;
 
     /*
      * Specify the application's key.
      */
-    @JsonProperty(value = "servicePrincipalKey", required = true)
     private SecretBase servicePrincipalKey;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -191,4 +191,54 @@ public final class Office365LinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Office365LinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("office365TenantId", this.office365TenantId);
+        jsonWriter.writeUntypedField("servicePrincipalTenantId", this.servicePrincipalTenantId);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Office365LinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Office365LinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Office365LinkedServiceTypeProperties.
+     */
+    public static Office365LinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Office365LinkedServiceTypeProperties deserializedOffice365LinkedServiceTypeProperties
+                = new Office365LinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("office365TenantId".equals(fieldName)) {
+                    deserializedOffice365LinkedServiceTypeProperties.office365TenantId = reader.readUntyped();
+                } else if ("servicePrincipalTenantId".equals(fieldName)) {
+                    deserializedOffice365LinkedServiceTypeProperties.servicePrincipalTenantId = reader.readUntyped();
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedOffice365LinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedOffice365LinkedServiceTypeProperties.servicePrincipalKey = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedOffice365LinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOffice365LinkedServiceTypeProperties;
+        });
+    }
 }

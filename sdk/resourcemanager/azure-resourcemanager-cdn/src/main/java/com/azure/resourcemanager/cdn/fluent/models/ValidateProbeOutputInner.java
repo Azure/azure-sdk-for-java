@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Output of the validate probe API.
  */
 @Immutable
-public final class ValidateProbeOutputInner {
+public final class ValidateProbeOutputInner implements JsonSerializable<ValidateProbeOutputInner> {
     /*
      * Indicates whether the probe URL is accepted or not.
      */
-    @JsonProperty(value = "isValid", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isValid;
 
     /*
      * Specifies the error code when the probe url is not accepted.
      */
-    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private String errorCode;
 
     /*
      * The detailed error message describing why the probe URL is not accepted.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
@@ -69,5 +70,44 @@ public final class ValidateProbeOutputInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateProbeOutputInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateProbeOutputInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidateProbeOutputInner.
+     */
+    public static ValidateProbeOutputInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateProbeOutputInner deserializedValidateProbeOutputInner = new ValidateProbeOutputInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isValid".equals(fieldName)) {
+                    deserializedValidateProbeOutputInner.isValid = reader.getNullable(JsonReader::getBoolean);
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedValidateProbeOutputInner.errorCode = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedValidateProbeOutputInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateProbeOutputInner;
+        });
     }
 }

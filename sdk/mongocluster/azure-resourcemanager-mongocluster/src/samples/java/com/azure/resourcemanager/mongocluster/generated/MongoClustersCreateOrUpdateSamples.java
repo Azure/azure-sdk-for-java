@@ -17,8 +17,7 @@ import java.util.Arrays;
  */
 public final class MongoClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/
-     * MongoClusters_CreatePITR.json
+     * x-ms-original-file: 2024-03-01-preview/MongoClusters_CreatePITR.json
      */
     /**
      * Sample code: Creates a Mongo Cluster resource from a point in time restore.
@@ -40,9 +39,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/MongoClusters_Create.
-     * json
+     * x-ms-original-file: 2024-03-01-preview/MongoClusters_Create.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource.

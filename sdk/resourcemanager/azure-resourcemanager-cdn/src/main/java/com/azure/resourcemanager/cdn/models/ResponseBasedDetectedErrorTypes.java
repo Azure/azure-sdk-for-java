@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Type of response errors for real user requests for which origin will be deemed unhealthy.
  */
@@ -41,7 +38,6 @@ public enum ResponseBasedDetectedErrorTypes {
      * @param value the serialized value to parse.
      * @return the parsed ResponseBasedDetectedErrorTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResponseBasedDetectedErrorTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum ResponseBasedDetectedErrorTypes {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

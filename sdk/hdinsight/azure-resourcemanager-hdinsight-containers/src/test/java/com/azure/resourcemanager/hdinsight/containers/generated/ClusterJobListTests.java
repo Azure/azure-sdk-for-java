@@ -15,9 +15,9 @@ public final class ClusterJobListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterJobList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"ipqiiobyuqerpq\",\"name\":\"pqwcciuqgbdbutau\",\"type\":\"fbtkuwhhmhyk\"},{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"oxafn\",\"name\":\"dlpichkoymkcdyhb\",\"type\":\"kkpwdreqnovvq\"}],\"nextLink\":\"vljxywsu\"}")
+            "{\"value\":[{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"vxccedcp\",\"name\":\"md\",\"type\":\"odn\"},{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"xltjcvnhltiu\",\"name\":\"cxnavv\",\"type\":\"xqi\"}],\"nextLink\":\"qunyowxwlmdjr\"}")
             .toObject(ClusterJobList.class);
-        Assertions.assertEquals("vljxywsu", model.nextLink());
+        Assertions.assertEquals("qunyowxwlmdjr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -25,8 +25,8 @@ public final class ClusterJobListTests {
         ClusterJobList model = new ClusterJobList()
             .withValue(Arrays.asList(new ClusterJobInner().withProperties(new ClusterJobProperties()),
                 new ClusterJobInner().withProperties(new ClusterJobProperties())))
-            .withNextLink("vljxywsu");
+            .withNextLink("qunyowxwlmdjr");
         model = BinaryData.fromObject(model).toObject(ClusterJobList.class);
-        Assertions.assertEquals("vljxywsu", model.nextLink());
+        Assertions.assertEquals("qunyowxwlmdjr", model.nextLink());
     }
 }

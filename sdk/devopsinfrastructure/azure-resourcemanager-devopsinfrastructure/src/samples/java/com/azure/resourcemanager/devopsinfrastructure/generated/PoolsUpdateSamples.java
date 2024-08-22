@@ -11,9 +11,7 @@ import com.azure.resourcemanager.devopsinfrastructure.models.Pool;
  */
 public final class PoolsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
-     * UpdatePool.json
+     * x-ms-original-file: 2024-04-04-preview/UpdatePool.json
      */
     /**
      * Sample code: Pools_Update.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class KnownDataCollectionRuleResourceKind
      * @param name a name to look for.
      * @return the corresponding KnownDataCollectionRuleResourceKind.
      */
-    @JsonCreator
     public static KnownDataCollectionRuleResourceKind fromString(String name) {
         return fromString(name, KnownDataCollectionRuleResourceKind.class);
     }

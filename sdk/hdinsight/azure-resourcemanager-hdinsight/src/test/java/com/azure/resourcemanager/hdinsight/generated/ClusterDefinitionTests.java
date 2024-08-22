@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"blueprint\":\"vce\",\"kind\":\"eil\",\"componentVersion\":{\"jfcn\":\"oty\",\"x\":\"bkc\",\"nv\":\"hbttkphyw\",\"qnermclfplphoxu\":\"t\"},\"configurations\":\"datarpabg\"}")
-                .toObject(ClusterDefinition.class);
+        ClusterDefinition model = BinaryData.fromString(
+            "{\"blueprint\":\"vce\",\"kind\":\"eil\",\"componentVersion\":{\"jfcn\":\"oty\",\"x\":\"bkc\",\"nv\":\"hbttkphyw\",\"qnermclfplphoxu\":\"t\"},\"configurations\":\"datarpabg\"}")
+            .toObject(ClusterDefinition.class);
         Assertions.assertEquals("vce", model.blueprint());
         Assertions.assertEquals("eil", model.kind());
         Assertions.assertEquals("oty", model.componentVersion().get("jfcn"));
@@ -25,18 +23,17 @@ public final class ClusterDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterDefinition model =
-            new ClusterDefinition()
-                .withBlueprint("vce")
-                .withKind("eil")
-                .withComponentVersion(mapOf("jfcn", "oty", "x", "bkc", "nv", "hbttkphyw", "qnermclfplphoxu", "t"))
-                .withConfigurations("datarpabg");
+        ClusterDefinition model = new ClusterDefinition().withBlueprint("vce")
+            .withKind("eil")
+            .withComponentVersion(mapOf("jfcn", "oty", "x", "bkc", "nv", "hbttkphyw", "qnermclfplphoxu", "t"))
+            .withConfigurations("datarpabg");
         model = BinaryData.fromObject(model).toObject(ClusterDefinition.class);
         Assertions.assertEquals("vce", model.blueprint());
         Assertions.assertEquals("eil", model.kind());
         Assertions.assertEquals("oty", model.componentVersion().get("jfcn"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

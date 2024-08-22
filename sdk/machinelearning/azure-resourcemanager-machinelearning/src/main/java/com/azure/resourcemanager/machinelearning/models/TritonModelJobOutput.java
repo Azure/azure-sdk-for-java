@@ -5,34 +5,70 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The TritonModelJobOutput model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobOutputType")
-@JsonTypeName("triton_model")
+/**
+ * The TritonModelJobOutput model.
+ */
 @Fluent
 public final class TritonModelJobOutput extends JobOutput {
     /*
-     * Output Asset Delivery Mode.
+     * [Required] Specifies the type of job.
      */
-    @JsonProperty(value = "mode")
-    private OutputDeliveryMode mode;
+    private JobOutputType jobOutputType = JobOutputType.TRITON_MODEL;
 
     /*
      * Output Asset URI.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
-    /** Creates an instance of TritonModelJobOutput class. */
+    /*
+     * Output Asset Delivery Mode.
+     */
+    private OutputDeliveryMode mode;
+
+    /**
+     * Creates an instance of TritonModelJobOutput class.
+     */
     public TritonModelJobOutput() {
     }
 
     /**
+     * Get the jobOutputType property: [Required] Specifies the type of job.
+     * 
+     * @return the jobOutputType value.
+     */
+    @Override
+    public JobOutputType jobOutputType() {
+        return this.jobOutputType;
+    }
+
+    /**
+     * Get the uri property: Output Asset URI.
+     * 
+     * @return the uri value.
+     */
+    public String uri() {
+        return this.uri;
+    }
+
+    /**
+     * Set the uri property: Output Asset URI.
+     * 
+     * @param uri the uri value to set.
+     * @return the TritonModelJobOutput object itself.
+     */
+    public TritonModelJobOutput withUri(String uri) {
+        this.uri = uri;
+        return this;
+    }
+
+    /**
      * Get the mode property: Output Asset Delivery Mode.
-     *
+     * 
      * @return the mode value.
      */
     public OutputDeliveryMode mode() {
@@ -41,7 +77,7 @@ public final class TritonModelJobOutput extends JobOutput {
 
     /**
      * Set the mode property: Output Asset Delivery Mode.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the TritonModelJobOutput object itself.
      */
@@ -51,26 +87,8 @@ public final class TritonModelJobOutput extends JobOutput {
     }
 
     /**
-     * Get the uri property: Output Asset URI.
-     *
-     * @return the uri value.
+     * {@inheritDoc}
      */
-    public String uri() {
-        return this.uri;
-    }
-
-    /**
-     * Set the uri property: Output Asset URI.
-     *
-     * @param uri the uri value to set.
-     * @return the TritonModelJobOutput object itself.
-     */
-    public TritonModelJobOutput withUri(String uri) {
-        this.uri = uri;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public TritonModelJobOutput withDescription(String description) {
         super.withDescription(description);
@@ -79,11 +97,56 @@ public final class TritonModelJobOutput extends JobOutput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("jobOutputType", this.jobOutputType == null ? null : this.jobOutputType.toString());
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TritonModelJobOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TritonModelJobOutput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TritonModelJobOutput.
+     */
+    public static TritonModelJobOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TritonModelJobOutput deserializedTritonModelJobOutput = new TritonModelJobOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedTritonModelJobOutput.withDescription(reader.getString());
+                } else if ("jobOutputType".equals(fieldName)) {
+                    deserializedTritonModelJobOutput.jobOutputType = JobOutputType.fromString(reader.getString());
+                } else if ("uri".equals(fieldName)) {
+                    deserializedTritonModelJobOutput.uri = reader.getString();
+                } else if ("mode".equals(fieldName)) {
+                    deserializedTritonModelJobOutput.mode = OutputDeliveryMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTritonModelJobOutput;
+        });
     }
 }

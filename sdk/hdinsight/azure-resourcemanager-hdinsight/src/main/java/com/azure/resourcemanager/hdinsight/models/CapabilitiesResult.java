@@ -8,39 +8,41 @@ import com.azure.resourcemanager.hdinsight.fluent.models.CapabilitiesResultInner
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of CapabilitiesResult. */
+/**
+ * An immutable client-side representation of CapabilitiesResult.
+ */
 public interface CapabilitiesResult {
     /**
      * Gets the versions property: The version capability.
-     *
+     * 
      * @return the versions value.
      */
     Map<String, VersionsCapability> versions();
 
     /**
      * Gets the regions property: The virtual machine size compatibility features.
-     *
+     * 
      * @return the regions value.
      */
     Map<String, RegionsCapability> regions();
 
     /**
      * Gets the features property: The capability features.
-     *
+     * 
      * @return the features value.
      */
     List<String> features();
 
     /**
      * Gets the quota property: The quota capability.
-     *
+     * 
      * @return the quota value.
      */
     QuotaCapability quota();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.CapabilitiesResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     CapabilitiesResultInner innerModel();

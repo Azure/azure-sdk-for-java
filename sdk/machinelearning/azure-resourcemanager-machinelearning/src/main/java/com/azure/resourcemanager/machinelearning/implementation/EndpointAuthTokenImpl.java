@@ -12,8 +12,7 @@ public final class EndpointAuthTokenImpl implements EndpointAuthToken {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    EndpointAuthTokenImpl(
-        EndpointAuthTokenInner innerObject,
+    EndpointAuthTokenImpl(EndpointAuthTokenInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -23,16 +22,16 @@ public final class EndpointAuthTokenImpl implements EndpointAuthToken {
         return this.innerModel().accessToken();
     }
 
+    public String tokenType() {
+        return this.innerModel().tokenType();
+    }
+
     public Long expiryTimeUtc() {
         return this.innerModel().expiryTimeUtc();
     }
 
     public Long refreshAfterTimeUtc() {
         return this.innerModel().refreshAfterTimeUtc();
-    }
-
-    public String tokenType() {
-        return this.innerModel().tokenType();
     }
 
     public EndpointAuthTokenInner innerModel() {
