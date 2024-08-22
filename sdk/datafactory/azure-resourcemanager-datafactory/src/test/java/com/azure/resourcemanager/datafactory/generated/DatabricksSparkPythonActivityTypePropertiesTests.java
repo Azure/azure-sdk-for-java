@@ -14,22 +14,17 @@ public final class DatabricksSparkPythonActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabricksSparkPythonActivityTypeProperties model = BinaryData.fromString(
-            "{\"pythonFile\":\"datan\",\"parameters\":[\"datanjzaaoxwcptoihoy\",\"datauaxfjuzgslqpzdx\"],\"libraries\":[{\"zscepogg\":\"datalgczvfb\",\"exyiuhjqd\":\"datappufueiaie\",\"udai\":\"datalxabtlmszq\",\"jbpt\":\"datafqnxjkopivsz\"},{\"bqsj\":\"datahabzjemqvlouucax\",\"jimussvur\":\"datancgqhpqgivyx\",\"valvkdaql\":\"datalwdxnx\",\"whtws\":\"datasoqrhwla\"},{\"rvtrwswbm\":\"dataiwpzucetzis\",\"btthzfgpzy\":\"dataubh\",\"jecajtuo\":\"dataivusehyvqxjbqfcl\"},{\"xn\":\"datadlzxuakbavpk\",\"vsgx\":\"datarbckfzb\"}]}")
+            "{\"pythonFile\":\"datatwgbfiosdizpg\",\"parameters\":[\"dataglzfgepblhe\"],\"libraries\":[{\"amrytrny\":\"datavenmuenoq\",\"mbj\":\"dataoixiduzrdvhgyj\",\"g\":\"datafwlxkxlru\"}]}")
             .toObject(DatabricksSparkPythonActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabricksSparkPythonActivityTypeProperties model
-            = new DatabricksSparkPythonActivityTypeProperties().withPythonFile("datan")
-                .withParameters(Arrays.asList("datanjzaaoxwcptoihoy", "datauaxfjuzgslqpzdx"))
-                .withLibraries(Arrays.asList(
-                    mapOf("zscepogg", "datalgczvfb", "exyiuhjqd", "datappufueiaie", "udai", "datalxabtlmszq", "jbpt",
-                        "datafqnxjkopivsz"),
-                    mapOf("bqsj", "datahabzjemqvlouucax", "jimussvur", "datancgqhpqgivyx", "valvkdaql", "datalwdxnx",
-                        "whtws", "datasoqrhwla"),
-                    mapOf("rvtrwswbm", "dataiwpzucetzis", "btthzfgpzy", "dataubh", "jecajtuo", "dataivusehyvqxjbqfcl"),
-                    mapOf("xn", "datadlzxuakbavpk", "vsgx", "datarbckfzb")));
+        DatabricksSparkPythonActivityTypeProperties model = new DatabricksSparkPythonActivityTypeProperties()
+            .withPythonFile("datatwgbfiosdizpg")
+            .withParameters(Arrays.asList("dataglzfgepblhe"))
+            .withLibraries(
+                Arrays.asList(mapOf("amrytrny", "datavenmuenoq", "mbj", "dataoixiduzrdvhgyj", "g", "datafwlxkxlru")));
         model = BinaryData.fromObject(model).toObject(DatabricksSparkPythonActivityTypeProperties.class);
     }
 

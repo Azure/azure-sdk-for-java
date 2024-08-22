@@ -6,33 +6,35 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.resourcemanager.hdinsight.fluent.models.GatewaySettingsInner;
 
-/** An immutable client-side representation of GatewaySettings. */
+/**
+ * An immutable client-side representation of GatewaySettings.
+ */
 public interface GatewaySettings {
     /**
      * Gets the isCredentialEnabled property: Indicates whether or not the gateway settings based authorization is
      * enabled.
-     *
+     * 
      * @return the isCredentialEnabled value.
      */
     String isCredentialEnabled();
 
     /**
      * Gets the username property: The gateway settings user name.
-     *
+     * 
      * @return the username value.
      */
     String username();
 
     /**
      * Gets the password property: The gateway settings user password.
-     *
+     * 
      * @return the password value.
      */
     String password();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.GatewaySettingsInner object.
-     *
+     * 
      * @return the inner object.
      */
     GatewaySettingsInner innerModel();

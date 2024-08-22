@@ -294,6 +294,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 ModelHelper.tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
             options.hasLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
             encryptionScope, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 AppendBlobsCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -474,6 +475,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(),
             appendBlobRequestConditions.getTagsConditions(), null, getCustomerProvidedKey(), encryptionScope,
             context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 AppendBlobsAppendBlockHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -609,6 +611,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
             sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),
             encryptionScope, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 AppendBlobsAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -673,7 +676,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.getAppendBlobs().sealNoCustomHeadersWithResponseAsync(containerName, blobName,
             null, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(), context);
+            requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(), context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**

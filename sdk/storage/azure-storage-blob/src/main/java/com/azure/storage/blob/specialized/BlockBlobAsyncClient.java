@@ -438,13 +438,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                     ModelHelper.tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
                 options.isLegalHold(), null, options.getHeaders(), getCustomerProvidedKey(),
                 encryptionScope, finalContext)
-            .map(rb -> {
-                BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
-                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsVersionId());
-                return new SimpleResponse<>(rb, item);
-            }));
+                .onErrorMap(ModelHelper::mapToBlobStorageException)
+                .map(rb -> {
+                    BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
+                    BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                        hd.getXMsVersionId());
+                    return new SimpleResponse<>(rb, item);
+                }));
     }
 
     /**
@@ -591,6 +592,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(), options.getHeaders(),
             getCustomerProvidedKey(), encryptionScope,
             context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -759,7 +761,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlockBlobs().stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName,
             base64BlockId, data.getLength(), data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
-            encryptionScope, context);
+            encryptionScope, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -885,7 +888,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             options.getSourceContentMd5(), null, null, options.getLeaseId(),
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null, sourceAuth,
-            getCustomerProvidedKey(), encryptionScope, context);
+            getCustomerProvidedKey(), encryptionScope, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -989,6 +993,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.getBlockBlobs().getBlockListWithResponseAsync(
             containerName, blobName, options.getType(), getSnapshotId(), null, options.getLeaseId(),
             options.getIfTagsMatch(), null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -1155,6 +1160,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             ModelHelper.tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
             options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
             encryptionScope, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 BlockBlobsCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

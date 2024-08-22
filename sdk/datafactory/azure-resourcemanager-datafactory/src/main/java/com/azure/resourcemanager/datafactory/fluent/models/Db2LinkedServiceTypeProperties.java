@@ -5,74 +5,69 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.Db2AuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * DB2 linked service properties.
  */
 @Fluent
-public final class Db2LinkedServiceTypeProperties {
+public final class Db2LinkedServiceTypeProperties implements JsonSerializable<Db2LinkedServiceTypeProperties> {
     /*
      * The connection string. It is mutually exclusive with server, database, authenticationType, userName,
      * packageCollection and certificateCommonName property. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
      * Server name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "server")
     private Object server;
 
     /*
      * Database name for connection. It is mutually exclusive with connectionString property. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "database")
     private Object database;
 
     /*
      * AuthenticationType to be used for connection. It is mutually exclusive with connectionString property.
      */
-    @JsonProperty(value = "authenticationType")
     private Db2AuthenticationType authenticationType;
 
     /*
      * Username for authentication. It is mutually exclusive with connectionString property. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * Password for authentication.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * Under where packages are created when querying database. It is mutually exclusive with connectionString property.
      * Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "packageCollection")
     private Object packageCollection;
 
     /*
      * Certificate Common Name when TLS is enabled. It is mutually exclusive with connectionString property. Type:
      * string (or Expression with resultType string).
      */
-    @JsonProperty(value = "certificateCommonName")
     private Object certificateCommonName;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. It is mutually exclusive with connectionString property. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -290,5 +285,68 @@ public final class Db2LinkedServiceTypeProperties {
         if (password() != null) {
             password().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeUntypedField("server", this.server);
+        jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("packageCollection", this.packageCollection);
+        jsonWriter.writeUntypedField("certificateCommonName", this.certificateCommonName);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Db2LinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Db2LinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Db2LinkedServiceTypeProperties.
+     */
+    public static Db2LinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Db2LinkedServiceTypeProperties deserializedDb2LinkedServiceTypeProperties
+                = new Db2LinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedDb2LinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("server".equals(fieldName)) {
+                    deserializedDb2LinkedServiceTypeProperties.server = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedDb2LinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedDb2LinkedServiceTypeProperties.authenticationType
+                        = Db2AuthenticationType.fromString(reader.getString());
+                } else if ("username".equals(fieldName)) {
+                    deserializedDb2LinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedDb2LinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("packageCollection".equals(fieldName)) {
+                    deserializedDb2LinkedServiceTypeProperties.packageCollection = reader.readUntyped();
+                } else if ("certificateCommonName".equals(fieldName)) {
+                    deserializedDb2LinkedServiceTypeProperties.certificateCommonName = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedDb2LinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDb2LinkedServiceTypeProperties;
+        });
     }
 }

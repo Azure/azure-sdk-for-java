@@ -336,8 +336,7 @@ public class ShareDirectoryAsyncClient {
      * shareDirectoryAsyncClient.createWithResponse&#40;options&#41;
      *         .subscribe&#40;response -&gt;
      *             System.out.println&#40;&quot;Completed creating the directory with status code:&quot; + response.getStatusCode&#40;&#41;&#41;,
-     *             error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;
-     * &#41;;
+     *             error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions -->
      *
@@ -379,6 +378,7 @@ public class ShareDirectoryAsyncClient {
         return azureFileStorageClient.getDirectories()
             .createWithResponseAsync(shareName, directoryPath, fileAttributes, null, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapShareDirectoryInfo);
     }
 
@@ -533,7 +533,8 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
-            .deleteNoCustomHeadersWithResponseAsync(shareName, directoryPath, null, context);
+            .deleteNoCustomHeadersWithResponseAsync(shareName, directoryPath, null, context)
+            .onErrorMap(ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -672,6 +673,7 @@ public class ShareDirectoryAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
             .getPropertiesWithResponseAsync(shareName, directoryPath, snapshot, null, context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapShareDirectoryPropertiesResponse);
     }
 
@@ -795,6 +797,7 @@ public class ShareDirectoryAsyncClient {
         return azureFileStorageClient.getDirectories()
             .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, null, filePermission,
                 filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapSetPropertiesResponse);
     }
 
@@ -885,6 +888,7 @@ public class ShareDirectoryAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
             .setMetadataWithResponseAsync(shareName, directoryPath, null, metadata, context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::setShareDirectoryMetadataResponse);
     }
 
@@ -1015,6 +1019,7 @@ public class ShareDirectoryAsyncClient {
                     modifiedOptions.getPrefix(), snapshot, marker,
                     pageSize == null ? modifiedOptions.getMaxResultsPerPage() : pageSize, null, finalIncludeTypes,
                     modifiedOptions.includeExtendedInfo(), context), timeout)
+                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), ModelHelper.convertResponseAndGetNumOfResults(response),
                     response.getValue().getNextMarker(), null));
@@ -1060,6 +1065,7 @@ public class ShareDirectoryAsyncClient {
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
                 .listHandlesWithResponseAsync(shareName, directoryPath, marker, maxResultPerPage, null, snapshot,
                     recursive, context), timeout)
+                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -1132,6 +1138,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId, Context context) {
         return this.azureFileStorageClient.getDirectories().forceCloseHandlesWithResponseAsync(shareName, directoryPath,
             handleId, null, null, snapshot, false, context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(response -> new SimpleResponse<>(response,
                 new CloseHandlesInfo(response.getDeserializedHeaders().getXMsNumberOfHandlesClosed(),
                     response.getDeserializedHeaders().getXMsNumberOfHandlesFailed())));
@@ -1176,6 +1183,7 @@ public class ShareDirectoryAsyncClient {
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
                 .forceCloseHandlesWithResponseAsync(shareName, directoryPath, "*", null, marker, snapshot,
                     recursive, context), timeout)
+                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -1298,6 +1306,7 @@ public class ShareDirectoryAsyncClient {
             null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
             options.getFilePermission(), options.getFilePermissionFormat(), filePermissionKey, options.getMetadata(),
             sourceConditions, destinationConditions, smbInfo, context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(response -> new SimpleResponse<>(response, destinationDirectoryClient));
     }
 

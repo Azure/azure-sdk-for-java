@@ -5,73 +5,72 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The security profile which contains Ssh public key for the HDInsight cluster. */
+/**
+ * The security profile which contains Ssh public key for the HDInsight cluster.
+ */
 @Fluent
-public final class SecurityProfile {
+public final class SecurityProfile implements JsonSerializable<SecurityProfile> {
     /*
      * The directory type.
      */
-    @JsonProperty(value = "directoryType")
     private DirectoryType directoryType;
 
     /*
      * The organization's active directory domain.
      */
-    @JsonProperty(value = "domain")
     private String domain;
 
     /*
      * The organizational unit within the Active Directory to place the cluster and service accounts.
      */
-    @JsonProperty(value = "organizationalUnitDN")
     private String organizationalUnitDN;
 
     /*
      * The LDAPS protocol URLs to communicate with the Active Directory.
      */
-    @JsonProperty(value = "ldapsUrls")
     private List<String> ldapsUrls;
 
     /*
      * The domain user account that will have admin privileges on the cluster.
      */
-    @JsonProperty(value = "domainUsername")
     private String domainUsername;
 
     /*
      * The domain admin password.
      */
-    @JsonProperty(value = "domainUserPassword")
     private String domainUserPassword;
 
     /*
      * Optional. The Distinguished Names for cluster user groups
      */
-    @JsonProperty(value = "clusterUsersGroupDNs")
     private List<String> clusterUsersGroupDNs;
 
     /*
      * The resource ID of the user's Azure Active Directory Domain Service.
      */
-    @JsonProperty(value = "aaddsResourceId")
     private String aaddsResourceId;
 
     /*
      * User assigned identity that has permissions to read and create cluster-related artifacts in the user's AADDS.
      */
-    @JsonProperty(value = "msiResourceId")
     private String msiResourceId;
 
-    /** Creates an instance of SecurityProfile class. */
+    /**
+     * Creates an instance of SecurityProfile class.
+     */
     public SecurityProfile() {
     }
 
     /**
      * Get the directoryType property: The directory type.
-     *
+     * 
      * @return the directoryType value.
      */
     public DirectoryType directoryType() {
@@ -80,7 +79,7 @@ public final class SecurityProfile {
 
     /**
      * Set the directoryType property: The directory type.
-     *
+     * 
      * @param directoryType the directoryType value to set.
      * @return the SecurityProfile object itself.
      */
@@ -91,7 +90,7 @@ public final class SecurityProfile {
 
     /**
      * Get the domain property: The organization's active directory domain.
-     *
+     * 
      * @return the domain value.
      */
     public String domain() {
@@ -100,7 +99,7 @@ public final class SecurityProfile {
 
     /**
      * Set the domain property: The organization's active directory domain.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the SecurityProfile object itself.
      */
@@ -112,7 +111,7 @@ public final class SecurityProfile {
     /**
      * Get the organizationalUnitDN property: The organizational unit within the Active Directory to place the cluster
      * and service accounts.
-     *
+     * 
      * @return the organizationalUnitDN value.
      */
     public String organizationalUnitDN() {
@@ -122,7 +121,7 @@ public final class SecurityProfile {
     /**
      * Set the organizationalUnitDN property: The organizational unit within the Active Directory to place the cluster
      * and service accounts.
-     *
+     * 
      * @param organizationalUnitDN the organizationalUnitDN value to set.
      * @return the SecurityProfile object itself.
      */
@@ -133,7 +132,7 @@ public final class SecurityProfile {
 
     /**
      * Get the ldapsUrls property: The LDAPS protocol URLs to communicate with the Active Directory.
-     *
+     * 
      * @return the ldapsUrls value.
      */
     public List<String> ldapsUrls() {
@@ -142,7 +141,7 @@ public final class SecurityProfile {
 
     /**
      * Set the ldapsUrls property: The LDAPS protocol URLs to communicate with the Active Directory.
-     *
+     * 
      * @param ldapsUrls the ldapsUrls value to set.
      * @return the SecurityProfile object itself.
      */
@@ -153,7 +152,7 @@ public final class SecurityProfile {
 
     /**
      * Get the domainUsername property: The domain user account that will have admin privileges on the cluster.
-     *
+     * 
      * @return the domainUsername value.
      */
     public String domainUsername() {
@@ -162,7 +161,7 @@ public final class SecurityProfile {
 
     /**
      * Set the domainUsername property: The domain user account that will have admin privileges on the cluster.
-     *
+     * 
      * @param domainUsername the domainUsername value to set.
      * @return the SecurityProfile object itself.
      */
@@ -173,7 +172,7 @@ public final class SecurityProfile {
 
     /**
      * Get the domainUserPassword property: The domain admin password.
-     *
+     * 
      * @return the domainUserPassword value.
      */
     public String domainUserPassword() {
@@ -182,7 +181,7 @@ public final class SecurityProfile {
 
     /**
      * Set the domainUserPassword property: The domain admin password.
-     *
+     * 
      * @param domainUserPassword the domainUserPassword value to set.
      * @return the SecurityProfile object itself.
      */
@@ -193,7 +192,7 @@ public final class SecurityProfile {
 
     /**
      * Get the clusterUsersGroupDNs property: Optional. The Distinguished Names for cluster user groups.
-     *
+     * 
      * @return the clusterUsersGroupDNs value.
      */
     public List<String> clusterUsersGroupDNs() {
@@ -202,7 +201,7 @@ public final class SecurityProfile {
 
     /**
      * Set the clusterUsersGroupDNs property: Optional. The Distinguished Names for cluster user groups.
-     *
+     * 
      * @param clusterUsersGroupDNs the clusterUsersGroupDNs value to set.
      * @return the SecurityProfile object itself.
      */
@@ -213,7 +212,7 @@ public final class SecurityProfile {
 
     /**
      * Get the aaddsResourceId property: The resource ID of the user's Azure Active Directory Domain Service.
-     *
+     * 
      * @return the aaddsResourceId value.
      */
     public String aaddsResourceId() {
@@ -222,7 +221,7 @@ public final class SecurityProfile {
 
     /**
      * Set the aaddsResourceId property: The resource ID of the user's Azure Active Directory Domain Service.
-     *
+     * 
      * @param aaddsResourceId the aaddsResourceId value to set.
      * @return the SecurityProfile object itself.
      */
@@ -234,7 +233,7 @@ public final class SecurityProfile {
     /**
      * Get the msiResourceId property: User assigned identity that has permissions to read and create cluster-related
      * artifacts in the user's AADDS.
-     *
+     * 
      * @return the msiResourceId value.
      */
     public String msiResourceId() {
@@ -244,7 +243,7 @@ public final class SecurityProfile {
     /**
      * Set the msiResourceId property: User assigned identity that has permissions to read and create cluster-related
      * artifacts in the user's AADDS.
-     *
+     * 
      * @param msiResourceId the msiResourceId value to set.
      * @return the SecurityProfile object itself.
      */
@@ -255,9 +254,72 @@ public final class SecurityProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("directoryType", this.directoryType == null ? null : this.directoryType.toString());
+        jsonWriter.writeStringField("domain", this.domain);
+        jsonWriter.writeStringField("organizationalUnitDN", this.organizationalUnitDN);
+        jsonWriter.writeArrayField("ldapsUrls", this.ldapsUrls, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("domainUsername", this.domainUsername);
+        jsonWriter.writeStringField("domainUserPassword", this.domainUserPassword);
+        jsonWriter.writeArrayField("clusterUsersGroupDNs", this.clusterUsersGroupDNs,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("aaddsResourceId", this.aaddsResourceId);
+        jsonWriter.writeStringField("msiResourceId", this.msiResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityProfile.
+     */
+    public static SecurityProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityProfile deserializedSecurityProfile = new SecurityProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("directoryType".equals(fieldName)) {
+                    deserializedSecurityProfile.directoryType = DirectoryType.fromString(reader.getString());
+                } else if ("domain".equals(fieldName)) {
+                    deserializedSecurityProfile.domain = reader.getString();
+                } else if ("organizationalUnitDN".equals(fieldName)) {
+                    deserializedSecurityProfile.organizationalUnitDN = reader.getString();
+                } else if ("ldapsUrls".equals(fieldName)) {
+                    List<String> ldapsUrls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecurityProfile.ldapsUrls = ldapsUrls;
+                } else if ("domainUsername".equals(fieldName)) {
+                    deserializedSecurityProfile.domainUsername = reader.getString();
+                } else if ("domainUserPassword".equals(fieldName)) {
+                    deserializedSecurityProfile.domainUserPassword = reader.getString();
+                } else if ("clusterUsersGroupDNs".equals(fieldName)) {
+                    List<String> clusterUsersGroupDNs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecurityProfile.clusterUsersGroupDNs = clusterUsersGroupDNs;
+                } else if ("aaddsResourceId".equals(fieldName)) {
+                    deserializedSecurityProfile.aaddsResourceId = reader.getString();
+                } else if ("msiResourceId".equals(fieldName)) {
+                    deserializedSecurityProfile.msiResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityProfile;
+        });
     }
 }

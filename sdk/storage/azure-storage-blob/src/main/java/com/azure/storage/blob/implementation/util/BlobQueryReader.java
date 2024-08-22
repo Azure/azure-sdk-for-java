@@ -39,7 +39,7 @@ import java.util.function.Consumer;
 
 /**
  * This class provides helper methods for blob query functions.
- *
+ * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public class BlobQueryReader {
@@ -64,7 +64,7 @@ public class BlobQueryReader {
 
     /**
      * Avro parses a query reactive stream.
-     *
+     * <p>
      * The Avro stream is formatted as the Avro Header (that specifies the schema) and the Avro Body (that contains
      * a series of blocks of data). The Query Avro schema indicates that the objects being emitted from the parser can
      * either be a result data record, an end record, a progress record or an error record.

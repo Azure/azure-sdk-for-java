@@ -5,26 +5,32 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Log verbosity for batch inferencing. Increasing verbosity order for logging is : Warning, Info and Debug. The default
- * value is Info.
+ * Log verbosity for batch inferencing.
+ * Increasing verbosity order for logging is : Warning, Info and Debug.
+ * The default value is Info.
  */
 public final class BatchLoggingLevel extends ExpandableStringEnum<BatchLoggingLevel> {
-    /** Static value Info for BatchLoggingLevel. */
+    /**
+     * Static value Info for BatchLoggingLevel.
+     */
     public static final BatchLoggingLevel INFO = fromString("Info");
 
-    /** Static value Warning for BatchLoggingLevel. */
+    /**
+     * Static value Warning for BatchLoggingLevel.
+     */
     public static final BatchLoggingLevel WARNING = fromString("Warning");
 
-    /** Static value Debug for BatchLoggingLevel. */
+    /**
+     * Static value Debug for BatchLoggingLevel.
+     */
     public static final BatchLoggingLevel DEBUG = fromString("Debug");
 
     /**
      * Creates a new instance of BatchLoggingLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +39,17 @@ public final class BatchLoggingLevel extends ExpandableStringEnum<BatchLoggingLe
 
     /**
      * Creates or finds a BatchLoggingLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BatchLoggingLevel.
      */
-    @JsonCreator
     public static BatchLoggingLevel fromString(String name) {
         return fromString(name, BatchLoggingLevel.class);
     }
 
     /**
      * Gets known BatchLoggingLevel values.
-     *
+     * 
      * @return known BatchLoggingLevel values.
      */
     public static Collection<BatchLoggingLevel> values() {

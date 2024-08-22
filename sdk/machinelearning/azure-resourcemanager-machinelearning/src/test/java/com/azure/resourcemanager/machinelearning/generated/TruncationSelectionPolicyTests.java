@@ -11,26 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class TruncationSelectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TruncationSelectionPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"policyType\":\"TruncationSelection\",\"truncationPercentage\":1106944697,\"delayEvaluation\":674073421,\"evaluationInterval\":1924509674}")
-                .toObject(TruncationSelectionPolicy.class);
-        Assertions.assertEquals(674073421, model.delayEvaluation());
-        Assertions.assertEquals(1924509674, model.evaluationInterval());
-        Assertions.assertEquals(1106944697, model.truncationPercentage());
+        TruncationSelectionPolicy model = BinaryData.fromString(
+            "{\"policyType\":\"TruncationSelection\",\"truncationPercentage\":2059662360,\"evaluationInterval\":281085668,\"delayEvaluation\":782879823}")
+            .toObject(TruncationSelectionPolicy.class);
+        Assertions.assertEquals(281085668, model.evaluationInterval());
+        Assertions.assertEquals(782879823, model.delayEvaluation());
+        Assertions.assertEquals(2059662360, model.truncationPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TruncationSelectionPolicy model =
-            new TruncationSelectionPolicy()
-                .withDelayEvaluation(674073421)
-                .withEvaluationInterval(1924509674)
-                .withTruncationPercentage(1106944697);
+        TruncationSelectionPolicy model = new TruncationSelectionPolicy().withEvaluationInterval(281085668)
+            .withDelayEvaluation(782879823)
+            .withTruncationPercentage(2059662360);
         model = BinaryData.fromObject(model).toObject(TruncationSelectionPolicy.class);
-        Assertions.assertEquals(674073421, model.delayEvaluation());
-        Assertions.assertEquals(1924509674, model.evaluationInterval());
-        Assertions.assertEquals(1106944697, model.truncationPercentage());
+        Assertions.assertEquals(281085668, model.evaluationInterval());
+        Assertions.assertEquals(782879823, model.delayEvaluation());
+        Assertions.assertEquals(2059662360, model.truncationPercentage());
     }
 }

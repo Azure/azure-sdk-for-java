@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Details about a service operation.
  */
 @Fluent
-public final class OperationServiceSpecification {
+public final class OperationServiceSpecification implements JsonSerializable<OperationServiceSpecification> {
     /*
      * Details about operations related to logs.
      */
-    @JsonProperty(value = "logSpecifications")
     private List<OperationLogSpecification> logSpecifications;
 
     /*
      * Details about operations related to metrics.
      */
-    @JsonProperty(value = "metricSpecifications")
     private List<OperationMetricSpecification> metricSpecifications;
 
     /**
@@ -84,5 +86,51 @@ public final class OperationServiceSpecification {
         if (metricSpecifications() != null) {
             metricSpecifications().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("logSpecifications", this.logSpecifications,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("metricSpecifications", this.metricSpecifications,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationServiceSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationServiceSpecification if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationServiceSpecification.
+     */
+    public static OperationServiceSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationServiceSpecification deserializedOperationServiceSpecification
+                = new OperationServiceSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logSpecifications".equals(fieldName)) {
+                    List<OperationLogSpecification> logSpecifications
+                        = reader.readArray(reader1 -> OperationLogSpecification.fromJson(reader1));
+                    deserializedOperationServiceSpecification.logSpecifications = logSpecifications;
+                } else if ("metricSpecifications".equals(fieldName)) {
+                    List<OperationMetricSpecification> metricSpecifications
+                        = reader.readArray(reader1 -> OperationMetricSpecification.fromJson(reader1));
+                    deserializedOperationServiceSpecification.metricSpecifications = metricSpecifications;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationServiceSpecification;
+        });
     }
 }

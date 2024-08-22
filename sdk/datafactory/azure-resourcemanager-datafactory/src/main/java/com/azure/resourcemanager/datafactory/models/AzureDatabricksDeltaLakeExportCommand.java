@@ -5,41 +5,33 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Azure Databricks Delta Lake export command settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AzureDatabricksDeltaLakeExportCommand.class,
-    visible = true)
-@JsonTypeName("AzureDatabricksDeltaLakeExportCommand")
 @Fluent
 public final class AzureDatabricksDeltaLakeExportCommand extends ExportSettings {
     /*
      * The export setting type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AzureDatabricksDeltaLakeExportCommand";
 
     /*
      * Specify the date format for the csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "dateFormat")
     private Object dateFormat;
 
     /*
      * Specify the timestamp format for the csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "timestampFormat")
     private Object timestampFormat;
 
     /**
@@ -110,5 +102,59 @@ public final class AzureDatabricksDeltaLakeExportCommand extends ExportSettings 
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("dateFormat", this.dateFormat);
+        jsonWriter.writeUntypedField("timestampFormat", this.timestampFormat);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDatabricksDeltaLakeExportCommand from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDatabricksDeltaLakeExportCommand if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureDatabricksDeltaLakeExportCommand.
+     */
+    public static AzureDatabricksDeltaLakeExportCommand fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDatabricksDeltaLakeExportCommand deserializedAzureDatabricksDeltaLakeExportCommand
+                = new AzureDatabricksDeltaLakeExportCommand();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeExportCommand.type = reader.getString();
+                } else if ("dateFormat".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeExportCommand.dateFormat = reader.readUntyped();
+                } else if ("timestampFormat".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeExportCommand.timestampFormat = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureDatabricksDeltaLakeExportCommand.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureDatabricksDeltaLakeExportCommand;
+        });
     }
 }

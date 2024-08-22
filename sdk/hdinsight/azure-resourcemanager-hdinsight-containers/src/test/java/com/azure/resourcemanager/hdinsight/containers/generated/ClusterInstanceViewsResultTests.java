@@ -17,60 +17,63 @@ public final class ClusterInstanceViewsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterInstanceViewsResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"idb\",\"properties\":{\"status\":{\"ready\":\"fatpxllrxcyjmoa\",\"reason\":\"uvarmywdmjsjq\",\"message\":\"hhyxxrw\"},\"serviceStatuses\":[{\"kind\":\"co\",\"ready\":\"uhpkxkgymar\",\"message\":\"n\"}]}},{\"name\":\"jxqugjhky\",\"properties\":{\"status\":{\"ready\":\"ubeddg\",\"reason\":\"ofwq\",\"message\":\"qal\"},\"serviceStatuses\":[{\"kind\":\"mnjijpxacqqudf\",\"ready\":\"byxbaaabjy\",\"message\":\"yffimrzrtuzqogs\"},{\"kind\":\"xnevfdnwn\",\"ready\":\"mewzsyyc\",\"message\":\"zsoibjudpfrxtr\"}]}},{\"name\":\"hzv\",\"properties\":{\"status\":{\"ready\":\"ytdw\",\"reason\":\"brqubp\",\"message\":\"h\"},\"serviceStatuses\":[{\"kind\":\"iilivpdtiirqtd\",\"ready\":\"oaxoruzfgsqu\",\"message\":\"xrxxlep\"},{\"kind\":\"ramxjezwlwnw\",\"ready\":\"uqlcvydy\",\"message\":\"tdooaoj\"},{\"kind\":\"niodkooeb\",\"ready\":\"nuj\",\"message\":\"mmsbvdkcrodtjin\"},{\"kind\":\"wj\",\"ready\":\"fltkacjv\",\"message\":\"kdlfoa\"}]}},{\"name\":\"ggkfpagaowpul\",\"properties\":{\"status\":{\"ready\":\"qblylsyxkqj\",\"reason\":\"jervtia\",\"message\":\"sdszue\"},\"serviceStatuses\":[{\"kind\":\"sbzkf\",\"ready\":\"beyvpnqicvinvkjj\",\"message\":\"xrbuukzclew\"},{\"kind\":\"hmlwpaztzpo\",\"ready\":\"ncckw\",\"message\":\"zqwhxxbuyqaxzfeq\"},{\"kind\":\"tpp\",\"ready\":\"iolxor\",\"message\":\"lt\"},{\"kind\":\"lmncw\",\"ready\":\"obqwcsdbnwdcfh\",\"message\":\"qdpfuvglsbjjca\"}]}}],\"nextLink\":\"xbvtvudu\"}")
+            "{\"value\":[{\"name\":\"rmuhapfcq\",\"properties\":{\"status\":{\"ready\":\"psqxq\",\"reason\":\"svuo\",\"message\":\"gc\"},\"serviceStatuses\":[{\"kind\":\"lvez\",\"ready\":\"ypql\",\"message\":\"eokerqwkyhkobopg\"},{\"kind\":\"edkowepbqpcrfk\",\"ready\":\"wccsnjvcdwxlpqek\",\"message\":\"nkhtjsyingw\"},{\"kind\":\"qatmtdhtmdvy\",\"ready\":\"gikdgsz\",\"message\":\"kbir\"}]}},{\"name\":\"yuzhlhkjoqrvq\",\"properties\":{\"status\":{\"ready\":\"aatjinrvgoupmfi\",\"reason\":\"fggjioolvr\",\"message\":\"kvtkkg\"},\"serviceStatuses\":[{\"kind\":\"qwjygvja\",\"ready\":\"vblm\",\"message\":\"k\"},{\"kind\":\"uhbxvvy\",\"ready\":\"gsopbyrqufegxu\",\"message\":\"zfbn\"},{\"kind\":\"lmctlpd\",\"ready\":\"gitvg\",\"message\":\"hrixkwmy\"},{\"kind\":\"jejveg\",\"ready\":\"hbpnaixexccbd\",\"message\":\"ax\"}]}},{\"name\":\"cexdrrvqa\",\"properties\":{\"status\":{\"ready\":\"qkghtpwijnhy\",\"reason\":\"vfycxzb\",\"message\":\"oowvrv\"},\"serviceStatuses\":[{\"kind\":\"gjqppy\",\"ready\":\"s\",\"message\":\"on\"}]}},{\"name\":\"myhgfipnsxkmc\",\"properties\":{\"status\":{\"ready\":\"a\",\"reason\":\"rrjreafxtsgu\",\"message\":\"jglikkxwslolb\"},\"serviceStatuses\":[{\"kind\":\"vuzlm\",\"ready\":\"felfktg\",\"message\":\"crpw\"},{\"kind\":\"xeznoi\",\"ready\":\"brnjwmw\",\"message\":\"nbsazejjoqkag\"}]}}],\"nextLink\":\"sxtta\"}")
             .toObject(ClusterInstanceViewsResult.class);
-        Assertions.assertEquals("idb", model.value().get(0).name());
-        Assertions.assertEquals("fatpxllrxcyjmoa", model.value().get(0).properties().status().ready());
-        Assertions.assertEquals("uvarmywdmjsjq", model.value().get(0).properties().status().reason());
-        Assertions.assertEquals("hhyxxrw", model.value().get(0).properties().status().message());
-        Assertions.assertEquals("co", model.value().get(0).properties().serviceStatuses().get(0).kind());
-        Assertions.assertEquals("uhpkxkgymar", model.value().get(0).properties().serviceStatuses().get(0).ready());
-        Assertions.assertEquals("n", model.value().get(0).properties().serviceStatuses().get(0).message());
+        Assertions.assertEquals("rmuhapfcq", model.value().get(0).name());
+        Assertions.assertEquals("psqxq", model.value().get(0).properties().status().ready());
+        Assertions.assertEquals("svuo", model.value().get(0).properties().status().reason());
+        Assertions.assertEquals("gc", model.value().get(0).properties().status().message());
+        Assertions.assertEquals("lvez", model.value().get(0).properties().serviceStatuses().get(0).kind());
+        Assertions.assertEquals("ypql", model.value().get(0).properties().serviceStatuses().get(0).ready());
+        Assertions.assertEquals("eokerqwkyhkobopg",
+            model.value().get(0).properties().serviceStatuses().get(0).message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterInstanceViewsResult model = new ClusterInstanceViewsResult().withValue(Arrays.asList(
-            new ClusterInstanceViewResultInner().withName("idb")
+            new ClusterInstanceViewResultInner().withName("rmuhapfcq")
+                .withProperties(new ClusterInstanceViewResultProperties().withStatus(
+                    new ClusterInstanceViewPropertiesStatus().withReady("psqxq").withReason("svuo").withMessage("gc"))
+                    .withServiceStatuses(Arrays.asList(
+                        new ServiceStatus().withKind("lvez").withReady("ypql").withMessage("eokerqwkyhkobopg"),
+                        new ServiceStatus().withKind("edkowepbqpcrfk")
+                            .withReady("wccsnjvcdwxlpqek")
+                            .withMessage("nkhtjsyingw"),
+                        new ServiceStatus().withKind("qatmtdhtmdvy").withReady("gikdgsz").withMessage("kbir")))),
+            new ClusterInstanceViewResultInner().withName("yuzhlhkjoqrvq")
                 .withProperties(new ClusterInstanceViewResultProperties()
-                    .withStatus(new ClusterInstanceViewPropertiesStatus().withReady("fatpxllrxcyjmoa")
-                        .withReason("uvarmywdmjsjq").withMessage("hhyxxrw"))
+                    .withStatus(new ClusterInstanceViewPropertiesStatus().withReady("aatjinrvgoupmfi")
+                        .withReason("fggjioolvr")
+                        .withMessage("kvtkkg"))
                     .withServiceStatuses(
-                        Arrays.asList(new ServiceStatus().withKind("co").withReady("uhpkxkgymar").withMessage("n")))),
-            new ClusterInstanceViewResultInner().withName("jxqugjhky")
+                        Arrays.asList(new ServiceStatus().withKind("qwjygvja").withReady("vblm").withMessage("k"),
+                            new ServiceStatus().withKind("uhbxvvy").withReady("gsopbyrqufegxu").withMessage("zfbn"),
+                            new ServiceStatus().withKind("lmctlpd").withReady("gitvg").withMessage("hrixkwmy"),
+                            new ServiceStatus().withKind("jejveg").withReady("hbpnaixexccbd").withMessage("ax")))),
+            new ClusterInstanceViewResultInner().withName("cexdrrvqa")
                 .withProperties(new ClusterInstanceViewResultProperties()
-                    .withStatus(new ClusterInstanceViewPropertiesStatus().withReady("ubeddg").withReason("ofwq")
-                        .withMessage("qal"))
-                    .withServiceStatuses(Arrays.asList(
-                        new ServiceStatus().withKind("mnjijpxacqqudf").withReady("byxbaaabjy")
-                            .withMessage("yffimrzrtuzqogs"),
-                        new ServiceStatus().withKind("xnevfdnwn").withReady("mewzsyyc")
-                            .withMessage("zsoibjudpfrxtr")))),
-            new ClusterInstanceViewResultInner().withName("hzv")
+                    .withStatus(new ClusterInstanceViewPropertiesStatus().withReady("qkghtpwijnhy")
+                        .withReason("vfycxzb")
+                        .withMessage("oowvrv"))
+                    .withServiceStatuses(
+                        Arrays.asList(new ServiceStatus().withKind("gjqppy").withReady("s").withMessage("on")))),
+            new ClusterInstanceViewResultInner().withName("myhgfipnsxkmc")
                 .withProperties(new ClusterInstanceViewResultProperties()
-                    .withStatus(new ClusterInstanceViewPropertiesStatus().withReady("ytdw").withReason("brqubp")
-                        .withMessage("h"))
+                    .withStatus(new ClusterInstanceViewPropertiesStatus().withReady("a")
+                        .withReason("rrjreafxtsgu")
+                        .withMessage("jglikkxwslolb"))
                     .withServiceStatuses(Arrays.asList(
-                        new ServiceStatus().withKind("iilivpdtiirqtd").withReady("oaxoruzfgsqu").withMessage("xrxxlep"),
-                        new ServiceStatus().withKind("ramxjezwlwnw").withReady("uqlcvydy").withMessage("tdooaoj"),
-                        new ServiceStatus().withKind("niodkooeb").withReady("nuj").withMessage("mmsbvdkcrodtjin"),
-                        new ServiceStatus().withKind("wj").withReady("fltkacjv").withMessage("kdlfoa")))),
-            new ClusterInstanceViewResultInner().withName("ggkfpagaowpul")
-                .withProperties(new ClusterInstanceViewResultProperties()
-                    .withStatus(new ClusterInstanceViewPropertiesStatus().withReady("qblylsyxkqj").withReason("jervtia")
-                        .withMessage("sdszue"))
-                    .withServiceStatuses(Arrays.asList(
-                        new ServiceStatus().withKind("sbzkf").withReady("beyvpnqicvinvkjj").withMessage("xrbuukzclew"),
-                        new ServiceStatus().withKind("hmlwpaztzpo").withReady("ncckw").withMessage("zqwhxxbuyqaxzfeq"),
-                        new ServiceStatus().withKind("tpp").withReady("iolxor").withMessage("lt"), new ServiceStatus()
-                            .withKind("lmncw").withReady("obqwcsdbnwdcfh").withMessage("qdpfuvglsbjjca"))))));
+                        new ServiceStatus().withKind("vuzlm").withReady("felfktg").withMessage("crpw"),
+                        new ServiceStatus().withKind("xeznoi").withReady("brnjwmw").withMessage("nbsazejjoqkag"))))));
         model = BinaryData.fromObject(model).toObject(ClusterInstanceViewsResult.class);
-        Assertions.assertEquals("idb", model.value().get(0).name());
-        Assertions.assertEquals("fatpxllrxcyjmoa", model.value().get(0).properties().status().ready());
-        Assertions.assertEquals("uvarmywdmjsjq", model.value().get(0).properties().status().reason());
-        Assertions.assertEquals("hhyxxrw", model.value().get(0).properties().status().message());
-        Assertions.assertEquals("co", model.value().get(0).properties().serviceStatuses().get(0).kind());
-        Assertions.assertEquals("uhpkxkgymar", model.value().get(0).properties().serviceStatuses().get(0).ready());
-        Assertions.assertEquals("n", model.value().get(0).properties().serviceStatuses().get(0).message());
+        Assertions.assertEquals("rmuhapfcq", model.value().get(0).name());
+        Assertions.assertEquals("psqxq", model.value().get(0).properties().status().ready());
+        Assertions.assertEquals("svuo", model.value().get(0).properties().status().reason());
+        Assertions.assertEquals("gc", model.value().get(0).properties().status().message());
+        Assertions.assertEquals("lvez", model.value().get(0).properties().serviceStatuses().get(0).kind());
+        Assertions.assertEquals("ypql", model.value().get(0).properties().serviceStatuses().get(0).ready());
+        Assertions.assertEquals("eokerqwkyhkobopg",
+            model.value().get(0).properties().serviceStatuses().get(0).message());
     }
 }
