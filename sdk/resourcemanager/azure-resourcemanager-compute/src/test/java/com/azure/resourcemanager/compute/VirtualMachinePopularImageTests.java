@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 public class VirtualMachinePopularImageTests extends ComputeManagementTest {
     private String rgName = "";
+    private Region region = Region.US_WEST2;
 
     @Test
     @DoNotRecord(skipInPlayback = true)
@@ -37,7 +38,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
             .collect(Collectors.toList())) {
             Mono<VirtualMachine> mono = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
-                .withRegion(Region.US_WEST2)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/24")
                 .withPrimaryPrivateIPAddressDynamic()
@@ -58,7 +59,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
 
             Mono<VirtualMachine> mono = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
-                .withRegion(Region.US_WEST2)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/24")
                 .withPrimaryPrivateIPAddressDynamic()

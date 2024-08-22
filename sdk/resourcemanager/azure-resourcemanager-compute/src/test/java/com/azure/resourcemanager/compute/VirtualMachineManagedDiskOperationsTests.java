@@ -527,7 +527,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withLatestLinuxImage("Canonical", "UbuntuServer", "16.04.0-LTS")
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(uname)
                 .withSsh(sshPublicKey())
                 .withUnmanagedDisks()/* UN-MANAGED OS and DATA DISKS */
