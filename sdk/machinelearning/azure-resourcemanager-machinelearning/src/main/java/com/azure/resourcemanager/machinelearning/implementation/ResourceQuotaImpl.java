@@ -14,8 +14,7 @@ public final class ResourceQuotaImpl implements ResourceQuota {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    ResourceQuotaImpl(
-        ResourceQuotaInner innerObject,
+    ResourceQuotaImpl(ResourceQuotaInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

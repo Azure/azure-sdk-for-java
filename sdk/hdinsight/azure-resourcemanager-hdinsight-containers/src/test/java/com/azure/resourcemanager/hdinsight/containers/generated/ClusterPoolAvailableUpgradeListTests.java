@@ -15,9 +15,9 @@ public final class ClusterPoolAvailableUpgradeListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPoolAvailableUpgradeList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"upgradeType\":\"ClusterPoolAvailableUpgradeProperties\"},\"id\":\"bciqfouflm\",\"name\":\"nkzsmodmglou\",\"type\":\"pbkwtmu\"},{\"properties\":{\"upgradeType\":\"ClusterPoolAvailableUpgradeProperties\"},\"id\":\"qktapspwgcuert\",\"name\":\"mkdo\",\"type\":\"vqwhbmdgbbjfd\"}],\"nextLink\":\"mbmbexppbh\"}")
+            "{\"value\":[{\"properties\":{\"upgradeType\":\"ClusterPoolAvailableUpgradeProperties\"},\"id\":\"ac\",\"name\":\"boo\",\"type\":\"flnrosfqpteehzz\"},{\"properties\":{\"upgradeType\":\"ClusterPoolAvailableUpgradeProperties\"},\"id\":\"yqrimzin\",\"name\":\"vswjdk\",\"type\":\"rsoodqxhcrmnoh\"},{\"properties\":{\"upgradeType\":\"ClusterPoolAvailableUpgradeProperties\"},\"id\":\"kwh\",\"name\":\"soifiyipjxsqw\",\"type\":\"gr\"}],\"nextLink\":\"znorcj\"}")
             .toObject(ClusterPoolAvailableUpgradeList.class);
-        Assertions.assertEquals("mbmbexppbh", model.nextLink());
+        Assertions.assertEquals("znorcj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -25,9 +25,10 @@ public final class ClusterPoolAvailableUpgradeListTests {
         ClusterPoolAvailableUpgradeList model = new ClusterPoolAvailableUpgradeList()
             .withValue(Arrays.asList(
                 new ClusterPoolAvailableUpgradeInner().withProperties(new ClusterPoolAvailableUpgradeProperties()),
+                new ClusterPoolAvailableUpgradeInner().withProperties(new ClusterPoolAvailableUpgradeProperties()),
                 new ClusterPoolAvailableUpgradeInner().withProperties(new ClusterPoolAvailableUpgradeProperties())))
-            .withNextLink("mbmbexppbh");
+            .withNextLink("znorcj");
         model = BinaryData.fromObject(model).toObject(ClusterPoolAvailableUpgradeList.class);
-        Assertions.assertEquals("mbmbexppbh", model.nextLink());
+        Assertions.assertEquals("znorcj", model.nextLink());
     }
 }

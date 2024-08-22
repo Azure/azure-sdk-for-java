@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuSetting model =
-            BinaryData.fromString("{\"name\":\"nnbsoqeqa\",\"tier\":\"Premium\"}").toObject(SkuSetting.class);
-        Assertions.assertEquals("nnbsoqeqa", model.name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
+        SkuSetting model
+            = BinaryData.fromString("{\"name\":\"wqjnsfzygleexa\",\"tier\":\"Basic\"}").toObject(SkuSetting.class);
+        Assertions.assertEquals("wqjnsfzygleexa", model.name());
+        Assertions.assertEquals(SkuTier.BASIC, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuSetting model = new SkuSetting().withName("nnbsoqeqa").withTier(SkuTier.PREMIUM);
+        SkuSetting model = new SkuSetting().withName("wqjnsfzygleexa").withTier(SkuTier.BASIC);
         model = BinaryData.fromObject(model).toObject(SkuSetting.class);
-        Assertions.assertEquals("nnbsoqeqa", model.name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
+        Assertions.assertEquals("wqjnsfzygleexa", model.name());
+        Assertions.assertEquals(SkuTier.BASIC, model.tier());
     }
 }

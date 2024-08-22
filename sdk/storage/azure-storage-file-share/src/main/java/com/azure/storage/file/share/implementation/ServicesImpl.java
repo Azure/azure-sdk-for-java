@@ -33,8 +33,8 @@ import com.azure.storage.file.share.implementation.models.ServicesListSharesSegm
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentNextHeaders;
 import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
+import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
 import com.azure.storage.file.share.models.ShareServiceProperties;
-import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.List;
 import java.util.Objects;
@@ -74,7 +74,7 @@ public final class ServicesImpl {
     public interface ServicesService {
         @Put("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setProperties(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -84,7 +84,7 @@ public final class ServicesImpl {
 
         @Put("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> setPropertiesNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -94,7 +94,7 @@ public final class ServicesImpl {
 
         @Put("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<ServicesSetPropertiesHeaders, Void> setPropertiesSync(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -104,7 +104,7 @@ public final class ServicesImpl {
 
         @Put("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> setPropertiesNoCustomHeadersSync(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -114,7 +114,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties>> getProperties(
             @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -123,7 +123,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<ShareServiceProperties>> getPropertiesNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -132,7 +132,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties> getPropertiesSync(
             @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -141,7 +141,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<ShareServiceProperties> getPropertiesNoCustomHeadersSync(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -150,7 +150,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse>> listSharesSegment(
             @HostParam("url") String url, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
@@ -161,7 +161,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<ListSharesResponse>> listSharesSegmentNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("comp") String comp, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
@@ -171,7 +171,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> listSharesSegmentSync(
             @HostParam("url") String url, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
@@ -182,7 +182,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<ListSharesResponse> listSharesSegmentNoCustomHeadersSync(@HostParam("url") String url,
             @QueryParam("comp") String comp, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
@@ -192,7 +192,7 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse>> listSharesSegmentNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
             @HeaderParam("x-ms-version") String version,
@@ -201,7 +201,7 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<ListSharesResponse>> listSharesSegmentNextNoCustomHeaders(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
             @HeaderParam("x-ms-version") String version,
@@ -210,7 +210,7 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> listSharesSegmentNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
             @HeaderParam("x-ms-version") String version,
@@ -219,7 +219,7 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<ListSharesResponse> listSharesSegmentNextNoCustomHeadersSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
             @HeaderParam("x-ms-version") String version,
@@ -236,7 +236,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -260,7 +260,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -283,7 +283,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -302,7 +302,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -322,7 +322,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -347,7 +347,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -371,7 +371,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -394,7 +394,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -412,7 +412,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -434,7 +434,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
      * and CORS (Cross-Origin Resource Sharing) rules along with {@link ResponseBase} on successful completion of
@@ -459,7 +459,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
      * and CORS (Cross-Origin Resource Sharing) rules along with {@link ResponseBase} on successful completion of
@@ -483,7 +483,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
      * and CORS (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
@@ -502,7 +502,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
      * and CORS (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
@@ -520,7 +520,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
      * and CORS (Cross-Origin Resource Sharing) rules along with {@link Response} on successful completion of
@@ -544,7 +544,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
      * and CORS (Cross-Origin Resource Sharing) rules along with {@link Response} on successful completion of
@@ -569,7 +569,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
      * and CORS (Cross-Origin Resource Sharing) rules along with {@link ResponseBase}.
@@ -592,7 +592,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
      * and CORS (Cross-Origin Resource Sharing) rules.
@@ -611,7 +611,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
      * and CORS (Cross-Origin Resource Sharing) rules along with {@link Response}.
@@ -640,7 +640,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -678,7 +678,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -714,7 +714,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares as paginated response with {@link PagedFlux}.
      */
@@ -741,7 +741,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares as paginated response with {@link PagedFlux}.
      */
@@ -768,7 +768,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -806,7 +806,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -842,7 +842,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares as paginated response with {@link PagedFlux}.
      */
@@ -870,7 +870,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares as paginated response with {@link PagedFlux}.
      */
@@ -896,7 +896,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse}.
      */
@@ -933,7 +933,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse}.
      */
@@ -969,7 +969,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares as paginated response with {@link PagedIterable}.
      */
@@ -997,7 +997,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares as paginated response with {@link PagedIterable}.
      */
@@ -1024,7 +1024,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse}.
      */
@@ -1061,7 +1061,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse}.
      */
@@ -1097,7 +1097,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares as paginated response with {@link PagedIterable}.
      */
@@ -1124,7 +1124,7 @@ public final class ServicesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares as paginated response with {@link PagedIterable}.
      */
@@ -1143,7 +1143,7 @@ public final class ServicesImpl {
      * 
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -1165,7 +1165,7 @@ public final class ServicesImpl {
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -1187,7 +1187,7 @@ public final class ServicesImpl {
      * 
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -1209,7 +1209,7 @@ public final class ServicesImpl {
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -1231,7 +1231,7 @@ public final class ServicesImpl {
      * 
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse}.
      */
@@ -1253,7 +1253,7 @@ public final class ServicesImpl {
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse}.
      */
@@ -1274,7 +1274,7 @@ public final class ServicesImpl {
      * 
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse}.
      */
@@ -1295,7 +1295,7 @@ public final class ServicesImpl {
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of shares along with {@link PagedResponse}.
      */

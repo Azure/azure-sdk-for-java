@@ -25,7 +25,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.storage.queue.implementation.models.MessageIdsDeleteHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.QueueMessage;
-import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
 import reactor.core.publisher.Mono;
 
 /**
@@ -62,7 +62,7 @@ public final class MessageIdsImpl {
     public interface MessageIdsService {
         @Put("/{queueName}/messages/{messageid}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
         Mono<ResponseBase<MessageIdsUpdateHeaders, Void>> update(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @PathParam("messageid") String messageid,
             @QueryParam("popreceipt") String popReceipt, @QueryParam("visibilitytimeout") int visibilitytimeout,
@@ -73,7 +73,7 @@ public final class MessageIdsImpl {
 
         @Put("/{queueName}/messages/{messageid}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
         Mono<Response<Void>> updateNoCustomHeaders(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @PathParam("messageid") String messageid,
             @QueryParam("popreceipt") String popReceipt, @QueryParam("visibilitytimeout") int visibilitytimeout,
@@ -84,7 +84,7 @@ public final class MessageIdsImpl {
 
         @Put("/{queueName}/messages/{messageid}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
         ResponseBase<MessageIdsUpdateHeaders, Void> updateSync(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @PathParam("messageid") String messageid,
             @QueryParam("popreceipt") String popReceipt, @QueryParam("visibilitytimeout") int visibilitytimeout,
@@ -95,7 +95,7 @@ public final class MessageIdsImpl {
 
         @Put("/{queueName}/messages/{messageid}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
         Response<Void> updateNoCustomHeadersSync(@HostParam("url") String url, @PathParam("queueName") String queueName,
             @PathParam("messageid") String messageid, @QueryParam("popreceipt") String popReceipt,
             @QueryParam("visibilitytimeout") int visibilitytimeout, @QueryParam("timeout") Integer timeout,
@@ -105,7 +105,7 @@ public final class MessageIdsImpl {
 
         @Delete("/{queueName}/messages/{messageid}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
         Mono<ResponseBase<MessageIdsDeleteHeaders, Void>> delete(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @PathParam("messageid") String messageid,
             @QueryParam("popreceipt") String popReceipt, @QueryParam("timeout") Integer timeout,
@@ -114,7 +114,7 @@ public final class MessageIdsImpl {
 
         @Delete("/{queueName}/messages/{messageid}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
         Mono<Response<Void>> deleteNoCustomHeaders(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @PathParam("messageid") String messageid,
             @QueryParam("popreceipt") String popReceipt, @QueryParam("timeout") Integer timeout,
@@ -123,7 +123,7 @@ public final class MessageIdsImpl {
 
         @Delete("/{queueName}/messages/{messageid}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
         ResponseBase<MessageIdsDeleteHeaders, Void> deleteSync(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @PathParam("messageid") String messageid,
             @QueryParam("popreceipt") String popReceipt, @QueryParam("timeout") Integer timeout,
@@ -132,7 +132,7 @@ public final class MessageIdsImpl {
 
         @Delete("/{queueName}/messages/{messageid}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageException.class)
+        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
         Response<Void> deleteNoCustomHeadersSync(@HostParam("url") String url, @PathParam("queueName") String queueName,
             @PathParam("messageid") String messageid, @QueryParam("popreceipt") String popReceipt,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -161,7 +161,7 @@ public final class MessageIdsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param queueMessage A Message object which can be stored in a Queue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -195,7 +195,7 @@ public final class MessageIdsImpl {
      * @param queueMessage A Message object which can be stored in a Queue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -229,7 +229,7 @@ public final class MessageIdsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param queueMessage A Message object which can be stored in a Queue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -262,7 +262,7 @@ public final class MessageIdsImpl {
      * @param queueMessage A Message object which can be stored in a Queue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -294,7 +294,7 @@ public final class MessageIdsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param queueMessage A Message object which can be stored in a Queue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -329,7 +329,7 @@ public final class MessageIdsImpl {
      * @param queueMessage A Message object which can be stored in a Queue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -364,7 +364,7 @@ public final class MessageIdsImpl {
      * @param queueMessage A Message object which can be stored in a Queue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -398,7 +398,7 @@ public final class MessageIdsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param queueMessage A Message object which can be stored in a Queue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -430,7 +430,7 @@ public final class MessageIdsImpl {
      * @param queueMessage A Message object which can be stored in a Queue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -455,7 +455,7 @@ public final class MessageIdsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -481,7 +481,7 @@ public final class MessageIdsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -506,7 +506,7 @@ public final class MessageIdsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -531,7 +531,7 @@ public final class MessageIdsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -555,7 +555,7 @@ public final class MessageIdsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -581,7 +581,7 @@ public final class MessageIdsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -607,7 +607,7 @@ public final class MessageIdsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -632,7 +632,7 @@ public final class MessageIdsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -654,7 +654,7 @@ public final class MessageIdsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */

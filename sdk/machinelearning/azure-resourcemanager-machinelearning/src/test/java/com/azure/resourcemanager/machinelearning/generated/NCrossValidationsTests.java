@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.NCrossValidations;
 public final class NCrossValidationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NCrossValidations model =
-            BinaryData.fromString("{\"mode\":\"NCrossValidations\"}").toObject(NCrossValidations.class);
+        NCrossValidations model
+            = BinaryData.fromString("{\"mode\":\"NCrossValidations\"}").toObject(NCrossValidations.class);
     }
 
     @org.junit.jupiter.api.Test

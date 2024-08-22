@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Workspaces. */
+/**
+ * Resource collection API of Workspaces.
+ */
 public interface Workspaces {
     /**
      * Gets the properties of the specified machine learning workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -25,7 +27,7 @@ public interface Workspaces {
 
     /**
      * Gets the properties of the specified machine learning workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,56 +39,57 @@ public interface Workspaces {
 
     /**
      * Deletes a machine learning workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByResourceGroup(String resourceGroupName, String workspaceName);
+    void delete(String resourceGroupName, String workspaceName);
 
     /**
      * Deletes a machine learning workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param forceToPurge Flag to indicate delete is a purge request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String workspaceName, Context context);
+    void delete(String resourceGroupName, String workspaceName, Boolean forceToPurge, Context context);
 
     /**
      * Lists all the available machine learning workspaces under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list machine learning workspaces as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list machine learning workspaces as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Workspace> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all the available machine learning workspaces under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skip Continuation token for pagination.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list machine learning workspaces as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list machine learning workspaces as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Workspace> listByResourceGroup(String resourceGroupName, String skip, Context context);
 
     /**
      * Diagnose workspace setup issue.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +101,7 @@ public interface Workspaces {
 
     /**
      * Diagnose workspace setup issue.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param parameters The parameter of diagnosing workspace health.
@@ -108,13 +111,13 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    DiagnoseResponseResult diagnose(
-        String resourceGroupName, String workspaceName, DiagnoseWorkspaceParameters parameters, Context context);
+    DiagnoseResponseResult diagnose(String resourceGroupName, String workspaceName,
+        DiagnoseWorkspaceParameters parameters, Context context);
 
     /**
      * Lists all the keys associated with this workspace. This includes keys for the storage account, app insights and
      * password for container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -123,13 +126,13 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<ListWorkspaceKeysResult> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListWorkspaceKeysResult> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Lists all the keys associated with this workspace. This includes keys for the storage account, app insights and
      * password for container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +145,7 @@ public interface Workspaces {
     /**
      * Resync all the keys associated with this workspace. This includes keys for the storage account, app insights and
      * password for container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +157,7 @@ public interface Workspaces {
     /**
      * Resync all the keys associated with this workspace. This includes keys for the storage account, app insights and
      * password for container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -166,30 +169,30 @@ public interface Workspaces {
 
     /**
      * Lists all the available machine learning workspaces under the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list machine learning workspaces as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list machine learning workspaces as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Workspace> list();
 
     /**
      * Lists all the available machine learning workspaces under the specified subscription.
-     *
+     * 
      * @param skip Continuation token for pagination.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list machine learning workspaces as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list machine learning workspaces as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Workspace> list(String skip, Context context);
 
     /**
      * return notebook access token and refresh token.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -198,12 +201,12 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<NotebookAccessTokenResult> listNotebookAccessTokenWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<NotebookAccessTokenResult> listNotebookAccessTokenWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
      * return notebook access token and refresh token.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,7 +218,7 @@ public interface Workspaces {
 
     /**
      * Prepare a notebook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,7 +230,7 @@ public interface Workspaces {
 
     /**
      * Prepare a notebook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -240,7 +243,7 @@ public interface Workspaces {
 
     /**
      * List storage account keys of a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -249,12 +252,12 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<ListStorageAccountKeysResult> listStorageAccountKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListStorageAccountKeysResult> listStorageAccountKeysWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
      * List storage account keys of a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -266,7 +269,7 @@ public interface Workspaces {
 
     /**
      * List keys of a notebook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -275,12 +278,12 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<ListNotebookKeysResult> listNotebookKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListNotebookKeysResult> listNotebookKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * List keys of a notebook.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -292,7 +295,7 @@ public interface Workspaces {
 
     /**
      * Called by Client (Portal, CLI, etc) to get a list of all external outbound dependencies (FQDNs) programmatically.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param context The context to associate with this operation.
@@ -301,12 +304,12 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<ExternalFqdnResponse> listOutboundNetworkDependenciesEndpointsWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ExternalFqdnResponse> listOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
      * Called by Client (Portal, CLI, etc) to get a list of all external outbound dependencies (FQDNs) programmatically.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -318,7 +321,7 @@ public interface Workspaces {
 
     /**
      * Gets the properties of the specified machine learning workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -329,7 +332,7 @@ public interface Workspaces {
 
     /**
      * Gets the properties of the specified machine learning workspace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,7 +344,7 @@ public interface Workspaces {
 
     /**
      * Deletes a machine learning workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -351,18 +354,19 @@ public interface Workspaces {
 
     /**
      * Deletes a machine learning workspace.
-     *
+     * 
      * @param id the resource ID.
+     * @param forceToPurge Flag to indicate delete is a purge request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Boolean forceToPurge, Context context);
 
     /**
      * Begins definition for a new Workspace resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Workspace definition.
      */

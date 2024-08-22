@@ -11,21 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DataPathAssetReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataPathAssetReference model =
-            BinaryData
-                .fromString(
-                    "{\"referenceType\":\"DataPath\",\"datastoreId\":\"uwxeoiojfizf\",\"path\":\"kjzwfbcyayk\"}")
-                .toObject(DataPathAssetReference.class);
-        Assertions.assertEquals("uwxeoiojfizf", model.datastoreId());
-        Assertions.assertEquals("kjzwfbcyayk", model.path());
+        DataPathAssetReference model = BinaryData
+            .fromString(
+                "{\"referenceType\":\"DataPath\",\"path\":\"wvumosqircamqprl\",\"datastoreId\":\"rugejcvjkjy\"}")
+            .toObject(DataPathAssetReference.class);
+        Assertions.assertEquals("wvumosqircamqprl", model.path());
+        Assertions.assertEquals("rugejcvjkjy", model.datastoreId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataPathAssetReference model =
-            new DataPathAssetReference().withDatastoreId("uwxeoiojfizf").withPath("kjzwfbcyayk");
+        DataPathAssetReference model
+            = new DataPathAssetReference().withPath("wvumosqircamqprl").withDatastoreId("rugejcvjkjy");
         model = BinaryData.fromObject(model).toObject(DataPathAssetReference.class);
-        Assertions.assertEquals("uwxeoiojfizf", model.datastoreId());
-        Assertions.assertEquals("kjzwfbcyayk", model.path());
+        Assertions.assertEquals("wvumosqircamqprl", model.path());
+        Assertions.assertEquals("rugejcvjkjy", model.datastoreId());
     }
 }

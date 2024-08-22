@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Resource Name. */
+/**
+ * The Resource Name.
+ */
 @Immutable
-public final class ResourceName {
+public final class ResourceName implements JsonSerializable<ResourceName> {
     /*
      * The name of the resource.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /*
      * The localized name of the resource.
      */
-    @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
     private String localizedValue;
 
-    /** Creates an instance of ResourceName class. */
+    /**
+     * Creates an instance of ResourceName class.
+     */
     public ResourceName() {
     }
 
     /**
      * Get the value property: The name of the resource.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +43,7 @@ public final class ResourceName {
 
     /**
      * Get the localizedValue property: The localized name of the resource.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -46,9 +52,46 @@ public final class ResourceName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceName if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceName.
+     */
+    public static ResourceName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceName deserializedResourceName = new ResourceName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedResourceName.value = reader.getString();
+                } else if ("localizedValue".equals(fieldName)) {
+                    deserializedResourceName.localizedValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceName;
+        });
     }
 }

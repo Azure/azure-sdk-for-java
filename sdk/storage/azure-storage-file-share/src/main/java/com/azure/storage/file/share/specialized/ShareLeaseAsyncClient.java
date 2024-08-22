@@ -14,6 +14,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
@@ -178,10 +179,12 @@ public final class ShareLeaseAsyncClient {
         if (this.isShareFile) {
             response = this.client.getFiles().acquireLeaseWithResponseAsync(shareName, resourcePath, null,
                 options.getDuration(), this.leaseId, null, context)
+                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
             response = this.client.getShares().acquireLeaseWithResponseAsync(shareName, null,
                 options.getDuration(), this.leaseId, shareSnapshot, null, context)
+                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 
@@ -234,10 +237,12 @@ public final class ShareLeaseAsyncClient {
         context = context == null ? Context.NONE : context;
         if (this.isShareFile) {
             return this.client.getFiles().releaseLeaseNoCustomHeadersWithResponseAsync(shareName, resourcePath,
-                this.leaseId, null, null, context);
+                this.leaseId, null, null, context)
+                .onErrorMap(ModelHelper::mapToShareStorageException);
         } else {
             return this.client.getShares().releaseLeaseNoCustomHeadersWithResponseAsync(shareName, this.leaseId, null,
-                shareSnapshot, null, context);
+                shareSnapshot, null, context)
+                .onErrorMap(ModelHelper::mapToShareStorageException);
         }
     }
 
@@ -314,10 +319,12 @@ public final class ShareLeaseAsyncClient {
             : Math.toIntExact(options.getBreakPeriod().getSeconds());
         if (this.isShareFile) {
             return this.client.getFiles()
-                .breakLeaseNoCustomHeadersWithResponseAsync(shareName, resourcePath, null, null, null, context);
+                .breakLeaseNoCustomHeadersWithResponseAsync(shareName, resourcePath, null, null, null, context)
+                .onErrorMap(ModelHelper::mapToShareStorageException);
         } else {
             return this.client.getShares().breakLeaseNoCustomHeadersWithResponseAsync(shareName, null, breakPeriod,
-                null, null, shareSnapshot, context);
+                null, null, shareSnapshot, context)
+                .onErrorMap(ModelHelper::mapToShareStorageException);
         }
     }
 
@@ -371,10 +378,12 @@ public final class ShareLeaseAsyncClient {
         if (this.isShareFile) {
             response = this.client.getFiles().changeLeaseWithResponseAsync(shareName, resourcePath, this.leaseId, null, proposedId,
                 null, context)
+                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
             response = this.client.getShares().changeLeaseWithResponseAsync(shareName, this.leaseId, null, proposedId, shareSnapshot,
                 null, context)
+                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 
@@ -433,6 +442,7 @@ public final class ShareLeaseAsyncClient {
         } else {
             response = this.client.getShares().renewLeaseWithResponseAsync(shareName, this.leaseId, null,
                 shareSnapshot, null, context)
+                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 
