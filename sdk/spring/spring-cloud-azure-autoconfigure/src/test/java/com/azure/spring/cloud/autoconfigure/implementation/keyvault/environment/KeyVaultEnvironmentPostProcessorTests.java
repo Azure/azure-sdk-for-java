@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
+import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.logging.DeferredLogs;
 import org.springframework.core.env.MutablePropertySources;
@@ -29,7 +31,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
 class KeyVaultEnvironmentPostProcessorTests {
@@ -43,14 +49,38 @@ class KeyVaultEnvironmentPostProcessorTests {
     private KeyVaultEnvironmentPostProcessor processor;
     private MockEnvironment environment;
     private MutablePropertySources propertySources;
+    private ConfigurableBootstrapContext context;
 
     @BeforeEach
     void beforeEach() {
+        context = mock(ConfigurableBootstrapContext.class);
+        TokenCredential tokenCredential = mock(TokenCredential.class);
+        when(context.get(TokenCredential.class)).thenReturn(tokenCredential);
         processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), null));
         environment = new MockEnvironment();
         propertySources = environment.getPropertySources();
         SecretClient secretClient = mock(SecretClient.class);
         doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
+    }
+
+    @Test
+    void testContextRegister_withTokenCredentialRegistered() {
+        when(context.isRegistered(TokenCredential.class)).thenReturn(true);
+        processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), context));
+
+        assertThrows(IllegalStateException.class, () -> processor.buildSecretClient(new AzureKeyVaultSecretProperties()));
+
+        verify(context, times(1)).get(TokenCredential.class);
+    }
+
+    @Test
+    void testContextRegister_withoutTokenCredentialRegistered() {
+        when(context.isRegistered(TokenCredential.class)).thenReturn(false);
+        processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), context));
+
+        assertThrows(IllegalStateException.class, () -> processor.buildSecretClient(new AzureKeyVaultSecretProperties()));
+
+        verify(context, never()).get(TokenCredential.class);
     }
 
     @Test
