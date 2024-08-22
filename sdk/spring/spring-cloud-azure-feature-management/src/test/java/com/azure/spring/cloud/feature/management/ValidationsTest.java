@@ -43,7 +43,7 @@ public class ValidationsTest {
     @Mock
     private FeatureManagementConfigProperties configProperties;
 
-    private static final Logger logger = LoggerFactory.getLogger(ValidationsTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ValidationsTest.class);
 
     private final ObjectMapper objectMapper = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
@@ -115,10 +115,10 @@ public class ValidationsTest {
         final FeatureManager featureManager = new FeatureManager(context, managementProperties, configProperties);
 
         final List<ValidationTestCase> testCases = readTestcasesFromFile(testsFile);
-        logger.debug("Running test case from file: " + testsFile.getName());
+        LOGGER.debug("Running test case from file: " + testsFile.getName());
 
         for (int i = 0; i < testCases.size(); i++) {
-            logger.debug("Test case " + i + " : " + testCases.get(i).getDescription());
+            LOGGER.debug("Test case " + i + " : " + testCases.get(i).getDescription());
             if (hasException(testCases.get(i))) {   // TODO(mametcal). Currently we didn't throw the exception when parameter is invalid
                 assertNull(managementProperties.getOnOff().get(testCases.get(i).getFeatureFlagName()));
                 continue;
