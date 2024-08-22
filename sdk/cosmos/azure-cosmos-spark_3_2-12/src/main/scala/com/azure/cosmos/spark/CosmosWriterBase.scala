@@ -100,24 +100,47 @@ private abstract class CosmosWriterBase(
 
   override def commit(): WriterCommitMessage = {
     log.logInfo("commit invoked!!!")
+    flushAndCloseWriterWithRetries("committing")
+    new WriterCommitMessage {}
+  }
 
+  override def abort(): Unit = {
+    log.logInfo("abort invoked!!!")
+    writer.get.abort(true)
+    if (cacheItemReleasedCount.incrementAndGet() == 1) {
+      clientCacheItem.close()
+    }
+  }
+
+  override def close(): Unit = {
+    log.logInfo("close invoked!!!")
+    flushAndCloseWriterWithRetries("closing")
+    if (cacheItemReleasedCount.incrementAndGet() == 1) {
+      clientCacheItem.close()
+      if (throughputControlClientCacheItemOpt.isDefined) {
+        throughputControlClientCacheItemOpt.get.close()
+      }
+    }
+  }
+
+  private def flushAndCloseWriterWithRetries(operationName: String) = {
     try {
       writer.get.flushAndClose()
     } catch {
       case bulkWriterStaleError: BulkWriterNoProgressException =>
         bulkWriterStaleError.activeBulkWriteOperations match {
           case Some(remainingWriteOperations) =>
-            log.logWarning(s"Error indicating stuck writer when committing writes. Retry will be attempted for "
+            log.logWarning(s"Error indicating stuck writer when $operationName write job. Retry will be attempted for "
               + s"the outstanding ${remainingWriteOperations.size} write operations.", bulkWriterStaleError)
 
             val bulkWriterForRetry =
-                new BulkWriter(
-                  container,
-                  partitionKeyDefinition,
-                  cosmosWriteConfig,
-                  diagnosticsConfig,
-                  getOutputMetricsPublisher(),
-                  commitAttempt.getAndIncrement())
+              new BulkWriter(
+                container,
+                partitionKeyDefinition,
+                cosmosWriteConfig,
+                diagnosticsConfig,
+                getOutputMetricsPublisher(),
+                commitAttempt.getAndIncrement())
             val oldBulkWriter = writer.getAndSet(bulkWriterForRetry)
 
             cosmosWriteConfig.retryCommitInterceptor match {
@@ -134,35 +157,14 @@ private abstract class CosmosWriterBase(
             bulkWriterForRetry.flushAndClose()
           // None means not just write operations but also read-many are outstanding we can't retry
           case None =>
-            log.logError(s"Error indicating stuck writer when committing writes. No retry possible because "
+            log.logError(s"Error indicating stuck writer when $operationName write job. No retry possible because "
               + "of outstanding read-many operations.", bulkWriterStaleError)
 
             throw bulkWriterStaleError
         }
       case e: Throwable =>
-        log.logError(s"Unexpected error when committing writes", e)
+        log.logError(s"Unexpected error when $operationName write job.", e)
         throw e
-    }
-
-    new WriterCommitMessage {}
-  }
-
-  override def abort(): Unit = {
-    log.logInfo("abort invoked!!!")
-    writer.get.abort(true)
-    if (cacheItemReleasedCount.incrementAndGet() == 1) {
-      clientCacheItem.close()
-    }
-  }
-
-  override def close(): Unit = {
-    log.logInfo("close invoked!!!")
-    writer.get.flushAndClose()
-    if (cacheItemReleasedCount.incrementAndGet() == 1) {
-      clientCacheItem.close()
-      if (throughputControlClientCacheItemOpt.isDefined) {
-        throughputControlClientCacheItemOpt.get.close()
-      }
     }
   }
 
