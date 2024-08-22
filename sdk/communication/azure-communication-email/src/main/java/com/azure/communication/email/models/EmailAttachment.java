@@ -4,7 +4,6 @@
 package com.azure.communication.email.models;
 
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
 
 /** Attachment to the email. */
 public final class EmailAttachment {
