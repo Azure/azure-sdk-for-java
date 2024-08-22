@@ -12,23 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomModelJobInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomModelJobInput model =
-            BinaryData
-                .fromString(
-                    "{\"jobInputType\":\"custom_model\",\"mode\":\"Direct\",\"uri\":\"bkjbz\",\"description\":\"nsvk\"}")
-                .toObject(CustomModelJobInput.class);
-        Assertions.assertEquals("nsvk", model.description());
-        Assertions.assertEquals(InputDeliveryMode.DIRECT, model.mode());
-        Assertions.assertEquals("bkjbz", model.uri());
+        CustomModelJobInput model = BinaryData.fromString(
+            "{\"jobInputType\":\"custom_model\",\"uri\":\"lmpctwj\",\"mode\":\"ReadWriteMount\",\"description\":\"lzmkxerxxxotee\"}")
+            .toObject(CustomModelJobInput.class);
+        Assertions.assertEquals("lzmkxerxxxotee", model.description());
+        Assertions.assertEquals("lmpctwj", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomModelJobInput model =
-            new CustomModelJobInput().withDescription("nsvk").withMode(InputDeliveryMode.DIRECT).withUri("bkjbz");
+        CustomModelJobInput model = new CustomModelJobInput().withDescription("lzmkxerxxxotee")
+            .withUri("lmpctwj")
+            .withMode(InputDeliveryMode.READ_WRITE_MOUNT);
         model = BinaryData.fromObject(model).toObject(CustomModelJobInput.class);
-        Assertions.assertEquals("nsvk", model.description());
-        Assertions.assertEquals(InputDeliveryMode.DIRECT, model.mode());
-        Assertions.assertEquals("bkjbz", model.uri());
+        Assertions.assertEquals("lzmkxerxxxotee", model.description());
+        Assertions.assertEquals("lmpctwj", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 }

@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class TriggerBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TriggerBase model =
-            BinaryData
-                .fromString(
-                    "{\"triggerType\":\"TriggerBase\",\"endTime\":\"plucfotangcfhnyk\",\"startTime\":\"ugswvx\",\"timeZone\":\"mzqwmvtxnjmxmcu\"}")
-                .toObject(TriggerBase.class);
-        Assertions.assertEquals("plucfotangcfhnyk", model.endTime());
-        Assertions.assertEquals("ugswvx", model.startTime());
-        Assertions.assertEquals("mzqwmvtxnjmxmcu", model.timeZone());
+        TriggerBase model = BinaryData.fromString(
+            "{\"triggerType\":\"TriggerBase\",\"endTime\":\"jadhqoawj\",\"startTime\":\"yueayfbpcmsp\",\"timeZone\":\"yrrueqth\"}")
+            .toObject(TriggerBase.class);
+        Assertions.assertEquals("jadhqoawj", model.endTime());
+        Assertions.assertEquals("yueayfbpcmsp", model.startTime());
+        Assertions.assertEquals("yrrueqth", model.timeZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TriggerBase model =
-            new TriggerBase().withEndTime("plucfotangcfhnyk").withStartTime("ugswvx").withTimeZone("mzqwmvtxnjmxmcu");
+        TriggerBase model
+            = new TriggerBase().withEndTime("jadhqoawj").withStartTime("yueayfbpcmsp").withTimeZone("yrrueqth");
         model = BinaryData.fromObject(model).toObject(TriggerBase.class);
-        Assertions.assertEquals("plucfotangcfhnyk", model.endTime());
-        Assertions.assertEquals("ugswvx", model.startTime());
-        Assertions.assertEquals("mzqwmvtxnjmxmcu", model.timeZone());
+        Assertions.assertEquals("jadhqoawj", model.endTime());
+        Assertions.assertEquals("yueayfbpcmsp", model.startTime());
+        Assertions.assertEquals("yrrueqth", model.timeZone());
     }
 }

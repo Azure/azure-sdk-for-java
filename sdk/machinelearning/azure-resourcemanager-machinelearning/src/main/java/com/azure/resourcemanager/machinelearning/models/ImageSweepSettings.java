@@ -6,50 +6,36 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Model sweeping and hyperparameter sweeping related settings. */
+/**
+ * Model sweeping and hyperparameter sweeping related settings.
+ */
 @Fluent
-public final class ImageSweepSettings {
-    /*
-     * Type of early termination policy.
-     */
-    @JsonProperty(value = "earlyTermination")
-    private EarlyTerminationPolicy earlyTermination;
-
+public final class ImageSweepSettings implements JsonSerializable<ImageSweepSettings> {
     /*
      * [Required] Type of the hyperparameter sampling algorithms.
      */
-    @JsonProperty(value = "samplingAlgorithm", required = true)
     private SamplingAlgorithmType samplingAlgorithm;
 
-    /** Creates an instance of ImageSweepSettings class. */
+    /*
+     * Type of early termination policy.
+     */
+    private EarlyTerminationPolicy earlyTermination;
+
+    /**
+     * Creates an instance of ImageSweepSettings class.
+     */
     public ImageSweepSettings() {
     }
 
     /**
-     * Get the earlyTermination property: Type of early termination policy.
-     *
-     * @return the earlyTermination value.
-     */
-    public EarlyTerminationPolicy earlyTermination() {
-        return this.earlyTermination;
-    }
-
-    /**
-     * Set the earlyTermination property: Type of early termination policy.
-     *
-     * @param earlyTermination the earlyTermination value to set.
-     * @return the ImageSweepSettings object itself.
-     */
-    public ImageSweepSettings withEarlyTermination(EarlyTerminationPolicy earlyTermination) {
-        this.earlyTermination = earlyTermination;
-        return this;
-    }
-
-    /**
      * Get the samplingAlgorithm property: [Required] Type of the hyperparameter sampling algorithms.
-     *
+     * 
      * @return the samplingAlgorithm value.
      */
     public SamplingAlgorithmType samplingAlgorithm() {
@@ -58,7 +44,7 @@ public final class ImageSweepSettings {
 
     /**
      * Set the samplingAlgorithm property: [Required] Type of the hyperparameter sampling algorithms.
-     *
+     * 
      * @param samplingAlgorithm the samplingAlgorithm value to set.
      * @return the ImageSweepSettings object itself.
      */
@@ -68,21 +54,82 @@ public final class ImageSweepSettings {
     }
 
     /**
+     * Get the earlyTermination property: Type of early termination policy.
+     * 
+     * @return the earlyTermination value.
+     */
+    public EarlyTerminationPolicy earlyTermination() {
+        return this.earlyTermination;
+    }
+
+    /**
+     * Set the earlyTermination property: Type of early termination policy.
+     * 
+     * @param earlyTermination the earlyTermination value to set.
+     * @return the ImageSweepSettings object itself.
+     */
+    public ImageSweepSettings withEarlyTermination(EarlyTerminationPolicy earlyTermination) {
+        this.earlyTermination = earlyTermination;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (samplingAlgorithm() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property samplingAlgorithm in model ImageSweepSettings"));
+        }
         if (earlyTermination() != null) {
             earlyTermination().validate();
-        }
-        if (samplingAlgorithm() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property samplingAlgorithm in model ImageSweepSettings"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageSweepSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("samplingAlgorithm",
+            this.samplingAlgorithm == null ? null : this.samplingAlgorithm.toString());
+        jsonWriter.writeJsonField("earlyTermination", this.earlyTermination);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageSweepSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageSweepSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageSweepSettings.
+     */
+    public static ImageSweepSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageSweepSettings deserializedImageSweepSettings = new ImageSweepSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("samplingAlgorithm".equals(fieldName)) {
+                    deserializedImageSweepSettings.samplingAlgorithm
+                        = SamplingAlgorithmType.fromString(reader.getString());
+                } else if ("earlyTermination".equals(fieldName)) {
+                    deserializedImageSweepSettings.earlyTermination = EarlyTerminationPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageSweepSettings;
+        });
+    }
 }

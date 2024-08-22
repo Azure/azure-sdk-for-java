@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.OnlineScaleSettings;
 public final class OnlineScaleSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OnlineScaleSettings model =
-            BinaryData.fromString("{\"scaleType\":\"OnlineScaleSettings\"}").toObject(OnlineScaleSettings.class);
+        OnlineScaleSettings model
+            = BinaryData.fromString("{\"scaleType\":\"OnlineScaleSettings\"}").toObject(OnlineScaleSettings.class);
     }
 
     @org.junit.jupiter.api.Test

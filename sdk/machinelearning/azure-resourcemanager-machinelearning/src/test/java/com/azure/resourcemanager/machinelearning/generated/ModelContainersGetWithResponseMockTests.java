@@ -6,68 +6,37 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ModelContainer;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ModelContainersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"isArchived\":true,\"latestVersion\":\"zqhph\",\"nextVersion\":\"jmi\",\"description\":\"vnrj\",\"tags\":{\"lldglzdkxftjre\":\"pbgtzrgyrldo\"},\"properties\":{\"ztghdwrvffjpw\":\"kvbdvlazkxaujjr\",\"cplxid\":\"zlfyftgae\",\"puw\":\"uxzzhldaxvi\"}},\"id\":\"f\",\"name\":\"nwvrbbpgibyzrpq\",\"type\":\"hrdldvxcjj\"}";
 
-        String responseStr =
-            "{\"properties\":{\"isArchived\":true,\"latestVersion\":\"yrletndqlmf\",\"nextVersion\":\"gnbbuypwovvvsfle\",\"description\":\"noqayrehjuqwvap\",\"properties\":{\"qzubfonfd\":\"zhpzihacenqqzlx\",\"jcw\":\"gmkfw\",\"zl\":\"ewfhxwyrkbre\"},\"tags\":{\"mkaeplrajubow\":\"jpch\",\"aoklfnis\":\"ywevtjrieikmw\",\"tjcyyuv\":\"xgucbmtredscnn\",\"ecwwtz\":\"zrxzhc\"}},\"id\":\"cloyhy\",\"name\":\"pgidhzgyresgzsdt\",\"type\":\"wbyorjplbchych\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ModelContainer response = manager.modelContainers()
+            .getWithResponse("hhiofcnyzqznld", "ngqwmllegucem", "gs", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ModelContainer response =
-            manager
-                .modelContainers()
-                .getWithResponse("wihbnnxemv", "nuqqkotauratnicp", "fzs", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("noqayrehjuqwvap", response.properties().description());
-        Assertions.assertEquals("zhpzihacenqqzlx", response.properties().properties().get("qzubfonfd"));
-        Assertions.assertEquals("jpch", response.properties().tags().get("mkaeplrajubow"));
+        Assertions.assertEquals("vnrj", response.properties().description());
+        Assertions.assertEquals("pbgtzrgyrldo", response.properties().tags().get("lldglzdkxftjre"));
+        Assertions.assertEquals("kvbdvlazkxaujjr", response.properties().properties().get("ztghdwrvffjpw"));
         Assertions.assertEquals(true, response.properties().isArchived());
     }
 }

@@ -11,22 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class AmlUserFeatureInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmlUserFeatureInner model =
-            BinaryData
-                .fromString("{\"id\":\"pkt\",\"displayName\":\"ylkmqp\",\"description\":\"yhlfb\"}")
+        AmlUserFeatureInner model
+            = BinaryData.fromString("{\"id\":\"yyyzlwhbw\",\"displayName\":\"nufzr\",\"description\":\"m\"}")
                 .toObject(AmlUserFeatureInner.class);
-        Assertions.assertEquals("pkt", model.id());
-        Assertions.assertEquals("ylkmqp", model.displayName());
-        Assertions.assertEquals("yhlfb", model.description());
+        Assertions.assertEquals("yyyzlwhbw", model.id());
+        Assertions.assertEquals("nufzr", model.displayName());
+        Assertions.assertEquals("m", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlUserFeatureInner model =
-            new AmlUserFeatureInner().withId("pkt").withDisplayName("ylkmqp").withDescription("yhlfb");
+        AmlUserFeatureInner model
+            = new AmlUserFeatureInner().withId("yyyzlwhbw").withDisplayName("nufzr").withDescription("m");
         model = BinaryData.fromObject(model).toObject(AmlUserFeatureInner.class);
-        Assertions.assertEquals("pkt", model.id());
-        Assertions.assertEquals("ylkmqp", model.displayName());
-        Assertions.assertEquals("yhlfb", model.description());
+        Assertions.assertEquals("yyyzlwhbw", model.id());
+        Assertions.assertEquals("nufzr", model.displayName());
+        Assertions.assertEquals("m", model.description());
     }
 }

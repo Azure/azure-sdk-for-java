@@ -14,14 +14,10 @@ public final class SkuResourceImpl implements SkuResource {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    SkuResourceImpl(
-        SkuResourceInner innerObject, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
+    SkuResourceImpl(SkuResourceInner innerObject,
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-    }
-
-    public SkuCapacity capacity() {
-        return this.innerModel().capacity();
     }
 
     public String resourceType() {
@@ -30,6 +26,10 @@ public final class SkuResourceImpl implements SkuResource {
 
     public SkuSetting sku() {
         return this.innerModel().sku();
+    }
+
+    public SkuCapacity capacity() {
+        return this.innerModel().capacity();
     }
 
     public SkuResourceInner innerModel() {
