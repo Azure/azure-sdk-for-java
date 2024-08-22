@@ -13,14 +13,14 @@ public final class ManagedVirtualNetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedVirtualNetwork model = BinaryData.fromString(
-            "{\"vNetId\":\"ohzjqatucoigeb\",\"alias\":\"cnwfepbnwgfmxjg\",\"\":{\"qbctqha\":\"datajbgdlfgtdysnaquf\"}}")
+            "{\"vNetId\":\"ydyynfsvkh\",\"alias\":\"vqtanarfdlpuk\",\"\":{\"zjcpeogk\":\"datarne\",\"ro\":\"datanmg\",\"zoyw\":\"dataxddbhfhpfpaz\"}}")
             .toObject(ManagedVirtualNetwork.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedVirtualNetwork model = new ManagedVirtualNetwork()
-            .withAdditionalProperties(mapOf("vNetId", "ohzjqatucoigeb", "alias", "cnwfepbnwgfmxjg"));
+            .withAdditionalProperties(mapOf("vNetId", "ydyynfsvkh", "alias", "vqtanarfdlpuk"));
         model = BinaryData.fromObject(model).toObject(ManagedVirtualNetwork.class);
     }
 

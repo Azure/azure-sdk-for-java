@@ -68,7 +68,7 @@ public final class FaceSessionAsyncClient {
      * retrieve a result, use the Get Liveness Session. To audit the individual requests that a client has made to your
      * resource, use the List Liveness Session Audit Entries.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
@@ -80,9 +80,9 @@ public final class FaceSessionAsyncClient {
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     sessionId: String (Required)
@@ -132,7 +132,7 @@ public final class FaceSessionAsyncClient {
     /**
      * Get session result of detectLiveness/singleModal call.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -225,7 +225,7 @@ public final class FaceSessionAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -265,7 +265,7 @@ public final class FaceSessionAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -361,7 +361,7 @@ public final class FaceSessionAsyncClient {
      * &gt; [!NOTE]
      * &gt; Extra measures should be taken to validate that the client is sending the expected VerifyImage.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
@@ -375,9 +375,9 @@ public final class FaceSessionAsyncClient {
      *     verifyConfidenceThreshold: Double (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     sessionId: String (Required)
@@ -434,7 +434,7 @@ public final class FaceSessionAsyncClient {
      *
      * Recommended Option: VerifyImage is provided during session creation.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     sessionId: String (Required)
@@ -496,7 +496,7 @@ public final class FaceSessionAsyncClient {
     /**
      * Get session result of detectLivenessWithVerify/singleModal call.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -589,7 +589,7 @@ public final class FaceSessionAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -629,7 +629,7 @@ public final class FaceSessionAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){

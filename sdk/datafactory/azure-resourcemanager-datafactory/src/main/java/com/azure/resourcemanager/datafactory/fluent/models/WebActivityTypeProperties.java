@@ -6,13 +6,16 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetReference;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeReference;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.WebActivityAuthentication;
 import com.azure.resourcemanager.datafactory.models.WebActivityMethod;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,17 +23,15 @@ import java.util.Map;
  * Web activity type properties.
  */
 @Fluent
-public final class WebActivityTypeProperties {
+public final class WebActivityTypeProperties implements JsonSerializable<WebActivityTypeProperties> {
     /*
      * Rest API method for target endpoint.
      */
-    @JsonProperty(value = "method", required = true)
     private WebActivityMethod method;
 
     /*
      * Web activity target endpoint and path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
@@ -38,27 +39,22 @@ public final class WebActivityTypeProperties {
      * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "headers")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> headers;
 
     /*
      * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
      * method Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "body")
     private Object body;
 
     /*
      * Authentication method used for calling the endpoint.
      */
-    @JsonProperty(value = "authentication")
     private WebActivityAuthentication authentication;
 
     /*
      * When set to true, Certificate validation will be disabled.
      */
-    @JsonProperty(value = "disableCertValidation")
     private Boolean disableCertValidation;
 
     /*
@@ -66,7 +62,6 @@ public final class WebActivityTypeProperties {
      * get a response, not the activity timeout. The default value is 00:01:00 (1 minute). The range is from 1 to 10
      * minutes
      */
-    @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
     /*
@@ -74,25 +69,21 @@ public final class WebActivityTypeProperties {
      * stops invoking HTTP GET on http location given in response header. If set false then continues to invoke HTTP GET
      * call on location given in http response headers.
      */
-    @JsonProperty(value = "turnOffAsync")
     private Boolean turnOffAsync;
 
     /*
      * List of datasets passed to web endpoint.
      */
-    @JsonProperty(value = "datasets")
     private List<DatasetReference> datasets;
 
     /*
      * List of linked services passed to web endpoint.
      */
-    @JsonProperty(value = "linkedServices")
     private List<LinkedServiceReference> linkedServices;
 
     /*
      * The integration runtime reference.
      */
-    @JsonProperty(value = "connectVia")
     private IntegrationRuntimeReference connectVia;
 
     /**
@@ -365,4 +356,77 @@ public final class WebActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
+        jsonWriter.writeUntypedField("url", this.url);
+        jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeUntypedField("body", this.body);
+        jsonWriter.writeJsonField("authentication", this.authentication);
+        jsonWriter.writeBooleanField("disableCertValidation", this.disableCertValidation);
+        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        jsonWriter.writeBooleanField("turnOffAsync", this.turnOffAsync);
+        jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("linkedServices", this.linkedServices,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("connectVia", this.connectVia);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebActivityTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebActivityTypeProperties.
+     */
+    public static WebActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebActivityTypeProperties deserializedWebActivityTypeProperties = new WebActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("method".equals(fieldName)) {
+                    deserializedWebActivityTypeProperties.method = WebActivityMethod.fromString(reader.getString());
+                } else if ("url".equals(fieldName)) {
+                    deserializedWebActivityTypeProperties.url = reader.readUntyped();
+                } else if ("headers".equals(fieldName)) {
+                    Map<String, Object> headers = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedWebActivityTypeProperties.headers = headers;
+                } else if ("body".equals(fieldName)) {
+                    deserializedWebActivityTypeProperties.body = reader.readUntyped();
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedWebActivityTypeProperties.authentication = WebActivityAuthentication.fromJson(reader);
+                } else if ("disableCertValidation".equals(fieldName)) {
+                    deserializedWebActivityTypeProperties.disableCertValidation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("httpRequestTimeout".equals(fieldName)) {
+                    deserializedWebActivityTypeProperties.httpRequestTimeout = reader.readUntyped();
+                } else if ("turnOffAsync".equals(fieldName)) {
+                    deserializedWebActivityTypeProperties.turnOffAsync = reader.getNullable(JsonReader::getBoolean);
+                } else if ("datasets".equals(fieldName)) {
+                    List<DatasetReference> datasets = reader.readArray(reader1 -> DatasetReference.fromJson(reader1));
+                    deserializedWebActivityTypeProperties.datasets = datasets;
+                } else if ("linkedServices".equals(fieldName)) {
+                    List<LinkedServiceReference> linkedServices
+                        = reader.readArray(reader1 -> LinkedServiceReference.fromJson(reader1));
+                    deserializedWebActivityTypeProperties.linkedServices = linkedServices;
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedWebActivityTypeProperties.connectVia = IntegrationRuntimeReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebActivityTypeProperties;
+        });
+    }
 }

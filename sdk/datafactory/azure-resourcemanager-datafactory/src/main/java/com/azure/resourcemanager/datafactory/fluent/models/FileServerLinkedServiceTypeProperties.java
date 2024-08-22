@@ -6,37 +6,38 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * File system linked service properties.
  */
 @Fluent
-public final class FileServerLinkedServiceTypeProperties {
+public final class FileServerLinkedServiceTypeProperties
+    implements JsonSerializable<FileServerLinkedServiceTypeProperties> {
     /*
      * Host name of the server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
      * User ID to logon the server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userId")
     private Object userId;
 
     /*
      * Password to logon the server.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -144,4 +145,51 @@ public final class FileServerLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FileServerLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("host", this.host);
+        jsonWriter.writeUntypedField("userId", this.userId);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileServerLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileServerLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileServerLinkedServiceTypeProperties.
+     */
+    public static FileServerLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileServerLinkedServiceTypeProperties deserializedFileServerLinkedServiceTypeProperties
+                = new FileServerLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("host".equals(fieldName)) {
+                    deserializedFileServerLinkedServiceTypeProperties.host = reader.readUntyped();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedFileServerLinkedServiceTypeProperties.userId = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedFileServerLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedFileServerLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileServerLinkedServiceTypeProperties;
+        });
+    }
 }
