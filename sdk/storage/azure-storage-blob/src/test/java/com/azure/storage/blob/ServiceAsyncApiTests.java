@@ -510,7 +510,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
         long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 10000L;
 
-
         Mono<Void> createContainer = containerAsyncClient.create();
 
         Flux<Response<BlockBlobItem>> upload = Flux.range(0, 15).flatMap(i ->

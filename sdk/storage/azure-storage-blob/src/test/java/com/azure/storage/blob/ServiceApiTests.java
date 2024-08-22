@@ -446,39 +446,6 @@ public class ServiceApiTests extends BlobTestBase {
         cc.delete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
-    @Test
-    public void findBlobsByPageAsync() {
-        BlobContainerAsyncClient containerAsyncClient =
-            primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-        containerAsyncClient.create().block();
-        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
-
-        for (int i = 0; i < 15; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
-        }
-        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
-        String query = String.format("\"%s\"='%s'", tagKey, tagValue);
-        FindBlobsOptions searchOptions = new FindBlobsOptions(query).setMaxResultsPerPage(12);
-
-        List<TaggedBlobItem> list = primaryBlobServiceAsyncClient
-            .findBlobsByTags(searchOptions)
-            .byPage(10) // byPage should take precedence
-            .take(1, true)
-            .concatMapIterable(ContinuablePage::getElements).collectList().block();
-
-        assertEquals(10, list.size());
-
-        List<TaggedBlobItem> list2 = primaryBlobServiceAsyncClient
-            .findBlobsByTags(searchOptions)
-            .byPage() // since no number is specified, it should use the max number specified in options
-            .take(1, true)
-            .concatMapIterable(ContinuablePage::getElements).collectList().block();
-
-        assertEquals(12, list2.size());
-    }
-
     @Test
     public void findBlobsError() {
         assertThrows(BlobStorageException.class, () ->
