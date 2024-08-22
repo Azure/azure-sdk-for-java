@@ -96,7 +96,7 @@ public final class EmailAsyncClient {
                 attachmentsImpl.add(new com.azure.communication.email.implementation.models.EmailAttachment(
                     attachment.getName(),
                     attachment.getContentType(),
-                    Base64.getEncoder().encodeToString(attachment.getContent().toBytes())
+                    attachment.getContent().toBytes()
                 ));
             }
         }

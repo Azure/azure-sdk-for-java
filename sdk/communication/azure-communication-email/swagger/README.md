@@ -22,7 +22,7 @@ required-fields-as-ctor-args: true
 generate-client-as-impl: true
 url-as-string: true
 service-versions:
-- 2023-03-31
+- 2024-07-01-preview
 polling:
   default:
     intermediate-type: EmailSendResult
