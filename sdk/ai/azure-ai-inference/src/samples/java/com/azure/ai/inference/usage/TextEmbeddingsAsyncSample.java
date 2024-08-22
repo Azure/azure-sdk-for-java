@@ -41,6 +41,7 @@ public final class TextEmbeddingsAsyncSample {
                     }
                 }
                 EmbeddingsUsage usage = embeddings.getUsage();
+                System.out.println("");
                 System.out.printf(
                     "Usage: number of prompt token is %d and number of total tokens in request and response is %d.%n",
                     usage.getPromptTokens(), usage.getTotalTokens());
