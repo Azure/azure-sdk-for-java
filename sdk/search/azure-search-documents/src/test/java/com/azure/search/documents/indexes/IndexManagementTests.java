@@ -57,7 +57,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Execution(ExecutionMode.SAME_THREAD)
 public class IndexManagementTests extends SearchTestBase {
     private static SearchIndexClient sharedIndexClient;
     private static SynonymMap sharedSynonymMap;
