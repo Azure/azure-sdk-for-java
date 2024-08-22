@@ -1,13 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.common.implementation.StorageImplUtils;
-
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 
 /**
  * A {@code BlobStorageException} is thrown whenever Azure Storage successfully returns an error code that is not
@@ -22,36 +19,20 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
  * <p>For more samples, please see the <a href="https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java">sample
  * file</a></p>
  */
-public final class BlobStorageException extends HttpResponseException {
+public final class BlobStorageExceptionInternal extends HttpResponseException {
     /**
      * Constructs a {@code BlobStorageException}.
      *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
-     * @param value the error code of the exception.
+     * @param value the deserialized error response.
      */
-    public BlobStorageException(String message, HttpResponse response, Object value) {
+    public BlobStorageExceptionInternal(String message, HttpResponse response, BlobStorageError value) {
         super(StorageImplUtils.convertStorageExceptionMessage(message, response), response, value);
     }
 
-    /**
-     * @return The error code returned by the service.
-     */
-    public BlobErrorCode getErrorCode() {
-        return BlobErrorCode.fromString(super.getResponse().getHeaders().getValue(ERROR_CODE_HEADER_NAME));
-    }
-
-    /**
-     * @return The message returned by the service.
-     */
-    public String getServiceMessage() {
-        return super.getMessage();
-    }
-
-    /**
-     * @return The status code on the response.
-     */
-    public int getStatusCode() {
-        return super.getResponse().getStatusCode();
+    @Override
+    public BlobStorageError getValue() {
+        return (BlobStorageError) super.getValue();
     }
 }

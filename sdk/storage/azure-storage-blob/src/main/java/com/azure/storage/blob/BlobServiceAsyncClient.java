@@ -539,7 +539,8 @@ public final class BlobServiceAsyncClient {
             this.azureBlobStorage.getServices().listBlobContainersSegmentSinglePageAsync(
                 options.getPrefix(), marker, options.getMaxResultsPerPage(),
                 toIncludeTypes(options.getDetails()),
-                null, null, Context.NONE), timeout);
+                null, null, Context.NONE), timeout)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -613,6 +614,7 @@ public final class BlobServiceAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getServices().filterBlobsWithResponseAsync(null, null,
                 options.getQuery(), marker, options.getMaxResultsPerPage(), null, context), timeout)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(response -> {
                 List<TaggedBlobItem> value = response.getValue().getBlobs().stream()
                     .map(ModelHelper::populateTaggedBlobItem)
@@ -710,6 +712,7 @@ public final class BlobServiceAsyncClient {
         context = context == null ? Context.NONE : context;
         throwOnAnonymousAccess();
         return this.azureBlobStorage.getServices().getPropertiesWithResponseAsync(null, null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -856,7 +859,8 @@ public final class BlobServiceAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getServices()
-            .setPropertiesNoCustomHeadersWithResponseAsync(finalProperties, null, null, context);
+            .setPropertiesNoCustomHeadersWithResponseAsync(finalProperties, null, null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -960,6 +964,7 @@ public final class BlobServiceAsyncClient {
                     .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
                     .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
                 null, null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -1017,6 +1022,7 @@ public final class BlobServiceAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getServices().getStatisticsWithResponseAsync(null, null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -1068,6 +1074,7 @@ public final class BlobServiceAsyncClient {
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         throwOnAnonymousAccess();
         return this.azureBlobStorage.getServices().getAccountInfoWithResponseAsync(context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 ServicesGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind(),
@@ -1269,6 +1276,7 @@ public final class BlobServiceAsyncClient {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getContainers().restoreWithResponseAsync(finalDestinationContainerName, null,
             null, options.getDeletedContainerName(), options.getDeletedContainerVersion(), context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(response -> new SimpleResponse<>(response,
                 getBlobContainerAsyncClient(finalDestinationContainerName)));
     }
