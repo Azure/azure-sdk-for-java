@@ -93,7 +93,7 @@ try {
             $emitterAdditionalOptions = " $emitterAdditionalOptions"
         }
     }
-    $typespecCompileCommand = "npx tsp compile $mainTypeSpecFile --emit $emitterName$emitterAdditionalOptions"
+    $typespecCompileCommand = "npx tsp compile $mainTypeSpecFile --emit $emitterName$emitterAdditionalOptions --debug"
     if ($TypespecAdditionalOptions) {
         $options = $TypespecAdditionalOptions.Split(";");
         foreach ($option in $options) {
