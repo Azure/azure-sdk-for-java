@@ -5,7 +5,6 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -26,7 +25,7 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
     /*
      * List of dictionaries containing features.
      */
-    private List<BinaryData> features;
+    private List<Object> features;
 
     /**
      * Creates an instance of PersonalizerRankableAction class.
@@ -36,7 +35,7 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
 
     /**
      * Get the id property: Id of the action.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -45,7 +44,7 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
 
     /**
      * Set the id property: Id of the action.
-     *
+     * 
      * @param id the id value to set.
      * @return the PersonalizerRankableAction object itself.
      */
@@ -56,20 +55,20 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
 
     /**
      * Get the features property: List of dictionaries containing features.
-     *
+     * 
      * @return the features value.
      */
-    public List<BinaryData> getFeatures() {
+    public List<Object> getFeatures() {
         return this.features;
     }
 
     /**
      * Set the features property: List of dictionaries containing features.
-     *
+     * 
      * @param features the features value to set.
      * @return the PersonalizerRankableAction object itself.
      */
-    public PersonalizerRankableAction setFeatures(List<BinaryData> features) {
+    public PersonalizerRankableAction setFeatures(List<Object> features) {
         this.features = features;
         return this;
     }
@@ -87,7 +86,7 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
 
     /**
      * Reads an instance of PersonalizerRankableAction from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PersonalizerRankableAction if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
@@ -104,7 +103,7 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
                 if ("id".equals(fieldName)) {
                     deserializedPersonalizerRankableAction.id = reader.getString();
                 } else if ("features".equals(fieldName)) {
-                    List<BinaryData> features = reader.readArray(reader1 -> BinaryData.fromObject(reader1.readUntyped()));
+                    List<Object> features = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedPersonalizerRankableAction.features = features;
                 } else {
                     reader.skipChildren();

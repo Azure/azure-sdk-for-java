@@ -5,7 +5,6 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -26,7 +25,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
     /*
      * List of dictionaries containing slot features.
      */
-    private List<BinaryData> features;
+    private List<Object> features;
 
     /*
      * List of excluded action Ids.
@@ -50,7 +49,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
 
     /**
      * Get the id property: Slot ID.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -59,7 +58,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
 
     /**
      * Set the id property: Slot ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the PersonalizerSlotOptions object itself.
      */
@@ -70,27 +69,27 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
 
     /**
      * Get the features property: List of dictionaries containing slot features.
-     *
+     * 
      * @return the features value.
      */
-    public List<BinaryData> getFeatures() {
+    public List<Object> getFeatures() {
         return this.features;
     }
 
     /**
      * Set the features property: List of dictionaries containing slot features.
-     *
+     * 
      * @param features the features value to set.
      * @return the PersonalizerSlotOptions object itself.
      */
-    public PersonalizerSlotOptions setFeatures(List<BinaryData> features) {
+    public PersonalizerSlotOptions setFeatures(List<Object> features) {
         this.features = features;
         return this;
     }
 
     /**
      * Get the excludedActions property: List of excluded action Ids.
-     *
+     * 
      * @return the excludedActions value.
      */
     public List<String> getExcludedActions() {
@@ -99,7 +98,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
 
     /**
      * Set the excludedActions property: List of excluded action Ids.
-     *
+     * 
      * @param excludedActions the excludedActions value to set.
      * @return the PersonalizerSlotOptions object itself.
      */
@@ -114,7 +113,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      * BaselineAction must be defined for every slot.
      * BaselineAction should never be part of ExcludedActions.
      * Each slot must have a unique BaselineAction which corresponds to an an action from the event's Actions list.
-     *
+     * 
      * @return the baselineAction value.
      */
     public String getBaselineAction() {
@@ -127,7 +126,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      * BaselineAction must be defined for every slot.
      * BaselineAction should never be part of ExcludedActions.
      * Each slot must have a unique BaselineAction which corresponds to an an action from the event's Actions list.
-     *
+     * 
      * @param baselineAction the baselineAction value to set.
      * @return the PersonalizerSlotOptions object itself.
      */
@@ -152,7 +151,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
 
     /**
      * Reads an instance of PersonalizerSlotOptions from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PersonalizerSlotOptions if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -171,7 +170,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
                 } else if ("baselineAction".equals(fieldName)) {
                     deserializedPersonalizerSlotOptions.baselineAction = reader.getString();
                 } else if ("features".equals(fieldName)) {
-                    List<BinaryData> features = reader.readArray(reader1 -> BinaryData.fromObject(reader1.readUntyped()));
+                    List<Object> features = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedPersonalizerSlotOptions.features = features;
                 } else if ("excludedActions".equals(fieldName)) {
                     List<String> excludedActions = reader.readArray(reader1 -> reader1.getString());

@@ -34,12 +34,12 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
     /**
      * Creates an instance of ServiceStatus class.
      */
-    ServiceStatus() {
+    public ServiceStatus() {
     }
 
     /**
      * Get the service property: The service property.
-     *
+     * 
      * @return the service value.
      */
     public String getService() {
@@ -48,7 +48,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
 
     /**
      * Set the service property: The service property.
-     *
+     * 
      * @param service the service value to set.
      * @return the ServiceStatus object itself.
      */
@@ -59,7 +59,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
 
     /**
      * Get the apiStatus property: The apiStatus property.
-     *
+     * 
      * @return the apiStatus value.
      */
     public String getApiStatus() {
@@ -68,7 +68,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
 
     /**
      * Set the apiStatus property: The apiStatus property.
-     *
+     * 
      * @param apiStatus the apiStatus value to set.
      * @return the ServiceStatus object itself.
      */
@@ -79,7 +79,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
 
     /**
      * Get the apiStatusMessage property: The apiStatusMessage property.
-     *
+     * 
      * @return the apiStatusMessage value.
      */
     public String getApiStatusMessage() {
@@ -88,7 +88,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
 
     /**
      * Set the apiStatusMessage property: The apiStatusMessage property.
-     *
+     * 
      * @param apiStatusMessage the apiStatusMessage value to set.
      * @return the ServiceStatus object itself.
      */
@@ -111,7 +111,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
 
     /**
      * Reads an instance of ServiceStatus from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServiceStatus if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

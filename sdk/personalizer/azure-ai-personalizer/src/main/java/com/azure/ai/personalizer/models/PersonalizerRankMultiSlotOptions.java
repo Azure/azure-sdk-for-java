@@ -5,7 +5,6 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -26,7 +25,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
      */
-    private List<BinaryData> contextFeatures;
+    private List<Object> contextFeatures;
 
     /*
      * The set of actions the Personalizer service can pick from.
@@ -73,10 +72,10 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * device, profile information, aggregated data about time and date, etc.
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
-     *
+     * 
      * @return the contextFeatures value.
      */
-    public List<BinaryData> getContextFeatures() {
+    public List<Object> getContextFeatures() {
         return this.contextFeatures;
     }
 
@@ -87,11 +86,11 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * device, profile information, aggregated data about time and date, etc.
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
-     *
+     * 
      * @param contextFeatures the contextFeatures value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
-    public PersonalizerRankMultiSlotOptions setContextFeatures(List<BinaryData> contextFeatures) {
+    public PersonalizerRankMultiSlotOptions setContextFeatures(List<Object> contextFeatures) {
         this.contextFeatures = contextFeatures;
         return this;
     }
@@ -102,7 +101,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * The order of the actions does not affect the rank result but the order
      * should match the sequence your application would have used to display them.
      * The first item in the array will be used as Baseline item in Offline Evaluations.
-     *
+     * 
      * @return the actions value.
      */
     public List<PersonalizerRankableAction> getActions() {
@@ -115,7 +114,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * The order of the actions does not affect the rank result but the order
      * should match the sequence your application would have used to display them.
      * The first item in the array will be used as Baseline item in Offline Evaluations.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
@@ -127,7 +126,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
     /**
      * Get the slots property: The set of slots the Personalizer service should select actions for.
      * The set should not contain more than 50 slots.
-     *
+     * 
      * @return the slots value.
      */
     public List<PersonalizerSlotOptions> getSlots() {
@@ -137,7 +136,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
     /**
      * Set the slots property: The set of slots the Personalizer service should select actions for.
      * The set should not contain more than 50 slots.
-     *
+     * 
      * @param slots the slots value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
@@ -151,7 +150,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * If null, the service generates a unique eventId. The eventId will be used for
      * associating this request with its reward, as well as seeding the pseudo-random
      * generator when making a Personalizer call.
-     *
+     * 
      * @return the eventId value.
      */
     public String getEventId() {
@@ -163,7 +162,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * If null, the service generates a unique eventId. The eventId will be used for
      * associating this request with its reward, as well as seeding the pseudo-random
      * generator when making a Personalizer call.
-     *
+     * 
      * @param eventId the eventId value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
@@ -179,7 +178,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * Reward to the event. Send true if it is possible the user will not see the action specified in the rank results,
      * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
      * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
-     *
+     * 
      * @return the deferActivation value.
      */
     public Boolean isDeferActivation() {
@@ -193,7 +192,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
      * Reward to the event. Send true if it is possible the user will not see the action specified in the rank results,
      * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
      * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
-     *
+     * 
      * @param deferActivation the deferActivation value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
@@ -219,7 +218,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
 
     /**
      * Reads an instance of PersonalizerRankMultiSlotOptions from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PersonalizerRankMultiSlotOptions if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
@@ -243,7 +242,7 @@ public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<
                         = reader.readArray(reader1 -> PersonalizerSlotOptions.fromJson(reader1));
                     deserializedPersonalizerRankMultiSlotOptions.slots = slots;
                 } else if ("contextFeatures".equals(fieldName)) {
-                    List<BinaryData> contextFeatures = reader.readArray(reader1 -> BinaryData.fromObject(reader1.readUntyped()));
+                    List<Object> contextFeatures = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedPersonalizerRankMultiSlotOptions.contextFeatures = contextFeatures;
                 } else if ("eventId".equals(fieldName)) {
                     deserializedPersonalizerRankMultiSlotOptions.eventId = reader.getString();

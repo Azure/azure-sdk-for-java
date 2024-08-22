@@ -5,7 +5,6 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -26,7 +25,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
      */
-    private List<BinaryData> contextFeatures;
+    private List<Object> contextFeatures;
 
     /*
      * The set of actions the Personalizer service can pick from.
@@ -74,10 +73,10 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * device, profile information, aggregated data about time and date, etc.
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
-     *
+     * 
      * @return the contextFeatures value.
      */
-    public List<BinaryData> getContextFeatures() {
+    public List<Object> getContextFeatures() {
         return this.contextFeatures;
     }
 
@@ -88,11 +87,11 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * device, profile information, aggregated data about time and date, etc.
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
-     *
+     * 
      * @param contextFeatures the contextFeatures value to set.
      * @return the PersonalizerRankOptions object itself.
      */
-    public PersonalizerRankOptions setContextFeatures(List<BinaryData> contextFeatures) {
+    public PersonalizerRankOptions setContextFeatures(List<Object> contextFeatures) {
         this.contextFeatures = contextFeatures;
         return this;
     }
@@ -103,7 +102,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * The order of the actions does not affect the rank result but the order
      * should match the sequence your application would have used to display them.
      * The first item in the array will be used as Baseline item in Offline Evaluations.
-     *
+     * 
      * @return the actions value.
      */
     public List<PersonalizerRankableAction> getActions() {
@@ -116,7 +115,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * The order of the actions does not affect the rank result but the order
      * should match the sequence your application would have used to display them.
      * The first item in the array will be used as Baseline item in Offline Evaluations.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the PersonalizerRankOptions object itself.
      */
@@ -129,7 +128,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * Get the excludedActions property: The set of action ids to exclude from ranking.
      * Personalizer will consider the first non-excluded item in the array as the Baseline action when performing
      * Offline Evaluations.
-     *
+     * 
      * @return the excludedActions value.
      */
     public List<String> getExcludedActions() {
@@ -140,7 +139,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * Set the excludedActions property: The set of action ids to exclude from ranking.
      * Personalizer will consider the first non-excluded item in the array as the Baseline action when performing
      * Offline Evaluations.
-     *
+     * 
      * @param excludedActions the excludedActions value to set.
      * @return the PersonalizerRankOptions object itself.
      */
@@ -154,7 +153,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * If null, the service generates a unique eventId. The eventId will be used for
      * associating this request with its reward, as well as seeding the pseudo-random
      * generator when making a Personalizer call.
-     *
+     * 
      * @return the eventId value.
      */
     public String getEventId() {
@@ -166,7 +165,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * If null, the service generates a unique eventId. The eventId will be used for
      * associating this request with its reward, as well as seeding the pseudo-random
      * generator when making a Personalizer call.
-     *
+     * 
      * @param eventId the eventId value to set.
      * @return the PersonalizerRankOptions object itself.
      */
@@ -182,7 +181,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * Reward to the event. Send true if it is possible the user will not see the action specified in the rank results,
      * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
      * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
-     *
+     * 
      * @return the deferActivation value.
      */
     public Boolean isDeferActivation() {
@@ -196,7 +195,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
      * Reward to the event. Send true if it is possible the user will not see the action specified in the rank results,
      * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
      * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
-     *
+     * 
      * @param deferActivation the deferActivation value to set.
      * @return the PersonalizerRankOptions object itself.
      */
@@ -223,7 +222,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
 
     /**
      * Reads an instance of PersonalizerRankOptions from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PersonalizerRankOptions if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -242,7 +241,7 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
                         = reader.readArray(reader1 -> PersonalizerRankableAction.fromJson(reader1));
                     deserializedPersonalizerRankOptions.actions = actions;
                 } else if ("contextFeatures".equals(fieldName)) {
-                    List<BinaryData> contextFeatures = reader.readArray(reader1 -> BinaryData.fromObject(reader1.readUntyped()));
+                    List<Object> contextFeatures = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedPersonalizerRankOptions.contextFeatures = contextFeatures;
                 } else if ("excludedActions".equals(fieldName)) {
                     List<String> excludedActions = reader.readArray(reader1 -> reader1.getString());
