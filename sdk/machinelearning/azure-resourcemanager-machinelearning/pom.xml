@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-machinelearning</artifactId>
-  <version>1.1.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-machinelearning;current} -->
+  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-machinelearning;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Machine Learning Management</name>
