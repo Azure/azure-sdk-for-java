@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -17,8 +19,9 @@ import jakarta.annotation.PostConstruct;
 /**
  * Properties for all Azure App Configuration stores that are loaded.
  */
+@Configuration
 @ConfigurationProperties(prefix = AppConfigurationProperties.CONFIG_PREFIX)
-public final class AppConfigurationProperties {
+public class AppConfigurationProperties {
 
     /**
      * Prefix for client configurations for connecting to configuration stores.
