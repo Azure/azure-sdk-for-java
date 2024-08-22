@@ -12,18 +12,18 @@ public final class ClusterLogAnalyticsApplicationLogsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterLogAnalyticsApplicationLogs model
-            = BinaryData.fromString("{\"stdOutEnabled\":false,\"stdErrorEnabled\":true}")
+            = BinaryData.fromString("{\"stdOutEnabled\":true,\"stdErrorEnabled\":true}")
                 .toObject(ClusterLogAnalyticsApplicationLogs.class);
-        Assertions.assertEquals(false, model.stdOutEnabled());
+        Assertions.assertEquals(true, model.stdOutEnabled());
         Assertions.assertEquals(true, model.stdErrorEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterLogAnalyticsApplicationLogs model
-            = new ClusterLogAnalyticsApplicationLogs().withStdOutEnabled(false).withStdErrorEnabled(true);
+            = new ClusterLogAnalyticsApplicationLogs().withStdOutEnabled(true).withStdErrorEnabled(true);
         model = BinaryData.fromObject(model).toObject(ClusterLogAnalyticsApplicationLogs.class);
-        Assertions.assertEquals(false, model.stdOutEnabled());
+        Assertions.assertEquals(true, model.stdOutEnabled());
         Assertions.assertEquals(true, model.stdErrorEnabled());
     }
 }

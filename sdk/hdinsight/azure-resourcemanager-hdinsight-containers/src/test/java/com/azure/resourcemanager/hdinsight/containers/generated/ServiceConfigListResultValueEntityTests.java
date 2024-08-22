@@ -12,18 +12,18 @@ public final class ServiceConfigListResultValueEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceConfigListResultValueEntity model
-            = BinaryData.fromString("{\"value\":\"ag\",\"description\":\"vimjwos\"}")
+            = BinaryData.fromString("{\"value\":\"kfwynw\",\"description\":\"tbvkayhmtnvyq\"}")
                 .toObject(ServiceConfigListResultValueEntity.class);
-        Assertions.assertEquals("ag", model.value());
-        Assertions.assertEquals("vimjwos", model.description());
+        Assertions.assertEquals("kfwynw", model.value());
+        Assertions.assertEquals("tbvkayhmtnvyq", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceConfigListResultValueEntity model
-            = new ServiceConfigListResultValueEntity().withValue("ag").withDescription("vimjwos");
+            = new ServiceConfigListResultValueEntity().withValue("kfwynw").withDescription("tbvkayhmtnvyq");
         model = BinaryData.fromObject(model).toObject(ServiceConfigListResultValueEntity.class);
-        Assertions.assertEquals("ag", model.value());
-        Assertions.assertEquals("vimjwos", model.description());
+        Assertions.assertEquals("kfwynw", model.value());
+        Assertions.assertEquals("tbvkayhmtnvyq", model.description());
     }
 }
