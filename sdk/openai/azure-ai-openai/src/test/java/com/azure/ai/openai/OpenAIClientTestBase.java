@@ -100,6 +100,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     private boolean sanitizersRemoved = false;
 
+    String azureSearchEndpoint = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
+    String azureSearchIndexName = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_SEARCH_INDEX");
+
     private static final String JAVA_SDK_TESTS_FILES_TXT =  "java_sdk_tests_files.txt";
     private static final String JAVA_SDK_TESTS_FINE_TUNING_JSON = "java_sdk_tests_fine_tuning.json";
     private static final String MS_LOGO_PNG = "ms_logo.png";
@@ -261,7 +264,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     void getChatCompletionsAzureChatSearchRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
                 Arrays.asList(new ChatRequestUserMessage("What does PR complete mean?")));
-        testRunner.accept("gpt-35-turbo-16k", chatCompletionsOptions);
+        testRunner.accept("gpt-4-32k", chatCompletionsOptions);
     }
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
@@ -269,7 +272,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getEmbeddingWithSmallerDimensionsRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
-        testRunner.accept("text-embedding-3-large",
+        testRunner.accept("text-embedding-3-small",
                 new EmbeddingsOptions(Arrays.asList("Your text string goes here")).setDimensions(20)
         );
     }

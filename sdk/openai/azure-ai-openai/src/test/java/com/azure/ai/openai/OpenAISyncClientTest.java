@@ -434,9 +434,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
             AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
-                    "https://openaisdktestsearch.search.windows.net",
-                    "openai-test-index-carbon-wiki"
-            );
+                azureSearchEndpoint, azureSearchIndexName);
             searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
             AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
                 new AzureSearchChatExtensionConfiguration(searchParameters);
@@ -455,9 +453,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
             AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
-                    "https://openaisdktestsearch.search.windows.net",
-                    "openai-test-index-carbon-wiki"
-            );
+                azureSearchEndpoint, azureSearchIndexName);
 
             // Only have citations in the search results, default are 'citations' and 'intent'.
             List<OnYourDataContextProperty> contextProperties = new ArrayList<>();
@@ -485,9 +481,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
             AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
-                    "https://openaisdktestsearch.search.windows.net",
-                    "openai-test-index-carbon-wiki"
-            );
+                azureSearchEndpoint, azureSearchIndexName);
             searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
             AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
                     new AzureSearchChatExtensionConfiguration(searchParameters);
