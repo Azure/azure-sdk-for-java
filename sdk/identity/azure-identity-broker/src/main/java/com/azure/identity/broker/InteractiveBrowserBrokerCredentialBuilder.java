@@ -78,8 +78,8 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      *
      * @return An updated instance of this builder with useDefaultBrokerAccount set.
      */
-    public InteractiveBrowserCredentialBuilder proofOfPosessionRequired(boolean tokenPoPRequired) {
-        CredentialBuilderBaseHelper.getClientOptions(this).setProofOfPosessionRequired(true);
+    public InteractiveBrowserCredentialBuilder proofOfPossessionRequired(boolean tokenPoPRequired) {
+        CredentialBuilderBaseHelper.getClientOptions(this).setProofOfPossessionRequired(true);
         return this;
     }
 

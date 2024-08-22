@@ -40,7 +40,23 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.AppTokenProviderParameters;
+import com.microsoft.aad.msal4j.ClaimsRequest;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IBroker;
+import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.ManagedIdentityId;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
+import com.microsoft.aad.msal4j.Prompt;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.SystemBrowserOptions;
+import com.microsoft.aad.msal4j.TokenProviderResult;
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4j.HttpMethod;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
@@ -585,7 +601,7 @@ public abstract class IdentityClientBase {
                 builder.extraQueryParameters(extraQueryParameters);
             }
 
-            if (options.isProofOfPosessionRequired() && request instanceof PopTokenRequestContext) {
+            if (options.isProofOfPossessionRequired() && request instanceof PopTokenRequestContext) {
                 PopTokenRequestContext requestContext = (PopTokenRequestContext) request;
                 builder.proofOfPossession(mapToMsalHttpMethod(requestContext.getHttpMethod()), requestContext.getUri(), requestContext.getProofOfPossessionNonce());
             }

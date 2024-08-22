@@ -7,9 +7,9 @@ import com.azure.core.credential.AccessToken;
 import reactor.core.publisher.Mono;
 
 /**
- * An interface for credentials that support proof of posession (PoP) tokens.
+ * An interface for credentials that support proof of possession (PoP) tokens.
  */
-public interface SupportsProofOfPosession {
+public interface SupportsProofOfPossession {
     /**
      * Asynchronously get a token for a given resource/audience.
      *

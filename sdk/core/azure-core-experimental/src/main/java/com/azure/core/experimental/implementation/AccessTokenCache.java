@@ -5,7 +5,7 @@ package com.azure.core.experimental.implementation;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.experimental.credential.PopTokenRequestContext;
-import com.azure.core.experimental.credential.SupportsProofOfPosession;
+import com.azure.core.experimental.credential.SupportsProofOfPossession;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -38,7 +38,7 @@ public final class AccessTokenCache {
     private static final ClientLogger LOGGER = new ClientLogger(AccessTokenCache.class);
     private final AtomicReference<Sinks.One<AccessToken>> wip;
     private final AtomicReference<AccessTokenCacheInfo> cacheInfo;
-    private final SupportsProofOfPosession tokenCredential;
+    private final SupportsProofOfPossession tokenCredential;
     // Stores the last authenticated token request context. The cached token is valid under this context.
     private PopTokenRequestContext tokenRequestContext;
     private final Supplier<Mono<AccessToken>> tokenSupplierAsync;
@@ -52,7 +52,7 @@ public final class AccessTokenCache {
      *
      * @param tokenCredential the token credential to be used to acquire the token.
      */
-    public AccessTokenCache(SupportsProofOfPosession tokenCredential) {
+    public AccessTokenCache(SupportsProofOfPossession tokenCredential) {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
         this.wip = new AtomicReference<>();
         this.tokenCredential = tokenCredential;

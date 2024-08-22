@@ -36,7 +36,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @param credential The credential to use for authentication.
      * @param scopes The scopes required for the token.
      */
-    public PopTokenAuthenticationPolicy(SupportsProofOfPosession credential, String... scopes) {
+    public PopTokenAuthenticationPolicy(SupportsProofOfPossession credential, String... scopes) {
         Objects.requireNonNull(credential);
         this.scopes.clear();
         this.scopes.addAll(Arrays.asList(scopes));
