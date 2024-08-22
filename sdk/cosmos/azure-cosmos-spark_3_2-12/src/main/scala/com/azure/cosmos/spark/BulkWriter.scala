@@ -657,8 +657,11 @@ private class BulkWriter
     // this means if the semaphore can't be acquired within 10 minutes
     // the first attempt will always assume it wasn't stale - so effectively we
     // allow staleness for ten additional minutes - which is perfectly fine
-    var activeOperationsSnapshot = mutable.Set.empty[CosmosItemOperation]
+    var activeBulkWriteOperationsSnapshot = mutable.Set.empty[CosmosItemOperation]
+    var pendingBulkWriteRetriesSnapshot = mutable.Set.empty[CosmosItemOperation]
     var activeReadManyOperationsSnapshot = mutable.Set.empty[ReadManyOperation]
+    var pendingReadManyRetriesSnapshot = mutable.Set.empty[ReadManyOperation]
+
     log.logTrace(
       s"Before TryAcquire ${totalScheduledMetrics.get}, Context: ${operationContext.toString} $getThreadInfo")
     while (!semaphore.tryAcquire(activeTasksSemaphoreTimeout, TimeUnit.MINUTES)) {
@@ -671,15 +674,17 @@ private class BulkWriter
 
       throwIfProgressStaled(
         "Semaphore acquisition",
-        // TODO @fabianm BEFORE MERGE use empty set instead
-        activeOperationsSnapshot,
-        activeOperationsSnapshot,
+        activeBulkWriteOperationsSnapshot,
+        pendingBulkWriteRetriesSnapshot,
         activeReadManyOperationsSnapshot,
-        activeReadManyOperationsSnapshot,
-        numberOfIntervalsWithIdenticalActiveOperationSnapshots)
+        pendingReadManyRetriesSnapshot,
+        numberOfIntervalsWithIdenticalActiveOperationSnapshots,
+        allowRetryOnNewBulkWriterInstance = false)
 
-      activeOperationsSnapshot = activeBulkWriteOperations.clone()
+      activeBulkWriteOperationsSnapshot = activeBulkWriteOperations.clone()
+      pendingBulkWriteRetriesSnapshot = pendingBulkWriteRetries.clone()
       activeReadManyOperationsSnapshot = activeReadManyOperations.clone()
+      pendingReadManyRetriesSnapshot = pendingReadManyRetries.clone()
     }
 
     val cnt = totalScheduledMetrics.getAndIncrement()
@@ -965,7 +970,8 @@ private class BulkWriter
     pendingRetriesSnapshot: mutable.Set[CosmosItemOperation],
     activeReadManyOperationsSnapshot: mutable.Set[ReadManyOperation],
     pendingReadManyOperationsSnapshot: mutable.Set[ReadManyOperation],
-    numberOfIntervalsWithIdenticalActiveOperationSnapshots: AtomicLong
+    numberOfIntervalsWithIdenticalActiveOperationSnapshots: AtomicLong,
+    allowRetryOnNewBulkWriterInstance: Boolean
   ): Unit = {
 
     val operationsLog = getActiveOperationsLog(activeOperationsSnapshot, activeReadManyOperationsSnapshot)
@@ -992,6 +998,7 @@ private class BulkWriter
     val maxAllowedIntervalWithoutAnyProgressExceeded =
       secondsWithoutProgress >= writeConfig.maxRetryNoProgressIntervalInSeconds ||
         (commitAttempt == 1
+          && allowRetryOnNewBulkWriterInstance
           && this.activeReadManyOperations.isEmpty
           && secondsWithoutProgress >= writeConfig.maxNoProgressIntervalInSeconds)
 
@@ -1003,7 +1010,11 @@ private class BulkWriter
             s"completed (first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
             s"${writeConfig.maxNoProgressIntervalInSeconds} seconds: $operationsLog",
           commitAttempt,
-          Some((pendingRetriesSnapshot ++ activeOperationsSnapshot).toList))
+          if (allowRetryOnNewBulkWriterInstance) {
+            Some((pendingRetriesSnapshot ++ activeOperationsSnapshot).toList)
+          } else {
+            None
+          })
       } else {
         new BulkWriterNoProgressException(
           s"Stale bulk ingestion as well as readMany operations identified in $operationName - the following active operations have not been " +
@@ -1059,7 +1070,8 @@ private class BulkWriter
                   pendingOperationsSnapshot,
                   activeReadManyOperationsSnapshot,
                   pendingReadManyOperationsSnapshot,
-                  numberOfIntervalsWithIdenticalActiveOperationSnapshots
+                  numberOfIntervalsWithIdenticalActiveOperationSnapshots,
+                  allowRetryOnNewBulkWriterInstance = true
                 )
 
                 if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get > 0L) {
