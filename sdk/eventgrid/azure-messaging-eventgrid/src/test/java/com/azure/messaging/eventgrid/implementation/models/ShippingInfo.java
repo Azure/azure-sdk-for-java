@@ -37,6 +37,7 @@ public class ShippingInfo implements JsonSerializable<ShippingInfo> {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken();
                 while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
                     String fieldName = readerToUse.getFieldName();
                     readerToUse.nextToken();

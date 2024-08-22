@@ -29,7 +29,7 @@ public class ContosoItemSentEventData implements JsonSerializable<ContosoItemSen
         return jsonWriter;
     }
 
-    public ContosoItemSentEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static ContosoItemSentEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ContosoItemSentEventData contosoItemSentEventData = new ContosoItemSentEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {

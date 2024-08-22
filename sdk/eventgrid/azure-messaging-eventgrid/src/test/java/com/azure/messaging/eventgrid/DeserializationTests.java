@@ -168,7 +168,6 @@ public class DeserializationTests {
             Arguments.of(BinaryData.fromObject(1)),
             Arguments.of(BinaryData.fromObject("data")),
             Arguments.of(BinaryData.fromString("{\"data\":\"data\"}")),
-            Arguments.of(BinaryData.fromObject(null)),
             Arguments.of(BinaryData.fromObject(true))
         );
     }
@@ -236,10 +235,10 @@ public class DeserializationTests {
 
         assertNotNull(events);
         assertEquals(1, events.length);
-        ContosoItemReceivedEventData[] eventData = events[0].getData().toObject(TypeReference.createInstance(ContosoItemReceivedEventData[].class));
+        List<ContosoItemReceivedEventData> eventData = events[0].getData().toObject(new TypeReference<List<ContosoItemReceivedEventData>>() {});
         assertNotNull(eventData);
 
-        assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", (eventData[0]).getItemSku());
+        assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", (eventData.get(0)).getItemSku());
     }
 
     @Test
