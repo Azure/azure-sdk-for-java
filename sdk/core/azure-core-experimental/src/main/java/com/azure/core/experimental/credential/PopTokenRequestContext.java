@@ -28,12 +28,11 @@ public final class PopTokenRequestContext extends TokenRequestContext {
     private String proofOfPossessionNonce;
     private HttpRequest request;
 
-
     /**
      * Creates a new instance of the PopTokenRequestContext.
      */
-    public PopTokenRequestContext() {}
-
+    public PopTokenRequestContext() {
+    }
 
     /**
      * Adds scopes required for the token.
