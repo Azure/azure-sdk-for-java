@@ -638,7 +638,7 @@
           "ignore": true,
           "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.compute.models.WindowsConfiguration com.azure.resourcemanager.compute.models.WindowsConfiguration::withEnableVMAgentPlatformUpdates(java.lang.Boolean)",
-          "justification": "Fix method removed."
+          "justification": "Service changed the property to readOnly."
         }
       ]
     }
