@@ -177,7 +177,7 @@ BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt")
 EmailAttachment attachment = new EmailAttachment(
     "attachment.txt",
     "text/plain",
-    attachmentContent.toBytes()
+    attachmentContent
 );
 
 EmailMessage message = new EmailMessage()
@@ -203,7 +203,7 @@ BinaryData attachmentContent = BinaryData.fromFile(new File("C:/inlineimage.jpg"
 EmailAttachment attachment = new EmailAttachment(
     "inlineimage.jpg",
     "image/jpeg",
-    BinaryData.fromString("test").toBytes()
+    BinaryData.fromString("test")
 );
 attachment.setContentId("inline_image");
 

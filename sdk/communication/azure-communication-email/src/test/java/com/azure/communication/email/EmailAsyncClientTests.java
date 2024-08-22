@@ -71,7 +71,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
         EmailAttachment attachment = new EmailAttachment(
             "attachment.txt",
             "text/plain",
-            BinaryData.fromString("test").toBytes()
+            BinaryData.fromString("test")
         );
 
         EmailMessage message = new EmailMessage()
@@ -96,7 +96,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
         EmailAttachment attachment = new EmailAttachment(
             "inlineimage.jpg",
             "image/jpeg",
-            BinaryData.fromString("test").toBytes()
+            BinaryData.fromString("test")
         );
         attachment.setContentId("inline_image");
 

@@ -21,7 +21,7 @@ public final class EmailAttachment {
     /*
      * Base64 encoded contents of the attachment
      */
-    private final byte[] contentInBase64;
+    private final BinaryData contentInBase64;
 
     /*
      * Unique identifier (CID) to reference an inline attachment.
@@ -35,7 +35,7 @@ public final class EmailAttachment {
      * @param contentType the contentType value to set.
      * @param contentInBase64 the contentInBase64 value to set.
      */
-    public EmailAttachment(String name, String contentType, byte[] contentInBase64) {
+    public EmailAttachment(String name, String contentType, BinaryData contentInBase64) {
         this.name = name;
         this.contentType = contentType;
         this.contentInBase64 = contentInBase64;
@@ -64,8 +64,8 @@ public final class EmailAttachment {
      * 
      * @return the contentInBase64 value.
      */
-    public byte[] getContentInBase64() {
-        return CoreUtils.clone(this.contentInBase64);
+    public BinaryData getContentInBase64() {
+        return this.contentInBase64;
     }
 
     /**

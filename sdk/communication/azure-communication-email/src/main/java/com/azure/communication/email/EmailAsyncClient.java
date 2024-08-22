@@ -93,11 +93,22 @@ public final class EmailAsyncClient {
         if (message.getAttachments() != null) {
             attachmentsImpl = new ArrayList<>();
             for (EmailAttachment attachment: message.getAttachments()) {
-                attachmentsImpl.add(new com.azure.communication.email.implementation.models.EmailAttachment(
+                com.azure.communication.email.implementation.models.EmailAttachment attachmentImpl = null;
+                
+                attachmentImpl = new com.azure.communication.email.implementation.models.EmailAttachment(
                     attachment.getName(),
                     attachment.getContentType(),
                     attachment.getContentInBase64()
-                ));
+                );
+
+                String contentId = attachment.getContentId();
+
+                 if (contentId != null)
+                 {
+                    attachmentImpl.setContentId(contentId);
+                 }
+
+                attachmentsImpl.add(attachmentImpl);
             }
         }
 
