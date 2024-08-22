@@ -29,13 +29,20 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
     @Generated
     private FunctionCall function;
 
+
+    /**
+     * Creates an instance of ChatCompletionsFunctionToolCall class.
+     *
+     * @param id the id value to set.
+     * @param function the function value to set.
+     */
     public ChatCompletionsFunctionToolCall(String id, FunctionCall function) {
         super(id, function);
     }
 
     /**
      * Get the type property: The object type.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -46,7 +53,7 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
 
     /**
      * Get the function property: The details of the function invocation requested by the tool call.
-     * 
+     *
      * @return the function value.
      */
     @Generated
@@ -69,7 +76,7 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
 
     /**
      * Reads an instance of ChatCompletionsFunctionToolCall from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ChatCompletionsFunctionToolCall if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
