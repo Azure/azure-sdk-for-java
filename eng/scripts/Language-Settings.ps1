@@ -499,7 +499,7 @@ function Update-java-GeneratedSdks([string]$PackageDirectoriesFile) {
 
         Push-Location "sdk/$directory"
         try {
-          Invoke-Expression "npx tsp-client update"
+          Invoke-Expression "npx tsp-client update --debug"
         }
         catch {
           Write-Host "##[error]Error generating project under directory $directory"
