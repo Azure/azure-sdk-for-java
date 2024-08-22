@@ -106,7 +106,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
+            return Mono.error(new RuntimeException("Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
         }
         HttpPipelineNextPolicy nextPolicy = next.clone();
 
@@ -138,7 +138,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
             throw LOGGER.logExceptionAsError(
-                new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
+                new RuntimeException("Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
         } else {
             HttpPipelineNextSyncPolicy nextPolicy = next.clone();
             this.authorizeRequestSync(context);
