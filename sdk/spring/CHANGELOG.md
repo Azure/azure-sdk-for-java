@@ -1,4 +1,11 @@
 # Release History
+## 5.16.0-beta.1 (unreleased)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Support to use registered `TokenCredential` to build SecretClient in KeyVaultEnvironmentPostProcessor [#41580](https://github.com/Azure/azure-sdk-for-java/pull/41580).
 
 ## 5.15.0 (2024-08-07)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.7, 3.3.0-3.3.2. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>7) and 3.3.m (m>2) should be supported, but they aren't tested with this release.)
