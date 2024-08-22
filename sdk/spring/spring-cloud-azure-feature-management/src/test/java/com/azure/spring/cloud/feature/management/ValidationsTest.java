@@ -21,6 +21,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -44,6 +46,8 @@ public class ValidationsTest {
     @Mock
     private FeatureManagementConfigProperties configProperties;
 
+    private static final Logger logger = LoggerFactory.getLogger(ValidationsTest.class);
+
     private final ObjectMapper objectMapper = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
     private final String testCaseFolderPath = "validations-tests";
@@ -51,6 +55,7 @@ public class ValidationsTest {
     private final String inputsGroups = "groups";
     private final String sampleFileNameFilter = "sample";
     private final String testsFileNameFilter = "tests";
+
 
     @BeforeEach
     public void setup() {
@@ -113,24 +118,24 @@ public class ValidationsTest {
         final FeatureManager featureManager = new FeatureManager(context, managementProperties, configProperties);
 
         final List<ValidationTestCase> testCases = readTestcasesFromFile(testsFile);
-        System.out.println("Running test case from file: " + testsFile.getName());
+        logger.debug("Running test case from file: " + testsFile.getName());
 
         for (int i = 0; i < testCases.size(); i++) {
-            System.out.println("Test case " + i + " : " + testCases.get(i).getDescription());
+            logger.debug("Test case " + i + " : " + testCases.get(i).getDescription());
             if (hasException(testCases.get(i))) {   // TODO. Currently we didn't throw the exception when parameter is invalid
                 assertNull(managementProperties.getOnOff().get(testCases.get(i).getFeatureFlagName()));
-            } else {
-                if (hasInput(testCases.get(i))) { // Set inputs
-                    final Object userObj = testCases.get(i).getInputs().get(inputsUser);
-                    final Object groupsObj = testCases.get(i).getInputs().get(inputsGroups);
-                    final String user = userObj != null ? userObj.toString() : null;
-                    final List<String> groups = groupsObj != null ? (List<String>) groupsObj : null;
-                    when(context.getBean(Mockito.contains("Targeting"))).thenReturn(new TargetingFilter(new TargetingFilterTestContextAccessor(user, groups)));
-                }
-
-                final Boolean result = featureManager.isEnabled(testCases.get(i).getFeatureFlagName());
-                assertEquals(result.toString(), testCases.get(i).getIsEnabled().getResult());
+                continue;
             }
+            if (hasInput(testCases.get(i))) { // Set inputs
+                final Object userObj = testCases.get(i).getInputs().get(inputsUser);
+                final Object groupsObj = testCases.get(i).getInputs().get(inputsGroups);
+                final String user = userObj != null ? userObj.toString() : null;
+                final List<String> groups = groupsObj != null ? (List<String>) groupsObj : null;
+                when(context.getBean(Mockito.contains("Targeting"))).thenReturn(new TargetingFilter(new TargetingFilterTestContextAccessor(user, groups)));
+            }
+
+            final Boolean result = featureManager.isEnabled(testCases.get(i).getFeatureFlagName());
+            assertEquals(result.toString(), testCases.get(i).getIsEnabled().getResult());
         }
     }
 
