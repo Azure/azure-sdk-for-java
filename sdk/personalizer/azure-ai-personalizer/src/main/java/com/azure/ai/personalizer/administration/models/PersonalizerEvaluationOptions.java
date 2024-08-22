@@ -5,48 +5,56 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** A counterfactual evaluation. */
+/**
+ * A counterfactual evaluation.
+ */
 @Fluent
-public final class PersonalizerEvaluationOptions {
+public final class PersonalizerEvaluationOptions implements JsonSerializable<PersonalizerEvaluationOptions> {
     /*
-     * True if the evaluation should explore for a more optimal learning
-     * settings.
+     * True if the evaluation should explore for a more optimal learning settings.
      */
-    @JsonProperty(value = "enableOfflineExperimentation")
     private Boolean enableOfflineExperimentation;
 
     /*
      * The name of the evaluation.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The start time of the evaluation.
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * The end time of the evaluation.
      */
-    @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
      * Additional learning settings to evaluate.
      */
-    @JsonProperty(value = "policies", required = true)
     private List<PersonalizerPolicy> policies;
+
+    /**
+     * Creates an instance of PersonalizerEvaluationOptions class.
+     */
+    public PersonalizerEvaluationOptions() {
+    }
 
     /**
      * Get the enableOfflineExperimentation property: True if the evaluation should explore for a more optimal learning
      * settings.
-     *
+     * 
      * @return the enableOfflineExperimentation value.
      */
     public Boolean isOfflineExperimentationEnabled() {
@@ -56,7 +64,7 @@ public final class PersonalizerEvaluationOptions {
     /**
      * Set the enableOfflineExperimentation property: True if the evaluation should explore for a more optimal learning
      * settings.
-     *
+     * 
      * @param enableOfflineExperimentation the enableOfflineExperimentation value to set.
      * @return the PersonalizerEvaluationOptions object itself.
      */
@@ -67,7 +75,7 @@ public final class PersonalizerEvaluationOptions {
 
     /**
      * Get the name property: The name of the evaluation.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -76,7 +84,7 @@ public final class PersonalizerEvaluationOptions {
 
     /**
      * Set the name property: The name of the evaluation.
-     *
+     * 
      * @param name the name value to set.
      * @return the PersonalizerEvaluationOptions object itself.
      */
@@ -87,7 +95,7 @@ public final class PersonalizerEvaluationOptions {
 
     /**
      * Get the startTime property: The start time of the evaluation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -96,7 +104,7 @@ public final class PersonalizerEvaluationOptions {
 
     /**
      * Set the startTime property: The start time of the evaluation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the PersonalizerEvaluationOptions object itself.
      */
@@ -107,7 +115,7 @@ public final class PersonalizerEvaluationOptions {
 
     /**
      * Get the endTime property: The end time of the evaluation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -116,7 +124,7 @@ public final class PersonalizerEvaluationOptions {
 
     /**
      * Set the endTime property: The end time of the evaluation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the PersonalizerEvaluationOptions object itself.
      */
@@ -127,7 +135,7 @@ public final class PersonalizerEvaluationOptions {
 
     /**
      * Get the policies property: Additional learning settings to evaluate.
-     *
+     * 
      * @return the policies value.
      */
     public List<PersonalizerPolicy> getPolicies() {
@@ -136,12 +144,69 @@ public final class PersonalizerEvaluationOptions {
 
     /**
      * Set the policies property: Additional learning settings to evaluate.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the PersonalizerEvaluationOptions object itself.
      */
     public PersonalizerEvaluationOptions setPolicies(List<PersonalizerPolicy> policies) {
         this.policies = policies;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeArrayField("policies", this.policies, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enableOfflineExperimentation", this.enableOfflineExperimentation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerEvaluationOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerEvaluationOptions if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PersonalizerEvaluationOptions.
+     */
+    public static PersonalizerEvaluationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerEvaluationOptions deserializedPersonalizerEvaluationOptions
+                = new PersonalizerEvaluationOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPersonalizerEvaluationOptions.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedPersonalizerEvaluationOptions.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedPersonalizerEvaluationOptions.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("policies".equals(fieldName)) {
+                    List<PersonalizerPolicy> policies
+                        = reader.readArray(reader1 -> PersonalizerPolicy.fromJson(reader1));
+                    deserializedPersonalizerEvaluationOptions.policies = policies;
+                } else if ("enableOfflineExperimentation".equals(fieldName)) {
+                    deserializedPersonalizerEvaluationOptions.enableOfflineExperimentation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerEvaluationOptions;
+        });
     }
 }

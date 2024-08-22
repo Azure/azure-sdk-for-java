@@ -23,17 +23,23 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Events. */
+/**
+ * An instance of this class provides access to all the operations defined in Events.
+ */
 public final class EventsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EventsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PersonalizerClientV1Preview3Impl client;
 
     /**
      * Initializes an instance of EventsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EventsImpl(PersonalizerClientV1Preview3Impl client) {
@@ -45,37 +51,29 @@ public final class EventsImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3Events to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/{ApiVersion}")
+    @Host("{Endpoint}/personalizer/v1.1-preview.3")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface EventsService {
         @Post("/events/{eventId}/reward")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> reward(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @PathParam("eventId") String eventId,
-                @BodyParam("application/json") PersonalizerRewardOptions reward,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> reward(@HostParam("Endpoint") String endpoint, @PathParam("eventId") String eventId,
+            @BodyParam("application/json") PersonalizerRewardOptions reward, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/events/{eventId}/activate")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> activate(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @PathParam("eventId") String eventId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> activate(@HostParam("Endpoint") String endpoint, @PathParam("eventId") String eventId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Post Reward.
-     *
-     * <p>Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the
-     * specified event.
-     *
+     * 
+     * Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the specified
+     * event.
+     * 
      * @param eventId The event id this reward applies to.
      * @param reward The reward should be a floating point number, typically between 0 and 1.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -86,23 +84,16 @@ public final class EventsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rewardWithResponseAsync(String eventId, PersonalizerRewardOptions reward) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.reward(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                eventId,
-                                reward,
-                                accept,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.reward(this.client.getEndpoint(), eventId, reward, accept, context));
     }
 
     /**
      * Post Reward.
-     *
-     * <p>Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the
-     * specified event.
-     *
+     * 
+     * Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the specified
+     * event.
+     * 
      * @param eventId The event id this reward applies to.
      * @param reward The reward should be a floating point number, typically between 0 and 1.
      * @param context The context to associate with this operation.
@@ -112,18 +103,18 @@ public final class EventsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardWithResponseAsync(
-            String eventId, PersonalizerRewardOptions reward, Context context) {
+    public Mono<Response<Void>> rewardWithResponseAsync(String eventId, PersonalizerRewardOptions reward,
+        Context context) {
         final String accept = "application/json";
-        return service.reward(this.client.getEndpoint(), this.client.getApiVersion(), eventId, reward, accept, context);
+        return service.reward(this.client.getEndpoint(), eventId, reward, accept, context);
     }
 
     /**
      * Post Reward.
-     *
-     * <p>Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the
-     * specified event.
-     *
+     * 
+     * Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the specified
+     * event.
+     * 
      * @param eventId The event id this reward applies to.
      * @param reward The reward should be a floating point number, typically between 0 and 1.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,10 +129,10 @@ public final class EventsImpl {
 
     /**
      * Post Reward.
-     *
-     * <p>Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the
-     * specified event.
-     *
+     * 
+     * Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the specified
+     * event.
+     * 
      * @param eventId The event id this reward applies to.
      * @param reward The reward should be a floating point number, typically between 0 and 1.
      * @param context The context to associate with this operation.
@@ -157,27 +148,10 @@ public final class EventsImpl {
 
     /**
      * Post Reward.
-     *
-     * <p>Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the
-     * specified event.
-     *
-     * @param eventId The event id this reward applies to.
-     * @param reward The reward should be a floating point number, typically between 0 and 1.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reward(String eventId, PersonalizerRewardOptions reward) {
-        rewardAsync(eventId, reward).block();
-    }
-
-    /**
-     * Post Reward.
-     *
-     * <p>Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the
-     * specified event.
-     *
+     * 
+     * Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the specified
+     * event.
+     * 
      * @param eventId The event id this reward applies to.
      * @param reward The reward should be a floating point number, typically between 0 and 1.
      * @param context The context to associate with this operation.
@@ -192,11 +166,28 @@ public final class EventsImpl {
     }
 
     /**
+     * Post Reward.
+     * 
+     * Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the specified
+     * event.
+     * 
+     * @param eventId The event id this reward applies to.
+     * @param reward The reward should be a floating point number, typically between 0 and 1.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reward(String eventId, PersonalizerRewardOptions reward) {
+        rewardWithResponse(eventId, reward, Context.NONE);
+    }
+
+    /**
      * Activate Event.
-     *
-     * <p>Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
+     * 
+     * Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
      * expected for it.
-     *
+     * 
      * @param eventId The event ID to be activated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -206,18 +197,15 @@ public final class EventsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> activateWithResponseAsync(String eventId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.activate(
-                                this.client.getEndpoint(), this.client.getApiVersion(), eventId, accept, context));
+        return FluxUtil.withContext(context -> service.activate(this.client.getEndpoint(), eventId, accept, context));
     }
 
     /**
      * Activate Event.
-     *
-     * <p>Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
+     * 
+     * Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
      * expected for it.
-     *
+     * 
      * @param eventId The event ID to be activated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,15 +216,15 @@ public final class EventsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> activateWithResponseAsync(String eventId, Context context) {
         final String accept = "application/json";
-        return service.activate(this.client.getEndpoint(), this.client.getApiVersion(), eventId, accept, context);
+        return service.activate(this.client.getEndpoint(), eventId, accept, context);
     }
 
     /**
      * Activate Event.
-     *
-     * <p>Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
+     * 
+     * Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
      * expected for it.
-     *
+     * 
      * @param eventId The event ID to be activated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -250,10 +238,10 @@ public final class EventsImpl {
 
     /**
      * Activate Event.
-     *
-     * <p>Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
+     * 
+     * Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
      * expected for it.
-     *
+     * 
      * @param eventId The event ID to be activated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,26 +256,10 @@ public final class EventsImpl {
 
     /**
      * Activate Event.
-     *
-     * <p>Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
+     * 
+     * Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
      * expected for it.
-     *
-     * @param eventId The event ID to be activated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void activate(String eventId) {
-        activateAsync(eventId).block();
-    }
-
-    /**
-     * Activate Event.
-     *
-     * <p>Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
-     * expected for it.
-     *
+     * 
      * @param eventId The event ID to be activated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -298,5 +270,21 @@ public final class EventsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> activateWithResponse(String eventId, Context context) {
         return activateWithResponseAsync(eventId, context).block();
+    }
+
+    /**
+     * Activate Event.
+     * 
+     * Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
+     * expected for it.
+     * 
+     * @param eventId The event ID to be activated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void activate(String eventId) {
+        activateWithResponse(eventId, Context.NONE);
     }
 }

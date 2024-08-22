@@ -5,8 +5,217 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.Duration;
+import java.time.OffsetDateTime;
 
-/** The aggregate total of the Offline Evaluation. */
+/**
+ * The aggregate total of the Offline Evaluation.
+ */
 @Fluent
 class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSummary {
+    /*
+     * Timestamp of the aggregation.
+     */
+    private OffsetDateTime timeStamp;
+
+    /*
+     * Numerator for IPS estimator.
+     */
+    private Float ipsEstimatorNumerator;
+
+    /*
+     * Denominator for IPS estimator.
+     */
+    private Float ipsEstimatorDenominator;
+
+    /*
+     * Denominator for SNIPS estimator.
+     */
+    private Float snipsEstimatorDenominator;
+
+    /*
+     * Time window for aggregation.
+     * For example, PT5M (5 mins). For information about the time format,
+     * see http://en.wikipedia.org/wiki/ISO_8601#Durations
+     */
+    private Duration aggregateTimeWindow;
+
+    /*
+     * Sum of Squares for the Policy evaluation results.
+     */
+    private Float sumOfSquares;
+
+    /*
+     * Gaussian confidence interval for the Policy evaluation.
+     */
+    private Float confidenceInterval;
+
+    /*
+     * Average reward.
+     */
+    private Float averageReward;
+
+    /**
+     * Creates an instance of PersonalizerPolicyResultTotalSummary class.
+     */
+    public PersonalizerPolicyResultTotalSummary() {
+    }
+
+    /**
+     * Get the timeStamp property: Timestamp of the aggregation.
+     * 
+     * @return the timeStamp value.
+     */
+    @Override
+    public OffsetDateTime getTimeStamp() {
+        return this.timeStamp;
+    }
+
+    /**
+     * Get the ipsEstimatorNumerator property: Numerator for IPS estimator.
+     * 
+     * @return the ipsEstimatorNumerator value.
+     */
+    @Override
+    public Float getIpsEstimatorNumerator() {
+        return this.ipsEstimatorNumerator;
+    }
+
+    /**
+     * Get the ipsEstimatorDenominator property: Denominator for IPS estimator.
+     * 
+     * @return the ipsEstimatorDenominator value.
+     */
+    @Override
+    public Float getIpsEstimatorDenominator() {
+        return this.ipsEstimatorDenominator;
+    }
+
+    /**
+     * Get the snipsEstimatorDenominator property: Denominator for SNIPS estimator.
+     * 
+     * @return the snipsEstimatorDenominator value.
+     */
+    @Override
+    public Float getSnipsEstimatorDenominator() {
+        return this.snipsEstimatorDenominator;
+    }
+
+    /**
+     * Get the aggregateTimeWindow property: Time window for aggregation.
+     * For example, PT5M (5 mins). For information about the time format,
+     * see http://en.wikipedia.org/wiki/ISO_8601#Durations.
+     * 
+     * @return the aggregateTimeWindow value.
+     */
+    @Override
+    public Duration getAggregateTimeWindow() {
+        return this.aggregateTimeWindow;
+    }
+
+    /**
+     * Get the sumOfSquares property: Sum of Squares for the Policy evaluation results.
+     * 
+     * @return the sumOfSquares value.
+     */
+    @Override
+    public Float getSumOfSquares() {
+        return this.sumOfSquares;
+    }
+
+    /**
+     * Get the confidenceInterval property: Gaussian confidence interval for the Policy evaluation.
+     * 
+     * @return the confidenceInterval value.
+     */
+    @Override
+    public Float getConfidenceInterval() {
+        return this.confidenceInterval;
+    }
+
+    /**
+     * Get the averageReward property: Average reward.
+     * 
+     * @return the averageReward value.
+     */
+    @Override
+    public Float getAverageReward() {
+        return this.averageReward;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PersonalizerPolicyResultTotalSummary setNonZeroProbability(Float nonZeroProbability) {
+        super.setNonZeroProbability(nonZeroProbability);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("nonZeroProbability", getNonZeroProbability());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerPolicyResultTotalSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerPolicyResultTotalSummary if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PersonalizerPolicyResultTotalSummary.
+     */
+    public static PersonalizerPolicyResultTotalSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerPolicyResultTotalSummary deserializedPersonalizerPolicyResultTotalSummary
+                = new PersonalizerPolicyResultTotalSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeStamp".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary.timeStamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("ipsEstimatorNumerator".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary.ipsEstimatorNumerator
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("ipsEstimatorDenominator".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary.ipsEstimatorDenominator
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("snipsEstimatorDenominator".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary.snipsEstimatorDenominator
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("aggregateTimeWindow".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary.aggregateTimeWindow
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("nonZeroProbability".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary
+                        .setNonZeroProbability(reader.getNullable(JsonReader::getFloat));
+                } else if ("sumOfSquares".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary.sumOfSquares
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("confidenceInterval".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary.confidenceInterval
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("averageReward".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResultTotalSummary.averageReward
+                        = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerPolicyResultTotalSummary;
+        });
+    }
 }

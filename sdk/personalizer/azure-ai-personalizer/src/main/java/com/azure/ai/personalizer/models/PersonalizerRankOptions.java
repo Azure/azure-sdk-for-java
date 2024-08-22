@@ -5,13 +5,18 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Request a set of actions to be ranked by the Personalizer service. */
+/**
+ * Request a set of actions to be ranked by the Personalizer service.
+ */
 @Fluent
-public final class PersonalizerRankOptions {
+public final class PersonalizerRankOptions implements JsonSerializable<PersonalizerRankOptions> {
     /*
      * Features of the context used for Personalizer as a
      * dictionary of dictionaries. This is determined by your application, and
@@ -20,87 +25,84 @@ public final class PersonalizerRankOptions {
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
      */
-    @JsonProperty(value = "contextFeatures")
-    private List<BinaryData> contextFeatures;
+    private List<Object> contextFeatures;
 
     /*
      * The set of actions the Personalizer service can pick from.
      * The set should not contain more than 50 actions.
      * The order of the actions does not affect the rank result but the order
-     * should match the sequence your application would have used to display
-     * them.
-     * The first item in the array will be used as Baseline item in Offline
-     * Evaluations.
+     * should match the sequence your application would have used to display them.
+     * The first item in the array will be used as Baseline item in Offline Evaluations.
      */
-    @JsonProperty(value = "actions", required = true)
     private List<PersonalizerRankableAction> actions;
 
     /*
      * The set of action ids to exclude from ranking.
-     * Personalizer will consider the first non-excluded item in the array as
-     * the Baseline action when performing Offline Evaluations.
+     * Personalizer will consider the first non-excluded item in the array as the Baseline action when performing
+     * Offline Evaluations.
      */
-    @JsonProperty(value = "excludedActions")
     private List<String> excludedActions;
 
     /*
      * Optionally pass an eventId that uniquely identifies this Rank event.
-     * If null, the service generates a unique eventId. The eventId will be
-     * used for
-     * associating this request with its reward, as well as seeding the
-     * pseudo-random
+     * If null, the service generates a unique eventId. The eventId will be used for
+     * associating this request with its reward, as well as seeding the pseudo-random
      * generator when making a Personalizer call.
      */
-    @JsonProperty(value = "eventId")
     private String eventId;
 
     /*
-     * Send false if it is certain the rewardActionId in rank results will be
-     * shown to the user, therefore
-     * Personalizer will expect a Reward call, otherwise it will assign the
-     * default
-     * Reward to the event. Send true if it is possible the user will not see
-     * the action specified in the rank results,
-     * (e.g. because the page is rendering later, or the Rank results may be
-     * overridden by code further downstream).
-     * You must call the Activate Event API if the event output is shown to
-     * users, otherwise Rewards will be ignored.
+     * Send false if it is certain the rewardActionId in rank results will be shown to the user, therefore
+     * Personalizer will expect a Reward call, otherwise it will assign the default
+     * Reward to the event. Send true if it is possible the user will not see the action specified in the rank results,
+     * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
+     * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
      */
-    @JsonProperty(value = "deferActivation")
     private Boolean deferActivation;
 
     /**
-     * Get the contextFeatures property: Features of the context used for Personalizer as a dictionary of dictionaries.
-     * This is determined by your application, and typically includes features about the current user, their device,
-     * profile information, aggregated data about time and date, etc. Features should not include personally
-     * identifiable information (PII), unique UserIDs, or precise timestamps.
-     *
+     * Creates an instance of PersonalizerRankOptions class.
+     */
+    public PersonalizerRankOptions() {
+    }
+
+    /**
+     * Get the contextFeatures property: Features of the context used for Personalizer as a
+     * dictionary of dictionaries. This is determined by your application, and
+     * typically includes features about the current user, their
+     * device, profile information, aggregated data about time and date, etc.
+     * Features should not include personally identifiable information (PII),
+     * unique UserIDs, or precise timestamps.
+     * 
      * @return the contextFeatures value.
      */
-    public List<BinaryData> getContextFeatures() {
+    public List<Object> getContextFeatures() {
         return this.contextFeatures;
     }
 
     /**
-     * Set the contextFeatures property: Features of the context used for Personalizer as a dictionary of dictionaries.
-     * This is determined by your application, and typically includes features about the current user, their device,
-     * profile information, aggregated data about time and date, etc. Features should not include personally
-     * identifiable information (PII), unique UserIDs, or precise timestamps.
-     *
+     * Set the contextFeatures property: Features of the context used for Personalizer as a
+     * dictionary of dictionaries. This is determined by your application, and
+     * typically includes features about the current user, their
+     * device, profile information, aggregated data about time and date, etc.
+     * Features should not include personally identifiable information (PII),
+     * unique UserIDs, or precise timestamps.
+     * 
      * @param contextFeatures the contextFeatures value to set.
      * @return the PersonalizerRankOptions object itself.
      */
-    public PersonalizerRankOptions setContextFeatures(List<BinaryData> contextFeatures) {
+    public PersonalizerRankOptions setContextFeatures(List<Object> contextFeatures) {
         this.contextFeatures = contextFeatures;
         return this;
     }
 
     /**
-     * Get the actions property: The set of actions the Personalizer service can pick from. The set should not contain
-     * more than 50 actions. The order of the actions does not affect the rank result but the order should match the
-     * sequence your application would have used to display them. The first item in the array will be used as Baseline
-     * item in Offline Evaluations.
-     *
+     * Get the actions property: The set of actions the Personalizer service can pick from.
+     * The set should not contain more than 50 actions.
+     * The order of the actions does not affect the rank result but the order
+     * should match the sequence your application would have used to display them.
+     * The first item in the array will be used as Baseline item in Offline Evaluations.
+     * 
      * @return the actions value.
      */
     public List<PersonalizerRankableAction> getActions() {
@@ -108,11 +110,12 @@ public final class PersonalizerRankOptions {
     }
 
     /**
-     * Set the actions property: The set of actions the Personalizer service can pick from. The set should not contain
-     * more than 50 actions. The order of the actions does not affect the rank result but the order should match the
-     * sequence your application would have used to display them. The first item in the array will be used as Baseline
-     * item in Offline Evaluations.
-     *
+     * Set the actions property: The set of actions the Personalizer service can pick from.
+     * The set should not contain more than 50 actions.
+     * The order of the actions does not affect the rank result but the order
+     * should match the sequence your application would have used to display them.
+     * The first item in the array will be used as Baseline item in Offline Evaluations.
+     * 
      * @param actions the actions value to set.
      * @return the PersonalizerRankOptions object itself.
      */
@@ -122,9 +125,10 @@ public final class PersonalizerRankOptions {
     }
 
     /**
-     * Get the excludedActions property: The set of action ids to exclude from ranking. Personalizer will consider the
-     * first non-excluded item in the array as the Baseline action when performing Offline Evaluations.
-     *
+     * Get the excludedActions property: The set of action ids to exclude from ranking.
+     * Personalizer will consider the first non-excluded item in the array as the Baseline action when performing
+     * Offline Evaluations.
+     * 
      * @return the excludedActions value.
      */
     public List<String> getExcludedActions() {
@@ -132,9 +136,10 @@ public final class PersonalizerRankOptions {
     }
 
     /**
-     * Set the excludedActions property: The set of action ids to exclude from ranking. Personalizer will consider the
-     * first non-excluded item in the array as the Baseline action when performing Offline Evaluations.
-     *
+     * Set the excludedActions property: The set of action ids to exclude from ranking.
+     * Personalizer will consider the first non-excluded item in the array as the Baseline action when performing
+     * Offline Evaluations.
+     * 
      * @param excludedActions the excludedActions value to set.
      * @return the PersonalizerRankOptions object itself.
      */
@@ -144,10 +149,11 @@ public final class PersonalizerRankOptions {
     }
 
     /**
-     * Get the eventId property: Optionally pass an eventId that uniquely identifies this Rank event. If null, the
-     * service generates a unique eventId. The eventId will be used for associating this request with its reward, as
-     * well as seeding the pseudo-random generator when making a Personalizer call.
-     *
+     * Get the eventId property: Optionally pass an eventId that uniquely identifies this Rank event.
+     * If null, the service generates a unique eventId. The eventId will be used for
+     * associating this request with its reward, as well as seeding the pseudo-random
+     * generator when making a Personalizer call.
+     * 
      * @return the eventId value.
      */
     public String getEventId() {
@@ -155,10 +161,11 @@ public final class PersonalizerRankOptions {
     }
 
     /**
-     * Set the eventId property: Optionally pass an eventId that uniquely identifies this Rank event. If null, the
-     * service generates a unique eventId. The eventId will be used for associating this request with its reward, as
-     * well as seeding the pseudo-random generator when making a Personalizer call.
-     *
+     * Set the eventId property: Optionally pass an eventId that uniquely identifies this Rank event.
+     * If null, the service generates a unique eventId. The eventId will be used for
+     * associating this request with its reward, as well as seeding the pseudo-random
+     * generator when making a Personalizer call.
+     * 
      * @param eventId the eventId value to set.
      * @return the PersonalizerRankOptions object itself.
      */
@@ -169,11 +176,12 @@ public final class PersonalizerRankOptions {
 
     /**
      * Get the deferActivation property: Send false if it is certain the rewardActionId in rank results will be shown to
-     * the user, therefore Personalizer will expect a Reward call, otherwise it will assign the default Reward to the
-     * event. Send true if it is possible the user will not see the action specified in the rank results, (e.g. because
-     * the page is rendering later, or the Rank results may be overridden by code further downstream). You must call the
-     * Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
-     *
+     * the user, therefore
+     * Personalizer will expect a Reward call, otherwise it will assign the default
+     * Reward to the event. Send true if it is possible the user will not see the action specified in the rank results,
+     * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
+     * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
+     * 
      * @return the deferActivation value.
      */
     public Boolean isDeferActivation() {
@@ -182,16 +190,72 @@ public final class PersonalizerRankOptions {
 
     /**
      * Set the deferActivation property: Send false if it is certain the rewardActionId in rank results will be shown to
-     * the user, therefore Personalizer will expect a Reward call, otherwise it will assign the default Reward to the
-     * event. Send true if it is possible the user will not see the action specified in the rank results, (e.g. because
-     * the page is rendering later, or the Rank results may be overridden by code further downstream). You must call the
-     * Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
-     *
+     * the user, therefore
+     * Personalizer will expect a Reward call, otherwise it will assign the default
+     * Reward to the event. Send true if it is possible the user will not see the action specified in the rank results,
+     * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
+     * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
+     * 
      * @param deferActivation the deferActivation value to set.
      * @return the PersonalizerRankOptions object itself.
      */
     public PersonalizerRankOptions setDeferActivation(Boolean deferActivation) {
         this.deferActivation = deferActivation;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("contextFeatures", this.contextFeatures,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("excludedActions", this.excludedActions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("eventId", this.eventId);
+        jsonWriter.writeBooleanField("deferActivation", this.deferActivation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerRankOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerRankOptions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PersonalizerRankOptions.
+     */
+    public static PersonalizerRankOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerRankOptions deserializedPersonalizerRankOptions = new PersonalizerRankOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actions".equals(fieldName)) {
+                    List<PersonalizerRankableAction> actions
+                        = reader.readArray(reader1 -> PersonalizerRankableAction.fromJson(reader1));
+                    deserializedPersonalizerRankOptions.actions = actions;
+                } else if ("contextFeatures".equals(fieldName)) {
+                    List<Object> contextFeatures = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedPersonalizerRankOptions.contextFeatures = contextFeatures;
+                } else if ("excludedActions".equals(fieldName)) {
+                    List<String> excludedActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPersonalizerRankOptions.excludedActions = excludedActions;
+                } else if ("eventId".equals(fieldName)) {
+                    deserializedPersonalizerRankOptions.eventId = reader.getString();
+                } else if ("deferActivation".equals(fieldName)) {
+                    deserializedPersonalizerRankOptions.deferActivation = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerRankOptions;
+        });
     }
 }

@@ -5,13 +5,18 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The PersonalizerRankMultiSlotOptions model. */
+/**
+ * The PersonalizerRankMultiSlotOptions model.
+ */
 @Fluent
-public final class PersonalizerRankMultiSlotOptions {
+public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<PersonalizerRankMultiSlotOptions> {
     /*
      * Features of the context used for Personalizer as a
      * dictionary of dictionaries. This is determined by your application, and
@@ -20,86 +25,83 @@ public final class PersonalizerRankMultiSlotOptions {
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
      */
-    @JsonProperty(value = "contextFeatures")
-    private List<BinaryData> contextFeatures;
+    private List<Object> contextFeatures;
 
     /*
      * The set of actions the Personalizer service can pick from.
      * The set should not contain more than 50 actions.
      * The order of the actions does not affect the rank result but the order
-     * should match the sequence your application would have used to display
-     * them.
-     * The first item in the array will be used as Baseline item in Offline
-     * Evaluations.
+     * should match the sequence your application would have used to display them.
+     * The first item in the array will be used as Baseline item in Offline Evaluations.
      */
-    @JsonProperty(value = "actions", required = true)
     private List<PersonalizerRankableAction> actions;
 
     /*
      * The set of slots the Personalizer service should select actions for.
      * The set should not contain more than 50 slots.
      */
-    @JsonProperty(value = "slots", required = true)
     private List<PersonalizerSlotOptions> slots;
 
     /*
      * Optionally pass an eventId that uniquely identifies this Rank event.
-     * If null, the service generates a unique eventId. The eventId will be
-     * used for
-     * associating this request with its reward, as well as seeding the
-     * pseudo-random
+     * If null, the service generates a unique eventId. The eventId will be used for
+     * associating this request with its reward, as well as seeding the pseudo-random
      * generator when making a Personalizer call.
      */
-    @JsonProperty(value = "eventId")
     private String eventId;
 
     /*
-     * Send false if it is certain the rewardActionId in rank results will be
-     * shown to the user, therefore
-     * Personalizer will expect a Reward call, otherwise it will assign the
-     * default
-     * Reward to the event. Send true if it is possible the user will not see
-     * the action specified in the rank results,
-     * (e.g. because the page is rendering later, or the Rank results may be
-     * overridden by code further downstream).
-     * You must call the Activate Event API if the event output is shown to
-     * users, otherwise Rewards will be ignored.
+     * Send false if it is certain the rewardActionId in rank results will be shown to the user, therefore
+     * Personalizer will expect a Reward call, otherwise it will assign the default
+     * Reward to the event. Send true if it is possible the user will not see the action specified in the rank results,
+     * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
+     * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
      */
-    @JsonProperty(value = "deferActivation")
     private Boolean deferActivation;
 
     /**
-     * Get the contextFeatures property: Features of the context used for Personalizer as a dictionary of dictionaries.
-     * This is determined by your application, and typically includes features about the current user, their device,
-     * profile information, aggregated data about time and date, etc. Features should not include personally
-     * identifiable information (PII), unique UserIDs, or precise timestamps.
-     *
+     * Creates an instance of PersonalizerRankMultiSlotOptions class.
+     */
+    public PersonalizerRankMultiSlotOptions() {
+    }
+
+    /**
+     * Get the contextFeatures property: Features of the context used for Personalizer as a
+     * dictionary of dictionaries. This is determined by your application, and
+     * typically includes features about the current user, their
+     * device, profile information, aggregated data about time and date, etc.
+     * Features should not include personally identifiable information (PII),
+     * unique UserIDs, or precise timestamps.
+     * 
      * @return the contextFeatures value.
      */
-    public List<BinaryData> getContextFeatures() {
+    public List<Object> getContextFeatures() {
         return this.contextFeatures;
     }
 
     /**
-     * Set the contextFeatures property: Features of the context used for Personalizer as a dictionary of dictionaries.
-     * This is determined by your application, and typically includes features about the current user, their device,
-     * profile information, aggregated data about time and date, etc. Features should not include personally
-     * identifiable information (PII), unique UserIDs, or precise timestamps.
-     *
+     * Set the contextFeatures property: Features of the context used for Personalizer as a
+     * dictionary of dictionaries. This is determined by your application, and
+     * typically includes features about the current user, their
+     * device, profile information, aggregated data about time and date, etc.
+     * Features should not include personally identifiable information (PII),
+     * unique UserIDs, or precise timestamps.
+     * 
      * @param contextFeatures the contextFeatures value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
-    public PersonalizerRankMultiSlotOptions setContextFeatures(List<BinaryData> contextFeatures) {
+    public PersonalizerRankMultiSlotOptions setContextFeatures(List<Object> contextFeatures) {
         this.contextFeatures = contextFeatures;
         return this;
     }
 
     /**
-     * Get the actions property: The set of actions the Personalizer service can pick from. The set should not contain
-     * more than 50 actions. The order of the actions does not affect the rank result but the order should match the
-     * sequence your application would have used to display them. The first item in the array will be used as Baseline
-     * item in Offline Evaluations.
-     *
+     * Get the actions property: The set of actions the Personalizer service can pick from.
+     * The set should not contain more than 50 actions.
+     * The order of the actions does not affect the rank result but the order
+     * should match the sequence your application would have used to display them.
+     * The first item in the array will be used as Baseline item in Offline Evaluations.
+     * 
      * @return the actions value.
      */
     public List<PersonalizerRankableAction> getActions() {
@@ -107,11 +109,12 @@ public final class PersonalizerRankMultiSlotOptions {
     }
 
     /**
-     * Set the actions property: The set of actions the Personalizer service can pick from. The set should not contain
-     * more than 50 actions. The order of the actions does not affect the rank result but the order should match the
-     * sequence your application would have used to display them. The first item in the array will be used as Baseline
-     * item in Offline Evaluations.
-     *
+     * Set the actions property: The set of actions the Personalizer service can pick from.
+     * The set should not contain more than 50 actions.
+     * The order of the actions does not affect the rank result but the order
+     * should match the sequence your application would have used to display them.
+     * The first item in the array will be used as Baseline item in Offline Evaluations.
+     * 
      * @param actions the actions value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
@@ -121,9 +124,9 @@ public final class PersonalizerRankMultiSlotOptions {
     }
 
     /**
-     * Get the slots property: The set of slots the Personalizer service should select actions for. The set should not
-     * contain more than 50 slots.
-     *
+     * Get the slots property: The set of slots the Personalizer service should select actions for.
+     * The set should not contain more than 50 slots.
+     * 
      * @return the slots value.
      */
     public List<PersonalizerSlotOptions> getSlots() {
@@ -131,9 +134,9 @@ public final class PersonalizerRankMultiSlotOptions {
     }
 
     /**
-     * Set the slots property: The set of slots the Personalizer service should select actions for. The set should not
-     * contain more than 50 slots.
-     *
+     * Set the slots property: The set of slots the Personalizer service should select actions for.
+     * The set should not contain more than 50 slots.
+     * 
      * @param slots the slots value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
@@ -143,10 +146,11 @@ public final class PersonalizerRankMultiSlotOptions {
     }
 
     /**
-     * Get the eventId property: Optionally pass an eventId that uniquely identifies this Rank event. If null, the
-     * service generates a unique eventId. The eventId will be used for associating this request with its reward, as
-     * well as seeding the pseudo-random generator when making a Personalizer call.
-     *
+     * Get the eventId property: Optionally pass an eventId that uniquely identifies this Rank event.
+     * If null, the service generates a unique eventId. The eventId will be used for
+     * associating this request with its reward, as well as seeding the pseudo-random
+     * generator when making a Personalizer call.
+     * 
      * @return the eventId value.
      */
     public String getEventId() {
@@ -154,10 +158,11 @@ public final class PersonalizerRankMultiSlotOptions {
     }
 
     /**
-     * Set the eventId property: Optionally pass an eventId that uniquely identifies this Rank event. If null, the
-     * service generates a unique eventId. The eventId will be used for associating this request with its reward, as
-     * well as seeding the pseudo-random generator when making a Personalizer call.
-     *
+     * Set the eventId property: Optionally pass an eventId that uniquely identifies this Rank event.
+     * If null, the service generates a unique eventId. The eventId will be used for
+     * associating this request with its reward, as well as seeding the pseudo-random
+     * generator when making a Personalizer call.
+     * 
      * @param eventId the eventId value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
@@ -168,11 +173,12 @@ public final class PersonalizerRankMultiSlotOptions {
 
     /**
      * Get the deferActivation property: Send false if it is certain the rewardActionId in rank results will be shown to
-     * the user, therefore Personalizer will expect a Reward call, otherwise it will assign the default Reward to the
-     * event. Send true if it is possible the user will not see the action specified in the rank results, (e.g. because
-     * the page is rendering later, or the Rank results may be overridden by code further downstream). You must call the
-     * Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
-     *
+     * the user, therefore
+     * Personalizer will expect a Reward call, otherwise it will assign the default
+     * Reward to the event. Send true if it is possible the user will not see the action specified in the rank results,
+     * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
+     * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
+     * 
      * @return the deferActivation value.
      */
     public Boolean isDeferActivation() {
@@ -181,16 +187,74 @@ public final class PersonalizerRankMultiSlotOptions {
 
     /**
      * Set the deferActivation property: Send false if it is certain the rewardActionId in rank results will be shown to
-     * the user, therefore Personalizer will expect a Reward call, otherwise it will assign the default Reward to the
-     * event. Send true if it is possible the user will not see the action specified in the rank results, (e.g. because
-     * the page is rendering later, or the Rank results may be overridden by code further downstream). You must call the
-     * Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
-     *
+     * the user, therefore
+     * Personalizer will expect a Reward call, otherwise it will assign the default
+     * Reward to the event. Send true if it is possible the user will not see the action specified in the rank results,
+     * (e.g. because the page is rendering later, or the Rank results may be overridden by code further downstream).
+     * You must call the Activate Event API if the event output is shown to users, otherwise Rewards will be ignored.
+     * 
      * @param deferActivation the deferActivation value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
     public PersonalizerRankMultiSlotOptions setDeferActivation(Boolean deferActivation) {
         this.deferActivation = deferActivation;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("slots", this.slots, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("contextFeatures", this.contextFeatures,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("eventId", this.eventId);
+        jsonWriter.writeBooleanField("deferActivation", this.deferActivation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerRankMultiSlotOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerRankMultiSlotOptions if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PersonalizerRankMultiSlotOptions.
+     */
+    public static PersonalizerRankMultiSlotOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerRankMultiSlotOptions deserializedPersonalizerRankMultiSlotOptions
+                = new PersonalizerRankMultiSlotOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actions".equals(fieldName)) {
+                    List<PersonalizerRankableAction> actions
+                        = reader.readArray(reader1 -> PersonalizerRankableAction.fromJson(reader1));
+                    deserializedPersonalizerRankMultiSlotOptions.actions = actions;
+                } else if ("slots".equals(fieldName)) {
+                    List<PersonalizerSlotOptions> slots
+                        = reader.readArray(reader1 -> PersonalizerSlotOptions.fromJson(reader1));
+                    deserializedPersonalizerRankMultiSlotOptions.slots = slots;
+                } else if ("contextFeatures".equals(fieldName)) {
+                    List<Object> contextFeatures = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedPersonalizerRankMultiSlotOptions.contextFeatures = contextFeatures;
+                } else if ("eventId".equals(fieldName)) {
+                    deserializedPersonalizerRankMultiSlotOptions.eventId = reader.getString();
+                } else if ("deferActivation".equals(fieldName)) {
+                    deserializedPersonalizerRankMultiSlotOptions.deferActivation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerRankMultiSlotOptions;
+        });
     }
 }

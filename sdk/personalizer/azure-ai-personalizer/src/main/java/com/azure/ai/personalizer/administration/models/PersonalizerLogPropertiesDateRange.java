@@ -5,8 +5,91 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** Date range. */
+/**
+ * Date range.
+ */
 @Immutable
 class PersonalizerLogPropertiesDateRange extends PersonalizerDateRange {
+    /*
+     * Start date for the range.
+     */
+    private OffsetDateTime from;
+
+    /*
+     * End date for the range.
+     */
+    private OffsetDateTime to;
+
+    /**
+     * Creates an instance of PersonalizerLogPropertiesDateRange class.
+     */
+    public PersonalizerLogPropertiesDateRange() {
+    }
+
+    /**
+     * Get the from property: Start date for the range.
+     * 
+     * @return the from value.
+     */
+    @Override
+    public OffsetDateTime getFrom() {
+        return this.from;
+    }
+
+    /**
+     * Get the to property: End date for the range.
+     * 
+     * @return the to value.
+     */
+    @Override
+    public OffsetDateTime getTo() {
+        return this.to;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerLogPropertiesDateRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerLogPropertiesDateRange if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PersonalizerLogPropertiesDateRange.
+     */
+    public static PersonalizerLogPropertiesDateRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerLogPropertiesDateRange deserializedPersonalizerLogPropertiesDateRange
+                = new PersonalizerLogPropertiesDateRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("from".equals(fieldName)) {
+                    deserializedPersonalizerLogPropertiesDateRange.from = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("to".equals(fieldName)) {
+                    deserializedPersonalizerLogPropertiesDateRange.to = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerLogPropertiesDateRange;
+        });
+    }
 }
