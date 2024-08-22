@@ -5,7 +5,6 @@
 package com.azure.communication.email.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -32,7 +31,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
     /*
      * Base64 encoded contents of the attachment
      */
-    private final byte[] contentInBase64;
+    private final String contentInBase64;
 
     /*
      * Unique identifier (CID) to reference an inline attachment.
@@ -46,7 +45,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
      * @param contentType the contentType value to set.
      * @param contentInBase64 the contentInBase64 value to set.
      */
-    public EmailAttachment(String name, String contentType, byte[] contentInBase64) {
+    public EmailAttachment(String name, String contentType, String contentInBase64) {
         this.name = name;
         this.contentType = contentType;
         this.contentInBase64 = contentInBase64;
@@ -75,8 +74,8 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
      * 
      * @return the contentInBase64 value.
      */
-    public byte[] getContentInBase64() {
-        return CoreUtils.clone(this.contentInBase64);
+    public String getContentInBase64() {
+        return this.contentInBase64;
     }
 
     /**
@@ -107,7 +106,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("contentType", this.contentType);
-        jsonWriter.writeBinaryField("contentInBase64", this.contentInBase64);
+        jsonWriter.writeStringField("contentInBase64", this.contentInBase64);
         jsonWriter.writeStringField("contentId", this.contentId);
         return jsonWriter.writeEndObject();
     }
@@ -128,7 +127,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
             boolean contentTypeFound = false;
             String contentType = null;
             boolean contentInBase64Found = false;
-            byte[] contentInBase64 = null;
+            String contentInBase64 = null;
             String contentId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -141,7 +140,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
                     contentType = reader.getString();
                     contentTypeFound = true;
                 } else if ("contentInBase64".equals(fieldName)) {
-                    contentInBase64 = reader.getBinary();
+                    contentInBase64 = reader.getString();
                     contentInBase64Found = true;
                 } else if ("contentId".equals(fieldName)) {
                     contentId = reader.getString();
