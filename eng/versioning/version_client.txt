@@ -446,7 +446,7 @@ com.azure.resourcemanager:azure-resourcemanager-quantum;1.0.0-beta.2;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-sphere;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-chaos;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-defendereasm;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-hdinsight-containers;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-hdinsight-containers;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-apicenter;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hybridconnectivity;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-playwrighttesting;1.0.0-beta.2;1.0.0-beta.3
