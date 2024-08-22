@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Optional;
 
 public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest {
     // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
@@ -428,12 +429,12 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
 
         // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
         //
-        Set<String> emsiIds = virtualMachine.innerModel().identity().userAssignedIdentities().keySet();
-        emsiIds.removeIf(emsiId -> !emsiId.endsWith("/" + identityName1));
+        Set<String> emsiIds = virtualMachine.userAssignedManagedServiceIdentityIds();
         Assertions.assertNotNull(emsiIds);
-        Assertions.assertEquals(1, emsiIds.size());
+        Optional<String> emsiIdOptional = emsiIds.stream().filter(emsiId -> emsiId.endsWith("/" + identityName1)).findAny();
+        Assertions.assertTrue(emsiIdOptional.isPresent());
 
-        Identity identity = msiManager.identities().getById(emsiIds.iterator().next());
+        Identity identity = msiManager.identities().getById(emsiIdOptional.get());
         Assertions.assertNotNull(identity);
         Assertions.assertTrue(identity.name().equalsIgnoreCase(identityName1));
 
@@ -467,12 +468,12 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
 
         // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
         //
-        emsiIds = virtualMachine.innerModel().identity().userAssignedIdentities().keySet();
-        emsiIds.removeIf(emsiId -> !emsiId.endsWith("/" + identityName2));
+        emsiIds = virtualMachine.userAssignedManagedServiceIdentityIds();
         Assertions.assertNotNull(emsiIds);
-        Assertions.assertEquals(1, emsiIds.size());
+        emsiIdOptional = emsiIds.stream().filter(emsiId -> emsiId.endsWith("/" + identityName2)).findAny();
+        Assertions.assertTrue(emsiIdOptional.isPresent());
 
-        identity = msiManager.identities().getById(emsiIds.iterator().next());
+        identity = msiManager.identities().getById(emsiIdOptional.get());
         Assertions.assertNotNull(identity);
         Assertions.assertTrue(identity.name().equalsIgnoreCase(identityName2));
 
