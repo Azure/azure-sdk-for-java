@@ -159,6 +159,15 @@
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
               </transformers>
+              <filters>
+                <filter>
+                  <artifact>com.azure:azure-json</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
             </configuration>
           </execution>
         </executions>
@@ -177,9 +186,7 @@
             <configuration>
               <overwriteExistingFiles>true</overwriteExistingFiles>
               <module>
-                <moduleInfoFile>
-                  src/main/resources/module-info.java
-                </moduleInfoFile>
+                <moduleInfoFile>src/main/resources/module-info.java</moduleInfoFile>
               </module>
             </configuration>
           </execution>
