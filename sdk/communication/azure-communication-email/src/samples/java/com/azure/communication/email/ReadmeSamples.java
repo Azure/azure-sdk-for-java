@@ -124,7 +124,7 @@ public class ReadmeSamples {
         EmailAttachment attachment = new EmailAttachment(
             "attachment.txt",
             "text/plain",
-            attachmentContent
+            attachmentContent.toBytes()
         );
         
         EmailMessage message = new EmailMessage()
@@ -149,9 +149,9 @@ public class ReadmeSamples {
         EmailAttachment attachment = new EmailAttachment(
             "inlineimage.jpg",
             "image/jpeg",
-            BinaryData.fromString("test")
+            BinaryData.fromString("test").toBytes()
         );
-        attachment.contentId = "inline_image";
+        attachment.setContentId("inline_image");
         
         EmailMessage message = new EmailMessage()
             .setSenderAddress("<sender-email-address>")

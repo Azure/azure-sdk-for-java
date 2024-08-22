@@ -69,7 +69,7 @@ public class EmailClientTests extends EmailTestBase {
         EmailAttachment attachment = new EmailAttachment(
             "attachment.txt",
             "text/plain",
-            BinaryData.fromString("test")
+            BinaryData.fromString("test").toBytes()
         );
 
         EmailMessage message = new EmailMessage()
@@ -93,9 +93,9 @@ public class EmailClientTests extends EmailTestBase {
         EmailAttachment attachment = new EmailAttachment(
             "inlineimage.jpg",
             "image/jpeg",
-            BinaryData.fromString("test")
+            BinaryData.fromString("test").toBytes()
         );
-        attachment.contentId = "inline_image";
+        attachment.setContentId("inline_image");
 
         EmailMessage message = new EmailMessage()
             .setSenderAddress(SENDER_ADDRESS)
