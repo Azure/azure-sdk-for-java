@@ -22,14 +22,14 @@ public class OnYourDataVectorizationSource implements JsonSerializable<OnYourDat
      */
     @Generated
     public OnYourDataVectorizationSource() {
+        this.type = OnYourDataVectorizationSourceType.fromString("OnYourDataVectorizationSource");
     }
 
     /*
      * The type of vectorization source to use.
      */
     @Generated
-    private OnYourDataVectorizationSourceType type
-        = OnYourDataVectorizationSourceType.fromString("OnYourDataVectorizationSource");
+    OnYourDataVectorizationSourceType type;
 
     /**
      * Get the type property: The type of vectorization source to use.
@@ -48,7 +48,7 @@ public class OnYourDataVectorizationSource implements JsonSerializable<OnYourDat
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -99,14 +99,27 @@ public class OnYourDataVectorizationSource implements JsonSerializable<OnYourDat
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedOnYourDataVectorizationSource.type
-                        = OnYourDataVectorizationSourceType.fromString(reader.getString());
-                } else {
+                if (!OnYourDataVectorizationSource.fromJsonShared(reader, fieldName,
+                    deserializedOnYourDataVectorizationSource)) {
                     reader.skipChildren();
                 }
             }
             return deserializedOnYourDataVectorizationSource;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        OnYourDataVectorizationSource deserializedOnYourDataVectorizationSource) throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedOnYourDataVectorizationSource.type
+                = OnYourDataVectorizationSourceType.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

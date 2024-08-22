@@ -21,12 +21,6 @@ import java.util.Set;
 public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSelectorAttachment {
 
     /*
-     * The type discriminator describing a sub-type of WorkerSelectorAttachment.
-     */
-    @Generated
-    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.WEIGHTED_ALLOCATION;
-
-    /*
      * A collection of percentage based weighted allocations.
      */
     @Generated
@@ -43,17 +37,7 @@ public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSele
      */
     @Generated
     public WeightedAllocationWorkerSelectorAttachment() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public WorkerSelectorAttachmentKind getKind() {
-        return this.kind;
+        this.kind = WorkerSelectorAttachmentKind.WEIGHTED_ALLOCATION;
     }
 
     /**
@@ -127,9 +111,9 @@ public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSele
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedWeightedAllocationWorkerSelectorAttachment.kind
-                        = WorkerSelectorAttachmentKind.fromString(reader.getString());
+                if (WorkerSelectorAttachment.fromJsonShared(reader, fieldName,
+                    deserializedWeightedAllocationWorkerSelectorAttachment)) {
+                    continue;
                 } else if ("allocations".equals(fieldName)) {
                     List<WorkerWeightedAllocation> allocations
                         = reader.readArray(reader1 -> WorkerWeightedAllocation.fromJson(reader1));

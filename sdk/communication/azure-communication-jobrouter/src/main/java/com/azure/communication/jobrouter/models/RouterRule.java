@@ -29,7 +29,7 @@ public class RouterRule implements JsonSerializable<RouterRule> {
      * The type discriminator describing a sub-type of RouterRule
      */
     @Generated
-    private RouterRuleKind kind = RouterRuleKind.fromString("RouterRule");
+    RouterRuleKind kind;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -66,6 +66,7 @@ public class RouterRule implements JsonSerializable<RouterRule> {
      */
     @Generated
     public RouterRule() {
+        this.kind = RouterRuleKind.fromString("RouterRule");
     }
 
     /**
@@ -150,13 +151,21 @@ public class RouterRule implements JsonSerializable<RouterRule> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedRouterRule.kind = RouterRuleKind.fromString(reader.getString());
-                } else {
+                if (!RouterRule.fromJsonShared(reader, fieldName, deserializedRouterRule)) {
                     reader.skipChildren();
                 }
             }
             return deserializedRouterRule;
         });
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName, RouterRule deserializedRouterRule)
+        throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedRouterRule.kind = RouterRuleKind.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

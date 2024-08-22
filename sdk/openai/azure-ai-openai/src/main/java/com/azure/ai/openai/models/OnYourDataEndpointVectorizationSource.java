@@ -55,23 +55,6 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
         return this.authentication;
     }
 
-    /*
-     * The type of vectorization source to use.
-     */
-    @Generated
-    private OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.ENDPOINT;
-
-    /**
-     * Get the type property: The type of vectorization source to use.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataVectorizationSourceType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -79,9 +62,9 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("endpoint", this.endpoint);
         jsonWriter.writeJsonField("authentication", this.authentication);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -131,5 +114,6 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
         OnYourDataVectorSearchAuthenticationOptions authentication) {
         this.endpoint = endpoint;
         this.authentication = authentication;
+        this.type = OnYourDataVectorizationSourceType.ENDPOINT;
     }
 }

@@ -21,7 +21,7 @@ public class RunStepDeltaCodeInterpreterOutput implements JsonSerializable<RunSt
      * The type of the streaming run step tool call's Code Interpreter output.
      */
     @Generated
-    private String type = "RunStepDeltaCodeInterpreterOutput";
+    String type;
 
     /*
      * The index of the output in the streaming run step tool call's Code Interpreter outputs array.
@@ -37,6 +37,7 @@ public class RunStepDeltaCodeInterpreterOutput implements JsonSerializable<RunSt
     @Generated
     protected RunStepDeltaCodeInterpreterOutput(int index) {
         this.index = index;
+        this.type = "RunStepDeltaCodeInterpreterOutput";
     }
 
     /**
@@ -67,8 +68,7 @@ public class RunStepDeltaCodeInterpreterOutput implements JsonSerializable<RunSt
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", this.index);
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -131,5 +131,10 @@ public class RunStepDeltaCodeInterpreterOutput implements JsonSerializable<RunSt
             deserializedRunStepDeltaCodeInterpreterOutput.type = type;
             return deserializedRunStepDeltaCodeInterpreterOutput;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeIntField("index", this.index);
+        jsonWriter.writeStringField("type", this.type);
     }
 }

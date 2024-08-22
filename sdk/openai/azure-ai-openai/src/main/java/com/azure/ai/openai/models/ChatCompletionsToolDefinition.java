@@ -22,13 +22,14 @@ public class ChatCompletionsToolDefinition implements JsonSerializable<ChatCompl
      */
     @Generated
     public ChatCompletionsToolDefinition() {
+        this.type = "ChatCompletionsToolDefinition";
     }
 
     /*
      * The object type.
      */
     @Generated
-    private String type = "ChatCompletionsToolDefinition";
+    String type;
 
     /**
      * Get the type property: The object type.
@@ -47,7 +48,7 @@ public class ChatCompletionsToolDefinition implements JsonSerializable<ChatCompl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -94,13 +95,26 @@ public class ChatCompletionsToolDefinition implements JsonSerializable<ChatCompl
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedChatCompletionsToolDefinition.type = reader.getString();
-                } else {
+                if (!ChatCompletionsToolDefinition.fromJsonShared(reader, fieldName,
+                    deserializedChatCompletionsToolDefinition)) {
                     reader.skipChildren();
                 }
             }
             return deserializedChatCompletionsToolDefinition;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        ChatCompletionsToolDefinition deserializedChatCompletionsToolDefinition) throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedChatCompletionsToolDefinition.type = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

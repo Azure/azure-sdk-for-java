@@ -20,12 +20,6 @@ import java.util.Set;
 public final class ExpressionRouterRule extends RouterRule {
 
     /*
-     * The type discriminator describing a sub-type of RouterRule
-     */
-    @Generated
-    private RouterRuleKind kind = RouterRuleKind.EXPRESSION;
-
-    /*
      * The expression language to compile to and execute.
      */
     @Generated
@@ -48,17 +42,7 @@ public final class ExpressionRouterRule extends RouterRule {
      */
     @Generated
     public ExpressionRouterRule() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of RouterRule.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RouterRuleKind getKind() {
-        return this.kind;
+        this.kind = RouterRuleKind.EXPRESSION;
     }
 
     /**
@@ -161,8 +145,8 @@ public final class ExpressionRouterRule extends RouterRule {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedExpressionRouterRule.kind = RouterRuleKind.fromString(reader.getString());
+                if (RouterRule.fromJsonShared(reader, fieldName, deserializedExpressionRouterRule)) {
+                    continue;
                 } else if ("language".equals(fieldName)) {
                     deserializedExpressionRouterRule.language
                         = ExpressionRouterRuleLanguage.fromString(reader.getString());

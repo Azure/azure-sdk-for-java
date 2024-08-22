@@ -17,12 +17,6 @@ import java.io.IOException;
 public final class RunStepDeltaMessageCreation extends RunStepDeltaDetail {
 
     /*
-     * The object type for the run step detail object.
-     */
-    @Generated
-    private String type = "message_creation";
-
-    /*
      * The message creation data.
      */
     @Generated
@@ -33,17 +27,7 @@ public final class RunStepDeltaMessageCreation extends RunStepDeltaDetail {
      */
     @Generated
     private RunStepDeltaMessageCreation() {
-    }
-
-    /**
-     * Get the type property: The object type for the run step detail object.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "message_creation";
     }
 
     /**
@@ -63,7 +47,7 @@ public final class RunStepDeltaMessageCreation extends RunStepDeltaDetail {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("message_creation", this.messageCreation);
         return jsonWriter.writeEndObject();
     }
@@ -83,8 +67,8 @@ public final class RunStepDeltaMessageCreation extends RunStepDeltaDetail {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedRunStepDeltaMessageCreation.type = reader.getString();
+                if (RunStepDeltaDetail.fromJsonShared(reader, fieldName, deserializedRunStepDeltaMessageCreation)) {
+                    continue;
                 } else if ("message_creation".equals(fieldName)) {
                     deserializedRunStepDeltaMessageCreation.messageCreation
                         = RunStepDeltaMessageCreationObject.fromJson(reader);

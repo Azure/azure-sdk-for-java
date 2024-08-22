@@ -30,6 +30,7 @@ public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthe
     @Generated
     public OnYourDataApiKeyAuthenticationOptions(String key) {
         this.key = key;
+        this.type = OnYourDataAuthenticationType.API_KEY;
     }
 
     /**
@@ -42,23 +43,6 @@ public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthe
         return this.key;
     }
 
-    /*
-     * The authentication type.
-     */
-    @Generated
-    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.API_KEY;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -66,8 +50,8 @@ public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("key", this.key);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

@@ -24,12 +24,6 @@ import java.util.Set;
 public final class ScheduleAndSuspendMode extends JobMatchingMode {
 
     /*
-     * The type discriminator describing a sub-type of JobMatchingMode.
-     */
-    @Generated
-    private JobMatchingModeKind kind = JobMatchingModeKind.SCHEDULE_AND_SUSPEND;
-
-    /*
      * Requested schedule time.
      */
     @Generated
@@ -46,17 +40,7 @@ public final class ScheduleAndSuspendMode extends JobMatchingMode {
      */
     @Generated
     public ScheduleAndSuspendMode() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of JobMatchingMode.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public JobMatchingModeKind getKind() {
-        return this.kind;
+        this.kind = JobMatchingModeKind.SCHEDULE_AND_SUSPEND;
     }
 
     /**
@@ -130,8 +114,8 @@ public final class ScheduleAndSuspendMode extends JobMatchingMode {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedScheduleAndSuspendMode.kind = JobMatchingModeKind.fromString(reader.getString());
+                if (JobMatchingMode.fromJsonShared(reader, fieldName, deserializedScheduleAndSuspendMode)) {
+                    continue;
                 } else if ("scheduleAt".equals(fieldName)) {
                     deserializedScheduleAndSuspendMode.scheduleAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

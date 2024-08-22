@@ -19,12 +19,6 @@ import java.util.Set;
 @Immutable
 public final class QueueAndMatchMode extends JobMatchingMode {
 
-    /*
-     * The type discriminator describing a sub-type of JobMatchingMode.
-     */
-    @Generated
-    private JobMatchingModeKind kind = JobMatchingModeKind.QUEUE_AND_MATCH;
-
     /**
      * Stores updated model property, the value is property name, not serialized name.
      */
@@ -36,17 +30,7 @@ public final class QueueAndMatchMode extends JobMatchingMode {
      */
     @Generated
     public QueueAndMatchMode() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of JobMatchingMode.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public JobMatchingModeKind getKind() {
-        return this.kind;
+        this.kind = JobMatchingModeKind.QUEUE_AND_MATCH;
     }
 
     /**
@@ -86,8 +70,8 @@ public final class QueueAndMatchMode extends JobMatchingMode {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedQueueAndMatchMode.kind = JobMatchingModeKind.fromString(reader.getString());
+                if (JobMatchingMode.fromJsonShared(reader, fieldName, deserializedQueueAndMatchMode)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

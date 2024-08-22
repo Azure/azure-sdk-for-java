@@ -21,12 +21,6 @@ import java.util.Set;
 public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttachment {
 
     /*
-     * The type discriminator describing a sub-type of QueueSelectorAttachment.
-     */
-    @Generated
-    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.CONDITIONAL;
-
-    /*
      * The condition that must be true for the queue selectors to be attached.
      */
     @Generated
@@ -49,17 +43,7 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      */
     @Generated
     public ConditionalQueueSelectorAttachment() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public QueueSelectorAttachmentKind getKind() {
-        return this.kind;
+        this.kind = QueueSelectorAttachmentKind.CONDITIONAL;
     }
 
     /**
@@ -168,9 +152,9 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedConditionalQueueSelectorAttachment.kind
-                        = QueueSelectorAttachmentKind.fromString(reader.getString());
+                if (QueueSelectorAttachment.fromJsonShared(reader, fieldName,
+                    deserializedConditionalQueueSelectorAttachment)) {
+                    continue;
                 } else if ("condition".equals(fieldName)) {
                     deserializedConditionalQueueSelectorAttachment.condition = RouterRule.fromJson(reader);
                 } else if ("queueSelectors".equals(fieldName)) {

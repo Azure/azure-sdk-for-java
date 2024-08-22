@@ -21,12 +21,6 @@ import java.util.Set;
 public final class ManualReclassifyExceptionAction extends ExceptionAction {
 
     /*
-     * The type discriminator describing a sub-type of ExceptionAction.
-     */
-    @Generated
-    private ExceptionActionKind kind = ExceptionActionKind.MANUAL_RECLASSIFY;
-
-    /*
      * Updated QueueId.
      */
     @Generated
@@ -55,17 +49,7 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      */
     @Generated
     public ManualReclassifyExceptionAction() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of ExceptionAction.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public ExceptionActionKind getKind() {
-        return this.kind;
+        this.kind = ExceptionActionKind.MANUAL_RECLASSIFY;
     }
 
     /**
@@ -220,12 +204,8 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    JsonMergePatchHelper.getExceptionActionAccessor()
-                        .setId(deserializedManualReclassifyExceptionAction, reader.getString());
-                } else if ("kind".equals(fieldName)) {
-                    deserializedManualReclassifyExceptionAction.kind
-                        = ExceptionActionKind.fromString(reader.getString());
+                if (ExceptionAction.fromJsonShared(reader, fieldName, deserializedManualReclassifyExceptionAction)) {
+                    continue;
                 } else if ("queueId".equals(fieldName)) {
                     deserializedManualReclassifyExceptionAction.queueId = reader.getString();
                 } else if ("priority".equals(fieldName)) {

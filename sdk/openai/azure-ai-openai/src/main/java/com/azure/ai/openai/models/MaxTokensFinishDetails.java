@@ -23,23 +23,7 @@ public final class MaxTokensFinishDetails extends ChatFinishDetails {
      */
     @Generated
     private MaxTokensFinishDetails() {
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "max_tokens";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "max_tokens";
     }
 
     /**
@@ -49,7 +33,7 @@ public final class MaxTokensFinishDetails extends ChatFinishDetails {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -68,8 +52,8 @@ public final class MaxTokensFinishDetails extends ChatFinishDetails {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedMaxTokensFinishDetails.type = reader.getString();
+                if (ChatFinishDetails.fromJsonShared(reader, fieldName, deserializedMaxTokensFinishDetails)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

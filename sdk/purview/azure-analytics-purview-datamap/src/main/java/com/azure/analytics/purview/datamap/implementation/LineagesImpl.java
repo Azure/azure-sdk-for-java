@@ -75,7 +75,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
+            @QueryParam("direction") String direction, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/lineage/{guid}")
@@ -85,7 +85,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
+            @QueryParam("direction") String direction, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/lineage/{guid}/next/")
@@ -96,7 +96,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getNextPage(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
+            @QueryParam("direction") String direction, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/lineage/{guid}/next/")
@@ -107,7 +107,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getNextPageSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
+            @QueryParam("direction") String direction, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/lineage/uniqueAttribute/type/{typeName}")
@@ -118,7 +118,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getByUniqueAttribute(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @QueryParam("direction") String direction,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/lineage/uniqueAttribute/type/{typeName}")
         @ExpectedResponses({ 200 })
@@ -128,7 +128,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getByUniqueAttributeSync(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @QueryParam("direction") String direction,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**

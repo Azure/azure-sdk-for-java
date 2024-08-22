@@ -21,7 +21,7 @@ public class DataConnectionData implements JsonSerializable<DataConnectionData> 
      * Discriminator property for DataConnectionData.
      */
     @Generated
-    private String kind = "DataConnectionData";
+    String kind;
 
     /*
      * The name of data connection
@@ -52,6 +52,7 @@ public class DataConnectionData implements JsonSerializable<DataConnectionData> 
      */
     @Generated
     public DataConnectionData() {
+        this.kind = "DataConnectionData";
     }
 
     /**
@@ -159,11 +160,7 @@ public class DataConnectionData implements JsonSerializable<DataConnectionData> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("content", this.content == null ? null : this.content.toString());
-        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
-        jsonWriter.writeNumberField("frequencyOffset", this.frequencyOffset);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -211,21 +208,41 @@ public class DataConnectionData implements JsonSerializable<DataConnectionData> 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedDataConnectionData.kind = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedDataConnectionData.name = reader.getString();
-                } else if ("content".equals(fieldName)) {
-                    deserializedDataConnectionData.content = DataConnectionContent.fromString(reader.getString());
-                } else if ("frequency".equals(fieldName)) {
-                    deserializedDataConnectionData.frequency = DataConnectionFrequency.fromString(reader.getString());
-                } else if ("frequencyOffset".equals(fieldName)) {
-                    deserializedDataConnectionData.frequencyOffset = reader.getNullable(JsonReader::getInt);
-                } else {
+                if (!DataConnectionData.fromJsonShared(reader, fieldName, deserializedDataConnectionData)) {
                     reader.skipChildren();
                 }
             }
             return deserializedDataConnectionData;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("content", this.content == null ? null : this.content.toString());
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeNumberField("frequencyOffset", this.frequencyOffset);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        DataConnectionData deserializedDataConnectionData) throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedDataConnectionData.kind = reader.getString();
+            return true;
+        } else if ("name".equals(fieldName)) {
+            deserializedDataConnectionData.name = reader.getString();
+            return true;
+        } else if ("content".equals(fieldName)) {
+            deserializedDataConnectionData.content = DataConnectionContent.fromString(reader.getString());
+            return true;
+        } else if ("frequency".equals(fieldName)) {
+            deserializedDataConnectionData.frequency = DataConnectionFrequency.fromString(reader.getString());
+            return true;
+        } else if ("frequencyOffset".equals(fieldName)) {
+            deserializedDataConnectionData.frequencyOffset = reader.getNullable(JsonReader::getInt);
+            return true;
+        }
+        return false;
     }
 }

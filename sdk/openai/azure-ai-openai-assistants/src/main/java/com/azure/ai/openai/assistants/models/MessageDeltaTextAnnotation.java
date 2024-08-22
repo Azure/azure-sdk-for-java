@@ -21,7 +21,7 @@ public class MessageDeltaTextAnnotation implements JsonSerializable<MessageDelta
      * The type of the text content annotation.
      */
     @Generated
-    private String type = "MessageDeltaTextAnnotation";
+    String type;
 
     /*
      * The index of the annotation within a text content part.
@@ -37,6 +37,7 @@ public class MessageDeltaTextAnnotation implements JsonSerializable<MessageDelta
     @Generated
     protected MessageDeltaTextAnnotation(int index) {
         this.index = index;
+        this.type = "MessageDeltaTextAnnotation";
     }
 
     /**
@@ -66,8 +67,7 @@ public class MessageDeltaTextAnnotation implements JsonSerializable<MessageDelta
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", this.index);
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -129,5 +129,10 @@ public class MessageDeltaTextAnnotation implements JsonSerializable<MessageDelta
             deserializedMessageDeltaTextAnnotation.type = type;
             return deserializedMessageDeltaTextAnnotation;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeIntField("index", this.index);
+        jsonWriter.writeStringField("type", this.type);
     }
 }
