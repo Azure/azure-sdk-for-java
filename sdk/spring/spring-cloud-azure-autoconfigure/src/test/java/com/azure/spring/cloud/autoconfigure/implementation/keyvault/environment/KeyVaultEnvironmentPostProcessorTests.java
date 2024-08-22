@@ -64,7 +64,7 @@ class KeyVaultEnvironmentPostProcessorTests {
     }
 
     @Test
-    void testContextRegister_withTokenCredentialRegistered() {
+    void testContextRegisterWithTokenCredentialRegistered() {
         when(context.isRegistered(TokenCredential.class)).thenReturn(true);
         processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), context));
 
@@ -74,7 +74,7 @@ class KeyVaultEnvironmentPostProcessorTests {
     }
 
     @Test
-    void testContextRegister_withoutTokenCredentialRegistered() {
+    void testContextRegisterWithoutTokenCredentialRegistered() {
         when(context.isRegistered(TokenCredential.class)).thenReturn(false);
         processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), context));
 
