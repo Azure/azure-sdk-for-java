@@ -53,9 +53,6 @@ class KeyVaultEnvironmentPostProcessorTests {
 
     @BeforeEach
     void beforeEach() {
-        context = mock(ConfigurableBootstrapContext.class);
-        TokenCredential tokenCredential = mock(TokenCredential.class);
-        when(context.get(TokenCredential.class)).thenReturn(tokenCredential);
         processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), null));
         environment = new MockEnvironment();
         propertySources = environment.getPropertySources();
@@ -65,20 +62,30 @@ class KeyVaultEnvironmentPostProcessorTests {
 
     @Test
     void testContextRegisterWithTokenCredentialRegistered() {
+        context = mock(ConfigurableBootstrapContext.class);
+        TokenCredential tokenCredential = mock(TokenCredential.class);
+        when(context.get(TokenCredential.class)).thenReturn(tokenCredential);
         when(context.isRegistered(TokenCredential.class)).thenReturn(true);
         processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), context));
+        AzureKeyVaultSecretProperties secretProperties = new AzureKeyVaultSecretProperties();
+        secretProperties.setEndpoint(ENDPOINT_0);
 
-        assertThrows(IllegalStateException.class, () -> processor.buildSecretClient(new AzureKeyVaultSecretProperties()));
+        processor.buildSecretClient(secretProperties);
 
         verify(context, times(1)).get(TokenCredential.class);
     }
 
     @Test
     void testContextRegisterWithoutTokenCredentialRegistered() {
+        context = mock(ConfigurableBootstrapContext.class);
+        TokenCredential tokenCredential = mock(TokenCredential.class);
+        when(context.get(TokenCredential.class)).thenReturn(tokenCredential);
         when(context.isRegistered(TokenCredential.class)).thenReturn(false);
         processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), context));
+        AzureKeyVaultSecretProperties secretProperties = new AzureKeyVaultSecretProperties();
+        secretProperties.setEndpoint(ENDPOINT_0);
 
-        assertThrows(IllegalStateException.class, () -> processor.buildSecretClient(new AzureKeyVaultSecretProperties()));
+        processor.buildSecretClient(secretProperties);
 
         verify(context, never()).get(TokenCredential.class);
     }
