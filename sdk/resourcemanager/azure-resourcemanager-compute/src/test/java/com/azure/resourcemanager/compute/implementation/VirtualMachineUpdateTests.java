@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.ComputeManagementTest;
 import com.azure.resourcemanager.compute.models.CachingTypes;
+import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
@@ -40,22 +41,22 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
     public void testVirtualMachineUpdate() {
         final String vmname = "javavm1";
 
-        final String mySqlInstallScript = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
-        final String installCommand = "bash install_mysql_server_5.6.sh Abc.123x(";
+        final String mySqlInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/0f875b569cb30b3cd4232bd20abb02452431b1ad/sdk/resourcemanager/azure-resourcemanager-compute/src/test/assets/install_mysql_server_5.7.sh";
+        final String installCommand = "bash install_mysql_server_5.7.sh " + password();
         List<String> fileUris = new ArrayList<>();
         fileUris.add(mySqlInstallScript);
 
         VirtualMachine vm = computeManager.virtualMachines()
             .define(vmname)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.4-LTS")
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
             .create();
 
         VirtualMachine.Update vmUpdate = vm.update();
