@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_EAST;
+    private final Region region = Region.US_WEST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -98,7 +98,7 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))    // ADE need 8GB
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)    // ADE need 8GB
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 

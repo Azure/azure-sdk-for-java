@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
 public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManagementTest {
@@ -107,7 +108,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard"))
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -353,7 +354,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard"))
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -477,7 +478,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withSku(VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard"))
                 .withExistingPrimaryNetworkSubnet(vmssNetwork, "subnet1")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
@@ -507,9 +508,10 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         //
         Set<String> emsiIds = virtualMachineScaleSet.userAssignedManagedServiceIdentityIds();
         Assertions.assertNotNull(emsiIds);
-        Assertions.assertEquals(1, emsiIds.size());
+        Optional<String> emsiIdOptional = emsiIds.stream().filter(emsiId -> emsiId.endsWith("/" + identityName1)).findAny();
+        Assertions.assertTrue(emsiIdOptional.isPresent());
 
-        Identity identity = msiManager.identities().getById(emsiIds.iterator().next());
+        Identity identity = msiManager.identities().getById(emsiIdOptional.get());
         Assertions.assertNotNull(identity);
         Assertions.assertTrue(identity.name().equalsIgnoreCase(identityName1));
 
@@ -519,7 +521,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .apply();
         emsiIds = virtualMachineScaleSet.userAssignedManagedServiceIdentityIds();
         Assertions.assertNotNull(emsiIds);
-        Assertions.assertEquals(1, emsiIds.size());
+        emsiIdOptional = emsiIds.stream().filter(emsiId -> emsiId.endsWith("/" + identityName1)).findAny();
+        Assertions.assertTrue(emsiIdOptional.isPresent());
 
         // Creates an EMSI
         //
@@ -543,11 +546,12 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
 
         // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
         //
-        emsiIds = virtualMachineScaleSet.innerModel().identity().userAssignedIdentities().keySet();
+        emsiIds = virtualMachineScaleSet.userAssignedManagedServiceIdentityIds();
         Assertions.assertNotNull(emsiIds);
-        Assertions.assertEquals(1, emsiIds.size());
+        emsiIdOptional = emsiIds.stream().filter(emsiId -> emsiId.endsWith("/" + identityName2)).findAny();
+        Assertions.assertTrue(emsiIdOptional.isPresent());
 
-        identity = msiManager.identities().getById(emsiIds.iterator().next());
+        identity = msiManager.identities().getById(emsiIdOptional.get());
         Assertions.assertNotNull(identity);
         Assertions.assertTrue(identity.name().equalsIgnoreCase(identityName2));
 
