@@ -42,7 +42,7 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
         // Management Long running operation is Failed or Cancelled
         final String vmname = "javavm1";
 
-        final String mySqlInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/4dadb9583bfcf29a0663f7f09d1cb443d909ac62/sdk/resourcemanager/azure-resourcemanager-compute/src/test/assets/install_mysql_server_5.7.sh";
+        final String mySqlInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/00df5c3ae1e25c526e265e78a00211d068b94f93/sdk/resourcemanager/azure-resourcemanager-compute/src/test/assets/install_mysql_server_5.7.sh";
         final String installCommand = "bash install_mysql_server_5.7.sh " + password();
         List<String> fileUris = new ArrayList<>();
         fileUris.add(mySqlInstallScript);
