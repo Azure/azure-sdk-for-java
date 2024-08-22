@@ -106,20 +106,19 @@ private abstract class CosmosWriterBase(
 
   override def abort(): Unit = {
     log.logInfo("abort invoked!!!")
-    writer.get.abort(true)
-    if (cacheItemReleasedCount.incrementAndGet() == 1) {
-      clientCacheItem.close()
+    try {
+      writer.get.abort(true)
+    } finally {
+      closeClients()
     }
   }
 
   override def close(): Unit = {
     log.logInfo("close invoked!!!")
-    flushAndCloseWriterWithRetries("closing")
-    if (cacheItemReleasedCount.incrementAndGet() == 1) {
-      clientCacheItem.close()
-      if (throughputControlClientCacheItemOpt.isDefined) {
-        throughputControlClientCacheItemOpt.get.close()
-      }
+    try {
+      flushAndCloseWriterWithRetries("closing")
+    } finally {
+      closeClients()
     }
   }
 
@@ -165,6 +164,15 @@ private abstract class CosmosWriterBase(
       case e: Throwable =>
         log.logError(s"Unexpected error when $operationName write job.", e)
         throw e
+    }
+  }
+
+  private def closeClients() = {
+    if (cacheItemReleasedCount.incrementAndGet() == 1) {
+      clientCacheItem.close()
+      if (throughputControlClientCacheItemOpt.isDefined) {
+        throughputControlClientCacheItemOpt.get.close()
+      }
     }
   }
 
