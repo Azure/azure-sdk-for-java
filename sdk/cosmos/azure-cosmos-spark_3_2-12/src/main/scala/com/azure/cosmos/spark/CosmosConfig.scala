@@ -1290,7 +1290,7 @@ private object CosmosWriteConfig {
   private val writeOnRetryCommitInterceptor = CosmosConfigEntry[Option[WriteOnRetryCommitInterceptor]](key = CosmosConfigNames.WriteOnRetryCommitInterceptor,
     mandatory = false,
     parseFromStringFunction = serviceName => getRetryCommitInterceptor(serviceName),
-    helpMessage = "Name of teh service to be invoked when retrying write commits (currently only implemented for bulk).")
+    helpMessage = "Name of the service to be invoked when retrying write commits (currently only implemented for bulk).")
 
   val key = "COSMOS.FLUSH_CLOSE_INTERVAL_SEC"
 
