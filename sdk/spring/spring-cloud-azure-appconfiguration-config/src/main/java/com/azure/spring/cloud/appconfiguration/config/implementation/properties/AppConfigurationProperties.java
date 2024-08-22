@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -30,6 +29,9 @@ public class AppConfigurationProperties {
 
     private boolean enabled = true;
 
+    /**
+     * List of Azure App Configuration stores to connect to.
+     */
     private List<ConfigStore> stores = new ArrayList<>();
 
     private Duration refreshInterval;
