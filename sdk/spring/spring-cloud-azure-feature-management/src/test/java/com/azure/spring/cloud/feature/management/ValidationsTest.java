@@ -30,10 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -107,7 +104,7 @@ public class ValidationsTest {
         if (featureManagementSection.getClass().isAssignableFrom(LinkedHashMap.class)) {
             return (LinkedHashMap<String, Object>) featureManagementSection;
         }
-        return new LinkedHashMap<>();
+        throw new IllegalArgumentException("feature_management part is not a map");
     }
 
     @SuppressWarnings("unchecked")
@@ -122,7 +119,7 @@ public class ValidationsTest {
 
         for (int i = 0; i < testCases.size(); i++) {
             logger.debug("Test case " + i + " : " + testCases.get(i).getDescription());
-            if (hasException(testCases.get(i))) {   // TODO. Currently we didn't throw the exception when parameter is invalid
+            if (hasException(testCases.get(i))) {   // TODO(mametcal). Currently we didn't throw the exception when parameter is invalid
                 assertNull(managementProperties.getOnOff().get(testCases.get(i).getFeatureFlagName()));
                 continue;
             }
@@ -147,7 +144,7 @@ public class ValidationsTest {
             throw new IllegalArgumentException("The sample files and tests files should have same count.");
         }
         for (int i = 0; i < sampleFiles.length; i++) {
-            if (sampleFiles[i].getName().contains("TargetingFilter.sample")) { // TODO. Not run the test case until we release the little endian fix
+            if (sampleFiles[i].getName().contains("TargetingFilter.sample")) { // TODO(mametcal). Not run the test case until we release the little endian fix
                 continue;
             }
             runTestcases(sampleFiles[i], testsFiles[i]);
