@@ -4493,9 +4493,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                          boolean disableAutomaticIdGeneration) {
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
-        return handleCircuitBreakingFeedbackForPointOperation(ObservableHelper
-            .inlineIfPossibleAsObs(() -> executeBatchRequestInternal(
-                collectionLink, serverBatchRequest, options, documentClientRetryPolicy, disableAutomaticIdGeneration, requestReference), documentClientRetryPolicy), requestReference);
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, ResourceType.Document, OperationType.Batch);
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
+        return handleCircuitBreakingFeedbackForPointOperation(
+            getPointOperationResponseMonoWithE2ETimeout(
+                nonNullRequestOptions,
+                endToEndPolicyConfig,
+                ObservableHelper
+                    .inlineIfPossibleAsObs(() -> executeBatchRequestInternal(
+                        collectionLink,
+                        serverBatchRequest,
+                        options,
+                        documentClientRetryPolicy,
+                        disableAutomaticIdGeneration,
+                        requestReference), documentClientRetryPolicy),
+                scopedDiagnosticsFactory
+            ),
+            requestReference);
     }
 
     private Mono<StoredProcedureResponse> executeStoredProcedureInternal(String storedProcedureLink,
