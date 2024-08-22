@@ -120,7 +120,7 @@ public class ReadmeSamples {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailWithAttachment
-        String attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath()).toString();
+        BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
         EmailAttachment attachment = new EmailAttachment(
             "attachment.txt",
             "text/plain",
@@ -145,7 +145,7 @@ public class ReadmeSamples {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailWithInlineAttachment
-        String attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath()).toString();
+        BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
         EmailAttachment attachment = new EmailAttachment(
             "inlineimage.jpg",
             "image/jpeg",

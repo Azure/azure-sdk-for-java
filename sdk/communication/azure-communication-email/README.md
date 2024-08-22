@@ -173,7 +173,7 @@ System.out.println("Operation Id: " + response.getValue().getId());
 Azure Communication Services support sending email with attachments.
 
 ```java readme-sample-sendEmailWithAttachment
-String attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath()).toString();
+BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
 EmailAttachment attachment = new EmailAttachment(
     "attachment.txt",
     "text/plain",
@@ -199,7 +199,7 @@ Azure Communication Services support sending inline attachments.
 Adding an optional `contentId` parameter to an `EmailAttachment` will make the attachment an inline attachment.
 
 ```java readme-sample-sendEmailWithInlineAttachment
-String attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath()).toString();
+BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
 EmailAttachment attachment = new EmailAttachment(
     "inlineimage.jpg",
     "image/jpeg",
