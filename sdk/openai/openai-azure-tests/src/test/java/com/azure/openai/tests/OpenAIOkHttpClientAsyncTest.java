@@ -3,7 +3,6 @@ package com.azure.openai.tests;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.openai.azure.extensions.AzureOpenAIExtensionsKt;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.core.JsonValue;
@@ -14,7 +13,6 @@ import com.openai.models.ChatCompletionMessage;
 import com.openai.models.ChatCompletionMessageParam;
 import com.openai.models.ChatCompletionMessageToolCall;
 import com.openai.models.ResponseFormatJsonObject;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,9 +43,9 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     private OpenAIOkHttpClientAsync.Builder setAzureServiceApiVersion(
             OpenAIOkHttpClientAsync.Builder clientBuilder, String apiVersion) {
         if (GA.equals(apiVersion)) {
-            AzureOpenAIExtensionsKt.serviceVersion(clientBuilder, AZURE_OPENAI_SERVICE_VERSION_GA);
+            clientBuilder.azureServiceVersion(AZURE_OPENAI_SERVICE_VERSION_GA);
         } else if (PREVIEW.equals(apiVersion)) {
-            AzureOpenAIExtensionsKt.serviceVersion(clientBuilder, AZURE_OPENAI_SERVICE_VERSION_PREVIEW);
+            clientBuilder.azureServiceVersion(AZURE_OPENAI_SERVICE_VERSION_PREVIEW);
         } else {
             throw new IllegalArgumentException("Invalid Azure API version");
         }
@@ -70,54 +68,54 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     }
 
     @Test
-    public void testNonAzureApiKey() throws ExecutionException, InterruptedException {
+    public void testNonAzureApiKey()  {
         client = createAsyncClient(OPEN_AI, V1);
         ChatCompletionCreateParams params = createParamsBuilder(GPT_3_5_TURBO).build();
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
-    public void testAzureApiKey(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testAzureApiKey(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
 
         ChatCompletionCreateParams params = createParamsBuilder(testModel).build();
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureAdTokenOnly")
-    public void testAzureEntraIdToken(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
-        client = createAsyncClient(apiType, apiVersion);
-        OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder();
+    public void testAzureEntraIdToken(String apiType, String apiVersion, String testModel) {
+        OpenAIOkHttpClientAsync.Builder clientBuilder = OpenAIOkHttpClientAsync.builder();
+        if (AZURE_OPEN_AI.equals(apiType)) {
+            setAzureServiceApiVersion(clientBuilder, apiVersion)
+                .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"))
+                // This requires `azure-identity` dependency.
+                .azureTokenCredential(new DefaultAzureCredentialBuilder().build());
+        } else {
+            throw new IllegalArgumentException("Invalid API type");
+        }
 
-        // This requires `azure-identity` dependency.
-        AzureOpenAIExtensionsKt.credential(builder, new DefaultAzureCredentialBuilder().build());
-
-        client = builder.baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT")).build();
+        client = clientBuilder.build();
 
         ChatCompletionCreateParams params = createParamsBuilder(testModel).build();
 
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionMaxTokens(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionMaxTokens(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params =
                 createParamsBuilder(testModel).maxTokens(50).build();
-        ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+        ChatCompletion chatCompletion = client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
         ChatCompletion.Usage usage = chatCompletion.usage().get();
         assertTrue(usage.completionTokens() <= 50);
@@ -126,81 +124,73 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionTemperature(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionTemperature(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params =
                 createParamsBuilder(testModel).temperature(0.8).build();
-        ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+        ChatCompletion chatCompletion = client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionTopP(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionTopP(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params =
                 createParamsBuilder(testModel).topP(0.1).build();
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionN(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionN(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params = createParamsBuilder(testModel).n(2).build();
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 2);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionStop(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionStop(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params =
                 createParamsBuilder(testModel).stop(" ").build();
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionTokenPenalty(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionTokenPenalty(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params = createParamsBuilder(testModel)
                 .presencePenalty(2.0)
                 .frequencyPenalty(2.0)
                 .build();
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionUser(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionUser(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params =
                 createParamsBuilder(testModel).user("javaUser").build();
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionLogitBias(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionLogitBias(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         Map<String, JsonValue> logitBiasMap = new HashMap<>();
         logitBiasMap.put("17585", JsonValue.from(-100.0));
@@ -212,40 +202,38 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         ChatCompletionCreateParams params =
                 createParamsBuilder(testModel).logitBias(logitBias).build();
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionLogprobs(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionLogprobs(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params =
                 createParamsBuilder(testModel).logprobs(true).topLogprobs(3).build();
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion, 1);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionSeed(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionSeed(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params =
                 createParamsBuilder(testModel, "Why is the sky blue?").seed(42).build();
         ChatCompletion chatCompletion = client.chat()
                 .completions()
                 .create(params)
-                .get(); // Assuming create method is overloaded to accept messages and seed
+                .join(); // Assuming create method is overloaded to accept messages and seed
         assertNotNull(chatCompletion.systemFingerprint()); // Assuming getSystemFingerprint() method exists
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
     public void testChatCompletionJsonResponse(String apiType, String apiVersion, String testModel)
-            throws JsonProcessingException, ExecutionException, InterruptedException {
+            throws JsonProcessingException {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
                 .messages(asList(
@@ -258,7 +246,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
                 .build();
 
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
 
         assertChatCompletion(chatCompletion, 1);
 
@@ -286,12 +274,11 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     @DisabledIf("com.azure.openai.tests.TestUtils#isAzureConfigMissing")
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
-    public void testChatCompletionWithoutSensitiveContent(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionWithoutSensitiveContent(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params = createChatCompletionParams(testModel, USER_CONTENT);
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletionWithoutSensitiveContent(chatCompletion);
     }
 
@@ -299,8 +286,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     @DisabledIf("com.azure.openai.tests.TestUtils#isAzureByodConfigMissing")
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureByodOnlyClient")
-    public void testChatCompletionByod(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params = createParamsBuilder(testModel)
                 .messages(asList(
@@ -308,7 +294,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
                         createUserMessageParam("What languages have libraries you know about for Azure OpenAI?")))
                 .additionalBodyProperties(createExtraBodyForByod())
                 .build();
-        ChatCompletion completion = client.chat().completions().create(params).get();
+        ChatCompletion completion = client.chat().completions().create(params).join();
         assertChatCompletionByod(completion);
     }
 
@@ -335,13 +321,12 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionTools(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionTools(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params =
                 createChatCompletionParamsWithTool(testModel, "What's the weather like today in Seattle?");
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
 
         assertChatCompletion(chatCompletion);
 
@@ -354,20 +339,19 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
 
         params = addToolResponseToMessages(params, chatCompletionMessageToolCalls, choice);
         ChatCompletion toolCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
 
         assertToolCompletion(toolCompletion);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionToolsParallelFunc(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionToolsParallelFunc(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params = createChatCompletionParamsWithTool(
                 testModel, "What's the weather like today in Seattle and Los Angeles?");
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
 
         assertChatCompletion(chatCompletion);
 
@@ -379,21 +363,20 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
 
         params = addToolResponseToMessages(params, chatCompletionMessageToolCalls, choice);
         ChatCompletion toolCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertToolCompletion(toolCompletion);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
-    public void testChatCompletionFunctions(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionFunctions(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         List<ChatCompletionMessageParam> messages = createMessages("What's the weather like today in Seattle?");
         List<ChatCompletionCreateParams.Function> functions = asList(createGetCurrentTemperatureFunction());
         ChatCompletionCreateParams params =
                 createChatCompletionParamsWithoutFunctionCall(testModel, messages, functions);
 
-        ChatCompletion completion = client.chat().completions().create(params).get();
+        ChatCompletion completion = client.chat().completions().create(params).join();
 
         assertChatCompletion(completion);
         assertFunctionCall(completion.choices().get(0).message().functionCall().get());
@@ -402,7 +385,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
                 .completions()
                 .create(addFunctionResponseToMessages(
                         testModel, messages, functions, "{\"temperature\": \"22\", \"unit\": \"celsius\"}"))
-                .get();
+                .join();
 
         assertFunctionCompletion(functionCompletion);
         assertPromptAndContentFilterResults(functionCompletion);
@@ -410,15 +393,14 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
-    public void testChatCompletionGivenFunction(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionGivenFunction(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         List<ChatCompletionMessageParam> messages = createMessages("What's the weather like today in Seattle?");
         List<ChatCompletionCreateParams.Function> functions = createFunctions();
         ChatCompletionCreateParams params =
                 createChatCompletionParamsWithFunction(testModel, messages, functions, "get_current_temperature");
 
-        ChatCompletion completion = client.chat().completions().create(params).get();
+        ChatCompletion completion = client.chat().completions().create(params).join();
 
         assertChatCompletion(completion);
 
@@ -431,7 +413,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         params = addFunctionResponseToMessages(
                 testModel, messages, functions, "{\"temperature\": \"22\", \"unit\": \"celsius\"}");
         ChatCompletion functionCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
 
         assertFunctionCompletion(functionCompletion);
     }
@@ -480,12 +462,11 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#visionOnlyClient")
-    public void testChatCompletionVision(String apiType, String apiVersion, String testModel)
-            throws ExecutionException, InterruptedException {
+    public void testChatCompletionVision(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params = createChatCompletionParamsWithImageUrl(testModel);
         ChatCompletion chatCompletion =
-                client.chat().completions().create(params).get();
+                client.chat().completions().create(params).join();
         assertChatCompletion(chatCompletion);
     }
 }

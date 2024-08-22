@@ -3,7 +3,6 @@ package com.azure.openai.tests;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.openai.azure.extensions.AzureOpenAIExtensionsKt;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.core.JsonValue;
@@ -14,7 +13,6 @@ import com.openai.models.ChatCompletionMessage;
 import com.openai.models.ChatCompletionMessageParam;
 import com.openai.models.ChatCompletionMessageToolCall;
 import com.openai.models.ResponseFormatJsonObject;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,9 +39,9 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     private OpenAIOkHttpClient.Builder setAzureServiceApiVersion(
             OpenAIOkHttpClient.Builder clientBuilder, String apiVersion) {
         if (GA.equals(apiVersion)) {
-            AzureOpenAIExtensionsKt.serviceVersion(clientBuilder, AZURE_OPENAI_SERVICE_VERSION_GA);
+            clientBuilder.azureServiceVersion(AZURE_OPENAI_SERVICE_VERSION_GA);
         } else if (PREVIEW.equals(apiVersion)) {
-            AzureOpenAIExtensionsKt.serviceVersion(clientBuilder, AZURE_OPENAI_SERVICE_VERSION_PREVIEW);
+            clientBuilder.azureServiceVersion(AZURE_OPENAI_SERVICE_VERSION_PREVIEW);
         } else {
             throw new IllegalArgumentException("Invalid Azure API version");
         }
@@ -54,7 +52,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         OpenAIOkHttpClient.Builder clientBuilder = OpenAIOkHttpClient.builder();
         if (AZURE_OPEN_AI.equals(apiType)) {
             setAzureServiceApiVersion(clientBuilder, apiVersion)
-                    .apiKey(System.getenv("AZURE_OPENAI_KEY"))
+                    .azureApiKey(System.getenv("AZURE_OPENAI_KEY"))
                     .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"));
         } else if (OPEN_AI.equals(apiType)) {
             clientBuilder.apiKey(System.getenv("NON_AZURE_OPENAI_KEY"));
@@ -89,14 +87,17 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureAdTokenOnly")
     public void testAzureEntraIdToken(String apiType, String apiVersion, String testModel) {
-        client = createClient(apiType, apiVersion);
+        OpenAIOkHttpClient.Builder clientBuilder = OpenAIOkHttpClient.builder();
+        if (AZURE_OPEN_AI.equals(apiType)) {
+            setAzureServiceApiVersion(clientBuilder, apiVersion)
+                .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"))
+                // This requires `azure-identity` dependency.
+                .azureTokenCredential(new DefaultAzureCredentialBuilder().build());
+        } else {
+            throw new IllegalArgumentException("Invalid API type");
+        }
 
-        OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder();
-
-        // This requires `azure-identity` dependency.
-        AzureOpenAIExtensionsKt.credential(builder, new DefaultAzureCredentialBuilder().build());
-
-        client = builder.baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT")).build();
+        client = clientBuilder.build();
 
         ChatCompletionCreateParams params = createParamsBuilder(testModel).build();
 
