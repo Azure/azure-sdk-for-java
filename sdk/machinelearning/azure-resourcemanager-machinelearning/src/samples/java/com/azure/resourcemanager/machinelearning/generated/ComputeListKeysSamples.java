@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for Compute ListKeys. */
+/**
+ * Samples for Compute ListKeys.
+ */
 public final class ComputeListKeysSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/listKeys.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/listKeys.json
      */
     /**
      * Sample code: List AKS Compute Keys.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listAKSComputeKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .computes()
+        manager.computes()
             .listKeysWithResponse("testrg123", "workspaces123", "compute123", com.azure.core.util.Context.NONE);
     }
 }

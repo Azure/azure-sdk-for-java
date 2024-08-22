@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current deployment state of schedule. */
+/**
+ * The current deployment state of schedule.
+ */
 public final class ScheduleProvisioningState extends ExpandableStringEnum<ScheduleProvisioningState> {
-    /** Static value Completed for ScheduleProvisioningState. */
+    /**
+     * Static value Completed for ScheduleProvisioningState.
+     */
     public static final ScheduleProvisioningState COMPLETED = fromString("Completed");
 
-    /** Static value Provisioning for ScheduleProvisioningState. */
+    /**
+     * Static value Provisioning for ScheduleProvisioningState.
+     */
     public static final ScheduleProvisioningState PROVISIONING = fromString("Provisioning");
 
-    /** Static value Failed for ScheduleProvisioningState. */
+    /**
+     * Static value Failed for ScheduleProvisioningState.
+     */
     public static final ScheduleProvisioningState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of ScheduleProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ScheduleProvisioningState extends ExpandableStringEnum<Schedu
 
     /**
      * Creates or finds a ScheduleProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScheduleProvisioningState.
      */
-    @JsonCreator
     public static ScheduleProvisioningState fromString(String name) {
         return fromString(name, ScheduleProvisioningState.class);
     }
 
     /**
      * Gets known ScheduleProvisioningState values.
-     *
+     * 
      * @return known ScheduleProvisioningState values.
      */
     public static Collection<ScheduleProvisioningState> values() {
