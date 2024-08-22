@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Fixed an issue to avoid transient `IllegalArgumentException` due to duplicate json properties for the `uniqueKeyPolicy` property. - See [PR 41348](https://github.com/Azure/azure-sdk-for-java/pull/41348)
 
 ### 4.63.1 (2024-08-12)
 
