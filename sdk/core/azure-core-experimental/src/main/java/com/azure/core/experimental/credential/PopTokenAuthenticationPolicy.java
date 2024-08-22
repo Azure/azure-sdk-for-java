@@ -5,7 +5,7 @@ package com.azure.core.experimental.credential;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.experimental.implementation.AccessTokenCache;
-import com.azure.core.experimental.implementation.ChallengeParser;
+import com.azure.core.experimental.implementation.AuthorizationChallengeParser;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -27,7 +27,6 @@ import java.util.Objects;
  */
 public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(PopTokenAuthenticationPolicy.class);
-    private static final String BEARER = "Bearer";
     private final List<String> scopes = new ArrayList<>();
     private final AccessTokenCache cache;
     private String popNonce;
@@ -68,13 +67,14 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @return A {@link Mono} containing a {@link Boolean} indicating if the request was authorized.
      */
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
-        popNonce = ChallengeParser.getChallengeParameterFromResponse(response, "PoP", "nonce");
+        popNonce = AuthorizationChallengeParser.getChallengeParameterFromResponse(response, "PoP", "nonce");
         if (CoreUtils.isNullOrEmpty(popNonce)) {
             return Mono.just(false);
         }
 
-        return this.scopes == null ? Mono.just(false) : this.setAuthorizationHeaderHelper(context, true)
-            .flatMap((ignored) -> Mono.just(true));
+        return this.scopes == null
+            ? Mono.just(false)
+            : this.setAuthorizationHeaderHelper(context, true).flatMap((ignored) -> Mono.just(true));
     }
 
     /**
@@ -84,7 +84,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @return A {@link Boolean} indicating if the request was authorized.
      */
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
-        popNonce = ChallengeParser.getChallengeParameterFromResponse(response, "PoP", "nonce");
+        popNonce = AuthorizationChallengeParser.getChallengeParameterFromResponse(response, "PoP", "nonce");
         if (CoreUtils.isNullOrEmpty(popNonce)) {
             return false;
         }
@@ -123,13 +123,11 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
                     }
                 });
             } else if (authHeader != null) {
-                popNonce = ChallengeParser
-                    .getChallengeParameterFromResponse(httpResponse, "PoP", "nonce");
+                popNonce = AuthorizationChallengeParser.getChallengeParameterFromResponse(httpResponse, "PoP", "nonce");
             }
             return Mono.just(httpResponse);
         });
     }
-
 
     /**
      * Processes the request synchronously.
@@ -139,7 +137,8 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
      */
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         } else {
             HttpPipelineNextSyncPolicy nextPolicy = next.clone();
             this.authorizeRequestSync(context);
@@ -153,8 +152,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
                     return httpResponse;
                 }
             } else if (authHeader != null) {
-                popNonce = ChallengeParser
-                    .getChallengeParameterFromResponse(httpResponse, "PoP", "nonce");
+                popNonce = AuthorizationChallengeParser.getChallengeParameterFromResponse(httpResponse, "PoP", "nonce");
                 return httpResponse;
             } else {
                 return httpResponse;
@@ -164,12 +162,14 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
 
     private Mono<Void> setAuthorizationHeaderHelper(HttpPipelineCallContext context, boolean checkToForceFetchToken) {
         if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                "Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
         }
 
-        PopTokenRequestContext popTokenRequestContext = new PopTokenRequestContext(this.scopes)
+        PopTokenRequestContext popTokenRequestContext = new PopTokenRequestContext().setScopes(this.scopes)
             .setParentRequestId(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID))
-            .setProofOfPossessionNonce(popNonce).setRequest(context.getHttpRequest());
+            .setProofOfPossessionNonce(popNonce)
+            .setRequest(context.getHttpRequest());
 
         if (!CoreUtils.isNullOrEmpty(popNonce)) {
             return this.cache.getToken(popTokenRequestContext, checkToForceFetchToken).flatMap((token) -> {
@@ -182,9 +182,10 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
 
     private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context, boolean checkToForceFetchToken) {
         if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                "Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
         }
-        PopTokenRequestContext popTokenRequestContext = new PopTokenRequestContext(this.scopes)
+        PopTokenRequestContext popTokenRequestContext = new PopTokenRequestContext().setScopes(this.scopes)
             .setParentRequestId(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID))
             .setProofOfPossessionNonce(popNonce);
 

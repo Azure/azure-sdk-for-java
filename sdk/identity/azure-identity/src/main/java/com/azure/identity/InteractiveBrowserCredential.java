@@ -229,4 +229,6 @@ public class InteractiveBrowserCredential implements TokenCredential {
         return (cachedToken.get() != null) && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
                 || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
+
+
 }

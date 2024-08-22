@@ -3,6 +3,7 @@
 
 package com.azure.core.experimental.credential;
 
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -16,10 +17,10 @@ import java.util.Objects;
 /**
  * The context for a Proof of Possession token request.
  */
-public final class PopTokenRequestContext {
+public final class PopTokenRequestContext extends TokenRequestContext {
     private static final ClientLogger LOGGER = new ClientLogger(PopTokenRequestContext.class);
 
-    private final List<String> scopes = new ArrayList();
+    private final List<String> scopes = new ArrayList<String>();
     private String parentRequestId;
     private String claims;
     private String tenantId;
@@ -28,74 +29,32 @@ public final class PopTokenRequestContext {
     private HttpRequest request;
 
 
-
     /**
      * Creates a new instance of the PopTokenRequestContext.
-     * @param scopes The scopes required for the token.
-     * @param parentRequestId The parent request id.
-     * @param claims The claims required for the token.
-     * @param tenantId The tenant id.
-     * @param isCaeEnabled Whether the client is enabled for Certificate Authority Encryption.
-     * @param proofOfPossessionNonce The proof of possession nonce.
-     * @param request The HTTP request.
      */
-    public PopTokenRequestContext(List<String> scopes, String parentRequestId, String claims, String tenantId,
-                                  boolean isCaeEnabled, String proofOfPossessionNonce, HttpRequest request) {
+    public PopTokenRequestContext() {}
+
+
+    /**
+     * Adds scopes required for the token.
+     * @param scopes The scopes required for the token.
+     * @return The updated PopTokenRequestContext object.
+     */
+    public PopTokenRequestContext addScopes(String... scopes) {
+        this.scopes.addAll(Arrays.asList(scopes));
+        return this;
+    }
+
+    /**
+     * Sets the scopes required for the token.
+     * @param scopes The scopes required for the token.
+     * @return The updated PopTokenRequestContext object.
+     */
+    public PopTokenRequestContext setScopes(List<String> scopes) {
         Objects.requireNonNull(scopes, "'scopes' cannot be null.");
         this.scopes.clear();
         this.scopes.addAll(scopes);
-        this.parentRequestId = parentRequestId;
-        this.claims = claims;
-        this.tenantId = tenantId;
-        this.isCaeEnabled = isCaeEnabled;
-        this.proofOfPossessionNonce = proofOfPossessionNonce;
-        this.request = request;
-    }
-
-    /**
-     * Creates a new instance of the PopTokenRequestContext.
-     * @param scopes The scopes required for the token.
-     */
-    public PopTokenRequestContext(List<String> scopes) {
-        Objects.requireNonNull(scopes, "'scopes' cannot be null.");
-        this.scopes.clear();
-        this.scopes.addAll(scopes);
-    }
-
-
-    /**
-     * Creates a new instance of the PopTokenRequestContext.
-     * @return A new instance of the PopTokenRequestContext.
-     */
-    public TokenRequestContext toTokenRequestContext() {
-        return new TokenRequestContext(scopes)
-            .setCaeEnabled(isCaeEnabled)
-            .setClaims(claims)
-            .setTenantId(tenantId)
-            .setParentRequestId(parentRequestId);
-    }
-
-    /**
-     * Creates a new instance of the PopTokenRequestContext from a TokenRequestContext.
-     * @param context The TokenRequestContext.
-     * @param request The HTTP request.
-     * @return A new instance of the PopTokenRequestContext.
-     */
-    public static PopTokenRequestContext fromTokenRequestContext(TokenRequestContext context, HttpRequest request) {
-        return new PopTokenRequestContext(context.getScopes())
-            .setParentRequestId(context.getParentRequestId())
-            .setClaims(context.getClaims())
-            .setTenantId(context.getTenantId())
-            .setCaeEnabled(context.isCaeEnabled());
-    }
-
-    /**
-     * Creates a new instance of the PopTokenRequestContext from a TokenRequestContext.
-     * @param context The TokenRequestContext.
-     * @return A new instance of the PopTokenRequestContext.
-     */
-    public static TokenRequestContext toTokenRequestContext(PopTokenRequestContext context) {
-        return context.toTokenRequestContext();
+        return this;
     }
 
     /**
@@ -234,63 +193,3 @@ public final class PopTokenRequestContext {
         }
     }
 }
-
-/**
- * The context for a token request.
- */
-class TokenRequestContext {
-    private final List<String> scopes = new ArrayList();
-    private String parentRequestId;
-    private String claims;
-    private String tenantId;
-    private boolean isCaeEnabled;
-
-    TokenRequestContext(List<String> scopes) {
-        this.scopes.addAll(scopes);
-    }
-
-    public List<String> getScopes() {
-        return scopes;
-    }
-
-    public String getParentRequestId() {
-        return parentRequestId;
-    }
-
-    public String getClaims() {
-        return claims;
-    }
-
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public boolean isCaeEnabled() {
-        return isCaeEnabled;
-    }
-
-    public TokenRequestContext addScopes(String... scopes) {
-        this.scopes.addAll(Arrays.asList(scopes));
-        return this;
-    }
-
-    public TokenRequestContext setClaims(String claims) {
-        this.claims = claims;
-        return this;
-    }
-    public TokenRequestContext setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
-
-    public TokenRequestContext setCaeEnabled(boolean enableCae) {
-        this.isCaeEnabled = enableCae;
-        return this;
-    }
-
-    public TokenRequestContext setParentRequestId(String parentRequestId) {
-        this.parentRequestId = parentRequestId;
-        return this;
-    }
-}
-

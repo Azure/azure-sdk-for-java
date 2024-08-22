@@ -97,7 +97,7 @@ public final class AccessTokenCache {
     }
 
     private Supplier<Mono<? extends AccessToken>> retrieveToken(PopTokenRequestContext tokenRequestContext,
-                                                                boolean checkToForceFetchToken) {
+        boolean checkToForceFetchToken) {
         return () -> {
             try {
                 if (tokenRequestContext == null) {
@@ -178,7 +178,7 @@ public final class AccessTokenCache {
     }
 
     private Supplier<AccessToken> retrieveTokenSync(PopTokenRequestContext tokenRequestContext,
-                                                    boolean checkToForceFetchToken) {
+        boolean checkToForceFetchToken) {
         return () -> {
             if (tokenRequestContext == null) {
                 throw LOGGER.logExceptionAsError(
@@ -253,14 +253,15 @@ public final class AccessTokenCache {
     private boolean checkIfForceRefreshRequired(PopTokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null
-            ? tokenRequestContext.getClaims() == null
-            : (tokenRequestContext.getClaims() == null
-            ? false
-            : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+                ? tokenRequestContext.getClaims() == null
+                : (tokenRequestContext.getClaims() == null
+                    ? false
+                    : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
-    private Function<Signal<AccessToken>, Mono<? extends AccessToken>> processTokenRefreshResult(Sinks.One<AccessToken> sinksOne, OffsetDateTime now, Mono<AccessToken> fallback) {
+    private Function<Signal<AccessToken>, Mono<? extends AccessToken>>
+        processTokenRefreshResult(Sinks.One<AccessToken> sinksOne, OffsetDateTime now, Mono<AccessToken> fallback) {
         return signal -> {
             AccessToken accessToken = signal.get();
             Throwable error = signal.getThrowable();

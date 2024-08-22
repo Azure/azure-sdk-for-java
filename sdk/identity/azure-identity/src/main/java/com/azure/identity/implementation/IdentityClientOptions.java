@@ -80,8 +80,8 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean brokerEnabled;
     private boolean enableMsaPassthrough;
     private boolean useDefaultBrokerAccount;
-
     private boolean useImdsRetryStrategy;
+    private boolean proofOfPosessionRequired;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -568,6 +568,24 @@ public final class IdentityClientOptions implements Cloneable {
     public IdentityClientOptions setRetryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
+    }
+
+    /**
+     * Configure the retry policy.
+     * @param proofOfPosessionRequired the flag indicating if proof of posession is required.
+     * @return the updated client options
+     */
+    public IdentityClientOptions setProofOfPosessionRequired(boolean proofOfPosessionRequired) {
+        this.proofOfPosessionRequired = proofOfPosessionRequired;
+        return this;
+    }
+
+    /**
+     * Get the configured proof of posession requirement.
+     * @return the proof of posession requirement.
+     */
+    public boolean isProofOfPosessionRequired() {
+        return proofOfPosessionRequired;
     }
 
     /**
