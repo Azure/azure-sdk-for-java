@@ -44,6 +44,8 @@ import java.util.function.Supplier;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.PUMP_ID_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.CONCURRENCY_PER_CORE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.CORES_VS_CONCURRENCY_MESSAGE;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MESSAGE_ID_LOGGING_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
@@ -195,6 +197,7 @@ final class SessionsMessagePump {
      * @return the Mono to begin and cancel message pumping.
      */
     Mono<Void> begin() {
+        logCPUResourcesConcurrencyMismatch();
         final Mono<List<RollingSessionReceiver>> createReceiversMono = Mono.fromSupplier(() -> {
             throwIfTerminatedOrInitialized();
             final List<RollingSessionReceiver> rollingReceivers = createRollingSessionReceivers();
@@ -281,6 +284,16 @@ final class SessionsMessagePump {
         }
         if (l != EMPTY) {
             throw logger.atVerbose().log(new IllegalStateException("Cannot invoke begin() more than once."));
+        }
+    }
+
+    private void logCPUResourcesConcurrencyMismatch() {
+        final int cores = Runtime.getRuntime().availableProcessors();
+        final int poolSize = DEFAULT_BOUNDED_ELASTIC_SIZE;
+        final int concurrency = maxConcurrentSessions * concurrencyPerSession;
+        if (concurrencyPerSession > poolSize || concurrency > CONCURRENCY_PER_CORE * cores) {
+            final String message = concurrency + " (ConcurrentSessions=" + maxConcurrentSessions + ", ConcurrencyPerSession=" + concurrencyPerSession + ")";
+            logger.atInfo().log(CORES_VS_CONCURRENCY_MESSAGE, poolSize, cores, message);
         }
     }
 
