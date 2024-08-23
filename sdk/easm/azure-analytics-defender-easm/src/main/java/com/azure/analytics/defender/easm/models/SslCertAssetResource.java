@@ -120,7 +120,6 @@ public final class SslCertAssetResource extends AssetResource {
      * @return the kind value.
      */
     @Generated
-    @Override
     public String getKind() {
         return this.kind;
     }

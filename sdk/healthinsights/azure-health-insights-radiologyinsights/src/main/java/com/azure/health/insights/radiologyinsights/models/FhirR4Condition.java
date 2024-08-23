@@ -197,7 +197,6 @@ public final class FhirR4Condition extends FhirR4DomainResource {
      * @return the resourceType value.
      */
     @Generated
-    @Override
     public String getResourceType() {
         return this.resourceType;
     }

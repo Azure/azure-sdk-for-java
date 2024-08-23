@@ -9,7 +9,9 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  */
 public final class ResourceDetailsListByPoolSamples {
     /*
-     * x-ms-original-file: 2024-04-04-preview/ResourceDetails_ListByPool.json
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * ResourceDetails_ListByPool.json
      */
     /**
      * Sample code: ResourceDetails_ListByPool.

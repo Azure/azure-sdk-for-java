@@ -36,7 +36,6 @@ public final class ChatCompletionsTextResponseFormat extends ChatCompletionsResp
      * @return the type value.
      */
     @Generated
-    @Override
     public String getType() {
         return this.type;
     }

@@ -56,7 +56,6 @@ public final class PassThroughQueueSelectorAttachment extends QueueSelectorAttac
      * @return the kind value.
      */
     @Generated
-    @Override
     public QueueSelectorAttachmentKind getKind() {
         return this.kind;
     }

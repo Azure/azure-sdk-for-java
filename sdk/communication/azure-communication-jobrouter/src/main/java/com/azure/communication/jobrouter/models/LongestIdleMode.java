@@ -44,7 +44,6 @@ public final class LongestIdleMode extends DistributionMode {
      * @return the kind value.
      */
     @Generated
-    @Override
     public DistributionModeKind getKind() {
         return this.kind;
     }

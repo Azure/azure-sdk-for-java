@@ -9,7 +9,8 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class MongoClustersListConnectionStringsSamples {
     /*
-     * x-ms-original-file: 2024-03-01-preview/MongoClusters_ListConnectionStrings.json
+     * x-ms-original-file: specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/
+     * MongoClusters_ListConnectionStrings.json
      */
     /**
      * Sample code: List the available connection strings for the Mongo Cluster resource.

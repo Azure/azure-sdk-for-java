@@ -121,7 +121,6 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
      * @return the kind value.
      */
     @Generated
-    @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
     }

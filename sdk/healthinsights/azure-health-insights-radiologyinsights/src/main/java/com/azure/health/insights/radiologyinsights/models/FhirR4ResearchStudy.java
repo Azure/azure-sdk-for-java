@@ -218,7 +218,6 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
      * @return the resourceType value.
      */
     @Generated
-    @Override
     public String getResourceType() {
         return this.resourceType;
     }

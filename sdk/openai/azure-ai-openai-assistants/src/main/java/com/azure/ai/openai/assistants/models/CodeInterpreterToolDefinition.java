@@ -42,7 +42,6 @@ public final class CodeInterpreterToolDefinition extends ToolDefinition {
      * @return the type value.
      */
     @Generated
-    @Override
     public String getType() {
         return this.type;
     }

@@ -44,7 +44,6 @@ public final class MessageDeltaTextContentObject extends MessageDeltaContent {
      * @return the type value.
      */
     @Generated
-    @Override
     public String getType() {
         return this.type;
     }

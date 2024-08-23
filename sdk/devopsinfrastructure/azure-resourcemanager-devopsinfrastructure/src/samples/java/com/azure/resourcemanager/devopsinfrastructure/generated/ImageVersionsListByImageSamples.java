@@ -9,7 +9,9 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  */
 public final class ImageVersionsListByImageSamples {
     /*
-     * x-ms-original-file: 2024-04-04-preview/ImageVersions_ListByImage.json
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * ImageVersions_ListByImage.json
      */
     /**
      * Sample code: ImageVersions_ListByImage.

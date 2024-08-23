@@ -59,7 +59,6 @@ public final class AzureMachineLearningIndexChatExtensionConfiguration extends A
      * @return the type value.
      */
     @Generated
-    @Override
     public AzureChatExtensionType getType() {
         return this.type;
     }

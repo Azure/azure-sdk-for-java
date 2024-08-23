@@ -6,6 +6,7 @@ package com.azure.ai.vision.face.implementation.models;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionJsonContent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 
 /**
  * Request of liveness with verify session creation.
@@ -23,20 +24,7 @@ public final class CreateLivenessWithVerifySessionMultipartContent {
      * The image stream for verify. Content-Disposition header field for this part must have filename.
      */
     @Generated
-    private final VerifyImageFileDetails verifyImage;
-
-    /**
-     * Creates an instance of CreateLivenessWithVerifySessionMultipartContent class.
-     *
-     * @param parameters the parameters value to set.
-     * @param verifyImage the verifyImage value to set.
-     */
-    @Generated
-    public CreateLivenessWithVerifySessionMultipartContent(CreateLivenessWithVerifySessionJsonContent parameters,
-        VerifyImageFileDetails verifyImage) {
-        this.parameters = parameters;
-        this.verifyImage = verifyImage;
-    }
+    private final byte[] verifyImage;
 
     /**
      * Get the parameters property: The parameters for creating session.
@@ -55,7 +43,20 @@ public final class CreateLivenessWithVerifySessionMultipartContent {
      * @return the verifyImage value.
      */
     @Generated
-    public VerifyImageFileDetails getVerifyImage() {
-        return this.verifyImage;
+    public byte[] getVerifyImage() {
+        return CoreUtils.clone(this.verifyImage);
+    }
+
+    /**
+     * Creates an instance of CreateLivenessWithVerifySessionMultipartContent class.
+     *
+     * @param parameters the parameters value to set.
+     * @param verifyImage the verifyImage value to set.
+     */
+    @Generated
+    public CreateLivenessWithVerifySessionMultipartContent(CreateLivenessWithVerifySessionJsonContent parameters,
+        byte[] verifyImage) {
+        this.parameters = parameters;
+        this.verifyImage = verifyImage;
     }
 }

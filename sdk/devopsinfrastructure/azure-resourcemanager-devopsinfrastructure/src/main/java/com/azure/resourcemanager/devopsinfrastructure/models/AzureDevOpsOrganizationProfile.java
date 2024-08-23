@@ -43,7 +43,6 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
      * 
      * @return the kind value.
      */
-    @Override
     public String kind() {
         return this.kind;
     }

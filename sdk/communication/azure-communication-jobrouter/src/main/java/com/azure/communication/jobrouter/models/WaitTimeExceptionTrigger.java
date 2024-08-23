@@ -52,7 +52,6 @@ public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
      * @return the kind value.
      */
     @Generated
-    @Override
     public ExceptionTriggerKind getKind() {
         return this.kind;
     }

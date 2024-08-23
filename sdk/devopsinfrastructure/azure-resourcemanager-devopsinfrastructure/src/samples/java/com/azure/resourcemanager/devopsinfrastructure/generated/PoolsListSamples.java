@@ -9,7 +9,9 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  */
 public final class PoolsListSamples {
     /*
-     * x-ms-original-file: 2024-04-04-preview/ListPoolsBySubscription.json
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * ListPoolsBySubscription.json
      */
     /**
      * Sample code: Pools_ListBySubscription.

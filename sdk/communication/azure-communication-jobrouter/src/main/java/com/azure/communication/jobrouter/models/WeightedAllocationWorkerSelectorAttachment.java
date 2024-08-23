@@ -51,7 +51,6 @@ public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSele
      * @return the kind value.
      */
     @Generated
-    @Override
     public WorkerSelectorAttachmentKind getKind() {
         return this.kind;
     }

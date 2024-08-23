@@ -9,7 +9,8 @@ package com.azure.resourcemanager.standbypool.generated;
  */
 public final class StandbyContainerGroupPoolsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-03-01-preview/StandbyContainerGroupPools_ListByResourceGroup.json
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2024-03-01-preview/
+     * StandbyContainerGroupPools_ListByResourceGroup.json
      */
     /**
      * Sample code: StandbyContainerGroupPools_ListByResourceGroup.

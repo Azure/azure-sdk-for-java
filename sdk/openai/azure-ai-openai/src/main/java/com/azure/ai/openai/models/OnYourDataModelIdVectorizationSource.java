@@ -56,7 +56,6 @@ public final class OnYourDataModelIdVectorizationSource extends OnYourDataVector
      * @return the type value.
      */
     @Generated
-    @Override
     public OnYourDataVectorizationSourceType getType() {
         return this.type;
     }

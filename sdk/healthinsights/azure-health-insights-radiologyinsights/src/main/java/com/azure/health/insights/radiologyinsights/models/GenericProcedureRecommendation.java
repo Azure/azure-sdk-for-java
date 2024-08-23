@@ -62,7 +62,6 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
      * @return the kind value.
      */
     @Generated
-    @Override
     public String getKind() {
         return this.kind;
     }

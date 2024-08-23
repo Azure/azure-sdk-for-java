@@ -40,7 +40,6 @@ public final class AgeMismatchInference extends RadiologyInsightsInference {
      * @return the kind value.
      */
     @Generated
-    @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
     }

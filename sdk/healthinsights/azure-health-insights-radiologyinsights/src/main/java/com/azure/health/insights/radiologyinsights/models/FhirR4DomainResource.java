@@ -83,7 +83,6 @@ public class FhirR4DomainResource extends FhirR4Resource {
      * @return the resourceType value.
      */
     @Generated
-    @Override
     public String getResourceType() {
         return this.resourceType;
     }

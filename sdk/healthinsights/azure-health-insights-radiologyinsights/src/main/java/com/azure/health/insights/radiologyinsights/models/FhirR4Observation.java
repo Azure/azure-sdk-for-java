@@ -266,7 +266,6 @@ public final class FhirR4Observation extends FhirR4DomainResource {
      * @return the resourceType value.
      */
     @Generated
-    @Override
     public String getResourceType() {
         return this.resourceType;
     }

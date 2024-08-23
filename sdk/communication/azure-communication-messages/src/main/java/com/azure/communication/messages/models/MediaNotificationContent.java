@@ -54,7 +54,6 @@ public final class MediaNotificationContent extends NotificationContent {
      * @return the kind value.
      */
     @Generated
-    @Override
     public CommunicationMessageKind getKind() {
         return this.kind;
     }

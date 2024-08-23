@@ -19,7 +19,8 @@ import java.util.Map;
  */
 public final class AssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2023-11-01-preview/Create_Asset_Without_ExternalAssetId.json
+     * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
+     * Create_Asset_Without_ExternalAssetId.json
      */
     /**
      * Sample code: Create_Asset_Without_ExternalAssetId.
@@ -76,7 +77,8 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2023-11-01-preview/Create_Asset_With_ExternalAssetId.json
+     * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
+     * Create_Asset_With_ExternalAssetId.json
      */
     /**
      * Sample code: Create_Asset_With_ExternalAssetId.
@@ -134,7 +136,8 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2023-11-01-preview/Create_Asset_Without_DisplayName.json
+     * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
+     * Create_Asset_Without_DisplayName.json
      */
     /**
      * Sample code: Create_Asset_Without_DisplayName.

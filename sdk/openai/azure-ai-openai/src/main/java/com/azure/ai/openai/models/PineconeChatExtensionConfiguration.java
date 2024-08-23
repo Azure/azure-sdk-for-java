@@ -58,7 +58,6 @@ public final class PineconeChatExtensionConfiguration extends AzureChatExtension
      * @return the type value.
      */
     @Generated
-    @Override
     public AzureChatExtensionType getType() {
         return this.type;
     }

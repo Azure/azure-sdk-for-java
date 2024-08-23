@@ -9,7 +9,8 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-05-01-preview/Operations_List.json
+     * x-ms-original-file:
+     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

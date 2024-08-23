@@ -56,7 +56,6 @@ public final class ExpressionRouterRule extends RouterRule {
      * @return the kind value.
      */
     @Generated
-    @Override
     public RouterRuleKind getKind() {
         return this.kind;
     }

@@ -65,7 +65,6 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
      * @return the kind value.
      */
     @Generated
-    @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
     }

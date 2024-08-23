@@ -11,7 +11,8 @@ import com.azure.resourcemanager.mongocluster.models.CheckNameAvailabilityReques
  */
 public final class MongoClustersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2024-03-01-preview/MongoClusters_NameAvailability.json
+     * x-ms-original-file: specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/
+     * MongoClusters_NameAvailability.json
      */
     /**
      * Sample code: Checks and confirms the Mongo Cluster name is availability for use.
@@ -26,7 +27,8 @@ public final class MongoClustersCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/MongoClusters_NameAvailability_AlreadyExists.json
+     * x-ms-original-file: specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/
+     * MongoClusters_NameAvailability_AlreadyExists.json
      */
     /**
      * Sample code: Checks and returns that the Mongo Cluster name is already in-use.

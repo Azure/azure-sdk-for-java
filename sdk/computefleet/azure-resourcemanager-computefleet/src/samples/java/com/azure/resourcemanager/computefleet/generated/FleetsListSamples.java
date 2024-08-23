@@ -9,7 +9,8 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class FleetsListSamples {
     /*
-     * x-ms-original-file: 2024-05-01-preview/Fleets_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_ListBySubscription.json
      */
     /**
      * Sample code: Fleets_ListBySubscription.

@@ -45,7 +45,6 @@ public final class OnYourDataVectorSearchAccessTokenAuthenticationOptions
      * @return the type value.
      */
     @Generated
-    @Override
     public OnYourDataVectorSearchAuthenticationType getType() {
         return this.type;
     }

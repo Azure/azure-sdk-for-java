@@ -56,7 +56,6 @@ public final class FunctionRouterRule extends RouterRule {
      * @return the kind value.
      */
     @Generated
-    @Override
     public RouterRuleKind getKind() {
         return this.kind;
     }

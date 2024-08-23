@@ -77,7 +77,6 @@
     "com.azure.ai.vision.face.implementation.models.FindSimilarRequest": "ClientCustomizations.findSimilar.Request.anonymous",
     "com.azure.ai.vision.face.implementation.models.GroupRequest": "ClientCustomizations.group.Request.anonymous",
     "com.azure.ai.vision.face.implementation.models.VerifyFaceToFaceRequest": "ClientCustomizations.verifyFaceToFace.Request.anonymous",
-    "com.azure.ai.vision.face.implementation.models.VerifyImageFileDetails": "null",
     "com.azure.ai.vision.face.models.AccessoryItem": "Face.AccessoryItem",
     "com.azure.ai.vision.face.models.AccessoryType": "Face.AccessoryType",
     "com.azure.ai.vision.face.models.AuditLivenessResponseInfo": "Face.AuditLivenessResponseInfo",

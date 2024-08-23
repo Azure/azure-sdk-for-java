@@ -85,7 +85,6 @@ public final class FunctionToolDefinition extends ToolDefinition {
      * @return the type value.
      */
     @Generated
-    @Override
     public String getType() {
         return this.type;
     }

@@ -45,7 +45,6 @@ public final class RunStepDeltaCodeInterpreterImageOutput extends RunStepDeltaCo
      * @return the type value.
      */
     @Generated
-    @Override
     public String getType() {
         return this.type;
     }

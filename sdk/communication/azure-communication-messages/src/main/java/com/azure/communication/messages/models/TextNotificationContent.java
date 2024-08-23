@@ -48,7 +48,6 @@ public final class TextNotificationContent extends NotificationContent {
      * @return the kind value.
      */
     @Generated
-    @Override
     public CommunicationMessageKind getKind() {
         return this.kind;
     }

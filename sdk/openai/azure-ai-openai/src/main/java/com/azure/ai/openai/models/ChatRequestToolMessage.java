@@ -72,7 +72,6 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      * @return the role value.
      */
     @Generated
-    @Override
     public ChatRole getRole() {
         return this.role;
     }

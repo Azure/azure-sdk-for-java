@@ -41,7 +41,6 @@ public final class RunStepDeltaMessageCreation extends RunStepDeltaDetail {
      * @return the type value.
      */
     @Generated
-    @Override
     public String getType() {
         return this.type;
     }

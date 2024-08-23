@@ -58,7 +58,6 @@ public final class RunStepFunctionToolCall extends RunStepToolCall {
      * @return the type value.
      */
     @Generated
-    @Override
     public String getType() {
         return this.type;
     }

@@ -53,7 +53,6 @@ public final class SexMismatchInference extends RadiologyInsightsInference {
      * @return the kind value.
      */
     @Generated
-    @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
     }

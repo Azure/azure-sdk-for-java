@@ -58,7 +58,6 @@ public final class VmssFabricProfile extends FabricProfile {
      * 
      * @return the kind value.
      */
-    @Override
     public String kind() {
         return this.kind;
     }

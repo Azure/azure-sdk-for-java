@@ -56,7 +56,6 @@ public final class CriticalResultInference extends RadiologyInsightsInference {
      * @return the kind value.
      */
     @Generated
-    @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
     }

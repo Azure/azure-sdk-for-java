@@ -54,7 +54,6 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
      * @return the type value.
      */
     @Generated
-    @Override
     public String getType() {
         return this.type;
     }

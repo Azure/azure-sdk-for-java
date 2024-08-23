@@ -13,7 +13,8 @@ import com.azure.resourcemanager.mongocluster.models.PrivateLinkServiceConnectio
  */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2024-03-01-preview/MongoClusters_PrivateEndpointConnectionPut.json
+     * x-ms-original-file: specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/
+     * MongoClusters_PrivateEndpointConnectionPut.json
      */
     /**
      * Sample code: Approves a private endpoint connection on a Mongo Cluster resource.

@@ -50,7 +50,6 @@ public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment
      * @return the kind value.
      */
     @Generated
-    @Override
     public QueueSelectorAttachmentKind getKind() {
         return this.kind;
     }

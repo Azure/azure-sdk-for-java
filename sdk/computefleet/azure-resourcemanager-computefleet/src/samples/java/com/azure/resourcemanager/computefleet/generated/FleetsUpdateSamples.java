@@ -111,7 +111,7 @@ import java.util.Map;
  */
 public final class FleetsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-05-01-preview/Fleets_Update.json
+     * x-ms-original-file: specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_Update.json
      */
     /**
      * Sample code: Fleets_Update.

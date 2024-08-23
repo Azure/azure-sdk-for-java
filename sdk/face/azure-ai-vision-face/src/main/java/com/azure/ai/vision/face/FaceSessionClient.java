@@ -6,7 +6,6 @@ package com.azure.ai.vision.face;
 import com.azure.ai.vision.face.implementation.FaceSessionClientImpl;
 import com.azure.ai.vision.face.implementation.MultipartFormDataHelper;
 import com.azure.ai.vision.face.implementation.models.CreateLivenessWithVerifySessionMultipartContent;
-import com.azure.ai.vision.face.implementation.models.VerifyImageFileDetails;
 import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionJsonContent;
@@ -28,6 +27,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
+import java.util.Objects;
+import com.azure.ai.vision.face.implementation.models.VerifyImageFileDetails;
 
 /**
  * Initializes a new instance of the synchronous FaceSessionClient type.
@@ -1075,8 +1076,7 @@ public final class FaceSessionClient {
         RequestOptions requestOptions = new RequestOptions();
         return createLivenessWithVerifySessionWithVerifyImageWithResponse(
             new MultipartFormDataHelper(requestOptions).serializeJsonField("Parameters", body.getParameters())
-                .serializeFileField("VerifyImage", body.getVerifyImage().getContent(),
-                    body.getVerifyImage().getContentType(), body.getVerifyImage().getFilename())
+                .serializeTextField("VerifyImage", Objects.toString(body.getVerifyImage()))
                 .end()
                 .getRequestBody(),
             requestOptions).getValue().toObject(CreateLivenessWithVerifySessionResult.class);
