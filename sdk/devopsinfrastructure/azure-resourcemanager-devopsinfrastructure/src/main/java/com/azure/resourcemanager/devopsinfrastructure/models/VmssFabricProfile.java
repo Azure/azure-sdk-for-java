@@ -18,11 +18,6 @@ import java.util.List;
 @Fluent
 public final class VmssFabricProfile extends FabricProfile {
     /*
-     * Discriminator property for FabricProfile.
-     */
-    private String kind = "Vmss";
-
-    /*
      * The Azure SKU of the machines in the pool.
      */
     private DevOpsAzureSku sku;
@@ -51,16 +46,7 @@ public final class VmssFabricProfile extends FabricProfile {
      * Creates an instance of VmssFabricProfile class.
      */
     public VmssFabricProfile() {
-    }
-
-    /**
-     * Get the kind property: Discriminator property for FabricProfile.
-     * 
-     * @return the kind value.
-     */
-    @Override
-    public String kind() {
-        return this.kind;
+        this.kind = "Vmss";
     }
 
     /**
@@ -201,9 +187,9 @@ public final class VmssFabricProfile extends FabricProfile {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeArrayField("images", this.images, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeJsonField("osProfile", this.osProfile);
         jsonWriter.writeJsonField("storageProfile", this.storageProfile);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
@@ -226,13 +212,13 @@ public final class VmssFabricProfile extends FabricProfile {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sku".equals(fieldName)) {
+                if (FabricProfile.fromJsonShared(reader, fieldName, deserializedVmssFabricProfile)) {
+                    continue;
+                } else if ("sku".equals(fieldName)) {
                     deserializedVmssFabricProfile.sku = DevOpsAzureSku.fromJson(reader);
                 } else if ("images".equals(fieldName)) {
                     List<PoolImage> images = reader.readArray(reader1 -> PoolImage.fromJson(reader1));
                     deserializedVmssFabricProfile.images = images;
-                } else if ("kind".equals(fieldName)) {
-                    deserializedVmssFabricProfile.kind = reader.getString();
                 } else if ("osProfile".equals(fieldName)) {
                     deserializedVmssFabricProfile.osProfile = OsProfile.fromJson(reader);
                 } else if ("storageProfile".equals(fieldName)) {

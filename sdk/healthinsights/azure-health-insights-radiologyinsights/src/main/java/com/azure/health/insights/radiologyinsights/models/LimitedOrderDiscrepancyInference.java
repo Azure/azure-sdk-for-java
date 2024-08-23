@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -24,14 +23,6 @@ import java.util.List;
 @JsonTypeName("limitedOrderDiscrepancy")
 @Immutable
 public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInference {
-
-    /*
-     * Discriminator property for RadiologyInsightsInference.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.LIMITED_ORDER_DISCREPANCY;
 
     /*
      * Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
@@ -63,17 +54,7 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
     @JsonCreator
     private LimitedOrderDiscrepancyInference(@JsonProperty(value = "orderType") FhirR4CodeableConcept orderType) {
         this.orderType = orderType;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for RadiologyInsightsInference.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
+        this.kind = RadiologyInsightsInferenceType.LIMITED_ORDER_DISCREPANCY;
     }
 
     /**

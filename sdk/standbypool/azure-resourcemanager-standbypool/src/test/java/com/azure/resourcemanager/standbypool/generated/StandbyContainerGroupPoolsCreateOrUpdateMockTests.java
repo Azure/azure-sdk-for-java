@@ -30,7 +30,7 @@ public final class StandbyContainerGroupPoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":1554730688618106722,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"rjcxerfuwu\",\"revision\":3193420375672203078},\"subnetIds\":[{\"id\":\"jrbirphxepcyv\"},{\"id\":\"hfnljkyq\"},{\"id\":\"j\"},{\"id\":\"uujqgidokgjljyo\"}]},\"provisioningState\":\"Succeeded\"},\"location\":\"ltbgsncghkj\",\"tags\":{\"xbf\":\"zhbijhtxfv\"},\"id\":\"mxnehmp\",\"name\":\"ec\",\"type\":\"godebfqkkrbmpu\"}";
+            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":5849348987172300465,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"cwzzhxgktr\",\"revision\":6598774338835583357},\"subnetIds\":[{\"id\":\"pkteo\"},{\"id\":\"llwptfdy\"},{\"id\":\"pfqbuaceopzf\"},{\"id\":\"rhhuaopppcqeqx\"}]},\"provisioningState\":\"Succeeded\"},\"location\":\"ahzxctobgbk\",\"tags\":{\"grcfb\":\"izpost\",\"bpvjymjhx\":\"nrmfqjhhk\",\"n\":\"j\",\"ivkrtsw\":\"u\"},\"id\":\"xqzvszjfa\",\"name\":\"vjfdx\",\"type\":\"ivetvtcq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,31 +40,30 @@ public final class StandbyContainerGroupPoolsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         StandbyContainerGroupPoolResource response = manager.standbyContainerGroupPools()
-            .define("oqqnwvlryav")
-            .withRegion("hwlrsf")
-            .withExistingResourceGroup("zlsico")
-            .withTags(mapOf("biqylihkaet", "pwvlqdq"))
+            .define("ultskzbbtdz")
+            .withRegion("qvkelnsm")
+            .withExistingResourceGroup("xipeilpjzuaejx")
+            .withTags(mapOf("sxyawjoyaqcs", "wyjsflhhcaalnjix", "eli", "yjpkiidzyexz", "bnxknalaulppg", "hnrztfol"))
             .withProperties(new StandbyContainerGroupPoolResourceProperties()
                 .withElasticityProfile(
-                    new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(4251439564125915731L)
+                    new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(5977049031075533879L)
                         .withRefillPolicy(RefillPolicy.ALWAYS))
                 .withContainerGroupProperties(new ContainerGroupProperties()
                     .withContainerGroupProfile(
-                        new ContainerGroupProfile().withId("mmqhgyxzkonocuk").withRevision(5997568094746061182L))
-                    .withSubnetIds(
-                        Arrays.asList(new Subnet().withId("uconuqszfkbey"), new Subnet().withId("ewrmjmwvvjektc")))))
+                        new ContainerGroupProfile().withId("gpw").withRevision(1337598975315689836L))
+                    .withSubnetIds(Arrays.asList(new Subnet().withId("p"), new Subnet().withId("sjyofdx"),
+                        new Subnet().withId("uusdttouwa")))))
             .create();
 
-        Assertions.assertEquals("ltbgsncghkj", response.location());
-        Assertions.assertEquals("zhbijhtxfv", response.tags().get("xbf"));
-        Assertions.assertEquals(1554730688618106722L, response.properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals("ahzxctobgbk", response.location());
+        Assertions.assertEquals("izpost", response.tags().get("grcfb"));
+        Assertions.assertEquals(5849348987172300465L, response.properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, response.properties().elasticityProfile().refillPolicy());
-        Assertions.assertEquals("rjcxerfuwu",
+        Assertions.assertEquals("cwzzhxgktr",
             response.properties().containerGroupProperties().containerGroupProfile().id());
-        Assertions.assertEquals(3193420375672203078L,
+        Assertions.assertEquals(6598774338835583357L,
             response.properties().containerGroupProperties().containerGroupProfile().revision());
-        Assertions.assertEquals("jrbirphxepcyv",
-            response.properties().containerGroupProperties().subnetIds().get(0).id());
+        Assertions.assertEquals("pkteo", response.properties().containerGroupProperties().subnetIds().get(0).id());
     }
 
     // Use "Map.of" if available

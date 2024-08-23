@@ -22,7 +22,7 @@ public class NotificationContent implements JsonSerializable<NotificationContent
      * The type discriminator describing a notification type.
      */
     @Generated
-    private CommunicationMessageKind kind = CommunicationMessageKind.fromString("NotificationContent");
+    CommunicationMessageKind kind;
 
     /*
      * The Channel Registration ID for the Business Identifier.
@@ -46,6 +46,7 @@ public class NotificationContent implements JsonSerializable<NotificationContent
     public NotificationContent(String channelRegistrationId, List<String> to) {
         this.channelRegistrationId = channelRegistrationId;
         this.to = to;
+        this.kind = CommunicationMessageKind.fromString("NotificationContent");
     }
 
     /**
@@ -85,9 +86,7 @@ public class NotificationContent implements JsonSerializable<NotificationContent
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("channelRegistrationId", this.channelRegistrationId);
-        jsonWriter.writeArrayField("to", this.to, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -154,5 +153,11 @@ public class NotificationContent implements JsonSerializable<NotificationContent
             deserializedNotificationContent.kind = kind;
             return deserializedNotificationContent;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("channelRegistrationId", this.channelRegistrationId);
+        jsonWriter.writeArrayField("to", this.to, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
     }
 }

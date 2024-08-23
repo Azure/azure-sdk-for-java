@@ -19,12 +19,6 @@ import java.util.Set;
 @Immutable
 public final class SuspendMode extends JobMatchingMode {
 
-    /*
-     * The type discriminator describing a sub-type of JobMatchingMode.
-     */
-    @Generated
-    private JobMatchingModeKind kind = JobMatchingModeKind.SUSPEND;
-
     /**
      * Stores updated model property, the value is property name, not serialized name.
      */
@@ -36,17 +30,7 @@ public final class SuspendMode extends JobMatchingMode {
      */
     @Generated
     public SuspendMode() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of JobMatchingMode.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public JobMatchingModeKind getKind() {
-        return this.kind;
+        this.kind = JobMatchingModeKind.SUSPEND;
     }
 
     /**
@@ -86,8 +70,8 @@ public final class SuspendMode extends JobMatchingMode {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedSuspendMode.kind = JobMatchingModeKind.fromString(reader.getString());
+                if (JobMatchingMode.fromJsonShared(reader, fieldName, deserializedSuspendMode)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

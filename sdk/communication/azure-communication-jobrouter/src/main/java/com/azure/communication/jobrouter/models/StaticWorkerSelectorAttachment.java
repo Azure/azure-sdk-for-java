@@ -20,12 +20,6 @@ import java.util.Set;
 public final class StaticWorkerSelectorAttachment extends WorkerSelectorAttachment {
 
     /*
-     * The type discriminator describing a sub-type of WorkerSelectorAttachment.
-     */
-    @Generated
-    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.STATIC;
-
-    /*
      * The worker selector to attach.
      */
     @Generated
@@ -42,17 +36,7 @@ public final class StaticWorkerSelectorAttachment extends WorkerSelectorAttachme
      */
     @Generated
     public StaticWorkerSelectorAttachment() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public WorkerSelectorAttachmentKind getKind() {
-        return this.kind;
+        this.kind = WorkerSelectorAttachmentKind.STATIC;
     }
 
     /**
@@ -129,9 +113,9 @@ public final class StaticWorkerSelectorAttachment extends WorkerSelectorAttachme
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedStaticWorkerSelectorAttachment.kind
-                        = WorkerSelectorAttachmentKind.fromString(reader.getString());
+                if (WorkerSelectorAttachment.fromJsonShared(reader, fieldName,
+                    deserializedStaticWorkerSelectorAttachment)) {
+                    continue;
                 } else if ("workerSelector".equals(fieldName)) {
                     deserializedStaticWorkerSelectorAttachment.workerSelector = RouterWorkerSelector.fromJson(reader);
                 } else {

@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class RunStepDeltaCodeInterpreterLogOutput extends RunStepDeltaCodeInterpreterOutput {
 
     /*
-     * The type of the streaming run step tool call's Code Interpreter output.
-     */
-    @Generated
-    private String type = "logs";
-
-    /*
      * The text output from the Code Interpreter tool call.
      */
     @Generated
@@ -37,17 +31,7 @@ public final class RunStepDeltaCodeInterpreterLogOutput extends RunStepDeltaCode
     @Generated
     private RunStepDeltaCodeInterpreterLogOutput(int index) {
         super(index);
-    }
-
-    /**
-     * Get the type property: The type of the streaming run step tool call's Code Interpreter output.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "logs";
     }
 
     /**
@@ -67,8 +51,7 @@ public final class RunStepDeltaCodeInterpreterLogOutput extends RunStepDeltaCode
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", getIndex());
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("logs", this.logs);
         return jsonWriter.writeEndObject();
     }

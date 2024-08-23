@@ -30,6 +30,7 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
     @Generated
     public ChatCompletionsNamedFunctionToolSelection(ChatCompletionsFunctionToolSelection function) {
         this.function = function;
+        this.type = "function";
     }
 
     /**
@@ -42,23 +43,6 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
         return this.function;
     }
 
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "function";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -66,8 +50,8 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("function", this.function);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

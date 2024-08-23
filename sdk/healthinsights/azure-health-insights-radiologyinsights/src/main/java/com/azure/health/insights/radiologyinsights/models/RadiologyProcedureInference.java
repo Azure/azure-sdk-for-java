@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -24,14 +23,6 @@ import java.util.List;
 @JsonTypeName("radiologyProcedure")
 @Immutable
 public final class RadiologyProcedureInference extends RadiologyInsightsInference {
-
-    /*
-     * Discriminator property for RadiologyInsightsInference.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE;
 
     /*
      * LOINC codes for the procedure.
@@ -67,17 +58,7 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
         @JsonProperty(value = "orderedProcedure") OrderedProcedure orderedProcedure) {
         this.imagingProcedures = imagingProcedures;
         this.orderedProcedure = orderedProcedure;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for RadiologyInsightsInference.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
+        this.kind = RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE;
     }
 
     /**

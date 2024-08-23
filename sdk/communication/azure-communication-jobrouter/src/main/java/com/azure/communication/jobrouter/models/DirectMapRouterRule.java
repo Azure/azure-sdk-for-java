@@ -34,12 +34,6 @@ public final class DirectMapRouterRule extends RouterRule {
         return RouterRuleKind.DIRECT_MAP;
     }
 
-    /*
-     * The type discriminator describing a sub-type of RouterRule
-     */
-    @Generated
-    private RouterRuleKind kind = RouterRuleKind.DIRECT_MAP;
-
     /**
      * Stores updated model property, the value is property name, not serialized name.
      */
@@ -83,8 +77,8 @@ public final class DirectMapRouterRule extends RouterRule {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedDirectMapRouterRule.kind = RouterRuleKind.fromString(reader.getString());
+                if (RouterRule.fromJsonShared(reader, fieldName, deserializedDirectMapRouterRule)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

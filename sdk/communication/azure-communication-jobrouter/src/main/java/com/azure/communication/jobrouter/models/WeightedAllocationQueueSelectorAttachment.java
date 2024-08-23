@@ -21,12 +21,6 @@ import java.util.Set;
 public final class WeightedAllocationQueueSelectorAttachment extends QueueSelectorAttachment {
 
     /*
-     * The type discriminator describing a sub-type of QueueSelectorAttachment.
-     */
-    @Generated
-    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.WEIGHTED_ALLOCATION;
-
-    /*
      * A collection of percentage based weighted allocations.
      */
     @Generated
@@ -43,17 +37,7 @@ public final class WeightedAllocationQueueSelectorAttachment extends QueueSelect
      */
     @Generated
     public WeightedAllocationQueueSelectorAttachment() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public QueueSelectorAttachmentKind getKind() {
-        return this.kind;
+        this.kind = QueueSelectorAttachmentKind.WEIGHTED_ALLOCATION;
     }
 
     /**
@@ -127,9 +111,9 @@ public final class WeightedAllocationQueueSelectorAttachment extends QueueSelect
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedWeightedAllocationQueueSelectorAttachment.kind
-                        = QueueSelectorAttachmentKind.fromString(reader.getString());
+                if (QueueSelectorAttachment.fromJsonShared(reader, fieldName,
+                    deserializedWeightedAllocationQueueSelectorAttachment)) {
+                    continue;
                 } else if ("allocations".equals(fieldName)) {
                     List<QueueWeightedAllocation> allocations
                         = reader.readArray(reader1 -> QueueWeightedAllocation.fromJson(reader1));

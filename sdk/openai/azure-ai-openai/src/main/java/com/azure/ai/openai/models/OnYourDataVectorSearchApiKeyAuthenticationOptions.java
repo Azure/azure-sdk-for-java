@@ -18,12 +18,6 @@ public final class OnYourDataVectorSearchApiKeyAuthenticationOptions
     extends OnYourDataVectorSearchAuthenticationOptions {
 
     /*
-     * The type of authentication to use.
-     */
-    @Generated
-    private OnYourDataVectorSearchAuthenticationType type = OnYourDataVectorSearchAuthenticationType.API_KEY;
-
-    /*
      * The API key to use for authentication.
      */
     @Generated
@@ -37,17 +31,7 @@ public final class OnYourDataVectorSearchApiKeyAuthenticationOptions
     @Generated
     public OnYourDataVectorSearchApiKeyAuthenticationOptions(String key) {
         this.key = key;
-    }
-
-    /**
-     * Get the type property: The type of authentication to use.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataVectorSearchAuthenticationType getType() {
-        return this.type;
+        this.type = OnYourDataVectorSearchAuthenticationType.API_KEY;
     }
 
     /**
@@ -67,8 +51,8 @@ public final class OnYourDataVectorSearchApiKeyAuthenticationOptions
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("key", this.key);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

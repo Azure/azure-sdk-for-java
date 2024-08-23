@@ -8,7 +8,6 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -29,14 +28,6 @@ import java.util.List;
     @JsonSubTypes.Type(name = "Observation", value = FhirR4Observation.class) })
 @Immutable
 public class FhirR4DomainResource extends FhirR4Resource {
-
-    /*
-     * Discriminator property for Fhir_R4_DomainResource.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "resourceType")
-    private String resourceType = "Fhir_R4_DomainResource";
 
     /*
      * Text summary of the resource, for human interpretation
@@ -75,17 +66,7 @@ public class FhirR4DomainResource extends FhirR4Resource {
     @JsonCreator
     protected FhirR4DomainResource(@JsonProperty(value = "resourceType") String resourceType) {
         super(resourceType);
-    }
-
-    /**
-     * Get the resourceType property: Discriminator property for Fhir_R4_DomainResource.
-     *
-     * @return the resourceType value.
-     */
-    @Generated
-    @Override
-    public String getResourceType() {
-        return this.resourceType;
+        this.resourceType = "Fhir_R4_DomainResource";
     }
 
     /**

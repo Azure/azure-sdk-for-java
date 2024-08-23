@@ -20,12 +20,6 @@ import java.util.Set;
 public final class RuleEngineQueueSelectorAttachment extends QueueSelectorAttachment {
 
     /*
-     * The type discriminator describing a sub-type of QueueSelectorAttachment.
-     */
-    @Generated
-    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.RULE_ENGINE;
-
-    /*
      * A RouterRule that resolves a collection of queue selectors to attach.
      */
     @Generated
@@ -42,17 +36,7 @@ public final class RuleEngineQueueSelectorAttachment extends QueueSelectorAttach
      */
     @Generated
     public RuleEngineQueueSelectorAttachment() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public QueueSelectorAttachmentKind getKind() {
-        return this.kind;
+        this.kind = QueueSelectorAttachmentKind.RULE_ENGINE;
     }
 
     /**
@@ -127,9 +111,9 @@ public final class RuleEngineQueueSelectorAttachment extends QueueSelectorAttach
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedRuleEngineQueueSelectorAttachment.kind
-                        = QueueSelectorAttachmentKind.fromString(reader.getString());
+                if (QueueSelectorAttachment.fromJsonShared(reader, fieldName,
+                    deserializedRuleEngineQueueSelectorAttachment)) {
+                    continue;
                 } else if ("rule".equals(fieldName)) {
                     deserializedRuleEngineQueueSelectorAttachment.rule = RouterRule.fromJson(reader);
                 } else {

@@ -19,13 +19,13 @@ public class ResourcePredictionsProfile implements JsonSerializable<ResourcePred
     /*
      * Determines how the stand-by scheme should be provided.
      */
-    private ResourcePredictionsProfileType kind
-        = ResourcePredictionsProfileType.fromString("ResourcePredictionsProfile");
+    ResourcePredictionsProfileType kind;
 
     /**
      * Creates an instance of ResourcePredictionsProfile class.
      */
     public ResourcePredictionsProfile() {
+        this.kind = ResourcePredictionsProfileType.fromString("ResourcePredictionsProfile");
     }
 
     /**
@@ -51,8 +51,12 @@ public class ResourcePredictionsProfile implements JsonSerializable<ResourcePred
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
     }
 
     /**
@@ -97,15 +101,22 @@ public class ResourcePredictionsProfile implements JsonSerializable<ResourcePred
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("kind".equals(fieldName)) {
-                    deserializedResourcePredictionsProfile.kind
-                        = ResourcePredictionsProfileType.fromString(reader.getString());
-                } else {
+                if (!ResourcePredictionsProfile.fromJsonShared(reader, fieldName,
+                    deserializedResourcePredictionsProfile)) {
                     reader.skipChildren();
                 }
             }
 
             return deserializedResourcePredictionsProfile;
         });
+    }
+
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        ResourcePredictionsProfile deserializedResourcePredictionsProfile) throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedResourcePredictionsProfile.kind = ResourcePredictionsProfileType.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

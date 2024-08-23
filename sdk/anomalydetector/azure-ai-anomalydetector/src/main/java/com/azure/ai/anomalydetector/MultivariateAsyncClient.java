@@ -115,7 +115,10 @@ public final class MultivariateAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detection results for the resultId value along with {@link Response} on successful completion of
+     * @return multivariate Anomaly Detection Result
+     *
+     * For asynchronous inference, get a multivariate anomaly detection result based on the
+     * resultId value that the BatchDetectAnomaly API returns along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @Generated
@@ -425,7 +428,9 @@ public final class MultivariateAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed information about the multivariate model, including the training status
+     * @return multivariate Model
+     *
+     * Get detailed information about the multivariate model, including the training status
      * and variables used in the model along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -625,7 +630,10 @@ public final class MultivariateAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detection results for the resultId value on successful completion of {@link Mono}.
+     * @return multivariate Anomaly Detection Result
+     *
+     * For asynchronous inference, get a multivariate anomaly detection result based on the
+     * resultId value that the BatchDetectAnomaly API returns on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -781,7 +789,9 @@ public final class MultivariateAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about the multivariate model, including the training status
+     * @return multivariate Model
+     *
+     * Get detailed information about the multivariate model, including the training status
      * and variables used in the model on successful completion of {@link Mono}.
      */
     @Generated

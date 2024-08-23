@@ -42,26 +42,7 @@ public final class AzureMachineLearningIndexChatExtensionConfiguration extends A
     public AzureMachineLearningIndexChatExtensionConfiguration(
         AzureMachineLearningIndexChatExtensionParameters parameters) {
         this.parameters = parameters;
-    }
-
-    /*
-     * The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
-     * Azure chat extensions are only compatible with Azure OpenAI.
-     */
-    @Generated
-    private AzureChatExtensionType type = AzureChatExtensionType.AZURE_MACHINE_LEARNING_INDEX;
-
-    /**
-     * Get the type property: The label for the type of an Azure chat extension. This typically corresponds to a
-     * matching Azure resource.
-     * Azure chat extensions are only compatible with Azure OpenAI.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public AzureChatExtensionType getType() {
-        return this.type;
+        this.type = AzureChatExtensionType.AZURE_MACHINE_LEARNING_INDEX;
     }
 
     /**
@@ -71,8 +52,8 @@ public final class AzureMachineLearningIndexChatExtensionConfiguration extends A
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("parameters", this.parameters);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

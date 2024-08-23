@@ -174,7 +174,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllEnvironments(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/environments")
         @ExpectedResponses({ 200 })
@@ -184,7 +184,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAllEnvironmentsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/environments")
         @ExpectedResponses({ 200 })
@@ -194,7 +194,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironments(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("userId") String userId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("userId") String userId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/projects/{projectName}/users/{userId}/environments")
@@ -205,7 +205,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("userId") String userId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("userId") String userId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/projects/{projectName}/users/{userId}/environments/{environmentName}")
@@ -217,7 +217,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Mono<Response<BinaryData>> getEnvironment(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({ 200 })
@@ -228,7 +228,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Response<BinaryData> getEnvironmentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({ 201 })
@@ -239,8 +239,8 @@ public final class DeploymentEnvironmentsClientImpl {
         Mono<Response<BinaryData>> createOrUpdateEnvironment(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({ 201 })
@@ -251,8 +251,8 @@ public final class DeploymentEnvironmentsClientImpl {
         Response<BinaryData> createOrUpdateEnvironmentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({ 202, 204 })
@@ -263,7 +263,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Mono<Response<BinaryData>> deleteEnvironment(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({ 202, 204 })
@@ -274,7 +274,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Response<BinaryData> deleteEnvironmentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs")
         @ExpectedResponses({ 200 })
@@ -284,7 +284,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCatalogs(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs")
         @ExpectedResponses({ 200 })
@@ -294,7 +294,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listCatalogsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}")
         @ExpectedResponses({ 200 })
@@ -304,7 +304,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCatalog(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("catalogName") String catalogName, @HeaderParam("accept") String accept,
+            @PathParam("catalogName") String catalogName, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}")
@@ -315,7 +315,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCatalogSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("catalogName") String catalogName, @HeaderParam("accept") String accept,
+            @PathParam("catalogName") String catalogName, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/environmentDefinitions")
@@ -326,7 +326,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentDefinitions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/environmentDefinitions")
         @ExpectedResponses({ 200 })
@@ -336,7 +336,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentDefinitionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions")
         @ExpectedResponses({ 200 })
@@ -346,7 +346,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentDefinitionsByCatalog(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("catalogName") String catalogName, @HeaderParam("accept") String accept,
+            @PathParam("catalogName") String catalogName, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions")
@@ -357,7 +357,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentDefinitionsByCatalogSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("catalogName") String catalogName, @HeaderParam("accept") String accept,
+            @PathParam("catalogName") String catalogName, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions/{definitionName}")
@@ -369,7 +369,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Mono<Response<BinaryData>> getEnvironmentDefinition(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("catalogName") String catalogName, @PathParam("definitionName") String definitionName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions/{definitionName}")
         @ExpectedResponses({ 200 })
@@ -380,7 +380,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Response<BinaryData> getEnvironmentDefinitionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("catalogName") String catalogName, @PathParam("definitionName") String definitionName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/environmentTypes")
         @ExpectedResponses({ 200 })
@@ -390,7 +390,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentTypes(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/environmentTypes")
         @ExpectedResponses({ 200 })
@@ -400,7 +400,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentTypesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -410,7 +410,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllEnvironmentsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -419,7 +419,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAllEnvironmentsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -429,7 +429,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -439,7 +439,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -449,7 +449,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCatalogsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -459,7 +459,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listCatalogsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -470,7 +470,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentDefinitionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -480,7 +480,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentDefinitionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -490,7 +490,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentDefinitionsByCatalogNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -500,7 +500,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentDefinitionsByCatalogNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -510,7 +510,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentTypesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -520,7 +520,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentTypesNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -1100,10 +1100,11 @@ public final class DeploymentEnvironmentsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> createOrUpdateEnvironmentWithResponseAsync(String projectName, String userId,
         String environmentName, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.createOrUpdateEnvironment(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                projectName, userId, environmentName, accept, body, requestOptions, context));
+                projectName, userId, environmentName, contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -1181,9 +1182,10 @@ public final class DeploymentEnvironmentsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateEnvironmentWithResponse(String projectName, String userId,
         String environmentName, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateEnvironmentSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            projectName, userId, environmentName, accept, body, requestOptions, Context.NONE);
+            projectName, userId, environmentName, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -2617,6 +2619,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists the environments for a project.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2667,6 +2671,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists the environments for a project.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2716,6 +2722,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists the environments for a project and user.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2767,6 +2775,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists the environments for a project and user.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2815,6 +2825,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists all of the catalogs available for a project.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2845,6 +2857,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists all of the catalogs available for a project.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2872,6 +2886,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists all environment definitions available for a project.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2921,6 +2937,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists all environment definitions available for a project.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2968,6 +2986,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists all environment definitions available within a catalog.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -3017,6 +3037,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists all environment definitions available within a catalog.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -3064,6 +3086,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists all environment types configured for a project.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -3095,6 +3119,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
+     * Lists all environment types configured for a project.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 

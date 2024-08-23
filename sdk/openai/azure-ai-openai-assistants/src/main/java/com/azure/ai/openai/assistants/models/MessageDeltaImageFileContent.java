@@ -17,12 +17,6 @@ import java.io.IOException;
 public final class MessageDeltaImageFileContent extends MessageDeltaContent {
 
     /*
-     * The type of content for this content part.
-     */
-    @Generated
-    private String type = "image_file";
-
-    /*
      * The image_file data.
      */
     @Generated
@@ -36,17 +30,7 @@ public final class MessageDeltaImageFileContent extends MessageDeltaContent {
     @Generated
     private MessageDeltaImageFileContent(int index) {
         super(index);
-    }
-
-    /**
-     * Get the type property: The type of content for this content part.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "image_file";
     }
 
     /**
@@ -66,8 +50,7 @@ public final class MessageDeltaImageFileContent extends MessageDeltaContent {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", getIndex());
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("image_file", this.imageFile);
         return jsonWriter.writeEndObject();
     }

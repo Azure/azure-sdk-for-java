@@ -18,12 +18,6 @@ import java.util.List;
 public final class TemplateNotificationContent extends NotificationContent {
 
     /*
-     * The type discriminator describing a notification type.
-     */
-    @Generated
-    private CommunicationMessageKind kind = CommunicationMessageKind.TEMPLATE;
-
-    /*
      * The template object used to create templates.
      */
     @Generated
@@ -40,17 +34,7 @@ public final class TemplateNotificationContent extends NotificationContent {
     public TemplateNotificationContent(String channelRegistrationId, List<String> to, MessageTemplate template) {
         super(channelRegistrationId, to);
         this.template = template;
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a notification type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public CommunicationMessageKind getKind() {
-        return this.kind;
+        this.kind = CommunicationMessageKind.TEMPLATE;
     }
 
     /**
@@ -70,10 +54,8 @@ public final class TemplateNotificationContent extends NotificationContent {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("channelRegistrationId", getChannelRegistrationId());
-        jsonWriter.writeArrayField("to", getTo(), (writer, element) -> writer.writeString(element));
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("template", this.template);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 
