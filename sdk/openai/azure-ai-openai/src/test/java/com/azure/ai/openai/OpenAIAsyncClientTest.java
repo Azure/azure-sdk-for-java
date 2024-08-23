@@ -17,8 +17,12 @@ import com.azure.ai.openai.models.BatchStatus;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolSelection;
+import com.azure.ai.openai.models.ChatCompletionsNamedFunctionToolSelection;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatCompletionsToolCall;
+import com.azure.ai.openai.models.ChatCompletionsToolSelection;
+import com.azure.ai.openai.models.ChatCompletionsToolSelectionPreset;
 import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
@@ -928,7 +932,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsToolCall(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getChatWithToolCallRunner((modelId, chatCompletionsOptions) ->
+        getChatWithToolCallRunner((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.AUTO));
             StepVerifier.create(
                 client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions())
                     .flatMap(response -> {
@@ -964,7 +969,103 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         assertFalse(content == null || content.isEmpty());
                         assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
                         assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
-                    }).verifyComplete());
+                    }).verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionToolCallChoiceExplicitToolName(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatWithToolCallRunner((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(
+                    new ChatCompletionsNamedFunctionToolSelection(
+                            new ChatCompletionsFunctionToolSelection("FutureTemperature"))));
+            StepVerifier.create(client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions())).assertNext(response -> {
+                assertNotNull(response);
+                assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+                ChatCompletions chatCompletions = response.getValue();
+                assertNotNull(chatCompletions);
+
+                assertTrue(chatCompletions.getChoices() != null && !chatCompletions.getChoices().isEmpty());
+                ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+
+                assertNotNull(chatCompletions);
+                assertNotNull(chatCompletions.getChoices());
+                assertNotNull(chatChoice);
+                assertNotNull(chatChoice.getMessage());
+                ChatResponseMessage message = chatChoice.getMessage();
+                assertNull(message.getContent());
+                assertNotNull(message.getToolCalls().get(0));
+                assertInstanceOf(ChatCompletionsFunctionToolCall.class, message.getToolCalls().get(0));
+                ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) chatChoice.getMessage().getToolCalls().get(0);
+                assertEquals(functionToolCall.getFunction().getName(), "FutureTemperature");
+                assertTrue(functionToolCall.getFunction().getArguments().contains("Honolulu"));
+                assertEquals(chatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
+                assertEquals(chatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
+            }).verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionToolCallChoiceNone(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatWithToolCallRunner((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.NONE));
+            StepVerifier.create(client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions())).assertNext(response -> {
+                assertNotNull(response);
+                assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+                ChatCompletions chatCompletions = response.getValue();
+                assertNotNull(chatCompletions);
+
+                assertTrue(chatCompletions.getChoices() != null && !chatCompletions.getChoices().isEmpty());
+                ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+
+                assertNotNull(chatCompletions);
+                assertNotNull(chatCompletions.getChoices());
+                assertNotNull(chatChoice);
+                assertNotNull(chatChoice.getMessage());
+                ChatResponseMessage message = chatChoice.getMessage();
+                assertNotNull(message.getContent());
+                assertFalse(message.getContent().isEmpty());
+                assertNull(message.getToolCalls());
+                assertEquals(chatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
+                assertEquals(chatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
+            }).verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionToolCallChoiceRequired(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatWithToolCallRunner((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.REQUIRED));
+            StepVerifier.create(client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions())).assertNext(response -> {
+                assertNotNull(response);
+                assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+                ChatCompletions chatCompletions = response.getValue();
+                assertNotNull(chatCompletions);
+
+                assertTrue(chatCompletions.getChoices() != null && !chatCompletions.getChoices().isEmpty());
+                ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+
+                assertNotNull(chatCompletions);
+                assertNotNull(chatCompletions.getChoices());
+                assertNotNull(chatChoice);
+                assertNotNull(chatChoice.getMessage());
+                ChatResponseMessage message = chatChoice.getMessage();
+                assertNull(message.getContent());
+                assertNotNull(message.getToolCalls().get(0));
+                assertInstanceOf(ChatCompletionsFunctionToolCall.class, message.getToolCalls().get(0));
+                ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) chatChoice.getMessage().getToolCalls().get(0);
+                assertEquals(functionToolCall.getFunction().getName(), "FutureTemperature");
+                assertTrue(functionToolCall.getFunction().getArguments().contains("Honolulu"));
+                assertEquals(chatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
+                assertEquals(chatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
+            }).verifyComplete();
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

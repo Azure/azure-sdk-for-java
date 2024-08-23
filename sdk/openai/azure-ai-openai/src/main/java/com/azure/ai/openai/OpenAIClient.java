@@ -874,6 +874,8 @@ public final class OpenAIClient {
             .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
             .serializeTextField("language", audioTranscriptionOptions.getLanguage())
             .serializeTextField("temperature", temperature)
+                .serializeTextField("timestamp_granularities[]", "")
+            // TODO (jpalvarezl) : figure out the situation with the square bracket name and add `timestamp_granularities` field
             .end()
             .getRequestBody();
         Response<BinaryData> response = openAIServiceClient != null

@@ -945,6 +945,7 @@ public final class OpenAIAsyncClient {
             .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
             .serializeTextField("language", audioTranscriptionOptions.getLanguage())
             .serializeTextField("temperature", temperature)
+            // TODO (jpalvarezl) : figure out the situation with the square bracket name and add `timestamp_granularities` field
             .end()
             .getRequestBody();
         Mono<Response<BinaryData>> response = openAIServiceClient != null
