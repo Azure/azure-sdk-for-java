@@ -54,7 +54,6 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
      * @return the type value.
      */
     @Generated
-    @Override
     public RunStepType getType() {
         return this.type;
     }

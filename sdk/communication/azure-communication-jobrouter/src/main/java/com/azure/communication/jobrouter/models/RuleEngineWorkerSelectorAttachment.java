@@ -50,7 +50,6 @@ public final class RuleEngineWorkerSelectorAttachment extends WorkerSelectorAtta
      * @return the kind value.
      */
     @Generated
-    @Override
     public WorkerSelectorAttachmentKind getKind() {
         return this.kind;
     }

@@ -71,7 +71,6 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
      * @return the kind value.
      */
     @Generated
-    @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
     }

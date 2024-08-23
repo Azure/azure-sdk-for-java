@@ -54,7 +54,6 @@ public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourData
      * @return the type value.
      */
     @Generated
-    @Override
     public OnYourDataAuthenticationType getType() {
         return this.type;
     }

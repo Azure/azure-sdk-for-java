@@ -156,7 +156,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectFromUrlImpl(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData detectFromUrlRequest,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData detectFromUrlRequest,
             RequestOptions requestOptions, Context context);
 
         @Post("/detect")
@@ -167,7 +167,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> detectFromUrlImplSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData detectFromUrlRequest,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData detectFromUrlRequest,
             RequestOptions requestOptions, Context context);
 
         @Post("/detect")
@@ -178,7 +178,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectImpl(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept, @BodyParam("application/octet-stream") BinaryData imageContent,
+            @HeaderParam("Accept") String accept, @BodyParam("application/octet-stream") BinaryData imageContent,
             RequestOptions requestOptions, Context context);
 
         @Post("/detect")
@@ -189,7 +189,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> detectImplSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("accept") String accept, @BodyParam("application/octet-stream") BinaryData imageContent,
+            @HeaderParam("Accept") String accept, @BodyParam("application/octet-stream") BinaryData imageContent,
             RequestOptions requestOptions, Context context);
 
         @Post("/findsimilars")
@@ -199,9 +199,9 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> findSimilar(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData findSimilarRequest, RequestOptions requestOptions,
-            Context context);
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData findSimilarRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/findsimilars")
         @ExpectedResponses({ 200 })
@@ -210,9 +210,9 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> findSimilarSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData findSimilarRequest, RequestOptions requestOptions,
-            Context context);
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData findSimilarRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/verify")
         @ExpectedResponses({ 200 })
@@ -221,9 +221,9 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> verifyFaceToFace(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData verifyFaceToFaceRequest, RequestOptions requestOptions,
-            Context context);
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData verifyFaceToFaceRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/verify")
         @ExpectedResponses({ 200 })
@@ -232,9 +232,9 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> verifyFaceToFaceSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData verifyFaceToFaceRequest, RequestOptions requestOptions,
-            Context context);
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData verifyFaceToFaceRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/group")
         @ExpectedResponses({ 200 })
@@ -243,8 +243,9 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> group(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData groupRequest, RequestOptions requestOptions, Context context);
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData groupRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/group")
         @ExpectedResponses({ 200 })
@@ -253,8 +254,9 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> groupSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData groupRequest, RequestOptions requestOptions, Context context);
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData groupRequest,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -1054,9 +1056,10 @@ public final class FaceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> findSimilarWithResponseAsync(BinaryData findSimilarRequest,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.findSimilar(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, findSimilarRequest, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, findSimilarRequest, requestOptions, context));
     }
 
     /**
@@ -1108,8 +1111,9 @@ public final class FaceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> findSimilarWithResponse(BinaryData findSimilarRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.findSimilarSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.findSimilarSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
             findSimilarRequest, requestOptions, Context.NONE);
     }
 
@@ -1152,9 +1156,11 @@ public final class FaceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> verifyFaceToFaceWithResponseAsync(BinaryData verifyFaceToFaceRequest,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.verifyFaceToFace(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, verifyFaceToFaceRequest, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.verifyFaceToFace(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                contentType, accept, verifyFaceToFaceRequest, requestOptions, context));
     }
 
     /**
@@ -1196,9 +1202,10 @@ public final class FaceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> verifyFaceToFaceWithResponse(BinaryData verifyFaceToFaceRequest,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.verifyFaceToFaceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            verifyFaceToFaceRequest, requestOptions, Context.NONE);
+        return service.verifyFaceToFaceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            accept, verifyFaceToFaceRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1250,9 +1257,10 @@ public final class FaceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> groupWithResponseAsync(BinaryData groupRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.group(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, groupRequest, requestOptions, context));
+            contentType, accept, groupRequest, requestOptions, context));
     }
 
     /**
@@ -1303,8 +1311,9 @@ public final class FaceClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> groupWithResponse(BinaryData groupRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.groupSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, groupRequest,
-            requestOptions, Context.NONE);
+        return service.groupSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            groupRequest, requestOptions, Context.NONE);
     }
 }

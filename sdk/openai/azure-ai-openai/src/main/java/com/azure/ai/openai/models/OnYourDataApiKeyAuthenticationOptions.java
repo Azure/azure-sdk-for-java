@@ -54,7 +54,6 @@ public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthe
      * @return the type value.
      */
     @Generated
-    @Override
     public OnYourDataAuthenticationType getType() {
         return this.type;
     }

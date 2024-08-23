@@ -50,7 +50,6 @@ public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
      * @return the kind value.
      */
     @Generated
-    @Override
     public ExceptionTriggerKind getKind() {
         return this.kind;
     }

@@ -51,7 +51,6 @@ public final class WeightedAllocationQueueSelectorAttachment extends QueueSelect
      * @return the kind value.
      */
     @Generated
-    @Override
     public QueueSelectorAttachmentKind getKind() {
         return this.kind;
     }

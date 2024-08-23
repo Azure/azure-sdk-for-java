@@ -86,7 +86,6 @@ public final class RunStepToolCallDetails extends RunStepDetails {
      * @return the type value.
      */
     @Generated
-    @Override
     public RunStepType getType() {
         return this.type;
     }

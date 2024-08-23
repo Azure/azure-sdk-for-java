@@ -56,7 +56,6 @@ public final class CancelExceptionAction extends ExceptionAction {
      * @return the kind value.
      */
     @Generated
-    @Override
     public ExceptionActionKind getKind() {
         return this.kind;
     }

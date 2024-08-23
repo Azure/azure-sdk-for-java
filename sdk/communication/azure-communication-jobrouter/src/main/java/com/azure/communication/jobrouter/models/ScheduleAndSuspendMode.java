@@ -54,7 +54,6 @@ public final class ScheduleAndSuspendMode extends JobMatchingMode {
      * @return the kind value.
      */
     @Generated
-    @Override
     public JobMatchingModeKind getKind() {
         return this.kind;
     }

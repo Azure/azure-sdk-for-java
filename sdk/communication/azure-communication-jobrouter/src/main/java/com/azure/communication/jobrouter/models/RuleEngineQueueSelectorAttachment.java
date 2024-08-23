@@ -50,7 +50,6 @@ public final class RuleEngineQueueSelectorAttachment extends QueueSelectorAttach
      * @return the kind value.
      */
     @Generated
-    @Override
     public QueueSelectorAttachmentKind getKind() {
         return this.kind;
     }

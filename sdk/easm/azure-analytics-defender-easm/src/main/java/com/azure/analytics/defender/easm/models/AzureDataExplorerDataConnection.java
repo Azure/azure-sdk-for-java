@@ -106,7 +106,6 @@ public final class AzureDataExplorerDataConnection extends DataConnection {
      * @return the kind value.
      */
     @Generated
-    @Override
     public String getKind() {
         return this.kind;
     }

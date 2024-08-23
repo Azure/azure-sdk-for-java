@@ -98,7 +98,6 @@ public final class SubmitToolOutputsAction extends RequiredAction {
      * @return the type value.
      */
     @Generated
-    @Override
     public String getType() {
         return this.type;
     }

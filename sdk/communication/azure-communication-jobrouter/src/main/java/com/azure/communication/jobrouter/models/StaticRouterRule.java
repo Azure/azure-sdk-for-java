@@ -50,7 +50,6 @@ public final class StaticRouterRule extends RouterRule {
      * @return the kind value.
      */
     @Generated
-    @Override
     public RouterRuleKind getKind() {
         return this.kind;
     }

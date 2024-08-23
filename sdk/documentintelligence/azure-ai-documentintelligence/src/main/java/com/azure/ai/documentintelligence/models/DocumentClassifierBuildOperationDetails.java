@@ -76,7 +76,6 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
      * @return the kind value.
      */
     @Generated
-    @Override
     public OperationKind getKind() {
         return this.kind;
     }

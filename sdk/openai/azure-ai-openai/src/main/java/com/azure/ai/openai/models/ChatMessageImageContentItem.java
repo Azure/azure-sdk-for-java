@@ -55,7 +55,6 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
      * @return the type value.
      */
     @Generated
-    @Override
     public String getType() {
         return this.type;
     }

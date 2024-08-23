@@ -67,7 +67,6 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
      * @return the type value.
      */
     @Generated
-    @Override
     public OnYourDataVectorizationSourceType getType() {
         return this.type;
     }

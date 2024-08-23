@@ -76,7 +76,6 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
      * @return the kind value.
      */
     @Generated
-    @Override
     public OperationKind getKind() {
         return this.kind;
     }

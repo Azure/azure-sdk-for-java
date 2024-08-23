@@ -58,7 +58,6 @@ public final class ElasticsearchChatExtensionConfiguration extends AzureChatExte
      * @return the type value.
      */
     @Generated
-    @Override
     public AzureChatExtensionType getType() {
         return this.type;
     }

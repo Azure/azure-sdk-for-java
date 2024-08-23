@@ -80,7 +80,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getBusinessMetadataById(@HostParam("endpoint") String endpoint,
-            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("guid") String guid, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/businessmetadatadef/guid/{guid}")
@@ -90,7 +90,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getBusinessMetadataByIdSync(@HostParam("endpoint") String endpoint,
-            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("guid") String guid, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/businessmetadatadef/name/{name}")
@@ -100,7 +100,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getBusinessMetadataByName(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/businessmetadatadef/name/{name}")
@@ -110,7 +110,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getBusinessMetadataByNameSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/classificationdef/guid/{guid}")
@@ -120,7 +120,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getClassificationById(@HostParam("endpoint") String endpoint,
-            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("guid") String guid, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/classificationdef/guid/{guid}")
@@ -130,7 +130,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getClassificationByIdSync(@HostParam("endpoint") String endpoint,
-            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("guid") String guid, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/classificationdef/name/{name}")
@@ -140,7 +140,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getClassificationByName(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/classificationdef/name/{name}")
@@ -150,7 +150,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getClassificationByNameSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/entitydef/guid/{guid}")
@@ -160,7 +160,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEntityById(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/entitydef/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -169,7 +169,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getEntityByIdSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/entitydef/name/{name}")
         @ExpectedResponses({ 200 })
@@ -178,7 +178,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEntityByName(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/entitydef/name/{name}")
@@ -188,7 +188,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getEntityByNameSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/enumdef/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -197,7 +197,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEnumById(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/enumdef/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -206,7 +206,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getEnumByIdSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/enumdef/name/{name}")
         @ExpectedResponses({ 200 })
@@ -215,7 +215,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEnumByName(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/enumdef/name/{name}")
         @ExpectedResponses({ 200 })
@@ -224,7 +224,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getEnumByNameSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/relationshipdef/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -233,7 +233,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getRelationshipById(@HostParam("endpoint") String endpoint,
-            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("guid") String guid, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/relationshipdef/guid/{guid}")
@@ -243,7 +243,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getRelationshipByIdSync(@HostParam("endpoint") String endpoint,
-            @PathParam("guid") String guid, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("guid") String guid, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/relationshipdef/name/{name}")
@@ -253,7 +253,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getRelationshipByName(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/relationshipdef/name/{name}")
@@ -263,7 +263,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getRelationshipByNameSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/structdef/guid/{guid}")
@@ -273,7 +273,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getStructById(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/structdef/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -282,7 +282,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getStructByIdSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/structdef/name/{name}")
         @ExpectedResponses({ 200 })
@@ -291,7 +291,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getStructByName(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/atlas/v2/types/structdef/name/{name}")
@@ -301,7 +301,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getStructByNameSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedef/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -310,7 +310,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getById(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedef/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -319,7 +319,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getByIdSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedef/name/{name}")
         @ExpectedResponses({ 200 })
@@ -328,7 +328,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getByName(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedef/name/{name}")
         @ExpectedResponses({ 200 })
@@ -337,7 +337,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getByNameSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/types/typedef/name/{name}")
         @ExpectedResponses({ 204 })
@@ -346,7 +346,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/types/typedef/name/{name}")
         @ExpectedResponses({ 204 })
@@ -355,7 +355,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 200 })
@@ -364,7 +364,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedefs")
@@ -374,7 +374,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/types/typedefs")
@@ -384,8 +384,8 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> batchCreate(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 200 })
@@ -394,8 +394,8 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> batchCreateSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 200 })
@@ -404,8 +404,8 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> batchUpdate(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 200 })
@@ -414,16 +414,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> batchUpdateSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
-
-        @Delete("/atlas/v2/types/typedefs")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> batchDelete(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/types/typedefs")
@@ -432,7 +423,18 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> batchDeleteSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+        Mono<Response<Void>> batchDelete(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+
+        @Delete("/atlas/v2/types/typedefs")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> batchDeleteSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedefs/headers")
@@ -442,7 +444,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getHeaders(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedefs/headers")
@@ -452,7 +454,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getHeadersSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/types/termtemplatedef/guid/{guid}")
@@ -463,7 +465,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTermTemplateById(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/types/termtemplatedef/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -473,7 +475,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTermTemplateByIdSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/types/termtemplatedef/name/{name}")
         @ExpectedResponses({ 200 })
@@ -483,7 +485,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTermTemplateByName(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/types/termtemplatedef/name/{name}")
         @ExpectedResponses({ 200 })
@@ -493,7 +495,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTermTemplateByNameSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -4981,9 +4983,10 @@ public final class TypeDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> batchCreateWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.batchCreate(this.client.getEndpoint(), accept, body, requestOptions, context));
+        return FluxUtil.withContext(context -> service.batchCreate(this.client.getEndpoint(), contentType, accept, body,
+            requestOptions, context));
     }
 
     /**
@@ -5564,8 +5567,10 @@ public final class TypeDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> batchCreateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.batchCreateSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
+        return service.batchCreateSync(this.client.getEndpoint(), contentType, accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -6147,9 +6152,10 @@ public final class TypeDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> batchUpdateWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.batchUpdate(this.client.getEndpoint(), accept, body, requestOptions, context));
+        return FluxUtil.withContext(context -> service.batchUpdate(this.client.getEndpoint(), contentType, accept, body,
+            requestOptions, context));
     }
 
     /**
@@ -6731,8 +6737,10 @@ public final class TypeDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> batchUpdateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.batchUpdateSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
+        return service.batchUpdateSync(this.client.getEndpoint(), contentType, accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -7030,9 +7038,10 @@ public final class TypeDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> batchDeleteWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.batchDelete(this.client.getEndpoint(), accept, body, requestOptions, context));
+        return FluxUtil.withContext(context -> service.batchDelete(this.client.getEndpoint(), contentType, accept, body,
+            requestOptions, context));
     }
 
     /**
@@ -7330,8 +7339,10 @@ public final class TypeDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> batchDeleteWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.batchDeleteSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
+        return service.batchDeleteSync(this.client.getEndpoint(), contentType, accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**

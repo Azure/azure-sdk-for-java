@@ -36,7 +36,6 @@ public final class AutomaticResourcePredictionsProfile extends ResourcePredictio
      * 
      * @return the kind value.
      */
-    @Override
     public ResourcePredictionsProfileType kind() {
         return this.kind;
     }

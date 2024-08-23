@@ -58,7 +58,6 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      * @return the kind value.
      */
     @Generated
-    @Override
     public WorkerSelectorAttachmentKind getKind() {
         return this.kind;
     }

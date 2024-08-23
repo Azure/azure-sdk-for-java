@@ -38,7 +38,6 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
      * 
      * @return the kind value.
      */
-    @Override
     public String kind() {
         return this.kind;
     }

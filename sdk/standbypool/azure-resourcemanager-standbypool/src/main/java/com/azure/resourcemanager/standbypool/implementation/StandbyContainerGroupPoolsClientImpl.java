@@ -81,9 +81,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -91,7 +90,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
-            @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") StandbyContainerGroupPoolResourceInner resource, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -102,9 +101,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -112,7 +110,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
-            @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") StandbyContainerGroupPoolResourceUpdate properties, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -122,7 +120,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
         Mono<Response<StandbyContainerGroupPoolResourceListResult>> listByResourceGroup(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -131,7 +129,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyContainerGroupPoolResourceListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -139,7 +137,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyContainerGroupPoolResourceListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -147,7 +145,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyContainerGroupPoolResourceListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -308,11 +306,12 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, resource,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, contentType, accept,
+                resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -352,11 +351,12 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, resource,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, contentType, accept,
+            resource, context);
     }
 
     /**
@@ -758,11 +758,12 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
         } else {
             properties.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, properties,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, contentType, accept,
+                properties, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -802,10 +803,11 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
         } else {
             properties.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, standbyContainerGroupPoolName, accept, properties, context);
+            resourceGroupName, standbyContainerGroupPoolName, contentType, accept, properties, context);
     }
 
     /**
@@ -1112,6 +1114,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     }
 
     /**
+     * List StandbyContainerGroupPoolResource resources by resource group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1141,6 +1145,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     }
 
     /**
+     * List StandbyContainerGroupPoolResource resources by resource group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1169,6 +1175,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     }
 
     /**
+     * List StandbyContainerGroupPoolResource resources by subscription ID
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1198,6 +1206,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     }
 
     /**
+     * List StandbyContainerGroupPoolResource resources by subscription ID
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

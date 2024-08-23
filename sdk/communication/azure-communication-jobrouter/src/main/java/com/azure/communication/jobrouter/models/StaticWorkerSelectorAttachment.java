@@ -50,7 +50,6 @@ public final class StaticWorkerSelectorAttachment extends WorkerSelectorAttachme
      * @return the kind value.
      */
     @Generated
-    @Override
     public WorkerSelectorAttachmentKind getKind() {
         return this.kind;
     }

@@ -75,7 +75,6 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
      * @return the kind value.
      */
     @Generated
-    @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
     }

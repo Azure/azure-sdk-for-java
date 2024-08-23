@@ -63,7 +63,6 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      * @return the kind value.
      */
     @Generated
-    @Override
     public ExceptionActionKind getKind() {
         return this.kind;
     }

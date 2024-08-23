@@ -104,7 +104,6 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
      * @return the type value.
      */
     @Generated
-    @Override
     public String getType() {
         return this.type;
     }

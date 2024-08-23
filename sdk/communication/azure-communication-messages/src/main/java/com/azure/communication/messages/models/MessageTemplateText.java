@@ -46,7 +46,6 @@ public final class MessageTemplateText extends MessageTemplateValue {
      * @return the kind value.
      */
     @Generated
-    @Override
     public MessageTemplateValueKind getKind() {
         return this.kind;
     }

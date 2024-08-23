@@ -57,7 +57,6 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      * @return the kind value.
      */
     @Generated
-    @Override
     public QueueSelectorAttachmentKind getKind() {
         return this.kind;
     }

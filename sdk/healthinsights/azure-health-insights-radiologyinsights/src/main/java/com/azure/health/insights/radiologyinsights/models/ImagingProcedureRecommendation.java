@@ -64,7 +64,6 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
      * @return the kind value.
      */
     @Generated
-    @Override
     public String getKind() {
         return this.kind;
     }
