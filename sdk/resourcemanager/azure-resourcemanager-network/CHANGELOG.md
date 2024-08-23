@@ -12,8 +12,6 @@
 
 ### Other Changes
 
-- Replaced `Jackson` with `azure-json` for serialization/deserialization.
-
 ## 2.42.0 (2024-08-23)
 
 ### Other Changes
