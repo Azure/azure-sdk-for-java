@@ -158,9 +158,10 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         if (bootstrapContext != null && bootstrapContext.isRegistered(TokenCredential.class)) {
             // If TokenCredential is registered in bootstrap context, use it to build SecretClient.
             // This will ignore the credential properties configured
-            logger.debug("TokenCredential is registered in bootstrap context, use it to build SecretClient.");
+            TokenCredential registerCredential = bootstrapContext.get(TokenCredential.class);
+            logger.debug(registerCredential.getClass().getSimpleName() + " is registered in bootstrap context, use it to build SecretClient.");
             factory.setTokenCredentialResolver(
-                new AzureTokenCredentialResolver(ignored -> bootstrapContext.get(TokenCredential.class))
+                new AzureTokenCredentialResolver(ignored -> registerCredential)
             );
         }
 
