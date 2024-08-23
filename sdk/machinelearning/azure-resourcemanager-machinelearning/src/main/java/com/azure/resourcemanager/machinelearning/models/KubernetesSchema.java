@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Kubernetes Compute Schema. */
+/**
+ * Kubernetes Compute Schema.
+ */
 @Fluent
-public class KubernetesSchema {
+public class KubernetesSchema implements JsonSerializable<KubernetesSchema> {
     /*
      * Properties of Kubernetes
      */
-    @JsonProperty(value = "properties")
     private KubernetesProperties properties;
 
-    /** Creates an instance of KubernetesSchema class. */
+    /**
+     * Creates an instance of KubernetesSchema class.
+     */
     public KubernetesSchema() {
     }
 
     /**
      * Get the properties property: Properties of Kubernetes.
-     *
+     * 
      * @return the properties value.
      */
     public KubernetesProperties properties() {
@@ -31,7 +38,7 @@ public class KubernetesSchema {
 
     /**
      * Set the properties property: Properties of Kubernetes.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the KubernetesSchema object itself.
      */
@@ -42,12 +49,48 @@ public class KubernetesSchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesSchema from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesSchema if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesSchema.
+     */
+    public static KubernetesSchema fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesSchema deserializedKubernetesSchema = new KubernetesSchema();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedKubernetesSchema.properties = KubernetesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesSchema;
+        });
     }
 }

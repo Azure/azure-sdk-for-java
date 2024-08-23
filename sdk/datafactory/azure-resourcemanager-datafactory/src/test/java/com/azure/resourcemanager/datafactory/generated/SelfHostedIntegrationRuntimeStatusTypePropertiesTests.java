@@ -18,39 +18,60 @@ public final class SelfHostedIntegrationRuntimeStatusTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SelfHostedIntegrationRuntimeStatusTypeProperties model = BinaryData.fromString(
-            "{\"createTime\":\"2021-07-28T04:18:35Z\",\"taskQueueId\":\"gyvxhfmuhkezuucq\",\"internalChannelEncryption\":\"SslEncrypted\",\"version\":\"dxvbeqzjdwxt\",\"nodes\":[{\"nodeName\":\"wnee\",\"machineName\":\"ytlxugjr\",\"hostServiceUri\":\"nffaofkvfruxzkfb\",\"status\":\"NeedRegistration\",\"capabilities\":{\"stvymdqaymqmyrnz\":\"zo\",\"voyjdgfkrq\":\"ubqkfnox\",\"juguvnxbo\":\"jrvpakxrdeexw\",\"kbeadyfen\":\"pzurnzoy\"},\"versionStatus\":\"zoijoxcb\",\"version\":\"iwse\",\"registerTime\":\"2021-05-31T21:20:24Z\",\"lastConnectTime\":\"2021-10-30T09:06:39Z\",\"expiryTime\":\"2021-06-19T04:36:39Z\",\"lastStartTime\":\"2020-12-23T12:06:27Z\",\"lastStopTime\":\"2020-12-23T08:41:04Z\",\"lastUpdateResult\":\"None\",\"lastStartUpdateTime\":\"2021-05-29T21:21:29Z\",\"lastEndUpdateTime\":\"2021-01-04T14:07:23Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":1173135899,\"maxConcurrentJobs\":129339132,\"\":{\"yajmm\":\"datacwkkgqy\",\"bgrufsdbkuxkdi\":\"datazupd\",\"s\":\"datam\",\"ceylaulpuexyigxz\":\"datavxwkscwbshfihvlm\"}},{\"nodeName\":\"ecxdslspgnndefyh\",\"machineName\":\"yhwl\",\"hostServiceUri\":\"v\",\"status\":\"Upgrading\",\"capabilities\":{\"vzr\":\"prqtfk\",\"uhbgftfvqukk\":\"pmonxdwf\",\"rjylw\":\"vzenegpd\"},\"versionStatus\":\"semjhhxlsu\",\"version\":\"hztb\",\"registerTime\":\"2021-09-19T20:36:09Z\",\"lastConnectTime\":\"2021-03-07T04:32:25Z\",\"expiryTime\":\"2021-11-04T03:20:26Z\",\"lastStartTime\":\"2021-09-11T09:38:16Z\",\"lastStopTime\":\"2021-01-18T21:21:35Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-07-12T20:50:44Z\",\"lastEndUpdateTime\":\"2021-02-10T12:07:01Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":792803694,\"maxConcurrentJobs\":2047573598,\"\":{\"mcyk\":\"datakykqfl\",\"xhcbeejn\":\"datamysmkbndnrihpj\"}}],\"scheduledUpdateDate\":\"2021-07-30T19:01:28Z\",\"updateDelayOffset\":\"ydlkrnpsbnm\",\"localTimeZoneOffset\":\"hkipjardvdp\",\"capabilities\":{\"elnpbieclund\":\"dxmi\",\"fskjvayc\":\"vjlpbjszq\",\"pbrzwi\":\"rwknsbgh\"},\"serviceUrls\":[\"cyhkecebtpgvut\",\"susfdyw\",\"rqcowk\"],\"autoUpdate\":\"Off\",\"versionStatus\":\"rcifflxqqn\",\"links\":[{\"name\":\"uyuwgnyj\",\"subscriptionId\":\"ujticwmlf\",\"dataFactoryName\":\"hibfmco\",\"dataFactoryLocation\":\"ktuajkufp\",\"createTime\":\"2021-05-14T23:34:35Z\"},{\"name\":\"nmeiomnobbaibcf\",\"subscriptionId\":\"yqzaisfofg\",\"dataFactoryName\":\"rkmgifmyzbuhdnhh\",\"dataFactoryLocation\":\"ts\",\"createTime\":\"2021-12-08T00:22:03Z\"},{\"name\":\"dpon\",\"subscriptionId\":\"lqivcnuqf\",\"dataFactoryName\":\"jzzbpcwtwtrchkcm\",\"dataFactoryLocation\":\"awqesqsqmiekx\",\"createTime\":\"2021-02-24T05:57:01Z\"},{\"name\":\"chf\",\"subscriptionId\":\"ykkvjjlbajcu\",\"dataFactoryName\":\"yqokbgumuejxxpx\",\"dataFactoryLocation\":\"zch\",\"createTime\":\"2021-09-20T13:29:17Z\"}],\"pushedVersion\":\"ginrk\",\"latestVersion\":\"ngzfsula\",\"autoUpdateETA\":\"2021-01-05T02:41:11Z\",\"selfContainedInteractiveAuthoringEnabled\":false}")
+            "{\"createTime\":\"2021-10-10T22:16:57Z\",\"taskQueueId\":\"yzjlgrwjbsycukb\",\"internalChannelEncryption\":\"NotEncrypted\",\"version\":\"t\",\"nodes\":[{\"nodeName\":\"sgzpwqieyxjkc\",\"machineName\":\"qst\",\"hostServiceUri\":\"m\",\"status\":\"Online\",\"capabilities\":{\"ub\":\"ft\",\"oepeqlhbtysy\":\"l\"},\"versionStatus\":\"e\",\"version\":\"ctpqnofkw\",\"registerTime\":\"2021-09-17T16:10:32Z\",\"lastConnectTime\":\"2021-08-28T05:34:45Z\",\"expiryTime\":\"2021-03-08T07:52:39Z\",\"lastStartTime\":\"2021-06-27T09:54:45Z\",\"lastStopTime\":\"2021-01-24T22:20:59Z\",\"lastUpdateResult\":\"Succeed\",\"lastStartUpdateTime\":\"2021-07-23T15:09:30Z\",\"lastEndUpdateTime\":\"2021-05-25T11:30:54Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":708652737,\"maxConcurrentJobs\":1122817965,\"\":{\"yqmlmwjwsmnwbm\":\"datajjsmvs\",\"vque\":\"datacvemmriyz\",\"lolxxhcyn\":\"dataxplcsinb\"}},{\"nodeName\":\"vaizvkwqqpwcid\",\"machineName\":\"qcqyzmrtfdl\",\"hostServiceUri\":\"ryyjlikalbcyuwah\",\"status\":\"InitializeFailed\",\"capabilities\":{\"nuhgy\":\"aidzcephn\",\"mrwpe\":\"zkhi\",\"rjbpertjpair\":\"i\"},\"versionStatus\":\"jmcgiw\",\"version\":\"wpejtvqo\",\"registerTime\":\"2021-06-02T02:29:28Z\",\"lastConnectTime\":\"2021-06-30T15:48:53Z\",\"expiryTime\":\"2021-09-12T05:48Z\",\"lastStartTime\":\"2021-10-16T20:30:06Z\",\"lastStopTime\":\"2021-06-21T01:55:54Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-07-23T05:04:48Z\",\"lastEndUpdateTime\":\"2021-09-28T18:44:07Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":528922339,\"maxConcurrentJobs\":1433779054,\"\":{\"ikwcx\":\"datacendidhue\",\"kiynbf\":\"dataasgukq\",\"irgyutexnzh\":\"datakiwmqnwmytcc\"}},{\"nodeName\":\"cgvjbrybfar\",\"machineName\":\"koqcudnwmoyhdpjj\",\"hostServiceUri\":\"nzcbjfpxoygnm\",\"status\":\"Online\",\"capabilities\":{\"knjqsstnw\":\"uqxyx\"},\"versionStatus\":\"avntvklkw\",\"version\":\"snlpaymketotk\",\"registerTime\":\"2020-12-30T06:28:35Z\",\"lastConnectTime\":\"2021-05-12T15:08:36Z\",\"expiryTime\":\"2021-10-24T23:18:34Z\",\"lastStartTime\":\"2021-11-22T06:56:32Z\",\"lastStopTime\":\"2021-05-25T11:08:26Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-05-10T19:11:58Z\",\"lastEndUpdateTime\":\"2021-03-27T21:03:38Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":382099748,\"maxConcurrentJobs\":675074110,\"\":{\"adbzjohd\":\"datagykjm\",\"ljgrpquafxgjqq\":\"dataczhdxity\",\"wafapctgljo\":\"dataactffxdbisihu\",\"ufqiqddjynpgomz\":\"dataizqqihvb\"}},{\"nodeName\":\"jpajlf\",\"machineName\":\"vrljlhejcccp\",\"hostServiceUri\":\"nwit\",\"status\":\"Upgrading\",\"capabilities\":{\"skplqftqcxqm\":\"vptvitghzqwvkpa\"},\"versionStatus\":\"udcykgul\",\"version\":\"lfw\",\"registerTime\":\"2021-03-27T14:44:34Z\",\"lastConnectTime\":\"2021-09-19T18:27:34Z\",\"expiryTime\":\"2021-06-08T02:55:02Z\",\"lastStartTime\":\"2020-12-31T20:59:05Z\",\"lastStopTime\":\"2021-06-20T22:53:30Z\",\"lastUpdateResult\":\"Succeed\",\"lastStartUpdateTime\":\"2021-07-04T05:20:19Z\",\"lastEndUpdateTime\":\"2021-05-04T15:23:13Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":1012333610,\"maxConcurrentJobs\":409889565,\"\":{\"rppoy\":\"datasdlraduhgwaxz\"}}],\"scheduledUpdateDate\":\"2021-06-29T22:25:46Z\",\"updateDelayOffset\":\"ibes\",\"localTimeZoneOffset\":\"opbksrib\",\"capabilities\":{\"gwsfrlyvzl\":\"morikczerqtiq\",\"doqgrucw\":\"jydg\",\"rru\":\"cyjudhgwjqeglym\"},\"serviceUrls\":[\"piyxkmqmgexqcilf\",\"ulgnnyxwdpm\",\"e\"],\"autoUpdate\":\"On\",\"versionStatus\":\"z\",\"links\":[{\"name\":\"mqrbbsnptmmvdpa\",\"subscriptionId\":\"jkb\",\"dataFactoryName\":\"uwhizcbqjxmhw\",\"dataFactoryLocation\":\"unpcskdlrf\",\"createTime\":\"2021-08-30T14:05:50Z\"},{\"name\":\"oltj\",\"subscriptionId\":\"u\",\"dataFactoryName\":\"jltyhddzeykudj\",\"dataFactoryLocation\":\"imyehplmqyo\",\"createTime\":\"2021-03-28T03:32:28Z\"},{\"name\":\"axznqqkq\",\"subscriptionId\":\"dglseuqkr\",\"dataFactoryName\":\"yakr\",\"dataFactoryLocation\":\"bnwgokrllb\",\"createTime\":\"2021-03-21T00:24:12Z\"}],\"pushedVersion\":\"nvxouh\",\"latestVersion\":\"ftp\",\"autoUpdateETA\":\"2021-10-01T09:43:03Z\",\"selfContainedInteractiveAuthoringEnabled\":true}")
             .toObject(SelfHostedIntegrationRuntimeStatusTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SelfHostedIntegrationRuntimeStatusTypeProperties model = new SelfHostedIntegrationRuntimeStatusTypeProperties()
-            .withNodes(Arrays.asList(new SelfHostedIntegrationRuntimeNodeInner().withAdditionalProperties(mapOf(
-                "nodeName", "wnee", "lastStartUpdateTime", "2021-05-29T21:21:29Z", "lastConnectTime",
-                "2021-10-30T09:06:39Z", "capabilities",
-                JacksonAdapter.createDefaultSerializerAdapter()
-                    .deserialize(
-                        "{\"stvymdqaymqmyrnz\":\"zo\",\"voyjdgfkrq\":\"ubqkfnox\",\"juguvnxbo\":\"jrvpakxrdeexw\",\"kbeadyfen\":\"pzurnzoy\"}",
-                        Object.class, SerializerEncoding.JSON),
-                "hostServiceUri", "nffaofkvfruxzkfb", "registerTime", "2021-05-31T21:20:24Z", "maxConcurrentJobs",
-                129339132, "lastStopTime", "2020-12-23T08:41:04Z", "version", "iwse", "machineName", "ytlxugjr",
-                "versionStatus", "zoijoxcb", "concurrentJobsLimit", 1173135899, "lastEndUpdateTime",
-                "2021-01-04T14:07:23Z", "expiryTime", "2021-06-19T04:36:39Z", "lastStartTime", "2020-12-23T12:06:27Z",
-                "lastUpdateResult", "None", "isActiveDispatcher", true, "status", "NeedRegistration")),
+            .withNodes(Arrays.asList(
+                new SelfHostedIntegrationRuntimeNodeInner().withAdditionalProperties(mapOf("nodeName", "sgzpwqieyxjkc",
+                    "lastStartUpdateTime", "2021-07-23T15:09:30Z", "lastConnectTime", "2021-08-28T05:34:45Z",
+                    "capabilities",
+                    JacksonAdapter.createDefaultSerializerAdapter()
+                        .deserialize("{\"ub\":\"ft\",\"oepeqlhbtysy\":\"l\"}", Object.class, SerializerEncoding.JSON),
+                    "hostServiceUri", "m", "registerTime", "2021-09-17T16:10:32Z", "maxConcurrentJobs", 1122817965,
+                    "lastStopTime", "2021-01-24T22:20:59Z", "version", "ctpqnofkw", "machineName", "qst",
+                    "versionStatus", "e", "concurrentJobsLimit", 708652737, "lastEndUpdateTime", "2021-05-25T11:30:54Z",
+                    "expiryTime", "2021-03-08T07:52:39Z", "lastStartTime", "2021-06-27T09:54:45Z", "lastUpdateResult",
+                    "Succeed", "isActiveDispatcher", false, "status", "Online")),
                 new SelfHostedIntegrationRuntimeNodeInner()
-                    .withAdditionalProperties(mapOf("nodeName", "ecxdslspgnndefyh", "lastStartUpdateTime",
-                        "2021-07-12T20:50:44Z", "lastConnectTime", "2021-03-07T04:32:25Z", "capabilities",
+                    .withAdditionalProperties(mapOf("nodeName", "vaizvkwqqpwcid", "lastStartUpdateTime",
+                        "2021-07-23T05:04:48Z", "lastConnectTime", "2021-06-30T15:48:53Z", "capabilities",
                         JacksonAdapter.createDefaultSerializerAdapter()
-                            .deserialize("{\"vzr\":\"prqtfk\",\"uhbgftfvqukk\":\"pmonxdwf\",\"rjylw\":\"vzenegpd\"}",
+                            .deserialize("{\"nuhgy\":\"aidzcephn\",\"mrwpe\":\"zkhi\",\"rjbpertjpair\":\"i\"}",
                                 Object.class, SerializerEncoding.JSON),
-                        "hostServiceUri", "v", "registerTime", "2021-09-19T20:36:09Z", "maxConcurrentJobs", 2047573598,
-                        "lastStopTime", "2021-01-18T21:21:35Z", "version", "hztb", "machineName", "yhwl",
-                        "versionStatus", "semjhhxlsu", "concurrentJobsLimit", 792803694, "lastEndUpdateTime",
-                        "2021-02-10T12:07:01Z", "expiryTime", "2021-11-04T03:20:26Z", "lastStartTime",
-                        "2021-09-11T09:38:16Z", "lastUpdateResult", "Fail", "isActiveDispatcher", false, "status",
-                        "Upgrading"))))
+                        "hostServiceUri", "ryyjlikalbcyuwah", "registerTime", "2021-06-02T02:29:28Z",
+                        "maxConcurrentJobs", 1433779054, "lastStopTime", "2021-06-21T01:55:54Z", "version", "wpejtvqo",
+                        "machineName", "qcqyzmrtfdl", "versionStatus", "jmcgiw", "concurrentJobsLimit", 528922339,
+                        "lastEndUpdateTime", "2021-09-28T18:44:07Z", "expiryTime", "2021-09-12T05:48Z", "lastStartTime",
+                        "2021-10-16T20:30:06Z", "lastUpdateResult", "Fail", "isActiveDispatcher", false, "status",
+                        "InitializeFailed")),
+                new SelfHostedIntegrationRuntimeNodeInner()
+                    .withAdditionalProperties(mapOf("nodeName", "cgvjbrybfar", "lastStartUpdateTime",
+                        "2021-05-10T19:11:58Z", "lastConnectTime", "2021-05-12T15:08:36Z", "capabilities",
+                        JacksonAdapter.createDefaultSerializerAdapter()
+                            .deserialize("{\"knjqsstnw\":\"uqxyx\"}", Object.class, SerializerEncoding.JSON),
+                        "hostServiceUri", "nzcbjfpxoygnm", "registerTime", "2020-12-30T06:28:35Z", "maxConcurrentJobs",
+                        675074110, "lastStopTime", "2021-05-25T11:08:26Z", "version", "snlpaymketotk", "machineName",
+                        "koqcudnwmoyhdpjj", "versionStatus", "avntvklkw", "concurrentJobsLimit", 382099748,
+                        "lastEndUpdateTime", "2021-03-27T21:03:38Z", "expiryTime", "2021-10-24T23:18:34Z",
+                        "lastStartTime", "2021-11-22T06:56:32Z", "lastUpdateResult", "Fail", "isActiveDispatcher",
+                        false, "status", "Online")),
+                new SelfHostedIntegrationRuntimeNodeInner().withAdditionalProperties(mapOf("nodeName", "jpajlf",
+                    "lastStartUpdateTime", "2021-07-04T05:20:19Z", "lastConnectTime", "2021-09-19T18:27:34Z",
+                    "capabilities",
+                    JacksonAdapter.createDefaultSerializerAdapter()
+                        .deserialize("{\"skplqftqcxqm\":\"vptvitghzqwvkpa\"}", Object.class, SerializerEncoding.JSON),
+                    "hostServiceUri", "nwit", "registerTime", "2021-03-27T14:44:34Z", "maxConcurrentJobs", 409889565,
+                    "lastStopTime", "2021-06-20T22:53:30Z", "version", "lfw", "machineName", "vrljlhejcccp",
+                    "versionStatus", "udcykgul", "concurrentJobsLimit", 1012333610, "lastEndUpdateTime",
+                    "2021-05-04T15:23:13Z", "expiryTime", "2021-06-08T02:55:02Z", "lastStartTime",
+                    "2020-12-31T20:59:05Z", "lastUpdateResult", "Succeed", "isActiveDispatcher", false, "status",
+                    "Upgrading"))))
             .withLinks(Arrays.asList(new LinkedIntegrationRuntime(), new LinkedIntegrationRuntime(),
-                new LinkedIntegrationRuntime(), new LinkedIntegrationRuntime()));
+                new LinkedIntegrationRuntime()));
         model = BinaryData.fromObject(model).toObject(SelfHostedIntegrationRuntimeStatusTypeProperties.class);
     }
 

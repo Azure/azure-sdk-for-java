@@ -12,8 +12,7 @@ public final class ClusterMonitoringResponseImpl implements ClusterMonitoringRes
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    ClusterMonitoringResponseImpl(
-        ClusterMonitoringResponseInner innerObject,
+    ClusterMonitoringResponseImpl(ClusterMonitoringResponseInner innerObject,
         com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

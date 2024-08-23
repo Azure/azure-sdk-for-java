@@ -11,19 +11,19 @@ public final class PhoenixSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PhoenixSource model = BinaryData.fromString(
-            "{\"type\":\"PhoenixSource\",\"query\":\"dataniob\",\"queryTimeout\":\"dataxxbneiobub\",\"additionalColumns\":\"datayemppwkryz\",\"sourceRetryCount\":\"dataqpk\",\"sourceRetryWait\":\"datauv\",\"maxConcurrentConnections\":\"datai\",\"disableMetricsCollection\":\"datazbhmyhjg\",\"\":{\"fi\":\"dataernckggwiquk\",\"fttmjomuwl\":\"datakeolzizfbunzmx\",\"fzgpvdlx\":\"datavjwkpznsfbit\",\"clcuxzl\":\"datayo\"}}")
+            "{\"type\":\"PhoenixSource\",\"query\":\"datajjprd\",\"queryTimeout\":\"datablonlhtgexwjhicu\",\"additionalColumns\":\"dataavimxnhylwogtvl\",\"sourceRetryCount\":\"datagd\",\"sourceRetryWait\":\"datat\",\"maxConcurrentConnections\":\"datadxlfn\",\"disableMetricsCollection\":\"dataclkmggnzlfyxaiaf\",\"\":{\"uoayapzzcxkuusba\":\"dataxekfvycvhw\",\"yak\":\"datacassqeybdnz\",\"zkicxtumqinawct\":\"datarkohfqm\",\"kjnpe\":\"dataarboxaluoadmcv\"}}")
             .toObject(PhoenixSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PhoenixSource model = new PhoenixSource().withSourceRetryCount("dataqpk")
-            .withSourceRetryWait("datauv")
-            .withMaxConcurrentConnections("datai")
-            .withDisableMetricsCollection("datazbhmyhjg")
-            .withQueryTimeout("dataxxbneiobub")
-            .withAdditionalColumns("datayemppwkryz")
-            .withQuery("dataniob");
+        PhoenixSource model = new PhoenixSource().withSourceRetryCount("datagd")
+            .withSourceRetryWait("datat")
+            .withMaxConcurrentConnections("datadxlfn")
+            .withDisableMetricsCollection("dataclkmggnzlfyxaiaf")
+            .withQueryTimeout("datablonlhtgexwjhicu")
+            .withAdditionalColumns("dataavimxnhylwogtvl")
+            .withQuery("datajjprd");
         model = BinaryData.fromObject(model).toObject(PhoenixSource.class);
     }
 }

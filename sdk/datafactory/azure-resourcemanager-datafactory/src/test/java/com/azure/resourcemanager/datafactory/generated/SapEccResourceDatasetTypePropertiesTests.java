@@ -10,14 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.SapEccResourceDataset
 public final class SapEccResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapEccResourceDatasetTypeProperties model = BinaryData.fromString("{\"path\":\"databgpasrvrmti\"}")
+        SapEccResourceDatasetTypeProperties model = BinaryData.fromString("{\"path\":\"datarjbjngoarsr\"}")
             .toObject(SapEccResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SapEccResourceDatasetTypeProperties model
-            = new SapEccResourceDatasetTypeProperties().withPath("databgpasrvrmti");
+            = new SapEccResourceDatasetTypeProperties().withPath("datarjbjngoarsr");
         model = BinaryData.fromObject(model).toObject(SapEccResourceDatasetTypeProperties.class);
     }
 }

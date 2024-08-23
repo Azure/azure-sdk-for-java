@@ -6,55 +6,45 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Azure Data Explorer (Kusto) source.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AzureDataExplorerSource.class,
-    visible = true)
-@JsonTypeName("AzureDataExplorerSource")
 @Fluent
 public final class AzureDataExplorerSource extends CopySource {
     /*
      * Copy source type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AzureDataExplorerSource";
 
     /*
      * Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "query", required = true)
     private Object query;
 
     /*
      * The name of the Boolean option that controls whether truncation is applied to result-sets that go beyond a
      * certain row-count limit.
      */
-    @JsonProperty(value = "noTruncation")
     private Object noTruncation;
 
     /*
      * Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..
      */
-    @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
     /**
@@ -212,4 +202,76 @@ public final class AzureDataExplorerSource extends CopySource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureDataExplorerSource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeUntypedField("query", this.query);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("noTruncation", this.noTruncation);
+        jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDataExplorerSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDataExplorerSource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureDataExplorerSource.
+     */
+    public static AzureDataExplorerSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDataExplorerSource deserializedAzureDataExplorerSource = new AzureDataExplorerSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedAzureDataExplorerSource.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedAzureDataExplorerSource.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAzureDataExplorerSource.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedAzureDataExplorerSource.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("query".equals(fieldName)) {
+                    deserializedAzureDataExplorerSource.query = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureDataExplorerSource.type = reader.getString();
+                } else if ("noTruncation".equals(fieldName)) {
+                    deserializedAzureDataExplorerSource.noTruncation = reader.readUntyped();
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedAzureDataExplorerSource.queryTimeout = reader.readUntyped();
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedAzureDataExplorerSource.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureDataExplorerSource.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureDataExplorerSource;
+        });
+    }
 }

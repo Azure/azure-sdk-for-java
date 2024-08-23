@@ -61,6 +61,13 @@ public interface HDInsightContainersManagementClient {
     ClusterPoolAvailableUpgradesClient getClusterPoolAvailableUpgrades();
 
     /**
+     * Gets the ClusterPoolUpgradeHistoriesClient object to access its operations.
+     * 
+     * @return the ClusterPoolUpgradeHistoriesClient object.
+     */
+    ClusterPoolUpgradeHistoriesClient getClusterPoolUpgradeHistories();
+
+    /**
      * Gets the ClustersClient object to access its operations.
      * 
      * @return the ClustersClient object.
@@ -73,6 +80,13 @@ public interface HDInsightContainersManagementClient {
      * @return the ClusterAvailableUpgradesClient object.
      */
     ClusterAvailableUpgradesClient getClusterAvailableUpgrades();
+
+    /**
+     * Gets the ClusterUpgradeHistoriesClient object to access its operations.
+     * 
+     * @return the ClusterUpgradeHistoriesClient object.
+     */
+    ClusterUpgradeHistoriesClient getClusterUpgradeHistories();
 
     /**
      * Gets the ClusterJobsClient object to access its operations.
@@ -108,4 +122,11 @@ public interface HDInsightContainersManagementClient {
      * @return the AvailableClusterVersionsClient object.
      */
     AvailableClusterVersionsClient getAvailableClusterVersions();
+
+    /**
+     * Gets the ClusterLibrariesClient object to access its operations.
+     * 
+     * @return the ClusterLibrariesClient object.
+     */
+    ClusterLibrariesClient getClusterLibraries();
 }

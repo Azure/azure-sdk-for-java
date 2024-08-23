@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIdentityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentityTypeProperties model
-            = BinaryData.fromString("{\"resourceId\":\"amb\"}").toObject(ManagedIdentityTypeProperties.class);
-        Assertions.assertEquals("amb", model.resourceId());
+        ManagedIdentityTypeProperties model = BinaryData.fromString("{\"resourceId\":\"rnbdzvcabchdzxj\"}")
+            .toObject(ManagedIdentityTypeProperties.class);
+        Assertions.assertEquals("rnbdzvcabchdzxj", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentityTypeProperties model = new ManagedIdentityTypeProperties().withResourceId("amb");
+        ManagedIdentityTypeProperties model = new ManagedIdentityTypeProperties().withResourceId("rnbdzvcabchdzxj");
         model = BinaryData.fromObject(model).toObject(ManagedIdentityTypeProperties.class);
-        Assertions.assertEquals("amb", model.resourceId());
+        Assertions.assertEquals("rnbdzvcabchdzxj", model.resourceId());
     }
 }

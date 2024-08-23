@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Type conversion settings.
  */
 @Fluent
-public final class TypeConversionSettings {
+public final class TypeConversionSettings implements JsonSerializable<TypeConversionSettings> {
     /*
      * Whether to allow data truncation when converting the data. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "allowDataTruncation")
     private Object allowDataTruncation;
 
     /*
      * Whether to treat boolean values as numbers. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "treatBooleanAsNumber")
     private Object treatBooleanAsNumber;
 
     /*
      * The format for DateTime values. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "dateTimeFormat")
     private Object dateTimeFormat;
 
     /*
      * The format for DateTimeOffset values. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "dateTimeOffsetFormat")
     private Object dateTimeOffsetFormat;
 
     /*
      * The format for TimeSpan values. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "timeSpanFormat")
     private Object timeSpanFormat;
 
     /*
      * The culture used to convert data from/to string. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "culture")
     private Object culture;
 
     /**
@@ -192,5 +190,56 @@ public final class TypeConversionSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("allowDataTruncation", this.allowDataTruncation);
+        jsonWriter.writeUntypedField("treatBooleanAsNumber", this.treatBooleanAsNumber);
+        jsonWriter.writeUntypedField("dateTimeFormat", this.dateTimeFormat);
+        jsonWriter.writeUntypedField("dateTimeOffsetFormat", this.dateTimeOffsetFormat);
+        jsonWriter.writeUntypedField("timeSpanFormat", this.timeSpanFormat);
+        jsonWriter.writeUntypedField("culture", this.culture);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TypeConversionSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TypeConversionSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TypeConversionSettings.
+     */
+    public static TypeConversionSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TypeConversionSettings deserializedTypeConversionSettings = new TypeConversionSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowDataTruncation".equals(fieldName)) {
+                    deserializedTypeConversionSettings.allowDataTruncation = reader.readUntyped();
+                } else if ("treatBooleanAsNumber".equals(fieldName)) {
+                    deserializedTypeConversionSettings.treatBooleanAsNumber = reader.readUntyped();
+                } else if ("dateTimeFormat".equals(fieldName)) {
+                    deserializedTypeConversionSettings.dateTimeFormat = reader.readUntyped();
+                } else if ("dateTimeOffsetFormat".equals(fieldName)) {
+                    deserializedTypeConversionSettings.dateTimeOffsetFormat = reader.readUntyped();
+                } else if ("timeSpanFormat".equals(fieldName)) {
+                    deserializedTypeConversionSettings.timeSpanFormat = reader.readUntyped();
+                } else if ("culture".equals(fieldName)) {
+                    deserializedTypeConversionSettings.culture = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTypeConversionSettings;
+        });
     }
 }

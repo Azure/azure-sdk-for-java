@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.IdentityConfiguration;
 public final class IdentityConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityConfiguration model =
-            BinaryData.fromString("{\"identityType\":\"IdentityConfiguration\"}").toObject(IdentityConfiguration.class);
+        IdentityConfiguration model = BinaryData.fromString("{\"identityType\":\"IdentityConfiguration\"}")
+            .toObject(IdentityConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

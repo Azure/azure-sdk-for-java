@@ -6,43 +6,42 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Source connection details.
  */
 @Fluent
-public final class MapperConnection {
+public final class MapperConnection implements JsonSerializable<MapperConnection> {
     /*
      * Linked service reference.
      */
-    @JsonProperty(value = "linkedService")
     private LinkedServiceReference linkedService;
 
     /*
      * Type of the linked service e.g.: AzureBlobFS.
      */
-    @JsonProperty(value = "linkedServiceType")
     private String linkedServiceType;
 
     /*
      * Type of connection via linked service or dataset.
      */
-    @JsonProperty(value = "type", required = true)
     private ConnectionType type;
 
     /*
      * A boolean indicating whether linked service is of type inline dataset. Currently only inline datasets are
      * supported.
      */
-    @JsonProperty(value = "isInlineDataset")
     private Boolean isInlineDataset;
 
     /*
      * List of name/value pairs for connection properties.
      */
-    @JsonProperty(value = "commonDslConnectorProperties")
     private List<MapperDslConnectorProperties> commonDslConnectorProperties;
 
     /**
@@ -173,4 +172,56 @@ public final class MapperConnection {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MapperConnection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("linkedService", this.linkedService);
+        jsonWriter.writeStringField("linkedServiceType", this.linkedServiceType);
+        jsonWriter.writeBooleanField("isInlineDataset", this.isInlineDataset);
+        jsonWriter.writeArrayField("commonDslConnectorProperties", this.commonDslConnectorProperties,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapperConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapperConnection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MapperConnection.
+     */
+    public static MapperConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapperConnection deserializedMapperConnection = new MapperConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedMapperConnection.type = ConnectionType.fromString(reader.getString());
+                } else if ("linkedService".equals(fieldName)) {
+                    deserializedMapperConnection.linkedService = LinkedServiceReference.fromJson(reader);
+                } else if ("linkedServiceType".equals(fieldName)) {
+                    deserializedMapperConnection.linkedServiceType = reader.getString();
+                } else if ("isInlineDataset".equals(fieldName)) {
+                    deserializedMapperConnection.isInlineDataset = reader.getNullable(JsonReader::getBoolean);
+                } else if ("commonDslConnectorProperties".equals(fieldName)) {
+                    List<MapperDslConnectorProperties> commonDslConnectorProperties
+                        = reader.readArray(reader1 -> MapperDslConnectorProperties.fromJson(reader1));
+                    deserializedMapperConnection.commonDslConnectorProperties = commonDslConnectorProperties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapperConnection;
+        });
+    }
 }

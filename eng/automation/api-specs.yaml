@@ -96,6 +96,8 @@ postgresqlhsc:
   service: cosmosdbforpostgresql
 privatedns:
   suffix: generated
+redhatopenshift/Microsoft.RedHatOpenShift/openshiftclusters:
+  service: redhatopenshift
 redis:
   suffix: generated
 resources:

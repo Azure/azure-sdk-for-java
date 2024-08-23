@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The execution summary of a script action. */
+/**
+ * The execution summary of a script action.
+ */
 @Immutable
-public final class ScriptActionExecutionSummary {
+public final class ScriptActionExecutionSummary implements JsonSerializable<ScriptActionExecutionSummary> {
     /*
      * The status of script action execution.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * The instance count for a given script action execution status.
      */
-    @JsonProperty(value = "instanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer instanceCount;
 
-    /** Creates an instance of ScriptActionExecutionSummary class. */
+    /**
+     * Creates an instance of ScriptActionExecutionSummary class.
+     */
     public ScriptActionExecutionSummary() {
     }
 
     /**
      * Get the status property: The status of script action execution.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -37,7 +43,7 @@ public final class ScriptActionExecutionSummary {
 
     /**
      * Get the instanceCount property: The instance count for a given script action execution status.
-     *
+     * 
      * @return the instanceCount value.
      */
     public Integer instanceCount() {
@@ -46,9 +52,46 @@ public final class ScriptActionExecutionSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptActionExecutionSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptActionExecutionSummary if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScriptActionExecutionSummary.
+     */
+    public static ScriptActionExecutionSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptActionExecutionSummary deserializedScriptActionExecutionSummary = new ScriptActionExecutionSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedScriptActionExecutionSummary.status = reader.getString();
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedScriptActionExecutionSummary.instanceCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptActionExecutionSummary;
+        });
     }
 }

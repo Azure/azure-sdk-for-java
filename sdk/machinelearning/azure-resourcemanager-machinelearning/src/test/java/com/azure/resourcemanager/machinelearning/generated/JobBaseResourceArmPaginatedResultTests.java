@@ -6,8 +6,14 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.JobBaseInner;
+import com.azure.resourcemanager.machinelearning.models.EmailNotificationEnableType;
+import com.azure.resourcemanager.machinelearning.models.IdentityConfiguration;
 import com.azure.resourcemanager.machinelearning.models.JobBaseProperties;
 import com.azure.resourcemanager.machinelearning.models.JobBaseResourceArmPaginatedResult;
+import com.azure.resourcemanager.machinelearning.models.JobService;
+import com.azure.resourcemanager.machinelearning.models.Nodes;
+import com.azure.resourcemanager.machinelearning.models.NotificationSetting;
+import com.azure.resourcemanager.machinelearning.models.Webhook;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,74 +22,117 @@ import org.junit.jupiter.api.Assertions;
 public final class JobBaseResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobBaseResourceArmPaginatedResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"zoggculapz\",\"value\":[{\"properties\":{\"jobType\":\"JobBaseProperties\",\"componentId\":\"gogtqxepnylbf\",\"computeId\":\"jlyjtlvofq\",\"displayName\":\"vfcibyfmowux\",\"experimentName\":\"jpvd\",\"isArchived\":true,\"services\":{},\"status\":\"Queued\",\"description\":\"wzjbh\",\"properties\":{},\"tags\":{}},\"id\":\"jrkambtrnegvmnv\",\"name\":\"q\",\"type\":\"qvldspastjbkkd\"},{\"properties\":{\"jobType\":\"JobBaseProperties\",\"componentId\":\"lves\",\"computeId\":\"jlxr\",\"displayName\":\"lozapeewchpxlk\",\"experimentName\":\"kuziycsle\",\"isArchived\":true,\"services\":{},\"status\":\"Preparing\",\"description\":\"tyh\",\"properties\":{},\"tags\":{}},\"id\":\"dcgzul\",\"name\":\"mmrqz\",\"type\":\"rr\"},{\"properties\":{\"jobType\":\"JobBaseProperties\",\"componentId\":\"pglydz\",\"computeId\":\"rvqeevtoepryutn\",\"displayName\":\"tpzdmovzvfvaawzq\",\"experimentName\":\"f\",\"isArchived\":false,\"services\":{},\"status\":\"Provisioning\",\"description\":\"aecxndtic\",\"properties\":{},\"tags\":{}},\"id\":\"zmlqtmldgxo\",\"name\":\"firclnpkciayz\",\"type\":\"iykhy\"}]}")
-                .toObject(JobBaseResourceArmPaginatedResult.class);
-        Assertions.assertEquals("zoggculapz", model.nextLink());
-        Assertions.assertEquals("wzjbh", model.value().get(0).properties().description());
-        Assertions.assertEquals("gogtqxepnylbf", model.value().get(0).properties().componentId());
-        Assertions.assertEquals("jlyjtlvofq", model.value().get(0).properties().computeId());
-        Assertions.assertEquals("vfcibyfmowux", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("jpvd", model.value().get(0).properties().experimentName());
-        Assertions.assertEquals(true, model.value().get(0).properties().isArchived());
+        JobBaseResourceArmPaginatedResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"jobType\":\"JobBaseProperties\",\"displayName\":\"bjazejwwviy\",\"status\":\"Completed\",\"experimentName\":\"uhbrnnhjxsq\",\"services\":{\"umtggmuwdchozfn\":{\"jobServiceType\":\"kbiwetpozyc\",\"port\":1973801888,\"endpoint\":\"yhgfsetzle\",\"status\":\"sfledyn\",\"errorMessage\":\"pziuwfbzkkdtnh\",\"properties\":{\"pkpbafvafhlbylcc\":\"cljse\",\"fwrsofpltdbmair\":\"evxrhyz\",\"pqigtuujwouhd\":\"hvhfnracw\",\"bvitvqkjya\":\"wsigrbjbxsj\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}}},\"computeId\":\"exlvxnoakiz\",\"isArchived\":false,\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"componentId\":\"naqln\",\"notificationSetting\":{\"emails\":[\"uyxlykwphvxzcw\",\"hmpejtlkexaonw\"],\"emailOn\":[\"JobFailed\"],\"webhooks\":{\"rxhxkn\":{\"webhookType\":\"Webhook\"}}},\"description\":\"crmmkyupijuby\",\"tags\":{\"em\":\"kakfqfr\"},\"properties\":{\"dxphlk\":\"dudxjascowvfdjk\",\"dkz\":\"snmgzvyfi\",\"uqwqulsutrjbhxyk\":\"qnwsithuqolyah\"}},\"id\":\"y\",\"name\":\"ezvqq\",\"type\":\"g\"},{\"properties\":{\"jobType\":\"JobBaseProperties\",\"displayName\":\"ftbcvexreuquow\",\"status\":\"Preparing\",\"experimentName\":\"fwhreagkhyxv\",\"services\":{\"l\":{\"jobServiceType\":\"bczsulmdgglmepjp\",\"port\":1660253828,\"endpoint\":\"kgsangpszng\",\"status\":\"p\",\"errorMessage\":\"lkvec\",\"properties\":{\"foknubnoitp\":\"cngoadyedmzrg\",\"rgdg\":\"pz\",\"we\":\"vcoqraswugyxpqi\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}},\"ckbbcc\":{\"jobServiceType\":\"skbuhzaca\",\"port\":149181411,\"endpoint\":\"tco\",\"status\":\"ujpdsxzak\",\"errorMessage\":\"jkmvbi\",\"properties\":{\"bemyeji\":\"ofqcvovjufycsjm\",\"rtudawlpjfel\":\"iuxegth\",\"bgqnz\":\"erppt\",\"ialwc\":\"nhii\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}},\"iua\":{\"jobServiceType\":\"zpraoxn\",\"port\":606416580,\"endpoint\":\"a\",\"status\":\"gftipwc\",\"errorMessage\":\"yubhiqdx\",\"properties\":{\"gbylbuig\":\"npnuhzafccnuhi\",\"dlbnbqxvhcsy\":\"xvatvcr\",\"xdndsbdweaderzm\":\"zlwxaeaovur\",\"ttmvmmagoaqylkjz\":\"ntopa\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}}},\"computeId\":\"cgm\",\"isArchived\":true,\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"componentId\":\"inzcpdltkrlgj\",\"notificationSetting\":{\"emails\":[\"rvcqguefzhomphe\",\"durelyujl\",\"youmpc\"],\"emailOn\":[\"JobCompleted\",\"JobCancelled\",\"JobCompleted\",\"JobCompleted\"],\"webhooks\":{\"ptajbrzmq\":{\"webhookType\":\"Webhook\"},\"ucycijo\":{\"webhookType\":\"Webhook\"}}},\"description\":\"xiutgjcyzyzj\",\"tags\":{\"fwwvuatbwbqam\":\"qjbtxjeaoqaqbzgy\"},\"properties\":{\"pkcvmwf\":\"liys\",\"pmywbormcq\":\"uxx\",\"mcsmyqwixvcp\":\"iciijqpkzfbojx\"}},\"id\":\"kwywzwofalic\",\"name\":\"duoiqt\",\"type\":\"mt\"}],\"nextLink\":\"sknxrwzawnvsbcf\"}")
+            .toObject(JobBaseResourceArmPaginatedResult.class);
+        Assertions.assertEquals("crmmkyupijuby", model.value().get(0).properties().description());
+        Assertions.assertEquals("kakfqfr", model.value().get(0).properties().tags().get("em"));
+        Assertions.assertEquals("dudxjascowvfdjk", model.value().get(0).properties().properties().get("dxphlk"));
+        Assertions.assertEquals("bjazejwwviy", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("uhbrnnhjxsq", model.value().get(0).properties().experimentName());
+        Assertions.assertEquals("kbiwetpozyc",
+            model.value().get(0).properties().services().get("umtggmuwdchozfn").jobServiceType());
+        Assertions.assertEquals(1973801888, model.value().get(0).properties().services().get("umtggmuwdchozfn").port());
+        Assertions.assertEquals("yhgfsetzle",
+            model.value().get(0).properties().services().get("umtggmuwdchozfn").endpoint());
+        Assertions.assertEquals("cljse",
+            model.value().get(0).properties().services().get("umtggmuwdchozfn").properties().get("pkpbafvafhlbylcc"));
+        Assertions.assertEquals("exlvxnoakiz", model.value().get(0).properties().computeId());
+        Assertions.assertEquals(false, model.value().get(0).properties().isArchived());
+        Assertions.assertEquals("naqln", model.value().get(0).properties().componentId());
+        Assertions.assertEquals("uyxlykwphvxzcw",
+            model.value().get(0).properties().notificationSetting().emails().get(0));
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_FAILED,
+            model.value().get(0).properties().notificationSetting().emailOn().get(0));
+        Assertions.assertEquals("sknxrwzawnvsbcf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobBaseResourceArmPaginatedResult model =
-            new JobBaseResourceArmPaginatedResult()
-                .withNextLink("zoggculapz")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new JobBaseInner()
-                                .withProperties(
-                                    new JobBaseProperties()
-                                        .withDescription("wzjbh")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withComponentId("gogtqxepnylbf")
-                                        .withComputeId("jlyjtlvofq")
-                                        .withDisplayName("vfcibyfmowux")
-                                        .withExperimentName("jpvd")
-                                        .withIsArchived(true)
-                                        .withServices(mapOf())),
-                            new JobBaseInner()
-                                .withProperties(
-                                    new JobBaseProperties()
-                                        .withDescription("tyh")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withComponentId("lves")
-                                        .withComputeId("jlxr")
-                                        .withDisplayName("lozapeewchpxlk")
-                                        .withExperimentName("kuziycsle")
-                                        .withIsArchived(true)
-                                        .withServices(mapOf())),
-                            new JobBaseInner()
-                                .withProperties(
-                                    new JobBaseProperties()
-                                        .withDescription("aecxndtic")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withComponentId("pglydz")
-                                        .withComputeId("rvqeevtoepryutn")
-                                        .withDisplayName("tpzdmovzvfvaawzq")
-                                        .withExperimentName("f")
-                                        .withIsArchived(false)
-                                        .withServices(mapOf()))));
+        JobBaseResourceArmPaginatedResult model = new JobBaseResourceArmPaginatedResult()
+            .withValue(Arrays.asList(
+                new JobBaseInner().withProperties(new JobBaseProperties().withDescription("crmmkyupijuby")
+                    .withTags(mapOf("em", "kakfqfr"))
+                    .withProperties(
+                        mapOf("dxphlk", "dudxjascowvfdjk", "dkz", "snmgzvyfi", "uqwqulsutrjbhxyk", "qnwsithuqolyah"))
+                    .withDisplayName("bjazejwwviy")
+                    .withExperimentName("uhbrnnhjxsq")
+                    .withServices(mapOf("umtggmuwdchozfn",
+                        new JobService().withJobServiceType("kbiwetpozyc")
+                            .withPort(1973801888)
+                            .withEndpoint("yhgfsetzle")
+                            .withProperties(mapOf("pkpbafvafhlbylcc", "cljse", "fwrsofpltdbmair", "evxrhyz",
+                                "pqigtuujwouhd", "hvhfnracw", "bvitvqkjya", "wsigrbjbxsj"))
+                            .withNodes(new Nodes())))
+                    .withComputeId("exlvxnoakiz")
+                    .withIsArchived(false)
+                    .withIdentity(new IdentityConfiguration())
+                    .withComponentId("naqln")
+                    .withNotificationSetting(new NotificationSetting()
+                        .withEmails(Arrays.asList("uyxlykwphvxzcw", "hmpejtlkexaonw"))
+                        .withEmailOn(Arrays.asList(EmailNotificationEnableType.JOB_FAILED))
+                        .withWebhooks(mapOf("rxhxkn", new Webhook())))),
+                new JobBaseInner().withProperties(new JobBaseProperties().withDescription("xiutgjcyzyzj")
+                    .withTags(mapOf("fwwvuatbwbqam", "qjbtxjeaoqaqbzgy"))
+                    .withProperties(mapOf("pkcvmwf", "liys", "pmywbormcq", "uxx", "mcsmyqwixvcp", "iciijqpkzfbojx"))
+                    .withDisplayName("ftbcvexreuquow")
+                    .withExperimentName("fwhreagkhyxv")
+                    .withServices(mapOf("l",
+                        new JobService().withJobServiceType("bczsulmdgglmepjp")
+                            .withPort(1660253828)
+                            .withEndpoint("kgsangpszng")
+                            .withProperties(
+                                mapOf("foknubnoitp", "cngoadyedmzrg", "rgdg", "pz", "we", "vcoqraswugyxpqi"))
+                            .withNodes(new Nodes()),
+                        "ckbbcc",
+                        new JobService().withJobServiceType("skbuhzaca")
+                            .withPort(149181411)
+                            .withEndpoint("tco")
+                            .withProperties(mapOf("bemyeji", "ofqcvovjufycsjm", "rtudawlpjfel", "iuxegth", "bgqnz",
+                                "erppt", "ialwc", "nhii"))
+                            .withNodes(new Nodes()),
+                        "iua",
+                        new JobService().withJobServiceType("zpraoxn")
+                            .withPort(606416580)
+                            .withEndpoint("a")
+                            .withProperties(mapOf("gbylbuig", "npnuhzafccnuhi", "dlbnbqxvhcsy", "xvatvcr",
+                                "xdndsbdweaderzm", "zlwxaeaovur", "ttmvmmagoaqylkjz", "ntopa"))
+                            .withNodes(new Nodes())))
+                    .withComputeId("cgm")
+                    .withIsArchived(true)
+                    .withIdentity(new IdentityConfiguration())
+                    .withComponentId("inzcpdltkrlgj")
+                    .withNotificationSetting(
+                        new NotificationSetting().withEmails(Arrays.asList("rvcqguefzhomphe", "durelyujl", "youmpc"))
+                            .withEmailOn(Arrays.asList(EmailNotificationEnableType.JOB_COMPLETED,
+                                EmailNotificationEnableType.JOB_CANCELLED, EmailNotificationEnableType.JOB_COMPLETED,
+                                EmailNotificationEnableType.JOB_COMPLETED))
+                            .withWebhooks(mapOf("ptajbrzmq", new Webhook(), "ucycijo", new Webhook()))))))
+            .withNextLink("sknxrwzawnvsbcf");
         model = BinaryData.fromObject(model).toObject(JobBaseResourceArmPaginatedResult.class);
-        Assertions.assertEquals("zoggculapz", model.nextLink());
-        Assertions.assertEquals("wzjbh", model.value().get(0).properties().description());
-        Assertions.assertEquals("gogtqxepnylbf", model.value().get(0).properties().componentId());
-        Assertions.assertEquals("jlyjtlvofq", model.value().get(0).properties().computeId());
-        Assertions.assertEquals("vfcibyfmowux", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("jpvd", model.value().get(0).properties().experimentName());
-        Assertions.assertEquals(true, model.value().get(0).properties().isArchived());
+        Assertions.assertEquals("crmmkyupijuby", model.value().get(0).properties().description());
+        Assertions.assertEquals("kakfqfr", model.value().get(0).properties().tags().get("em"));
+        Assertions.assertEquals("dudxjascowvfdjk", model.value().get(0).properties().properties().get("dxphlk"));
+        Assertions.assertEquals("bjazejwwviy", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("uhbrnnhjxsq", model.value().get(0).properties().experimentName());
+        Assertions.assertEquals("kbiwetpozyc",
+            model.value().get(0).properties().services().get("umtggmuwdchozfn").jobServiceType());
+        Assertions.assertEquals(1973801888, model.value().get(0).properties().services().get("umtggmuwdchozfn").port());
+        Assertions.assertEquals("yhgfsetzle",
+            model.value().get(0).properties().services().get("umtggmuwdchozfn").endpoint());
+        Assertions.assertEquals("cljse",
+            model.value().get(0).properties().services().get("umtggmuwdchozfn").properties().get("pkpbafvafhlbylcc"));
+        Assertions.assertEquals("exlvxnoakiz", model.value().get(0).properties().computeId());
+        Assertions.assertEquals(false, model.value().get(0).properties().isArchived());
+        Assertions.assertEquals("naqln", model.value().get(0).properties().componentId());
+        Assertions.assertEquals("uyxlykwphvxzcw",
+            model.value().get(0).properties().notificationSetting().emails().get(0));
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_FAILED,
+            model.value().get(0).properties().notificationSetting().emailOn().get(0));
+        Assertions.assertEquals("sknxrwzawnvsbcf", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

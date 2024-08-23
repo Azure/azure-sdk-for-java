@@ -6,66 +6,37 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptActionDetail;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ScriptActionsListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"scriptExecutionId\":2665247310105497195,\"startTime\":\"xaeaovurexdnds\",\"endTime\":\"weaderzm\",\"status\":\"t\",\"operation\":\"agttm\",\"executionSummary\":[{\"status\":\"goaqylkjztj\",\"instanceCount\":1339575917},{\"status\":\"jcg\",\"instanceCount\":556812746},{\"status\":\"pfinzcpdltkrlg\",\"instanceCount\":408763108}],\"debugInformation\":\"drvcqguef\",\"name\":\"hompheqdurelyu\",\"uri\":\"lf\",\"parameters\":\"u\",\"roles\":[\"ckyeclcdigpta\",\"brzmqxucycijoclx\"],\"applicationName\":\"tgjcy\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"scriptExecutionId\":7487371903139013200,\"startTime\":\"bwbqamt\",\"endTime\":\"liys\",\"status\":\"kcvmwfauxxepmy\",\"operation\":\"ormcqmic\",\"executionSummary\":[{\"status\":\"pkzfbojxj\",\"instanceCount\":2016154693},{\"status\":\"yqwixvcpwnkwywzw\",\"instanceCount\":47513011}],\"debugInformation\":\"ickduoiqta\",\"name\":\"t\",\"uri\":\"vsknxrwzawnv\",\"parameters\":\"cfhzagxnvhycv\",\"roles\":[\"mwrzregzgyufutrw\",\"weryekzk\",\"hmeott\",\"w\"],\"applicationName\":\"osxw\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HDInsightManager manager = HDInsightManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<RuntimeScriptActionDetail> response
+            = manager.scriptActions().listByCluster("lbnb", "xvhcs", com.azure.core.util.Context.NONE);
 
-        HDInsightManager manager =
-            HDInsightManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<RuntimeScriptActionDetail> response =
-            manager.scriptActions().listByCluster("xjeaoqaqbzgyh", "w", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("t", response.iterator().next().name());
-        Assertions.assertEquals("vsknxrwzawnv", response.iterator().next().uri());
-        Assertions.assertEquals("cfhzagxnvhycv", response.iterator().next().parameters());
-        Assertions.assertEquals("mwrzregzgyufutrw", response.iterator().next().roles().get(0));
+        Assertions.assertEquals("hompheqdurelyu", response.iterator().next().name());
+        Assertions.assertEquals("lf", response.iterator().next().uri());
+        Assertions.assertEquals("u", response.iterator().next().parameters());
+        Assertions.assertEquals("ckyeclcdigpta", response.iterator().next().roles().get(0));
     }
 }

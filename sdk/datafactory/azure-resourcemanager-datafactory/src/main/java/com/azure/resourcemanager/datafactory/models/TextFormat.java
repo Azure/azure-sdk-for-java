@@ -5,53 +5,46 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The data stored in text format.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = TextFormat.class, visible = true)
-@JsonTypeName("TextFormat")
 @Fluent
 public final class TextFormat extends DatasetStorageFormat {
     /*
      * Type of dataset storage format.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "TextFormat";
 
     /*
      * The column delimiter. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "columnDelimiter")
     private Object columnDelimiter;
 
     /*
      * The row delimiter. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "rowDelimiter")
     private Object rowDelimiter;
 
     /*
      * The escape character. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "escapeChar")
     private Object escapeChar;
 
     /*
      * The quote character. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "quoteChar")
     private Object quoteChar;
 
     /*
      * The null value string. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "nullValue")
     private Object nullValue;
 
     /*
@@ -60,28 +53,24 @@ public final class TextFormat extends DatasetStorageFormat {
      * values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "encodingName")
     private Object encodingName;
 
     /*
      * Treat empty column values in the text file as null. The default value is true. Type: boolean (or Expression with
      * resultType boolean).
      */
-    @JsonProperty(value = "treatEmptyAsNull")
     private Object treatEmptyAsNull;
 
     /*
      * The number of lines/rows to be skipped when parsing text files. The default value is 0. Type: integer (or
      * Expression with resultType integer).
      */
-    @JsonProperty(value = "skipLineCount")
     private Object skipLineCount;
 
     /*
      * When used as input, treat the first row of data as headers. When used as output,write the headers into the output
      * as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "firstRowAsHeader")
     private Object firstRowAsHeader;
 
     /**
@@ -320,5 +309,85 @@ public final class TextFormat extends DatasetStorageFormat {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("serializer", serializer());
+        jsonWriter.writeUntypedField("deserializer", deserializer());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("columnDelimiter", this.columnDelimiter);
+        jsonWriter.writeUntypedField("rowDelimiter", this.rowDelimiter);
+        jsonWriter.writeUntypedField("escapeChar", this.escapeChar);
+        jsonWriter.writeUntypedField("quoteChar", this.quoteChar);
+        jsonWriter.writeUntypedField("nullValue", this.nullValue);
+        jsonWriter.writeUntypedField("encodingName", this.encodingName);
+        jsonWriter.writeUntypedField("treatEmptyAsNull", this.treatEmptyAsNull);
+        jsonWriter.writeUntypedField("skipLineCount", this.skipLineCount);
+        jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TextFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TextFormat if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TextFormat.
+     */
+    public static TextFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TextFormat deserializedTextFormat = new TextFormat();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serializer".equals(fieldName)) {
+                    deserializedTextFormat.withSerializer(reader.readUntyped());
+                } else if ("deserializer".equals(fieldName)) {
+                    deserializedTextFormat.withDeserializer(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedTextFormat.type = reader.getString();
+                } else if ("columnDelimiter".equals(fieldName)) {
+                    deserializedTextFormat.columnDelimiter = reader.readUntyped();
+                } else if ("rowDelimiter".equals(fieldName)) {
+                    deserializedTextFormat.rowDelimiter = reader.readUntyped();
+                } else if ("escapeChar".equals(fieldName)) {
+                    deserializedTextFormat.escapeChar = reader.readUntyped();
+                } else if ("quoteChar".equals(fieldName)) {
+                    deserializedTextFormat.quoteChar = reader.readUntyped();
+                } else if ("nullValue".equals(fieldName)) {
+                    deserializedTextFormat.nullValue = reader.readUntyped();
+                } else if ("encodingName".equals(fieldName)) {
+                    deserializedTextFormat.encodingName = reader.readUntyped();
+                } else if ("treatEmptyAsNull".equals(fieldName)) {
+                    deserializedTextFormat.treatEmptyAsNull = reader.readUntyped();
+                } else if ("skipLineCount".equals(fieldName)) {
+                    deserializedTextFormat.skipLineCount = reader.readUntyped();
+                } else if ("firstRowAsHeader".equals(fieldName)) {
+                    deserializedTextFormat.firstRowAsHeader = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedTextFormat.withAdditionalProperties(additionalProperties);
+
+            return deserializedTextFormat;
+        });
     }
 }
