@@ -107,7 +107,7 @@ asyncClient.complete(new ChatCompletionsOptions(chatMessages))
 ### Authentication errors
 
 Azure Inference supports Azure Active Directory authentication. [ChatCompletionsClientBuilder][chat_completions_client_builder]
-has method to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more
+offers an API to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more
 details on getting started, refer to the [README][how_to_create_chat_completions_client] of Azure Inference library.
 You can also refer to the [Azure Identity documentation][identity_doc] for more details on the various types of
 credential supported in `azure-identity`.
