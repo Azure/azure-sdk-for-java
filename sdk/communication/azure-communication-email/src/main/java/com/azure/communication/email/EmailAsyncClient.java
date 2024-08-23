@@ -23,7 +23,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
