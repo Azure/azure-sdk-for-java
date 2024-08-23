@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -24,14 +23,6 @@ import java.util.List;
 @JsonTypeName("Observation")
 @Immutable
 public final class FhirR4Observation extends FhirR4DomainResource {
-
-    /*
-     * Discriminator property for Fhir_R4_DomainResource.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "resourceType")
-    private String resourceType = "Observation";
 
     /*
      * Business Identifier for observation
@@ -258,17 +249,7 @@ public final class FhirR4Observation extends FhirR4DomainResource {
         super(resourceType);
         this.status = status;
         this.code = code;
-    }
-
-    /**
-     * Get the resourceType property: Discriminator property for Fhir_R4_DomainResource.
-     *
-     * @return the resourceType value.
-     */
-    @Generated
-    @Override
-    public String getResourceType() {
-        return this.resourceType;
+        this.resourceType = "Observation";
     }
 
     /**

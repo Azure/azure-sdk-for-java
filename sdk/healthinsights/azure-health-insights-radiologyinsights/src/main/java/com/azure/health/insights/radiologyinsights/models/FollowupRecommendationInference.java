@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -24,14 +23,6 @@ import java.util.List;
 @JsonTypeName("followupRecommendation")
 @Immutable
 public final class FollowupRecommendationInference extends RadiologyInsightsInference {
-
-    /*
-     * Discriminator property for RadiologyInsightsInference.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION;
 
     /*
      * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
@@ -113,17 +104,7 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
         this.isGuideline = isGuideline;
         this.isHedging = isHedging;
         this.recommendedProcedure = recommendedProcedure;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for RadiologyInsightsInference.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
+        this.kind = RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION;
     }
 
     /**

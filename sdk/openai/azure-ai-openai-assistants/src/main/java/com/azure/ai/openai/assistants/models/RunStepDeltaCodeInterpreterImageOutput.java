@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class RunStepDeltaCodeInterpreterImageOutput extends RunStepDeltaCodeInterpreterOutput {
 
     /*
-     * The type of the streaming run step tool call's Code Interpreter output.
-     */
-    @Generated
-    private String type = "image";
-
-    /*
      * The image data for the Code Interpreter tool call output.
      */
     @Generated
@@ -37,17 +31,7 @@ public final class RunStepDeltaCodeInterpreterImageOutput extends RunStepDeltaCo
     @Generated
     private RunStepDeltaCodeInterpreterImageOutput(int index) {
         super(index);
-    }
-
-    /**
-     * Get the type property: The type of the streaming run step tool call's Code Interpreter output.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "image";
     }
 
     /**
@@ -67,8 +51,7 @@ public final class RunStepDeltaCodeInterpreterImageOutput extends RunStepDeltaCo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", getIndex());
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("image", this.image);
         return jsonWriter.writeEndObject();
     }

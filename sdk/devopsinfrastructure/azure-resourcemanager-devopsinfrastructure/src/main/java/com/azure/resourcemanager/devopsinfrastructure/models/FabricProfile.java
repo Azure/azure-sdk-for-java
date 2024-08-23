@@ -19,12 +19,13 @@ public class FabricProfile implements JsonSerializable<FabricProfile> {
     /*
      * Discriminator property for FabricProfile.
      */
-    private String kind = "FabricProfile";
+    String kind;
 
     /**
      * Creates an instance of FabricProfile class.
      */
     public FabricProfile() {
+        this.kind = "FabricProfile";
     }
 
     /**
@@ -50,8 +51,12 @@ public class FabricProfile implements JsonSerializable<FabricProfile> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("kind", this.kind);
     }
 
     /**
@@ -94,14 +99,21 @@ public class FabricProfile implements JsonSerializable<FabricProfile> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("kind".equals(fieldName)) {
-                    deserializedFabricProfile.kind = reader.getString();
-                } else {
+                if (!FabricProfile.fromJsonShared(reader, fieldName, deserializedFabricProfile)) {
                     reader.skipChildren();
                 }
             }
 
             return deserializedFabricProfile;
         });
+    }
+
+    static boolean fromJsonShared(JsonReader reader, String fieldName, FabricProfile deserializedFabricProfile)
+        throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedFabricProfile.kind = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

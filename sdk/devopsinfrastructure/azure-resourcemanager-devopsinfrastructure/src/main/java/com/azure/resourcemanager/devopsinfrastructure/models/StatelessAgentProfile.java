@@ -15,25 +15,11 @@ import java.io.IOException;
  */
 @Fluent
 public final class StatelessAgentProfile extends AgentProfile {
-    /*
-     * Discriminator property for AgentProfile.
-     */
-    private String kind = "Stateless";
-
     /**
      * Creates an instance of StatelessAgentProfile class.
      */
     public StatelessAgentProfile() {
-    }
-
-    /**
-     * Get the kind property: Discriminator property for AgentProfile.
-     * 
-     * @return the kind value.
-     */
-    @Override
-    public String kind() {
-        return this.kind;
+        this.kind = "Stateless";
     }
 
     /**
@@ -75,9 +61,7 @@ public final class StatelessAgentProfile extends AgentProfile {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourcePredictions", resourcePredictions());
-        jsonWriter.writeJsonField("resourcePredictionsProfile", resourcePredictionsProfile());
-        jsonWriter.writeStringField("kind", this.kind);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -96,13 +80,8 @@ public final class StatelessAgentProfile extends AgentProfile {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("resourcePredictions".equals(fieldName)) {
-                    deserializedStatelessAgentProfile.withResourcePredictions(ResourcePredictions.fromJson(reader));
-                } else if ("resourcePredictionsProfile".equals(fieldName)) {
-                    deserializedStatelessAgentProfile
-                        .withResourcePredictionsProfile(ResourcePredictionsProfile.fromJson(reader));
-                } else if ("kind".equals(fieldName)) {
-                    deserializedStatelessAgentProfile.kind = reader.getString();
+                if (AgentProfile.fromJsonShared(reader, fieldName, deserializedStatelessAgentProfile)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

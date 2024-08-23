@@ -21,12 +21,6 @@ import java.util.Set;
 public final class ReclassifyExceptionAction extends ExceptionAction {
 
     /*
-     * The type discriminator describing a sub-type of ExceptionAction.
-     */
-    @Generated
-    private ExceptionActionKind kind = ExceptionActionKind.RECLASSIFY;
-
-    /*
      * The new classification policy that will determine queue, priority and worker selectors.
      */
     @Generated
@@ -50,17 +44,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      */
     @Generated
     public ReclassifyExceptionAction() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of ExceptionAction.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public ExceptionActionKind getKind() {
-        return this.kind;
+        this.kind = ExceptionActionKind.RECLASSIFY;
     }
 
     /**
@@ -187,11 +171,8 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    JsonMergePatchHelper.getExceptionActionAccessor()
-                        .setId(deserializedReclassifyExceptionAction, reader.getString());
-                } else if ("kind".equals(fieldName)) {
-                    deserializedReclassifyExceptionAction.kind = ExceptionActionKind.fromString(reader.getString());
+                if (ExceptionAction.fromJsonShared(reader, fieldName, deserializedReclassifyExceptionAction)) {
+                    continue;
                 } else if ("classificationPolicyId".equals(fieldName)) {
                     deserializedReclassifyExceptionAction.classificationPolicyId = reader.getString();
                 } else if ("labelsToUpsert".equals(fieldName)) {

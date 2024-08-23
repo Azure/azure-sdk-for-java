@@ -17,12 +17,6 @@ import java.io.IOException;
 public final class MessageTemplateDocument extends MessageTemplateValue {
 
     /*
-     * The type discriminator describing a template parameter type.
-     */
-    @Generated
-    private MessageTemplateValueKind kind = MessageTemplateValueKind.DOCUMENT;
-
-    /*
      * The (public) URL of the media.
      */
     @Generated
@@ -50,17 +44,7 @@ public final class MessageTemplateDocument extends MessageTemplateValue {
     public MessageTemplateDocument(String refValue, String url) {
         super(refValue);
         this.url = url;
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a template parameter type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public MessageTemplateValueKind getKind() {
-        return this.kind;
+        this.kind = MessageTemplateValueKind.DOCUMENT;
     }
 
     /**
@@ -124,9 +108,8 @@ public final class MessageTemplateDocument extends MessageTemplateValue {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getRefValue());
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("url", this.url);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("caption", this.caption);
         jsonWriter.writeStringField("fileName", this.fileName);
         return jsonWriter.writeEndObject();

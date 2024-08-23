@@ -20,12 +20,6 @@ import java.util.Set;
 public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
 
     /*
-     * The type discriminator describing a sub-type of ExceptionTrigger.
-     */
-    @Generated
-    private ExceptionTriggerKind kind = ExceptionTriggerKind.QUEUE_LENGTH;
-
-    /*
      * Threshold of number of jobs ahead in the queue to for this trigger to fire.
      */
     @Generated
@@ -42,17 +36,7 @@ public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
      */
     @Generated
     public QueueLengthExceptionTrigger() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of ExceptionTrigger.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public ExceptionTriggerKind getKind() {
-        return this.kind;
+        this.kind = ExceptionTriggerKind.QUEUE_LENGTH;
     }
 
     /**
@@ -120,8 +104,8 @@ public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedQueueLengthExceptionTrigger.kind = ExceptionTriggerKind.fromString(reader.getString());
+                if (ExceptionTrigger.fromJsonShared(reader, fieldName, deserializedQueueLengthExceptionTrigger)) {
+                    continue;
                 } else if ("threshold".equals(fieldName)) {
                     deserializedQueueLengthExceptionTrigger.threshold = reader.getInt();
                 } else {

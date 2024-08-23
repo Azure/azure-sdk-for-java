@@ -18,12 +18,6 @@ import java.util.List;
 public final class TextNotificationContent extends NotificationContent {
 
     /*
-     * The type discriminator describing a notification type.
-     */
-    @Generated
-    private CommunicationMessageKind kind = CommunicationMessageKind.TEXT;
-
-    /*
      * Message content.
      */
     @Generated
@@ -40,17 +34,7 @@ public final class TextNotificationContent extends NotificationContent {
     public TextNotificationContent(String channelRegistrationId, List<String> to, String content) {
         super(channelRegistrationId, to);
         this.content = content;
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a notification type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public CommunicationMessageKind getKind() {
-        return this.kind;
+        this.kind = CommunicationMessageKind.TEXT;
     }
 
     /**
@@ -70,10 +54,8 @@ public final class TextNotificationContent extends NotificationContent {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("channelRegistrationId", getChannelRegistrationId());
-        jsonWriter.writeArrayField("to", getTo(), (writer, element) -> writer.writeString(element));
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("content", this.content);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 

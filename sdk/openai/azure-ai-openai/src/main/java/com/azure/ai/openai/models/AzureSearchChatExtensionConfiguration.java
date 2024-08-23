@@ -31,6 +31,7 @@ public final class AzureSearchChatExtensionConfiguration extends AzureChatExtens
     @Generated
     public AzureSearchChatExtensionConfiguration(AzureSearchChatExtensionParameters parameters) {
         this.parameters = parameters;
+        this.type = AzureChatExtensionType.AZURE_SEARCH;
     }
 
     /**
@@ -43,26 +44,6 @@ public final class AzureSearchChatExtensionConfiguration extends AzureChatExtens
         return this.parameters;
     }
 
-    /*
-     * The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
-     * Azure chat extensions are only compatible with Azure OpenAI.
-     */
-    @Generated
-    private AzureChatExtensionType type = AzureChatExtensionType.AZURE_SEARCH;
-
-    /**
-     * Get the type property: The label for the type of an Azure chat extension. This typically corresponds to a
-     * matching Azure resource.
-     * Azure chat extensions are only compatible with Azure OpenAI.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public AzureChatExtensionType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -70,8 +51,8 @@ public final class AzureSearchChatExtensionConfiguration extends AzureChatExtens
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("parameters", this.parameters);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

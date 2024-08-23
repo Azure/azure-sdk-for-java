@@ -21,7 +21,7 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
      * The object type.
      */
     @Generated
-    private String type = "MessageTextAnnotation";
+    String type;
 
     /*
      * The textual content associated with this text annotation item.
@@ -37,6 +37,7 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
     @Generated
     public MessageTextAnnotation(String text) {
         this.text = text;
+        this.type = "MessageTextAnnotation";
     }
 
     /**
@@ -66,8 +67,7 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -129,5 +129,10 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
             deserializedMessageTextAnnotation.type = type;
             return deserializedMessageTextAnnotation;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("type", this.type);
     }
 }

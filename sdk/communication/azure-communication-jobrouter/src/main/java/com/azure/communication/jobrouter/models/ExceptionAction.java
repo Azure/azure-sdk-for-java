@@ -24,7 +24,7 @@ public class ExceptionAction implements JsonSerializable<ExceptionAction> {
      * The type discriminator describing a sub-type of ExceptionAction.
      */
     @Generated
-    private ExceptionActionKind kind = ExceptionActionKind.fromString("ExceptionAction");
+    ExceptionActionKind kind;
 
     /*
      * Unique Id of the exception action.
@@ -72,6 +72,7 @@ public class ExceptionAction implements JsonSerializable<ExceptionAction> {
      */
     @Generated
     public ExceptionAction() {
+        this.kind = ExceptionActionKind.fromString("ExceptionAction");
     }
 
     /**
@@ -183,15 +184,24 @@ public class ExceptionAction implements JsonSerializable<ExceptionAction> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedExceptionAction.kind = ExceptionActionKind.fromString(reader.getString());
-                } else if ("id".equals(fieldName)) {
-                    deserializedExceptionAction.id = reader.getString();
-                } else {
+                if (!ExceptionAction.fromJsonShared(reader, fieldName, deserializedExceptionAction)) {
                     reader.skipChildren();
                 }
             }
             return deserializedExceptionAction;
         });
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName, ExceptionAction deserializedExceptionAction)
+        throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedExceptionAction.kind = ExceptionActionKind.fromString(reader.getString());
+            return true;
+        } else if ("id".equals(fieldName)) {
+            deserializedExceptionAction.id = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

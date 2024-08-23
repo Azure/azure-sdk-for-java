@@ -34,10 +34,6 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bacfionlebxetq", response.iterator().next().display().provider());
-        Assertions.assertEquals("zxdpnqbqqw", response.iterator().next().display().resource());
-        Assertions.assertEquals("jfeallnwsub", response.iterator().next().display().operation());
-        Assertions.assertEquals("njampm", response.iterator().next().display().description());
         Assertions.assertEquals(ActionType.INTERNAL, response.iterator().next().actionType());
     }
 }

@@ -20,12 +20,6 @@ import java.util.Set;
 public final class PassThroughQueueSelectorAttachment extends QueueSelectorAttachment {
 
     /*
-     * The type discriminator describing a sub-type of QueueSelectorAttachment.
-     */
-    @Generated
-    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.PASS_THROUGH;
-
-    /*
      * The label key to query against.
      */
     @Generated
@@ -48,17 +42,7 @@ public final class PassThroughQueueSelectorAttachment extends QueueSelectorAttac
      */
     @Generated
     public PassThroughQueueSelectorAttachment() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public QueueSelectorAttachmentKind getKind() {
-        return this.kind;
+        this.kind = QueueSelectorAttachmentKind.PASS_THROUGH;
     }
 
     /**
@@ -164,9 +148,9 @@ public final class PassThroughQueueSelectorAttachment extends QueueSelectorAttac
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedPassThroughQueueSelectorAttachment.kind
-                        = QueueSelectorAttachmentKind.fromString(reader.getString());
+                if (QueueSelectorAttachment.fromJsonShared(reader, fieldName,
+                    deserializedPassThroughQueueSelectorAttachment)) {
+                    continue;
                 } else if ("key".equals(fieldName)) {
                     deserializedPassThroughQueueSelectorAttachment.key = reader.getString();
                 } else if ("labelOperator".equals(fieldName)) {
