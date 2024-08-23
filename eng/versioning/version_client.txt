@@ -203,10 +203,10 @@ com.azure:azure-verticals-agrifood-farming;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-xml;1.1.0;1.2.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-vision-imageanalysis;1.0.0-beta.2;1.0.0-beta.3
-com.azure:identity-test-container;1.0-SNAPSHOT;1.0-SNAPSHOT
-com.azure:identity-test-function;1.0-SNAPSHOT;1.0-SNAPSHOT
-com.azure:identity-test-vm;1.0-SNAPSHOT;1.0-SNAPSHOT
-com.azure:identity-test-webapp;0.0.1-SNAPSHOT;0.0.1-SNAPSHOT
+com.azure:identity-test-container;1.0.0-beta.1;1.0.0-beta.1
+com.azure:identity-test-function;1.0.0-beta.1;1.0.0-beta.1
+com.azure:identity-test-vm;1.0.0-beta.1;1.0.0-beta.1
+com.azure:identity-test-webapp;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-vision-face;1.0.0-beta.1;1.0.0-beta.2
 com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
