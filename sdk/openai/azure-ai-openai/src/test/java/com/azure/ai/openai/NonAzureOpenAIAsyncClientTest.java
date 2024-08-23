@@ -925,9 +925,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                                     assertEquals(1, toolCalls.size());
                                     ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
                                     FunctionCall functionCall = toolCall.getFunction();
-                                    // TODO: It used to be first stream event but now second event, in NonAzure
-                                    // this data is only available in the first stream message, if at all
-                                    if (i == 1) {
+                                    if (i == 0) {
                                         content = chatChoice.getDelta().getContent();
                                         functionName = functionCall.getName();
                                         toolCallId = toolCall.getId();
