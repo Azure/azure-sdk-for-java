@@ -1170,10 +1170,8 @@ private class BulkWriter
 
           assume(activeTasks.get() <= 0)
 
-          // NOTE: The conversion via toList is intentional - the LinkedHashSet.size is an estimate -
-          // and isEmpty is checking for size==0
-          assume(activeBulkWriteOperations.toList.isEmpty)
-          assume(activeReadManyOperations.toList.isEmpty)
+          assume(activeBulkWriteOperations.isEmpty)
+          assume(activeReadManyOperations.isEmpty)
           assume(semaphore.availablePermits() >= maxPendingOperations)
 
           if (totalScheduledMetrics.get() != totalSuccessfulIngestionMetrics.get) {
