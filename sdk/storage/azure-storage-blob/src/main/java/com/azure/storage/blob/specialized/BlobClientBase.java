@@ -857,8 +857,8 @@ public class BlobClientBase {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
             }
             ResponseBase<BlobsStartCopyFromURLHeaders, Void> response =
-                azureBlobStorage.getBlobs().startCopyFromURLWithResponse(containerName, blobName,
-                    options.getSourceUrl(), null, options.getMetadata(), options.getTier(),
+                wrapServiceCallWithExceptionMapping(() -> azureBlobStorage.getBlobs().startCopyFromURLWithResponse(
+                    containerName, blobName, options.getSourceUrl(), null, options.getMetadata(), options.getTier(),
                     options.getRehydratePriority(), sourceModifiedConditions.getIfModifiedSince(),
                     sourceModifiedConditions.getIfUnmodifiedSince(), sourceModifiedConditions.getIfMatch(),
                     sourceModifiedConditions.getIfNoneMatch(), sourceModifiedConditions.getTagsConditions(),
@@ -867,7 +867,7 @@ public class BlobClientBase {
                     destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getTagsConditions(),
                     destinationRequestConditions.getLeaseId(), null, ModelHelper.tagsToString(options.getTags()),
                     options.isSealDestination(), immutabilityPolicy.getExpiryTime(),
-                    immutabilityPolicy.getPolicyMode(), options.isLegalHold(), Context.NONE);
+                    immutabilityPolicy.getPolicyMode(), options.isLegalHold(), Context.NONE));
 
             BlobsStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
             copyId.set(headers.getXMsCopyId());
