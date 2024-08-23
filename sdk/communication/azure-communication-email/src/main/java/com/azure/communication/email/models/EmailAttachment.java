@@ -59,6 +59,17 @@ public final class EmailAttachment {
     }
 
     /**
+     * @deprecated Use {@link #getContentInBase64()} instead.
+     * Returns the content of the attachment.
+     *
+     * @return The content of the attachment as BinaryData.
+     */
+    @Deprecated
+    public BinaryData getContent() {
+        return this.contentInBase64;
+    }
+
+    /**
      * Get the contentInBase64 property: Base64 encoded contents of the attachment.
      * 
      * @return the contentInBase64 value.
