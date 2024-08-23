@@ -1009,6 +1009,7 @@ private class BulkWriter
         (commitAttempt == 1
           && allowRetryOnNewBulkWriterInstance
           && this.activeReadManyOperations.isEmpty
+          && this.pendingReadManyRetries.isEmpty
           && secondsWithoutProgress >= writeConfig.maxNoProgressIntervalInSeconds)
 
     if (maxAllowedIntervalWithoutAnyProgressExceeded) {
