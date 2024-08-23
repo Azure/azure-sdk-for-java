@@ -22,6 +22,7 @@ public class MessageContent implements JsonSerializable<MessageContent> {
      */
     @Generated
     public MessageContent() {
+        this.type = "MessageContent";
     }
 
     /**
@@ -31,7 +32,7 @@ public class MessageContent implements JsonSerializable<MessageContent> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -88,7 +89,7 @@ public class MessageContent implements JsonSerializable<MessageContent> {
      * The object type.
      */
     @Generated
-    private String type = "MessageContent";
+    String type;
 
     /**
      * Get the type property: The object type.
@@ -98,5 +99,19 @@ public class MessageContent implements JsonSerializable<MessageContent> {
     @Generated
     public String getType() {
         return this.type;
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName, MessageContent deserializedMessageContent)
+        throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedMessageContent.type = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

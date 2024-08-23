@@ -31,6 +31,7 @@ public final class RunStepToolCallDetails extends RunStepDetails {
     @Generated
     private RunStepToolCallDetails(List<RunStepToolCall> toolCalls) {
         this.toolCalls = toolCalls;
+        this.type = RunStepType.TOOL_CALLS;
     }
 
     /**
@@ -74,23 +75,6 @@ public final class RunStepToolCallDetails extends RunStepDetails {
         });
     }
 
-    /*
-     * The object type.
-     */
-    @Generated
-    private RunStepType type = RunStepType.TOOL_CALLS;
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public RunStepType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -98,8 +82,8 @@ public final class RunStepToolCallDetails extends RunStepDetails {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 }

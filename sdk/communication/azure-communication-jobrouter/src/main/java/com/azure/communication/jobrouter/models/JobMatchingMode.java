@@ -28,7 +28,7 @@ public class JobMatchingMode implements JsonSerializable<JobMatchingMode> {
      * The type discriminator describing a sub-type of JobMatchingMode.
      */
     @Generated
-    private JobMatchingModeKind kind = JobMatchingModeKind.fromString("JobMatchingMode");
+    JobMatchingModeKind kind;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -65,6 +65,7 @@ public class JobMatchingMode implements JsonSerializable<JobMatchingMode> {
      */
     @Generated
     public JobMatchingMode() {
+        this.kind = JobMatchingModeKind.fromString("JobMatchingMode");
     }
 
     /**
@@ -145,13 +146,21 @@ public class JobMatchingMode implements JsonSerializable<JobMatchingMode> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedJobMatchingMode.kind = JobMatchingModeKind.fromString(reader.getString());
-                } else {
+                if (!JobMatchingMode.fromJsonShared(reader, fieldName, deserializedJobMatchingMode)) {
                     reader.skipChildren();
                 }
             }
             return deserializedJobMatchingMode;
         });
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName, JobMatchingMode deserializedJobMatchingMode)
+        throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedJobMatchingMode.kind = JobMatchingModeKind.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

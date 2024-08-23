@@ -20,12 +20,6 @@ import java.util.Set;
 public final class FunctionRouterRule extends RouterRule {
 
     /*
-     * The type discriminator describing a sub-type of RouterRule
-     */
-    @Generated
-    private RouterRuleKind kind = RouterRuleKind.FUNCTION;
-
-    /*
      * URL for Azure Function.
      */
     @Generated
@@ -48,17 +42,7 @@ public final class FunctionRouterRule extends RouterRule {
      */
     @Generated
     public FunctionRouterRule() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of RouterRule.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RouterRuleKind getKind() {
-        return this.kind;
+        this.kind = RouterRuleKind.FUNCTION;
     }
 
     /**
@@ -165,8 +149,8 @@ public final class FunctionRouterRule extends RouterRule {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedFunctionRouterRule.kind = RouterRuleKind.fromString(reader.getString());
+                if (RouterRule.fromJsonShared(reader, fieldName, deserializedFunctionRouterRule)) {
+                    continue;
                 } else if ("functionUri".equals(fieldName)) {
                     deserializedFunctionRouterRule.functionUri = reader.getString();
                 } else if ("credential".equals(fieldName)) {

@@ -43,6 +43,7 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
     private RequiredFunctionToolCall(String id, RequiredFunctionToolCallDetails function) {
         super(id);
         this.function = function;
+        this.type = "function";
     }
 
     /**
@@ -52,9 +53,8 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", getId());
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("function", this.function);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -90,22 +90,5 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
             deserializedRequiredFunctionToolCall.type = type;
             return deserializedRequiredFunctionToolCall;
         });
-    }
-
-    /*
-     * The object type for the required tool call.
-     */
-    @Generated
-    private String type = "function";
-
-    /**
-     * Get the type property: The object type for the required tool call.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

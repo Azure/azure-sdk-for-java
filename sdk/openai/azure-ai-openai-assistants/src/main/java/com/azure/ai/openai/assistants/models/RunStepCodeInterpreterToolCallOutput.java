@@ -22,6 +22,7 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
      */
     @Generated
     protected RunStepCodeInterpreterToolCallOutput() {
+        this.type = "RunStepCodeInterpreterToolCallOutput";
     }
 
     /**
@@ -31,7 +32,7 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -89,7 +90,7 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
      * The object type.
      */
     @Generated
-    private String type = "RunStepCodeInterpreterToolCallOutput";
+    String type;
 
     /**
      * Get the type property: The object type.
@@ -99,5 +100,19 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
     @Generated
     public String getType() {
         return this.type;
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        RunStepCodeInterpreterToolCallOutput deserializedRunStepCodeInterpreterToolCallOutput) throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedRunStepCodeInterpreterToolCallOutput.type = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

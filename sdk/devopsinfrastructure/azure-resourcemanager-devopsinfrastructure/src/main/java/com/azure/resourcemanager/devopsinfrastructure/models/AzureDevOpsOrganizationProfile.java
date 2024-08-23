@@ -18,11 +18,6 @@ import java.util.List;
 @Fluent
 public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
     /*
-     * Discriminator property for OrganizationProfile.
-     */
-    private String kind = "AzureDevOps";
-
-    /*
      * The list of Azure DevOps organizations the pool should be present in.
      */
     private List<Organization> organizations;
@@ -36,16 +31,7 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
      * Creates an instance of AzureDevOpsOrganizationProfile class.
      */
     public AzureDevOpsOrganizationProfile() {
-    }
-
-    /**
-     * Get the kind property: Discriminator property for OrganizationProfile.
-     * 
-     * @return the kind value.
-     */
-    @Override
-    public String kind() {
-        return this.kind;
+        this.kind = "AzureDevOps";
     }
 
     /**
@@ -117,8 +103,8 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeArrayField("organizations", this.organizations, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeJsonField("permissionProfile", this.permissionProfile);
         return jsonWriter.writeEndObject();
     }
@@ -140,11 +126,11 @@ public final class AzureDevOpsOrganizationProfile extends OrganizationProfile {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("organizations".equals(fieldName)) {
+                if (OrganizationProfile.fromJsonShared(reader, fieldName, deserializedAzureDevOpsOrganizationProfile)) {
+                    continue;
+                } else if ("organizations".equals(fieldName)) {
                     List<Organization> organizations = reader.readArray(reader1 -> Organization.fromJson(reader1));
                     deserializedAzureDevOpsOrganizationProfile.organizations = organizations;
-                } else if ("kind".equals(fieldName)) {
-                    deserializedAzureDevOpsOrganizationProfile.kind = reader.getString();
                 } else if ("permissionProfile".equals(fieldName)) {
                     deserializedAzureDevOpsOrganizationProfile.permissionProfile
                         = AzureDevOpsPermissionProfile.fromJson(reader);

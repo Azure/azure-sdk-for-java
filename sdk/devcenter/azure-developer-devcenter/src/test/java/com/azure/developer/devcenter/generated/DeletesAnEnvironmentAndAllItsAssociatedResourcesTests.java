@@ -17,8 +17,8 @@ public final class DeletesAnEnvironmentAndAllItsAssociatedResourcesTests extends
     @Disabled
     public void testDeletesAnEnvironmentAndAllItsAssociatedResourcesTests() {
         // method invocation
-        SyncPoller<DevCenterOperationDetails, Void> response
-            = deploymentEnvironmentsClient.beginDeleteEnvironment("myProject", "me", "mydevenv");
+        SyncPoller<DevCenterOperationDetails, Void> response = setPlaybackSyncPollerPollInterval(
+            deploymentEnvironmentsClient.beginDeleteEnvironment("myProject", "me", "mydevenv"));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,

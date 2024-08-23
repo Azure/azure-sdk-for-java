@@ -30,6 +30,7 @@ public final class StopFinishDetails extends ChatFinishDetails {
     @Generated
     private StopFinishDetails(String stop) {
         this.stop = stop;
+        this.type = "stop";
     }
 
     /**
@@ -42,23 +43,6 @@ public final class StopFinishDetails extends ChatFinishDetails {
         return this.stop;
     }
 
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "stop";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -66,8 +50,8 @@ public final class StopFinishDetails extends ChatFinishDetails {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("stop", this.stop);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

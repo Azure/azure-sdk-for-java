@@ -20,12 +20,6 @@ import java.util.Set;
 public final class CancelExceptionAction extends ExceptionAction {
 
     /*
-     * The type discriminator describing a sub-type of ExceptionAction.
-     */
-    @Generated
-    private ExceptionActionKind kind = ExceptionActionKind.CANCEL;
-
-    /*
      * A note that will be appended to a job's notes collection with the current timestamp.
      */
     @Generated
@@ -48,17 +42,7 @@ public final class CancelExceptionAction extends ExceptionAction {
      */
     @Generated
     public CancelExceptionAction() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of ExceptionAction.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public ExceptionActionKind getKind() {
-        return this.kind;
+        this.kind = ExceptionActionKind.CANCEL;
     }
 
     /**
@@ -181,11 +165,8 @@ public final class CancelExceptionAction extends ExceptionAction {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    JsonMergePatchHelper.getExceptionActionAccessor()
-                        .setId(deserializedCancelExceptionAction, reader.getString());
-                } else if ("kind".equals(fieldName)) {
-                    deserializedCancelExceptionAction.kind = ExceptionActionKind.fromString(reader.getString());
+                if (ExceptionAction.fromJsonShared(reader, fieldName, deserializedCancelExceptionAction)) {
+                    continue;
                 } else if ("note".equals(fieldName)) {
                     deserializedCancelExceptionAction.note = reader.getString();
                 } else if ("dispositionCode".equals(fieldName)) {

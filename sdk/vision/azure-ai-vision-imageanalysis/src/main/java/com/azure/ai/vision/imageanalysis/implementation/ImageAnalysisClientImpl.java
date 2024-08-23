@@ -162,7 +162,7 @@ public final class ImageAnalysisClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> analyzeFromImageData(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @QueryParam("features") String visualFeatures, @HeaderParam("accept") String accept,
             @BodyParam("application/octet-stream") BinaryData imageData, RequestOptions requestOptions,
             Context context);
@@ -174,7 +174,7 @@ public final class ImageAnalysisClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> analyzeFromImageDataSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @QueryParam("features") String visualFeatures, @HeaderParam("accept") String accept,
             @BodyParam("application/octet-stream") BinaryData imageData, RequestOptions requestOptions,
             Context context);
@@ -186,7 +186,7 @@ public final class ImageAnalysisClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> analyzeFromUrl(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @QueryParam("features") String visualFeatures, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData imageUrl, RequestOptions requestOptions, Context context);
 
@@ -197,7 +197,7 @@ public final class ImageAnalysisClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> analyzeFromUrlSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @QueryParam("features") String visualFeatures, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData imageUrl, RequestOptions requestOptions, Context context);
     }

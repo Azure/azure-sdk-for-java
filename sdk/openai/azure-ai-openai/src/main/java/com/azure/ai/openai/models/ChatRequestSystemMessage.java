@@ -37,6 +37,7 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     @Generated
     public ChatRequestSystemMessage(String content) {
         this.content = content;
+        this.role = ChatRole.SYSTEM;
     }
 
     /**
@@ -71,23 +72,6 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
         return this;
     }
 
-    /*
-     * The chat role associated with this message.
-     */
-    @Generated
-    private ChatRole role = ChatRole.SYSTEM;
-
-    /**
-     * Get the role property: The chat role associated with this message.
-     *
-     * @return the role value.
-     */
-    @Generated
-    @Override
-    public ChatRole getRole() {
-        return this.role;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -95,8 +79,8 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("content", this.content);
-        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }

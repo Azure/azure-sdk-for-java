@@ -21,7 +21,7 @@ public class MessageTemplateValue implements JsonSerializable<MessageTemplateVal
      * The type discriminator describing a template parameter type.
      */
     @Generated
-    private MessageTemplateValueKind kind = MessageTemplateValueKind.fromString("MessageTemplateValue");
+    MessageTemplateValueKind kind;
 
     /*
      * Template binding reference name
@@ -37,6 +37,7 @@ public class MessageTemplateValue implements JsonSerializable<MessageTemplateVal
     @Generated
     public MessageTemplateValue(String refValue) {
         this.refValue = refValue;
+        this.kind = MessageTemplateValueKind.fromString("MessageTemplateValue");
     }
 
     /**
@@ -66,8 +67,7 @@ public class MessageTemplateValue implements JsonSerializable<MessageTemplateVal
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.refValue);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -137,5 +137,10 @@ public class MessageTemplateValue implements JsonSerializable<MessageTemplateVal
             deserializedMessageTemplateValue.kind = kind;
             return deserializedMessageTemplateValue;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("name", this.refValue);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
     }
 }

@@ -32,6 +32,7 @@ public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDat
     @Generated
     public OnYourDataDeploymentNameVectorizationSource(String deploymentName) {
         this.deploymentName = deploymentName;
+        this.type = OnYourDataVectorizationSourceType.DEPLOYMENT_NAME;
     }
 
     /**
@@ -45,23 +46,6 @@ public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDat
         return this.deploymentName;
     }
 
-    /*
-     * The type of vectorization source to use.
-     */
-    @Generated
-    private OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.DEPLOYMENT_NAME;
-
-    /**
-     * Get the type property: The type of vectorization source to use.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataVectorizationSourceType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -69,8 +53,8 @@ public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDat
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("deployment_name", this.deploymentName);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("dimensions", this.dimensions);
         return jsonWriter.writeEndObject();
     }

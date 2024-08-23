@@ -21,12 +21,6 @@ import java.util.Set;
 public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAttachment {
 
     /*
-     * The type discriminator describing a sub-type of WorkerSelectorAttachment.
-     */
-    @Generated
-    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.CONDITIONAL;
-
-    /*
      * The condition that must be true for the worker selectors to be attached.
      */
     @Generated
@@ -49,17 +43,7 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
      */
     @Generated
     public ConditionalWorkerSelectorAttachment() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public WorkerSelectorAttachmentKind getKind() {
-        return this.kind;
+        this.kind = WorkerSelectorAttachmentKind.CONDITIONAL;
     }
 
     /**
@@ -168,9 +152,9 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedConditionalWorkerSelectorAttachment.kind
-                        = WorkerSelectorAttachmentKind.fromString(reader.getString());
+                if (WorkerSelectorAttachment.fromJsonShared(reader, fieldName,
+                    deserializedConditionalWorkerSelectorAttachment)) {
+                    continue;
                 } else if ("condition".equals(fieldName)) {
                     deserializedConditionalWorkerSelectorAttachment.condition = RouterRule.fromJson(reader);
                 } else if ("workerSelectors".equals(fieldName)) {

@@ -17,12 +17,6 @@ import java.io.IOException;
 public final class MessageTemplateQuickAction extends MessageTemplateValue {
 
     /*
-     * The type discriminator describing a template parameter type.
-     */
-    @Generated
-    private MessageTemplateValueKind kind = MessageTemplateValueKind.QUICK_ACTION;
-
-    /*
      * The [Optional] quick action text
      */
     @Generated
@@ -42,17 +36,7 @@ public final class MessageTemplateQuickAction extends MessageTemplateValue {
     @Generated
     public MessageTemplateQuickAction(String refValue) {
         super(refValue);
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a template parameter type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public MessageTemplateValueKind getKind() {
-        return this.kind;
+        this.kind = MessageTemplateValueKind.QUICK_ACTION;
     }
 
     /**
@@ -106,8 +90,7 @@ public final class MessageTemplateQuickAction extends MessageTemplateValue {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getRefValue());
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("payload", this.payload);
         return jsonWriter.writeEndObject();

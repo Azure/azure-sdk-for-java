@@ -22,6 +22,7 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
      */
     @Generated
     protected RequiredAction() {
+        this.type = "RequiredAction";
     }
 
     /**
@@ -31,7 +32,7 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -86,7 +87,7 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
      * The object type.
      */
     @Generated
-    private String type = "RequiredAction";
+    String type;
 
     /**
      * Get the type property: The object type.
@@ -96,5 +97,19 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
     @Generated
     public String getType() {
         return this.type;
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName, RequiredAction deserializedRequiredAction)
+        throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedRequiredAction.type = reader.getString();
+            return true;
+        }
+        return false;
     }
 }
