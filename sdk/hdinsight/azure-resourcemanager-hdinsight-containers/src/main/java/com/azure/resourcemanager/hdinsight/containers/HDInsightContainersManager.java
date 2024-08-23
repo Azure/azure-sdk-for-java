@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -28,9 +28,12 @@ import com.azure.resourcemanager.hdinsight.containers.implementation.AvailableCl
 import com.azure.resourcemanager.hdinsight.containers.implementation.AvailableClusterVersionsImpl;
 import com.azure.resourcemanager.hdinsight.containers.implementation.ClusterAvailableUpgradesImpl;
 import com.azure.resourcemanager.hdinsight.containers.implementation.ClusterJobsImpl;
+import com.azure.resourcemanager.hdinsight.containers.implementation.ClusterLibrariesImpl;
 import com.azure.resourcemanager.hdinsight.containers.implementation.ClusterPoolAvailableUpgradesImpl;
 import com.azure.resourcemanager.hdinsight.containers.implementation.ClusterPoolsImpl;
+import com.azure.resourcemanager.hdinsight.containers.implementation.ClusterPoolUpgradeHistoriesImpl;
 import com.azure.resourcemanager.hdinsight.containers.implementation.ClustersImpl;
+import com.azure.resourcemanager.hdinsight.containers.implementation.ClusterUpgradeHistoriesImpl;
 import com.azure.resourcemanager.hdinsight.containers.implementation.HDInsightContainersManagementClientBuilder;
 import com.azure.resourcemanager.hdinsight.containers.implementation.LocationsImpl;
 import com.azure.resourcemanager.hdinsight.containers.implementation.OperationsImpl;
@@ -38,9 +41,12 @@ import com.azure.resourcemanager.hdinsight.containers.models.AvailableClusterPoo
 import com.azure.resourcemanager.hdinsight.containers.models.AvailableClusterVersions;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterAvailableUpgrades;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterJobs;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterLibraries;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolAvailableUpgrades;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPools;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolUpgradeHistories;
 import com.azure.resourcemanager.hdinsight.containers.models.Clusters;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterUpgradeHistories;
 import com.azure.resourcemanager.hdinsight.containers.models.Locations;
 import com.azure.resourcemanager.hdinsight.containers.models.Operations;
 import java.time.Duration;
@@ -59,9 +65,13 @@ public final class HDInsightContainersManager {
 
     private ClusterPoolAvailableUpgrades clusterPoolAvailableUpgrades;
 
+    private ClusterPoolUpgradeHistories clusterPoolUpgradeHistories;
+
     private Clusters clusters;
 
     private ClusterAvailableUpgrades clusterAvailableUpgrades;
+
+    private ClusterUpgradeHistories clusterUpgradeHistories;
 
     private ClusterJobs clusterJobs;
 
@@ -73,14 +83,18 @@ public final class HDInsightContainersManager {
 
     private AvailableClusterVersions availableClusterVersions;
 
+    private ClusterLibraries clusterLibraries;
+
     private final HDInsightContainersManagementClient clientObject;
 
     private HDInsightContainersManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new HDInsightContainersManagementClientBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -231,12 +245,19 @@ public final class HDInsightContainersManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.hdinsight.containers")
-                .append("/").append("1.0.0-beta.2");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.hdinsight.containers")
+                .append("/")
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -255,18 +276,21 @@ public final class HDInsightContainersManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new HDInsightContainersManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -297,6 +321,19 @@ public final class HDInsightContainersManager {
     }
 
     /**
+     * Gets the resource collection API of ClusterPoolUpgradeHistories.
+     * 
+     * @return Resource collection API of ClusterPoolUpgradeHistories.
+     */
+    public ClusterPoolUpgradeHistories clusterPoolUpgradeHistories() {
+        if (this.clusterPoolUpgradeHistories == null) {
+            this.clusterPoolUpgradeHistories
+                = new ClusterPoolUpgradeHistoriesImpl(clientObject.getClusterPoolUpgradeHistories(), this);
+        }
+        return clusterPoolUpgradeHistories;
+    }
+
+    /**
      * Gets the resource collection API of Clusters. It manages Cluster.
      * 
      * @return Resource collection API of Clusters.
@@ -319,6 +356,19 @@ public final class HDInsightContainersManager {
                 = new ClusterAvailableUpgradesImpl(clientObject.getClusterAvailableUpgrades(), this);
         }
         return clusterAvailableUpgrades;
+    }
+
+    /**
+     * Gets the resource collection API of ClusterUpgradeHistories.
+     * 
+     * @return Resource collection API of ClusterUpgradeHistories.
+     */
+    public ClusterUpgradeHistories clusterUpgradeHistories() {
+        if (this.clusterUpgradeHistories == null) {
+            this.clusterUpgradeHistories
+                = new ClusterUpgradeHistoriesImpl(clientObject.getClusterUpgradeHistories(), this);
+        }
+        return clusterUpgradeHistories;
     }
 
     /**
@@ -381,6 +431,18 @@ public final class HDInsightContainersManager {
                 = new AvailableClusterVersionsImpl(clientObject.getAvailableClusterVersions(), this);
         }
         return availableClusterVersions;
+    }
+
+    /**
+     * Gets the resource collection API of ClusterLibraries.
+     * 
+     * @return Resource collection API of ClusterLibraries.
+     */
+    public ClusterLibraries clusterLibraries() {
+        if (this.clusterLibraries == null) {
+            this.clusterLibraries = new ClusterLibrariesImpl(clientObject.getClusterLibraries(), this);
+        }
+        return clusterLibraries;
     }
 
     /**

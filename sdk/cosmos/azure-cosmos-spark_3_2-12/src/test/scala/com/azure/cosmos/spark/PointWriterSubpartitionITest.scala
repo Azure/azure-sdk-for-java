@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
+import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKeyBuilder, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
 import com.azure.cosmos.spark.utils.{CosmosPatchTestHelper, TestOutputMetricsPublisher}
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -761,7 +761,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
           bulkMaxPendingOperations = Some(900)
         )
 
-        val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None),new TestOutputMetricsPublisher)
+        val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None),new TestOutputMetricsPublisher, 1)
 
         // First create one item, as patch can only operate on existing items
         val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)
@@ -1293,7 +1293,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
                   bulkMaxPendingOperations = Some(900)
               )
 
-              val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None),new TestOutputMetricsPublisher)
+              val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None),new TestOutputMetricsPublisher, 1)
 
               // First create one item
               val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString)

@@ -38,6 +38,7 @@ import com.azure.storage.file.datalake.implementation.models.PathList;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
+import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
@@ -779,7 +780,8 @@ public class DataLakeFileSystemAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.azureDataLakeStorage.getFileSystems().listPathsWithResponseAsync(options.isRecursive(), null, null,
                 marker, options.getPath(), options.getMaxResults(),
-                options.isUserPrincipalNameReturned(),  Context.NONE), timeout);
+                options.isUserPrincipalNameReturned(),  Context.NONE), timeout)
+            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -870,7 +872,8 @@ public class DataLakeFileSystemAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponseAsync(
                 prefix, null, marker, maxResults,
-                null, ListBlobsShowOnly.DELETED, null, null, context), timeout);
+                null, ListBlobsShowOnly.DELETED, null, null, context), timeout)
+            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1670,6 +1673,7 @@ public class DataLakeFileSystemAsyncClient {
         // Initial rest call
         return blobDataLakeStoragePath.getPaths().undeleteWithResponseAsync(null,
             String.format("?%s=%s", Constants.UrlConstants.DELETIONID_QUERY_PARAMETER, deletionId), null, context)
+                .onErrorMap(ModelHelper::mapToDataLakeStorageException)
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 // Construct the new client and final response from the undelete + getProperties responses
                 .map(response -> {

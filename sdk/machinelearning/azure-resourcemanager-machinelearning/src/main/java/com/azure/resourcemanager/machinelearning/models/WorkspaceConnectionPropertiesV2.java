@@ -5,58 +5,95 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 
-/** The WorkspaceConnectionPropertiesV2 model. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "authType",
-    defaultImpl = WorkspaceConnectionPropertiesV2.class)
-@JsonTypeName("WorkspaceConnectionPropertiesV2")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "PAT", value = PatAuthTypeWorkspaceConnectionProperties.class),
-    @JsonSubTypes.Type(name = "SAS", value = SasAuthTypeWorkspaceConnectionProperties.class),
-    @JsonSubTypes.Type(name = "UsernamePassword", value = UsernamePasswordAuthTypeWorkspaceConnectionProperties.class),
-    @JsonSubTypes.Type(name = "None", value = NoneAuthTypeWorkspaceConnectionProperties.class),
-    @JsonSubTypes.Type(name = "ManagedIdentity", value = ManagedIdentityAuthTypeWorkspaceConnectionProperties.class)
-})
+/**
+ * The WorkspaceConnectionPropertiesV2 model.
+ */
 @Fluent
-public class WorkspaceConnectionPropertiesV2 {
+public class WorkspaceConnectionPropertiesV2 implements JsonSerializable<WorkspaceConnectionPropertiesV2> {
+    /*
+     * Authentication type of the connection target
+     */
+    private ConnectionAuthType authType = ConnectionAuthType.fromString("WorkspaceConnectionPropertiesV2");
+
     /*
      * Category of the connection
      */
-    @JsonProperty(value = "category")
     private ConnectionCategory category;
+
+    /*
+     * The createdByWorkspaceArmId property.
+     */
+    private String createdByWorkspaceArmId;
+
+    /*
+     * The expiryTime property.
+     */
+    private OffsetDateTime expiryTime;
+
+    /*
+     * Group based on connection category
+     */
+    private ConnectionGroup group;
+
+    /*
+     * The isSharedToAll property.
+     */
+    private Boolean isSharedToAll;
 
     /*
      * The target property.
      */
-    @JsonProperty(value = "target")
     private String target;
+
+    /*
+     * Store user metadata for this connection
+     */
+    private Map<String, String> metadata;
+
+    /*
+     * The sharedUserList property.
+     */
+    private List<String> sharedUserList;
 
     /*
      * Value details of the workspace connection.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * format for the workspace connection value
      */
-    @JsonProperty(value = "valueFormat")
     private ValueFormat valueFormat;
 
-    /** Creates an instance of WorkspaceConnectionPropertiesV2 class. */
+    /**
+     * Creates an instance of WorkspaceConnectionPropertiesV2 class.
+     */
     public WorkspaceConnectionPropertiesV2() {
     }
 
     /**
+     * Get the authType property: Authentication type of the connection target.
+     * 
+     * @return the authType value.
+     */
+    public ConnectionAuthType authType() {
+        return this.authType;
+    }
+
+    /**
      * Get the category property: Category of the connection.
-     *
+     * 
      * @return the category value.
      */
     public ConnectionCategory category() {
@@ -65,7 +102,7 @@ public class WorkspaceConnectionPropertiesV2 {
 
     /**
      * Set the category property: Category of the connection.
-     *
+     * 
      * @param category the category value to set.
      * @return the WorkspaceConnectionPropertiesV2 object itself.
      */
@@ -75,8 +112,88 @@ public class WorkspaceConnectionPropertiesV2 {
     }
 
     /**
+     * Get the createdByWorkspaceArmId property: The createdByWorkspaceArmId property.
+     * 
+     * @return the createdByWorkspaceArmId value.
+     */
+    public String createdByWorkspaceArmId() {
+        return this.createdByWorkspaceArmId;
+    }
+
+    /**
+     * Set the createdByWorkspaceArmId property: The createdByWorkspaceArmId property.
+     * 
+     * @param createdByWorkspaceArmId the createdByWorkspaceArmId value to set.
+     * @return the WorkspaceConnectionPropertiesV2 object itself.
+     */
+    WorkspaceConnectionPropertiesV2 withCreatedByWorkspaceArmId(String createdByWorkspaceArmId) {
+        this.createdByWorkspaceArmId = createdByWorkspaceArmId;
+        return this;
+    }
+
+    /**
+     * Get the expiryTime property: The expiryTime property.
+     * 
+     * @return the expiryTime value.
+     */
+    public OffsetDateTime expiryTime() {
+        return this.expiryTime;
+    }
+
+    /**
+     * Set the expiryTime property: The expiryTime property.
+     * 
+     * @param expiryTime the expiryTime value to set.
+     * @return the WorkspaceConnectionPropertiesV2 object itself.
+     */
+    public WorkspaceConnectionPropertiesV2 withExpiryTime(OffsetDateTime expiryTime) {
+        this.expiryTime = expiryTime;
+        return this;
+    }
+
+    /**
+     * Get the group property: Group based on connection category.
+     * 
+     * @return the group value.
+     */
+    public ConnectionGroup group() {
+        return this.group;
+    }
+
+    /**
+     * Set the group property: Group based on connection category.
+     * 
+     * @param group the group value to set.
+     * @return the WorkspaceConnectionPropertiesV2 object itself.
+     */
+    WorkspaceConnectionPropertiesV2 withGroup(ConnectionGroup group) {
+        this.group = group;
+        return this;
+    }
+
+    /**
+     * Get the isSharedToAll property: The isSharedToAll property.
+     * 
+     * @return the isSharedToAll value.
+     */
+    public Boolean isSharedToAll() {
+        return this.isSharedToAll;
+    }
+
+    /**
+     * Set the isSharedToAll property: The isSharedToAll property.
+     * 
+     * @param isSharedToAll the isSharedToAll value to set.
+     * @return the WorkspaceConnectionPropertiesV2 object itself.
+     */
+    public WorkspaceConnectionPropertiesV2 withIsSharedToAll(Boolean isSharedToAll) {
+        this.isSharedToAll = isSharedToAll;
+        return this;
+    }
+
+    /**
      * Get the target property: The target property.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -85,7 +202,7 @@ public class WorkspaceConnectionPropertiesV2 {
 
     /**
      * Set the target property: The target property.
-     *
+     * 
      * @param target the target value to set.
      * @return the WorkspaceConnectionPropertiesV2 object itself.
      */
@@ -95,8 +212,48 @@ public class WorkspaceConnectionPropertiesV2 {
     }
 
     /**
+     * Get the metadata property: Store user metadata for this connection.
+     * 
+     * @return the metadata value.
+     */
+    public Map<String, String> metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Store user metadata for this connection.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the WorkspaceConnectionPropertiesV2 object itself.
+     */
+    public WorkspaceConnectionPropertiesV2 withMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the sharedUserList property: The sharedUserList property.
+     * 
+     * @return the sharedUserList value.
+     */
+    public List<String> sharedUserList() {
+        return this.sharedUserList;
+    }
+
+    /**
+     * Set the sharedUserList property: The sharedUserList property.
+     * 
+     * @param sharedUserList the sharedUserList value to set.
+     * @return the WorkspaceConnectionPropertiesV2 object itself.
+     */
+    public WorkspaceConnectionPropertiesV2 withSharedUserList(List<String> sharedUserList) {
+        this.sharedUserList = sharedUserList;
+        return this;
+    }
+
+    /**
      * Get the value property: Value details of the workspace connection.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -105,7 +262,7 @@ public class WorkspaceConnectionPropertiesV2 {
 
     /**
      * Set the value property: Value details of the workspace connection.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkspaceConnectionPropertiesV2 object itself.
      */
@@ -116,7 +273,7 @@ public class WorkspaceConnectionPropertiesV2 {
 
     /**
      * Get the valueFormat property: format for the workspace connection value.
-     *
+     * 
      * @return the valueFormat value.
      */
     public ValueFormat valueFormat() {
@@ -125,7 +282,7 @@ public class WorkspaceConnectionPropertiesV2 {
 
     /**
      * Set the valueFormat property: format for the workspace connection value.
-     *
+     * 
      * @param valueFormat the valueFormat value to set.
      * @return the WorkspaceConnectionPropertiesV2 object itself.
      */
@@ -136,9 +293,130 @@ public class WorkspaceConnectionPropertiesV2 {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeStringField("expiryTime",
+            this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
+        jsonWriter.writeBooleanField("isSharedToAll", this.isSharedToAll);
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sharedUserList", this.sharedUserList,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("valueFormat", this.valueFormat == null ? null : this.valueFormat.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceConnectionPropertiesV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceConnectionPropertiesV2 if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceConnectionPropertiesV2.
+     */
+    public static WorkspaceConnectionPropertiesV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("authType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("PAT".equals(discriminatorValue)) {
+                    return PatAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else if ("SAS".equals(discriminatorValue)) {
+                    return SasAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else if ("UsernamePassword".equals(discriminatorValue)) {
+                    return UsernamePasswordAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else if ("None".equals(discriminatorValue)) {
+                    return NoneAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else if ("ManagedIdentity".equals(discriminatorValue)) {
+                    return ManagedIdentityAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else if ("AAD".equals(discriminatorValue)) {
+                    return AadAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else if ("AccessKey".equals(discriminatorValue)) {
+                    return AccessKeyAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else if ("AccountKey".equals(discriminatorValue)) {
+                    return AccountKeyAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else if ("ApiKey".equals(discriminatorValue)) {
+                    return ApiKeyAuthWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else if ("CustomKeys".equals(discriminatorValue)) {
+                    return CustomKeysWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else if ("OAuth2".equals(discriminatorValue)) {
+                    return OAuth2AuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else if ("ServicePrincipal".equals(discriminatorValue)) {
+                    return ServicePrincipalAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static WorkspaceConnectionPropertiesV2 fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceConnectionPropertiesV2 deserializedWorkspaceConnectionPropertiesV2
+                = new WorkspaceConnectionPropertiesV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authType".equals(fieldName)) {
+                    deserializedWorkspaceConnectionPropertiesV2.authType
+                        = ConnectionAuthType.fromString(reader.getString());
+                } else if ("category".equals(fieldName)) {
+                    deserializedWorkspaceConnectionPropertiesV2.category
+                        = ConnectionCategory.fromString(reader.getString());
+                } else if ("createdByWorkspaceArmId".equals(fieldName)) {
+                    deserializedWorkspaceConnectionPropertiesV2.createdByWorkspaceArmId = reader.getString();
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedWorkspaceConnectionPropertiesV2.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("group".equals(fieldName)) {
+                    deserializedWorkspaceConnectionPropertiesV2.group = ConnectionGroup.fromString(reader.getString());
+                } else if ("isSharedToAll".equals(fieldName)) {
+                    deserializedWorkspaceConnectionPropertiesV2.isSharedToAll
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("target".equals(fieldName)) {
+                    deserializedWorkspaceConnectionPropertiesV2.target = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkspaceConnectionPropertiesV2.metadata = metadata;
+                } else if ("sharedUserList".equals(fieldName)) {
+                    List<String> sharedUserList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWorkspaceConnectionPropertiesV2.sharedUserList = sharedUserList;
+                } else if ("value".equals(fieldName)) {
+                    deserializedWorkspaceConnectionPropertiesV2.value = reader.getString();
+                } else if ("valueFormat".equals(fieldName)) {
+                    deserializedWorkspaceConnectionPropertiesV2.valueFormat
+                        = ValueFormat.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceConnectionPropertiesV2;
+        });
     }
 }

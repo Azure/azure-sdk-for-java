@@ -427,7 +427,8 @@ public final class BlobContainerAsyncClient {
         Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getContainers().createNoCustomHeadersWithResponseAsync(containerName, null,
-            metadata, accessType, null, blobContainerEncryptionScope, context);
+            metadata, accessType, null, blobContainerEncryptionScope, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -575,7 +576,8 @@ public final class BlobContainerAsyncClient {
 
         return this.azureBlobStorage.getContainers().deleteNoCustomHeadersWithResponseAsync(containerName, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, context);
+            requestConditions.getIfUnmodifiedSince(), null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -716,6 +718,7 @@ public final class BlobContainerAsyncClient {
 
         return this.azureBlobStorage.getContainers()
             .getPropertiesWithResponseAsync(containerName, null, leaseId, null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 ContainersGetPropertiesHeaders hd = rb.getDeserializedHeaders();
                 BlobContainerProperties properties = new BlobContainerProperties(hd.getXMsMeta(), hd.getETag(),
@@ -799,7 +802,8 @@ public final class BlobContainerAsyncClient {
         }
 
         return this.azureBlobStorage.getContainers().setMetadataNoCustomHeadersWithResponseAsync(containerName, null,
-            requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null, context);
+            requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -867,6 +871,7 @@ public final class BlobContainerAsyncClient {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getContainers().getAccessPolicyWithResponseAsync(
             containerName, null, leaseId, null, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(response -> new SimpleResponse<>(response,
                 new BlobContainerAccessPolicies(response.getDeserializedHeaders().getXMsBlobPublicAccess(),
                 response.getValue().items())));
@@ -990,7 +995,8 @@ public final class BlobContainerAsyncClient {
 
         return this.azureBlobStorage.getContainers().setAccessPolicyNoCustomHeadersWithResponseAsync(containerName,
             null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, identifiers, context);
+            requestConditions.getIfUnmodifiedSince(), null, identifiers, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1197,7 +1203,8 @@ public final class BlobContainerAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getContainers().listBlobFlatSegmentWithResponseAsync(containerName,
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, null, Context.NONE),
-            timeout);
+            timeout)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1371,7 +1378,8 @@ public final class BlobContainerAsyncClient {
             this.azureBlobStorage.getContainers().listBlobHierarchySegmentWithResponseAsync(containerName, delimiter,
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, null,
                 Context.NONE),
-            timeout);
+            timeout)
+            .onErrorMap(ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1454,6 +1462,7 @@ public final class BlobContainerAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getContainers().filterBlobsWithResponseAsync(containerName, null, null,
                 options.getQuery(), marker, options.getMaxResultsPerPage(), null, context), timeout)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(response -> {
                 List<TaggedBlobItem> value = response.getValue().getBlobs().stream()
                     .map(ModelHelper::populateTaggedBlobItem)
@@ -1520,6 +1529,7 @@ public final class BlobContainerAsyncClient {
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, context)
+            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 ContainersGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));
@@ -1562,6 +1572,7 @@ public final class BlobContainerAsyncClient {
 //        return this.azureBlobStorage.getContainers().renameWithResponseAsync(containerName,
 //            sourceContainerName, null, null, requestConditions.getLeaseId(),
 //            context)
+//            .onErrorMap(ModelHelper::mapToBlobStorageException)
 //            .map(response -> new SimpleResponse<>(response, this));
 //    }
 

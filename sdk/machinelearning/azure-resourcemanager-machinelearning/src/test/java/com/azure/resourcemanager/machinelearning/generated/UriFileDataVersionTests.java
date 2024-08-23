@@ -13,38 +13,35 @@ import org.junit.jupiter.api.Assertions;
 public final class UriFileDataVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UriFileDataVersion model =
-            BinaryData
-                .fromString(
-                    "{\"dataType\":\"uri_file\",\"dataUri\":\"zbtz\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"pfs\",\"properties\":{\"ezacfpztga\":\"pfnocm\",\"ctgkppgkqzkcyzmf\":\"wyqejgaao\"},\"tags\":{\"hlcqvhoe\":\"dyfcix\",\"mkahpqha\":\"goiutgw\",\"mip\":\"yntacihnco\",\"i\":\"mliqmvlb\"}}")
-                .toObject(UriFileDataVersion.class);
-        Assertions.assertEquals("pfs", model.description());
-        Assertions.assertEquals("pfnocm", model.properties().get("ezacfpztga"));
-        Assertions.assertEquals("dyfcix", model.tags().get("hlcqvhoe"));
-        Assertions.assertEquals(true, model.isAnonymous());
-        Assertions.assertEquals(true, model.isArchived());
-        Assertions.assertEquals("zbtz", model.dataUri());
+        UriFileDataVersion model = BinaryData.fromString(
+            "{\"dataType\":\"uri_file\",\"dataUri\":\"vhkhpsp\",\"isArchived\":false,\"isAnonymous\":false,\"description\":\"yfaoexnguwnrdpu\",\"tags\":{\"ybsz\":\"ihsujtg\"},\"properties\":{\"yelrnh\":\"jxejpdcliqwzut\"}}")
+            .toObject(UriFileDataVersion.class);
+        Assertions.assertEquals("yfaoexnguwnrdpu", model.description());
+        Assertions.assertEquals("ihsujtg", model.tags().get("ybsz"));
+        Assertions.assertEquals("jxejpdcliqwzut", model.properties().get("yelrnh"));
+        Assertions.assertEquals(false, model.isArchived());
+        Assertions.assertEquals(false, model.isAnonymous());
+        Assertions.assertEquals("vhkhpsp", model.dataUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UriFileDataVersion model =
-            new UriFileDataVersion()
-                .withDescription("pfs")
-                .withProperties(mapOf("ezacfpztga", "pfnocm", "ctgkppgkqzkcyzmf", "wyqejgaao"))
-                .withTags(mapOf("hlcqvhoe", "dyfcix", "mkahpqha", "goiutgw", "mip", "yntacihnco", "i", "mliqmvlb"))
-                .withIsAnonymous(true)
-                .withIsArchived(true)
-                .withDataUri("zbtz");
+        UriFileDataVersion model = new UriFileDataVersion().withDescription("yfaoexnguwnrdpu")
+            .withTags(mapOf("ybsz", "ihsujtg"))
+            .withProperties(mapOf("yelrnh", "jxejpdcliqwzut"))
+            .withIsArchived(false)
+            .withIsAnonymous(false)
+            .withDataUri("vhkhpsp");
         model = BinaryData.fromObject(model).toObject(UriFileDataVersion.class);
-        Assertions.assertEquals("pfs", model.description());
-        Assertions.assertEquals("pfnocm", model.properties().get("ezacfpztga"));
-        Assertions.assertEquals("dyfcix", model.tags().get("hlcqvhoe"));
-        Assertions.assertEquals(true, model.isAnonymous());
-        Assertions.assertEquals(true, model.isArchived());
-        Assertions.assertEquals("zbtz", model.dataUri());
+        Assertions.assertEquals("yfaoexnguwnrdpu", model.description());
+        Assertions.assertEquals("ihsujtg", model.tags().get("ybsz"));
+        Assertions.assertEquals("jxejpdcliqwzut", model.properties().get("yelrnh"));
+        Assertions.assertEquals(false, model.isArchived());
+        Assertions.assertEquals(false, model.isAnonymous());
+        Assertions.assertEquals("vhkhpsp", model.dataUri());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** PyTorch distribution configuration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "distributionType")
-@JsonTypeName("PyTorch")
+/**
+ * PyTorch distribution configuration.
+ */
 @Fluent
 public final class PyTorch extends DistributionConfiguration {
     /*
+     * [Required] Specifies the type of distribution framework.
+     */
+    private DistributionType distributionType = DistributionType.PY_TORCH;
+
+    /*
      * Number of processes per node.
      */
-    @JsonProperty(value = "processCountPerInstance")
     private Integer processCountPerInstance;
 
-    /** Creates an instance of PyTorch class. */
+    /**
+     * Creates an instance of PyTorch class.
+     */
     public PyTorch() {
     }
 
     /**
+     * Get the distributionType property: [Required] Specifies the type of distribution framework.
+     * 
+     * @return the distributionType value.
+     */
+    @Override
+    public DistributionType distributionType() {
+        return this.distributionType;
+    }
+
+    /**
      * Get the processCountPerInstance property: Number of processes per node.
-     *
+     * 
      * @return the processCountPerInstance value.
      */
     public Integer processCountPerInstance() {
@@ -35,7 +52,7 @@ public final class PyTorch extends DistributionConfiguration {
 
     /**
      * Set the processCountPerInstance property: Number of processes per node.
-     *
+     * 
      * @param processCountPerInstance the processCountPerInstance value to set.
      * @return the PyTorch object itself.
      */
@@ -46,11 +63,51 @@ public final class PyTorch extends DistributionConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("distributionType",
+            this.distributionType == null ? null : this.distributionType.toString());
+        jsonWriter.writeNumberField("processCountPerInstance", this.processCountPerInstance);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PyTorch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PyTorch if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the PyTorch.
+     */
+    public static PyTorch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PyTorch deserializedPyTorch = new PyTorch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("distributionType".equals(fieldName)) {
+                    deserializedPyTorch.distributionType = DistributionType.fromString(reader.getString());
+                } else if ("processCountPerInstance".equals(fieldName)) {
+                    deserializedPyTorch.processCountPerInstance = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPyTorch;
+        });
     }
 }

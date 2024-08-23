@@ -6,70 +6,44 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ConnectionCategory;
 import com.azure.resourcemanager.machinelearning.models.ValueFormat;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionPropertiesV2BasicResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkspaceConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"Oracle\",\"createdByWorkspaceArmId\":\"hxh\",\"expiryTime\":\"2021-06-05T00:33:45Z\",\"group\":\"GenericProtocol\",\"isSharedToAll\":false,\"target\":\"zzfmugykwuyc\",\"metadata\":{\"zffpherwj\":\"enndzgthdzit\",\"xvfybxmmr\":\"vswtwonadezm\"},\"sharedUserList\":[\"vqkrr\",\"guogkcbrotp\",\"abensjflwpftvv\",\"tmvifgcv\"],\"value\":\"mal\",\"valueFormat\":\"JSON\"},\"id\":\"cx\",\"name\":\"osnx\",\"type\":\"jptcd\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"Git\",\"target\":\"wh\",\"value\":\"xsure\",\"valueFormat\":\"JSON\"},\"id\":\"hzzbgullcxiqq\",\"name\":\"jkoxdupna\",\"type\":\"gl\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<WorkspaceConnectionPropertiesV2BasicResource> response = manager.workspaceConnections()
+            .list("pzhbw", "xybtdzycxhao", "gjzgpljbnwczsr", "zcby", com.azure.core.util.Context.NONE);
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<WorkspaceConnectionPropertiesV2BasicResource> response =
-            manager
-                .workspaceConnections()
-                .list("idb", "pglhzqp", "zbawkikcdgfh", "ssdpjeyoqxded", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(ConnectionCategory.GIT, response.iterator().next().properties().category());
-        Assertions.assertEquals("wh", response.iterator().next().properties().target());
-        Assertions.assertEquals("xsure", response.iterator().next().properties().value());
+        Assertions.assertEquals(ConnectionCategory.ORACLE, response.iterator().next().properties().category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-05T00:33:45Z"),
+            response.iterator().next().properties().expiryTime());
+        Assertions.assertEquals(false, response.iterator().next().properties().isSharedToAll());
+        Assertions.assertEquals("zzfmugykwuyc", response.iterator().next().properties().target());
+        Assertions.assertEquals("enndzgthdzit", response.iterator().next().properties().metadata().get("zffpherwj"));
+        Assertions.assertEquals("vqkrr", response.iterator().next().properties().sharedUserList().get(0));
+        Assertions.assertEquals("mal", response.iterator().next().properties().value());
         Assertions.assertEquals(ValueFormat.JSON, response.iterator().next().properties().valueFormat());
     }
 }

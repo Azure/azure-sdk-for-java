@@ -5,33 +5,108 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base definition for identity configuration. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "identityType",
-    defaultImpl = IdentityConfiguration.class)
-@JsonTypeName("IdentityConfiguration")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AMLToken", value = AmlToken.class),
-    @JsonSubTypes.Type(name = "Managed", value = ManagedIdentity.class),
-    @JsonSubTypes.Type(name = "UserIdentity", value = UserIdentity.class)
-})
+/**
+ * Base definition for identity configuration.
+ */
 @Immutable
-public class IdentityConfiguration {
-    /** Creates an instance of IdentityConfiguration class. */
+public class IdentityConfiguration implements JsonSerializable<IdentityConfiguration> {
+    /*
+     * [Required] Specifies the type of identity framework.
+     */
+    private IdentityConfigurationType identityType = IdentityConfigurationType.fromString("IdentityConfiguration");
+
+    /**
+     * Creates an instance of IdentityConfiguration class.
+     */
     public IdentityConfiguration() {
     }
 
     /**
+     * Get the identityType property: [Required] Specifies the type of identity framework.
+     * 
+     * @return the identityType value.
+     */
+    public IdentityConfigurationType identityType() {
+        return this.identityType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("identityType", this.identityType == null ? null : this.identityType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentityConfiguration.
+     */
+    public static IdentityConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("identityType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AMLToken".equals(discriminatorValue)) {
+                    return AmlToken.fromJson(readerToUse.reset());
+                } else if ("Managed".equals(discriminatorValue)) {
+                    return ManagedIdentity.fromJson(readerToUse.reset());
+                } else if ("UserIdentity".equals(discriminatorValue)) {
+                    return UserIdentity.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static IdentityConfiguration fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityConfiguration deserializedIdentityConfiguration = new IdentityConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identityType".equals(fieldName)) {
+                    deserializedIdentityConfiguration.identityType
+                        = IdentityConfigurationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityConfiguration;
+        });
     }
 }

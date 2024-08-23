@@ -5,55 +5,77 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** uri-folder data version entity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataType")
-@JsonTypeName("uri_folder")
+/**
+ * uri-folder data version entity.
+ */
 @Fluent
 public final class UriFolderDataVersion extends DataVersionBaseProperties {
-    /** Creates an instance of UriFolderDataVersion class. */
+    /*
+     * [Required] Specifies the type of data.
+     */
+    private DataType dataType = DataType.URI_FOLDER;
+
+    /**
+     * Creates an instance of UriFolderDataVersion class.
+     */
     public UriFolderDataVersion() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the dataType property: [Required] Specifies the type of data.
+     * 
+     * @return the dataType value.
+     */
+    @Override
+    public DataType dataType() {
+        return this.dataType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UriFolderDataVersion withDataUri(String dataUri) {
         super.withDataUri(dataUri);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public UriFolderDataVersion withIsAnonymous(Boolean isAnonymous) {
-        super.withIsAnonymous(isAnonymous);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UriFolderDataVersion withIsArchived(Boolean isArchived) {
         super.withIsArchived(isArchived);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UriFolderDataVersion withIsAnonymous(Boolean isAnonymous) {
+        super.withIsAnonymous(isAnonymous);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UriFolderDataVersion withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public UriFolderDataVersion withProperties(Map<String, String> properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UriFolderDataVersion withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -61,12 +83,78 @@ public final class UriFolderDataVersion extends DataVersionBaseProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UriFolderDataVersion withProperties(Map<String, String> properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataUri", dataUri());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", properties(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchived", isArchived());
+        jsonWriter.writeBooleanField("isAnonymous", isAnonymous());
+        jsonWriter.writeStringField("dataType", this.dataType == null ? null : this.dataType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UriFolderDataVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UriFolderDataVersion if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UriFolderDataVersion.
+     */
+    public static UriFolderDataVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UriFolderDataVersion deserializedUriFolderDataVersion = new UriFolderDataVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataUri".equals(fieldName)) {
+                    deserializedUriFolderDataVersion.withDataUri(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedUriFolderDataVersion.withDescription(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedUriFolderDataVersion.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedUriFolderDataVersion.withProperties(properties);
+                } else if ("isArchived".equals(fieldName)) {
+                    deserializedUriFolderDataVersion.withIsArchived(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isAnonymous".equals(fieldName)) {
+                    deserializedUriFolderDataVersion.withIsAnonymous(reader.getNullable(JsonReader::getBoolean));
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedUriFolderDataVersion.dataType = DataType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUriFolderDataVersion;
+        });
     }
 }
