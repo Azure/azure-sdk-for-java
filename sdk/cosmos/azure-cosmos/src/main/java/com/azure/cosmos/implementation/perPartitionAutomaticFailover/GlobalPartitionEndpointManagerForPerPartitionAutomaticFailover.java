@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.implementation.perPartitionAutomaticFailover;
 
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -32,6 +35,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     }
 
     public boolean tryAddPartitionLevelLocationOverride(RxDocumentServiceRequest request) {
+
+        if (!Configs.isPerPartitionAutomaticFailoverEnabled()) {
+            return false;
+        }
+
+        ConnectionPolicy connectionPolicy = this.globalEndpointManager.getConnectionPolicy();
+
+        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+            return false;
+        }
+
         checkNotNull(request, "Argument 'request' cannot be null!");
         checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
@@ -58,6 +72,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     }
 
     public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request) {
+
+        if (!Configs.isPerPartitionAutomaticFailoverEnabled()) {
+            return false;
+        }
+
+        ConnectionPolicy connectionPolicy = this.globalEndpointManager.getConnectionPolicy();
+
+        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+            return false;
+        }
+
         checkNotNull(request, "Argument 'request' cannot be null!");
         checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 

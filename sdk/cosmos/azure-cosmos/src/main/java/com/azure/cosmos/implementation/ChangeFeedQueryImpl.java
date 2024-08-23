@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.spark.OperationContext;
@@ -197,12 +197,12 @@ class ChangeFeedQueryImpl<T> {
 
     private Mono<RxDocumentServiceRequest> handlePartitionLevelCircuitBreakingPrerequisites(RxDocumentServiceRequest request) {
 
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
             = client.getGlobalPartitionEndpointManagerForCircuitBreaker();
 
-        checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "Argument 'globalPartitionEndpointManagerForCircuitBreaker' must not be null!");
+        checkNotNull(globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "Argument 'globalPartitionEndpointManagerForPerPartitionCircuitBreaker' must not be null!");
 
-        if (globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+        if (globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
             return Mono.just(request)
                 .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
                 .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)

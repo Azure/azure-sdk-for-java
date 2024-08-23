@@ -12,9 +12,9 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
-import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
-import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealthStatus;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.Pair;
@@ -40,9 +40,9 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
+public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForCircuitBreakerTests.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests.class);
     private final static Pair<URI, String> LocationEastUsEndpointToLocationPair = Pair.of(createUrl("https://contoso-east-us.documents.azure.com"), "eastus");
     private final static Pair<URI, String> LocationEastUs2EndpointToLocationPair = Pair.of(createUrl("https://contoso-east-us-2.documents.azure.com"), "eastus2");
     private final static Pair<URI, String> LocationCentralUsEndpointToLocationPair = Pair.of(createUrl("https://contoso-central-us.documents.azure.com"), "centralus");
@@ -102,8 +102,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManagerMock);
 
         String pkRangeId = "0";
         String minInclusive = "AA";
@@ -120,16 +120,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
 
-        globalPartitionEndpointManagerForCircuitBreaker
+        globalPartitionEndpointManagerForPerPartitionCircuitBreaker
             .handleLocationSuccessForPartitionKeyRange(request);
 
-        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
         Class<?> partitionLevelUnavailabilityInfoClass
             = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
         assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
         Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+            = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
         partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
 
         Field locationEndpointToLocationSpecificContextForPartitionField
@@ -137,7 +137,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
 
         ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
-            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
@@ -159,8 +159,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManagerMock);
 
         String pkRangeId = "0";
         String minInclusive = "AA";
@@ -188,16 +188,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Mockito.when(this.globalEndpointManagerMock.getReadEndpoints()).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
         Mockito.when(this.globalEndpointManagerMock.getWriteEndpoints()).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
-        globalPartitionEndpointManagerForCircuitBreaker
+        globalPartitionEndpointManagerForPerPartitionCircuitBreaker
             .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
 
-        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
         Class<?> partitionLevelUnavailabilityInfoClass
             = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
         assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
         Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+            = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
         partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
 
         Field locationEndpointToLocationSpecificContextForPartitionField
@@ -205,7 +205,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
 
         ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
-            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
@@ -227,8 +227,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManagerMock);
 
         String pkRangeId = "0";
         String minInclusive = "AA";
@@ -257,20 +257,20 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
-            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
+            = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
-            globalPartitionEndpointManagerForCircuitBreaker
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
 
-        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
         Class<?> partitionLevelUnavailabilityInfoClass
             = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
         assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
         Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+            = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
         partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
 
         Field locationEndpointToLocationSpecificContextForPartitionField
@@ -278,7 +278,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
 
         ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
-            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
@@ -300,10 +300,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManagerMock);
 
-        globalPartitionEndpointManagerForCircuitBreaker.init();
+        globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
 
         String pkRangeId = "0";
         String minInclusive = "AA";
@@ -332,20 +332,20 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
-            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
+            = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
-            globalPartitionEndpointManagerForCircuitBreaker
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
 
-        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
         Class<?> partitionLevelUnavailabilityInfoClass
             = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
         assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
         Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+            = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
         partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
 
         Field locationEndpointToLocationSpecificContextForPartitionField
@@ -353,7 +353,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
 
         ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
-            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
@@ -386,10 +386,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManagerMock);
 
-        globalPartitionEndpointManagerForCircuitBreaker.init();
+        globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
 
         String pkRangeId = "0";
         String minInclusive = "AA";
@@ -418,20 +418,20 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
-            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
+            = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
-            globalPartitionEndpointManagerForCircuitBreaker
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
 
-        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
         Class<?> partitionLevelUnavailabilityInfoClass
             = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
         assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
         Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+            = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
         partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
 
         Field locationEndpointToLocationSpecificContextForPartitionField
@@ -439,7 +439,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
 
         ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
-            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
@@ -461,10 +461,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        int successCountToUpgradeStatus = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getMinimumSuccessCountForStatusUpgrade(LocationHealthStatus.HealthyTentative, readOperationTrue);
+        int successCountToUpgradeStatus = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getMinimumSuccessCountForStatusUpgrade(LocationHealthStatus.HealthyTentative, readOperationTrue);
 
         for (int i = 1; i <= successCountToUpgradeStatus + 1; i++) {
-            globalPartitionEndpointManagerForCircuitBreaker
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationSuccessForPartitionKeyRange(request);
         }
 
@@ -479,10 +479,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManagerMock);
 
-        globalPartitionEndpointManagerForCircuitBreaker.init();
+        globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
 
         String pkRangeId = "0";
         String minInclusive = "AA";
@@ -511,20 +511,20 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
-            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
+            = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
-            globalPartitionEndpointManagerForCircuitBreaker
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
 
-        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
         Class<?> partitionLevelUnavailabilityInfoClass
             = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
         assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
         Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+            = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
         partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
 
         Field locationEndpointToLocationSpecificContextForPartitionField
@@ -532,7 +532,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
 
         ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
-            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
@@ -552,10 +552,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             throw new RuntimeException(ex);
         }
 
-        exceptionCountToHandle = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyTentative, readOperationTrue);
+        exceptionCountToHandle = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyTentative, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
-            globalPartitionEndpointManagerForCircuitBreaker
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
 
@@ -571,10 +571,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     public void allRegionsUnavailableHandling(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManagerMock);
 
-        globalPartitionEndpointManagerForCircuitBreaker.init();
+        globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
 
         String pkRangeId = "0";
         String minInclusive = "AA";
@@ -603,26 +603,26 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
-            = globalPartitionEndpointManagerForCircuitBreaker
+            = globalPartitionEndpointManagerForPerPartitionCircuitBreaker
             .getConsecutiveExceptionBasedCircuitBreaker()
             .getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
-            globalPartitionEndpointManagerForCircuitBreaker
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
-            globalPartitionEndpointManagerForCircuitBreaker
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUsEndpointToLocationPair.getKey());
-            globalPartitionEndpointManagerForCircuitBreaker
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationCentralUsEndpointToLocationPair.getKey());
         }
 
-        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
         Class<?> partitionLevelUnavailabilityInfoClass
             = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
         assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
         Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+            = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
         partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
 
         Field locationEndpointToLocationSpecificContextForPartitionField
@@ -630,7 +630,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
 
         ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
-            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
@@ -644,8 +644,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     public void multiContainerBothWithSinglePartitionHealthyToUnavailableHandling(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchFieldException, IllegalAccessException {
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManagerMock);
 
         String pkRangeId = "0";
         String minInclusive = "AA";
@@ -685,22 +685,22 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
-            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
+            = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
-            globalPartitionEndpointManagerForCircuitBreaker
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request1, LocationEastUs2EndpointToLocationPair.getKey());
         }
 
-        globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request2);
+        globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request2);
 
-        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
         Class<?> partitionLevelUnavailabilityInfoClass
             = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
         assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
         Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+            = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
         partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
 
         Field locationEndpointToLocationSpecificContextForPartitionField
@@ -708,7 +708,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
 
         ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
-            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         Object partitionLevelLocationUnavailabilityInfoSnapshotForColl1
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(
@@ -807,10 +807,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
 
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManagerMock);
 
-        int exceptionCountToHandle = globalPartitionEndpointManagerForCircuitBreaker
+        int exceptionCountToHandle = globalPartitionEndpointManagerForPerPartitionCircuitBreaker
             .getConsecutiveExceptionBasedCircuitBreaker()
             .getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
@@ -818,7 +818,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
             ScheduledFuture<?> scheduledFutureForEastUs = executorForEastUs.schedule(
                 () -> validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
-                    globalPartitionEndpointManagerForCircuitBreaker,
+                    globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                     requestEastUs,
                     LocationEastUsEndpointToLocationPair.getKey(),
                     collectionResourceId,
@@ -829,7 +829,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
             ScheduledFuture<?> scheduledFutureForCentralUs = executorForCentralUs.schedule(
                 () -> validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
-                    globalPartitionEndpointManagerForCircuitBreaker,
+                    globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                     requestCentralUs,
                     LocationCentralUsEndpointToLocationPair.getKey(),
                     collectionResourceId,
@@ -840,7 +840,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
             ScheduledFuture<?> scheduledFutureForEastUs2 = executorForEastUs2.schedule(
                 () -> validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
-                    globalPartitionEndpointManagerForCircuitBreaker,
+                    globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                     requestEastUs2,
                     LocationEastUs2EndpointToLocationPair.getKey(),
                     collectionResourceId,
@@ -878,7 +878,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     private static void validateAllRegionsAreNotUnavailableAfterExceptionInLocation(
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker,
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
         RxDocumentServiceRequest request,
         URI locationWithFailure,
         String collectionResourceId,
@@ -886,10 +886,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         List<URI> applicableReadWriteLocations) {
 
         logger.warn("Handling exception for {}", locationWithFailure.getPath());
-        globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(request, locationWithFailure);
+        globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(request, locationWithFailure);
 
         List<String> unavailableRegions
-            = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(collectionResourceId, partitionKeyRange, request.getOperationType());
+            = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(collectionResourceId, partitionKeyRange, request.getOperationType());
 
         logger.info("Assert that all regions are not Unavailable!");
         assertThat(unavailableRegions.size()).isLessThan(applicableReadWriteLocations.size());

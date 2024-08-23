@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
@@ -51,8 +51,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         boolean isSplitHandlingDisabled,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
-        super(executeFunc, true, top, maxItemCount, operationContext, null, globalEndpointManager, globalPartitionEndpointManagerForCircuitBreaker);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker) {
+        super(executeFunc, true, top, maxItemCount, operationContext, null, globalEndpointManager, globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");

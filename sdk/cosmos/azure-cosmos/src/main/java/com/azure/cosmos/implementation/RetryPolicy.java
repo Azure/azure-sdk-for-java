@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 
 /**
@@ -17,7 +17,7 @@ import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalParti
 public class RetryPolicy implements IRetryPolicyFactory {
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final GlobalEndpointManager globalEndpointManager;
-    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
+    private final GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
     private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
     private final boolean enableEndpointDiscovery;
     private final ThrottlingRetryOptions throttlingRetryOptions;
@@ -27,14 +27,14 @@ public class RetryPolicy implements IRetryPolicyFactory {
         DiagnosticsClientContext diagnosticsClientContext,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker,
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover) {
 
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.enableEndpointDiscovery = connectionPolicy.isEndpointDiscoveryEnabled();
         this.globalEndpointManager = globalEndpointManager;
         this.throttlingRetryOptions = connectionPolicy.getThrottlingRetryOptions();
-        this.globalPartitionEndpointManagerForCircuitBreaker = globalPartitionEndpointManagerForCircuitBreaker;
+        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker = globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
         this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover = globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
     }
 
@@ -50,7 +50,7 @@ public class RetryPolicy implements IRetryPolicyFactory {
             this.enableEndpointDiscovery,
             this.throttlingRetryOptions,
             this.rxCollectionCache,
-            this.globalPartitionEndpointManagerForCircuitBreaker,
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         return clientRetryPolicy;

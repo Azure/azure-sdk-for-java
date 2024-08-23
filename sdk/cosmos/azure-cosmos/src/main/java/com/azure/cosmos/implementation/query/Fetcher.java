@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -43,7 +43,7 @@ abstract class Fetcher<T> {
     private final AtomicInteger top;
     private final List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker;
     private final GlobalEndpointManager globalEndpointManager;
-    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
+    private final GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 
     public Fetcher(
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
@@ -53,7 +53,7 @@ abstract class Fetcher<T> {
         OperationContextAndListenerTuple operationContext,
         List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
         GlobalEndpointManager globalEndpointManager,
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker) {
 
         checkNotNull(executeFunc, "Argument 'executeFunc' must not be null.");
 
@@ -78,7 +78,7 @@ abstract class Fetcher<T> {
         this.shouldFetchMore = new AtomicBoolean(true);
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
         this.globalEndpointManager = globalEndpointManager;
-        this.globalPartitionEndpointManagerForCircuitBreaker = globalPartitionEndpointManagerForCircuitBreaker;
+        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker = globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
     }
 
     public final boolean shouldFetchMore() {
@@ -172,7 +172,7 @@ abstract class Fetcher<T> {
             .doOnNext(response -> {
                 completed.set(true);
 
-                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+                if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
 
                     checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
                     FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContextForCircuitBreaker();
@@ -180,7 +180,7 @@ abstract class Fetcher<T> {
                     checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' must not be null!");
 
                     if (!feedOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
-                        this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
+                        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
                         feedOperationContextForCircuitBreaker.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId());
                     }
                 }
@@ -199,7 +199,7 @@ abstract class Fetcher<T> {
                     return;
                 }
 
-                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+                if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
 
                     checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
 
@@ -223,7 +223,7 @@ abstract class Fetcher<T> {
         URI firstContactedLocationEndpoint = diagnosticsAccessor.getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {
-            this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
         }
     }
 }

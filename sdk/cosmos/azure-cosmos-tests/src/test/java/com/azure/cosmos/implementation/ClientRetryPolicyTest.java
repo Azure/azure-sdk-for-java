@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.ChannelAcquisitionException;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import io.netty.handler.timeout.ReadTimeoutException;
@@ -65,8 +65,8 @@ public class ClientRetryPolicyTest {
     public void networkFailureOnRead() throws Exception {
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
@@ -78,7 +78,7 @@ public class ClientRetryPolicyTest {
             true,
             throttlingRetryOptions,
             null,
-            globalPartitionEndpointManagerForCircuitBreaker,
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         Exception exception = new SocketException("Dummy SocketException");
@@ -116,8 +116,8 @@ public class ClientRetryPolicyTest {
         boolean shouldCrossRegionRetry) throws Exception {
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
@@ -130,7 +130,7 @@ public class ClientRetryPolicyTest {
                 true,
                 throttlingRetryOptions,
                 null,
-                globalPartitionEndpointManagerForCircuitBreaker,
+                globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                 globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         Exception exception = ReadTimeoutException.INSTANCE;
@@ -163,8 +163,8 @@ public class ClientRetryPolicyTest {
     public void tcpNetworkFailureOnRead() throws Exception {
         ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
@@ -177,7 +177,7 @@ public class ClientRetryPolicyTest {
             true,
             retryOptions,
             null,
-            globalPartitionEndpointManagerForCircuitBreaker,
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         Exception exception = ReadTimeoutException.INSTANCE;
@@ -221,8 +221,8 @@ public class ClientRetryPolicyTest {
     public void networkFailureOnWrite() throws Exception {
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
@@ -234,7 +234,7 @@ public class ClientRetryPolicyTest {
             true,
             throttlingRetryOptions,
             null,
-            globalPartitionEndpointManagerForCircuitBreaker,
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         Exception exception = new SocketException("Dummy SocketException");;
@@ -266,8 +266,8 @@ public class ClientRetryPolicyTest {
         boolean shouldRetry) throws Exception {
         ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
@@ -280,7 +280,7 @@ public class ClientRetryPolicyTest {
             true,
             retryOptions,
             null,
-            globalPartitionEndpointManagerForCircuitBreaker,
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         //Non retribale exception for write
@@ -336,8 +336,8 @@ public class ClientRetryPolicyTest {
     public void networkFailureOnUpsert() throws Exception {
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
@@ -349,7 +349,7 @@ public class ClientRetryPolicyTest {
             true,
             throttlingRetryOptions,
             null,
-            globalPartitionEndpointManagerForCircuitBreaker,
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         Exception exception = new SocketException("Dummy SocketException");
@@ -379,8 +379,8 @@ public class ClientRetryPolicyTest {
     public void tcpNetworkFailureOnUpsert() throws Exception {
         ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
@@ -393,7 +393,7 @@ public class ClientRetryPolicyTest {
             true,
             retryOptions,
             null,
-            globalPartitionEndpointManagerForCircuitBreaker,
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         Exception exception = new SocketException("Dummy SocketException");
@@ -425,8 +425,8 @@ public class ClientRetryPolicyTest {
     public void networkFailureOnDelete() throws Exception {
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
@@ -438,7 +438,7 @@ public class ClientRetryPolicyTest {
             true,
             throttlingRetryOptions,
             null,
-            globalPartitionEndpointManagerForCircuitBreaker,
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         Exception exception = ReadTimeoutException.INSTANCE;
@@ -469,8 +469,8 @@ public class ClientRetryPolicyTest {
     public void tcpNetworkFailureOnDelete() throws Exception {
         ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
@@ -483,7 +483,7 @@ public class ClientRetryPolicyTest {
             true,
             retryOptions,
             null,
-            globalPartitionEndpointManagerForCircuitBreaker,
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         Exception exception = ReadTimeoutException.INSTANCE;
@@ -515,8 +515,8 @@ public class ClientRetryPolicyTest {
     public void onBeforeSendRequestNotInvoked() {
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
@@ -527,7 +527,7 @@ public class ClientRetryPolicyTest {
             true,
             throttlingRetryOptions,
             null,
-            globalPartitionEndpointManagerForCircuitBreaker,
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         Exception exception = ReadTimeoutException.INSTANCE;

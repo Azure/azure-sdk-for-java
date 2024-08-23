@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.circuitBreaker;
+package com.azure.cosmos.implementation.perPartitionCircuitBreaker;
 
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import org.slf4j.Logger;

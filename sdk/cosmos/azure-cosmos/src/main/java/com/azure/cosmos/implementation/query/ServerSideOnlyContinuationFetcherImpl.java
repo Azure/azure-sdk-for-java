@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -33,9 +33,9 @@ class ServerSideOnlyContinuationFetcherImpl<T> extends Fetcher<T> {
                                                  OperationContextAndListenerTuple operationContext,
                                                  List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
                                                  GlobalEndpointManager globalEndpointManager,
-                                                 GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
+                                                 GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker) {
 
-        super(executeFunc, isChangeFeed, top, maxItemCount, operationContext, cancelledRequestDiagnosticsTracker, globalEndpointManager, globalPartitionEndpointManagerForCircuitBreaker);
+        super(executeFunc, isChangeFeed, top, maxItemCount, operationContext, cancelledRequestDiagnosticsTracker, globalEndpointManager, globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
         this.createRequestFunc = createRequestFunc;

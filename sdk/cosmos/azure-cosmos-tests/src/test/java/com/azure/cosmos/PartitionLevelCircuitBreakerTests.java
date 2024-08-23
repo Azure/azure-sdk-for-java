@@ -17,10 +17,10 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.circuitBreaker.ConsecutiveExceptionBasedCircuitBreaker;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
-import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
-import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.ConsecutiveExceptionBasedCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealthStatus;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -2556,16 +2556,16 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             RxCollectionCache collectionCache = ReflectionUtils.getClientCollectionCache(documentClient);
             RxPartitionKeyRangeCache partitionKeyRangeCache = ReflectionUtils.getPartitionKeyRangeCache(documentClient);
 
-            GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
+            GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 = documentClient.getGlobalPartitionEndpointManagerForCircuitBreaker();
 
-            Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+            Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses();
             Class<?> partitionLevelUnavailabilityInfoClass
                 = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
             assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
             Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
-                = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+                = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
             partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
 
             Field locationEndpointToLocationSpecificContextForPartitionField
@@ -2573,7 +2573,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
 
             ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
-                = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+                = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
             faultInjectionRuleParamsWrapper.withFaultInjectionApplicableFeedRange(operationInvocationParamsWrapper.faultyFeedRange);
             faultInjectionRuleParamsWrapper.withFaultInjectionApplicableAsyncContainer(container);
@@ -2648,7 +2648,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
 
                     ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
-                        = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
+                        = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
 
                     int expectedCircuitBreakingThreshold
                         = doesOperationHaveWriteSemantics(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType()) ?
