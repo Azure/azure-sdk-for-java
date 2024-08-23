@@ -184,9 +184,7 @@ public final class ReadmeSamples {
             new CreateFileSearchToolResourceOptions(
                 new CreateFileSearchToolResourceVectorStoreOptionsList(
                     Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
-                        Arrays.asList(openAIFile.getId()),
-                        null
-                    )))));
+                        Arrays.asList(openAIFile.getId()))))));
 
         Assistant assistant = client.createAssistant(
             new AssistantCreationOptions(deploymentOrModelId)

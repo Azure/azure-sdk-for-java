@@ -18,7 +18,7 @@ public abstract class FileSearchTestBase extends AssistantsClientTestBase {
     public abstract void basicFileSearch(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
     public abstract void fileSearchWithMaxNumberResult(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
 
-    void createRetrievalRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
+    void fileSearchRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
         FileDetails fileDetails = new FileDetails(
             BinaryData.fromFile(openResourceFile(JAVA_SDK_TESTS_ASSISTANTS_TXT)),
             JAVA_SDK_TESTS_ASSISTANTS_TXT);

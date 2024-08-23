@@ -64,9 +64,7 @@ public class FileSearchToolSample {
             new CreateFileSearchToolResourceOptions(
                 new CreateFileSearchToolResourceVectorStoreOptionsList(
                     Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
-                        Arrays.asList(openAIFile.getId()),
-                        null
-                    )))));
+                        Arrays.asList(openAIFile.getId()))))));
 
         // Create assistant passing the file ID
         Assistant assistant = client.createAssistant(

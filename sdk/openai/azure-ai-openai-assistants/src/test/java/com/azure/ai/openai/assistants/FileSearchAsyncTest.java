@@ -45,7 +45,7 @@ public class FileSearchAsyncTest extends FileSearchTestBase {
     public void basicFileSearch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
 
-        createRetrievalRunner((fileDetails, assistantCreationOptions) -> {
+        fileSearchRunner((fileDetails, assistantCreationOptions) -> {
             // Upload file
             StepVerifier.create(client.uploadFile(fileDetails, FilePurpose.ASSISTANTS)
                 .flatMap(openAIFile -> {
@@ -56,9 +56,7 @@ public class FileSearchAsyncTest extends FileSearchTestBase {
                         new CreateFileSearchToolResourceOptions(
                             new CreateFileSearchToolResourceVectorStoreOptionsList(
                                 Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
-                                    Arrays.asList(openAIFile.getId()),
-                                    null
-                                )))));
+                                    Arrays.asList(openAIFile.getId()))))));
                     assistantCreationOptions.setToolResources(createToolResourcesOptions);
                     cleanUp.setFile(openAIFile);
                     return client.createAssistant(assistantCreationOptions).zipWith(Mono.just(cleanUp));
@@ -142,12 +140,7 @@ public class FileSearchAsyncTest extends FileSearchTestBase {
                             new CreateFileSearchToolResourceOptions(
                                 new CreateFileSearchToolResourceVectorStoreOptionsList(
                                     Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
-                                        Arrays.asList(openAIFile.getId()),
-                                        null
-                                    ))
-                                )
-                            )
-                        );
+                                        Arrays.asList(openAIFile.getId()))))));
                         assistantCreationOptions.setToolResources(createToolResourcesOptions);
 
                         cleanUp.setFile(openAIFile);

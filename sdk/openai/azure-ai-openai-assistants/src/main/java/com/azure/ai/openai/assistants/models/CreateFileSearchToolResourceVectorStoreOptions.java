@@ -129,6 +129,16 @@ public final class CreateFileSearchToolResourceVectorStoreOptions
      * Creates an instance of CreateFileSearchToolResourceVectorStoreOptions class.
      *
      * @param fileIds the fileIds value to set.
+     */
+    public CreateFileSearchToolResourceVectorStoreOptions(List<String> fileIds) {
+        this.fileIds = fileIds;
+        this.chunkingStrategy = null;
+    }
+
+    /**
+     * Creates an instance of CreateFileSearchToolResourceVectorStoreOptions class.
+     *
+     * @param fileIds the fileIds value to set.
      * @param chunkingStrategy the chunkingStrategy value to set.
      */
     @Generated

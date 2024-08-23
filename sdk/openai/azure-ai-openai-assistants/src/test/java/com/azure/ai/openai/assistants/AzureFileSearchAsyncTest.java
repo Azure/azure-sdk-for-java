@@ -47,7 +47,7 @@ public class AzureFileSearchAsyncTest extends FileSearchTestBase {
     public void basicFileSearch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
 
-        createRetrievalRunner((fileDetails, assistantCreationOptions) -> {
+        fileSearchRunner((fileDetails, assistantCreationOptions) -> {
             // Upload file
             StepVerifier.create(client.uploadFile(fileDetails, FilePurpose.ASSISTANTS)
                 .flatMap(openAIFile -> {
@@ -58,9 +58,7 @@ public class AzureFileSearchAsyncTest extends FileSearchTestBase {
                         new CreateFileSearchToolResourceOptions(
                             new CreateFileSearchToolResourceVectorStoreOptionsList(
                                 Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
-                                    Arrays.asList(openAIFile.getId()),
-                                    null
-                                )))));
+                                    Arrays.asList(openAIFile.getId()))))));
                     assistantCreationOptions.setToolResources(createToolResourcesOptions);
                     cleanUp.setFile(openAIFile);
                     return client.createAssistant(assistantCreationOptions).zipWith(Mono.just(cleanUp));
@@ -128,7 +126,6 @@ public class AzureFileSearchAsyncTest extends FileSearchTestBase {
         });
     }
 
-    @Disabled("file_search tools are not supported in Azure")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void fileSearchWithMaxNumberResult(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
@@ -145,12 +142,7 @@ public class AzureFileSearchAsyncTest extends FileSearchTestBase {
                         new CreateFileSearchToolResourceOptions(
                             new CreateFileSearchToolResourceVectorStoreOptionsList(
                                 Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
-                                    Arrays.asList(openAIFile.getId()),
-                                    null
-                                ))
-                            )
-                        )
-                    );
+                                    Arrays.asList(openAIFile.getId()))))));
                     assistantCreationOptions.setToolResources(createToolResourcesOptions);
 
                     cleanUp.setFile(openAIFile);

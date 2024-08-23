@@ -42,7 +42,7 @@ public class FileSearchSyncTest extends FileSearchTestBase {
     public void basicFileSearch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
 
-        createRetrievalRunner((fileDetails, assistantCreationOptions) -> {
+        fileSearchRunner((fileDetails, assistantCreationOptions) -> {
             // Upload file for assistant
             OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
 
@@ -52,9 +52,7 @@ public class FileSearchSyncTest extends FileSearchTestBase {
                 new CreateFileSearchToolResourceOptions(
                     new CreateFileSearchToolResourceVectorStoreOptionsList(
                         Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
-                            Arrays.asList(openAIFile.getId()),
-                            null
-                        )))));
+                            Arrays.asList(openAIFile.getId()))))));
             assistantCreationOptions.setToolResources(createToolResourcesOptions);
             Assistant assistant = client.createAssistant(assistantCreationOptions);
 
@@ -116,12 +114,7 @@ public class FileSearchSyncTest extends FileSearchTestBase {
                     new CreateFileSearchToolResourceVectorStoreOptionsList(
                         Arrays.asList(
                             new CreateFileSearchToolResourceVectorStoreOptions(
-                            Arrays.asList(openAIFile.getId()),
-                            null)
-                        )
-                    )
-                )
-            );
+                            Arrays.asList(openAIFile.getId()))))));
             assistantCreationOptions.setToolResources(createToolResourcesOptions);
 
             assertThrows(HttpResponseException.class, () -> {

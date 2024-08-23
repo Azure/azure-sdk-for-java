@@ -22,10 +22,6 @@
 
 ### Breaking Changes
 
-- Replaced constructor `CreateFileSearchToolResourceVectorStoreOptions(List<String> fileIds)` by 
-  `CreateFileSearchToolResourceVectorStoreOptions(List<String> fileIds, VectorStoreChunkingStrategyRequest chunkingStrategy)`
-  in `CreateFileSearchToolResourceVectorStoreOptions` model, to take one more parameter `chunkingStrategy`.
-
 ### Bugs Fixed
 
 ### Other Changes

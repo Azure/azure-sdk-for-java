@@ -44,7 +44,7 @@ public class AzureFileSearchSyncTest extends FileSearchTestBase {
     public void basicFileSearch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
 
-        createRetrievalRunner((fileDetails, assistantCreationOptions) -> {
+        fileSearchRunner((fileDetails, assistantCreationOptions) -> {
             // Upload file for assistant
             OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
 
@@ -54,9 +54,7 @@ public class AzureFileSearchSyncTest extends FileSearchTestBase {
                 new CreateFileSearchToolResourceOptions(
                     new CreateFileSearchToolResourceVectorStoreOptionsList(
                         Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
-                            Arrays.asList(openAIFile.getId()),
-                            null
-                        )))));
+                            Arrays.asList(openAIFile.getId()))))));
             assistantCreationOptions.setToolResources(createToolResourcesOptions);
             Assistant assistant = client.createAssistant(assistantCreationOptions);
 
@@ -102,7 +100,6 @@ public class AzureFileSearchSyncTest extends FileSearchTestBase {
         });
     }
 
-    @Disabled("file_search tools are not supported in Azure")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void fileSearchWithMaxNumberResult(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
@@ -119,12 +116,7 @@ public class AzureFileSearchSyncTest extends FileSearchTestBase {
                     new CreateFileSearchToolResourceVectorStoreOptionsList(
                         Arrays.asList(
                             new CreateFileSearchToolResourceVectorStoreOptions(
-                                Arrays.asList(openAIFile.getId()),
-                                null)
-                        )
-                    )
-                )
-            );
+                                Arrays.asList(openAIFile.getId()))))));
             assistantCreationOptions.setToolResources(createToolResourcesOptions);
 
             assertThrows(HttpResponseException.class, () -> {

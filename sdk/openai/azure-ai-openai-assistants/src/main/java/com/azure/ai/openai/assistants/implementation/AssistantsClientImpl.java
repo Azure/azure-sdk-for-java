@@ -1419,7 +1419,7 @@ public final class AssistantsClientImpl {
      *     ]
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
-     *             fileIds (Optional): [
+     *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -1510,7 +1510,7 @@ public final class AssistantsClientImpl {
      *     ]
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
-     *             fileIds (Optional): [
+     *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -1887,7 +1887,7 @@ public final class AssistantsClientImpl {
      * {
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
-     *             fileIds (Optional): [
+     *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -1954,7 +1954,7 @@ public final class AssistantsClientImpl {
      * {
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
-     *             fileIds (Optional): [
+     *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -3733,7 +3733,7 @@ public final class AssistantsClientImpl {
      *     ]
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
-     *             fileIds (Optional): [
+     *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -3874,7 +3874,7 @@ public final class AssistantsClientImpl {
      *     ]
      *     tool_resources (Optional): {
      *         code_interpreter (Optional): {
-     *             fileIds (Optional): [
+     *             file_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
