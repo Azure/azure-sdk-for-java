@@ -65,6 +65,8 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
+    private String[] scopes = DEFAULT_SCOPES;
+
     /**
      * Create an instance of the ChatCompletionsClientBuilder.
      */
@@ -195,7 +197,19 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
     @Generated
     @Override
     public ChatCompletionsClientBuilder credential(TokenCredential tokenCredential) {
+        return this.credential(tokenCredential, DEFAULT_SCOPES);
+    }
+
+    /**
+     * Sets credential for client authentication.
+     *
+     * @param tokenCredential credential to authenticate with.
+     * @param scopes scope to authenticate against.
+     * @return the ChatCompletionsClientBuilder.
+     */
+    public ChatCompletionsClientBuilder credential(TokenCredential tokenCredential, String[] scopes) {
         this.tokenCredential = tokenCredential;
+        this.scopes = scopes;
         return this;
     }
 
@@ -239,7 +253,7 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
 
     /**
      * Sets Service version.
-     * 
+     *
      * @param serviceVersion the serviceVersion value.
      * @return the ChatCompletionsClientBuilder.
      */
@@ -257,7 +271,7 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the ChatCompletionsClientBuilder.
      */
@@ -269,7 +283,7 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
 
     /**
      * Builds an instance of ChatCompletionsClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of ChatCompletionsClientImpl.
      */
     @Generated
@@ -317,7 +331,7 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
             policies.add(new KeyCredentialPolicy("api-key", keyCredential));
         }
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, scopes));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
@@ -333,7 +347,7 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
 
     /**
      * Builds an instance of ChatCompletionsAsyncClient class.
-     * 
+     *
      * @return an instance of ChatCompletionsAsyncClient.
      */
     @Generated
@@ -343,7 +357,7 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
 
     /**
      * Builds an instance of ChatCompletionsClient class.
-     * 
+     *
      * @return an instance of ChatCompletionsClient.
      */
     @Generated
