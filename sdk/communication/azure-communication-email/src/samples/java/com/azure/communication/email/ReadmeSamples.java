@@ -149,7 +149,7 @@ public class ReadmeSamples {
         EmailAttachment attachment = new EmailAttachment(
             "inlineimage.jpg",
             "image/jpeg",
-            BinaryData.fromString("test")
+            attachmentContent
         );
         attachment.setContentId("inline_image");
         

@@ -103,10 +103,9 @@ public final class EmailAsyncClient {
 
                 String contentId = attachment.getContentId();
 
-                 if (contentId != null)
-                 {
+                if (contentId != null) {
                     attachmentImpl.setContentId(contentId);
-                 }
+                }
 
                 attachmentsImpl.add(attachmentImpl);
             }
