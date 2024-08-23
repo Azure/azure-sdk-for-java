@@ -104,8 +104,8 @@ private class BulkWriter
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
 
-  private val activeBulkWriteOperations = mutable.LinkedHashSet[CosmosItemOperation]()
-  private val activeReadManyOperations = mutable.LinkedHashSet[ReadManyOperation]()
+  private val activeBulkWriteOperations =java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
+  private val activeReadManyOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[ReadManyOperation]().asScala
   private val semaphore = new Semaphore(maxPendingOperations)
 
   private val totalScheduledMetrics = new AtomicLong(0)
@@ -120,6 +120,7 @@ private class BulkWriter
   private val cosmosBulkExecutionOptionsImpl = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
     .getCosmosBulkExecutionOptionsAccessor
     .getImpl(cosmosBulkExecutionOptions)
+  private val monotonicOperationCounter = new AtomicLong(0)
 
   cosmosBulkExecutionOptionsImpl.setSchedulerOverride(bulkWriterRequestsBoundedElastic)
   cosmosBulkExecutionOptionsImpl.setMaxConcurrentCosmosPartitions(maxConcurrentPartitions)
@@ -183,7 +184,7 @@ private class BulkWriter
   }
 
   private val batchIntervalInMs = cosmosBulkExecutionOptionsImpl
-    .getMaxMicroBatchInterval()
+    .getMaxMicroBatchInterval
     .toMillis
 
   private[this] val flushExecutorHolder: Option[(ScheduledThreadPoolExecutor, ScheduledFuture[_])] = {
@@ -273,7 +274,7 @@ private class BulkWriter
         case None => BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST
       }
 
-      val batchConcurrency = cosmosBulkExecutionOptionsImpl.getMaxMicroBatchConcurrency()
+      val batchConcurrency = cosmosBulkExecutionOptionsImpl.getMaxMicroBatchConcurrency
 
     val firstRecordTimeStamp = new AtomicLong(-1)
     val currentMicroBatchSize = new AtomicLong(0)
@@ -396,6 +397,7 @@ private class BulkWriter
                                               readManyOperation.operationContext.partitionKeyValue,
                                               Some(etag.asText()),
                                               readManyOperation.operationContext.attemptNumber,
+                                              monotonicOperationCounter.incrementAndGet(),
                                               Some(readManyOperation.objectNode)
                                           ))
                                   case None => CosmosBulkOperations.getCreateItemOperation(
@@ -406,6 +408,7 @@ private class BulkWriter
                                           readManyOperation.operationContext.partitionKeyValue,
                                           eTagInput = None,
                                           readManyOperation.operationContext.attemptNumber,
+                                          monotonicOperationCounter.incrementAndGet(),
                                           Some(readManyOperation.objectNode)
                                       ))
                               }
@@ -520,7 +523,8 @@ private class BulkWriter
                   operationContext.itemId,
                   operationContext.partitionKeyValue,
                   operationContext.eTag,
-                  operationContext.attemptNumber + 1))
+                  operationContext.attemptNumber + 1,
+                  operationContext.sequenceNumber))
           if (clearPendingRetryAction()) {
             this.pendingRetries.decrementAndGet()
           }
@@ -650,7 +654,12 @@ private class BulkWriter
     throwIfCapturedExceptionExists()
 
     val activeTasksSemaphoreTimeout = 10
-    val operationContext = new OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1)
+    val operationContext = new OperationContext(
+      getId(objectNode),
+      partitionKeyValue,
+      getETag(objectNode),
+      1,
+      monotonicOperationCounter.incrementAndGet())
     val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
     // Don't clone the activeOperations for the first iteration
     // to reduce perf impact before the Semaphore has been acquired
@@ -928,7 +937,7 @@ private class BulkWriter
   private[this] def sameBulkWriteOperations
   (
     snapshot: mutable.Set[CosmosItemOperation],
-    current: mutable.LinkedHashSet[CosmosItemOperation]
+    current: mutable.Set[CosmosItemOperation]
   ): Boolean = {
 
     if (snapshot.size != current.size) {
@@ -948,7 +957,7 @@ private class BulkWriter
   private[this] def sameReadManyOperations
   (
     snapshot: mutable.Set[ReadManyOperation],
-    current: mutable.LinkedHashSet[ReadManyOperation]
+    current: mutable.Set[ReadManyOperation]
   ): Boolean = {
 
     if (snapshot.size != current.size) {
@@ -1005,16 +1014,22 @@ private class BulkWriter
     if (maxAllowedIntervalWithoutAnyProgressExceeded) {
 
       val exception = if (activeReadManyOperationsSnapshot.isEmpty) {
+        val retriableRemainingOperations = if (allowRetryOnNewBulkWriterInstance) {
+          Some(
+            (pendingRetriesSnapshot ++ activeOperationsSnapshot)
+              .toList
+              .sortBy(op => op.getContext[OperationContext].sequenceNumber)
+          )
+        } else {
+          None
+        }
+
         new BulkWriterNoProgressException(
           s"Stale bulk ingestion identified in $operationName - the following active operations have not been " +
             s"completed (first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
             s"${writeConfig.maxNoProgressIntervalInSeconds} seconds: $operationsLog",
           commitAttempt,
-          if (allowRetryOnNewBulkWriterInstance) {
-            Some((pendingRetriesSnapshot ++ activeOperationsSnapshot).toList)
-          } else {
-            None
-          })
+          retriableRemainingOperations)
       } else {
         new BulkWriterNoProgressException(
           s"Stale bulk ingestion as well as readMany operations identified in $operationName - the following active operations have not been " +
@@ -1337,6 +1352,7 @@ private class BulkWriter
     partitionKeyValueInput: PartitionKey,
     eTagInput: Option[String],
     val attemptNumber: Int,
+    val sequenceNumber: Long,
     /** starts from 1 * */
     sourceItemInput: Option[ObjectNode] = None) // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
   {
@@ -1429,7 +1445,7 @@ private object BulkWriter {
 
   private val bulkProcessingThresholds = new CosmosBulkExecutionThresholdsState()
 
-  val maxPendingOperationsPerJVM = DefaultMaxPendingOperationPerCore * SparkUtils.getNumberOfHostCPUCores
+  private val maxPendingOperationsPerJVM: Int = DefaultMaxPendingOperationPerCore * SparkUtils.getNumberOfHostCPUCores
 
   // Custom bounded elastic scheduler to consume input flux
   val bulkWriterRequestsBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
