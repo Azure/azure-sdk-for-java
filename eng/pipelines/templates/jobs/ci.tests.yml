@@ -153,6 +153,12 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
+      - pwsh: |
+          $contents = Invoke-WebRequest -Method GET -Uri http://localhost:5000/Audit/Logs
+          Write-Host $contents.Content
+        displayName: Dump Test-Proxy Audit Log
+        condition: failed()
+
       # Shut down proxy to prevent file locks on the log file for auto-injected credscan
       # steps on windows
       - template: /eng/common/testproxy/test-proxy-tool-shutdown.yml
