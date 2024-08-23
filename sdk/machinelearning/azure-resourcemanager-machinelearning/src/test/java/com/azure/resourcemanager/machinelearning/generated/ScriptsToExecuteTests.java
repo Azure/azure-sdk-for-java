@@ -12,45 +12,38 @@ import org.junit.jupiter.api.Assertions;
 public final class ScriptsToExecuteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScriptsToExecute model =
-            BinaryData
-                .fromString(
-                    "{\"startupScript\":{\"scriptSource\":\"rvkmjcwmjvlgfggc\",\"scriptData\":\"yylizrz\",\"scriptArguments\":\"psfxsf\",\"timeout\":\"tl\"},\"creationScript\":{\"scriptSource\":\"vagbwidqlvhukove\",\"scriptData\":\"i\",\"scriptArguments\":\"vjfn\",\"timeout\":\"mvl\"}}")
-                .toObject(ScriptsToExecute.class);
-        Assertions.assertEquals("rvkmjcwmjvlgfggc", model.startupScript().scriptSource());
-        Assertions.assertEquals("yylizrz", model.startupScript().scriptData());
-        Assertions.assertEquals("psfxsf", model.startupScript().scriptArguments());
-        Assertions.assertEquals("tl", model.startupScript().timeout());
-        Assertions.assertEquals("vagbwidqlvhukove", model.creationScript().scriptSource());
-        Assertions.assertEquals("i", model.creationScript().scriptData());
-        Assertions.assertEquals("vjfn", model.creationScript().scriptArguments());
-        Assertions.assertEquals("mvl", model.creationScript().timeout());
+        ScriptsToExecute model = BinaryData.fromString(
+            "{\"startupScript\":{\"scriptSource\":\"ibniynts\",\"scriptData\":\"mfmeftvhkmoo\",\"scriptArguments\":\"rh\",\"timeout\":\"bwgmjgrul\"},\"creationScript\":{\"scriptSource\":\"gxhcxnwjtpfdzxco\",\"scriptData\":\"fwofwakukzkdtz\",\"scriptArguments\":\"oednlwglihezomuc\",\"timeout\":\"g\"}}")
+            .toObject(ScriptsToExecute.class);
+        Assertions.assertEquals("ibniynts", model.startupScript().scriptSource());
+        Assertions.assertEquals("mfmeftvhkmoo", model.startupScript().scriptData());
+        Assertions.assertEquals("rh", model.startupScript().scriptArguments());
+        Assertions.assertEquals("bwgmjgrul", model.startupScript().timeout());
+        Assertions.assertEquals("gxhcxnwjtpfdzxco", model.creationScript().scriptSource());
+        Assertions.assertEquals("fwofwakukzkdtz", model.creationScript().scriptData());
+        Assertions.assertEquals("oednlwglihezomuc", model.creationScript().scriptArguments());
+        Assertions.assertEquals("g", model.creationScript().timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptsToExecute model =
-            new ScriptsToExecute()
-                .withStartupScript(
-                    new ScriptReference()
-                        .withScriptSource("rvkmjcwmjvlgfggc")
-                        .withScriptData("yylizrz")
-                        .withScriptArguments("psfxsf")
-                        .withTimeout("tl"))
-                .withCreationScript(
-                    new ScriptReference()
-                        .withScriptSource("vagbwidqlvhukove")
-                        .withScriptData("i")
-                        .withScriptArguments("vjfn")
-                        .withTimeout("mvl"));
+        ScriptsToExecute model = new ScriptsToExecute()
+            .withStartupScript(new ScriptReference().withScriptSource("ibniynts")
+                .withScriptData("mfmeftvhkmoo")
+                .withScriptArguments("rh")
+                .withTimeout("bwgmjgrul"))
+            .withCreationScript(new ScriptReference().withScriptSource("gxhcxnwjtpfdzxco")
+                .withScriptData("fwofwakukzkdtz")
+                .withScriptArguments("oednlwglihezomuc")
+                .withTimeout("g"));
         model = BinaryData.fromObject(model).toObject(ScriptsToExecute.class);
-        Assertions.assertEquals("rvkmjcwmjvlgfggc", model.startupScript().scriptSource());
-        Assertions.assertEquals("yylizrz", model.startupScript().scriptData());
-        Assertions.assertEquals("psfxsf", model.startupScript().scriptArguments());
-        Assertions.assertEquals("tl", model.startupScript().timeout());
-        Assertions.assertEquals("vagbwidqlvhukove", model.creationScript().scriptSource());
-        Assertions.assertEquals("i", model.creationScript().scriptData());
-        Assertions.assertEquals("vjfn", model.creationScript().scriptArguments());
-        Assertions.assertEquals("mvl", model.creationScript().timeout());
+        Assertions.assertEquals("ibniynts", model.startupScript().scriptSource());
+        Assertions.assertEquals("mfmeftvhkmoo", model.startupScript().scriptData());
+        Assertions.assertEquals("rh", model.startupScript().scriptArguments());
+        Assertions.assertEquals("bwgmjgrul", model.startupScript().timeout());
+        Assertions.assertEquals("gxhcxnwjtpfdzxco", model.creationScript().scriptSource());
+        Assertions.assertEquals("fwofwakukzkdtz", model.creationScript().scriptData());
+        Assertions.assertEquals("oednlwglihezomuc", model.creationScript().scriptArguments());
+        Assertions.assertEquals("g", model.creationScript().timeout());
     }
 }

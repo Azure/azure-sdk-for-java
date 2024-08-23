@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class WafAction extends ExpandableStringEnum<WafAction> {
      * @param name a name to look for.
      * @return the corresponding WafAction.
      */
-    @JsonCreator
     public static WafAction fromString(String name) {
         return fromString(name, WafAction.class);
     }

@@ -6,59 +6,56 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.ODataAadServicePrincipalCredentialType;
 import com.azure.resourcemanager.datafactory.models.ODataAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * OData linked service properties.
  */
 @Fluent
-public final class ODataLinkedServiceTypeProperties {
+public final class ODataLinkedServiceTypeProperties implements JsonSerializable<ODataLinkedServiceTypeProperties> {
     /*
      * The URL of the OData service endpoint. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
      * Type of authentication used to connect to the OData service.
      */
-    @JsonProperty(value = "authenticationType")
     private ODataAuthenticationType authenticationType;
 
     /*
      * User name of the OData service. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName")
     private Object username;
 
     /*
      * Password of the OData service.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The additional HTTP headers in the request to RESTful API used for authorization. Type: key value pairs (value
      * should be string type).
      */
-    @JsonProperty(value = "authHeaders")
     private Object authHeaders;
 
     /*
      * Specify the tenant information (domain name or tenant ID) under which your application resides. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
      * Specify the application id of your application registered in Azure Active Directory. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
@@ -66,48 +63,41 @@ public final class ODataLinkedServiceTypeProperties {
      * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
      * Specify the resource you are requesting authorization to use Directory. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "aadResourceId")
     private Object aadResourceId;
 
     /*
      * Specify the credential type (key or cert) is used for service principal.
      */
-    @JsonProperty(value = "aadServicePrincipalCredentialType")
     private ODataAadServicePrincipalCredentialType aadServicePrincipalCredentialType;
 
     /*
      * Specify the secret of your application registered in Azure Active Directory. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalEmbeddedCert")
     private SecretBase servicePrincipalEmbeddedCert;
 
     /*
      * Specify the password of your certificate if your certificate has a password and you are using AadServicePrincipal
      * authentication. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalEmbeddedCertPassword")
     private SecretBase servicePrincipalEmbeddedCertPassword;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -448,4 +438,87 @@ public final class ODataLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ODataLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("url", this.url);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("authHeaders", this.authHeaders);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        jsonWriter.writeUntypedField("aadResourceId", this.aadResourceId);
+        jsonWriter.writeStringField("aadServicePrincipalCredentialType",
+            this.aadServicePrincipalCredentialType == null ? null : this.aadServicePrincipalCredentialType.toString());
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeJsonField("servicePrincipalEmbeddedCert", this.servicePrincipalEmbeddedCert);
+        jsonWriter.writeJsonField("servicePrincipalEmbeddedCertPassword", this.servicePrincipalEmbeddedCertPassword);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ODataLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ODataLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ODataLinkedServiceTypeProperties.
+     */
+    public static ODataLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ODataLinkedServiceTypeProperties deserializedODataLinkedServiceTypeProperties
+                = new ODataLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.url = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.authenticationType
+                        = ODataAuthenticationType.fromString(reader.getString());
+                } else if ("userName".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("authHeaders".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.authHeaders = reader.readUntyped();
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("azureCloudType".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.azureCloudType = reader.readUntyped();
+                } else if ("aadResourceId".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.aadResourceId = reader.readUntyped();
+                } else if ("aadServicePrincipalCredentialType".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.aadServicePrincipalCredentialType
+                        = ODataAadServicePrincipalCredentialType.fromString(reader.getString());
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.servicePrincipalKey = SecretBase.fromJson(reader);
+                } else if ("servicePrincipalEmbeddedCert".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.servicePrincipalEmbeddedCert
+                        = SecretBase.fromJson(reader);
+                } else if ("servicePrincipalEmbeddedCertPassword".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.servicePrincipalEmbeddedCertPassword
+                        = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedODataLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedODataLinkedServiceTypeProperties;
+        });
+    }
 }

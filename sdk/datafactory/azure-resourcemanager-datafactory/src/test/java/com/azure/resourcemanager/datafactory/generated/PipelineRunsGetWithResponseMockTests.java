@@ -20,7 +20,7 @@ public final class PipelineRunsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"runId\":\"cov\",\"runGroupId\":\"cobfnbdpao\",\"isLatest\":false,\"pipelineName\":\"gfmftrv\",\"parameters\":{\"xwnircmodws\":\"jfkpuszsjayrl\",\"wxwkjambfsxsr\":\"hzlamdqgav\",\"yezwjqb\":\"jfapiodsn\"},\"runDimensions\":{\"hvcorobmqu\":\"lgeuxoymjxqint\"},\"invokedBy\":{\"name\":\"pzk\",\"id\":\"ea\",\"invokedByType\":\"cygyqgvof\",\"pipelineName\":\"guj\",\"pipelineRunId\":\"kwwyfsq\"},\"lastUpdated\":\"2021-11-04T14:17:32Z\",\"runStart\":\"2021-05-15T21:49:42Z\",\"runEnd\":\"2021-08-02T18:51:40Z\",\"durationInMs\":1811088788,\"status\":\"rmuls\",\"message\":\"gohpwnrmhlotknbr\",\"\":{\"xmdmlowesixpw\":\"dataqmudmef\",\"fkdvb\":\"datavtwgnmeqirxwkomj\",\"inj\":\"datacj\",\"zuaxsrmadakj\":\"datawpivfplbajqecngw\"}}";
+            = "{\"runId\":\"mrfjjrp\",\"runGroupId\":\"jecqwdosbsngyia\",\"isLatest\":false,\"pipelineName\":\"vlkuucpw\",\"parameters\":{\"c\":\"yrblrqeqcdi\",\"njxi\":\"cvzdtft\"},\"runDimensions\":{\"yixgxtccmqzkuq\":\"mm\",\"gindlnteoapszxq\":\"rzu\"},\"invokedBy\":{\"name\":\"vyracqmfjihm\",\"id\":\"zwoijtlhxlsxxra\",\"invokedByType\":\"aicgqgafkrtsaeag\",\"pipelineName\":\"ctcrdfxqhn\",\"pipelineRunId\":\"ujrnfdqlzggvo\"},\"lastUpdated\":\"2021-11-15T19:48:05Z\",\"runStart\":\"2021-08-31T03:56:26Z\",\"runEnd\":\"2021-10-30T14:33:10Z\",\"durationInMs\":41436935,\"status\":\"uj\",\"message\":\"jqci\",\"\":{\"shmntlbfknxzc\":\"datapsvgupqw\",\"ccpbtvgiokz\":\"datauvjbfryortbres\",\"dwawomkzussgjmub\":\"datatpvs\",\"ekzcmfibbozkp\":\"datagjdluwbmwuj\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class PipelineRunsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PipelineRun response = manager.pipelineRuns()
-            .getWithResponse("xrrjudgnphgsdq", "wfmvpsvwwtncvnoq", "gnl", com.azure.core.util.Context.NONE)
+            .getWithResponse("llzbtq", "jmio", "csdfbki", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

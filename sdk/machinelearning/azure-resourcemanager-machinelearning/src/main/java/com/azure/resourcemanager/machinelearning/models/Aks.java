@@ -5,28 +5,75 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.List;
 
-/** A Machine Learning compute based on AKS. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "computeType")
-@JsonTypeName("AKS")
+/**
+ * A Machine Learning compute based on AKS.
+ */
 @Fluent
 public final class Aks extends Compute {
     /*
+     * The type of compute
+     */
+    private ComputeType computeType = ComputeType.AKS;
+
+    /*
      * AKS properties
      */
-    @JsonProperty(value = "properties")
     private AksSchemaProperties properties;
 
-    /** Creates an instance of Aks class. */
+    /*
+     * The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
+     */
+    private ProvisioningState provisioningState;
+
+    /*
+     * The time at which the compute was created.
+     */
+    private OffsetDateTime createdOn;
+
+    /*
+     * The time at which the compute was last modified.
+     */
+    private OffsetDateTime modifiedOn;
+
+    /*
+     * Errors during provisioning
+     */
+    private List<ManagementError> provisioningErrors;
+
+    /*
+     * Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+     * service provisioned it if false.
+     */
+    private Boolean isAttachedCompute;
+
+    /**
+     * Creates an instance of Aks class.
+     */
     public Aks() {
     }
 
     /**
+     * Get the computeType property: The type of compute.
+     * 
+     * @return the computeType value.
+     */
+    @Override
+    public ComputeType computeType() {
+        return this.computeType;
+    }
+
+    /**
      * Get the properties property: AKS properties.
-     *
+     * 
      * @return the properties value.
      */
     public AksSchemaProperties properties() {
@@ -35,7 +82,7 @@ public final class Aks extends Compute {
 
     /**
      * Set the properties property: AKS properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the Aks object itself.
      */
@@ -44,28 +91,88 @@ public final class Aks extends Compute {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the provisioningState property: The provision state of the cluster. Valid values are Unknown, Updating,
+     * Provisioning, Succeeded, and Failed.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the createdOn property: The time at which the compute was created.
+     * 
+     * @return the createdOn value.
+     */
+    @Override
+    public OffsetDateTime createdOn() {
+        return this.createdOn;
+    }
+
+    /**
+     * Get the modifiedOn property: The time at which the compute was last modified.
+     * 
+     * @return the modifiedOn value.
+     */
+    @Override
+    public OffsetDateTime modifiedOn() {
+        return this.modifiedOn;
+    }
+
+    /**
+     * Get the provisioningErrors property: Errors during provisioning.
+     * 
+     * @return the provisioningErrors value.
+     */
+    @Override
+    public List<ManagementError> provisioningErrors() {
+        return this.provisioningErrors;
+    }
+
+    /**
+     * Get the isAttachedCompute property: Indicating whether the compute was provisioned by user and brought from
+     * outside if true, or machine learning service provisioned it if false.
+     * 
+     * @return the isAttachedCompute value.
+     */
+    @Override
+    public Boolean isAttachedCompute() {
+        return this.isAttachedCompute;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Aks withComputeLocation(String computeLocation) {
         super.withComputeLocation(computeLocation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Aks withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Aks withResourceId(String resourceId) {
         super.withResourceId(resourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Aks withDisableLocalAuth(Boolean disableLocalAuth) {
         super.withDisableLocalAuth(disableLocalAuth);
@@ -74,7 +181,7 @@ public final class Aks extends Compute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -83,5 +190,70 @@ public final class Aks extends Compute {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("computeLocation", computeLocation());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("resourceId", resourceId());
+        jsonWriter.writeBooleanField("disableLocalAuth", disableLocalAuth());
+        jsonWriter.writeStringField("computeType", this.computeType == null ? null : this.computeType.toString());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Aks from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Aks if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Aks.
+     */
+    public static Aks fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Aks deserializedAks = new Aks();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeLocation".equals(fieldName)) {
+                    deserializedAks.withComputeLocation(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAks.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedAks.withDescription(reader.getString());
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedAks.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("modifiedOn".equals(fieldName)) {
+                    deserializedAks.modifiedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedAks.withResourceId(reader.getString());
+                } else if ("provisioningErrors".equals(fieldName)) {
+                    List<ManagementError> provisioningErrors
+                        = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
+                    deserializedAks.provisioningErrors = provisioningErrors;
+                } else if ("isAttachedCompute".equals(fieldName)) {
+                    deserializedAks.isAttachedCompute = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedAks.withDisableLocalAuth(reader.getNullable(JsonReader::getBoolean));
+                } else if ("computeType".equals(fieldName)) {
+                    deserializedAks.computeType = ComputeType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAks.properties = AksSchemaProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAks;
+        });
     }
 }

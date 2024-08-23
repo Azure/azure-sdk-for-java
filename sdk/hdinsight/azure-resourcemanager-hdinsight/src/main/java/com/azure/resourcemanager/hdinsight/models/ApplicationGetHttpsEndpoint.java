@@ -5,61 +5,62 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Gets the application HTTP endpoints. */
+/**
+ * Gets the application HTTP endpoints.
+ */
 @Fluent
-public final class ApplicationGetHttpsEndpoint {
+public final class ApplicationGetHttpsEndpoint implements JsonSerializable<ApplicationGetHttpsEndpoint> {
     /*
      * The list of access modes for the application.
      */
-    @JsonProperty(value = "accessModes")
     private List<String> accessModes;
 
     /*
      * The location of the endpoint.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * The destination port to connect to.
      */
-    @JsonProperty(value = "destinationPort")
     private Integer destinationPort;
 
     /*
      * The public port to connect to.
      */
-    @JsonProperty(value = "publicPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer publicPort;
 
     /*
      * The private ip address of the endpoint.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
     /*
      * The subdomain suffix of the application.
      */
-    @JsonProperty(value = "subDomainSuffix")
     private String subDomainSuffix;
 
     /*
      * The value indicates whether to disable GatewayAuth.
      */
-    @JsonProperty(value = "disableGatewayAuth")
     private Boolean disableGatewayAuth;
 
-    /** Creates an instance of ApplicationGetHttpsEndpoint class. */
+    /**
+     * Creates an instance of ApplicationGetHttpsEndpoint class.
+     */
     public ApplicationGetHttpsEndpoint() {
     }
 
     /**
      * Get the accessModes property: The list of access modes for the application.
-     *
+     * 
      * @return the accessModes value.
      */
     public List<String> accessModes() {
@@ -68,7 +69,7 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Set the accessModes property: The list of access modes for the application.
-     *
+     * 
      * @param accessModes the accessModes value to set.
      * @return the ApplicationGetHttpsEndpoint object itself.
      */
@@ -79,7 +80,7 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Get the location property: The location of the endpoint.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -88,7 +89,7 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Get the destinationPort property: The destination port to connect to.
-     *
+     * 
      * @return the destinationPort value.
      */
     public Integer destinationPort() {
@@ -97,7 +98,7 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Set the destinationPort property: The destination port to connect to.
-     *
+     * 
      * @param destinationPort the destinationPort value to set.
      * @return the ApplicationGetHttpsEndpoint object itself.
      */
@@ -108,7 +109,7 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Get the publicPort property: The public port to connect to.
-     *
+     * 
      * @return the publicPort value.
      */
     public Integer publicPort() {
@@ -117,7 +118,7 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Get the privateIpAddress property: The private ip address of the endpoint.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -126,7 +127,7 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Set the privateIpAddress property: The private ip address of the endpoint.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the ApplicationGetHttpsEndpoint object itself.
      */
@@ -137,7 +138,7 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Get the subDomainSuffix property: The subdomain suffix of the application.
-     *
+     * 
      * @return the subDomainSuffix value.
      */
     public String subDomainSuffix() {
@@ -146,7 +147,7 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Set the subDomainSuffix property: The subdomain suffix of the application.
-     *
+     * 
      * @param subDomainSuffix the subDomainSuffix value to set.
      * @return the ApplicationGetHttpsEndpoint object itself.
      */
@@ -157,7 +158,7 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Get the disableGatewayAuth property: The value indicates whether to disable GatewayAuth.
-     *
+     * 
      * @return the disableGatewayAuth value.
      */
     public Boolean disableGatewayAuth() {
@@ -166,7 +167,7 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Set the disableGatewayAuth property: The value indicates whether to disable GatewayAuth.
-     *
+     * 
      * @param disableGatewayAuth the disableGatewayAuth value to set.
      * @return the ApplicationGetHttpsEndpoint object itself.
      */
@@ -177,9 +178,63 @@ public final class ApplicationGetHttpsEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("accessModes", this.accessModes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("destinationPort", this.destinationPort);
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        jsonWriter.writeStringField("subDomainSuffix", this.subDomainSuffix);
+        jsonWriter.writeBooleanField("disableGatewayAuth", this.disableGatewayAuth);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGetHttpsEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGetHttpsEndpoint if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGetHttpsEndpoint.
+     */
+    public static ApplicationGetHttpsEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGetHttpsEndpoint deserializedApplicationGetHttpsEndpoint = new ApplicationGetHttpsEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accessModes".equals(fieldName)) {
+                    List<String> accessModes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationGetHttpsEndpoint.accessModes = accessModes;
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationGetHttpsEndpoint.location = reader.getString();
+                } else if ("destinationPort".equals(fieldName)) {
+                    deserializedApplicationGetHttpsEndpoint.destinationPort = reader.getNullable(JsonReader::getInt);
+                } else if ("publicPort".equals(fieldName)) {
+                    deserializedApplicationGetHttpsEndpoint.publicPort = reader.getNullable(JsonReader::getInt);
+                } else if ("privateIPAddress".equals(fieldName)) {
+                    deserializedApplicationGetHttpsEndpoint.privateIpAddress = reader.getString();
+                } else if ("subDomainSuffix".equals(fieldName)) {
+                    deserializedApplicationGetHttpsEndpoint.subDomainSuffix = reader.getString();
+                } else if ("disableGatewayAuth".equals(fieldName)) {
+                    deserializedApplicationGetHttpsEndpoint.disableGatewayAuth
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGetHttpsEndpoint;
+        });
     }
 }

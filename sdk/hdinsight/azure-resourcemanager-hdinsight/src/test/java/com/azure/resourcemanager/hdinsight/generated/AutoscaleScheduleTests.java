@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoscaleScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoscaleSchedule model =
-            BinaryData
-                .fromString(
-                    "{\"days\":[\"Monday\",\"Thursday\",\"Tuesday\",\"Sunday\"],\"timeAndCapacity\":{\"time\":\"czsqpjhvm\",\"minInstanceCount\":330627677,\"maxInstanceCount\":1964386727}}")
-                .toObject(AutoscaleSchedule.class);
+        AutoscaleSchedule model = BinaryData.fromString(
+            "{\"days\":[\"Monday\",\"Thursday\",\"Tuesday\",\"Sunday\"],\"timeAndCapacity\":{\"time\":\"czsqpjhvm\",\"minInstanceCount\":330627677,\"maxInstanceCount\":1964386727}}")
+            .toObject(AutoscaleSchedule.class);
         Assertions.assertEquals(DaysOfWeek.MONDAY, model.days().get(0));
         Assertions.assertEquals("czsqpjhvm", model.timeAndCapacity().time());
         Assertions.assertEquals(330627677, model.timeAndCapacity().minInstanceCount());
@@ -27,14 +25,11 @@ public final class AutoscaleScheduleTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoscaleSchedule model =
-            new AutoscaleSchedule()
-                .withDays(Arrays.asList(DaysOfWeek.MONDAY, DaysOfWeek.THURSDAY, DaysOfWeek.TUESDAY, DaysOfWeek.SUNDAY))
-                .withTimeAndCapacity(
-                    new AutoscaleTimeAndCapacity()
-                        .withTime("czsqpjhvm")
-                        .withMinInstanceCount(330627677)
-                        .withMaxInstanceCount(1964386727));
+        AutoscaleSchedule model = new AutoscaleSchedule()
+            .withDays(Arrays.asList(DaysOfWeek.MONDAY, DaysOfWeek.THURSDAY, DaysOfWeek.TUESDAY, DaysOfWeek.SUNDAY))
+            .withTimeAndCapacity(new AutoscaleTimeAndCapacity().withTime("czsqpjhvm")
+                .withMinInstanceCount(330627677)
+                .withMaxInstanceCount(1964386727));
         model = BinaryData.fromObject(model).toObject(AutoscaleSchedule.class);
         Assertions.assertEquals(DaysOfWeek.MONDAY, model.days().get(0));
         Assertions.assertEquals("czsqpjhvm", model.timeAndCapacity().time());

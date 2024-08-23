@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScheduleProvisioningStatus. */
+/**
+ * Defines values for ScheduleProvisioningStatus.
+ */
 public final class ScheduleProvisioningStatus extends ExpandableStringEnum<ScheduleProvisioningStatus> {
-    /** Static value Creating for ScheduleProvisioningStatus. */
+    /**
+     * Static value Creating for ScheduleProvisioningStatus.
+     */
     public static final ScheduleProvisioningStatus CREATING = fromString("Creating");
 
-    /** Static value Updating for ScheduleProvisioningStatus. */
+    /**
+     * Static value Updating for ScheduleProvisioningStatus.
+     */
     public static final ScheduleProvisioningStatus UPDATING = fromString("Updating");
 
-    /** Static value Deleting for ScheduleProvisioningStatus. */
+    /**
+     * Static value Deleting for ScheduleProvisioningStatus.
+     */
     public static final ScheduleProvisioningStatus DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for ScheduleProvisioningStatus. */
+    /**
+     * Static value Succeeded for ScheduleProvisioningStatus.
+     */
     public static final ScheduleProvisioningStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ScheduleProvisioningStatus. */
+    /**
+     * Static value Failed for ScheduleProvisioningStatus.
+     */
     public static final ScheduleProvisioningStatus FAILED = fromString("Failed");
 
-    /** Static value Canceled for ScheduleProvisioningStatus. */
+    /**
+     * Static value Canceled for ScheduleProvisioningStatus.
+     */
     public static final ScheduleProvisioningStatus CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of ScheduleProvisioningStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class ScheduleProvisioningStatus extends ExpandableStringEnum<Sched
 
     /**
      * Creates or finds a ScheduleProvisioningStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScheduleProvisioningStatus.
      */
-    @JsonCreator
     public static ScheduleProvisioningStatus fromString(String name) {
         return fromString(name, ScheduleProvisioningStatus.class);
     }
 
     /**
      * Gets known ScheduleProvisioningStatus values.
-     *
+     * 
      * @return known ScheduleProvisioningStatus values.
      */
     public static Collection<ScheduleProvisioningStatus> values() {

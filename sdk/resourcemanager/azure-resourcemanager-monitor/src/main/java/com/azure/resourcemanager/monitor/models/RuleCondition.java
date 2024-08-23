@@ -5,43 +5,45 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The condition that results in the alert rule being activated.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "odata.type",
-    defaultImpl = RuleCondition.class)
-@JsonTypeName("RuleCondition")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
-        value = ThresholdRuleCondition.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition",
-        value = LocationThresholdRuleCondition.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition",
-        value = ManagementEventRuleCondition.class) })
 @Fluent
-public class RuleCondition {
+public class RuleCondition implements JsonSerializable<RuleCondition> {
+    /*
+     * specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of
+     * management events), LocationThresholdRuleCondition (based on the number of failures of a web test), and
+     * ThresholdRuleCondition (based on the threshold of a metric).
+     */
+    private String odataType = "RuleCondition";
+
     /*
      * the resource from which the rule collects its data. For this type dataSource will always be of type
      * RuleMetricDataSource.
      */
-    @JsonProperty(value = "dataSource")
     private RuleDataSource dataSource;
 
     /**
      * Creates an instance of RuleCondition class.
      */
     public RuleCondition() {
+    }
+
+    /**
+     * Get the odataType property: specifies the type of condition. This can be one of three types:
+     * ManagementEventRuleCondition (occurrences of management events), LocationThresholdRuleCondition (based on the
+     * number of failures of a web test), and ThresholdRuleCondition (based on the threshold of a metric).
+     * 
+     * @return the odataType value.
+     */
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
@@ -75,5 +77,75 @@ public class RuleCondition {
         if (dataSource() != null) {
             dataSource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("odata.type", this.odataType);
+        jsonWriter.writeJsonField("dataSource", this.dataSource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuleCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuleCondition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RuleCondition.
+     */
+    public static RuleCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition".equals(discriminatorValue)) {
+                    return ThresholdRuleCondition.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition"
+                    .equals(discriminatorValue)) {
+                    return LocationThresholdRuleCondition.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition"
+                    .equals(discriminatorValue)) {
+                    return ManagementEventRuleCondition.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RuleCondition fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuleCondition deserializedRuleCondition = new RuleCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("odata.type".equals(fieldName)) {
+                    deserializedRuleCondition.odataType = reader.getString();
+                } else if ("dataSource".equals(fieldName)) {
+                    deserializedRuleCondition.dataSource = RuleDataSource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleCondition;
+        });
     }
 }

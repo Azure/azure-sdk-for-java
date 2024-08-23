@@ -5,32 +5,28 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.PhoenixDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Phoenix server dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = PhoenixObjectDataset.class, visible = true)
-@JsonTypeName("PhoenixObject")
 @Fluent
 public final class PhoenixObjectDataset extends Dataset {
     /*
      * Type of dataset.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "PhoenixObject";
 
     /*
      * Properties specific to this dataset type.
      */
-    @JsonProperty(value = "typeProperties")
     private PhoenixDatasetTypeProperties innerTypeProperties;
 
     /**
@@ -203,5 +199,81 @@ public final class PhoenixObjectDataset extends Dataset {
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeUntypedField("structure", structure());
+        jsonWriter.writeUntypedField("schema", schema());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", folder());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PhoenixObjectDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PhoenixObjectDataset if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PhoenixObjectDataset.
+     */
+    public static PhoenixObjectDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PhoenixObjectDataset deserializedPhoenixObjectDataset = new PhoenixObjectDataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedPhoenixObjectDataset.withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedPhoenixObjectDataset.withDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedPhoenixObjectDataset.withStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedPhoenixObjectDataset.withSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedPhoenixObjectDataset.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedPhoenixObjectDataset.withAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedPhoenixObjectDataset.withFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedPhoenixObjectDataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedPhoenixObjectDataset.innerTypeProperties
+                        = PhoenixDatasetTypeProperties.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedPhoenixObjectDataset.withAdditionalProperties(additionalProperties);
+
+            return deserializedPhoenixObjectDataset;
+        });
     }
 }

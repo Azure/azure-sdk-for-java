@@ -607,7 +607,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             // Replace "AccountKey=<accountKey>;" with "AccountKey=REDACTED;"
             new TestProxySanitizer("(?:AccountKey=)(?<accountKey>.*?)(?:;)", REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("accountKey"),
             new TestProxySanitizer("$.properties.WEBSITE_AUTH_ENCRYPTION_KEY", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$.properties.DOCKER_REGISTRY_SERVER_PASSWORD", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
+            new TestProxySanitizer("$.properties.DOCKER_REGISTRY_SERVER_PASSWORD", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$.properties.protectedSettings.storageAccountKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
         ));
         sanitizers.addAll(this.sanitizers);
         interceptorManager.addSanitizers(sanitizers);

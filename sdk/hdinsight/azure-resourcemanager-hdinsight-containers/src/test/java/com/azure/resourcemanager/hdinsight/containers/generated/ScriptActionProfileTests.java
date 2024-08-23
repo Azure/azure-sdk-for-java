@@ -13,29 +13,33 @@ public final class ScriptActionProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActionProfile model = BinaryData.fromString(
-            "{\"type\":\"bycnojvkn\",\"name\":\"e\",\"url\":\"qsgzvahapj\",\"parameters\":\"hpvgqz\",\"services\":[\"rvxdjzlmw\"],\"timeoutInMinutes\":2136070791,\"shouldPersist\":false}")
+            "{\"type\":\"nqxwbp\",\"name\":\"kulpiujwaasi\",\"url\":\"qiiobyuqer\",\"parameters\":\"lp\",\"services\":[\"cciuqgbdbutau\",\"fbtkuwhhmhyk\",\"joxafnndlpi\"],\"timeoutInMinutes\":1639639314,\"shouldPersist\":false}")
             .toObject(ScriptActionProfile.class);
-        Assertions.assertEquals("bycnojvkn", model.type());
-        Assertions.assertEquals("e", model.name());
-        Assertions.assertEquals("qsgzvahapj", model.url());
-        Assertions.assertEquals("hpvgqz", model.parameters());
-        Assertions.assertEquals("rvxdjzlmw", model.services().get(0));
-        Assertions.assertEquals(2136070791, model.timeoutInMinutes());
+        Assertions.assertEquals("nqxwbp", model.type());
+        Assertions.assertEquals("kulpiujwaasi", model.name());
+        Assertions.assertEquals("qiiobyuqer", model.url());
+        Assertions.assertEquals("lp", model.parameters());
+        Assertions.assertEquals("cciuqgbdbutau", model.services().get(0));
+        Assertions.assertEquals(1639639314, model.timeoutInMinutes());
         Assertions.assertEquals(false, model.shouldPersist());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActionProfile model = new ScriptActionProfile().withType("bycnojvkn").withName("e").withUrl("qsgzvahapj")
-            .withParameters("hpvgqz").withServices(Arrays.asList("rvxdjzlmw")).withTimeoutInMinutes(2136070791)
+        ScriptActionProfile model = new ScriptActionProfile().withType("nqxwbp")
+            .withName("kulpiujwaasi")
+            .withUrl("qiiobyuqer")
+            .withParameters("lp")
+            .withServices(Arrays.asList("cciuqgbdbutau", "fbtkuwhhmhyk", "joxafnndlpi"))
+            .withTimeoutInMinutes(1639639314)
             .withShouldPersist(false);
         model = BinaryData.fromObject(model).toObject(ScriptActionProfile.class);
-        Assertions.assertEquals("bycnojvkn", model.type());
-        Assertions.assertEquals("e", model.name());
-        Assertions.assertEquals("qsgzvahapj", model.url());
-        Assertions.assertEquals("hpvgqz", model.parameters());
-        Assertions.assertEquals("rvxdjzlmw", model.services().get(0));
-        Assertions.assertEquals(2136070791, model.timeoutInMinutes());
+        Assertions.assertEquals("nqxwbp", model.type());
+        Assertions.assertEquals("kulpiujwaasi", model.name());
+        Assertions.assertEquals("qiiobyuqer", model.url());
+        Assertions.assertEquals("lp", model.parameters());
+        Assertions.assertEquals("cciuqgbdbutau", model.services().get(0));
+        Assertions.assertEquals(1639639314, model.timeoutInMinutes());
         Assertions.assertEquals(false, model.shouldPersist());
     }
 }

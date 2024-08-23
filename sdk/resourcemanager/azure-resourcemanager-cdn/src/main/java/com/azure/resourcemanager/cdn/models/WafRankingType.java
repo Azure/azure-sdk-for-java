@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class WafRankingType extends ExpandableStringEnum<WafRankingType> {
      * @param name a name to look for.
      * @return the corresponding WafRankingType.
      */
-    @JsonCreator
     public static WafRankingType fromString(String name) {
         return fromString(name, WafRankingType.class);
     }

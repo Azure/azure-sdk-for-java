@@ -31,6 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
+import com.azure.storage.file.datalake.implementation.models.DataLakeStorageExceptionInternal;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
@@ -54,7 +55,6 @@ import com.azure.storage.file.datalake.implementation.models.PathsUpdateHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathUpdateAction;
 import com.azure.storage.file.datalake.implementation.models.SetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.EncryptionAlgorithmType;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -97,7 +97,7 @@ public final class PathsImpl {
     public interface PathsService {
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsCreateHeaders, Void>> create(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -132,7 +132,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<Void>> createNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -167,7 +167,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsCreateHeaders, Void> createSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -202,7 +202,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<Void> createNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -237,7 +237,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsUpdateHeaders, SetAccessControlRecursiveResponse>> update(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -263,7 +263,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<SetAccessControlRecursiveResponse>> updateNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -289,7 +289,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsUpdateHeaders, SetAccessControlRecursiveResponse>> update(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -315,7 +315,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<SetAccessControlRecursiveResponse>> updateNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -341,7 +341,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsUpdateHeaders, SetAccessControlRecursiveResponse> updateSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -367,7 +367,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<SetAccessControlRecursiveResponse> updateNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -393,7 +393,7 @@ public final class PathsImpl {
 
         @Post("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 201, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsLeaseHeaders, Void>> lease(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -409,7 +409,7 @@ public final class PathsImpl {
 
         @Post("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 201, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<Void>> leaseNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -425,7 +425,7 @@ public final class PathsImpl {
 
         @Post("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 201, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsLeaseHeaders, Void> leaseSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -441,7 +441,7 @@ public final class PathsImpl {
 
         @Post("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 201, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<Void> leaseNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -457,7 +457,7 @@ public final class PathsImpl {
 
         @Get("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 206 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsReadHeaders, Flux<ByteBuffer>>> read(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -474,7 +474,7 @@ public final class PathsImpl {
 
         @Get("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 206 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<StreamResponse> readNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -491,7 +491,7 @@ public final class PathsImpl {
 
         @Get("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 206 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsReadHeaders, InputStream> readSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -508,7 +508,7 @@ public final class PathsImpl {
 
         @Get("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 206 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<InputStream> readNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -525,7 +525,7 @@ public final class PathsImpl {
 
         @Head("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsGetPropertiesHeaders, Void>> getProperties(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -538,7 +538,7 @@ public final class PathsImpl {
 
         @Head("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<Void>> getPropertiesNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -551,7 +551,7 @@ public final class PathsImpl {
 
         @Head("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsGetPropertiesHeaders, Void> getPropertiesSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -564,7 +564,7 @@ public final class PathsImpl {
 
         @Head("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<Void> getPropertiesNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -577,7 +577,7 @@ public final class PathsImpl {
 
         @Delete("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsDeleteHeaders, Void>> delete(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -590,7 +590,7 @@ public final class PathsImpl {
 
         @Delete("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<Void>> deleteNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -603,7 +603,7 @@ public final class PathsImpl {
 
         @Delete("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsDeleteHeaders, Void> deleteSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -616,7 +616,7 @@ public final class PathsImpl {
 
         @Delete("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<Void> deleteNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -629,7 +629,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsSetAccessControlHeaders, Void>> setAccessControl(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
@@ -644,7 +644,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<Void>> setAccessControlNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
@@ -659,7 +659,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsSetAccessControlHeaders, Void> setAccessControlSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
@@ -674,7 +674,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<Void> setAccessControlNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
@@ -689,7 +689,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse>>
             setAccessControlRecursive(@HostParam("url") String url, @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path, @QueryParam("action") String action,
@@ -701,7 +701,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<SetAccessControlRecursiveResponse>> setAccessControlRecursiveNoCustomHeaders(
             @HostParam("url") String url, @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
@@ -712,7 +712,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse>
             setAccessControlRecursiveSync(@HostParam("url") String url, @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path, @QueryParam("action") String action,
@@ -724,7 +724,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<SetAccessControlRecursiveResponse> setAccessControlRecursiveNoCustomHeadersSync(
             @HostParam("url") String url, @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
@@ -735,7 +735,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsFlushDataHeaders, Void>> flushData(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
@@ -761,7 +761,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<Void>> flushDataNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
@@ -787,7 +787,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsFlushDataHeaders, Void> flushDataSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
@@ -813,7 +813,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<Void> flushDataNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
@@ -839,7 +839,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsAppendDataHeaders, Void>> appendData(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("position") Long position,
@@ -858,7 +858,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<Void>> appendDataNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("position") Long position,
@@ -877,7 +877,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsAppendDataHeaders, Void>> appendData(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("position") Long position,
@@ -896,7 +896,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<Void>> appendDataNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("position") Long position,
@@ -915,7 +915,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsAppendDataHeaders, Void> appendDataSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("position") Long position,
@@ -934,7 +934,7 @@ public final class PathsImpl {
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<Void> appendDataNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("position") Long position,
@@ -953,7 +953,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsSetExpiryHeaders, Void>> setExpiry(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -963,7 +963,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<Void>> setExpiryNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -973,7 +973,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsSetExpiryHeaders, Void> setExpirySync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -983,7 +983,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<Void> setExpiryNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -993,7 +993,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<ResponseBase<PathsUndeleteHeaders, Void>> undelete(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-undelete-source") String undeleteSource,
@@ -1002,7 +1002,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Mono<Response<Void>> undeleteNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-undelete-source") String undeleteSource,
@@ -1011,7 +1011,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         ResponseBase<PathsUndeleteHeaders, Void> undeleteSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-undelete-source") String undeleteSource,
@@ -1020,7 +1020,7 @@ public final class PathsImpl {
 
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
         Response<Void> undeleteNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-undelete-source") String undeleteSource,
@@ -1090,7 +1090,7 @@ public final class PathsImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1268,7 +1268,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1445,7 +1445,7 @@ public final class PathsImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1525,7 +1525,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1604,7 +1604,7 @@ public final class PathsImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1783,7 +1783,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1961,7 +1961,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2138,7 +2138,7 @@ public final class PathsImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2217,7 +2217,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -2406,7 +2406,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2561,7 +2561,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2714,7 +2714,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2806,7 +2806,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -2897,7 +2897,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -3052,7 +3052,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -3205,7 +3205,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3360,7 +3360,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3513,7 +3513,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -3605,7 +3605,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -3696,7 +3696,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -3851,7 +3851,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -4005,7 +4005,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase}.
      */
@@ -4158,7 +4158,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4248,7 +4248,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -4356,7 +4356,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4429,7 +4429,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4502,7 +4502,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4543,7 +4543,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4583,7 +4583,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4656,7 +4656,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4730,7 +4730,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -4803,7 +4803,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4843,7 +4843,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -4910,7 +4910,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4992,7 +4992,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -5073,7 +5073,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5108,7 +5108,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5143,7 +5143,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -5225,7 +5225,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -5307,7 +5307,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase}.
      */
@@ -5388,7 +5388,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5423,7 +5423,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -5506,7 +5506,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties returns all system and user defined properties for a path along with {@link ResponseBase} on
      * successful completion of {@link Mono}.
@@ -5575,7 +5575,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties returns all system and user defined properties for a path along with {@link ResponseBase} on
      * successful completion of {@link Mono}.
@@ -5643,7 +5643,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties returns all system and user defined properties for a path on successful completion of
      * {@link Mono}.
@@ -5680,7 +5680,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties returns all system and user defined properties for a path on successful completion of
      * {@link Mono}.
@@ -5717,7 +5717,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties returns all system and user defined properties for a path along with {@link Response} on
      * successful completion of {@link Mono}.
@@ -5786,7 +5786,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties returns all system and user defined properties for a path along with {@link Response} on
      * successful completion of {@link Mono}.
@@ -5855,7 +5855,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties returns all system and user defined properties for a path along with {@link ResponseBase}.
      */
@@ -5922,7 +5922,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5957,7 +5957,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties returns all system and user defined properties for a path along with {@link Response}.
      */
@@ -6024,7 +6024,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -6092,7 +6092,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -6159,7 +6159,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -6196,7 +6196,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -6232,7 +6232,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -6301,7 +6301,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -6369,7 +6369,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -6436,7 +6436,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6471,7 +6471,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -6534,7 +6534,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -6600,7 +6600,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -6665,7 +6665,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -6698,7 +6698,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -6730,7 +6730,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -6796,7 +6796,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -6861,7 +6861,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -6925,7 +6925,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6957,7 +6957,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -7026,7 +7026,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -7067,7 +7067,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -7107,7 +7107,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -7145,7 +7145,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -7182,7 +7182,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -7223,7 +7223,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -7264,7 +7264,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase}.
      */
@@ -7304,7 +7304,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -7341,7 +7341,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -7397,7 +7397,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -7534,7 +7534,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -7669,7 +7669,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -7725,7 +7725,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -7780,7 +7780,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -7917,7 +7917,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -8054,7 +8054,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -8189,7 +8189,7 @@ public final class PathsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8244,7 +8244,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -8370,7 +8370,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -8447,7 +8447,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -8522,7 +8522,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -8568,7 +8568,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -8613,7 +8613,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -8690,7 +8690,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -8766,7 +8766,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -8843,7 +8843,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -8918,7 +8918,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -8964,7 +8964,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -9009,7 +9009,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -9086,7 +9086,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -9163,7 +9163,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -9238,7 +9238,7 @@ public final class PathsImpl {
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9283,7 +9283,7 @@ public final class PathsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -9339,7 +9339,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param expiresOn The time to set the blob to expiry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -9365,7 +9365,7 @@ public final class PathsImpl {
      * @param expiresOn The time to set the blob to expiry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -9389,7 +9389,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param expiresOn The time to set the blob to expiry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -9412,7 +9412,7 @@ public final class PathsImpl {
      * @param expiresOn The time to set the blob to expiry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -9434,7 +9434,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param expiresOn The time to set the blob to expiry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -9460,7 +9460,7 @@ public final class PathsImpl {
      * @param expiresOn The time to set the blob to expiry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -9486,7 +9486,7 @@ public final class PathsImpl {
      * @param expiresOn The time to set the blob to expiry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -9510,7 +9510,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param expiresOn The time to set the blob to expiry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9530,7 +9530,7 @@ public final class PathsImpl {
      * @param expiresOn The time to set the blob to expiry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -9555,7 +9555,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -9581,7 +9581,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -9605,7 +9605,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -9626,7 +9626,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -9646,7 +9646,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -9672,7 +9672,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -9697,7 +9697,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -9721,7 +9721,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9741,7 +9741,7 @@ public final class PathsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */

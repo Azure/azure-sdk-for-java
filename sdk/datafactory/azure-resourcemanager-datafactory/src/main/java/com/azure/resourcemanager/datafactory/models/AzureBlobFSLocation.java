@@ -5,29 +5,26 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The location of azure blobFS dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzureBlobFSLocation.class, visible = true)
-@JsonTypeName("AzureBlobFSLocation")
 @Fluent
 public final class AzureBlobFSLocation extends DatasetLocation {
     /*
      * Type of dataset storage location.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AzureBlobFSLocation";
 
     /*
      * Specify the fileSystem of azure blobFS. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileSystem")
     private Object fileSystem;
 
     /**
@@ -94,5 +91,61 @@ public final class AzureBlobFSLocation extends DatasetLocation {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", folderPath());
+        jsonWriter.writeUntypedField("fileName", fileName());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("fileSystem", this.fileSystem);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobFSLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobFSLocation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBlobFSLocation.
+     */
+    public static AzureBlobFSLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobFSLocation deserializedAzureBlobFSLocation = new AzureBlobFSLocation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedAzureBlobFSLocation.withFolderPath(reader.readUntyped());
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedAzureBlobFSLocation.withFileName(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureBlobFSLocation.type = reader.getString();
+                } else if ("fileSystem".equals(fieldName)) {
+                    deserializedAzureBlobFSLocation.fileSystem = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureBlobFSLocation.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureBlobFSLocation;
+        });
     }
 }

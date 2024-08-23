@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The configuration that services will be excluded when creating cluster. */
+/**
+ * The configuration that services will be excluded when creating cluster.
+ */
 @Fluent
-public final class ExcludedServicesConfig {
+public final class ExcludedServicesConfig implements JsonSerializable<ExcludedServicesConfig> {
     /*
      * The config id of excluded services.
      */
-    @JsonProperty(value = "excludedServicesConfigId")
     private String excludedServicesConfigId;
 
     /*
      * The list of excluded services.
      */
-    @JsonProperty(value = "excludedServicesList")
     private String excludedServicesList;
 
-    /** Creates an instance of ExcludedServicesConfig class. */
+    /**
+     * Creates an instance of ExcludedServicesConfig class.
+     */
     public ExcludedServicesConfig() {
     }
 
     /**
      * Get the excludedServicesConfigId property: The config id of excluded services.
-     *
+     * 
      * @return the excludedServicesConfigId value.
      */
     public String excludedServicesConfigId() {
@@ -37,7 +43,7 @@ public final class ExcludedServicesConfig {
 
     /**
      * Set the excludedServicesConfigId property: The config id of excluded services.
-     *
+     * 
      * @param excludedServicesConfigId the excludedServicesConfigId value to set.
      * @return the ExcludedServicesConfig object itself.
      */
@@ -48,7 +54,7 @@ public final class ExcludedServicesConfig {
 
     /**
      * Get the excludedServicesList property: The list of excluded services.
-     *
+     * 
      * @return the excludedServicesList value.
      */
     public String excludedServicesList() {
@@ -57,7 +63,7 @@ public final class ExcludedServicesConfig {
 
     /**
      * Set the excludedServicesList property: The list of excluded services.
-     *
+     * 
      * @param excludedServicesList the excludedServicesList value to set.
      * @return the ExcludedServicesConfig object itself.
      */
@@ -68,9 +74,48 @@ public final class ExcludedServicesConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("excludedServicesConfigId", this.excludedServicesConfigId);
+        jsonWriter.writeStringField("excludedServicesList", this.excludedServicesList);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExcludedServicesConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExcludedServicesConfig if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExcludedServicesConfig.
+     */
+    public static ExcludedServicesConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExcludedServicesConfig deserializedExcludedServicesConfig = new ExcludedServicesConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("excludedServicesConfigId".equals(fieldName)) {
+                    deserializedExcludedServicesConfig.excludedServicesConfigId = reader.getString();
+                } else if ("excludedServicesList".equals(fieldName)) {
+                    deserializedExcludedServicesConfig.excludedServicesList = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExcludedServicesConfig;
+        });
     }
 }

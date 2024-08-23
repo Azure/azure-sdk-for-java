@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for Compute List. */
+/**
+ * Samples for Compute List.
+ */
 public final class ComputeListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/list.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/list.json
      */
     /**
      * Sample code: Get Computes.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getComputes(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {

@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputeInstanceEnvironmentInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeInstanceEnvironmentInfo model =
-            BinaryData
-                .fromString("{\"name\":\"incqlhriswsl\",\"version\":\"iiovgqcgxu\"}")
-                .toObject(ComputeInstanceEnvironmentInfo.class);
-        Assertions.assertEquals("incqlhriswsl", model.name());
-        Assertions.assertEquals("iiovgqcgxu", model.version());
+        ComputeInstanceEnvironmentInfo model = BinaryData.fromString("{\"name\":\"z\",\"version\":\"karkptg\"}")
+            .toObject(ComputeInstanceEnvironmentInfo.class);
+        Assertions.assertEquals("z", model.name());
+        Assertions.assertEquals("karkptg", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputeInstanceEnvironmentInfo model =
-            new ComputeInstanceEnvironmentInfo().withName("incqlhriswsl").withVersion("iiovgqcgxu");
+        ComputeInstanceEnvironmentInfo model
+            = new ComputeInstanceEnvironmentInfo().withName("z").withVersion("karkptg");
         model = BinaryData.fromObject(model).toObject(ComputeInstanceEnvironmentInfo.class);
-        Assertions.assertEquals("incqlhriswsl", model.name());
-        Assertions.assertEquals("iiovgqcgxu", model.version());
+        Assertions.assertEquals("z", model.name());
+        Assertions.assertEquals("karkptg", model.version());
     }
 }

@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines an Aml Instance container. */
+/**
+ * Defines an Aml Instance container.
+ */
 @Fluent
-public final class ComputeInstanceContainer {
+public final class ComputeInstanceContainer implements JsonSerializable<ComputeInstanceContainer> {
     /*
      * Name of the ComputeInstance container.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Auto save settings.
      */
-    @JsonProperty(value = "autosave")
     private Autosave autosave;
 
     /*
      * Information of GPU.
      */
-    @JsonProperty(value = "gpu")
     private String gpu;
 
     /*
      * network of this container.
      */
-    @JsonProperty(value = "network")
     private Network network;
 
     /*
      * Environment information of this container.
      */
-    @JsonProperty(value = "environment")
     private ComputeInstanceEnvironmentInfo environment;
 
     /*
      * services of this containers.
      */
-    @JsonProperty(value = "services", access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> services;
 
-    /** Creates an instance of ComputeInstanceContainer class. */
+    /**
+     * Creates an instance of ComputeInstanceContainer class.
+     */
     public ComputeInstanceContainer() {
     }
 
     /**
      * Get the name property: Name of the ComputeInstance container.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +64,7 @@ public final class ComputeInstanceContainer {
 
     /**
      * Set the name property: Name of the ComputeInstance container.
-     *
+     * 
      * @param name the name value to set.
      * @return the ComputeInstanceContainer object itself.
      */
@@ -73,7 +75,7 @@ public final class ComputeInstanceContainer {
 
     /**
      * Get the autosave property: Auto save settings.
-     *
+     * 
      * @return the autosave value.
      */
     public Autosave autosave() {
@@ -82,7 +84,7 @@ public final class ComputeInstanceContainer {
 
     /**
      * Set the autosave property: Auto save settings.
-     *
+     * 
      * @param autosave the autosave value to set.
      * @return the ComputeInstanceContainer object itself.
      */
@@ -93,7 +95,7 @@ public final class ComputeInstanceContainer {
 
     /**
      * Get the gpu property: Information of GPU.
-     *
+     * 
      * @return the gpu value.
      */
     public String gpu() {
@@ -102,7 +104,7 @@ public final class ComputeInstanceContainer {
 
     /**
      * Set the gpu property: Information of GPU.
-     *
+     * 
      * @param gpu the gpu value to set.
      * @return the ComputeInstanceContainer object itself.
      */
@@ -113,7 +115,7 @@ public final class ComputeInstanceContainer {
 
     /**
      * Get the network property: network of this container.
-     *
+     * 
      * @return the network value.
      */
     public Network network() {
@@ -122,7 +124,7 @@ public final class ComputeInstanceContainer {
 
     /**
      * Set the network property: network of this container.
-     *
+     * 
      * @param network the network value to set.
      * @return the ComputeInstanceContainer object itself.
      */
@@ -133,7 +135,7 @@ public final class ComputeInstanceContainer {
 
     /**
      * Get the environment property: Environment information of this container.
-     *
+     * 
      * @return the environment value.
      */
     public ComputeInstanceEnvironmentInfo environment() {
@@ -142,7 +144,7 @@ public final class ComputeInstanceContainer {
 
     /**
      * Set the environment property: Environment information of this container.
-     *
+     * 
      * @param environment the environment value to set.
      * @return the ComputeInstanceContainer object itself.
      */
@@ -153,7 +155,7 @@ public final class ComputeInstanceContainer {
 
     /**
      * Get the services property: services of this containers.
-     *
+     * 
      * @return the services value.
      */
     public List<Object> services() {
@@ -162,12 +164,63 @@ public final class ComputeInstanceContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (environment() != null) {
             environment().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("autosave", this.autosave == null ? null : this.autosave.toString());
+        jsonWriter.writeStringField("gpu", this.gpu);
+        jsonWriter.writeStringField("network", this.network == null ? null : this.network.toString());
+        jsonWriter.writeJsonField("environment", this.environment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputeInstanceContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputeInstanceContainer if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputeInstanceContainer.
+     */
+    public static ComputeInstanceContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputeInstanceContainer deserializedComputeInstanceContainer = new ComputeInstanceContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedComputeInstanceContainer.name = reader.getString();
+                } else if ("autosave".equals(fieldName)) {
+                    deserializedComputeInstanceContainer.autosave = Autosave.fromString(reader.getString());
+                } else if ("gpu".equals(fieldName)) {
+                    deserializedComputeInstanceContainer.gpu = reader.getString();
+                } else if ("network".equals(fieldName)) {
+                    deserializedComputeInstanceContainer.network = Network.fromString(reader.getString());
+                } else if ("environment".equals(fieldName)) {
+                    deserializedComputeInstanceContainer.environment = ComputeInstanceEnvironmentInfo.fromJson(reader);
+                } else if ("services".equals(fieldName)) {
+                    List<Object> services = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedComputeInstanceContainer.services = services;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputeInstanceContainer;
+        });
     }
 }

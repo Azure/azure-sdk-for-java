@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Environment information. */
+/**
+ * Environment information.
+ */
 @Fluent
-public final class ComputeInstanceEnvironmentInfo {
+public final class ComputeInstanceEnvironmentInfo implements JsonSerializable<ComputeInstanceEnvironmentInfo> {
     /*
      * name of environment.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * version of environment.
      */
-    @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of ComputeInstanceEnvironmentInfo class. */
+    /**
+     * Creates an instance of ComputeInstanceEnvironmentInfo class.
+     */
     public ComputeInstanceEnvironmentInfo() {
     }
 
     /**
      * Get the name property: name of environment.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class ComputeInstanceEnvironmentInfo {
 
     /**
      * Set the name property: name of environment.
-     *
+     * 
      * @param name the name value to set.
      * @return the ComputeInstanceEnvironmentInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class ComputeInstanceEnvironmentInfo {
 
     /**
      * Get the version property: version of environment.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -57,7 +63,7 @@ public final class ComputeInstanceEnvironmentInfo {
 
     /**
      * Set the version property: version of environment.
-     *
+     * 
      * @param version the version value to set.
      * @return the ComputeInstanceEnvironmentInfo object itself.
      */
@@ -68,9 +74,49 @@ public final class ComputeInstanceEnvironmentInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputeInstanceEnvironmentInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputeInstanceEnvironmentInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputeInstanceEnvironmentInfo.
+     */
+    public static ComputeInstanceEnvironmentInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputeInstanceEnvironmentInfo deserializedComputeInstanceEnvironmentInfo
+                = new ComputeInstanceEnvironmentInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedComputeInstanceEnvironmentInfo.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedComputeInstanceEnvironmentInfo.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputeInstanceEnvironmentInfo;
+        });
     }
 }

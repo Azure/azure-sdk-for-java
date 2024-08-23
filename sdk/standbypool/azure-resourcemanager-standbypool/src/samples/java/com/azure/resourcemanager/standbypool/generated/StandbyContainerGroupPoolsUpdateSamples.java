@@ -20,9 +20,7 @@ import java.util.Map;
  */
 public final class StandbyContainerGroupPoolsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/standbypool/StandbyPool.Management/examples/2024-03-01-preview/StandbyContainerGroupPools_Update.
-     * json
+     * x-ms-original-file: 2024-03-01-preview/StandbyContainerGroupPools_Update.json
      */
     /**
      * Sample code: StandbyContainerGroupPools_Update.

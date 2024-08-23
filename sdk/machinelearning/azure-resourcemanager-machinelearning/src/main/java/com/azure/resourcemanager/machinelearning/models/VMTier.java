@@ -5,27 +5,32 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * VM tier
- *
- * <p>The type of the VM.
+ * 
+ * The type of the VM.
  */
 public final class VMTier extends ExpandableStringEnum<VMTier> {
-    /** Static value Standard for VMTier. */
+    /**
+     * Static value Standard for VMTier.
+     */
     public static final VMTier STANDARD = fromString("Standard");
 
-    /** Static value LowPriority for VMTier. */
+    /**
+     * Static value LowPriority for VMTier.
+     */
     public static final VMTier LOW_PRIORITY = fromString("LowPriority");
 
-    /** Static value Spot for VMTier. */
+    /**
+     * Static value Spot for VMTier.
+     */
     public static final VMTier SPOT = fromString("Spot");
 
     /**
      * Creates a new instance of VMTier value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +39,17 @@ public final class VMTier extends ExpandableStringEnum<VMTier> {
 
     /**
      * Creates or finds a VMTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VMTier.
      */
-    @JsonCreator
     public static VMTier fromString(String name) {
         return fromString(name, VMTier.class);
     }
 
     /**
      * Gets known VMTier values.
-     *
+     * 
      * @return known VMTier values.
      */
     public static Collection<VMTier> values() {

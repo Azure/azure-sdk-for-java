@@ -13,8 +13,7 @@ public final class NotebookResourceInfoImpl implements NotebookResourceInfo {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    NotebookResourceInfoImpl(
-        NotebookResourceInfoInner innerObject,
+    NotebookResourceInfoImpl(NotebookResourceInfoInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

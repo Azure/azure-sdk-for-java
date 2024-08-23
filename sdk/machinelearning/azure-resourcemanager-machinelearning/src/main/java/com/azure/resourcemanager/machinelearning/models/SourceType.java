@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Data source type. */
+/**
+ * Data source type.
+ */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
-    /** Static value Dataset for SourceType. */
+    /**
+     * Static value Dataset for SourceType.
+     */
     public static final SourceType DATASET = fromString("Dataset");
 
-    /** Static value Datastore for SourceType. */
+    /**
+     * Static value Datastore for SourceType.
+     */
     public static final SourceType DATASTORE = fromString("Datastore");
 
-    /** Static value URI for SourceType. */
+    /**
+     * Static value URI for SourceType.
+     */
     public static final SourceType URI = fromString("URI");
 
     /**
      * Creates a new instance of SourceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
 
     /**
      * Creates or finds a SourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SourceType.
      */
-    @JsonCreator
     public static SourceType fromString(String name) {
         return fromString(name, SourceType.class);
     }
 
     /**
      * Gets known SourceType values.
-     *
+     * 
      * @return known SourceType values.
      */
     public static Collection<SourceType> values() {

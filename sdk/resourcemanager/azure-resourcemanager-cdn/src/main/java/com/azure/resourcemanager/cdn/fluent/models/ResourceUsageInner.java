@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.ResourceUsageUnit;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Output of check resource usage API.
  */
 @Immutable
-public final class ResourceUsageInner {
+public final class ResourceUsageInner implements JsonSerializable<ResourceUsageInner> {
     /*
      * Resource type for which the usage is provided.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * Unit of the usage. e.g. count.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceUsageUnit unit;
 
     /*
      * Actual value of usage on the specified resource type.
      */
-    @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentValue;
 
     /*
      * Quota of the specified resource type.
      */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Integer limit;
 
     /**
@@ -85,5 +85,46 @@ public final class ResourceUsageInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceUsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceUsageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceUsageInner.
+     */
+    public static ResourceUsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceUsageInner deserializedResourceUsageInner = new ResourceUsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedResourceUsageInner.resourceType = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedResourceUsageInner.unit = ResourceUsageUnit.fromString(reader.getString());
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedResourceUsageInner.currentValue = reader.getNullable(JsonReader::getInt);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedResourceUsageInner.limit = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceUsageInner;
+        });
     }
 }

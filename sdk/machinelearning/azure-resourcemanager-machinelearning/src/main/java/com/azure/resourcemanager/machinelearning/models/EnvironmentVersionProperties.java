@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Environment version details. */
+/**
+ * Environment version details.
+ */
 @Fluent
 public final class EnvironmentVersionProperties extends AssetBase {
     /*
-     * Defines if image needs to be rebuilt based on base image changes.
+     * Environment type is either user managed or curated by the Azure ML service
+     * <see href="https://docs.microsoft.com/en-us/azure/machine-learning/resource-curated-environments" />
      */
-    @JsonProperty(value = "autoRebuild")
-    private AutoRebuildSetting autoRebuild;
+    private EnvironmentType environmentType;
 
     /*
-     * Configuration settings for Docker build context.
+     * Name of the image that will be used for the environment.
+     * <seealso href=
+     * "https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-custom-docker-image#use-a-custom-base-image"
+     * />
      */
-    @JsonProperty(value = "build")
-    private BuildContext build;
+    private String image;
 
     /*
      * Standard configuration file used by Conda that lets you install any kind of package, including Python, R, and
@@ -30,112 +37,48 @@ public final class EnvironmentVersionProperties extends AssetBase {
      * href="https://repo2docker.readthedocs.io/en/latest/config_files.html#environment-yml-install-a-conda-environment"
      * />
      */
-    @JsonProperty(value = "condaFile")
     private String condaFile;
 
     /*
-     * Environment type is either user managed or curated by the Azure ML service
-     * <see href="https://docs.microsoft.com/en-us/azure/machine-learning/resource-curated-environments" />
+     * Configuration settings for Docker build context.
      */
-    @JsonProperty(value = "environmentType", access = JsonProperty.Access.WRITE_ONLY)
-    private EnvironmentType environmentType;
-
-    /*
-     * Name of the image that will be used for the environment.
-     * <seealso
-     * href="https://docs.microsoft.com/en-us/azure/machine-learning"
-         + "/how-to-deploy-custom-docker-image#use-a-custom-base-image"
-     * />
-     */
-    @JsonProperty(value = "image")
-    private String image;
-
-    /*
-     * Defines configuration specific to inference.
-     */
-    @JsonProperty(value = "inferenceConfig")
-    private InferenceContainerProperties inferenceConfig;
+    private BuildContext build;
 
     /*
      * The OS type of the environment.
      */
-    @JsonProperty(value = "osType")
     private OperatingSystemType osType;
 
-    /** Creates an instance of EnvironmentVersionProperties class. */
+    /*
+     * Defines configuration specific to inference.
+     */
+    private InferenceContainerProperties inferenceConfig;
+
+    /*
+     * Defines if image needs to be rebuilt based on base image changes.
+     */
+    private AutoRebuildSetting autoRebuild;
+
+    /*
+     * Provisioning state for the environment version.
+     */
+    private AssetProvisioningState provisioningState;
+
+    /*
+     * Stage in the environment lifecycle assigned to this environment
+     */
+    private String stage;
+
+    /**
+     * Creates an instance of EnvironmentVersionProperties class.
+     */
     public EnvironmentVersionProperties() {
-    }
-
-    /**
-     * Get the autoRebuild property: Defines if image needs to be rebuilt based on base image changes.
-     *
-     * @return the autoRebuild value.
-     */
-    public AutoRebuildSetting autoRebuild() {
-        return this.autoRebuild;
-    }
-
-    /**
-     * Set the autoRebuild property: Defines if image needs to be rebuilt based on base image changes.
-     *
-     * @param autoRebuild the autoRebuild value to set.
-     * @return the EnvironmentVersionProperties object itself.
-     */
-    public EnvironmentVersionProperties withAutoRebuild(AutoRebuildSetting autoRebuild) {
-        this.autoRebuild = autoRebuild;
-        return this;
-    }
-
-    /**
-     * Get the build property: Configuration settings for Docker build context.
-     *
-     * @return the build value.
-     */
-    public BuildContext build() {
-        return this.build;
-    }
-
-    /**
-     * Set the build property: Configuration settings for Docker build context.
-     *
-     * @param build the build value to set.
-     * @return the EnvironmentVersionProperties object itself.
-     */
-    public EnvironmentVersionProperties withBuild(BuildContext build) {
-        this.build = build;
-        return this;
-    }
-
-    /**
-     * Get the condaFile property: Standard configuration file used by Conda that lets you install any kind of package,
-     * including Python, R, and C/C++ packages. &lt;see
-     * href="https://repo2docker.readthedocs.io/en/latest/config_files.html#environment-yml-install-a-conda-environment"
-     * /&gt;.
-     *
-     * @return the condaFile value.
-     */
-    public String condaFile() {
-        return this.condaFile;
-    }
-
-    /**
-     * Set the condaFile property: Standard configuration file used by Conda that lets you install any kind of package,
-     * including Python, R, and C/C++ packages. &lt;see
-     * href="https://repo2docker.readthedocs.io/en/latest/config_files.html#environment-yml-install-a-conda-environment"
-     * /&gt;.
-     *
-     * @param condaFile the condaFile value to set.
-     * @return the EnvironmentVersionProperties object itself.
-     */
-    public EnvironmentVersionProperties withCondaFile(String condaFile) {
-        this.condaFile = condaFile;
-        return this;
     }
 
     /**
      * Get the environmentType property: Environment type is either user managed or curated by the Azure ML service
      * &lt;see href="https://docs.microsoft.com/en-us/azure/machine-learning/resource-curated-environments" /&gt;.
-     *
+     * 
      * @return the environmentType value.
      */
     public EnvironmentType environmentType() {
@@ -143,11 +86,11 @@ public final class EnvironmentVersionProperties extends AssetBase {
     }
 
     /**
-     * Get the image property: Name of the image that will be used for the environment. &lt;seealso
-     * href="https://docs.microsoft.com/en-us/azure/machine-learning"
-         + "/how-to-deploy-custom-docker-image#use-a-custom-base-image"
+     * Get the image property: Name of the image that will be used for the environment.
+     * &lt;seealso
+     * href="https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-custom-docker-image#use-a-custom-base-image"
      * /&gt;.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -155,11 +98,11 @@ public final class EnvironmentVersionProperties extends AssetBase {
     }
 
     /**
-     * Set the image property: Name of the image that will be used for the environment. &lt;seealso
-     * href="https://docs.microsoft.com/en-us/azure/machine-learning"
-         + "/how-to-deploy-custom-docker-image#use-a-custom-base-image"
+     * Set the image property: Name of the image that will be used for the environment.
+     * &lt;seealso
+     * href="https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-custom-docker-image#use-a-custom-base-image"
      * /&gt;.
-     *
+     * 
      * @param image the image value to set.
      * @return the EnvironmentVersionProperties object itself.
      */
@@ -169,8 +112,76 @@ public final class EnvironmentVersionProperties extends AssetBase {
     }
 
     /**
+     * Get the condaFile property: Standard configuration file used by Conda that lets you install any kind of package,
+     * including Python, R, and C/C++ packages.
+     * &lt;see
+     * href="https://repo2docker.readthedocs.io/en/latest/config_files.html#environment-yml-install-a-conda-environment"
+     * /&gt;.
+     * 
+     * @return the condaFile value.
+     */
+    public String condaFile() {
+        return this.condaFile;
+    }
+
+    /**
+     * Set the condaFile property: Standard configuration file used by Conda that lets you install any kind of package,
+     * including Python, R, and C/C++ packages.
+     * &lt;see
+     * href="https://repo2docker.readthedocs.io/en/latest/config_files.html#environment-yml-install-a-conda-environment"
+     * /&gt;.
+     * 
+     * @param condaFile the condaFile value to set.
+     * @return the EnvironmentVersionProperties object itself.
+     */
+    public EnvironmentVersionProperties withCondaFile(String condaFile) {
+        this.condaFile = condaFile;
+        return this;
+    }
+
+    /**
+     * Get the build property: Configuration settings for Docker build context.
+     * 
+     * @return the build value.
+     */
+    public BuildContext build() {
+        return this.build;
+    }
+
+    /**
+     * Set the build property: Configuration settings for Docker build context.
+     * 
+     * @param build the build value to set.
+     * @return the EnvironmentVersionProperties object itself.
+     */
+    public EnvironmentVersionProperties withBuild(BuildContext build) {
+        this.build = build;
+        return this;
+    }
+
+    /**
+     * Get the osType property: The OS type of the environment.
+     * 
+     * @return the osType value.
+     */
+    public OperatingSystemType osType() {
+        return this.osType;
+    }
+
+    /**
+     * Set the osType property: The OS type of the environment.
+     * 
+     * @param osType the osType value to set.
+     * @return the EnvironmentVersionProperties object itself.
+     */
+    public EnvironmentVersionProperties withOsType(OperatingSystemType osType) {
+        this.osType = osType;
+        return this;
+    }
+
+    /**
      * Get the inferenceConfig property: Defines configuration specific to inference.
-     *
+     * 
      * @return the inferenceConfig value.
      */
     public InferenceContainerProperties inferenceConfig() {
@@ -179,7 +190,7 @@ public final class EnvironmentVersionProperties extends AssetBase {
 
     /**
      * Set the inferenceConfig property: Defines configuration specific to inference.
-     *
+     * 
      * @param inferenceConfig the inferenceConfig value to set.
      * @return the EnvironmentVersionProperties object itself.
      */
@@ -189,54 +200,84 @@ public final class EnvironmentVersionProperties extends AssetBase {
     }
 
     /**
-     * Get the osType property: The OS type of the environment.
-     *
-     * @return the osType value.
+     * Get the autoRebuild property: Defines if image needs to be rebuilt based on base image changes.
+     * 
+     * @return the autoRebuild value.
      */
-    public OperatingSystemType osType() {
-        return this.osType;
+    public AutoRebuildSetting autoRebuild() {
+        return this.autoRebuild;
     }
 
     /**
-     * Set the osType property: The OS type of the environment.
-     *
-     * @param osType the osType value to set.
+     * Set the autoRebuild property: Defines if image needs to be rebuilt based on base image changes.
+     * 
+     * @param autoRebuild the autoRebuild value to set.
      * @return the EnvironmentVersionProperties object itself.
      */
-    public EnvironmentVersionProperties withOsType(OperatingSystemType osType) {
-        this.osType = osType;
+    public EnvironmentVersionProperties withAutoRebuild(AutoRebuildSetting autoRebuild) {
+        this.autoRebuild = autoRebuild;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public EnvironmentVersionProperties withIsAnonymous(Boolean isAnonymous) {
-        super.withIsAnonymous(isAnonymous);
+    /**
+     * Get the provisioningState property: Provisioning state for the environment version.
+     * 
+     * @return the provisioningState value.
+     */
+    public AssetProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the stage property: Stage in the environment lifecycle assigned to this environment.
+     * 
+     * @return the stage value.
+     */
+    public String stage() {
+        return this.stage;
+    }
+
+    /**
+     * Set the stage property: Stage in the environment lifecycle assigned to this environment.
+     * 
+     * @param stage the stage value to set.
+     * @return the EnvironmentVersionProperties object itself.
+     */
+    public EnvironmentVersionProperties withStage(String stage) {
+        this.stage = stage;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnvironmentVersionProperties withIsArchived(Boolean isArchived) {
         super.withIsArchived(isArchived);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EnvironmentVersionProperties withIsAnonymous(Boolean isAnonymous) {
+        super.withIsAnonymous(isAnonymous);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnvironmentVersionProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public EnvironmentVersionProperties withProperties(Map<String, String> properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnvironmentVersionProperties withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -244,8 +285,17 @@ public final class EnvironmentVersionProperties extends AssetBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EnvironmentVersionProperties withProperties(Map<String, String> properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -257,5 +307,86 @@ public final class EnvironmentVersionProperties extends AssetBase {
         if (inferenceConfig() != null) {
             inferenceConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", properties(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchived", isArchived());
+        jsonWriter.writeBooleanField("isAnonymous", isAnonymous());
+        jsonWriter.writeStringField("image", this.image);
+        jsonWriter.writeStringField("condaFile", this.condaFile);
+        jsonWriter.writeJsonField("build", this.build);
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeJsonField("inferenceConfig", this.inferenceConfig);
+        jsonWriter.writeStringField("autoRebuild", this.autoRebuild == null ? null : this.autoRebuild.toString());
+        jsonWriter.writeStringField("stage", this.stage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentVersionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentVersionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentVersionProperties.
+     */
+    public static EnvironmentVersionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentVersionProperties deserializedEnvironmentVersionProperties = new EnvironmentVersionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties.withDescription(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEnvironmentVersionProperties.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEnvironmentVersionProperties.withProperties(properties);
+                } else if ("isArchived".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties.withIsArchived(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isAnonymous".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties
+                        .withIsAnonymous(reader.getNullable(JsonReader::getBoolean));
+                } else if ("environmentType".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties.environmentType
+                        = EnvironmentType.fromString(reader.getString());
+                } else if ("image".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties.image = reader.getString();
+                } else if ("condaFile".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties.condaFile = reader.getString();
+                } else if ("build".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties.build = BuildContext.fromJson(reader);
+                } else if ("osType".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties.osType
+                        = OperatingSystemType.fromString(reader.getString());
+                } else if ("inferenceConfig".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties.inferenceConfig
+                        = InferenceContainerProperties.fromJson(reader);
+                } else if ("autoRebuild".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties.autoRebuild
+                        = AutoRebuildSetting.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties.provisioningState
+                        = AssetProvisioningState.fromString(reader.getString());
+                } else if ("stage".equals(fieldName)) {
+                    deserializedEnvironmentVersionProperties.stage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentVersionProperties;
+        });
     }
 }

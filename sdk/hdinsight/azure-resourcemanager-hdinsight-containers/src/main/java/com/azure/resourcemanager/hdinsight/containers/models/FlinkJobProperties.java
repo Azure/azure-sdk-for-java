@@ -5,66 +5,61 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Properties of flink job.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
-@JsonTypeName("FlinkJob")
 @Fluent
 public final class FlinkJobProperties extends ClusterJobProperties {
     /*
+     * Type of cluster job.
+     */
+    private JobType jobType = JobType.FLINK_JOB;
+
+    /*
      * Run id of job
      */
-    @JsonProperty(value = "runId")
     private String runId;
 
     /*
      * Name of job
      */
-    @JsonProperty(value = "jobName")
     private String jobName;
 
     /*
      * A string property that specifies the directory where the job JAR is located.
      */
-    @JsonProperty(value = "jobJarDirectory")
     private String jobJarDirectory;
 
     /*
      * A string property that represents the name of the job JAR.
      */
-    @JsonProperty(value = "jarName")
     private String jarName;
 
     /*
      * A string property that specifies the entry class for the Flink job.
      */
-    @JsonProperty(value = "entryClass")
     private String entryClass;
 
     /*
      * A string property representing additional JVM arguments for the Flink job. It should be space separated value.
      */
-    @JsonProperty(value = "args")
     private String args;
 
     /*
      * A string property that represents the name of the savepoint for the Flink job
      */
-    @JsonProperty(value = "savePointName")
     private String savePointName;
 
     /*
      * A string property that indicates the action to be performed on the Flink job. It can have one of the following
      * enum values => NEW, UPDATE, STATELESS_UPDATE, STOP, START, CANCEL, SAVEPOINT, LIST_SAVEPOINT, or DELETE.
      */
-    @JsonProperty(value = "action")
     private Action action;
 
     /*
@@ -72,44 +67,47 @@ public final class FlinkJobProperties extends ClusterJobProperties {
      * jobSavePointDirectory. It accepts additional key-value pairs as properties, where the keys are strings and the
      * values are strings as well.
      */
-    @JsonProperty(value = "flinkConfiguration")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> flinkConfiguration;
 
     /*
      * Unique id for identifying a job
      */
-    @JsonProperty(value = "jobId", access = JsonProperty.Access.WRITE_ONLY)
     private String jobId;
 
     /*
      * Status of job.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Output of job.
      */
-    @JsonProperty(value = "jobOutput", access = JsonProperty.Access.WRITE_ONLY)
     private String jobOutput;
 
     /*
      * Action result of job.
      */
-    @JsonProperty(value = "actionResult", access = JsonProperty.Access.WRITE_ONLY)
     private String actionResult;
 
     /*
      * The last savepoint.
      */
-    @JsonProperty(value = "lastSavePoint", access = JsonProperty.Access.WRITE_ONLY)
     private String lastSavePoint;
 
     /**
      * Creates an instance of FlinkJobProperties class.
      */
     public FlinkJobProperties() {
+    }
+
+    /**
+     * Get the jobType property: Type of cluster job.
+     * 
+     * @return the jobType value.
+     */
+    @Override
+    public JobType jobType() {
+        return this.jobType;
     }
 
     /**
@@ -355,5 +353,80 @@ public final class FlinkJobProperties extends ClusterJobProperties {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobType", this.jobType == null ? null : this.jobType.toString());
+        jsonWriter.writeStringField("runId", this.runId);
+        jsonWriter.writeStringField("jobName", this.jobName);
+        jsonWriter.writeStringField("jobJarDirectory", this.jobJarDirectory);
+        jsonWriter.writeStringField("jarName", this.jarName);
+        jsonWriter.writeStringField("entryClass", this.entryClass);
+        jsonWriter.writeStringField("args", this.args);
+        jsonWriter.writeStringField("savePointName", this.savePointName);
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeMapField("flinkConfiguration", this.flinkConfiguration,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FlinkJobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FlinkJobProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FlinkJobProperties.
+     */
+    public static FlinkJobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FlinkJobProperties deserializedFlinkJobProperties = new FlinkJobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobType".equals(fieldName)) {
+                    deserializedFlinkJobProperties.jobType = JobType.fromString(reader.getString());
+                } else if ("runId".equals(fieldName)) {
+                    deserializedFlinkJobProperties.runId = reader.getString();
+                } else if ("jobName".equals(fieldName)) {
+                    deserializedFlinkJobProperties.jobName = reader.getString();
+                } else if ("jobJarDirectory".equals(fieldName)) {
+                    deserializedFlinkJobProperties.jobJarDirectory = reader.getString();
+                } else if ("jarName".equals(fieldName)) {
+                    deserializedFlinkJobProperties.jarName = reader.getString();
+                } else if ("entryClass".equals(fieldName)) {
+                    deserializedFlinkJobProperties.entryClass = reader.getString();
+                } else if ("args".equals(fieldName)) {
+                    deserializedFlinkJobProperties.args = reader.getString();
+                } else if ("savePointName".equals(fieldName)) {
+                    deserializedFlinkJobProperties.savePointName = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    deserializedFlinkJobProperties.action = Action.fromString(reader.getString());
+                } else if ("flinkConfiguration".equals(fieldName)) {
+                    Map<String, String> flinkConfiguration = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFlinkJobProperties.flinkConfiguration = flinkConfiguration;
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedFlinkJobProperties.jobId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedFlinkJobProperties.status = reader.getString();
+                } else if ("jobOutput".equals(fieldName)) {
+                    deserializedFlinkJobProperties.jobOutput = reader.getString();
+                } else if ("actionResult".equals(fieldName)) {
+                    deserializedFlinkJobProperties.actionResult = reader.getString();
+                } else if ("lastSavePoint".equals(fieldName)) {
+                    deserializedFlinkJobProperties.lastSavePoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFlinkJobProperties;
+        });
     }
 }

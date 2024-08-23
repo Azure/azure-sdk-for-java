@@ -12,23 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class UriFileJobInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UriFileJobInput model =
-            BinaryData
-                .fromString(
-                    "{\"jobInputType\":\"uri_file\",\"mode\":\"ReadOnlyMount\",\"uri\":\"qgrvg\",\"description\":\"mxpu\"}")
-                .toObject(UriFileJobInput.class);
-        Assertions.assertEquals("mxpu", model.description());
-        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.mode());
-        Assertions.assertEquals("qgrvg", model.uri());
+        UriFileJobInput model = BinaryData
+            .fromString(
+                "{\"jobInputType\":\"uri_file\",\"uri\":\"jt\",\"mode\":\"ReadWriteMount\",\"description\":\"z\"}")
+            .toObject(UriFileJobInput.class);
+        Assertions.assertEquals("z", model.description());
+        Assertions.assertEquals("jt", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UriFileJobInput model =
-            new UriFileJobInput().withDescription("mxpu").withMode(InputDeliveryMode.READ_ONLY_MOUNT).withUri("qgrvg");
+        UriFileJobInput model
+            = new UriFileJobInput().withDescription("z").withUri("jt").withMode(InputDeliveryMode.READ_WRITE_MOUNT);
         model = BinaryData.fromObject(model).toObject(UriFileJobInput.class);
-        Assertions.assertEquals("mxpu", model.description());
-        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.mode());
-        Assertions.assertEquals("qgrvg", model.uri());
+        Assertions.assertEquals("z", model.description());
+        Assertions.assertEquals("jt", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 }
