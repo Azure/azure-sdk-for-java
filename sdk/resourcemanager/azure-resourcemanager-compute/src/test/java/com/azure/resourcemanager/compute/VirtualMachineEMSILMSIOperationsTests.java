@@ -408,7 +408,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A0)
                 .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the

@@ -226,7 +226,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
                 .withNewUnmanagedDataDisk(100)
-                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withNewStorageAccount(storageAccountName)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
@@ -370,7 +370,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withNewVhd(60)
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
-                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();

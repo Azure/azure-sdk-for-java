@@ -48,7 +48,7 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
 
         VirtualMachine vm = computeManager.virtualMachines()
             .define(vmname)
-            .withRegion(Region.US_WEST2)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
@@ -56,7 +56,7 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
             .create();
 
         VirtualMachine.Update vmUpdate = vm.update();

@@ -1574,7 +1574,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withNewDataDisk(10, 1, CachingTypes.READ_WRITE)
             .withOSDiskDeleteOptions(DeleteOptions.DETACH)
             .withExistingStorageAccount(storageAccount)
-            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .create();
         Disk vm1OSDisk = this.computeManager.disks().getById(vm1.osDiskId());
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, vm1OSDisk.encryption().type());

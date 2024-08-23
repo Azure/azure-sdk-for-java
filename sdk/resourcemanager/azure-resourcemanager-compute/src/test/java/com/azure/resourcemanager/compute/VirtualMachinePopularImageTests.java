@@ -46,7 +46,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withPopularWindowsImage(image)
                 .withAdminUsername("testUser")
                 .withAdminPassword(password())
-                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .createAsync();
             vmMonos.add(mono);
         }
@@ -67,7 +67,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withPopularLinuxImage(image)
                 .withRootUsername("testUser")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .createAsync();
             vmMonos.add(mono);
         }

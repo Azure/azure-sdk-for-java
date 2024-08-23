@@ -406,7 +406,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withSsh(sshPublicKey())
                 .withNewDataDisk(1)
                 .withNewDataDisk(1, 2, CachingTypes.READ_WRITE)
-                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withTrustedLaunch()
@@ -498,7 +498,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withNewVhd(60)
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
-                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
