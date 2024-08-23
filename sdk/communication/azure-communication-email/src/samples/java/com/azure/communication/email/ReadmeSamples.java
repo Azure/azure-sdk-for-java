@@ -126,7 +126,7 @@ public class ReadmeSamples {
             "text/plain",
             attachmentContent
         );
-        
+
         EmailMessage message = new EmailMessage()
             .setSenderAddress("<sender-email-address>")
             .setToRecipients("<recipient-email-address>")
@@ -152,7 +152,7 @@ public class ReadmeSamples {
             attachmentContent
         );
         attachment.setContentId("inline_image");
-        
+
         EmailMessage message = new EmailMessage()
             .setSenderAddress("<sender-email-address>")
             .setToRecipients("<recipient-email-address>")

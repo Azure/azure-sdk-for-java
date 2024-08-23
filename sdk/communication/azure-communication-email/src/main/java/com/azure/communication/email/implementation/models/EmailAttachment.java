@@ -41,7 +41,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
 
     /**
      * Creates an instance of EmailAttachment class.
-     * 
+     *
      * @param name the name value to set.
      * @param contentType the contentType value to set.
      * @param contentInBase64 the contentInBase64 value to set.
@@ -54,7 +54,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
 
     /**
      * Get the name property: Name of the attachment.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -63,7 +63,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
 
     /**
      * Get the contentType property: MIME type of the content being attached.
-     * 
+     *
      * @return the contentType value.
      */
     public String getContentType() {
@@ -83,7 +83,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
 
     /**
      * Get the contentInBase64 property: Base64 encoded contents of the attachment.
-     * 
+     *
      * @return the contentInBase64 value.
      */
     public BinaryData getContentInBase64() {
@@ -92,7 +92,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
 
     /**
      * Get the contentId property: Unique identifier (CID) to reference an inline attachment.
-     * 
+     *
      * @return the contentId value.
      */
     public String getContentId() {
@@ -101,7 +101,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
 
     /**
      * Set the contentId property: Unique identifier (CID) to reference an inline attachment.
-     * 
+     *
      * @param contentId the contentId value to set.
      * @return the EmailAttachment object itself.
      */
@@ -125,7 +125,7 @@ public final class EmailAttachment implements JsonSerializable<EmailAttachment> 
 
     /**
      * Reads an instance of EmailAttachment from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of EmailAttachment if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

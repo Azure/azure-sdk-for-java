@@ -29,7 +29,7 @@ public final class EmailAttachment {
 
     /**
      * Creates an instance of EmailAttachment class.
-     * 
+     *
      * @param name the name value to set.
      * @param contentType the contentType value to set.
      * @param contentInBase64 the contentInBase64 value to set.
@@ -42,7 +42,7 @@ public final class EmailAttachment {
 
     /**
      * Get the name property: Name of the attachment.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -51,7 +51,7 @@ public final class EmailAttachment {
 
     /**
      * Get the contentType property: MIME type of the content being attached.
-     * 
+     *
      * @return the contentType value.
      */
     public String getContentType() {
@@ -71,7 +71,7 @@ public final class EmailAttachment {
 
     /**
      * Get the contentInBase64 property: Base64 encoded contents of the attachment.
-     * 
+     *
      * @return the contentInBase64 value.
      */
     public BinaryData getContentInBase64() {
@@ -80,7 +80,7 @@ public final class EmailAttachment {
 
     /**
      * Get the contentId property: Unique identifier (CID) to reference an inline attachment.
-     * 
+     *
      * @return the contentId value.
      */
     public String getContentId() {
@@ -89,7 +89,7 @@ public final class EmailAttachment {
 
     /**
      * Set the contentId property: Unique identifier (CID) to reference an inline attachment.
-     * 
+     *
      * @param contentId the contentId value to set.
      * @return the EmailAttachment object itself.
      */

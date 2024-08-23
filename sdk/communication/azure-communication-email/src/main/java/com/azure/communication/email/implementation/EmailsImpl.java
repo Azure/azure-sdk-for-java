@@ -49,7 +49,7 @@ public final class EmailsImpl {
 
     /**
      * Initializes an instance of EmailsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     EmailsImpl(AzureCommunicationEmailServiceImpl client) {
@@ -82,7 +82,7 @@ public final class EmailsImpl {
 
     /**
      * Gets the status of the email send operation.
-     * 
+     *
      * @param operationId ID of the long running operation (GUID) returned from a previous call to send email.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -98,7 +98,7 @@ public final class EmailsImpl {
 
     /**
      * Gets the status of the email send operation.
-     * 
+     *
      * @param operationId ID of the long running operation (GUID) returned from a previous call to send email.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +115,7 @@ public final class EmailsImpl {
 
     /**
      * Gets the status of the email send operation.
-     * 
+     *
      * @param operationId ID of the long running operation (GUID) returned from a previous call to send email.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -129,7 +129,7 @@ public final class EmailsImpl {
 
     /**
      * Gets the status of the email send operation.
-     * 
+     *
      * @param operationId ID of the long running operation (GUID) returned from a previous call to send email.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,7 +144,7 @@ public final class EmailsImpl {
 
     /**
      * Queues an email message to be sent to one or more recipients.
-     * 
+     *
      * @param message Message payload for sending an email.
      * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
      * not provided by the customer, the service will generate one.
@@ -164,7 +164,7 @@ public final class EmailsImpl {
 
     /**
      * Queues an email message to be sent to one or more recipients.
-     * 
+     *
      * @param message Message payload for sending an email.
      * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
      * not provided by the customer, the service will generate one.
@@ -185,7 +185,7 @@ public final class EmailsImpl {
 
     /**
      * Queues an email message to be sent to one or more recipients.
-     * 
+     *
      * @param message Message payload for sending an email.
      * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
      * not provided by the customer, the service will generate one.
@@ -208,7 +208,7 @@ public final class EmailsImpl {
 
     /**
      * Queues an email message to be sent to one or more recipients.
-     * 
+     *
      * @param message Message payload for sending an email.
      * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
      * not provided by the customer, the service will generate one.
