@@ -1,7 +1,7 @@
 {
   "flavor": "azure", 
   "CrossLanguageDefinitionId": {
-    "com.azure.ai.anomalydetector.AnomalyDetectorClientBuilder": "AnomalyDetector.AnomalyDetectorClient",
+    "com.azure.ai.anomalydetector.AnomalyDetectorClientBuilder": "AnomalyDetector",
     "com.azure.ai.anomalydetector.MultivariateAsyncClient": "null",
     "com.azure.ai.anomalydetector.MultivariateAsyncClient.deleteMultivariateModel": "AnomalyDetector.Multivariate.deleteMultivariateModel",
     "com.azure.ai.anomalydetector.MultivariateAsyncClient.deleteMultivariateModelWithResponse": "AnomalyDetector.Multivariate.deleteMultivariateModel",

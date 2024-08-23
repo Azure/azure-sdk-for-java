@@ -30,6 +30,7 @@ public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDa
     @Generated
     public OnYourDataEncodedApiKeyAuthenticationOptions(String encodedApiKey) {
         this.encodedApiKey = encodedApiKey;
+        this.type = OnYourDataAuthenticationType.ENCODED_API_KEY;
     }
 
     /**
@@ -42,23 +43,6 @@ public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDa
         return this.encodedApiKey;
     }
 
-    /*
-     * The authentication type.
-     */
-    @Generated
-    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.ENCODED_API_KEY;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -66,8 +50,8 @@ public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("encoded_api_key", this.encodedApiKey);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

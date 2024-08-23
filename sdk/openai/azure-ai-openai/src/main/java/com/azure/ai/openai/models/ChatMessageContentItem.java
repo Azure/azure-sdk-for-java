@@ -22,13 +22,14 @@ public class ChatMessageContentItem implements JsonSerializable<ChatMessageConte
      */
     @Generated
     public ChatMessageContentItem() {
+        this.type = "ChatMessageContentItem";
     }
 
     /*
      * The discriminated object type.
      */
     @Generated
-    private String type = "ChatMessageContentItem";
+    String type;
 
     /**
      * Get the type property: The discriminated object type.
@@ -47,7 +48,7 @@ public class ChatMessageContentItem implements JsonSerializable<ChatMessageConte
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -95,13 +96,25 @@ public class ChatMessageContentItem implements JsonSerializable<ChatMessageConte
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedChatMessageContentItem.type = reader.getString();
-                } else {
+                if (!ChatMessageContentItem.fromJsonShared(reader, fieldName, deserializedChatMessageContentItem)) {
                     reader.skipChildren();
                 }
             }
             return deserializedChatMessageContentItem;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        ChatMessageContentItem deserializedChatMessageContentItem) throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedChatMessageContentItem.type = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

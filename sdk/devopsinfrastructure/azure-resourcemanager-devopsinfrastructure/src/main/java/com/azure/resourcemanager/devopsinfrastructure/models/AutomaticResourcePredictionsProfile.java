@@ -16,11 +16,6 @@ import java.io.IOException;
 @Fluent
 public final class AutomaticResourcePredictionsProfile extends ResourcePredictionsProfile {
     /*
-     * Determines how the stand-by scheme should be provided.
-     */
-    private ResourcePredictionsProfileType kind = ResourcePredictionsProfileType.AUTOMATIC;
-
-    /*
      * Determines the balance between cost and performance.
      */
     private PredictionPreference predictionPreference;
@@ -29,16 +24,7 @@ public final class AutomaticResourcePredictionsProfile extends ResourcePredictio
      * Creates an instance of AutomaticResourcePredictionsProfile class.
      */
     public AutomaticResourcePredictionsProfile() {
-    }
-
-    /**
-     * Get the kind property: Determines how the stand-by scheme should be provided.
-     * 
-     * @return the kind value.
-     */
-    @Override
-    public ResourcePredictionsProfileType kind() {
-        return this.kind;
+        this.kind = ResourcePredictionsProfileType.AUTOMATIC;
     }
 
     /**
@@ -76,7 +62,7 @@ public final class AutomaticResourcePredictionsProfile extends ResourcePredictio
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("predictionPreference",
             this.predictionPreference == null ? null : this.predictionPreference.toString());
         return jsonWriter.writeEndObject();
@@ -98,9 +84,9 @@ public final class AutomaticResourcePredictionsProfile extends ResourcePredictio
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("kind".equals(fieldName)) {
-                    deserializedAutomaticResourcePredictionsProfile.kind
-                        = ResourcePredictionsProfileType.fromString(reader.getString());
+                if (ResourcePredictionsProfile.fromJsonShared(reader, fieldName,
+                    deserializedAutomaticResourcePredictionsProfile)) {
+                    continue;
                 } else if ("predictionPreference".equals(fieldName)) {
                     deserializedAutomaticResourcePredictionsProfile.predictionPreference
                         = PredictionPreference.fromString(reader.getString());

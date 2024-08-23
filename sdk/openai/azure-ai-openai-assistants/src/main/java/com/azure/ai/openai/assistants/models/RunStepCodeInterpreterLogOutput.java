@@ -30,6 +30,7 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
     @Generated
     private RunStepCodeInterpreterLogOutput(String logs) {
         this.logs = logs;
+        this.type = "logs";
     }
 
     /**
@@ -42,23 +43,6 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
         return this.logs;
     }
 
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "logs";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -66,8 +50,8 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("logs", this.logs);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

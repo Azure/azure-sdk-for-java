@@ -18,11 +18,6 @@ import java.util.List;
 @Fluent
 public final class GitHubOrganizationProfile extends OrganizationProfile {
     /*
-     * Discriminator property for OrganizationProfile.
-     */
-    private String kind = "GitHub";
-
-    /*
      * The list of GitHub organizations/repositories the pool should be present in.
      */
     private List<GitHubOrganization> organizations;
@@ -31,16 +26,7 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
      * Creates an instance of GitHubOrganizationProfile class.
      */
     public GitHubOrganizationProfile() {
-    }
-
-    /**
-     * Get the kind property: Discriminator property for OrganizationProfile.
-     * 
-     * @return the kind value.
-     */
-    @Override
-    public String kind() {
-        return this.kind;
+        this.kind = "GitHub";
     }
 
     /**
@@ -87,8 +73,8 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeArrayField("organizations", this.organizations, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 
@@ -108,12 +94,12 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("organizations".equals(fieldName)) {
+                if (OrganizationProfile.fromJsonShared(reader, fieldName, deserializedGitHubOrganizationProfile)) {
+                    continue;
+                } else if ("organizations".equals(fieldName)) {
                     List<GitHubOrganization> organizations
                         = reader.readArray(reader1 -> GitHubOrganization.fromJson(reader1));
                     deserializedGitHubOrganizationProfile.organizations = organizations;
-                } else if ("kind".equals(fieldName)) {
-                    deserializedGitHubOrganizationProfile.kind = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

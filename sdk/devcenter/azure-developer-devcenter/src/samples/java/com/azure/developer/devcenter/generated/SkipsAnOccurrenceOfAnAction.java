@@ -12,8 +12,7 @@ public class SkipsAnOccurrenceOfAnAction {
     public static void main(String[] args) {
         DevBoxesClient devBoxesClient
             = new DevBoxesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(
-                    "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
+                .endpoint("https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com")
                 .buildClient();
         // BEGIN:com.azure.developer.devcenter.generated.skipaction.skipsanoccurrenceofanaction
         devBoxesClient.skipAction("myProject", "me", "myDevBox", "schedule-default");

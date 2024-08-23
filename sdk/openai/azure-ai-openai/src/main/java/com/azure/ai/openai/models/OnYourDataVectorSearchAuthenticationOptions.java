@@ -22,14 +22,14 @@ public class OnYourDataVectorSearchAuthenticationOptions
      * The type of authentication to use.
      */
     @Generated
-    private OnYourDataVectorSearchAuthenticationType type
-        = OnYourDataVectorSearchAuthenticationType.fromString("OnYourDataVectorSearchAuthenticationOptions");
+    OnYourDataVectorSearchAuthenticationType type;
 
     /**
      * Creates an instance of OnYourDataVectorSearchAuthenticationOptions class.
      */
     @Generated
     public OnYourDataVectorSearchAuthenticationOptions() {
+        this.type = OnYourDataVectorSearchAuthenticationType.fromString("OnYourDataVectorSearchAuthenticationOptions");
     }
 
     /**
@@ -49,7 +49,7 @@ public class OnYourDataVectorSearchAuthenticationOptions
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -99,14 +99,28 @@ public class OnYourDataVectorSearchAuthenticationOptions
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedOnYourDataVectorSearchAuthenticationOptions.type
-                        = OnYourDataVectorSearchAuthenticationType.fromString(reader.getString());
-                } else {
+                if (!OnYourDataVectorSearchAuthenticationOptions.fromJsonShared(reader, fieldName,
+                    deserializedOnYourDataVectorSearchAuthenticationOptions)) {
                     reader.skipChildren();
                 }
             }
             return deserializedOnYourDataVectorSearchAuthenticationOptions;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        OnYourDataVectorSearchAuthenticationOptions deserializedOnYourDataVectorSearchAuthenticationOptions)
+        throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedOnYourDataVectorSearchAuthenticationOptions.type
+                = OnYourDataVectorSearchAuthenticationType.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

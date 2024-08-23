@@ -22,23 +22,7 @@ public final class ChatCompletionsTextResponseFormat extends ChatCompletionsResp
      */
     @Generated
     public ChatCompletionsTextResponseFormat() {
-    }
-
-    /*
-     * The discriminated type for the response format.
-     */
-    @Generated
-    private String type = "text";
-
-    /**
-     * Get the type property: The discriminated type for the response format.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "text";
     }
 
     /**
@@ -48,7 +32,7 @@ public final class ChatCompletionsTextResponseFormat extends ChatCompletionsResp
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -68,8 +52,9 @@ public final class ChatCompletionsTextResponseFormat extends ChatCompletionsResp
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedChatCompletionsTextResponseFormat.type = reader.getString();
+                if (ChatCompletionsResponseFormat.fromJsonShared(reader, fieldName,
+                    deserializedChatCompletionsTextResponseFormat)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

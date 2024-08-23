@@ -31,6 +31,7 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
     @Generated
     protected RunStepToolCall(String id) {
         this.id = id;
+        this.type = "RunStepToolCall";
     }
 
     /**
@@ -50,8 +51,7 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -115,7 +115,7 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
      * The object type.
      */
     @Generated
-    private String type = "RunStepToolCall";
+    String type;
 
     /**
      * Get the type property: The object type.
@@ -125,5 +125,10 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
     @Generated
     public String getType() {
         return this.type;
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
     }
 }

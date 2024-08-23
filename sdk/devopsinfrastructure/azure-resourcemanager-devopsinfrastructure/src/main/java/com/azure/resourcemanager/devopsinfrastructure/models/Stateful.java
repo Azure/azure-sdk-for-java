@@ -16,11 +16,6 @@ import java.io.IOException;
 @Fluent
 public final class Stateful extends AgentProfile {
     /*
-     * Discriminator property for AgentProfile.
-     */
-    private String kind = "Stateful";
-
-    /*
      * How long should stateful machines be kept around. The maximum is one week.
      */
     private String maxAgentLifetime;
@@ -35,16 +30,7 @@ public final class Stateful extends AgentProfile {
      * Creates an instance of Stateful class.
      */
     public Stateful() {
-    }
-
-    /**
-     * Get the kind property: Discriminator property for AgentProfile.
-     * 
-     * @return the kind value.
-     */
-    @Override
-    public String kind() {
-        return this.kind;
+        this.kind = "Stateful";
     }
 
     /**
@@ -128,9 +114,7 @@ public final class Stateful extends AgentProfile {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resourcePredictions", resourcePredictions());
-        jsonWriter.writeJsonField("resourcePredictionsProfile", resourcePredictionsProfile());
-        jsonWriter.writeStringField("kind", this.kind);
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("maxAgentLifetime", this.maxAgentLifetime);
         jsonWriter.writeStringField("gracePeriodTimeSpan", this.gracePeriodTimeSpan);
         return jsonWriter.writeEndObject();
@@ -151,12 +135,8 @@ public final class Stateful extends AgentProfile {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("resourcePredictions".equals(fieldName)) {
-                    deserializedStateful.withResourcePredictions(ResourcePredictions.fromJson(reader));
-                } else if ("resourcePredictionsProfile".equals(fieldName)) {
-                    deserializedStateful.withResourcePredictionsProfile(ResourcePredictionsProfile.fromJson(reader));
-                } else if ("kind".equals(fieldName)) {
-                    deserializedStateful.kind = reader.getString();
+                if (AgentProfile.fromJsonShared(reader, fieldName, deserializedStateful)) {
+                    continue;
                 } else if ("maxAgentLifetime".equals(fieldName)) {
                     deserializedStateful.maxAgentLifetime = reader.getString();
                 } else if ("gracePeriodTimeSpan".equals(fieldName)) {

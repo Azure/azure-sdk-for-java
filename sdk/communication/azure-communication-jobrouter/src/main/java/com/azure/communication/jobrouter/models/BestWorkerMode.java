@@ -20,12 +20,6 @@ import java.util.Set;
 public final class BestWorkerMode extends DistributionMode {
 
     /*
-     * The type discriminator describing a sub-type of DistributionMode.
-     */
-    @Generated
-    private DistributionModeKind kind = DistributionModeKind.BEST_WORKER;
-
-    /*
      * Define a scoring rule to use, when calculating a score to determine the best worker. If not set, will use a
      * default scoring formula that uses the number of job labels that the worker labels match, as well as the number of
      * label selectors the worker labels match and/or exceed using a logistic function
@@ -51,17 +45,7 @@ public final class BestWorkerMode extends DistributionMode {
      */
     @Generated
     public BestWorkerMode() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of DistributionMode.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public DistributionModeKind getKind() {
-        return this.kind;
+        this.kind = DistributionModeKind.BEST_WORKER;
     }
 
     /**
@@ -232,17 +216,8 @@ public final class BestWorkerMode extends DistributionMode {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("minConcurrentOffers".equals(fieldName)) {
-                    JsonMergePatchHelper.getDistributionModeAccessor()
-                        .setMinConcurrentOffers(deserializedBestWorkerMode, reader.getNullable(JsonReader::getInt));
-                } else if ("maxConcurrentOffers".equals(fieldName)) {
-                    JsonMergePatchHelper.getDistributionModeAccessor()
-                        .setMaxConcurrentOffers(deserializedBestWorkerMode, reader.getNullable(JsonReader::getInt));
-                } else if ("bypassSelectors".equals(fieldName)) {
-                    JsonMergePatchHelper.getDistributionModeAccessor()
-                        .setBypassSelectors(deserializedBestWorkerMode, reader.getNullable(JsonReader::getBoolean));
-                } else if ("kind".equals(fieldName)) {
-                    deserializedBestWorkerMode.kind = DistributionModeKind.fromString(reader.getString());
+                if (DistributionMode.fromJsonShared(reader, fieldName, deserializedBestWorkerMode)) {
+                    continue;
                 } else if ("scoringRule".equals(fieldName)) {
                     deserializedBestWorkerMode.scoringRule = RouterRule.fromJson(reader);
                 } else if ("scoringRuleOptions".equals(fieldName)) {

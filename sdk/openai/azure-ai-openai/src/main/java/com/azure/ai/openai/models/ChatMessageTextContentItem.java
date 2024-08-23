@@ -30,6 +30,7 @@ public final class ChatMessageTextContentItem extends ChatMessageContentItem {
     @Generated
     public ChatMessageTextContentItem(String text) {
         this.text = text;
+        this.type = "text";
     }
 
     /**
@@ -42,23 +43,6 @@ public final class ChatMessageTextContentItem extends ChatMessageContentItem {
         return this.text;
     }
 
-    /*
-     * The discriminated object type.
-     */
-    @Generated
-    private String type = "text";
-
-    /**
-     * Get the type property: The discriminated object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -66,8 +50,8 @@ public final class ChatMessageTextContentItem extends ChatMessageContentItem {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

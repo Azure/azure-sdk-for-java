@@ -21,6 +21,7 @@ public final class CodeInterpreterToolDefinition extends ToolDefinition {
      */
     @Generated
     public CodeInterpreterToolDefinition() {
+        this.type = "code_interpreter";
     }
 
     @Override
@@ -28,23 +29,6 @@ public final class CodeInterpreterToolDefinition extends ToolDefinition {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", "code_interpreter");
         return jsonWriter.writeEndObject();
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "code_interpreter";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 
     /**
@@ -63,8 +47,8 @@ public final class CodeInterpreterToolDefinition extends ToolDefinition {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedCodeInterpreterToolDefinition.type = reader.getString();
+                if (ToolDefinition.fromJsonShared(reader, fieldName, deserializedCodeInterpreterToolDefinition)) {
+                    continue;
                 } else {
                     reader.skipChildren();
                 }

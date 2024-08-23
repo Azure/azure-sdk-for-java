@@ -20,12 +20,6 @@ import java.util.Set;
 public final class StaticRouterRule extends RouterRule {
 
     /*
-     * The type discriminator describing a sub-type of RouterRule
-     */
-    @Generated
-    private RouterRuleKind kind = RouterRuleKind.STATIC;
-
-    /*
      * The static value this rule always returns. Values must be primitive values - number, string, boolean.
      */
     @Generated
@@ -42,17 +36,7 @@ public final class StaticRouterRule extends RouterRule {
      */
     @Generated
     public StaticRouterRule() {
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of RouterRule.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RouterRuleKind getKind() {
-        return this.kind;
+        this.kind = RouterRuleKind.STATIC;
     }
 
     /**
@@ -111,8 +95,8 @@ public final class StaticRouterRule extends RouterRule {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedStaticRouterRule.kind = RouterRuleKind.fromString(reader.getString());
+                if (RouterRule.fromJsonShared(reader, fieldName, deserializedStaticRouterRule)) {
+                    continue;
                 } else if ("value".equals(fieldName)) {
                     deserializedStaticRouterRule.value = RouterValue.fromJson(reader);
                 } else {

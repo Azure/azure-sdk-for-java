@@ -25,7 +25,7 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
      * Type of operation.
      */
     @Generated
-    private OperationKind kind = OperationKind.fromString("OperationDetails");
+    OperationKind kind;
 
     /*
      * Operation ID
@@ -96,6 +96,7 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
         this.createdDateTime = createdDateTime;
         this.lastUpdatedDateTime = lastUpdatedDateTime;
         this.resourceLocation = resourceLocation;
+        this.kind = OperationKind.fromString("OperationDetails");
     }
 
     /**
@@ -265,6 +266,11 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("createdDateTime",
             this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
@@ -278,7 +284,6 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
         jsonWriter.writeStringField("apiVersion", this.apiVersion);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("error", this.error);
-        return jsonWriter.writeEndObject();
     }
 
     /**

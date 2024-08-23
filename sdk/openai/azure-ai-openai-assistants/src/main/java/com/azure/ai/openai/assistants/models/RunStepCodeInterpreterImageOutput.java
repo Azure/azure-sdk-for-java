@@ -30,6 +30,7 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
     @Generated
     private RunStepCodeInterpreterImageOutput(RunStepCodeInterpreterImageReference image) {
         this.image = image;
+        this.type = "image";
     }
 
     /**
@@ -49,8 +50,8 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("image", this.image);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,22 +85,5 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
             deserializedRunStepCodeInterpreterImageOutput.type = type;
             return deserializedRunStepCodeInterpreterImageOutput;
         });
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "image";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

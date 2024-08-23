@@ -30,18 +30,6 @@ import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 
 /**
  * Initializes a new instance of the asynchronous ImageAnalysisClient type.
- *
- * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client -->
- * <pre>
- * &#47;&#47;
- * &#47;&#47; Create an asynchronous Image Analysis client.
- * &#47;&#47;
- * ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.async-client -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class, isAsync = true)
 public final class ImageAnalysisAsyncClient {
@@ -89,15 +77,15 @@ public final class ImageAnalysisAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     url: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     captionResult (Optional): {
@@ -319,13 +307,13 @@ public final class ImageAnalysisAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     captionResult (Optional): {
@@ -536,30 +524,26 @@ public final class ImageAnalysisAsyncClient {
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.async-analysis-from-url -->
+     * 
      * <pre>
      * &#47;&#47;
      * &#47;&#47; Asynchronous analysis of an image file &#40;https:&#47;&#47;aka.ms&#47;azsdk&#47;image-analysis&#47;sample.jpg&#41;,
      * &#47;&#47; using all visual features, with all options set. You will likely need fewer visual features
      * &#47;&#47; and only some &#40;or no&#41; options set.
      * &#47;&#47;
-     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;
-     *     .setLanguage&#40;&quot;en&quot;&#41;
+     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;.setLanguage&#40;&quot;en&quot;&#41;
      *     .setGenderNeutralCaption&#40;true&#41;
      *     .setSmartCropsAspectRatios&#40;Arrays.asList&#40;0.9, 1.33&#41;&#41;
      *     .setModelVersion&#40;&quot;latest&quot;&#41;;
      *
-     * Mono&lt;ImageAnalysisResult&gt; result = client.analyzeFromUrl&#40;
-     *     &quot;https:&#47;&#47;aka.ms&#47;azsdk&#47;image-analysis&#47;sample.jpg&quot;,
-     *     Arrays.asList&#40;
-     *         VisualFeatures.SMART_CROPS,
-     *         VisualFeatures.CAPTION,
-     *         VisualFeatures.DENSE_CAPTIONS,
-     *         VisualFeatures.OBJECTS,
-     *         VisualFeatures.PEOPLE,
-     *         VisualFeatures.READ,
-     *         VisualFeatures.TAGS&#41;,
-     *     options&#41;;
+     * Mono&lt;ImageAnalysisResult&gt; result
+     *     = client
+     *         .analyzeFromUrl&#40;&quot;https:&#47;&#47;aka.ms&#47;azsdk&#47;image-analysis&#47;sample.jpg&quot;,
+     *             Arrays.asList&#40;VisualFeatures.SMART_CROPS, VisualFeatures.CAPTION, VisualFeatures.DENSE_CAPTIONS,
+     *                 VisualFeatures.OBJECTS, VisualFeatures.PEOPLE, VisualFeatures.READ, VisualFeatures.TAGS&#41;,
+     *             options&#41;;
      * </pre>
+     * 
      * <!-- end com.azure.ai.vision.imageanalysis.async-analysis-from-url -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -589,30 +573,26 @@ public final class ImageAnalysisAsyncClient {
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.async-analysis-from-file -->
+     * 
      * <pre>
      * &#47;&#47;
      * &#47;&#47; Asynchronous analysis of an image file &#40;sample.jpg&#41;, using all visual features,
      * &#47;&#47; with all options set. You will likely need fewer visual features and only
      * &#47;&#47; some &#40;or no&#41; options set.
      * &#47;&#47;
-     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;
-     *     .setLanguage&#40;&quot;en&quot;&#41;
+     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;.setLanguage&#40;&quot;en&quot;&#41;
      *     .setGenderNeutralCaption&#40;true&#41;
      *     .setSmartCropsAspectRatios&#40;Arrays.asList&#40;0.9, 1.33&#41;&#41;
      *     .setModelVersion&#40;&quot;latest&quot;&#41;;
      *
-     * Mono&lt;ImageAnalysisResult&gt; result = client.analyze&#40;
-     *     BinaryData.fromFile&#40;new File&#40;&quot;sample.jpg&quot;&#41;.toPath&#40;&#41;&#41;,
-     *     Arrays.asList&#40;
-     *         VisualFeatures.SMART_CROPS,
-     *         VisualFeatures.CAPTION,
-     *         VisualFeatures.DENSE_CAPTIONS,
-     *         VisualFeatures.OBJECTS,
-     *         VisualFeatures.PEOPLE,
-     *         VisualFeatures.READ,
-     *         VisualFeatures.TAGS&#41;,
-     *     options&#41;;
+     * Mono&lt;ImageAnalysisResult&gt; result
+     *     = client
+     *         .analyze&#40;BinaryData.fromFile&#40;new File&#40;&quot;sample.jpg&quot;&#41;.toPath&#40;&#41;&#41;,
+     *             Arrays.asList&#40;VisualFeatures.SMART_CROPS, VisualFeatures.CAPTION, VisualFeatures.DENSE_CAPTIONS,
+     *                 VisualFeatures.OBJECTS, VisualFeatures.PEOPLE, VisualFeatures.READ, VisualFeatures.TAGS&#41;,
+     *             options&#41;;
      * </pre>
+     * 
      * <!-- end com.azure.ai.vision.imageanalysis.async-analysis-from-file -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -30,6 +30,7 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
     @Generated
     private RunStepMessageCreationDetails(RunStepMessageCreationReference messageCreation) {
         this.messageCreation = messageCreation;
+        this.type = RunStepType.MESSAGE_CREATION;
     }
 
     /**
@@ -42,23 +43,6 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
         return this.messageCreation;
     }
 
-    /*
-     * The object type.
-     */
-    @Generated
-    private RunStepType type = RunStepType.MESSAGE_CREATION;
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public RunStepType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -66,8 +50,8 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("message_creation", this.messageCreation);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
