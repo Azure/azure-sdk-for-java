@@ -29,7 +29,6 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
-import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsCopyFromURLHeaders;
@@ -694,9 +693,9 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         try {
-            Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
-                .getPropertiesNoCustomHeadersWithResponse(containerName, blobName, snapshot, versionId, null, null,
-                    null, null, null, null, null, null, customerProvidedKey, context);
+            Callable<Response<Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(
+                () -> this.azureBlobStorage.getBlobs().getPropertiesNoCustomHeadersWithResponse(containerName, blobName,
+                    snapshot, versionId, null, null, null, null, null, null, null, null, customerProvidedKey, context));
             return new SimpleResponse<>(sendRequest(operation, timeout, BlobStorageException.class), true);
         } catch (RuntimeException e) {
             if (e instanceof HttpResponseException) {
