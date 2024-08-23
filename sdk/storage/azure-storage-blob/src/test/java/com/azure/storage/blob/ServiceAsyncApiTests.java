@@ -106,21 +106,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .setDefaultServiceVersion("2018-03-28"));
     }
 
-    private Mono<Void> resetProperties() {
-        BlobRetentionPolicy disabled = new BlobRetentionPolicy().setEnabled(false);
-        return primaryBlobServiceAsyncClient.setProperties(new BlobServiceProperties()
-            .setStaticWebsite(new StaticWebsite().setEnabled(false))
-            .setDeleteRetentionPolicy(disabled)
-            .setCors(null)
-            .setHourMetrics(new BlobMetrics().setVersion("1.0").setEnabled(false)
-                .setRetentionPolicy(disabled))
-            .setMinuteMetrics(new BlobMetrics().setVersion("1.0").setEnabled(false)
-                .setRetentionPolicy(disabled))
-            .setLogging(new BlobAnalyticsLogging().setVersion("1.0")
-                .setRetentionPolicy(disabled))
-            .setDefaultServiceVersion("2018-03-28"));
-    }
-
     @Test
     public void listContainers() {
         StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(
@@ -357,8 +342,13 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .thenMany(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
                 .setDetails(new BlobContainerListDetails().setRetrieveSystemContainers(true))))
             .doFinally(signalType -> {
-                // cleanup:
-                resetProperties().subscribe();
+                // Ensure cleanup is completed
+                setInitialProperties()
+                    .then(primaryBlobServiceAsyncClient.getProperties())
+                    .doOnNext(properties -> {
+                        assertFalse(properties.getLogging().getRetentionPolicy().isEnabled());
+                    })
+                    .subscribe();
             });
 
         StepVerifier.create(response)
@@ -668,7 +658,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .then(primaryBlobServiceAsyncClient.getProperties())
             .doFinally(signalType -> {
                 // cleanup:
-                resetProperties().subscribe();
+                setInitialProperties().subscribe();
             });
 
         StepVerifier.create(response)
@@ -717,7 +707,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties))
             .doFinally(signalType -> {
                 // cleanup:
-                resetProperties().subscribe();
+                setInitialProperties().subscribe();
             });
 
         assertAsyncResponseStatusCode(response, 202);
@@ -740,7 +730,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 return primaryBlobServiceAsyncClient.setPropertiesWithResponse(r)
                     .doFinally(signalType -> {
                         // cleanup:
-                        resetProperties().subscribe();
+                        setInitialProperties().subscribe();
                     });
             });
 
@@ -768,7 +758,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         Mono<BlobServiceProperties> response2 = primaryBlobServiceAsyncClient.getProperties()
             .doFinally(signalType -> {
                 // cleanup:
-                resetProperties().subscribe();
+                setInitialProperties().subscribe();
             });
 
         StepVerifier.create(response2)
@@ -802,7 +792,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .then(primaryBlobServiceAsyncClient.getPropertiesWithResponse())
             .doFinally(signalType -> {
                 // cleanup:
-                resetProperties().subscribe();
+                setInitialProperties().subscribe();
             });
         assertAsyncResponseStatusCode(response, 200);
     }
