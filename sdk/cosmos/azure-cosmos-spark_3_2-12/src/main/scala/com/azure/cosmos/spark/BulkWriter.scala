@@ -417,9 +417,8 @@ private class BulkWriter
                           }
                       })
                       .onErrorResume(throwable => {
-                          val requestTimeoutDelayInjected = new AtomicBoolean(false)
                           for (readManyOperation <- readManyOperations) {
-                              handleReadManyExceptions(throwable, readManyOperation, requestTimeoutDelayInjected)
+                              handleReadManyExceptions(throwable, readManyOperation)
                           }
 
                           Mono.empty()
@@ -448,7 +447,7 @@ private class BulkWriter
           .subscribe()
   }
 
-  private def handleReadManyExceptions(throwable: Throwable, ReadManyOperation: ReadManyOperation, requestTimeoutDelayInjected: AtomicBoolean): Unit = {
+  private def handleReadManyExceptions(throwable: Throwable, ReadManyOperation: ReadManyOperation): Unit = {
       throwable match {
           case e: CosmosException =>
               outputMetricsPublisher.trackWriteOperation(
@@ -473,8 +472,7 @@ private class BulkWriter
                       ReadManyOperation.cosmosItemIdentity.getPartitionKey,
                       ReadManyOperation.objectNode,
                       ReadManyOperation.operationContext,
-                      e.getStatusCode,
-                      requestTimeoutDelayInjected)
+                      e.getStatusCode)
 
               } else {
                   // Non-retryable exception or has exceeded the max retry count
@@ -508,8 +506,7 @@ private class BulkWriter
                                partitionKey: PartitionKey,
                                objectNode: ObjectNode,
                                operationContext: OperationContext,
-                               statusCode: Int,
-                               requestTimeoutDelayInjected: AtomicBoolean): Unit = {
+                               statusCode: Int): Unit = {
       if (trackPendingRetryAction()) {
         this.pendingRetries.incrementAndGet()
       }
@@ -531,7 +528,7 @@ private class BulkWriter
           SMono.empty
       })
 
-      if (Exceptions.isTimeout(statusCode) && requestTimeoutDelayInjected.compareAndSet(false, true)) {
+      if (Exceptions.isTimeout(statusCode)) {
           deferredRetryMono
               .delaySubscription(
                   Duration(
@@ -577,7 +574,6 @@ private class BulkWriter
       resp => {
         val isGettingRetried = new AtomicBoolean(false)
         val shouldSkipTaskCompletion = new AtomicBoolean(false)
-        val requestTimeoutDelayInjected = new AtomicBoolean(false)
         try {
           val itemOperation = resp.getOperation
           val itemOperationFound = activeBulkWriteOperations.remove(itemOperation)
@@ -602,7 +598,7 @@ private class BulkWriter
               Option(resp.getException) match {
                 case Some(cosmosException: CosmosException) =>
                   handleNonSuccessfulStatusCode(
-                    context, itemOperation, itemResponse, isGettingRetried, Some(cosmosException), requestTimeoutDelayInjected)
+                    context, itemOperation, itemResponse, isGettingRetried, Some(cosmosException))
                 case _ =>
                   log.logWarning(
                     s"unexpected failure: itemId=[${context.itemId}], partitionKeyValue=[" +
@@ -613,7 +609,7 @@ private class BulkWriter
                   cancelWork()
               }
             } else if (Option(itemResponse).isEmpty || !itemResponse.isSuccessStatusCode) {
-              handleNonSuccessfulStatusCode(context, itemOperation, itemResponse, isGettingRetried, None, requestTimeoutDelayInjected)
+              handleNonSuccessfulStatusCode(context, itemOperation, itemResponse, isGettingRetried, None)
             } else {
               // no error case
               outputMetricsPublisher.trackWriteOperation(1, None)
@@ -804,8 +800,7 @@ private class BulkWriter
     itemOperation: CosmosItemOperation,
     itemResponse: CosmosBulkItemResponse,
     isGettingRetried: AtomicBoolean,
-    responseException: Option[CosmosException],
-    requestTimeoutDelayInjected: AtomicBoolean
+    responseException: Option[CosmosException]
   ) : Unit = {
 
     val exceptionMessage = responseException match {
@@ -863,8 +858,7 @@ private class BulkWriter
         itemOperation.getPartitionKeyValue,
         sourceItem,
         context,
-        effectiveStatusCode,
-        requestTimeoutDelayInjected)
+        effectiveStatusCode)
       isGettingRetried.set(true)
     } else {
       log.logError(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
