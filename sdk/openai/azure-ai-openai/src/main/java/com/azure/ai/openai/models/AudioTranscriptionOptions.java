@@ -6,9 +6,6 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -247,8 +244,7 @@ public final class AudioTranscriptionOptions {
      * latency.
      */
     @Generated
-    @JsonProperty("timestamp_granularities[]")
-    private AudioTranscriptionTimestampGranularity timestampGranularities;
+    private List<AudioTranscriptionTimestampGranularity> timestampGranularities;
 
     /**
      * Get the timestampGranularities property: The timestamp granularities to populate for this transcription.
@@ -261,7 +257,7 @@ public final class AudioTranscriptionOptions {
      */
     @Generated
     public List<AudioTranscriptionTimestampGranularity> getTimestampGranularities() {
-        return Arrays.asList(this.timestampGranularities);
+        return this.timestampGranularities;
     }
 
     /**
@@ -277,7 +273,7 @@ public final class AudioTranscriptionOptions {
     @Generated
     public AudioTranscriptionOptions
         setTimestampGranularities(List<AudioTranscriptionTimestampGranularity> timestampGranularities) {
-        this.timestampGranularities = timestampGranularities.get(0);
+        this.timestampGranularities = timestampGranularities;
         return this;
     }
 }

@@ -10,6 +10,7 @@ import com.azure.ai.openai.implementation.models.OpenAIPageableListOfBatch;
 import com.azure.ai.openai.implementation.models.UploadFileRequest;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.Batch;
@@ -938,15 +939,24 @@ public final class OpenAIAsyncClient {
         String temperature = audioTranscriptionOptions.getTemperature() == null
             ? null
             : String.valueOf(audioTranscriptionOptions.getTemperature());
-        BinaryData uploadFileRequest = new MultipartFormDataHelper(multipartRequestOptions)
+        MultipartFormDataHelper multipartRequest = new MultipartFormDataHelper(multipartRequestOptions)
             .serializeFileField("file", file.getContent(), file.getContentType(), file.getFilename())
             .serializeTextField("response_format", audioTranscriptionOptions.getResponseFormat().toString())
             .serializeTextField("model", audioTranscriptionOptions.getModel())
             .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
             .serializeTextField("language", audioTranscriptionOptions.getLanguage())
-            .serializeTextField("temperature", temperature)
-            // TODO (jpalvarezl) : figure out the situation with the square bracket name and add `timestamp_granularities` field
-            .end()
+            .serializeTextField("temperature", temperature);
+
+        List<AudioTranscriptionTimestampGranularity> timestampGranularities
+            = audioTranscriptionOptions.getTimestampGranularities();
+
+        if(timestampGranularities != null && !timestampGranularities.isEmpty()) {
+            for (AudioTranscriptionTimestampGranularity timestampGranularity : timestampGranularities) {
+                // somehow we don't need to send the index in OAI
+                multipartRequest.serializeTextField("timestamp_granularities[]", timestampGranularity.toString());
+            }
+        }
+        BinaryData uploadFileRequest = multipartRequest.end()
             .getRequestBody();
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
