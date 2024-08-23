@@ -6,87 +6,84 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.NetworkIsolationSettings;
 import com.azure.resourcemanager.sql.models.OperationMode;
 import com.azure.resourcemanager.sql.models.StorageKeyType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Contains the database information after a successful Import, Export, or PolybaseImport. */
+/**
+ * Contains the database information after a successful Import, Export, or PolybaseImport.
+ */
 @Fluent
-public final class DatabaseExtensionsProperties {
+public final class DatabaseExtensionsProperties implements JsonSerializable<DatabaseExtensionsProperties> {
     /*
      * Operation mode of the operation: Import, Export, or PolybaseImport.
      */
-    @JsonProperty(value = "operationMode", required = true)
     private OperationMode operationMode;
 
     /*
      * Storage key type: StorageAccessKey or SharedAccessKey.
      */
-    @JsonProperty(value = "storageKeyType", required = true)
     private StorageKeyType storageKeyType;
 
     /*
      * Storage key for the storage account.
      */
-    @JsonProperty(value = "storageKey", required = true)
     private String storageKey;
 
     /*
      * Storage Uri for the storage account.
      */
-    @JsonProperty(value = "storageUri", required = true)
     private String storageUri;
 
     /*
      * Administrator login name.
      */
-    @JsonProperty(value = "administratorLogin")
     private String administratorLogin;
 
     /*
      * Administrator login password.
      */
-    @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
 
     /*
      * Authentication type: SQL authentication or AD password.
      */
-    @JsonProperty(value = "authenticationType")
     private String authenticationType;
 
     /*
      * Database edition for the newly created database in the case of an import operation.
      */
-    @JsonProperty(value = "databaseEdition")
     private String databaseEdition;
 
     /*
      * Database service level objective for the newly created database in the case of an import operation.
      */
-    @JsonProperty(value = "serviceObjectiveName")
     private String serviceObjectiveName;
 
     /*
      * Database max size in bytes for the newly created database in the case of an import operation.
      */
-    @JsonProperty(value = "maxSizeBytes")
     private String maxSizeBytes;
 
     /*
      * Optional resource information to enable network isolation for request.
      */
-    @JsonProperty(value = "networkIsolation")
     private NetworkIsolationSettings networkIsolation;
 
-    /** Creates an instance of DatabaseExtensionsProperties class. */
+    /**
+     * Creates an instance of DatabaseExtensionsProperties class.
+     */
     public DatabaseExtensionsProperties() {
     }
 
     /**
      * Get the operationMode property: Operation mode of the operation: Import, Export, or PolybaseImport.
-     *
+     * 
      * @return the operationMode value.
      */
     public OperationMode operationMode() {
@@ -95,7 +92,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the operationMode property: Operation mode of the operation: Import, Export, or PolybaseImport.
-     *
+     * 
      * @param operationMode the operationMode value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -106,7 +103,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the storageKeyType property: Storage key type: StorageAccessKey or SharedAccessKey.
-     *
+     * 
      * @return the storageKeyType value.
      */
     public StorageKeyType storageKeyType() {
@@ -115,7 +112,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the storageKeyType property: Storage key type: StorageAccessKey or SharedAccessKey.
-     *
+     * 
      * @param storageKeyType the storageKeyType value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -126,7 +123,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the storageKey property: Storage key for the storage account.
-     *
+     * 
      * @return the storageKey value.
      */
     public String storageKey() {
@@ -135,7 +132,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the storageKey property: Storage key for the storage account.
-     *
+     * 
      * @param storageKey the storageKey value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -146,7 +143,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the storageUri property: Storage Uri for the storage account.
-     *
+     * 
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -155,7 +152,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the storageUri property: Storage Uri for the storage account.
-     *
+     * 
      * @param storageUri the storageUri value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -166,7 +163,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the administratorLogin property: Administrator login name.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -175,7 +172,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the administratorLogin property: Administrator login name.
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -186,7 +183,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -195,7 +192,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -206,7 +203,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the authenticationType property: Authentication type: SQL authentication or AD password.
-     *
+     * 
      * @return the authenticationType value.
      */
     public String authenticationType() {
@@ -215,7 +212,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the authenticationType property: Authentication type: SQL authentication or AD password.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -227,7 +224,7 @@ public final class DatabaseExtensionsProperties {
     /**
      * Get the databaseEdition property: Database edition for the newly created database in the case of an import
      * operation.
-     *
+     * 
      * @return the databaseEdition value.
      */
     public String databaseEdition() {
@@ -237,7 +234,7 @@ public final class DatabaseExtensionsProperties {
     /**
      * Set the databaseEdition property: Database edition for the newly created database in the case of an import
      * operation.
-     *
+     * 
      * @param databaseEdition the databaseEdition value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -249,7 +246,7 @@ public final class DatabaseExtensionsProperties {
     /**
      * Get the serviceObjectiveName property: Database service level objective for the newly created database in the
      * case of an import operation.
-     *
+     * 
      * @return the serviceObjectiveName value.
      */
     public String serviceObjectiveName() {
@@ -259,7 +256,7 @@ public final class DatabaseExtensionsProperties {
     /**
      * Set the serviceObjectiveName property: Database service level objective for the newly created database in the
      * case of an import operation.
-     *
+     * 
      * @param serviceObjectiveName the serviceObjectiveName value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -271,7 +268,7 @@ public final class DatabaseExtensionsProperties {
     /**
      * Get the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an import
      * operation.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public String maxSizeBytes() {
@@ -281,7 +278,7 @@ public final class DatabaseExtensionsProperties {
     /**
      * Set the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an import
      * operation.
-     *
+     * 
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -292,7 +289,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @return the networkIsolation value.
      */
     public NetworkIsolationSettings networkIsolation() {
@@ -301,7 +298,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @param networkIsolation the networkIsolation value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -312,33 +309,29 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operationMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operationMode in model DatabaseExtensionsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property operationMode in model DatabaseExtensionsProperties"));
         }
         if (storageKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageKeyType in model DatabaseExtensionsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageKeyType in model DatabaseExtensionsProperties"));
         }
         if (storageKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageKey in model DatabaseExtensionsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageKey in model DatabaseExtensionsProperties"));
         }
         if (storageUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageUri in model DatabaseExtensionsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageUri in model DatabaseExtensionsProperties"));
         }
         if (networkIsolation() != null) {
             networkIsolation().validate();
@@ -346,4 +339,75 @@ public final class DatabaseExtensionsProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatabaseExtensionsProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationMode", this.operationMode == null ? null : this.operationMode.toString());
+        jsonWriter.writeStringField("storageKeyType",
+            this.storageKeyType == null ? null : this.storageKeyType.toString());
+        jsonWriter.writeStringField("storageKey", this.storageKey);
+        jsonWriter.writeStringField("storageUri", this.storageUri);
+        jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
+        jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
+        jsonWriter.writeStringField("authenticationType", this.authenticationType);
+        jsonWriter.writeStringField("databaseEdition", this.databaseEdition);
+        jsonWriter.writeStringField("serviceObjectiveName", this.serviceObjectiveName);
+        jsonWriter.writeStringField("maxSizeBytes", this.maxSizeBytes);
+        jsonWriter.writeJsonField("networkIsolation", this.networkIsolation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseExtensionsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseExtensionsProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseExtensionsProperties.
+     */
+    public static DatabaseExtensionsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseExtensionsProperties deserializedDatabaseExtensionsProperties = new DatabaseExtensionsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationMode".equals(fieldName)) {
+                    deserializedDatabaseExtensionsProperties.operationMode
+                        = OperationMode.fromString(reader.getString());
+                } else if ("storageKeyType".equals(fieldName)) {
+                    deserializedDatabaseExtensionsProperties.storageKeyType
+                        = StorageKeyType.fromString(reader.getString());
+                } else if ("storageKey".equals(fieldName)) {
+                    deserializedDatabaseExtensionsProperties.storageKey = reader.getString();
+                } else if ("storageUri".equals(fieldName)) {
+                    deserializedDatabaseExtensionsProperties.storageUri = reader.getString();
+                } else if ("administratorLogin".equals(fieldName)) {
+                    deserializedDatabaseExtensionsProperties.administratorLogin = reader.getString();
+                } else if ("administratorLoginPassword".equals(fieldName)) {
+                    deserializedDatabaseExtensionsProperties.administratorLoginPassword = reader.getString();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedDatabaseExtensionsProperties.authenticationType = reader.getString();
+                } else if ("databaseEdition".equals(fieldName)) {
+                    deserializedDatabaseExtensionsProperties.databaseEdition = reader.getString();
+                } else if ("serviceObjectiveName".equals(fieldName)) {
+                    deserializedDatabaseExtensionsProperties.serviceObjectiveName = reader.getString();
+                } else if ("maxSizeBytes".equals(fieldName)) {
+                    deserializedDatabaseExtensionsProperties.maxSizeBytes = reader.getString();
+                } else if ("networkIsolation".equals(fieldName)) {
+                    deserializedDatabaseExtensionsProperties.networkIsolation
+                        = NetworkIsolationSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseExtensionsProperties;
+        });
+    }
 }

@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of a linked server to be returned in get/put response.
@@ -16,8 +20,19 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
     /*
      * Terminal state of the link between primary and secondary redis cache.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /*
+     * The unchanging DNS name which will always point to current geo-primary cache among the linked redis caches for
+     * seamless Geo Failover experience.
+     */
+    private String geoReplicatedPrimaryHostname;
+
+    /*
+     * The changing DNS name that resolves to the current geo-primary cache among the linked redis caches before or
+     * after the Geo Failover.
+     */
+    private String primaryHostname;
 
     /**
      * Creates an instance of RedisLinkedServerProperties class.
@@ -32,6 +47,28 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the geoReplicatedPrimaryHostname property: The unchanging DNS name which will always point to current
+     * geo-primary cache among the linked redis caches for seamless Geo Failover experience.
+     * 
+     * @return the geoReplicatedPrimaryHostname value.
+     */
+    @Override
+    public String geoReplicatedPrimaryHostname() {
+        return this.geoReplicatedPrimaryHostname;
+    }
+
+    /**
+     * Get the primaryHostname property: The changing DNS name that resolves to the current geo-primary cache among the
+     * linked redis caches before or after the Geo Failover.
+     * 
+     * @return the primaryHostname value.
+     */
+    @Override
+    public String primaryHostname() {
+        return this.primaryHostname;
     }
 
     /**
@@ -66,8 +103,73 @@ public final class RedisLinkedServerProperties extends RedisLinkedServerCreatePr
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
+        if (linkedRedisCacheId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedRedisCacheId in model RedisLinkedServerProperties"));
+        }
+        if (linkedRedisCacheLocation() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedRedisCacheLocation in model RedisLinkedServerProperties"));
+        }
+        if (serverRole() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverRole in model RedisLinkedServerProperties"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RedisLinkedServerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("linkedRedisCacheId", linkedRedisCacheId());
+        jsonWriter.writeStringField("linkedRedisCacheLocation", linkedRedisCacheLocation());
+        jsonWriter.writeStringField("serverRole", serverRole() == null ? null : serverRole().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisLinkedServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisLinkedServerProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisLinkedServerProperties.
+     */
+    public static RedisLinkedServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisLinkedServerProperties deserializedRedisLinkedServerProperties = new RedisLinkedServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedRedisCacheId".equals(fieldName)) {
+                    deserializedRedisLinkedServerProperties.withLinkedRedisCacheId(reader.getString());
+                } else if ("linkedRedisCacheLocation".equals(fieldName)) {
+                    deserializedRedisLinkedServerProperties.withLinkedRedisCacheLocation(reader.getString());
+                } else if ("serverRole".equals(fieldName)) {
+                    deserializedRedisLinkedServerProperties
+                        .withServerRole(ReplicationRole.fromString(reader.getString()));
+                } else if ("geoReplicatedPrimaryHostName".equals(fieldName)) {
+                    deserializedRedisLinkedServerProperties.geoReplicatedPrimaryHostname = reader.getString();
+                } else if ("primaryHostName".equals(fieldName)) {
+                    deserializedRedisLinkedServerProperties.primaryHostname = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRedisLinkedServerProperties.provisioningState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisLinkedServerProperties;
+        });
     }
 }

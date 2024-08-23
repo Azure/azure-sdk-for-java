@@ -9,8 +9,7 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class PrivateEndpointConnectionsListByMongoClusterSamples {
     /*
-     * x-ms-original-file: specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/
-     * MongoClusters_PrivateEndpointConnectionList.json
+     * x-ms-original-file: 2024-03-01-preview/MongoClusters_PrivateEndpointConnectionList.json
      */
     /**
      * Sample code: Lists the private endpoint connection resources on a Mongo Cluster resource.

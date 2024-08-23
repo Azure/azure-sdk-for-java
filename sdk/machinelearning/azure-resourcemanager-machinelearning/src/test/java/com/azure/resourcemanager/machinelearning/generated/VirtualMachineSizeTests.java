@@ -9,62 +9,51 @@ import com.azure.resourcemanager.machinelearning.models.BillingCurrency;
 import com.azure.resourcemanager.machinelearning.models.EstimatedVMPrice;
 import com.azure.resourcemanager.machinelearning.models.EstimatedVMPrices;
 import com.azure.resourcemanager.machinelearning.models.UnitOfMeasure;
+import com.azure.resourcemanager.machinelearning.models.VirtualMachineSize;
 import com.azure.resourcemanager.machinelearning.models.VMPriceOSType;
 import com.azure.resourcemanager.machinelearning.models.VMTier;
-import com.azure.resourcemanager.machinelearning.models.VirtualMachineSize;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class VirtualMachineSizeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineSize model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"aamdect\",\"family\":\"f\",\"vCPUs\":1860942440,\"gpus\":993666965,\"osVhdSizeMB\":230831104,\"maxResourceVolumeMB\":796129419,\"memoryGB\":78.8172659538708,\"lowPriorityCapable\":true,\"premiumIO\":false,\"estimatedVMPrices\":{\"billingCurrency\":\"USD\",\"unitOfMeasure\":\"OneHour\",\"values\":[{\"retailPrice\":43.63741417101916,\"osType\":\"Linux\",\"vmTier\":\"Standard\"},{\"retailPrice\":10.488278430863074,\"osType\":\"Windows\",\"vmTier\":\"LowPriority\"},{\"retailPrice\":12.69677181728943,\"osType\":\"Windows\",\"vmTier\":\"Standard\"},{\"retailPrice\":38.22056349066922,\"osType\":\"Linux\",\"vmTier\":\"LowPriority\"}]},\"supportedComputeTypes\":[\"pkc\",\"t\",\"pngjcrcczsqpjhvm\"]}")
-                .toObject(VirtualMachineSize.class);
+        VirtualMachineSize model = BinaryData.fromString(
+            "{\"name\":\"utttxfvjrbirp\",\"family\":\"epcyvahfnlj\",\"vCPUs\":561070013,\"gpus\":197436298,\"osVhdSizeMB\":1640197955,\"maxResourceVolumeMB\":9347197,\"memoryGB\":95.87972980881396,\"lowPriorityCapable\":false,\"premiumIO\":true,\"estimatedVMPrices\":{\"billingCurrency\":\"USD\",\"unitOfMeasure\":\"OneHour\",\"values\":[{\"retailPrice\":41.20565542900856,\"osType\":\"Linux\",\"vmTier\":\"Standard\"},{\"retailPrice\":89.24458873666032,\"osType\":\"Windows\",\"vmTier\":\"Standard\"},{\"retailPrice\":74.67569214860603,\"osType\":\"Linux\",\"vmTier\":\"LowPriority\"},{\"retailPrice\":67.46272082562218,\"osType\":\"Linux\",\"vmTier\":\"Standard\"}]},\"supportedComputeTypes\":[\"zz\",\"bijhtxfvgxbf\",\"mxnehmp\",\"ec\"]}")
+            .toObject(VirtualMachineSize.class);
         Assertions.assertEquals(BillingCurrency.USD, model.estimatedVMPrices().billingCurrency());
         Assertions.assertEquals(UnitOfMeasure.ONE_HOUR, model.estimatedVMPrices().unitOfMeasure());
-        Assertions.assertEquals(43.63741417101916, model.estimatedVMPrices().values().get(0).retailPrice());
+        Assertions.assertEquals(41.20565542900856, model.estimatedVMPrices().values().get(0).retailPrice());
         Assertions.assertEquals(VMPriceOSType.LINUX, model.estimatedVMPrices().values().get(0).osType());
         Assertions.assertEquals(VMTier.STANDARD, model.estimatedVMPrices().values().get(0).vmTier());
-        Assertions.assertEquals("pkc", model.supportedComputeTypes().get(0));
+        Assertions.assertEquals("zz", model.supportedComputeTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineSize model =
-            new VirtualMachineSize()
-                .withEstimatedVMPrices(
-                    new EstimatedVMPrices()
-                        .withBillingCurrency(BillingCurrency.USD)
-                        .withUnitOfMeasure(UnitOfMeasure.ONE_HOUR)
-                        .withValues(
-                            Arrays
-                                .asList(
-                                    new EstimatedVMPrice()
-                                        .withRetailPrice(43.63741417101916)
-                                        .withOsType(VMPriceOSType.LINUX)
-                                        .withVmTier(VMTier.STANDARD),
-                                    new EstimatedVMPrice()
-                                        .withRetailPrice(10.488278430863074)
-                                        .withOsType(VMPriceOSType.WINDOWS)
-                                        .withVmTier(VMTier.LOW_PRIORITY),
-                                    new EstimatedVMPrice()
-                                        .withRetailPrice(12.69677181728943)
-                                        .withOsType(VMPriceOSType.WINDOWS)
-                                        .withVmTier(VMTier.STANDARD),
-                                    new EstimatedVMPrice()
-                                        .withRetailPrice(38.22056349066922)
-                                        .withOsType(VMPriceOSType.LINUX)
-                                        .withVmTier(VMTier.LOW_PRIORITY))))
-                .withSupportedComputeTypes(Arrays.asList("pkc", "t", "pngjcrcczsqpjhvm"));
+        VirtualMachineSize model = new VirtualMachineSize()
+            .withEstimatedVMPrices(new EstimatedVMPrices().withBillingCurrency(BillingCurrency.USD)
+                .withUnitOfMeasure(UnitOfMeasure.ONE_HOUR)
+                .withValues(Arrays.asList(
+                    new EstimatedVMPrice().withRetailPrice(41.20565542900856)
+                        .withOsType(VMPriceOSType.LINUX)
+                        .withVmTier(VMTier.STANDARD),
+                    new EstimatedVMPrice().withRetailPrice(89.24458873666032)
+                        .withOsType(VMPriceOSType.WINDOWS)
+                        .withVmTier(VMTier.STANDARD),
+                    new EstimatedVMPrice().withRetailPrice(74.67569214860603)
+                        .withOsType(VMPriceOSType.LINUX)
+                        .withVmTier(VMTier.LOW_PRIORITY),
+                    new EstimatedVMPrice().withRetailPrice(67.46272082562218)
+                        .withOsType(VMPriceOSType.LINUX)
+                        .withVmTier(VMTier.STANDARD))))
+            .withSupportedComputeTypes(Arrays.asList("zz", "bijhtxfvgxbf", "mxnehmp", "ec"));
         model = BinaryData.fromObject(model).toObject(VirtualMachineSize.class);
         Assertions.assertEquals(BillingCurrency.USD, model.estimatedVMPrices().billingCurrency());
         Assertions.assertEquals(UnitOfMeasure.ONE_HOUR, model.estimatedVMPrices().unitOfMeasure());
-        Assertions.assertEquals(43.63741417101916, model.estimatedVMPrices().values().get(0).retailPrice());
+        Assertions.assertEquals(41.20565542900856, model.estimatedVMPrices().values().get(0).retailPrice());
         Assertions.assertEquals(VMPriceOSType.LINUX, model.estimatedVMPrices().values().get(0).osType());
         Assertions.assertEquals(VMTier.STANDARD, model.estimatedVMPrices().values().get(0).vmTier());
-        Assertions.assertEquals("pkc", model.supportedComputeTypes().get(0));
+        Assertions.assertEquals("zz", model.supportedComputeTypes().get(0));
     }
 }

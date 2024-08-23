@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class AfdEndpointProtocols extends ExpandableStringEnum<AfdEndpoint
      * @param name a name to look for.
      * @return the corresponding AfdEndpointProtocols.
      */
-    @JsonCreator
     public static AfdEndpointProtocols fromString(String name) {
         return fromString(name, AfdEndpointProtocols.class);
     }

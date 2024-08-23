@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateEndpointConnections. */
+/**
+ * Resource collection API of PrivateEndpointConnections.
+ */
 public interface PrivateEndpointConnections {
     /**
      * Lists the private endpoint connections for a HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Lists the private endpoint connections for a HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -33,12 +35,12 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list private endpoint connections response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnection> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<PrivateEndpointConnection> listByCluster(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Gets the specific private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -48,12 +50,12 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific private endpoint connection along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String clusterName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String clusterName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Gets the specific private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -66,7 +68,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Deletes the specific private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -78,7 +80,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Deletes the specific private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -91,7 +93,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Gets the specific private endpoint connection.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +104,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Gets the specific private endpoint connection.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Deletes the specific private endpoint connection.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +126,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Deletes the specific private endpoint connection.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +137,7 @@ public interface PrivateEndpointConnections {
 
     /**
      * Begins definition for a new PrivateEndpointConnection resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PrivateEndpointConnection definition.
      */

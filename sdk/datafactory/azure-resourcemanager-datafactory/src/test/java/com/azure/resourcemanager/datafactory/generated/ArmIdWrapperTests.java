@@ -10,7 +10,7 @@ import com.azure.resourcemanager.datafactory.models.ArmIdWrapper;
 public final class ArmIdWrapperTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmIdWrapper model = BinaryData.fromString("{\"id\":\"roznnhdrlktgj\"}").toObject(ArmIdWrapper.class);
+        ArmIdWrapper model = BinaryData.fromString("{\"id\":\"lbyrru\"}").toObject(ArmIdWrapper.class);
     }
 
     @org.junit.jupiter.api.Test

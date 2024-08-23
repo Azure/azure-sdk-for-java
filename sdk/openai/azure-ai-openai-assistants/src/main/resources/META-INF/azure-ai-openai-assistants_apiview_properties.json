@@ -1,7 +1,7 @@
 {
   "flavor": "azure", 
   "CrossLanguageDefinitionId": {
-    "com.azure.ai.openai.assistants.AssistantsAsyncClient": "Azure.AI.OpenAI.Assistants.AssistantsClient",
+    "com.azure.ai.openai.assistants.AssistantsAsyncClient": "Azure.AI.OpenAI.Assistants",
     "com.azure.ai.openai.assistants.AssistantsAsyncClient.cancelRun": "Azure.AI.OpenAI.Assistants.cancelRun",
     "com.azure.ai.openai.assistants.AssistantsAsyncClient.cancelRunWithResponse": "Azure.AI.OpenAI.Assistants.cancelRun",
     "com.azure.ai.openai.assistants.AssistantsAsyncClient.cancelVectorStoreFileBatch": "Azure.AI.OpenAI.Assistants.cancelVectorStoreFileBatch",
@@ -82,7 +82,7 @@
     "com.azure.ai.openai.assistants.AssistantsAsyncClient.updateThreadWithResponse": "Azure.AI.OpenAI.Assistants.updateThread",
     "com.azure.ai.openai.assistants.AssistantsAsyncClient.uploadFile": "Azure.AI.OpenAI.Assistants.uploadFile",
     "com.azure.ai.openai.assistants.AssistantsAsyncClient.uploadFileWithResponse": "Azure.AI.OpenAI.Assistants.uploadFile",
-    "com.azure.ai.openai.assistants.AssistantsClient": "Azure.AI.OpenAI.Assistants.AssistantsClient",
+    "com.azure.ai.openai.assistants.AssistantsClient": "Azure.AI.OpenAI.Assistants",
     "com.azure.ai.openai.assistants.AssistantsClient.cancelRun": "Azure.AI.OpenAI.Assistants.cancelRun",
     "com.azure.ai.openai.assistants.AssistantsClient.cancelRunWithResponse": "Azure.AI.OpenAI.Assistants.cancelRun",
     "com.azure.ai.openai.assistants.AssistantsClient.cancelVectorStoreFileBatch": "Azure.AI.OpenAI.Assistants.cancelVectorStoreFileBatch",
@@ -163,7 +163,7 @@
     "com.azure.ai.openai.assistants.AssistantsClient.updateThreadWithResponse": "Azure.AI.OpenAI.Assistants.updateThread",
     "com.azure.ai.openai.assistants.AssistantsClient.uploadFile": "Azure.AI.OpenAI.Assistants.uploadFile",
     "com.azure.ai.openai.assistants.AssistantsClient.uploadFileWithResponse": "Azure.AI.OpenAI.Assistants.uploadFile",
-    "com.azure.ai.openai.assistants.AssistantsClientBuilder": "Azure.AI.OpenAI.Assistants.AssistantsClient",
+    "com.azure.ai.openai.assistants.AssistantsClientBuilder": "Azure.AI.OpenAI.Assistants",
     "com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileBatchRequest": "createVectorStoreFileBatch.Request.anonymous",
     "com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileRequest": "createVectorStoreFile.Request.anonymous",
     "com.azure.ai.openai.assistants.implementation.models.FileListResponse": "Azure.AI.OpenAI.Assistants.FileListResponse",

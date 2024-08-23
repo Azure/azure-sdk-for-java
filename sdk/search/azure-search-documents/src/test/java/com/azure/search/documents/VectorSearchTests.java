@@ -3,7 +3,6 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -90,7 +89,7 @@ public class VectorSearchTests extends SearchTestBase {
         searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .serviceVersion(SearchServiceVersion.V2023_11_01)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(TestHelpers.getTestTokenCredential())
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .buildClient();
 

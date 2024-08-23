@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.machinelearning.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ListStorageAccountKeysResult model. */
+/**
+ * The ListStorageAccountKeysResult model.
+ */
 @Immutable
-public final class ListStorageAccountKeysResultInner {
+public final class ListStorageAccountKeysResultInner implements JsonSerializable<ListStorageAccountKeysResultInner> {
     /*
      * The userStorageKey property.
      */
-    @JsonProperty(value = "userStorageKey", access = JsonProperty.Access.WRITE_ONLY)
     private String userStorageKey;
 
-    /** Creates an instance of ListStorageAccountKeysResultInner class. */
+    /**
+     * Creates an instance of ListStorageAccountKeysResultInner class.
+     */
     public ListStorageAccountKeysResultInner() {
     }
 
     /**
      * Get the userStorageKey property: The userStorageKey property.
-     *
+     * 
      * @return the userStorageKey value.
      */
     public String userStorageKey() {
@@ -31,9 +38,45 @@ public final class ListStorageAccountKeysResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListStorageAccountKeysResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListStorageAccountKeysResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListStorageAccountKeysResultInner.
+     */
+    public static ListStorageAccountKeysResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListStorageAccountKeysResultInner deserializedListStorageAccountKeysResultInner
+                = new ListStorageAccountKeysResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userStorageKey".equals(fieldName)) {
+                    deserializedListStorageAccountKeysResultInner.userStorageKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListStorageAccountKeysResultInner;
+        });
     }
 }

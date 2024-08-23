@@ -12,21 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class TrinoWorkerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrinoWorker model
-            = BinaryData.fromString("{\"debug\":{\"enable\":false,\"port\":1949820387,\"suspend\":false}}")
-                .toObject(TrinoWorker.class);
-        Assertions.assertEquals(false, model.debug().enable());
-        Assertions.assertEquals(1949820387, model.debug().port());
+        TrinoWorker model = BinaryData.fromString("{\"debug\":{\"enable\":true,\"port\":1935648017,\"suspend\":false}}")
+            .toObject(TrinoWorker.class);
+        Assertions.assertEquals(true, model.debug().enable());
+        Assertions.assertEquals(1935648017, model.debug().port());
         Assertions.assertEquals(false, model.debug().suspend());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TrinoWorker model = new TrinoWorker()
-            .withDebug(new TrinoDebugConfig().withEnable(false).withPort(1949820387).withSuspend(false));
+            .withDebug(new TrinoDebugConfig().withEnable(true).withPort(1935648017).withSuspend(false));
         model = BinaryData.fromObject(model).toObject(TrinoWorker.class);
-        Assertions.assertEquals(false, model.debug().enable());
-        Assertions.assertEquals(1949820387, model.debug().port());
+        Assertions.assertEquals(true, model.debug().enable());
+        Assertions.assertEquals(1935648017, model.debug().port());
         Assertions.assertEquals(false, model.debug().suspend());
     }
 }

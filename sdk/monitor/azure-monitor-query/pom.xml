@@ -36,6 +36,7 @@
       --add-exports com.azure.core.serializer.json/com.azure.core.serializer.json.jackson.implementation=ALL-UNNAMED
       --add-opens com.azure.monitor.query/com.azure.monitor.query=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <spotless.skip>false</spotless.skip>
     <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
   </properties>
   <dependencies>
@@ -93,7 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

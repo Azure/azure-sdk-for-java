@@ -10,10 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.DistributionConfiguratio
 public final class DistributionConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DistributionConfiguration model =
-            BinaryData
-                .fromString("{\"distributionType\":\"DistributionConfiguration\"}")
-                .toObject(DistributionConfiguration.class);
+        DistributionConfiguration model = BinaryData.fromString("{\"distributionType\":\"DistributionConfiguration\"}")
+            .toObject(DistributionConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

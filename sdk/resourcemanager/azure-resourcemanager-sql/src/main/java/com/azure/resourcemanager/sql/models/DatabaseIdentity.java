@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-/** Azure Active Directory identity configuration for a resource. */
+/**
+ * Azure Active Directory identity configuration for a resource.
+ */
 @Fluent
-public class DatabaseIdentity {
+public final class DatabaseIdentity implements JsonSerializable<DatabaseIdentity> {
     /*
      * The identity type
      */
-    @JsonProperty(value = "type")
     private DatabaseIdentityType type;
 
     /*
      * The Azure Active Directory tenant id.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tenantId;
 
     /*
      * The resource ids of the user assigned identities to use
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, DatabaseUserIdentity> userAssignedIdentities;
 
-    /** Creates an instance of DatabaseIdentity class. */
+    /**
+     * Creates an instance of DatabaseIdentity class.
+     */
     public DatabaseIdentity() {
     }
 
     /**
      * Get the type property: The identity type.
-     *
+     * 
      * @return the type value.
      */
     public DatabaseIdentityType type() {
@@ -47,7 +50,7 @@ public class DatabaseIdentity {
 
     /**
      * Set the type property: The identity type.
-     *
+     * 
      * @param type the type value to set.
      * @return the DatabaseIdentity object itself.
      */
@@ -58,7 +61,7 @@ public class DatabaseIdentity {
 
     /**
      * Get the tenantId property: The Azure Active Directory tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -67,7 +70,7 @@ public class DatabaseIdentity {
 
     /**
      * Get the userAssignedIdentities property: The resource ids of the user assigned identities to use.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, DatabaseUserIdentity> userAssignedIdentities() {
@@ -76,7 +79,7 @@ public class DatabaseIdentity {
 
     /**
      * Set the userAssignedIdentities property: The resource ids of the user assigned identities to use.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the DatabaseIdentity object itself.
      */
@@ -87,19 +90,61 @@ public class DatabaseIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseIdentity.
+     */
+    public static DatabaseIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseIdentity deserializedDatabaseIdentity = new DatabaseIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDatabaseIdentity.type = DatabaseIdentityType.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedDatabaseIdentity.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, DatabaseUserIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> DatabaseUserIdentity.fromJson(reader1));
+                    deserializedDatabaseIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseIdentity;
+        });
     }
 }

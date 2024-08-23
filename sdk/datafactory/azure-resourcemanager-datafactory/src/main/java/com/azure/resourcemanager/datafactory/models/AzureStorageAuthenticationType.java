@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class AzureStorageAuthenticationType extends ExpandableStringEnum<A
      * @param name a name to look for.
      * @return the corresponding AzureStorageAuthenticationType.
      */
-    @JsonCreator
     public static AzureStorageAuthenticationType fromString(String name) {
         return fromString(name, AzureStorageAuthenticationType.class);
     }

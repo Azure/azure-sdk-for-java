@@ -12,8 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterPoolsClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterPoolInner;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPool;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolUpgrade;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPools;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolUpgrade;
 
 public final class ClusterPoolsImpl implements ClusterPools {
     private static final ClientLogger LOGGER = new ClientLogger(ClusterPoolsImpl.class);

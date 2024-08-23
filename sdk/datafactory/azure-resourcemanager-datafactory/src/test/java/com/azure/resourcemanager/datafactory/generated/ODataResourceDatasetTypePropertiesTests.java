@@ -10,13 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.ODataResourceDatasetT
 public final class ODataResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ODataResourceDatasetTypeProperties model
-            = BinaryData.fromString("{\"path\":\"datalfozuu\"}").toObject(ODataResourceDatasetTypeProperties.class);
+        ODataResourceDatasetTypeProperties model = BinaryData.fromString("{\"path\":\"datahrcmelycpgokuth\"}")
+            .toObject(ODataResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ODataResourceDatasetTypeProperties model = new ODataResourceDatasetTypeProperties().withPath("datalfozuu");
+        ODataResourceDatasetTypeProperties model
+            = new ODataResourceDatasetTypeProperties().withPath("datahrcmelycpgokuth");
         model = BinaryData.fromObject(model).toObject(ODataResourceDatasetTypeProperties.class);
     }
 }

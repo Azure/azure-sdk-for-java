@@ -20,9 +20,13 @@ public final class VMInsightsGetOnboardingStatusSamples {
      */
     public static void getStatusForAResourceGroupThatHasAtLeastOneVMThatIsActivelyReportingData(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getVMInsights().getOnboardingStatusWithResponse(
-            "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/resource-group-with-vms",
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getVMInsights()
+            .getOnboardingStatusWithResponse(
+                "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/resource-group-with-vms",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,9 +40,13 @@ public final class VMInsightsGetOnboardingStatusSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getStatusForAVMThatHasNotYetReportedData(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getVMInsights().getOnboardingStatusWithResponse(
-            "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/vm-resource-group/providers/Microsoft.Compute/virtualMachines/ubuntu-vm",
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getVMInsights()
+            .getOnboardingStatusWithResponse(
+                "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/vm-resource-group/providers/Microsoft.Compute/virtualMachines/ubuntu-vm",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -53,9 +61,13 @@ public final class VMInsightsGetOnboardingStatusSamples {
      */
     public static void
         getStatusForAVMThatIsActivelyReportingData(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getVMInsights().getOnboardingStatusWithResponse(
-            "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/vm-resource-group/providers/Microsoft.Compute/virtualMachines/ubuntu-vm",
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getVMInsights()
+            .getOnboardingStatusWithResponse(
+                "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/vm-resource-group/providers/Microsoft.Compute/virtualMachines/ubuntu-vm",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -70,9 +82,13 @@ public final class VMInsightsGetOnboardingStatusSamples {
      */
     public static void
         getStatusForAVMScaleSetThatIsActivelyReportingData(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getVMInsights().getOnboardingStatusWithResponse(
-            "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/my-service-cluster/providers/Microsoft.Compute/virtualMachineScaleSets/scale-set-01",
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getVMInsights()
+            .getOnboardingStatusWithResponse(
+                "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/my-service-cluster/providers/Microsoft.Compute/virtualMachineScaleSets/scale-set-01",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -87,7 +103,11 @@ public final class VMInsightsGetOnboardingStatusSamples {
      */
     public static void getStatusForASubscriptionThatHasAtLeastOneVMThatIsActivelyReportingData(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getVMInsights().getOnboardingStatusWithResponse(
-            "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getVMInsights()
+            .getOnboardingStatusWithResponse("subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87",
+                com.azure.core.util.Context.NONE);
     }
 }

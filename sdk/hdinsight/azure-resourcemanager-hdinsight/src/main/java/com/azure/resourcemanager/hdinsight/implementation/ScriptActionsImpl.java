@@ -23,14 +23,14 @@ public final class ScriptActionsImpl implements ScriptActions {
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    public ScriptActionsImpl(
-        ScriptActionsClient innerClient, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
+    public ScriptActionsImpl(ScriptActionsClient innerClient,
+        com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String clusterName, String scriptName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String clusterName, String scriptName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, clusterName, scriptName, context);
     }
 
@@ -39,39 +39,34 @@ public final class ScriptActionsImpl implements ScriptActions {
     }
 
     public PagedIterable<RuntimeScriptActionDetail> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<RuntimeScriptActionDetailInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
+        PagedIterable<RuntimeScriptActionDetailInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RuntimeScriptActionDetail> listByCluster(
-        String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<RuntimeScriptActionDetailInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
+    public PagedIterable<RuntimeScriptActionDetail> listByCluster(String resourceGroupName, String clusterName,
+        Context context) {
+        PagedIterable<RuntimeScriptActionDetailInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
     }
 
-    public Response<RuntimeScriptActionDetail> getExecutionDetailWithResponse(
-        String resourceGroupName, String clusterName, String scriptExecutionId, Context context) {
-        Response<RuntimeScriptActionDetailInner> inner =
-            this
-                .serviceClient()
-                .getExecutionDetailWithResponse(resourceGroupName, clusterName, scriptExecutionId, context);
+    public Response<RuntimeScriptActionDetail> getExecutionDetailWithResponse(String resourceGroupName,
+        String clusterName, String scriptExecutionId, Context context) {
+        Response<RuntimeScriptActionDetailInner> inner = this.serviceClient()
+            .getExecutionDetailWithResponse(resourceGroupName, clusterName, scriptExecutionId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RuntimeScriptActionDetailImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RuntimeScriptActionDetail getExecutionDetail(
-        String resourceGroupName, String clusterName, String scriptExecutionId) {
-        RuntimeScriptActionDetailInner inner =
-            this.serviceClient().getExecutionDetail(resourceGroupName, clusterName, scriptExecutionId);
+    public RuntimeScriptActionDetail getExecutionDetail(String resourceGroupName, String clusterName,
+        String scriptExecutionId) {
+        RuntimeScriptActionDetailInner inner
+            = this.serviceClient().getExecutionDetail(resourceGroupName, clusterName, scriptExecutionId);
         if (inner != null) {
             return new RuntimeScriptActionDetailImpl(inner, this.manager());
         } else {
@@ -79,27 +74,22 @@ public final class ScriptActionsImpl implements ScriptActions {
         }
     }
 
-    public Response<AsyncOperationResult> getExecutionAsyncOperationStatusWithResponse(
-        String resourceGroupName, String clusterName, String operationId, Context context) {
-        Response<AsyncOperationResultInner> inner =
-            this
-                .serviceClient()
-                .getExecutionAsyncOperationStatusWithResponse(resourceGroupName, clusterName, operationId, context);
+    public Response<AsyncOperationResult> getExecutionAsyncOperationStatusWithResponse(String resourceGroupName,
+        String clusterName, String operationId, Context context) {
+        Response<AsyncOperationResultInner> inner = this.serviceClient()
+            .getExecutionAsyncOperationStatusWithResponse(resourceGroupName, clusterName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AsyncOperationResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AsyncOperationResult getExecutionAsyncOperationStatus(
-        String resourceGroupName, String clusterName, String operationId) {
-        AsyncOperationResultInner inner =
-            this.serviceClient().getExecutionAsyncOperationStatus(resourceGroupName, clusterName, operationId);
+    public AsyncOperationResult getExecutionAsyncOperationStatus(String resourceGroupName, String clusterName,
+        String operationId) {
+        AsyncOperationResultInner inner
+            = this.serviceClient().getExecutionAsyncOperationStatus(resourceGroupName, clusterName, operationId);
         if (inner != null) {
             return new AsyncOperationResultImpl(inner, this.manager());
         } else {

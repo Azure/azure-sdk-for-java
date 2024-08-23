@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a managed server DNS alias. */
+/**
+ * Properties of a managed server DNS alias.
+ */
 @Immutable
-public final class ManagedServerDnsAliasProperties {
+public final class ManagedServerDnsAliasProperties implements JsonSerializable<ManagedServerDnsAliasProperties> {
     /*
      * The fully qualified DNS record for managed server alias
      */
-    @JsonProperty(value = "azureDnsRecord", access = JsonProperty.Access.WRITE_ONLY)
     private String azureDnsRecord;
 
     /*
      * The fully qualified public DNS record for managed server alias
      */
-    @JsonProperty(value = "publicAzureDnsRecord", access = JsonProperty.Access.WRITE_ONLY)
     private String publicAzureDnsRecord;
 
-    /** Creates an instance of ManagedServerDnsAliasProperties class. */
+    /**
+     * Creates an instance of ManagedServerDnsAliasProperties class.
+     */
     public ManagedServerDnsAliasProperties() {
     }
 
     /**
      * Get the azureDnsRecord property: The fully qualified DNS record for managed server alias.
-     *
+     * 
      * @return the azureDnsRecord value.
      */
     public String azureDnsRecord() {
@@ -37,7 +43,7 @@ public final class ManagedServerDnsAliasProperties {
 
     /**
      * Get the publicAzureDnsRecord property: The fully qualified public DNS record for managed server alias.
-     *
+     * 
      * @return the publicAzureDnsRecord value.
      */
     public String publicAzureDnsRecord() {
@@ -46,9 +52,47 @@ public final class ManagedServerDnsAliasProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedServerDnsAliasProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedServerDnsAliasProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedServerDnsAliasProperties.
+     */
+    public static ManagedServerDnsAliasProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedServerDnsAliasProperties deserializedManagedServerDnsAliasProperties
+                = new ManagedServerDnsAliasProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureDnsRecord".equals(fieldName)) {
+                    deserializedManagedServerDnsAliasProperties.azureDnsRecord = reader.getString();
+                } else if ("publicAzureDnsRecord".equals(fieldName)) {
+                    deserializedManagedServerDnsAliasProperties.publicAzureDnsRecord = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedServerDnsAliasProperties;
+        });
     }
 }
