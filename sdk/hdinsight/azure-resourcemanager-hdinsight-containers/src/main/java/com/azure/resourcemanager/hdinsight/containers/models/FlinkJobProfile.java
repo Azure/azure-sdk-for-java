@@ -6,50 +6,48 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Job specifications for flink clusters in application deployment mode. The specification is immutable even if job
  * properties are changed by calling the RunJob API, please use the ListJob API to get the latest job information.
  */
 @Fluent
-public final class FlinkJobProfile {
+public final class FlinkJobProfile implements JsonSerializable<FlinkJobProfile> {
     /*
      * A string property that specifies the directory where the job JAR is located.
      */
-    @JsonProperty(value = "jobJarDirectory", required = true)
     private String jobJarDirectory;
 
     /*
      * A string property that represents the name of the job JAR.
      */
-    @JsonProperty(value = "jarName", required = true)
     private String jarName;
 
     /*
      * A string property that specifies the entry class for the Flink job. If not specified, the entry point is
      * auto-detected from the flink job jar package.
      */
-    @JsonProperty(value = "entryClass")
     private String entryClass;
 
     /*
      * A string property representing additional JVM arguments for the Flink job. It should be space separated value.
      */
-    @JsonProperty(value = "args")
     private String args;
 
     /*
      * A string property that represents the name of the savepoint for the Flink job
      */
-    @JsonProperty(value = "savePointName")
     private String savePointName;
 
     /*
      * A string property that indicates the upgrade mode to be performed on the Flink job. It can have one of the
      * following enum values => STATELESS_UPDATE, UPDATE, LAST_STATE_UPDATE.
      */
-    @JsonProperty(value = "upgradeMode", required = true)
     private UpgradeMode upgradeMode;
 
     /**
@@ -163,8 +161,8 @@ public final class FlinkJobProfile {
     }
 
     /**
-     * Get the upgradeMode property: A string property that indicates the upgrade mode to be performed on the Flink
-     * job. It can have one of the following enum values =&gt; STATELESS_UPDATE, UPDATE, LAST_STATE_UPDATE.
+     * Get the upgradeMode property: A string property that indicates the upgrade mode to be performed on the Flink job.
+     * It can have one of the following enum values =&gt; STATELESS_UPDATE, UPDATE, LAST_STATE_UPDATE.
      * 
      * @return the upgradeMode value.
      */
@@ -173,8 +171,8 @@ public final class FlinkJobProfile {
     }
 
     /**
-     * Set the upgradeMode property: A string property that indicates the upgrade mode to be performed on the Flink
-     * job. It can have one of the following enum values =&gt; STATELESS_UPDATE, UPDATE, LAST_STATE_UPDATE.
+     * Set the upgradeMode property: A string property that indicates the upgrade mode to be performed on the Flink job.
+     * It can have one of the following enum values =&gt; STATELESS_UPDATE, UPDATE, LAST_STATE_UPDATE.
      * 
      * @param upgradeMode the upgradeMode value to set.
      * @return the FlinkJobProfile object itself.
@@ -191,18 +189,71 @@ public final class FlinkJobProfile {
      */
     public void validate() {
         if (jobJarDirectory() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property jobJarDirectory in model FlinkJobProfile"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property jobJarDirectory in model FlinkJobProfile"));
         }
         if (jarName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property jarName in model FlinkJobProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property jarName in model FlinkJobProfile"));
         }
         if (upgradeMode() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property upgradeMode in model FlinkJobProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property upgradeMode in model FlinkJobProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FlinkJobProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobJarDirectory", this.jobJarDirectory);
+        jsonWriter.writeStringField("jarName", this.jarName);
+        jsonWriter.writeStringField("upgradeMode", this.upgradeMode == null ? null : this.upgradeMode.toString());
+        jsonWriter.writeStringField("entryClass", this.entryClass);
+        jsonWriter.writeStringField("args", this.args);
+        jsonWriter.writeStringField("savePointName", this.savePointName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FlinkJobProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FlinkJobProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FlinkJobProfile.
+     */
+    public static FlinkJobProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FlinkJobProfile deserializedFlinkJobProfile = new FlinkJobProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobJarDirectory".equals(fieldName)) {
+                    deserializedFlinkJobProfile.jobJarDirectory = reader.getString();
+                } else if ("jarName".equals(fieldName)) {
+                    deserializedFlinkJobProfile.jarName = reader.getString();
+                } else if ("upgradeMode".equals(fieldName)) {
+                    deserializedFlinkJobProfile.upgradeMode = UpgradeMode.fromString(reader.getString());
+                } else if ("entryClass".equals(fieldName)) {
+                    deserializedFlinkJobProfile.entryClass = reader.getString();
+                } else if ("args".equals(fieldName)) {
+                    deserializedFlinkJobProfile.args = reader.getString();
+                } else if ("savePointName".equals(fieldName)) {
+                    deserializedFlinkJobProfile.savePointName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFlinkJobProfile;
+        });
+    }
 }

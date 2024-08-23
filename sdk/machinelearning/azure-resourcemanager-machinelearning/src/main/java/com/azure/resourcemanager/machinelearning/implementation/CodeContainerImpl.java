@@ -60,22 +60,18 @@ public final class CodeContainerImpl implements CodeContainer, CodeContainer.Def
     }
 
     public CodeContainer create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeContainers()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public CodeContainer create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeContainers()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -90,52 +86,43 @@ public final class CodeContainerImpl implements CodeContainer, CodeContainer.Def
     }
 
     public CodeContainer apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeContainers()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public CodeContainer apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeContainers()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    CodeContainerImpl(
-        CodeContainerInner innerObject,
+    CodeContainerImpl(CodeContainerInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "codes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "codes");
     }
 
     public CodeContainer refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeContainers()
+            .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CodeContainer refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCodeContainers()
-                .getWithResponse(resourceGroupName, workspaceName, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCodeContainers()
+            .getWithResponse(resourceGroupName, workspaceName, name, context)
+            .getValue();
         return this;
     }
 

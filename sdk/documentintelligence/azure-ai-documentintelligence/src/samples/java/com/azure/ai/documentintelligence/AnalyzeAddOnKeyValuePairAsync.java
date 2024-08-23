@@ -79,7 +79,8 @@ public class AnalyzeAddOnKeyValuePairAsync {
                             boundingRegions.forEach(boundingRegion -> {
                                 System.out.printf("  Bounding regions page: %s, polygon: %s%n",
                                         boundingRegion.getPageNumber(), boundingRegion.getPolygon());
-                            });                    }
+                            });
+                        }
                         if (value != null) {
                             System.out.println("- Value: " + value.getContent());
                             List<BoundingRegion> boundingRegions = value.getBoundingRegions();

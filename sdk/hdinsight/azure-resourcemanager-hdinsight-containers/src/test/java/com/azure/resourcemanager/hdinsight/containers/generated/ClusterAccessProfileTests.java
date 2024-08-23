@@ -12,7 +12,7 @@ public final class ClusterAccessProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterAccessProfile model
-            = BinaryData.fromString("{\"enableInternalIngress\":true,\"privateLinkServiceId\":\"ivfsnk\"}")
+            = BinaryData.fromString("{\"enableInternalIngress\":true,\"privateLinkServiceId\":\"bkdmo\"}")
                 .toObject(ClusterAccessProfile.class);
         Assertions.assertEquals(true, model.enableInternalIngress());
     }

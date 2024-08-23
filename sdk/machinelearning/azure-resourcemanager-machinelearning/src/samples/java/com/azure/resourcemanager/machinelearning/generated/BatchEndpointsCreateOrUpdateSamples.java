@@ -15,45 +15,43 @@ import com.azure.resourcemanager.machinelearning.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for BatchEndpoints CreateOrUpdate. */
+/**
+ * Samples for BatchEndpoints CreateOrUpdate.
+ */
 public final class BatchEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/BatchEndpoint/createOrUpdate.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/BatchEndpoint/createOrUpdate.json
      */
     /**
-     * Sample code: CreateOrUpdate Batch Endpoint.
-     *
+     * Sample code: CreateOrUpdate Workspace Batch Endpoint.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void createOrUpdateBatchEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .batchEndpoints()
+    public static void
+        createOrUpdateWorkspaceBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.batchEndpoints()
             .define("testEndpointName")
             .withRegion("string")
             .withExistingWorkspace("test-rg", "my-aml-workspace")
-            .withProperties(
-                new BatchEndpointProperties()
-                    .withAuthMode(EndpointAuthMode.AMLTOKEN)
-                    .withDescription("string")
-                    .withProperties(mapOf("string", "string"))
-                    .withDefaults(new BatchEndpointDefaults().withDeploymentName("string")))
+            .withProperties(new BatchEndpointProperties().withDescription("string")
+                .withProperties(mapOf("string", "string"))
+                .withAuthMode(EndpointAuthMode.AMLTOKEN)
+                .withDefaults(new BatchEndpointDefaults().withDeploymentName("string")))
             .withTags(mapOf())
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("string", new UserAssignedIdentity())))
             .withKind("string")
-            .withSku(
-                new Sku()
-                    .withName("string")
-                    .withTier(SkuTier.FREE)
-                    .withSize("string")
-                    .withFamily("string")
-                    .withCapacity(1))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("string", new UserAssignedIdentity())))
+            .withSku(new Sku().withName("string")
+                .withTier(SkuTier.FREE)
+                .withSize("string")
+                .withFamily("string")
+                .withCapacity(1))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -29,6 +29,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.implementation.models.BlobContainersSegment;
+import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
 import com.azure.storage.blob.implementation.models.FilterBlobSegment;
 import com.azure.storage.blob.implementation.models.FilterBlobsIncludeItem;
 import com.azure.storage.blob.implementation.models.ServicesFilterBlobsHeaders;
@@ -43,7 +44,6 @@ import com.azure.storage.blob.implementation.models.ServicesSubmitBatchHeaders;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
-import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -87,7 +87,7 @@ public final class ServicesImpl {
     public interface ServicesService {
         @Put("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setProperties(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -97,7 +97,7 @@ public final class ServicesImpl {
 
         @Put("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> setPropertiesNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -107,7 +107,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesGetPropertiesHeaders, BlobServiceProperties>> getProperties(
             @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -116,7 +116,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<BlobServiceProperties>> getPropertiesNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -125,7 +125,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesGetStatisticsHeaders, BlobServiceStatistics>> getStatistics(
             @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -134,7 +134,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<BlobServiceStatistics>> getStatisticsNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -143,7 +143,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesListBlobContainersSegmentHeaders, BlobContainersSegment>> listBlobContainersSegment(
             @HostParam("url") String url, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
@@ -153,7 +153,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<BlobContainersSegment>> listBlobContainersSegmentNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("comp") String comp, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String listBlobContainersIncludeType,
@@ -163,7 +163,7 @@ public final class ServicesImpl {
 
         @Post("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> getUserDelegationKey(
             @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -172,7 +172,7 @@ public final class ServicesImpl {
 
         @Post("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<UserDelegationKey>> getUserDelegationKeyNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -181,21 +181,21 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesGetAccountInfoHeaders, Void>> getAccountInfo(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> getAccountInfoNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp,
             @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesSubmitBatchHeaders, Flux<ByteBuffer>>> submitBatch(@HostParam("url") String url,
             @QueryParam("comp") String comp, @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("Content-Type") String multipartContentType, @QueryParam("timeout") Integer timeout,
@@ -204,7 +204,7 @@ public final class ServicesImpl {
 
         @Post("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<StreamResponse> submitBatchNoCustomHeaders(@HostParam("url") String url, @QueryParam("comp") String comp,
             @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-Type") String multipartContentType,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -213,7 +213,7 @@ public final class ServicesImpl {
 
         @Post("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesSubmitBatchHeaders, Flux<ByteBuffer>>> submitBatch(@HostParam("url") String url,
             @QueryParam("comp") String comp, @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("Content-Type") String multipartContentType, @QueryParam("timeout") Integer timeout,
@@ -222,7 +222,7 @@ public final class ServicesImpl {
 
         @Post("/")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<StreamResponse> submitBatchNoCustomHeaders(@HostParam("url") String url, @QueryParam("comp") String comp,
             @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-Type") String multipartContentType,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -231,7 +231,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesFilterBlobsHeaders, FilterBlobSegment>> filterBlobs(@HostParam("url") String url,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
@@ -241,7 +241,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<FilterBlobSegment>> filterBlobsNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
@@ -251,7 +251,7 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<ServicesListBlobContainersSegmentNextHeaders, BlobContainersSegment>>
             listBlobContainersSegmentNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url, @HeaderParam("x-ms-version") String version,
@@ -260,7 +260,7 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<BlobContainersSegment>> listBlobContainersSegmentNextNoCustomHeaders(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
@@ -278,7 +278,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -304,7 +304,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -329,7 +329,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -352,7 +352,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -374,7 +374,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -400,7 +400,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -424,7 +424,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules along with {@link ResponseBase} on successful completion of {@link Mono}.
@@ -450,7 +450,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules along with {@link ResponseBase} on successful completion of {@link Mono}.
@@ -475,7 +475,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
@@ -496,7 +496,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
@@ -517,7 +517,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules along with {@link Response} on successful completion of {@link Mono}.
@@ -543,7 +543,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules along with {@link Response} on successful completion of {@link Mono}.
@@ -568,7 +568,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the storage service along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -593,7 +593,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the storage service along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -617,7 +617,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the storage service on successful completion of {@link Mono}.
      */
@@ -637,7 +637,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the storage service on successful completion of {@link Mono}.
      */
@@ -657,7 +657,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the storage service along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -682,7 +682,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the storage service along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -718,7 +718,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -764,7 +764,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -808,7 +808,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers as paginated response with {@link PagedFlux}.
      */
@@ -843,7 +843,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers as paginated response with {@link PagedFlux}.
      */
@@ -879,7 +879,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -925,7 +925,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -969,7 +969,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers as paginated response with {@link PagedFlux}.
      */
@@ -1006,7 +1006,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers as paginated response with {@link PagedFlux}.
      */
@@ -1031,7 +1031,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a user delegation key along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1057,7 +1057,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a user delegation key along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1082,7 +1082,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a user delegation key on successful completion of {@link Mono}.
      */
@@ -1104,7 +1104,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a user delegation key on successful completion of {@link Mono}.
      */
@@ -1126,7 +1126,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a user delegation key along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1152,7 +1152,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a user delegation key along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1169,7 +1169,7 @@ public final class ServicesImpl {
     /**
      * Returns the sku name and account kind.
      * 
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1187,7 +1187,7 @@ public final class ServicesImpl {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1202,7 +1202,7 @@ public final class ServicesImpl {
     /**
      * Returns the sku name and account kind.
      * 
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1216,7 +1216,7 @@ public final class ServicesImpl {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1228,7 +1228,7 @@ public final class ServicesImpl {
     /**
      * Returns the sku name and account kind.
      * 
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1246,7 +1246,7 @@ public final class ServicesImpl {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1272,7 +1272,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1299,7 +1299,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1326,7 +1326,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1351,7 +1351,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1375,7 +1375,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1402,7 +1402,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1428,7 +1428,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1455,7 +1455,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1482,7 +1482,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1507,7 +1507,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1531,7 +1531,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1558,7 +1558,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1594,7 +1594,7 @@ public final class ServicesImpl {
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a Filter Blobs API call along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -1638,7 +1638,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a Filter Blobs API call along with {@link ResponseBase} on successful completion of
      * {@link Mono}.
@@ -1681,7 +1681,7 @@ public final class ServicesImpl {
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a Filter Blobs API call on successful completion of {@link Mono}.
      */
@@ -1716,7 +1716,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a Filter Blobs API call on successful completion of {@link Mono}.
      */
@@ -1750,7 +1750,7 @@ public final class ServicesImpl {
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a Filter Blobs API call along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -1793,7 +1793,7 @@ public final class ServicesImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a Filter Blobs API call along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -1822,7 +1822,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -1847,7 +1847,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -1871,7 +1871,7 @@ public final class ServicesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -1896,7 +1896,7 @@ public final class ServicesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */

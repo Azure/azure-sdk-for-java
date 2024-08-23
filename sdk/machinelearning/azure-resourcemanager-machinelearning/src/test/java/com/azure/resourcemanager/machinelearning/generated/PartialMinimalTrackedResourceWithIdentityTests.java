@@ -15,30 +15,28 @@ import org.junit.jupiter.api.Assertions;
 public final class PartialMinimalTrackedResourceWithIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartialMinimalTrackedResourceWithIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"opkwhojv\":\"datamg\",\"mocmbqfqvmk\":\"dataajqgxy\",\"helxprglya\":\"dataxozap\"}},\"tags\":{\"uejrjxgc\":\"ckcb\",\"i\":\"qibrhosxsdqrhzoy\"}}")
-                .toObject(PartialMinimalTrackedResourceWithIdentity.class);
-        Assertions.assertEquals("ckcb", model.tags().get("uejrjxgc"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        PartialMinimalTrackedResourceWithIdentity model = BinaryData.fromString(
+            "{\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ni\":\"dataspofapvuhry\",\"st\":\"datafrzgbzjed\",\"nsnvpd\":\"datavnlvxbcuiiznktwf\",\"z\":\"databmikost\"}},\"tags\":{\"ophzfylsgcrp\":\"wbuqn\",\"fwyfwlwxjwet\":\"bcunezzceze\"}}")
+            .toObject(PartialMinimalTrackedResourceWithIdentity.class);
+        Assertions.assertEquals("wbuqn", model.tags().get("ophzfylsgcrp"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartialMinimalTrackedResourceWithIdentity model =
-            new PartialMinimalTrackedResourceWithIdentity()
-                .withTags(mapOf("uejrjxgc", "ckcb", "i", "qibrhosxsdqrhzoy"))
-                .withIdentity(
-                    new PartialManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf("opkwhojv", "datamg", "mocmbqfqvmk", "dataajqgxy", "helxprglya", "dataxozap")));
+        PartialMinimalTrackedResourceWithIdentity model
+            = new PartialMinimalTrackedResourceWithIdentity()
+                .withTags(mapOf("ophzfylsgcrp", "wbuqn", "fwyfwlwxjwet", "bcunezzceze"))
+                .withIdentity(new PartialManagedServiceIdentity()
+                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("ni", "dataspofapvuhry", "st", "datafrzgbzjed", "nsnvpd",
+                        "datavnlvxbcuiiznktwf", "z", "databmikost")));
         model = BinaryData.fromObject(model).toObject(PartialMinimalTrackedResourceWithIdentity.class);
-        Assertions.assertEquals("ckcb", model.tags().get("uejrjxgc"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("wbuqn", model.tags().get("ophzfylsgcrp"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

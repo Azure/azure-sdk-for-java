@@ -22,7 +22,7 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storageToNetworkProximity\":\"Default\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"xztmo\",\"isAvailable\":false},{\"availabilityZone\":\"ft\",\"isAvailable\":true},{\"availabilityZone\":\"cwq\",\"isAvailable\":false}]},\"id\":\"aqxzhemjyho\",\"name\":\"uj\",\"type\":\"wtwko\"}";
+            = "{\"properties\":{\"storageToNetworkProximity\":\"T1AndT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"g\",\"isAvailable\":true},{\"availabilityZone\":\"xslhvnhlabrqnkk\",\"isAvailable\":true},{\"availabilityZone\":\"b\",\"isAvailable\":true}]},\"id\":\"ehvvib\",\"name\":\"xjjs\",\"type\":\"oqbeitpkxzt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class NetAppResourceRegionInfosGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RegionInfoResource response = manager.netAppResourceRegionInfos()
-            .getWithResponse("brxjjsto", com.azure.core.util.Context.NONE)
+            .getWithResponse("seypxiutcxapz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.DEFAULT, response.storageToNetworkProximity());
-        Assertions.assertEquals("xztmo", response.availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(false, response.availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2, response.storageToNetworkProximity());
+        Assertions.assertEquals("g", response.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertEquals(true, response.availabilityZoneMappings().get(0).isAvailable());
     }
 }

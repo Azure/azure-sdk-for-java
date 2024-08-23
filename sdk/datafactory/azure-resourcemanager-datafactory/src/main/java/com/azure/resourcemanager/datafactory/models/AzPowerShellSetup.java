@@ -6,30 +6,25 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.AzPowerShellSetupTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * The express custom setup of installing Azure PowerShell.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzPowerShellSetup.class, visible = true)
-@JsonTypeName("AzPowerShellSetup")
 @Fluent
 public final class AzPowerShellSetup extends CustomSetupBase {
     /*
      * The type of custom setup.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AzPowerShellSetup";
 
     /*
      * Install Azure PowerShell type properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private AzPowerShellSetupTypeProperties innerTypeProperties = new AzPowerShellSetupTypeProperties();
 
     /**
@@ -98,4 +93,45 @@ public final class AzPowerShellSetup extends CustomSetupBase {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzPowerShellSetup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzPowerShellSetup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzPowerShellSetup if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzPowerShellSetup.
+     */
+    public static AzPowerShellSetup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzPowerShellSetup deserializedAzPowerShellSetup = new AzPowerShellSetup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("typeProperties".equals(fieldName)) {
+                    deserializedAzPowerShellSetup.innerTypeProperties
+                        = AzPowerShellSetupTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzPowerShellSetup.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzPowerShellSetup;
+        });
+    }
 }

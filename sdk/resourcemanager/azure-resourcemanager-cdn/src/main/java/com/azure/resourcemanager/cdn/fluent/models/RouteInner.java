@@ -7,6 +7,9 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
@@ -17,7 +20,7 @@ import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
 import com.azure.resourcemanager.cdn.models.HttpsRedirect;
 import com.azure.resourcemanager.cdn.models.LinkToDefaultDomain;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -28,14 +31,27 @@ public final class RouteInner extends ProxyResource {
     /*
      * The JSON object that contains the properties of the Routes to create.
      */
-    @JsonProperty(value = "properties")
     private RouteProperties innerProperties;
 
     /*
      * Read only system data
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of RouteInner class.
@@ -59,6 +75,36 @@ public final class RouteInner extends ProxyResource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -135,8 +181,8 @@ public final class RouteInner extends ProxyResource {
     }
 
     /**
-     * Get the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content
-     * from, e.g. contoso.cloudapp.net/originpath.
+     * Get the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content from,
+     * e.g. contoso.cloudapp.net/originpath.
      * 
      * @return the originPath value.
      */
@@ -145,8 +191,8 @@ public final class RouteInner extends ProxyResource {
     }
 
     /**
-     * Set the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content
-     * from, e.g. contoso.cloudapp.net/originpath.
+     * Set the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content from,
+     * e.g. contoso.cloudapp.net/originpath.
      * 
      * @param originPath the originPath value to set.
      * @return the RouteInner object itself.
@@ -229,8 +275,8 @@ public final class RouteInner extends ProxyResource {
     }
 
     /**
-     * Get the cacheConfiguration property: The caching configuration for this route. To disable caching, do not
-     * provide a cacheConfiguration object.
+     * Get the cacheConfiguration property: The caching configuration for this route. To disable caching, do not provide
+     * a cacheConfiguration object.
      * 
      * @return the cacheConfiguration value.
      */
@@ -239,8 +285,8 @@ public final class RouteInner extends ProxyResource {
     }
 
     /**
-     * Set the cacheConfiguration property: The caching configuration for this route. To disable caching, do not
-     * provide a cacheConfiguration object.
+     * Set the cacheConfiguration property: The caching configuration for this route. To disable caching, do not provide
+     * a cacheConfiguration object.
      * 
      * @param cacheConfiguration the cacheConfiguration value to set.
      * @return the RouteInner object itself.
@@ -356,5 +402,50 @@ public final class RouteInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RouteInner.
+     */
+    public static RouteInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteInner deserializedRouteInner = new RouteInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRouteInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRouteInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRouteInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRouteInner.innerProperties = RouteProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRouteInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteInner;
+        });
     }
 }

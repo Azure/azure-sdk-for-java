@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SsisAccessCredential;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * SSIS package execution log location properties.
  */
 @Fluent
-public final class SsisLogLocationTypeProperties {
+public final class SsisLogLocationTypeProperties implements JsonSerializable<SsisLogLocationTypeProperties> {
     /*
      * The package execution log access credential.
      */
-    @JsonProperty(value = "accessCredential")
     private SsisAccessCredential accessCredential;
 
     /*
      * Specifies the interval to refresh log. The default interval is 5 minutes. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "logRefreshInterval")
     private Object logRefreshInterval;
 
     /**
@@ -85,5 +87,45 @@ public final class SsisLogLocationTypeProperties {
         if (accessCredential() != null) {
             accessCredential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("accessCredential", this.accessCredential);
+        jsonWriter.writeUntypedField("logRefreshInterval", this.logRefreshInterval);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisLogLocationTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisLogLocationTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisLogLocationTypeProperties.
+     */
+    public static SsisLogLocationTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisLogLocationTypeProperties deserializedSsisLogLocationTypeProperties
+                = new SsisLogLocationTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accessCredential".equals(fieldName)) {
+                    deserializedSsisLogLocationTypeProperties.accessCredential = SsisAccessCredential.fromJson(reader);
+                } else if ("logRefreshInterval".equals(fieldName)) {
+                    deserializedSsisLogLocationTypeProperties.logRefreshInterval = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisLogLocationTypeProperties;
+        });
     }
 }

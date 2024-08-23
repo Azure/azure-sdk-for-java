@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Aggregation operators allowed in a rule.
  */
@@ -51,7 +48,6 @@ public enum TimeAggregationOperator {
      * @param value the serialized value to parse.
      * @return the parsed TimeAggregationOperator object, or null if unable to parse.
      */
-    @JsonCreator
     public static TimeAggregationOperator fromString(String value) {
         if (value == null) {
             return null;
@@ -68,7 +64,6 @@ public enum TimeAggregationOperator {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

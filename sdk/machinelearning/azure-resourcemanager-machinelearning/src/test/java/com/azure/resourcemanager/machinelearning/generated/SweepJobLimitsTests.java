@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class SweepJobLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SweepJobLimits model =
-            BinaryData
-                .fromString(
-                    "{\"jobLimitsType\":\"Sweep\",\"maxConcurrentTrials\":1289892692,\"maxTotalTrials\":1229317362,\"trialTimeout\":\"PT17H24M34S\",\"timeout\":\"PT94H24M1S\"}")
-                .toObject(SweepJobLimits.class);
-        Assertions.assertEquals(Duration.parse("PT94H24M1S"), model.timeout());
-        Assertions.assertEquals(1289892692, model.maxConcurrentTrials());
-        Assertions.assertEquals(1229317362, model.maxTotalTrials());
-        Assertions.assertEquals(Duration.parse("PT17H24M34S"), model.trialTimeout());
+        SweepJobLimits model = BinaryData.fromString(
+            "{\"jobLimitsType\":\"Sweep\",\"maxTotalTrials\":1216231012,\"maxConcurrentTrials\":734824046,\"trialTimeout\":\"PT31H24M17S\",\"timeout\":\"PT39H5M12S\"}")
+            .toObject(SweepJobLimits.class);
+        Assertions.assertEquals(Duration.parse("PT39H5M12S"), model.timeout());
+        Assertions.assertEquals(1216231012, model.maxTotalTrials());
+        Assertions.assertEquals(734824046, model.maxConcurrentTrials());
+        Assertions.assertEquals(Duration.parse("PT31H24M17S"), model.trialTimeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SweepJobLimits model =
-            new SweepJobLimits()
-                .withTimeout(Duration.parse("PT94H24M1S"))
-                .withMaxConcurrentTrials(1289892692)
-                .withMaxTotalTrials(1229317362)
-                .withTrialTimeout(Duration.parse("PT17H24M34S"));
+        SweepJobLimits model = new SweepJobLimits().withTimeout(Duration.parse("PT39H5M12S"))
+            .withMaxTotalTrials(1216231012)
+            .withMaxConcurrentTrials(734824046)
+            .withTrialTimeout(Duration.parse("PT31H24M17S"));
         model = BinaryData.fromObject(model).toObject(SweepJobLimits.class);
-        Assertions.assertEquals(Duration.parse("PT94H24M1S"), model.timeout());
-        Assertions.assertEquals(1289892692, model.maxConcurrentTrials());
-        Assertions.assertEquals(1229317362, model.maxTotalTrials());
-        Assertions.assertEquals(Duration.parse("PT17H24M34S"), model.trialTimeout());
+        Assertions.assertEquals(Duration.parse("PT39H5M12S"), model.timeout());
+        Assertions.assertEquals(1216231012, model.maxTotalTrials());
+        Assertions.assertEquals(734824046, model.maxConcurrentTrials());
+        Assertions.assertEquals(Duration.parse("PT31H24M17S"), model.trialTimeout());
     }
 }

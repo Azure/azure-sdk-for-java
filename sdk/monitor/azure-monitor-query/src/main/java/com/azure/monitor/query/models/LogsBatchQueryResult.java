@@ -27,7 +27,7 @@ public final class LogsBatchQueryResult extends LogsQueryResult {
      * @param error The error details if there was an error executing the query.
      */
     public LogsBatchQueryResult(String id, int status, List<LogsTable> logsTables, BinaryData statistics,
-                                BinaryData visualization, ResponseError error) {
+        BinaryData visualization, ResponseError error) {
         super(logsTables, statistics, visualization, error);
         this.id = id;
         this.status = status;
@@ -49,4 +49,3 @@ public final class LogsBatchQueryResult extends LogsQueryResult {
         return status;
     }
 }
-

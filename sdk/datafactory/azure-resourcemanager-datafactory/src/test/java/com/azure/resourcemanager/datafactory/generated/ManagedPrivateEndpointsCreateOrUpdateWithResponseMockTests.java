@@ -26,7 +26,7 @@ public final class ManagedPrivateEndpointsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"hdr\",\"description\":\"aqtrcwzmdencq\",\"status\":\"sqnliougavudmxct\"},\"fqdns\":[\"zrkcvbfeucd\",\"ejazhtetimcjk\",\"exxn\"],\"groupId\":\"lcekonmcxriqfrrx\",\"isReserved\":true,\"privateLinkResourceId\":\"rhcjhsz\",\"provisioningState\":\"mfriosm\",\"\":{\"yixbbhj\":\"datakizqqdawmrk\",\"zdjzhxwobxso\":\"datanj\",\"odrtk\":\"dataemawrnq\"}},\"name\":\"mgllnyohnhfup\",\"type\":\"fosrwzhmlklocyjp\",\"etag\":\"tnvxomhk\",\"id\":\"vdmjjiqjv\"}";
+            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"jyfiabhepxqtkynl\",\"description\":\"norhwdo\",\"status\":\"ythsl\"},\"fqdns\":[\"lvwbgbmpit\"],\"groupId\":\"xhiuhgvgnolusqfd\",\"isReserved\":true,\"privateLinkResourceId\":\"pwvieymkguvrd\",\"provisioningState\":\"proytd\",\"\":{\"vmvpp\":\"datalq\",\"is\":\"datatsolxnhlrpsign\"}},\"name\":\"obpxfgp\",\"type\":\"zdzswvfwiunjwqx\",\"etag\":\"tfzgdq\",\"id\":\"vbiryxsa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,20 +36,20 @@ public final class ManagedPrivateEndpointsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedPrivateEndpointResource response = manager.managedPrivateEndpoints()
-            .define("elupsobq")
-            .withExistingManagedVirtualNetwork("ddadez", "saecdc", "hxwegdsmnyphv")
+            .define("zbg")
+            .withExistingManagedVirtualNetwork("cwacchixdafrx", "rhqzjz", "onttfvjfwl")
             .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-                .withFqdns(Arrays.asList("b"))
-                .withGroupId("yedrkgrtda")
-                .withPrivateLinkResourceId("oimtar")
-                .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "exkbmod")))
-            .withIfMatch("mblhcbanzkw")
+                .withFqdns(Arrays.asList("sayiivoixefncqf", "wqnz", "ctnmkitsvkuop", "vqsabopou"))
+                .withGroupId("gxnzpqegga")
+                .withPrivateLinkResourceId("zudysndiexb")
+                .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "wjmqn")))
+            .withIfMatch("nfwijlvkrnsodohp")
             .create();
 
-        Assertions.assertEquals("vdmjjiqjv", response.id());
-        Assertions.assertEquals("zrkcvbfeucd", response.properties().fqdns().get(0));
-        Assertions.assertEquals("lcekonmcxriqfrrx", response.properties().groupId());
-        Assertions.assertEquals("rhcjhsz", response.properties().privateLinkResourceId());
+        Assertions.assertEquals("vbiryxsa", response.id());
+        Assertions.assertEquals("lvwbgbmpit", response.properties().fqdns().get(0));
+        Assertions.assertEquals("xhiuhgvgnolusqfd", response.properties().groupId());
+        Assertions.assertEquals("pwvieymkguvrd", response.properties().privateLinkResourceId());
     }
 
     // Use "Map.of" if available

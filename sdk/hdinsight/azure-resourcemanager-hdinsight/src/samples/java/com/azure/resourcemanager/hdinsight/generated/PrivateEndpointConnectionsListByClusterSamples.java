@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-/** Samples for PrivateEndpointConnections ListByCluster. */
+/**
+ * Samples for PrivateEndpointConnections ListByCluster.
+ */
 public final class PrivateEndpointConnectionsListByClusterSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/GetAllPrivateEndpointConnectionsInCluster.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * GetAllPrivateEndpointConnectionsInCluster.json
      */
     /**
      * Sample code: Get all private endpoint connections for a specific HDInsight cluster.
-     *
+     * 
      * @param manager Entry point to HDInsightManager.
      */
     public static void getAllPrivateEndpointConnectionsForASpecificHDInsightCluster(

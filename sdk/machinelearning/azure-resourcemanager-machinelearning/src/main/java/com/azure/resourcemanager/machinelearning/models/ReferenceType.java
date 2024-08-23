@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum to determine which reference method to use for an asset. */
+/**
+ * Enum to determine which reference method to use for an asset.
+ */
 public final class ReferenceType extends ExpandableStringEnum<ReferenceType> {
-    /** Static value Id for ReferenceType. */
+    /**
+     * Static value Id for ReferenceType.
+     */
     public static final ReferenceType ID = fromString("Id");
 
-    /** Static value DataPath for ReferenceType. */
+    /**
+     * Static value DataPath for ReferenceType.
+     */
     public static final ReferenceType DATA_PATH = fromString("DataPath");
 
-    /** Static value OutputPath for ReferenceType. */
+    /**
+     * Static value OutputPath for ReferenceType.
+     */
     public static final ReferenceType OUTPUT_PATH = fromString("OutputPath");
 
     /**
      * Creates a new instance of ReferenceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ReferenceType extends ExpandableStringEnum<ReferenceType> {
 
     /**
      * Creates or finds a ReferenceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReferenceType.
      */
-    @JsonCreator
     public static ReferenceType fromString(String name) {
         return fromString(name, ReferenceType.class);
     }
 
     /**
      * Gets known ReferenceType values.
-     *
+     * 
      * @return known ReferenceType values.
      */
     public static Collection<ReferenceType> values() {

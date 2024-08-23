@@ -5,13 +5,16 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
 import com.azure.resourcemanager.datafactory.models.AzureSqlDatabaseAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SqlAlwaysEncryptedProperties;
 import com.azure.resourcemanager.datafactory.models.SqlServerBaseLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Azure SQL Database linked service properties.
@@ -21,45 +24,38 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties extends SqlServer
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
      * The type used for authentication. Type: string.
      */
-    @JsonProperty(value = "authenticationType")
     private AzureSqlDatabaseAuthenticationType authenticationType;
 
     /*
      * The user name to be used when connecting to server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName")
     private Object username;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "password")
     private AzureKeyVaultSecretReference password;
 
     /*
      * The ID of the service principal used to authenticate against Azure SQL Database. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against Azure SQL Database.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
      * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalCredentialType")
     private Object servicePrincipalCredentialType;
 
     /*
@@ -68,14 +64,12 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties extends SqlServer
      * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
@@ -83,26 +77,22 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties extends SqlServer
      * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * Sql always encrypted properties.
      */
-    @JsonProperty(value = "alwaysEncryptedSettings")
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /**
@@ -595,5 +585,150 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties extends SqlServer
         if (credential() != null) {
             credential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("server", server());
+        jsonWriter.writeUntypedField("database", database());
+        jsonWriter.writeUntypedField("encrypt", encrypt());
+        jsonWriter.writeUntypedField("trustServerCertificate", trustServerCertificate());
+        jsonWriter.writeUntypedField("hostNameInCertificate", hostnameInCertificate());
+        jsonWriter.writeUntypedField("applicationIntent", applicationIntent());
+        jsonWriter.writeUntypedField("connectTimeout", connectTimeout());
+        jsonWriter.writeUntypedField("connectRetryCount", connectRetryCount());
+        jsonWriter.writeUntypedField("connectRetryInterval", connectRetryInterval());
+        jsonWriter.writeUntypedField("loadBalanceTimeout", loadBalanceTimeout());
+        jsonWriter.writeUntypedField("commandTimeout", commandTimeout());
+        jsonWriter.writeUntypedField("integratedSecurity", integratedSecurity());
+        jsonWriter.writeUntypedField("failoverPartner", failoverPartner());
+        jsonWriter.writeUntypedField("maxPoolSize", maxPoolSize());
+        jsonWriter.writeUntypedField("minPoolSize", minPoolSize());
+        jsonWriter.writeUntypedField("multipleActiveResultSets", multipleActiveResultSets());
+        jsonWriter.writeUntypedField("multiSubnetFailover", multiSubnetFailover());
+        jsonWriter.writeUntypedField("packetSize", packetSize());
+        jsonWriter.writeUntypedField("pooling", pooling());
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("alwaysEncryptedSettings", this.alwaysEncryptedSettings);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlDatabaseLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlDatabaseLinkedServiceTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlDatabaseLinkedServiceTypeProperties.
+     */
+    public static AzureSqlDatabaseLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlDatabaseLinkedServiceTypeProperties deserializedAzureSqlDatabaseLinkedServiceTypeProperties
+                = new AzureSqlDatabaseLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withServer(reader.readUntyped());
+                } else if ("database".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withDatabase(reader.readUntyped());
+                } else if ("encrypt".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withEncrypt(reader.readUntyped());
+                } else if ("trustServerCertificate".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties
+                        .withTrustServerCertificate(reader.readUntyped());
+                } else if ("hostNameInCertificate".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties
+                        .withHostnameInCertificate(reader.readUntyped());
+                } else if ("applicationIntent".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withApplicationIntent(reader.readUntyped());
+                } else if ("connectTimeout".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withConnectTimeout(reader.readUntyped());
+                } else if ("connectRetryCount".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withConnectRetryCount(reader.readUntyped());
+                } else if ("connectRetryInterval".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties
+                        .withConnectRetryInterval(reader.readUntyped());
+                } else if ("loadBalanceTimeout".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties
+                        .withLoadBalanceTimeout(reader.readUntyped());
+                } else if ("commandTimeout".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withCommandTimeout(reader.readUntyped());
+                } else if ("integratedSecurity".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties
+                        .withIntegratedSecurity(reader.readUntyped());
+                } else if ("failoverPartner".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withFailoverPartner(reader.readUntyped());
+                } else if ("maxPoolSize".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withMaxPoolSize(reader.readUntyped());
+                } else if ("minPoolSize".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withMinPoolSize(reader.readUntyped());
+                } else if ("multipleActiveResultSets".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties
+                        .withMultipleActiveResultSets(reader.readUntyped());
+                } else if ("multiSubnetFailover".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties
+                        .withMultiSubnetFailover(reader.readUntyped());
+                } else if ("packetSize".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withPacketSize(reader.readUntyped());
+                } else if ("pooling".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.withPooling(reader.readUntyped());
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.authenticationType
+                        = AzureSqlDatabaseAuthenticationType.fromString(reader.getString());
+                } else if ("userName".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.password
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.servicePrincipalKey
+                        = SecretBase.fromJson(reader);
+                } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.servicePrincipalCredentialType
+                        = reader.readUntyped();
+                } else if ("servicePrincipalCredential".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.servicePrincipalCredential
+                        = SecretBase.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("azureCloudType".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.azureCloudType = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("alwaysEncryptedSettings".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.alwaysEncryptedSettings
+                        = SqlAlwaysEncryptedProperties.fromJson(reader);
+                } else if ("credential".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedServiceTypeProperties.credential
+                        = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlDatabaseLinkedServiceTypeProperties;
+        });
     }
 }

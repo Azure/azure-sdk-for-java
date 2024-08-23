@@ -5,20 +5,35 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of upgrading cluster's AKS patch version.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "upgradeType")
-@JsonTypeName("AKSPatchUpgrade")
 @Immutable
 public final class ClusterAksPatchVersionUpgradeProperties extends ClusterUpgradeProperties {
+    /*
+     * Type of upgrade.
+     */
+    private ClusterUpgradeType upgradeType = ClusterUpgradeType.AKSPATCH_UPGRADE;
+
     /**
      * Creates an instance of ClusterAksPatchVersionUpgradeProperties class.
      */
     public ClusterAksPatchVersionUpgradeProperties() {
+    }
+
+    /**
+     * Get the upgradeType property: Type of upgrade.
+     * 
+     * @return the upgradeType value.
+     */
+    @Override
+    public ClusterUpgradeType upgradeType() {
+        return this.upgradeType;
     }
 
     /**
@@ -29,5 +44,43 @@ public final class ClusterAksPatchVersionUpgradeProperties extends ClusterUpgrad
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("upgradeType", this.upgradeType == null ? null : this.upgradeType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterAksPatchVersionUpgradeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterAksPatchVersionUpgradeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterAksPatchVersionUpgradeProperties.
+     */
+    public static ClusterAksPatchVersionUpgradeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterAksPatchVersionUpgradeProperties deserializedClusterAksPatchVersionUpgradeProperties
+                = new ClusterAksPatchVersionUpgradeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgradeType".equals(fieldName)) {
+                    deserializedClusterAksPatchVersionUpgradeProperties.upgradeType
+                        = ClusterUpgradeType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterAksPatchVersionUpgradeProperties;
+        });
     }
 }

@@ -6,35 +6,35 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Secret reference and corresponding properties of a key vault secret.
  */
 @Fluent
-public final class SecretReference {
+public final class SecretReference implements JsonSerializable<SecretReference> {
     /*
      * Reference name of the secret to be used in service configs.
      */
-    @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
     /*
      * Type of key vault object: secret, key or certificate.
      */
-    @JsonProperty(value = "type", required = true)
     private KeyVaultObjectType type;
 
     /*
      * Version of the secret in key vault.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Object identifier name of the secret in key vault.
      */
-    @JsonProperty(value = "keyVaultObjectName", required = true)
     private String keyVaultObjectName;
 
     /**
@@ -130,18 +130,65 @@ public final class SecretReference {
      */
     public void validate() {
         if (referenceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property referenceName in model SecretReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property referenceName in model SecretReference"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model SecretReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model SecretReference"));
         }
         if (keyVaultObjectName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property keyVaultObjectName in model SecretReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVaultObjectName in model SecretReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecretReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("keyVaultObjectName", this.keyVaultObjectName);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecretReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecretReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecretReference.
+     */
+    public static SecretReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretReference deserializedSecretReference = new SecretReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("referenceName".equals(fieldName)) {
+                    deserializedSecretReference.referenceName = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSecretReference.type = KeyVaultObjectType.fromString(reader.getString());
+                } else if ("keyVaultObjectName".equals(fieldName)) {
+                    deserializedSecretReference.keyVaultObjectName = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSecretReference.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecretReference;
+        });
+    }
 }

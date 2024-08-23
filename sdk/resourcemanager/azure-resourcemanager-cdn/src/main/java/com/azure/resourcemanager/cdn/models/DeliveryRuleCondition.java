@@ -5,45 +5,35 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A condition for the delivery rule.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "name",
-    defaultImpl = DeliveryRuleCondition.class)
-@JsonTypeName("DeliveryRuleCondition")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "RemoteAddress", value = DeliveryRuleRemoteAddressCondition.class),
-    @JsonSubTypes.Type(name = "RequestMethod", value = DeliveryRuleRequestMethodCondition.class),
-    @JsonSubTypes.Type(name = "QueryString", value = DeliveryRuleQueryStringCondition.class),
-    @JsonSubTypes.Type(name = "PostArgs", value = DeliveryRulePostArgsCondition.class),
-    @JsonSubTypes.Type(name = "RequestUri", value = DeliveryRuleRequestUriCondition.class),
-    @JsonSubTypes.Type(name = "RequestHeader", value = DeliveryRuleRequestHeaderCondition.class),
-    @JsonSubTypes.Type(name = "RequestBody", value = DeliveryRuleRequestBodyCondition.class),
-    @JsonSubTypes.Type(name = "RequestScheme", value = DeliveryRuleRequestSchemeCondition.class),
-    @JsonSubTypes.Type(name = "UrlPath", value = DeliveryRuleUrlPathCondition.class),
-    @JsonSubTypes.Type(name = "UrlFileExtension", value = DeliveryRuleUrlFileExtensionCondition.class),
-    @JsonSubTypes.Type(name = "UrlFileName", value = DeliveryRuleUrlFileNameCondition.class),
-    @JsonSubTypes.Type(name = "HttpVersion", value = DeliveryRuleHttpVersionCondition.class),
-    @JsonSubTypes.Type(name = "Cookies", value = DeliveryRuleCookiesCondition.class),
-    @JsonSubTypes.Type(name = "IsDevice", value = DeliveryRuleIsDeviceCondition.class),
-    @JsonSubTypes.Type(name = "SocketAddr", value = DeliveryRuleSocketAddrCondition.class),
-    @JsonSubTypes.Type(name = "ClientPort", value = DeliveryRuleClientPortCondition.class),
-    @JsonSubTypes.Type(name = "ServerPort", value = DeliveryRuleServerPortCondition.class),
-    @JsonSubTypes.Type(name = "HostName", value = DeliveryRuleHostnameCondition.class),
-    @JsonSubTypes.Type(name = "SslProtocol", value = DeliveryRuleSslProtocolCondition.class) })
 @Immutable
-public class DeliveryRuleCondition {
+public class DeliveryRuleCondition implements JsonSerializable<DeliveryRuleCondition> {
+    /*
+     * The name of the condition for the delivery rule.
+     */
+    private MatchVariable name = MatchVariable.fromString("DeliveryRuleCondition");
+
     /**
      * Creates an instance of DeliveryRuleCondition class.
      */
     public DeliveryRuleCondition() {
+    }
+
+    /**
+     * Get the name property: The name of the condition for the delivery rule.
+     * 
+     * @return the name value.
+     */
+    public MatchVariable name() {
+        return this.name;
     }
 
     /**
@@ -52,5 +42,102 @@ public class DeliveryRuleCondition {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeliveryRuleCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeliveryRuleCondition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeliveryRuleCondition.
+     */
+    public static DeliveryRuleCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("name".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("RemoteAddress".equals(discriminatorValue)) {
+                    return DeliveryRuleRemoteAddressCondition.fromJson(readerToUse.reset());
+                } else if ("RequestMethod".equals(discriminatorValue)) {
+                    return DeliveryRuleRequestMethodCondition.fromJson(readerToUse.reset());
+                } else if ("QueryString".equals(discriminatorValue)) {
+                    return DeliveryRuleQueryStringCondition.fromJson(readerToUse.reset());
+                } else if ("PostArgs".equals(discriminatorValue)) {
+                    return DeliveryRulePostArgsCondition.fromJson(readerToUse.reset());
+                } else if ("RequestUri".equals(discriminatorValue)) {
+                    return DeliveryRuleRequestUriCondition.fromJson(readerToUse.reset());
+                } else if ("RequestHeader".equals(discriminatorValue)) {
+                    return DeliveryRuleRequestHeaderCondition.fromJson(readerToUse.reset());
+                } else if ("RequestBody".equals(discriminatorValue)) {
+                    return DeliveryRuleRequestBodyCondition.fromJson(readerToUse.reset());
+                } else if ("RequestScheme".equals(discriminatorValue)) {
+                    return DeliveryRuleRequestSchemeCondition.fromJson(readerToUse.reset());
+                } else if ("UrlPath".equals(discriminatorValue)) {
+                    return DeliveryRuleUrlPathCondition.fromJson(readerToUse.reset());
+                } else if ("UrlFileExtension".equals(discriminatorValue)) {
+                    return DeliveryRuleUrlFileExtensionCondition.fromJson(readerToUse.reset());
+                } else if ("UrlFileName".equals(discriminatorValue)) {
+                    return DeliveryRuleUrlFileNameCondition.fromJson(readerToUse.reset());
+                } else if ("HttpVersion".equals(discriminatorValue)) {
+                    return DeliveryRuleHttpVersionCondition.fromJson(readerToUse.reset());
+                } else if ("Cookies".equals(discriminatorValue)) {
+                    return DeliveryRuleCookiesCondition.fromJson(readerToUse.reset());
+                } else if ("IsDevice".equals(discriminatorValue)) {
+                    return DeliveryRuleIsDeviceCondition.fromJson(readerToUse.reset());
+                } else if ("SocketAddr".equals(discriminatorValue)) {
+                    return DeliveryRuleSocketAddrCondition.fromJson(readerToUse.reset());
+                } else if ("ClientPort".equals(discriminatorValue)) {
+                    return DeliveryRuleClientPortCondition.fromJson(readerToUse.reset());
+                } else if ("ServerPort".equals(discriminatorValue)) {
+                    return DeliveryRuleServerPortCondition.fromJson(readerToUse.reset());
+                } else if ("HostName".equals(discriminatorValue)) {
+                    return DeliveryRuleHostnameCondition.fromJson(readerToUse.reset());
+                } else if ("SslProtocol".equals(discriminatorValue)) {
+                    return DeliveryRuleSslProtocolCondition.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DeliveryRuleCondition fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeliveryRuleCondition deserializedDeliveryRuleCondition = new DeliveryRuleCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDeliveryRuleCondition.name = MatchVariable.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeliveryRuleCondition;
+        });
     }
 }

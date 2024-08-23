@@ -5,10 +5,12 @@ package com.azure.storage.file.datalake.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.file.datalake.implementation.models.DataLakeStorageExceptionInternal;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import reactor.core.Exceptions;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -53,5 +55,15 @@ public class DataLakeImplUtils {
         } catch (BlobStorageException ex) {
             throw logger.logExceptionAsError((RuntimeException) transformBlobStorageException(ex));
         }
+    }
+
+    public static <T> Callable<T> wrapServiceCallWithExceptionMapping(Supplier<T> serviceCall) {
+        return () -> {
+            try {
+                return serviceCall.get();
+            } catch (DataLakeStorageExceptionInternal internal) {
+                throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internal);
+            }
+        };
     }
 }

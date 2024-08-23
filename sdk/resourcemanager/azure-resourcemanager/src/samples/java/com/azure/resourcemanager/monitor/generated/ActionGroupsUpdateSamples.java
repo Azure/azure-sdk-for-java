@@ -22,10 +22,15 @@ public final class ActionGroupsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void patchAnActionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getActionGroups().updateWithResponse(
-            "Default-NotificationRules", "SampleActionGroup", new ActionGroupPatchBody()
-                .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")).withEnabled(false),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getActionGroups()
+            .updateWithResponse("Default-NotificationRules", "SampleActionGroup",
+                new ActionGroupPatchBody()
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+                    .withEnabled(false),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

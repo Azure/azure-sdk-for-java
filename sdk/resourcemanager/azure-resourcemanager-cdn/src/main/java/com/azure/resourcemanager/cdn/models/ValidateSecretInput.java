@@ -6,17 +6,20 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Input of the secret to be validated.
  */
 @Fluent
-public final class ValidateSecretInput {
+public final class ValidateSecretInput implements JsonSerializable<ValidateSecretInput> {
     /*
      * The secret type.
      */
-    @JsonProperty(value = "secretType", required = true)
     private SecretType secretType;
 
     /*
@@ -26,13 +29,11 @@ public final class ValidateSecretInput {
      * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}
      * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
-    @JsonProperty(value = "secretSource", required = true)
     private ResourceReference secretSource;
 
     /*
      * Secret version, if customer is using a specific version.
      */
-    @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
     /**
@@ -110,16 +111,60 @@ public final class ValidateSecretInput {
      */
     public void validate() {
         if (secretType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property secretType in model ValidateSecretInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property secretType in model ValidateSecretInput"));
         }
         if (secretSource() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property secretSource in model ValidateSecretInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secretSource in model ValidateSecretInput"));
         } else {
             secretSource().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ValidateSecretInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("secretType", this.secretType == null ? null : this.secretType.toString());
+        jsonWriter.writeJsonField("secretSource", this.secretSource);
+        jsonWriter.writeStringField("secretVersion", this.secretVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateSecretInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateSecretInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ValidateSecretInput.
+     */
+    public static ValidateSecretInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateSecretInput deserializedValidateSecretInput = new ValidateSecretInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secretType".equals(fieldName)) {
+                    deserializedValidateSecretInput.secretType = SecretType.fromString(reader.getString());
+                } else if ("secretSource".equals(fieldName)) {
+                    deserializedValidateSecretInput.secretSource = ResourceReference.fromJson(reader);
+                } else if ("secretVersion".equals(fieldName)) {
+                    deserializedValidateSecretInput.secretVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateSecretInput;
+        });
+    }
 }
