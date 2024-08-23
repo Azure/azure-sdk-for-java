@@ -227,7 +227,7 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     @Override
     public Mono<Void> zipDeployAsync(File zipFile) {
         try {
-            return kuduClient.zipDeployAsync(zipFile);
+            return kuduClient.zipDeployAsync(zipFile, false);
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -240,7 +240,7 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
 
     @Override
     public Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
-        return kuduClient.zipDeployAsync(zipFile, length)
+        return kuduClient.zipDeployAsync(zipFile, length, false)
             .then(WebAppImpl.this.stopAsync())
             .then(WebAppImpl.this.startAsync());
     }
@@ -389,7 +389,7 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
                             return Mono.error(new ManagementException("Deserialize failed for response body.", response));
                         }
                         return Mono.justOrEmpty(status);
-                    });
+                    }).doFinally(ignored -> response.close());
             });
     }
 }

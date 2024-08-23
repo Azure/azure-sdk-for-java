@@ -17,6 +17,7 @@ import com.azure.resourcemanager.appservice.models.DeploymentBuildStatus;
 import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppConfig;
+import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.FunctionsDeployment;
 import com.azure.resourcemanager.appservice.models.FunctionsDeploymentStorage;
 import com.azure.resourcemanager.appservice.models.FunctionsDeploymentStorageAuthentication;
@@ -40,9 +41,13 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -137,9 +142,10 @@ public class OneDeployTests extends AppServiceTest {
     }
 
     // test uses storage account key and connection string to configure the function app
-    @Test
     @DoNotRecord(skipInPlayback = true)
-    public void canDeployFlexConsumptionFunctionApp() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void canDeployFlexConsumptionFunctionApp(boolean pushDeploy) throws FileNotFoundException {
         final PricingTier flexConsumptionTier = new PricingTier("FlexConsumption", "FC1");
 
         String appServiceName = generateRandomResourceName("plan", 10);
@@ -197,8 +203,8 @@ public class OneDeployTests extends AppServiceTest {
                             .withStorageAccountConnectionStringName("DEPLOYMENT_STORAGE_CONNECTION_STRING"))))
                 .withRuntime(new FunctionsRuntime().withName(RuntimeName.JAVA).withVersion("11"))
                 .withScaleAndConcurrency(new FunctionsScaleAndConcurrency()
-                    .withMaximumInstanceCount(100F)
-                    .withInstanceMemoryMB(2048F))),
+                    .withMaximumInstanceCount(100)
+                    .withInstanceMemoryMB(2048))),
                 com.azure.core.util.Context.NONE);
 
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName, functionAppName);
@@ -206,7 +212,56 @@ public class OneDeployTests extends AppServiceTest {
         // test one deploy
         if (!isPlaybackMode()) {
             File zipFile = new File(OneDeployTests.class.getResource("/java-functions.zip").getPath());
-            functionApp.deploy(zipFile);
+
+            if (pushDeploy) {
+                KuduDeploymentResult deploymentResult = functionApp.pushDeploy(DeployType.ZIP, zipFile, null);
+
+                String deploymentId = deploymentResult.deploymentId();
+                Assertions.assertNotNull(deploymentId);
+
+                // waitForRuntimeSuccess(functionApp, deploymentId);
+                CsmDeploymentStatus deploymentStatus = functionApp.getDeploymentStatus(deploymentId);
+                Assertions.assertNotNull(deploymentStatus.deploymentId());
+            } else {
+                functionApp.deploy(DeployType.ZIP, zipFile);
+            }
+
+            assertFunctionAppRunning(functionApp);
+        }
+    }
+
+    @DoNotRecord(skipInPlayback = true)
+    @ValueSource(booleans = {true, false})
+    public void canDeployFunctionApp(boolean pushDeploy) {
+        String functionAppName = generateRandomResourceName("functionapp", 20);
+
+        FunctionApp functionApp =
+            appServiceManager
+                .functionApps()
+                .define(functionAppName)
+                .withRegion(Region.US_WEST2)
+                .withNewResourceGroup(rgName)
+                .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
+                .withBuiltInImage(FunctionRuntimeStack.JAVA_11)
+                .withHttpsOnly(true)
+                .create();
+
+        // test one deploy
+        if (!isPlaybackMode()) {
+            File zipFile = new File(OneDeployTests.class.getResource("/java-functions.zip").getPath());
+
+            if (pushDeploy) {
+                KuduDeploymentResult deploymentResult = functionApp.pushDeploy(DeployType.ZIP, zipFile, null);
+
+                String deploymentId = deploymentResult.deploymentId();
+                Assertions.assertNotNull(deploymentId);
+
+                // waitForRuntimeSuccess(functionApp, deploymentId);
+                CsmDeploymentStatus deploymentStatus = functionApp.getDeploymentStatus(deploymentId);
+                Assertions.assertNotNull(deploymentStatus.deploymentId());
+            } else {
+                functionApp.deploy(DeployType.ZIP, zipFile);
+            }
 
             assertFunctionAppRunning(functionApp);
         }
@@ -227,6 +282,9 @@ public class OneDeployTests extends AppServiceTest {
                 // failed
                 break;
             }
+
+            // use "deploymentId" from response
+            deploymentId = deploymentStatus.deploymentId();
         }
         Assertions.assertEquals(DeploymentBuildStatus.RUNTIME_SUCCESSFUL, buildStatus);
     }

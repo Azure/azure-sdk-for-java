@@ -9,6 +9,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
@@ -20,9 +21,14 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -43,6 +49,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 
 /** A client which interacts with Kudu service. */
 class KuduClient {
@@ -68,6 +75,47 @@ class KuduClient {
 
         service = RestProxy.create(KuduService.class, webAppBase.manager().httpPipeline(),
             SerializerFactory.createDefaultManagementSerializerAdapter());
+    }
+
+    public static class DeploymentStatus implements JsonSerializable<DeploymentStatus> {
+        private String id;
+        private Integer status;
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            // no serialization
+            jsonWriter.writeStartObject();
+            return jsonWriter.writeEndObject();
+        }
+
+        public static DeploymentStatus fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                DeploymentStatus deserializedDeploymentStatus
+                    = new DeploymentStatus();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("id".equals(fieldName)) {
+                        deserializedDeploymentStatus.id = reader.getString();
+                    } else if ("status".equals(fieldName)) {
+                        deserializedDeploymentStatus.status = reader.getNullable(JsonReader::getInt);
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+
+                return deserializedDeploymentStatus;
+            });
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public Integer getStatus() {
+            return status;
+        }
     }
 
     @Host("{$host}")
@@ -101,7 +149,9 @@ class KuduClient {
         Mono<Void> zipDeploy(
             @HostParam("$host") String host,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> zipFile,
-            @HeaderParam("content-length") long size);
+            @HeaderParam("content-length") long size,
+            @QueryParam("isAsync") Boolean isAsync
+        );
 
         // OneDeploy
         @Headers({"Content-Type: application/octet-stream"})
@@ -131,6 +181,13 @@ class KuduClient {
 
         @Get("api/settings")
         Mono<Map<String, String>> settings(@HostParam("$host") String host);
+
+        @Headers({"Accept: application/json"})
+        @Get("api/deployments/{deploymentId}")
+        Mono<DeploymentStatus> deploymentStatus(
+            @HostParam("$host") String host,
+            @PathParam("deploymentId") String deploymentId
+        );
     }
 
     Flux<String> streamApplicationLogsAsync() {
@@ -247,14 +304,14 @@ class KuduClient {
                 });
     }
 
-    Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
+    Mono<Void> zipDeployAsync(InputStream zipFile, long length, boolean isAsync) {
         Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(zipFile);
-        return retryOnError(service.zipDeploy(host, flux, length));
+        return retryOnError(service.zipDeploy(host, flux, length, isAsync));
     }
 
-    Mono<Void> zipDeployAsync(File zipFile) throws IOException {
+    Mono<Void> zipDeployAsync(File zipFile, boolean isAsync) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(zipFile.toPath(), StandardOpenOption.READ);
-        return retryOnError(service.zipDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size()))
+        return retryOnError(service.zipDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(), isAsync))
             .doFinally(ignored -> {
                 try {
                     fileChannel.close();
@@ -278,27 +335,6 @@ class KuduClient {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
         return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
             type, path, restart, clean, false, false))
-            .then()
-            .doFinally(ignored -> {
-                try {
-                    fileChannel.close();
-                } catch (IOException e) {
-                    logger.logThrowableAsError(e);
-                }
-            });
-    }
-
-//    Mono<Void> deployFlexConsumptionAsync(InputStream file, long length) {
-//        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
-//        return retryOnError(service.deployFlexConsumption(host, flux, length,
-//            false, DEPLOYER_JAVA_SDK))
-//            .then();
-//    }
-
-    Mono<Void> deployFlexConsumptionAsync(File file) throws IOException {
-        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
-        return retryOnError(service.deployFlexConsumption(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            false, DEPLOYER_JAVA_SDK))
             .then()
             .doFinally(ignored -> {
                 try {
@@ -336,8 +372,60 @@ class KuduClient {
             });
     }
 
+    Mono<KuduDeploymentResult> pushDeployFlexConsumptionAsync(File file) throws IOException {
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
+        return retryOnError(service.deployFlexConsumption(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
+            false, DEPLOYER_JAVA_SDK))
+            .then(Mono.just(new KuduDeploymentResult("latest")))
+            .doFinally(ignored -> {
+                try {
+                    fileChannel.close();
+                } catch (IOException e) {
+                    logger.logThrowableAsError(e);
+                }
+            });
+    }
+
+    Mono<KuduDeploymentResult> pushDeployFlexConsumptionAsync(InputStream file, long length) throws IOException {
+        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
+        return retryOnError(service.deployFlexConsumption(host, flux, length,
+            false, DEPLOYER_JAVA_SDK))
+            .then(Mono.just(new KuduDeploymentResult("latest")));
+    }
+
     Mono<Map<String, String>> settings() {
         return retryOnError(service.settings(host));
+    }
+
+    Mono<DeploymentStatus> getDeploymentStatus(String deploymentId) {
+        return service.deploymentStatus(host, deploymentId);
+    }
+
+    Mono<Void> pollDeploymentStatus(KuduDeploymentResult result) {
+        AtomicReference<String> deploymentId = new AtomicReference<>(result.deploymentId());
+        return Mono.defer(() -> this.getDeploymentStatus(deploymentId.get()))
+            .flatMap(deploymentStatus -> {
+                Integer status = deploymentStatus.getStatus();
+
+                // https://github.com/Azure/azure-cli/blob/dev/src/azure-cli/azure/cli/command_modules/appservice/custom.py
+                boolean succeeded = status == 4;
+                boolean completed = succeeded
+                    || status == -1
+                    || (status >= 3 && status <= 6);
+
+                deploymentId.set(deploymentStatus.getId());
+
+                if (succeeded) {
+                    return Mono.just(deploymentStatus);
+                } else if (completed) {
+                    return Mono.error(new RuntimeException("Deployment failed, status " + status));
+                } else {
+                    // continue polling
+                    return Mono.empty();
+                }
+            })
+            .repeatWhenEmpty(observable -> Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(30))))
+            .then();
     }
 
     private <T> Mono<T> retryOnError(Mono<T> observable) {
