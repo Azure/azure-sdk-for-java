@@ -67,6 +67,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -699,6 +701,24 @@ public final class ModelHelper {
         }
 
         return internal;
+    }
+
+    public static <T> Callable<T> wrapTimeoutServiceCallWithExceptionMapping(Supplier<T> serviceCall) {
+        return () -> {
+            try {
+                return serviceCall.get();
+            } catch (BlobStorageExceptionInternal internal) {
+                throw (BlobStorageException) mapToBlobStorageException(internal);
+            }
+        };
+    }
+
+    public static <T> T wrapServiceCallWithExceptionMapping(Supplier<T> serviceCall) {
+        try {
+            return serviceCall.get();
+        } catch (BlobStorageExceptionInternal internal) {
+            throw (BlobStorageException) mapToBlobStorageException(internal);
+        }
     }
 
     private ModelHelper() {

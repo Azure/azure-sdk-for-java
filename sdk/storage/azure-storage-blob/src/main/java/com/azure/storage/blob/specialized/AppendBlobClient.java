@@ -48,6 +48,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
+import static com.azure.storage.blob.implementation.util.ModelHelper.wrapTimeoutServiceCallWithExceptionMapping;
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 
 /**
@@ -338,14 +339,15 @@ public final class AppendBlobClient extends BlobClientBase {
         Context finalContext = context == null ? Context.NONE : context;
         BlobImmutabilityPolicy immutabilityPolicy = finalOptions.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : finalOptions.getImmutabilityPolicy();
-        Callable<ResponseBase<AppendBlobsCreateHeaders, Void>> operation = () ->
+        Callable<ResponseBase<AppendBlobsCreateHeaders, Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(
+            () ->
             this.azureBlobStorage.getAppendBlobs().createWithResponse(containerName, blobName, 0, null,
                 finalOptions.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 ModelHelper.tagsToString(finalOptions.getTags()), immutabilityPolicy.getExpiryTime(),
                 immutabilityPolicy.getPolicyMode(), finalOptions.hasLegalHold(), finalOptions.getHeaders(),
-                getCustomerProvidedKey(), encryptionScope, finalContext);
+                getCustomerProvidedKey(), encryptionScope, finalContext));
         ResponseBase<AppendBlobsCreateHeaders, Void> response = sendRequest(operation, timeout,
             BlobStorageException.class);
         AppendBlobsCreateHeaders hd = response.getDeserializedHeaders();
@@ -670,11 +672,11 @@ public final class AppendBlobClient extends BlobClientBase {
             ? new AppendBlobRequestConditions() : finalOptions.getRequestConditions();
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<Response<Void>> operation = () -> this.azureBlobStorage.getAppendBlobs()
-            .sealNoCustomHeadersWithResponse(containerName, blobName, null, null, requestConditions.getLeaseId(),
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getAppendPosition(), finalContext);
+        Callable<Response<Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
+            this.azureBlobStorage.getAppendBlobs().sealNoCustomHeadersWithResponse(containerName, blobName, null, null,
+                requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(), finalContext));
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
