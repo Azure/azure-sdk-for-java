@@ -1,10 +1,6 @@
 ## Release History
 
-### 4.34.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.33.1 (2024-08-23)
 
 #### Bugs Fixed
 * Fixed an issue to avoid transient `IllegalArgumentException` due to duplicate json properties for the `uniqueKeyPolicy` property. - See [PR 41608](https://github.com/Azure/azure-sdk-for-java/pull/41608)
