@@ -18,15 +18,15 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for network management API. */
 @Fluent
-public interface VpnSites
-    extends SupportsCreating<VpnSite.DefinitionStages.Blank>,
-        SupportsListing<VpnSite>,
-        SupportsListingByResourceGroup<VpnSite>,
-        SupportsGettingByResourceGroup<VpnSite>,
-        SupportsGettingById<VpnSite>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<VpnSite>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+public interface VirtualWans
+    extends SupportsCreating<VirtualWan.DefinitionStages.Blank>,
+    SupportsListing<VirtualWan>,
+    SupportsListingByResourceGroup<VirtualWan>,
+    SupportsGettingByResourceGroup<VirtualWan>,
+    SupportsGettingById<VirtualWan>,
+    SupportsDeletingById,
+    SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<VirtualWan>,
+    SupportsBatchDeletion,
+    HasManager<NetworkManager> {
 }

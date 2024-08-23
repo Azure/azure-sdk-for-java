@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteInner;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkInner;
@@ -31,7 +30,7 @@ public interface VpnSite
     List<String> addressPrefixes();
 
     /** @return the virtualWan property of VPN site. */
-    SubResource virtualWan();
+    VirtualWan virtualWan();
 
     /** @return the vpnSiteLinks property of VPN site. */
     List<VpnSiteLinkInner> vpnSiteLinks();

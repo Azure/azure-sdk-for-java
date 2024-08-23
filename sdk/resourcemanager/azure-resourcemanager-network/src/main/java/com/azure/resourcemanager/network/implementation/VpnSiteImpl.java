@@ -10,6 +10,7 @@ import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkInner;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DeviceProperties;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
+import com.azure.resourcemanager.network.models.VirtualWan;
 import com.azure.resourcemanager.network.models.VpnSite;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -107,8 +108,8 @@ public class VpnSiteImpl extends GroupableResourceImpl<VpnSite, VpnSiteInner, Vp
     }
 
     @Override
-    public SubResource virtualWan() {
-        return this.innerModel().virtualWan();
+    public VirtualWan virtualWan() {
+        return this.manager().virtualWans().getById(this.innerModel().virtualWan().id());
     }
 
     @Override

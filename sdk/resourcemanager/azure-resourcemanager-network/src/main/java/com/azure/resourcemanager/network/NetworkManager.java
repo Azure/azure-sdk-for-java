@@ -26,6 +26,7 @@ import com.azure.resourcemanager.network.implementation.PublicIpPrefixesImpl;
 import com.azure.resourcemanager.network.implementation.RouteFiltersImpl;
 import com.azure.resourcemanager.network.implementation.RouteTablesImpl;
 import com.azure.resourcemanager.network.implementation.VirtualNetworkGatewaysImpl;
+import com.azure.resourcemanager.network.implementation.VirtualWansImpl;
 import com.azure.resourcemanager.network.implementation.VpnSitesImpl;
 import com.azure.resourcemanager.network.implementation.WebApplicationFirewallPoliciesImpl;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
@@ -47,6 +48,7 @@ import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
+import com.azure.resourcemanager.network.models.VirtualWans;
 import com.azure.resourcemanager.network.models.VpnSites;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicies;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
@@ -81,6 +83,7 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
     private NetworkProfiles networkProfiles;
     private WebApplicationFirewallPolicies webApplicationFirewallPolicies;
     private VpnSites vpnSites;
+    private VirtualWans virtualWans;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager} with optional configuration.
@@ -314,5 +317,13 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
             this.vpnSites = new VpnSitesImpl(this);
         }
         return this.vpnSites;
+    }
+
+    /** @return entry point to VPN management */
+    public VirtualWans virtualWans() {
+        if (this.virtualWans == null) {
+            this.virtualWans = new VirtualWansImpl(this);
+        }
+        return this.virtualWans;
     }
 }

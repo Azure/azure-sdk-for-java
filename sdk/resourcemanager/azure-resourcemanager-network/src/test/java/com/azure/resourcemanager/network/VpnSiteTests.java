@@ -6,11 +6,11 @@ package com.azure.resourcemanager.network;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.network.fluent.models.VirtualWanInner;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkInner;
 import com.azure.resourcemanager.network.models.DeviceProperties;
 import com.azure.resourcemanager.network.models.O365BreakOutCategoryPolicies;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
+import com.azure.resourcemanager.network.models.VirtualWan;
 import com.azure.resourcemanager.network.models.VpnLinkBgpSettings;
 import com.azure.resourcemanager.network.models.VpnLinkProviderProperties;
 import com.azure.resourcemanager.network.models.VpnSite;
@@ -35,27 +35,27 @@ public class VpnSiteTests extends NetworkManagementTest {
         vslName1 = generateRandomResourceName("vsl1", 8);
         vslName2 = generateRandomResourceName("vsl2", 8);
         super.initializeClients(httpPipeline, profile);
+        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
     }
 
-    private VirtualWanInner createVirtualWan(String vwName, Boolean disableVpnEncryption, String type) {
-        return networkManager.serviceClient()
-            .getVirtualWans()
-            .createOrUpdate(rgName, vwName,
-                new VirtualWanInner()
-                    .withLocation(region.name())
-                    .withDisableVpnEncryption(disableVpnEncryption)
-                    .withTypePropertiesType(type));
+    private VirtualWan createVirtualWan(String vwName, String virtualWanType) {
+        return  networkManager.virtualWans()
+            .define(vwName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .enableVpnEncryption()
+            .withAllowBranchToBranchTraffic(true)
+            .withVirtualWanType("Basic")
+            .create();
     }
 
     @Test
     public void canCreateAndUpdateVpnSiteByMinimumParametersWithLinkIpAddress() {
-        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
-
-        VirtualWanInner virtualWanForCreate = createVirtualWan(vwName1, false, "Basic");
+        VirtualWan virtualWanForCreate = createVirtualWan(vwName1,"Basic");
         VpnSite vpnSite = networkManager.vpnSites()
             .define(vpnName)
             .withRegion(region)
-            .withNewResourceGroup(rgName)
+            .withExistingResourceGroup(rgName)
             .withVirtualWan(virtualWanForCreate.id())
             .withAddressSpace("10.0.0.0/16")
             .withVpnSiteLinks(Arrays.asList(
@@ -73,7 +73,6 @@ public class VpnSiteTests extends NetworkManagementTest {
             ))
             .create();
 
-        vpnSite = networkManager.vpnSites().getById(vpnSite.id());
         Assertions.assertNotNull(vpnSite.virtualWan());
         Assertions.assertEquals(virtualWanForCreate.id(), vpnSite.virtualWan().id());
 
@@ -90,7 +89,7 @@ public class VpnSiteTests extends NetworkManagementTest {
         Assertions.assertEquals("192.168.0.0", vpnSite.vpnSiteLinks().get(0).bgpProperties().bgpPeeringAddress());
         Assertions.assertEquals(1234L, vpnSite.vpnSiteLinks().get(0).bgpProperties().asn());
 
-        VirtualWanInner virtualWanForUpdate = createVirtualWan(vwName2, false, "Basic");
+        VirtualWan virtualWanForUpdate = createVirtualWan(vwName2, "Basic");
         vpnSite.update()
             .withVirtualWan(virtualWanForUpdate.id())
             .withAddressSpace("20.0.0.0/16")
@@ -135,13 +134,11 @@ public class VpnSiteTests extends NetworkManagementTest {
 
     @Test
     public void canCreateAndUpdateVpnSiteByMinimumParametersWithFqdn() {
-        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
-
-        VirtualWanInner virtualWanForCreate = createVirtualWan(vwName1, false, "Basic");
+        VirtualWan virtualWanForCreate = createVirtualWan(vwName1,  "Basic");
         VpnSite vpnSite = networkManager.vpnSites()
             .define(vpnName)
             .withRegion(region)
-            .withNewResourceGroup(rgName)
+            .withExistingResourceGroup(rgName)
             .withVirtualWan(virtualWanForCreate.id())
             .withAddressSpace("10.0.0.0/16")
             .withVpnSiteLinks(Arrays.asList(
@@ -159,7 +156,6 @@ public class VpnSiteTests extends NetworkManagementTest {
             ))
             .create();
 
-        vpnSite = networkManager.vpnSites().getById(vpnSite.id());
         Assertions.assertNotNull(vpnSite.virtualWan());
         Assertions.assertEquals(virtualWanForCreate.id(), vpnSite.virtualWan().id());
 
@@ -177,7 +173,7 @@ public class VpnSiteTests extends NetworkManagementTest {
         Assertions.assertEquals(1234L, vpnSite.vpnSiteLinks().get(0).bgpProperties().asn());
 
 
-        VirtualWanInner virtualWanForUpdate = createVirtualWan(vwName2, false, "Basic");
+        VirtualWan virtualWanForUpdate = createVirtualWan(vwName2, "Basic");
         vpnSite.update()
             .withVirtualWan(virtualWanForUpdate.id())
             .withAddressSpace("20.0.0.0/16")
@@ -223,13 +219,12 @@ public class VpnSiteTests extends NetworkManagementTest {
 
     @Test
     public void canCreateAndUpdateVpnSiteByOtherParameters() {
-        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
-        VirtualWanInner virtualWanForCreate = createVirtualWan(vwName1, false, "Basic");
+        VirtualWan virtualWanForCreate = createVirtualWan(vwName1,  "Basic");
 
         VpnSite vpnSite = networkManager.vpnSites()
             .define(vpnName)
             .withRegion(region)
-            .withNewResourceGroup(rgName)
+            .withExistingResourceGroup(rgName)
             .withVirtualWan(virtualWanForCreate.id())
             .withAddressSpace("10.0.0.0/16")
             .withVpnSiteLinks(Arrays.asList(
@@ -260,7 +255,6 @@ public class VpnSiteTests extends NetworkManagementTest {
                             .withDefaultProperty(false)))
             .create();
 
-        vpnSite = networkManager.vpnSites().getById(vpnSite.id());
         Assertions.assertTrue(vpnSite.isSecuritySite());
         Assertions.assertNotNull(vpnSite.device());
         Assertions.assertEquals("device1", vpnSite.device().deviceVendor());
