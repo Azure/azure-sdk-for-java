@@ -157,6 +157,9 @@ class FunctionDeploymentSlotImpl
 
     @Override
     public Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, File file, DeployOptions deployOptions) {
+        // If tier of the AppServicePlan is "FlexConsumption", use /api/publish; else, use /api/zipdeploy
+
+        // deployOptions is ignored
         if (type != DeployType.ZIP) {
             return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
         }
@@ -174,7 +177,9 @@ class FunctionDeploymentSlotImpl
         });
     }
 
-    private Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
+    private Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, InputStream file, long length,
+                                                       DeployOptions deployOptions) {
+        // deployOptions is ignored
         if (type != DeployType.ZIP) {
             return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
         }

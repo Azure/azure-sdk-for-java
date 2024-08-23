@@ -19,6 +19,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -436,7 +437,11 @@ class KuduClient {
                     || (status >= 3 && status <= 6);
 
                 // use deploymentId from response, as the initial deploymentId could be "latest"
-                deploymentId.set(deploymentStatus.getId());
+                // but do not use temp id
+                String id = deploymentStatus.getId();
+                if (!CoreUtils.isNullOrEmpty(id) && !id.startsWith("temp-")) {
+                    deploymentId.set(id);
+                }
 
                 if (succeeded) {
                     return Mono.just(deploymentStatus);

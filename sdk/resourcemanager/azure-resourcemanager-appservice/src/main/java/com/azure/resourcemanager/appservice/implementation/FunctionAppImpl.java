@@ -865,6 +865,7 @@ class FunctionAppImpl
 
     @Override
     public Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, File file, DeployOptions deployOptions) {
+        // deployOptions is ignored
         if (type != DeployType.ZIP) {
             return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
         }
@@ -882,7 +883,9 @@ class FunctionAppImpl
         });
     }
 
-    private Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
+    private Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, InputStream file, long length,
+                                                       DeployOptions deployOptions) {
+        // deployOptions is ignored
         if (type != DeployType.ZIP) {
             return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
         }
