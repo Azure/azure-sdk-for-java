@@ -227,7 +227,7 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     @Override
     public Mono<Void> zipDeployAsync(File zipFile) {
         try {
-            return kuduClient.zipDeployAsync(zipFile, false);
+            return kuduClient.zipDeployAsync(zipFile);
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -240,7 +240,7 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
 
     @Override
     public Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
-        return kuduClient.zipDeployAsync(zipFile, length, false)
+        return kuduClient.zipDeployAsync(zipFile, length)
             .then(WebAppImpl.this.stopAsync())
             .then(WebAppImpl.this.startAsync());
     }

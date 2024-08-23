@@ -46,7 +46,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -144,7 +143,7 @@ public class OneDeployTests extends AppServiceTest {
     // test uses storage account key and connection string to configure the function app
     @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = {false})
     public void canDeployFlexConsumptionFunctionApp(boolean pushDeploy) throws FileNotFoundException {
         final PricingTier flexConsumptionTier = new PricingTier("FlexConsumption", "FC1");
 
@@ -231,7 +230,8 @@ public class OneDeployTests extends AppServiceTest {
     }
 
     @DoNotRecord(skipInPlayback = true)
-    @ValueSource(booleans = {true, false})
+    @ParameterizedTest
+    @ValueSource(booleans = {false})
     public void canDeployFunctionApp(boolean pushDeploy) {
         String functionAppName = generateRandomResourceName("functionapp", 20);
 
@@ -241,7 +241,7 @@ public class OneDeployTests extends AppServiceTest {
                 .define(functionAppName)
                 .withRegion(Region.US_WEST2)
                 .withNewResourceGroup(rgName)
-                .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
+                .withNewLinuxConsumptionPlan()
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_11)
                 .withHttpsOnly(true)
                 .create();

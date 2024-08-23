@@ -112,13 +112,13 @@ class DeploymentSlotImpl
 
     @Override
     public Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
-        return kuduClient.zipDeployAsync(zipFile, length, false).then(stopAsync()).then(startAsync());
+        return kuduClient.zipDeployAsync(zipFile, length).then(stopAsync()).then(startAsync());
     }
 
     @Override
     public Mono<Void> zipDeployAsync(File zipFile) {
         try {
-            return kuduClient.zipDeployAsync(zipFile, false);
+            return kuduClient.zipDeployAsync(zipFile);
         } catch (IOException e) {
             return Mono.error(e);
         }

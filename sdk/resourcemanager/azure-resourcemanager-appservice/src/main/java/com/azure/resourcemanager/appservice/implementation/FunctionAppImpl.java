@@ -105,6 +105,8 @@ class FunctionAppImpl
 
     private String functionServiceHost;
 
+    private Boolean appServicePlanIsFlexConsumption;
+
     FunctionAppImpl(
         final String name,
         SiteInner innerObject,
@@ -632,7 +634,7 @@ class FunctionAppImpl
     @Override
     public Mono<Void> zipDeployAsync(File zipFile) {
         try {
-            return kuduClient.zipDeployAsync(zipFile, false);
+            return kuduClient.zipDeployAsync(zipFile);
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -645,7 +647,7 @@ class FunctionAppImpl
 
     @Override
     public Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
-        return kuduClient.zipDeployAsync(zipFile, length, false);
+        return kuduClient.zipDeployAsync(zipFile, length);
     }
 
     @Override
@@ -866,24 +868,50 @@ class FunctionAppImpl
         if (type != DeployType.ZIP) {
             return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
         }
-        try {
-            return kuduClient.pushDeployFlexConsumptionAsync(file);
-//            return kuduClient.pushDeployAsync(type, file, null, null, null, true);
-        } catch (IOException e) {
-            return Mono.error(e);
-        }
+        return getAppServicePlanIsFlexConsumptionMono().flatMap(appServiceIsFlexConsumptionPlan -> {
+            try {
+                if (appServiceIsFlexConsumptionPlan) {
+                    return kuduClient.pushDeployFlexConsumptionAsync(file);
+                } else {
+                    return kuduClient.pushZipDeployAsync(file)
+                        .then(Mono.just(new KuduDeploymentResult("latest")));
+                }
+            } catch (IOException e) {
+                return Mono.error(e);
+            }
+        });
     }
 
     private Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
         if (type != DeployType.ZIP) {
             return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
         }
-        try {
-            return kuduClient.pushDeployFlexConsumptionAsync(file, length);
-//            return kuduClient.pushDeployAsync(type, file, null, null, null, true);
-        } catch (IOException e) {
-            return Mono.error(e);
+        return getAppServicePlanIsFlexConsumptionMono().flatMap(appServiceIsFlexConsumptionPlan -> {
+            try {
+                if (appServiceIsFlexConsumptionPlan) {
+                    return kuduClient.pushDeployFlexConsumptionAsync(file, length);
+                } else {
+                    return kuduClient.pushZipDeployAsync(file, length)
+                        .then(Mono.just(new KuduDeploymentResult("latest")));
+                }
+            } catch (IOException e) {
+                return Mono.error(e);
+            }
+        });
+    }
+
+    private Mono<Boolean> getAppServicePlanIsFlexConsumptionMono() {
+        Mono<Boolean> updateAppServicePlan = Mono.justOrEmpty(appServicePlanIsFlexConsumption);
+        if (appServicePlanIsFlexConsumption == null) {
+            updateAppServicePlan = Mono.defer(
+                () -> manager().appServicePlans()
+                    .getByIdAsync(this.appServicePlanId())
+                    .map(appServicePlan -> {
+                        appServicePlanIsFlexConsumption = "FlexConsumption".equals(appServicePlan.pricingTier().toSkuDescription().tier());
+                        return appServicePlanIsFlexConsumption;
+                    }));
         }
+        return updateAppServicePlan;
     }
 
     @Override

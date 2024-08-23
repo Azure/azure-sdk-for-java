@@ -146,7 +146,7 @@ class KuduClient {
 
         @Headers({"Content-Type: application/octet-stream"})
         @Post("api/zipdeploy")
-        Mono<Void> zipDeploy(
+        Mono<Response<Void>> zipDeploy(
             @HostParam("$host") String host,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> zipFile,
             @HeaderParam("content-length") long size,
@@ -304,21 +304,21 @@ class KuduClient {
                 });
     }
 
-    Mono<Void> zipDeployAsync(InputStream zipFile, long length, boolean isAsync) {
+    Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
         Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(zipFile);
-        return retryOnError(service.zipDeploy(host, flux, length, isAsync));
+        return retryOnError(service.zipDeploy(host, flux, length, false)).then();
     }
 
-    Mono<Void> zipDeployAsync(File zipFile, boolean isAsync) throws IOException {
+    Mono<Void> zipDeployAsync(File zipFile) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(zipFile.toPath(), StandardOpenOption.READ);
-        return retryOnError(service.zipDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(), isAsync))
+        return retryOnError(service.zipDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(), false))
             .doFinally(ignored -> {
                 try {
                     fileChannel.close();
                 } catch (IOException e) {
                     logger.logThrowableAsError(e);
                 }
-            });
+            }).then();
     }
 
     Mono<Void> deployAsync(DeployType type,
@@ -350,19 +350,8 @@ class KuduClient {
         final boolean trackDeploymentProgress = trackDeployment == null || trackDeployment;
 
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
-        return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            type, path, restart, clean, true, trackDeployment))
-            .map(response -> {
-                HttpHeader deploymentIdHeader = response.getHeaders().get("SCM-DEPLOYMENT-ID");
-                if (trackDeploymentProgress && (deploymentIdHeader == null || deploymentIdHeader.getValue() == null
-                    || deploymentIdHeader.getValue().isEmpty())) {
-
-                    // error, deployment ID not available
-                    throw logger.logExceptionAsError(
-                        new AzureException("Deployment ID not found in response header 'SCM-DEPLOYMENT-ID'"));
-                }
-                return new KuduDeploymentResult(deploymentIdHeader == null ? null : deploymentIdHeader.getValue());
-            })
+        return getDeploymentResult(retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
+            type, path, restart, clean, true, trackDeployment)), trackDeploymentProgress)
             .doFinally(ignored -> {
                 try {
                     fileChannel.close();
@@ -370,6 +359,39 @@ class KuduClient {
                     logger.logThrowableAsError(e);
                 }
             });
+    }
+
+    private Mono<KuduDeploymentResult> getDeploymentResult(Mono<Response<Void>> responseMono, boolean trackDeploymentProgress) {
+        return responseMono.map(response -> {
+            HttpHeader deploymentIdHeader = response.getHeaders().get("SCM-DEPLOYMENT-ID");
+            if (trackDeploymentProgress && (deploymentIdHeader == null || deploymentIdHeader.getValue() == null
+                || deploymentIdHeader.getValue().isEmpty())) {
+
+                // error, deployment ID not available
+                throw logger.logExceptionAsError(
+                    new AzureException("Deployment ID not found in response header 'SCM-DEPLOYMENT-ID'"));
+            }
+            return new KuduDeploymentResult(deploymentIdHeader == null ? null : deploymentIdHeader.getValue());
+        });
+    }
+
+    Mono<KuduDeploymentResult> pushZipDeployAsync(File file) throws IOException {
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
+        return getDeploymentResult(retryOnError(service.zipDeploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
+            true)), true)
+            .doFinally(ignored -> {
+                try {
+                    fileChannel.close();
+                } catch (IOException e) {
+                    logger.logThrowableAsError(e);
+                }
+            });
+    }
+
+    Mono<KuduDeploymentResult> pushZipDeployAsync(InputStream file, long length) throws IOException {
+        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
+        return getDeploymentResult(retryOnError(service.zipDeploy(host, flux, length,
+            true)), true);
     }
 
     Mono<KuduDeploymentResult> pushDeployFlexConsumptionAsync(File file) throws IOException {
@@ -413,6 +435,7 @@ class KuduClient {
                     || status == -1
                     || (status >= 3 && status <= 6);
 
+                // use deploymentId from response, as the initial deploymentId could be "latest"
                 deploymentId.set(deploymentStatus.getId());
 
                 if (succeeded) {
