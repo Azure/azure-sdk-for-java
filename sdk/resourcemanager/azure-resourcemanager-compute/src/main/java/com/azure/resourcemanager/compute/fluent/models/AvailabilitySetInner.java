@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
 import java.io.IOException;
 import java.util.List;
@@ -242,6 +243,31 @@ public final class AvailabilitySetInner extends Resource {
      */
     public List<InstanceViewStatus> statuses() {
         return this.innerProperties() == null ? null : this.innerProperties().statuses();
+    }
+
+    /**
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledEventsPolicy();
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the AvailabilitySetInner object itself.
+     */
+    public AvailabilitySetInner withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
+        }
+        this.innerProperties().withScheduledEventsPolicy(scheduledEventsPolicy);
+        return this;
     }
 
     /**

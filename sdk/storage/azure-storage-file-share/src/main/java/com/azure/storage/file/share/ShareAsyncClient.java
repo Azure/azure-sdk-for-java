@@ -376,6 +376,7 @@ public class ShareAsyncClient {
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -525,6 +526,7 @@ public class ShareAsyncClient {
     Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().createSnapshotWithResponseAsync(shareName, null, metadata, context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapCreateSnapshotResponse);
     }
 
@@ -626,7 +628,8 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null,
             ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
-            requestConditions.getLeaseId(), context);
+            requestConditions.getLeaseId(), context)
+            .onErrorMap(ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -807,6 +810,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares()
             .getPropertiesWithResponseAsync(shareName, snapshot, null, requestConditions.getLeaseId(), context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapGetPropertiesResponse);
     }
 
@@ -941,6 +945,7 @@ public class ShareAsyncClient {
             options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
             options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
             options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1065,6 +1070,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().setMetadataNoCustomHeadersWithResponseAsync(shareName, null,
             options.getMetadata(), requestConditions.getLeaseId(), context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1129,6 +1135,7 @@ public class ShareAsyncClient {
                 marker -> this.azureFileStorageClient.getShares()
                     .getAccessPolicyWithResponseAsync(shareName, null, requestConditions.getLeaseId(),
                         Context.NONE)
+                    .onErrorMap(ModelHelper::mapToShareStorageException)
                     .map(response -> new PagedResponseBase<>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -1259,6 +1266,7 @@ public class ShareAsyncClient {
 
         return azureFileStorageClient.getShares().setAccessPolicyNoCustomHeadersWithResponseAsync(shareName, null,
                 requestConditions.getLeaseId(), permissions, context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1350,6 +1358,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().getStatisticsNoCustomHeadersWithResponseAsync(shareName, null,
             requestConditions.getLeaseId(), context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapGetStatisticsResponse);
     }
 
@@ -2137,9 +2146,10 @@ public class ShareAsyncClient {
         // NOTE: Should we check for null or empty?
         SharePermission sharePermission = new SharePermission().setPermission(filePermission).setFormat(filePermissionFormat);
         return azureFileStorageClient.getShares()
-                .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
-                .map(response -> new SimpleResponse<>(response,
-                        response.getDeserializedHeaders().getXMsFilePermissionKey()));
+            .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .map(response -> new SimpleResponse<>(response,
+                response.getDeserializedHeaders().getXMsFilePermissionKey()));
     }
 
     /**
@@ -2245,6 +2255,7 @@ public class ShareAsyncClient {
         Context context) {
         return azureFileStorageClient.getShares()
             .getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat, null, context)
+            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(response -> new SimpleResponse<>(response, response.getValue().getPermission()));
     }
 

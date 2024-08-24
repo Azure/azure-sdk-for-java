@@ -3,10 +3,10 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
-    UseFederatedAuth: false
     stages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          UseFederatedAuth: false
           CloudConfig:
             Cosmos_Public:
               SubscriptionConfigurations:
@@ -43,6 +43,7 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          UseFederatedAuth: false
           TestName: 'Spring_Data_Cosmos_Integration'
           CloudConfig:
             Public:
@@ -72,6 +73,7 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          UseFederatedAuth: false
           TestName: 'Kafka_Cosmos_Integration'
           CloudConfig:
             Public:
