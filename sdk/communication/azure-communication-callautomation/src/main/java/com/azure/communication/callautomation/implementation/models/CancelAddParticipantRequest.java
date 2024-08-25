@@ -5,31 +5,31 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Request payload for cancelling add participant request.
  */
 @Fluent
-public final class CancelAddParticipantRequest implements JsonSerializable<CancelAddParticipantRequest> {
+public final class CancelAddParticipantRequest {
     /*
      * Invitation ID used to add a participant.
      */
+    @JsonProperty(value = "invitationId", required = true)
     private String invitationId;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
+    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
+    @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /**
@@ -83,7 +83,8 @@ public final class CancelAddParticipantRequest implements JsonSerializable<Cance
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @return the operationCallbackUri value.
      */
@@ -94,7 +95,8 @@ public final class CancelAddParticipantRequest implements JsonSerializable<Cance
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the CancelAddParticipantRequest object itself.
@@ -102,48 +104,5 @@ public final class CancelAddParticipantRequest implements JsonSerializable<Cance
     public CancelAddParticipantRequest setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("invitationId", this.invitationId);
-        jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CancelAddParticipantRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CancelAddParticipantRequest if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CancelAddParticipantRequest.
-     */
-    public static CancelAddParticipantRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CancelAddParticipantRequest deserializedCancelAddParticipantRequest = new CancelAddParticipantRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("invitationId".equals(fieldName)) {
-                    deserializedCancelAddParticipantRequest.invitationId = reader.getString();
-                } else if ("operationContext".equals(fieldName)) {
-                    deserializedCancelAddParticipantRequest.operationContext = reader.getString();
-                } else if ("operationCallbackUri".equals(fieldName)) {
-                    deserializedCancelAddParticipantRequest.operationCallbackUri = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCancelAddParticipantRequest;
-        });
     }
 }

@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * The base event interface with ReasonCode added.
  */
@@ -10,11 +12,10 @@ public abstract class CallAutomationEventBaseWithReasonCode extends CallAutomati
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
-    @SuppressWarnings("FieldMayBeFinal")
-    ResultInformation resultInformation;
+    @JsonProperty(value = "resultInformation")
+    private final ResultInformation resultInformation;
 
     CallAutomationEventBaseWithReasonCode() {
-
         this.resultInformation = null;
     }
 

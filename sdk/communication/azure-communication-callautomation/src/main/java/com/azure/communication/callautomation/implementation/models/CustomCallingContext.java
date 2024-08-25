@@ -5,26 +5,24 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /**
- * The CustomCallingContext model.
+ * The custom calling context which will be sent to the target.
  */
 @Fluent
-public final class CustomCallingContext implements JsonSerializable<CustomCallingContext> {
+public final class CustomCallingContext {
     /*
-     * Dictionary of <string>
+     * Custom calling context VoiP headers
      */
+    @JsonProperty(value = "voipHeaders")
     private Map<String, String> voipHeaders;
 
     /*
-     * Dictionary of <string>
+     * Custom calling context SIP headers
      */
+    @JsonProperty(value = "sipHeaders")
     private Map<String, String> sipHeaders;
 
     /**
@@ -34,7 +32,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     }
 
     /**
-     * Get the voipHeaders property: Dictionary of &lt;string&gt;.
+     * Get the voipHeaders property: Custom calling context VoiP headers.
      * 
      * @return the voipHeaders value.
      */
@@ -43,7 +41,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     }
 
     /**
-     * Set the voipHeaders property: Dictionary of &lt;string&gt;.
+     * Set the voipHeaders property: Custom calling context VoiP headers.
      * 
      * @param voipHeaders the voipHeaders value to set.
      * @return the CustomCallingContext object itself.
@@ -54,7 +52,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     }
 
     /**
-     * Get the sipHeaders property: Dictionary of &lt;string&gt;.
+     * Get the sipHeaders property: Custom calling context SIP headers.
      * 
      * @return the sipHeaders value.
      */
@@ -63,7 +61,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     }
 
     /**
-     * Set the sipHeaders property: Dictionary of &lt;string&gt;.
+     * Set the sipHeaders property: Custom calling context SIP headers.
      * 
      * @param sipHeaders the sipHeaders value to set.
      * @return the CustomCallingContext object itself.
@@ -71,46 +69,5 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     public CustomCallingContext setSipHeaders(Map<String, String> sipHeaders) {
         this.sipHeaders = sipHeaders;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("voipHeaders", this.voipHeaders, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("sipHeaders", this.sipHeaders, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CustomCallingContext from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CustomCallingContext if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CustomCallingContext.
-     */
-    public static CustomCallingContext fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CustomCallingContext deserializedCustomCallingContext = new CustomCallingContext();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("voipHeaders".equals(fieldName)) {
-                    Map<String, String> voipHeaders = reader.readMap(reader1 -> reader1.getString());
-                    deserializedCustomCallingContext.voipHeaders = voipHeaders;
-                } else if ("sipHeaders".equals(fieldName)) {
-                    Map<String, String> sipHeaders = reader.readMap(reader1 -> reader1.getString());
-                    deserializedCustomCallingContext.sipHeaders = sipHeaders;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCustomCallingContext;
-        });
     }
 }
