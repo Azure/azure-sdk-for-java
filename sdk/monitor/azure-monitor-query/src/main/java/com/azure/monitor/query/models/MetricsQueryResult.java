@@ -35,7 +35,7 @@ public final class MetricsQueryResult {
      * @param metrics the value of the collection.
      */
     public MetricsQueryResult(Integer cost, QueryTimeInterval timeInterval, Duration granularity, String namespace,
-        String resourceRegion, List<MetricResult> metrics) {
+                              String resourceRegion, List<MetricResult> metrics) {
         this.cost = cost;
         this.timeInterval = timeInterval;
         this.granularity = granularity;
@@ -113,8 +113,8 @@ public final class MetricsQueryResult {
         }
 
         return metrics.stream()
-            .filter(metricResult -> metricResult.getMetricName().equals(metricName))
-            .findFirst()
-            .orElse(null);
+                .filter(metricResult -> metricResult.getMetricName().equals(metricName))
+                .findFirst()
+                .orElse(null);
     }
 }

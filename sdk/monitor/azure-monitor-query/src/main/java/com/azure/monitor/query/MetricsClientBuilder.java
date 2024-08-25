@@ -23,17 +23,16 @@ import com.azure.monitor.query.models.MetricsAudience;
 /**
  * Fluent builder for creating instances of {@link MetricsClient} and {@link MetricsAsyncClient}.
  */
-@ServiceClientBuilder(serviceClients = { MetricsClient.class, MetricsAsyncClient.class })
-public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBuilder>, HttpTrait<MetricsClientBuilder>,
-    ConfigurationTrait<MetricsClientBuilder>, TokenCredentialTrait<MetricsClientBuilder> {
+@ServiceClientBuilder(serviceClients = {MetricsClient.class, MetricsAsyncClient.class})
+public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBuilder>,
+    HttpTrait<MetricsClientBuilder>, ConfigurationTrait<MetricsClientBuilder>, TokenCredentialTrait<MetricsClientBuilder> {
 
     private final AzureMonitorMetricBatchBuilder innerMetricsBatchBuilder = new AzureMonitorMetricBatchBuilder();
 
     /**
      * Creates an instance of MetricsClientBuilder.
      */
-    public MetricsClientBuilder() {
-    }
+    public MetricsClientBuilder() { }
 
     /**
      * Sets the metrics endpoint.

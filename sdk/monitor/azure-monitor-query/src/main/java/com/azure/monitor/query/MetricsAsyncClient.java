@@ -52,10 +52,8 @@ public final class MetricsAsyncClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricsQueryResourcesResult> queryResources(List<String> resourceIds, List<String> metricsNames,
-        String metricsNamespace) {
-        return this
-            .queryResourcesWithResponse(resourceIds, metricsNames, metricsNamespace, new MetricsQueryResourcesOptions())
+    public Mono<MetricsQueryResourcesResult> queryResources(List<String> resourceIds, List<String> metricsNames, String metricsNamespace) {
+        return this.queryResourcesWithResponse(resourceIds, metricsNames, metricsNamespace, new MetricsQueryResourcesOptions())
             .map(Response::getValue);
     }
 
@@ -71,8 +69,8 @@ public final class MetricsAsyncClient {
      * @throws NullPointerException thrown if {@code resourceIds}, {@code metricsNames} or {@code metricsNamespace} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricsQueryResourcesResult>> queryResourcesWithResponse(List<String> resourceIds,
-        List<String> metricsNames, String metricsNamespace, MetricsQueryResourcesOptions options) {
+    public Mono<Response<MetricsQueryResourcesResult>> queryResourcesWithResponse(List<String> resourceIds, List<String> metricsNames,
+                                                                                  String metricsNamespace, MetricsQueryResourcesOptions options) {
 
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceIds, "'resourceIds cannot be null."))) {
             return monoError(LOGGER, new IllegalArgumentException("resourceIds cannot be empty"));
@@ -107,8 +105,7 @@ public final class MetricsAsyncClient {
             }
             if (options.getTimeInterval() != null) {
                 if (options.getTimeInterval().getDuration() != null) {
-                    return monoError(LOGGER, new IllegalArgumentException(
-                        "Duration is not a supported time interval for batch query. Use startTime and endTime instead."));
+                    return monoError(LOGGER, new IllegalArgumentException("Duration is not a supported time interval for batch query. Use startTime and endTime instead."));
                 }
                 if (options.getTimeInterval().getStartTime() != null) {
                     startTime = options.getTimeInterval().getStartTime().toString();
@@ -118,6 +115,7 @@ public final class MetricsAsyncClient {
                 }
             }
 
+
             top = options.getTop();
             orderBy = options.getOrderBy();
         }
@@ -125,18 +123,19 @@ public final class MetricsAsyncClient {
         ResourceIdList resourceIdList = new ResourceIdList();
         resourceIdList.setResourceids(resourceIds);
         Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetricsBatches()
-            .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime, endTime,
-                granularity, aggregations, top, orderBy, filter, rollupBy);
+            .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
+                endTime, granularity, aggregations, top, orderBy, filter, rollupBy);
+
 
         return responseMono.map(response -> {
             MetricResultsResponse value = response.getValue();
             List<MetricResultsResponseValuesItem> values = value.getValues();
-            List<MetricsQueryResult> metricsQueryResults
-                = values.stream().map(result -> mapToMetricsQueryResult(result)).collect(Collectors.toList());
-            MetricsQueryResourcesResult metricsQueryResourcesResult
-                = new MetricsQueryResourcesResult(metricsQueryResults);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                metricsQueryResourcesResult);
+            List<MetricsQueryResult> metricsQueryResults = values.stream()
+                .map(result -> mapToMetricsQueryResult(result))
+                .collect(Collectors.toList());
+            MetricsQueryResourcesResult metricsQueryResourcesResult = new MetricsQueryResourcesResult(metricsQueryResults);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), metricsQueryResourcesResult);
         });
     }
 }
