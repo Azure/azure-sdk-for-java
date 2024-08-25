@@ -116,8 +116,8 @@ public final class ReadmeSamples {
         BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
 
         // receive response with BinaryData content
-        Response<BinaryData> fileUrlOut =
-            adminClient.uploadTestFileWithResponse("test12345", "sample-file.jmx", fileData, null);
+        PollResponse<BinaryData> fileUrlOut = adminClient.beginUploadTestFile("test12345", "sample-file.jmx", fileData, null)
+            .waitForCompletion(Duration.ofMinutes(2));
         System.out.println(fileUrlOut.getValue().toString());
         // END: java-readme-sample-uploadTestFile
     }
