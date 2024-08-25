@@ -6,26 +6,21 @@ package com.azure.digitaltwins.core.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
-import com.azure.digitaltwins.core.DigitalTwinsClient;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link DigitalTwinsClient#updateComponentWithResponse(String, String, JsonPatchDocument, UpdateComponentOptions, Context)} and
- * {@link DigitalTwinsAsyncClient#updateComponentWithResponse(String, String, JsonPatchDocument, UpdateComponentOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#updateComponentWithResponse(String, String, JsonPatchDocument, UpdateComponentOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#updateComponentWithResponse(String, String, JsonPatchDocument, UpdateComponentOptions)}
  */
 @Fluent
 public final class UpdateComponentOptions {
     /*
-     * Only perform the operation if the entity's etag matches one of the etags provided or * is provided.
+     * Only perform the operation if the entity's etag matches one of the etags
+     * provided or * is provided.
      */
+    @JsonProperty(value = "If-Match")
     private String ifMatch;
-
-    /**
-     * Creates a new instance of {@link UpdateComponentOptions}.
-     */
-    public UpdateComponentOptions() {
-    }
 
     /**
      * Get the ifMatch property: Only perform the operation if the entity's etag matches one of the etags provided or *

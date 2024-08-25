@@ -9,8 +9,6 @@ import com.azure.core.http.rest.ResponseBase;
 
 /**
  * A helper class to represent the HTTP response returned by the service.
- *
- * @param <T> The deserialized type of the response value.
  */
 public final class DigitalTwinsResponse<T> extends ResponseBase<DigitalTwinsResponseHeaders, T> {
     /**
@@ -22,8 +20,8 @@ public final class DigitalTwinsResponse<T> extends ResponseBase<DigitalTwinsResp
      * @param value the raw value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public DigitalTwinsResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, T value,
-        DigitalTwinsResponseHeaders headers) {
+    public DigitalTwinsResponse(
+        HttpRequest request, int statusCode, HttpHeaders rawHeaders, T value, DigitalTwinsResponseHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
