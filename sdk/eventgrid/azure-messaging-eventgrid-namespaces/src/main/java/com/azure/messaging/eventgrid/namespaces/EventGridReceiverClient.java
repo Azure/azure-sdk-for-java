@@ -154,7 +154,7 @@ public final class EventGridReceiverClient {
      *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param acknowledgeRequest The acknowledgeRequest parameter.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -164,10 +164,9 @@ public final class EventGridReceiverClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> acknowledgeWithResponse(String topicName, String eventSubscriptionName,
-        BinaryData acknowledgeRequest, RequestOptions requestOptions) {
-        return this.serviceClient.acknowledgeWithResponse(topicName, eventSubscriptionName, acknowledgeRequest,
-            requestOptions);
+    Response<BinaryData> acknowledgeWithResponse(String topicName, String eventSubscriptionName, BinaryData request,
+        RequestOptions requestOptions) {
+        return this.serviceClient.acknowledgeWithResponse(topicName, eventSubscriptionName, request, requestOptions);
     }
 
     /**
@@ -221,7 +220,7 @@ public final class EventGridReceiverClient {
      *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param releaseRequest The releaseRequest parameter.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -231,9 +230,9 @@ public final class EventGridReceiverClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> releaseWithResponse(String topicName, String eventSubscriptionName, BinaryData releaseRequest,
+    Response<BinaryData> releaseWithResponse(String topicName, String eventSubscriptionName, BinaryData request,
         RequestOptions requestOptions) {
-        return this.serviceClient.releaseWithResponse(topicName, eventSubscriptionName, releaseRequest, requestOptions);
+        return this.serviceClient.releaseWithResponse(topicName, eventSubscriptionName, request, requestOptions);
     }
 
     /**
@@ -279,7 +278,7 @@ public final class EventGridReceiverClient {
      *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param rejectRequest The rejectRequest parameter.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -289,9 +288,9 @@ public final class EventGridReceiverClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> rejectWithResponse(String topicName, String eventSubscriptionName, BinaryData rejectRequest,
+    Response<BinaryData> rejectWithResponse(String topicName, String eventSubscriptionName, BinaryData request,
         RequestOptions requestOptions) {
-        return this.serviceClient.rejectWithResponse(topicName, eventSubscriptionName, rejectRequest, requestOptions);
+        return this.serviceClient.rejectWithResponse(topicName, eventSubscriptionName, request, requestOptions);
     }
 
     /**
@@ -337,7 +336,7 @@ public final class EventGridReceiverClient {
      *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param renewLocksRequest The renewLocksRequest parameter.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -347,10 +346,9 @@ public final class EventGridReceiverClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> renewLocksWithResponse(String topicName, String eventSubscriptionName,
-        BinaryData renewLocksRequest, RequestOptions requestOptions) {
-        return this.serviceClient.renewLocksWithResponse(topicName, eventSubscriptionName, renewLocksRequest,
-            requestOptions);
+    Response<BinaryData> renewLocksWithResponse(String topicName, String eventSubscriptionName, BinaryData request,
+        RequestOptions requestOptions) {
+        return this.serviceClient.renewLocksWithResponse(topicName, eventSubscriptionName, request, requestOptions);
     }
 
     /**
