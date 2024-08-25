@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-confidentialledger</artifactId>
-  <version>1.0.23</version> <!-- {x-version-update;com.azure:azure-security-confidentialledger;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-confidentialledger;current} -->
 
   <name>Microsoft Azure client library for Confidential Ledger</name>
   <description>This package contains Microsoft Azure Confidential Ledger client library.</description>
