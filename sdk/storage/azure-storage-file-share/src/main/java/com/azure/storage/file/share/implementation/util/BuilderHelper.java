@@ -6,7 +6,6 @@ package com.azure.storage.file.share.implementation.util;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -65,7 +64,7 @@ public final class BuilderHelper {
     }
 
     private static final Pattern IP_URL_PATTERN = Pattern
-        .compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|localhost");
+        .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
 
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
@@ -189,7 +188,7 @@ public final class BuilderHelper {
      */
     private static HttpPipelinePolicy getResponseValidationPolicy() {
         return new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(HttpHeaderName.X_MS_CLIENT_REQUEST_ID)
+            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
             .build();
     }
 

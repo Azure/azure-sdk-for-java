@@ -5,7 +5,6 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 
 import java.util.Map;
 
@@ -16,7 +15,6 @@ import java.util.Map;
 public class ShareDirectoryCreateOptions {
     private FileSmbProperties smbProperties;
     private String filePermission;
-    private FilePermissionFormat filePermissionFormat;
     private Map<String, String> metadata;
 
     /**
@@ -87,26 +85,6 @@ public class ShareDirectoryCreateOptions {
      */
     public ShareDirectoryCreateOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Gets the file permission format.
-     *
-     * @return file permission format.
-     */
-    public FilePermissionFormat getFilePermissionFormat() {
-        return filePermissionFormat;
-    }
-
-    /**
-     * Sets the file permission format.
-     *
-     * @param filePermissionFormat the file permission format.
-     * @return The updated options.
-     */
-    public ShareDirectoryCreateOptions setFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        this.filePermissionFormat = filePermissionFormat;
         return this;
     }
 }

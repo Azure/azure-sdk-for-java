@@ -14,7 +14,6 @@ import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -25,7 +24,6 @@ import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
-import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
@@ -34,10 +32,7 @@ import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
-import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
-import com.azure.storage.file.share.options.ShareFileRenameOptions;
-import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,22 +116,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void createFileError() {
         StepVerifier.create(primaryFileAsyncClient.create(-1)).verifyErrorSatisfies(it ->
             FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.OUT_OF_RANGE_INPUT));
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
-    public void createFileFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
-
-        ShareFileCreateOptions options = new ShareFileCreateOptions(1024).setFilePermission(permission)
-            .setFilePermissionFormat(filePermissionFormat);
-
-        StepVerifier.create(primaryFileAsyncClient.createWithResponse(options))
-            .assertNext(it -> {
-                assertNotNull(it.getValue().getSmbProperties().getFilePermissionKey());
-                FileShareTestHelper.assertResponseStatusCode(it, 201);
-            }).verifyComplete();
     }
 
     @Test
@@ -1170,7 +1149,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void deleteIfExistsFileThatWasAlreadyDeleted() {
-        primaryFileAsyncClient.createWithResponse(1024, null, null, null, null, null).block();
+        primaryFileAsyncClient.createWithResponse(1024, null, null, null, null, null, null).block();
         assertEquals(Boolean.TRUE, primaryFileAsyncClient.deleteIfExists().block());
         assertNotEquals(Boolean.TRUE, primaryFileAsyncClient.deleteIfExists().block());
     }
@@ -1277,25 +1256,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 assertNotNull(it.getValue().getSmbProperties().getParentId());
                 assertNotNull(it.getValue().getSmbProperties().getFileId());
             }).verifyComplete();
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
-    public void setFileHttpHeadersFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        primaryFileAsyncClient.create(512);
-
-        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
-
-        ShareFileSetPropertiesOptions options = new ShareFileSetPropertiesOptions(512)
-            .setFilePermissions(new ShareFilePermission().setPermission(permission).setPermissionFormat(filePermissionFormat));
-
-        StepVerifier.create(primaryFileAsyncClient.create(512).then(primaryFileAsyncClient.setPropertiesWithResponse(options)))
-            .assertNext(r -> {
-                FileShareTestHelper.assertResponseStatusCode(r, 200);
-                assertNotNull(r.getValue().getSmbProperties().getFilePermissionKey());
-            })
-            .verifyComplete();
     }
 
     @Test
@@ -1569,29 +1529,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
             }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
-    public void renameFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
-
-        ShareFileRenameOptions options = new ShareFileRenameOptions(generatePathName()).setFilePermission(permission)
-            .setFilePermissionFormat(filePermissionFormat);
-
-        Mono<ShareFileProperties> response = primaryFileAsyncClient.create(512)
-            .then(primaryFileAsyncClient.renameWithResponse(options))
-            .flatMap(r -> {
-                FileShareTestHelper.assertResponseStatusCode(r, 200);
-                return r.getValue().getProperties();
-            });
-
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertNotNull(r.getSmbProperties().getFilePermissionKey());
-            })
-            .verifyComplete();
-    }
-
     @Test
     public void getSnapshotId() {
         String snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 1, 1), ZoneOffset.UTC).toString();
@@ -1659,7 +1596,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(aadFileClient.exists())
             .verifyErrorSatisfies(r -> {
                 ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
-                assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+                assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
             });
     }
 

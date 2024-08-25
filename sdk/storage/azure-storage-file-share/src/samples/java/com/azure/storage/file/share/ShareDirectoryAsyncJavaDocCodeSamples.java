@@ -4,13 +4,10 @@ package com.azure.storage.file.share;
 
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
-import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
-import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
@@ -132,7 +129,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareDirectoryAsyncClient#createWithResponse(FileSmbProperties, String,
-     * Map)} and {@link ShareDirectoryAsyncClient#createWithResponse(ShareDirectoryCreateOptions)}
+     * Map)}
      */
     public void createDirectoryWithResponseAsync() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
@@ -146,19 +143,6 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
             error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#FileSmbProperties-String-Map
-
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions
-        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions()
-                .setSmbProperties(new FileSmbProperties())
-                .setFilePermission("filePermission")
-                .setFilePermissionFormat(FilePermissionFormat.BINARY)
-                .setMetadata(Collections.singletonMap("directory", "metadata"));
-
-        shareDirectoryAsyncClient.createWithResponse(options)
-                .subscribe(response ->
-                    System.out.println("Completed creating the directory with status code:" + response.getStatusCode()),
-                    error -> System.err.print(error.toString()));
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions
     }
 
     /**
@@ -457,7 +441,6 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     /**
      * Generates a code sample for using {@link ShareDirectoryAsyncClient#setPropertiesWithResponse(FileSmbProperties,
      * String)}
-     * and {@link ShareDirectoryAsyncClient#setPropertiesWithResponse(ShareDirectorySetPropertiesOptions)}
      */
     public void setPropertiesWithResponse() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
@@ -468,16 +451,6 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
             System.out.printf("Directory latest modified date is %s:", properties.getValue().getLastModified());
         });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#FileSmbProperties-String
-
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#ShareDirectorySetPropertiesOptions
-        ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions();
-        options.setSmbProperties(new FileSmbProperties());
-        options.setFilePermissions(new ShareFilePermission().setPermission("filePermission")
-            .setPermissionFormat(FilePermissionFormat.BINARY));
-        shareDirectoryAsyncClient.setPropertiesWithResponse(options).subscribe(properties -> {
-            System.out.printf("Directory latest modified date is %s:", properties.getValue().getLastModified());
-        });
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#ShareDirectorySetPropertiesOptions
     }
 
     /**

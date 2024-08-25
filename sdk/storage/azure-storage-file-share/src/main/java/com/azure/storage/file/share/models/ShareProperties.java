@@ -126,21 +126,6 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      */
     private Boolean enableSnapshotVirtualDirectoryAccess;
 
-    /*
-     * If paid bursting is enabled.
-     */
-    private Boolean enablePaidBursting;
-
-    /*
-     * The maximum IOPS for paid bursting.
-     */
-    private Long paidBurstingMaxIops;
-
-    /*
-     * The maximum MiB/sec for paid bursting.
-     */
-    private Long paidBurstingMaxBandwidthMibps;
-
     /**
      * Get the lastModified property: The lastModified property.
      *
@@ -603,76 +588,6 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     public ShareProperties setSnapshotVirtualDirectoryAccessEnabled(
         Boolean enableSnapshotVirtualDirectoryAccess) {
         this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
-        return this;
-    }
-
-    /**
-     * Get the enablePaidBursting property:
-     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
-     * This property enables paid bursting on premium file storage accounts.
-     * @return the enablePaidBursting value.
-     */
-    public Boolean isPaidBurstingEnabled() {
-        return enablePaidBursting;
-    }
-
-    /**
-     * Set the enablePaidBursting property:
-     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
-     * This property enables paid bursting on premium file storage accounts.
-     * @param enablePaidBursting the enablePaidBursting value to set.
-     * @return the ShareSetPropertiesOptions object itself.
-     */
-    public ShareProperties setPaidBurstingEnabled(Boolean enablePaidBursting) {
-        this.enablePaidBursting = enablePaidBursting;
-        return this;
-    }
-
-    /**
-     * Get the paidBurstingMaxIops property:
-     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
-     * Default if not specified is the maximum IOPS the file share can support.
-     * Current maximum for a file share is 102,400 IOPS.
-     * @return the paidBurstingMaxIops value.
-     */
-    public Long getPaidBurstingMaxIops() {
-        return paidBurstingMaxIops;
-    }
-
-    /**
-     * Set the paidBurstingMaxIops property:
-     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
-     * Default if not specified is the maximum IOPS the file share can support.
-     * Current maximum for a file share is 102,400 IOPS.
-     * @param paidBurstingMaxIops the paidBurstingMaxIops value to set.
-     * @return the ShareSetPropertiesOptions object itself.
-     */
-    public ShareProperties setPaidBurstingMaxIops(Long paidBurstingMaxIops) {
-        this.paidBurstingMaxIops = paidBurstingMaxIops;
-        return this;
-    }
-
-    /**
-     * Get the paidBurstingMaxBandwidthMibps property:
-     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
-     * Default if not specified is the maximum throughput the file share can support.
-     * Current maximum for a file share is 10,340 MiB/sec.
-     * @return the paidBurstingMaxBandwidthMibps value.
-     */
-    public Long getPaidBurstingMaxBandwidthMibps() {
-        return paidBurstingMaxBandwidthMibps;
-    }
-
-    /**
-     * Set the paidBurstingMaxBandwidthMibps property:
-     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
-     * Default if not specified is the maximum throughput the file share can support.
-     * Current maximum for a file share is 10,340 MiB/sec.
-     * @param paidBurstingMaxBandwidthMibps the paidBurstingMaxBandwidthMibps value to set.
-     * @return the ShareSetPropertiesOptions object itself.
-     */
-    public ShareProperties setPaidBurstingMaxBandwidthMibps(Long paidBurstingMaxBandwidthMibps) {
-        this.paidBurstingMaxBandwidthMibps = paidBurstingMaxBandwidthMibps;
         return this;
     }
 

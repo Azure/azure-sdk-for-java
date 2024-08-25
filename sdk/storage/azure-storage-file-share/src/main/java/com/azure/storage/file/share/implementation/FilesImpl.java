@@ -49,13 +49,12 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUR
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
-import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import java.io.InputStream;
@@ -97,7 +96,7 @@ public final class FilesImpl {
     public interface FilesService {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesCreateHeaders, Void>> create(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
@@ -109,7 +108,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -120,7 +118,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> createNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
@@ -132,7 +130,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -143,7 +140,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesCreateHeaders, Void> createSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
@@ -155,7 +152,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -166,7 +162,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> createNoCustomHeadersSync(@HostParam("url") String url, @PathParam("shareName") String shareName,
             @PathParam("fileName") String fileName, @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -178,7 +174,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -189,7 +184,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200, 206 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesDownloadHeaders, Flux<ByteBuffer>>> download(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
@@ -201,7 +196,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200, 206 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<StreamResponse> downloadNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
@@ -213,7 +208,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200, 206 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesDownloadHeaders, InputStream> downloadSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
@@ -225,7 +220,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200, 206 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<InputStream> downloadNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
@@ -237,7 +232,7 @@ public final class FilesImpl {
 
         @Head("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesGetPropertiesHeaders, Void>> getProperties(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -248,7 +243,7 @@ public final class FilesImpl {
 
         @Head("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> getPropertiesNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -259,7 +254,7 @@ public final class FilesImpl {
 
         @Head("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesGetPropertiesHeaders, Void> getPropertiesSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -270,7 +265,7 @@ public final class FilesImpl {
 
         @Head("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> getPropertiesNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -281,7 +276,7 @@ public final class FilesImpl {
 
         @Delete("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesDeleteHeaders, Void>> delete(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
@@ -291,7 +286,7 @@ public final class FilesImpl {
 
         @Delete("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> deleteNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
@@ -301,7 +296,7 @@ public final class FilesImpl {
 
         @Delete("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesDeleteHeaders, Void> deleteSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
@@ -311,7 +306,7 @@ public final class FilesImpl {
 
         @Delete("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> deleteNoCustomHeadersSync(@HostParam("url") String url, @PathParam("shareName") String shareName,
             @PathParam("fileName") String fileName, @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -321,7 +316,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesSetHttpHeadersHeaders, Void>> setHttpHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -332,7 +327,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5,
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -344,7 +338,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> setHttpHeadersNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -355,7 +349,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5,
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -367,7 +360,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesSetHttpHeadersHeaders, Void> setHttpHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -378,7 +371,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5,
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -390,7 +382,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> setHttpHeadersNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -401,7 +393,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5,
             @HeaderParam("x-ms-content-disposition") String contentDisposition,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-file-attributes") String fileAttributes,
             @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
@@ -413,7 +404,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRange(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -428,7 +419,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> uploadRangeNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -443,7 +434,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRange(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -458,7 +449,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> uploadRangeNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -473,7 +464,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesUploadRangeHeaders, Void> uploadRangeSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -488,7 +479,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> uploadRangeNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -503,7 +494,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesSetMetadataHeaders, Void>> setMetadata(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -515,7 +506,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> setMetadataNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -527,7 +518,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesSetMetadataHeaders, Void> setMetadataSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -539,7 +530,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> setMetadataNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -551,7 +542,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesAcquireLeaseHeaders, Void>> acquireLease(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -564,7 +555,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> acquireLeaseNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -577,7 +568,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesAcquireLeaseHeaders, Void> acquireLeaseSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -590,7 +581,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> acquireLeaseNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -603,7 +594,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesReleaseLeaseHeaders, Void>> releaseLease(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -615,7 +606,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> releaseLeaseNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -627,7 +618,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesReleaseLeaseHeaders, Void> releaseLeaseSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -639,7 +630,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> releaseLeaseNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -651,7 +642,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesChangeLeaseHeaders, Void>> changeLease(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -664,7 +655,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> changeLeaseNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -677,7 +668,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesChangeLeaseHeaders, Void> changeLeaseSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -690,7 +681,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> changeLeaseNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -703,7 +694,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesBreakLeaseHeaders, Void>> breakLease(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -715,7 +706,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> breakLeaseNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -727,7 +718,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesBreakLeaseHeaders, Void> breakLeaseSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -739,7 +730,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> breakLeaseNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action,
@@ -751,7 +742,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesUploadRangeFromURLHeaders, Void>> uploadRangeFromURL(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -771,7 +762,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> uploadRangeFromURLNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -791,7 +782,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesUploadRangeFromURLHeaders, Void> uploadRangeFromURLSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -811,7 +802,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> uploadRangeFromURLNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -831,7 +822,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> getRangeList(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("sharesnapshot") String sharesnapshot,
@@ -845,7 +836,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<ShareFileRangeList>> getRangeListNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("sharesnapshot") String sharesnapshot,
@@ -859,7 +850,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> getRangeListSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("sharesnapshot") String sharesnapshot,
@@ -873,7 +864,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<ShareFileRangeList> getRangeListNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("sharesnapshot") String sharesnapshot,
@@ -887,7 +878,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesStartCopyHeaders, Void>> startCopy(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -909,7 +900,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> startCopyNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -931,7 +922,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesStartCopyHeaders, Void> startCopySync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -953,7 +944,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> startCopyNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -975,7 +966,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesAbortCopyHeaders, Void>> abortCopy(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("copyid") String copyId,
@@ -987,7 +978,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> abortCopyNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("copyid") String copyId,
@@ -999,7 +990,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesAbortCopyHeaders, Void> abortCopySync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("copyid") String copyId,
@@ -1011,7 +1002,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> abortCopyNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("copyid") String copyId,
@@ -1023,7 +1014,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesListHandlesHeaders, ListHandlesResponse>> listHandles(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("marker") String marker,
@@ -1035,7 +1026,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<ListHandlesResponse>> listHandlesNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("marker") String marker,
@@ -1047,7 +1038,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesListHandlesHeaders, ListHandlesResponse> listHandlesSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("marker") String marker,
@@ -1059,7 +1050,7 @@ public final class FilesImpl {
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<ListHandlesResponse> listHandlesNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("marker") String marker,
@@ -1071,7 +1062,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesForceCloseHandlesHeaders, Void>> forceCloseHandles(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -1083,7 +1074,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> forceCloseHandlesNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -1095,7 +1086,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesForceCloseHandlesHeaders, Void> forceCloseHandlesSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -1107,7 +1098,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> forceCloseHandlesNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -1119,7 +1110,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesRenameHeaders, Void>> rename(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -1133,7 +1124,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-content-type") String contentType,
@@ -1144,7 +1134,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<Response<Void>> renameNoCustomHeaders(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -1158,7 +1148,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-content-type") String contentType,
@@ -1169,7 +1158,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         ResponseBase<FilesRenameHeaders, Void> renameSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -1183,7 +1172,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-content-type") String contentType,
@@ -1194,7 +1182,7 @@ public final class FilesImpl {
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Response<Void> renameNoCustomHeadersSync(@HostParam("url") String url, @PathParam("shareName") String shareName,
             @PathParam("fileName") String fileName, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
@@ -1208,7 +1196,6 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-permission") String filePermission,
-            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
             @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
             @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-content-type") String contentType,
@@ -1234,11 +1221,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1247,16 +1229,15 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesCreateHeaders, Void>> createWithResponseAsync(String shareName, String fileName,
         long fileContentLength, String fileAttributes, Integer timeout, Map<String, String> metadata,
-        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        String filePermission, String filePermissionKey, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1293,8 +1274,8 @@ public final class FilesImpl {
         return FluxUtil.withContext(context -> service.create(this.client.getUrl(), shareName, fileName,
             this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant,
             contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition,
-            metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
-            fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context));
+            metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1313,11 +1294,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1327,16 +1303,15 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesCreateHeaders, Void>> createWithResponseAsync(String shareName, String fileName,
         long fileContentLength, String fileAttributes, Integer timeout, Map<String, String> metadata,
-        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        String filePermission, String filePermissionKey, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1373,8 +1348,8 @@ public final class FilesImpl {
         return service.create(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(), timeout,
             this.client.getVersion(), fileContentLength, fileTypeConstant, contentType, contentEncoding,
             contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
-            filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
+            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1393,11 +1368,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1406,18 +1376,18 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAsync(String shareName, String fileName, long fileContentLength, String fileAttributes,
-        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
+        Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders) {
         return createWithResponseAsync(shareName, fileName, fileContentLength, fileAttributes, timeout, metadata,
-            filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1436,11 +1406,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1450,18 +1415,18 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAsync(String shareName, String fileName, long fileContentLength, String fileAttributes,
-        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         return createWithResponseAsync(shareName, fileName, fileContentLength, fileAttributes, timeout, metadata,
-            filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, shareFileHttpHeaders, context).flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            shareFileHttpHeaders, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1480,11 +1445,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1493,16 +1453,15 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         long fileContentLength, String fileAttributes, Integer timeout, Map<String, String> metadata,
-        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        String filePermission, String filePermissionKey, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1539,8 +1498,8 @@ public final class FilesImpl {
         return FluxUtil.withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), shareName, fileName,
             this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant,
             contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition,
-            metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
-            fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context));
+            metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -1559,11 +1518,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1573,16 +1527,15 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         long fileContentLength, String fileAttributes, Integer timeout, Map<String, String> metadata,
-        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        String filePermission, String filePermissionKey, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1619,8 +1572,8 @@ public final class FilesImpl {
         return service.createNoCustomHeaders(this.client.getUrl(), shareName, fileName,
             this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant,
             contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition,
-            metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
-            fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
+            metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1639,11 +1592,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1653,16 +1601,15 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesCreateHeaders, Void> createWithResponse(String shareName, String fileName,
         long fileContentLength, String fileAttributes, Integer timeout, Map<String, String> metadata,
-        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        String filePermission, String filePermissionKey, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1699,8 +1646,8 @@ public final class FilesImpl {
         return service.createSync(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(), timeout,
             this.client.getVersion(), fileContentLength, fileTypeConstant, contentType, contentEncoding,
             contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
-            filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
+            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1719,11 +1666,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1732,17 +1674,17 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String shareName, String fileName, long fileContentLength, String fileAttributes,
-        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
+        Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders) {
         createWithResponse(shareName, fileName, fileContentLength, fileAttributes, timeout, metadata, filePermission,
-            filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            shareFileHttpHeaders, Context.NONE);
+            filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, shareFileHttpHeaders,
+            Context.NONE);
     }
 
     /**
@@ -1761,11 +1703,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -1775,16 +1712,15 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createNoCustomHeadersWithResponse(String shareName, String fileName, long fileContentLength,
         String fileAttributes, Integer timeout, Map<String, String> metadata, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
-        Context context) {
+        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1821,8 +1757,8 @@ public final class FilesImpl {
         return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
             this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant,
             contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted, contentDisposition,
-            metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
-            fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
+            metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -1838,7 +1774,7 @@ public final class FilesImpl {
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1865,7 +1801,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1891,7 +1827,7 @@ public final class FilesImpl {
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1916,7 +1852,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1940,7 +1876,7 @@ public final class FilesImpl {
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1967,7 +1903,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1994,7 +1930,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase}.
      */
@@ -2020,7 +1956,7 @@ public final class FilesImpl {
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2045,7 +1981,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -2071,7 +2007,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2098,7 +2034,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2124,7 +2060,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2149,7 +2085,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2173,7 +2109,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2200,7 +2136,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2227,7 +2163,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2253,7 +2189,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2276,7 +2212,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -2299,7 +2235,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2323,7 +2259,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2345,7 +2281,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2365,7 +2301,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2384,7 +2320,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2408,7 +2344,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2432,7 +2368,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -2454,7 +2390,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2473,7 +2409,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -2502,11 +2438,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2515,15 +2446,15 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesSetHttpHeadersHeaders, Void>> setHttpHeadersWithResponseAsync(String shareName,
         String fileName, String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
+        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2559,9 +2490,9 @@ public final class FilesImpl {
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return FluxUtil.withContext(context -> service.setHttpHeaders(this.client.getUrl(), shareName, fileName, comp,
             timeout, this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage,
-            cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionFormat,
-            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context));
+            cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionKey, fileAttributes,
+            fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.isAllowTrailingDot(),
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -2580,11 +2511,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2594,16 +2520,15 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesSetHttpHeadersHeaders, Void>> setHttpHeadersWithResponseAsync(String shareName,
         String fileName, String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
-        Context context) {
+        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2639,9 +2564,9 @@ public final class FilesImpl {
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return service.setHttpHeaders(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5Converted, contentDisposition, filePermission, filePermissionFormat, filePermissionKey,
-            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
+            contentMd5Converted, contentDisposition, filePermission, filePermissionKey, fileAttributes,
+            fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.isAllowTrailingDot(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2660,11 +2585,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2673,18 +2593,17 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setHttpHeadersAsync(String shareName, String fileName, String fileAttributes, Integer timeout,
-        Long fileContentLength, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
+        Long fileContentLength, String filePermission, String filePermissionKey, String fileCreationTime,
+        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
         return setHttpHeadersWithResponseAsync(shareName, fileName, fileAttributes, timeout, fileContentLength,
-            filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2703,11 +2622,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2717,18 +2631,18 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setHttpHeadersAsync(String shareName, String fileName, String fileAttributes, Integer timeout,
-        Long fileContentLength, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        Long fileContentLength, String filePermission, String filePermissionKey, String fileCreationTime,
+        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         return setHttpHeadersWithResponseAsync(shareName, fileName, fileAttributes, timeout, fileContentLength,
-            filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, shareFileHttpHeaders, context).flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            shareFileHttpHeaders, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2747,11 +2661,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2760,15 +2669,15 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setHttpHeadersNoCustomHeadersWithResponseAsync(String shareName, String fileName,
-        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
+        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2802,12 +2711,11 @@ public final class FilesImpl {
         }
         String contentDisposition = contentDispositionInternal;
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        return FluxUtil.withContext(
-            context -> service.setHttpHeadersNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, timeout,
-                this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage,
-                cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionFormat,
-                filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context));
+        return FluxUtil.withContext(context -> service.setHttpHeadersNoCustomHeaders(this.client.getUrl(), shareName,
+            fileName, comp, timeout, this.client.getVersion(), fileContentLength, contentType, contentEncoding,
+            contentLanguage, cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionKey,
+            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
+            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -2826,11 +2734,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2840,16 +2743,15 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setHttpHeadersNoCustomHeadersWithResponseAsync(String shareName, String fileName,
-        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
-        Context context) {
+        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2885,9 +2787,9 @@ public final class FilesImpl {
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return service.setHttpHeadersNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5Converted, contentDisposition, filePermission, filePermissionFormat, filePermissionKey,
-            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
+            contentMd5Converted, contentDisposition, filePermission, filePermissionKey, fileAttributes,
+            fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.isAllowTrailingDot(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2906,11 +2808,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2920,16 +2817,15 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesSetHttpHeadersHeaders, Void> setHttpHeadersWithResponse(String shareName, String fileName,
-        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
-        Context context) {
+        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2965,9 +2861,9 @@ public final class FilesImpl {
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return service.setHttpHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5Converted, contentDisposition, filePermission, filePermissionFormat, filePermissionKey,
-            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
+            contentMd5Converted, contentDisposition, filePermission, filePermissionKey, fileAttributes,
+            fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.isAllowTrailingDot(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -2986,11 +2882,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -2999,17 +2890,16 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setHttpHeaders(String shareName, String fileName, String fileAttributes, Integer timeout,
-        Long fileContentLength, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
+        Long fileContentLength, String filePermission, String filePermissionKey, String fileCreationTime,
+        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders) {
         setHttpHeadersWithResponse(shareName, fileName, fileAttributes, timeout, fileContentLength, filePermission,
-            filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            shareFileHttpHeaders, Context.NONE);
+            filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, shareFileHttpHeaders,
+            Context.NONE);
     }
 
     /**
@@ -3028,11 +2918,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
@@ -3042,16 +2927,15 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setHttpHeadersNoCustomHeadersWithResponse(String shareName, String fileName,
-        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
-        Context context) {
+        String fileAttributes, Integer timeout, Long fileContentLength, String filePermission, String filePermissionKey,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
+        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "properties";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -3087,9 +2971,9 @@ public final class FilesImpl {
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         return service.setHttpHeadersNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage, cacheControl,
-            contentMd5Converted, contentDisposition, filePermission, filePermissionFormat, filePermissionKey,
-            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId,
-            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
+            contentMd5Converted, contentDisposition, filePermission, filePermissionKey, fileAttributes,
+            fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.isAllowTrailingDot(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -3119,7 +3003,7 @@ public final class FilesImpl {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3164,7 +3048,7 @@ public final class FilesImpl {
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3208,7 +3092,7 @@ public final class FilesImpl {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3248,7 +3132,7 @@ public final class FilesImpl {
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3287,7 +3171,7 @@ public final class FilesImpl {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3332,7 +3216,7 @@ public final class FilesImpl {
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3375,7 +3259,7 @@ public final class FilesImpl {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3420,7 +3304,7 @@ public final class FilesImpl {
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3464,7 +3348,7 @@ public final class FilesImpl {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3504,7 +3388,7 @@ public final class FilesImpl {
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3543,7 +3427,7 @@ public final class FilesImpl {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3588,7 +3472,7 @@ public final class FilesImpl {
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3632,7 +3516,7 @@ public final class FilesImpl {
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -3675,7 +3559,7 @@ public final class FilesImpl {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3714,7 +3598,7 @@ public final class FilesImpl {
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -3741,7 +3625,7 @@ public final class FilesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3767,7 +3651,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3792,7 +3676,7 @@ public final class FilesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3815,7 +3699,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -3837,7 +3721,7 @@ public final class FilesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3863,7 +3747,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -3889,7 +3773,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -3914,7 +3798,7 @@ public final class FilesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3935,7 +3819,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -3966,7 +3850,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -3999,7 +3883,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4031,7 +3915,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4060,7 +3944,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4088,7 +3972,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4121,7 +4005,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4154,7 +4038,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -4186,7 +4070,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4213,7 +4097,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -4240,7 +4124,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4268,7 +4152,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4295,7 +4179,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4319,7 +4203,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4342,7 +4226,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4370,7 +4254,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4398,7 +4282,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -4425,7 +4309,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4446,7 +4330,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -4476,7 +4360,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4507,7 +4391,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4537,7 +4421,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4564,7 +4448,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4590,7 +4474,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4621,7 +4505,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4652,7 +4536,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -4682,7 +4566,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4707,7 +4591,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -4734,7 +4618,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4762,7 +4646,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -4789,7 +4673,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4813,7 +4697,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -4836,7 +4720,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4864,7 +4748,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -4892,7 +4776,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -4919,7 +4803,7 @@ public final class FilesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4940,7 +4824,7 @@ public final class FilesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -4981,7 +4865,7 @@ public final class FilesImpl {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param sourceModifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -5041,7 +4925,7 @@ public final class FilesImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -5100,7 +4984,7 @@ public final class FilesImpl {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param sourceModifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -5141,7 +5025,7 @@ public final class FilesImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -5181,7 +5065,7 @@ public final class FilesImpl {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param sourceModifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -5241,7 +5125,7 @@ public final class FilesImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -5301,7 +5185,7 @@ public final class FilesImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -5360,7 +5244,7 @@ public final class FilesImpl {
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
      * @param sourceModifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5400,7 +5284,7 @@ public final class FilesImpl {
      * @param sourceModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -5452,7 +5336,7 @@ public final class FilesImpl {
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -5488,7 +5372,7 @@ public final class FilesImpl {
      * default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -5523,7 +5407,7 @@ public final class FilesImpl {
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges on successful completion of {@link Mono}.
      */
@@ -5555,7 +5439,7 @@ public final class FilesImpl {
      * default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges on successful completion of {@link Mono}.
      */
@@ -5587,7 +5471,7 @@ public final class FilesImpl {
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -5623,7 +5507,7 @@ public final class FilesImpl {
      * default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -5659,7 +5543,7 @@ public final class FilesImpl {
      * default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges along with {@link ResponseBase}.
      */
@@ -5694,7 +5578,7 @@ public final class FilesImpl {
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges.
      */
@@ -5726,7 +5610,7 @@ public final class FilesImpl {
      * default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of file ranges along with {@link Response}.
      */
@@ -5765,7 +5649,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param copyFileSmbInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -5841,7 +5725,7 @@ public final class FilesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -5916,7 +5800,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param copyFileSmbInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -5953,7 +5837,7 @@ public final class FilesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -5989,7 +5873,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param copyFileSmbInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -6065,7 +5949,7 @@ public final class FilesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -6141,7 +6025,7 @@ public final class FilesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -6216,7 +6100,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param copyFileSmbInfo Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6252,7 +6136,7 @@ public final class FilesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -6314,7 +6198,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -6341,7 +6225,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -6367,7 +6251,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -6390,7 +6274,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -6412,7 +6296,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -6439,7 +6323,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -6466,7 +6350,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -6492,7 +6376,7 @@ public final class FilesImpl {
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6512,7 +6396,7 @@ public final class FilesImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -6544,7 +6428,7 @@ public final class FilesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -6576,7 +6460,7 @@ public final class FilesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -6608,7 +6492,7 @@ public final class FilesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles on successful completion of {@link Mono}.
      */
@@ -6637,7 +6521,7 @@ public final class FilesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles on successful completion of {@link Mono}.
      */
@@ -6665,7 +6549,7 @@ public final class FilesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -6697,7 +6581,7 @@ public final class FilesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -6729,7 +6613,7 @@ public final class FilesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles along with {@link ResponseBase}.
      */
@@ -6760,7 +6644,7 @@ public final class FilesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles.
      */
@@ -6789,7 +6673,7 @@ public final class FilesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of handles along with {@link Response}.
      */
@@ -6820,7 +6704,7 @@ public final class FilesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -6852,7 +6736,7 @@ public final class FilesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -6883,7 +6767,7 @@ public final class FilesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -6912,7 +6796,7 @@ public final class FilesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -6940,7 +6824,7 @@ public final class FilesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -6972,7 +6856,7 @@ public final class FilesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -7004,7 +6888,7 @@ public final class FilesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -7035,7 +6919,7 @@ public final class FilesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7062,7 +6946,7 @@ public final class FilesImpl {
      * snapshot to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -7097,11 +6981,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7110,15 +6989,14 @@ public final class FilesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesRenameHeaders, Void>> renameWithResponseAsync(String shareName, String fileName,
         String renameSource, Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
-        SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders) {
         final String comp = "rename";
@@ -7160,9 +7038,9 @@ public final class FilesImpl {
         String contentType = contentTypeInternal;
         return FluxUtil.withContext(context -> service.rename(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId, destinationLeaseId,
-            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionFormat,
-            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
-            this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context));
+            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionKey,
+            metadata, contentType, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
+            this.client.getFileRequestIntent(), accept, context));
     }
 
     /**
@@ -7186,11 +7064,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7200,15 +7073,14 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesRenameHeaders, Void>> renameWithResponseAsync(String shareName, String fileName,
         String renameSource, Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
-        SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "rename";
@@ -7250,9 +7122,9 @@ public final class FilesImpl {
         String contentType = contentTypeInternal;
         return service.rename(this.client.getUrl(), shareName, fileName, comp, timeout, this.client.getVersion(),
             renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId, destinationLeaseId, fileAttributes,
-            fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionFormat,
-            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
-            this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
+            fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionKey, metadata,
+            contentType, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -7276,11 +7148,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7289,20 +7156,19 @@ public final class FilesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameAsync(String shareName, String fileName, String renameSource, Integer timeout,
-        Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
-        SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission, String filePermissionKey,
+        Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders) {
         return renameWithResponseAsync(shareName, fileName, renameSource, timeout, replaceIfExists, ignoreReadOnly,
-            filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
-            destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionKey, metadata, sourceLeaseAccessConditions, destinationLeaseAccessConditions,
+            copyFileSmbInfo, shareFileHttpHeaders).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7326,11 +7192,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7340,21 +7201,19 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameAsync(String shareName, String fileName, String renameSource, Integer timeout,
-        Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
-        SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission, String filePermissionKey,
+        Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         return renameWithResponseAsync(shareName, fileName, renameSource, timeout, replaceIfExists, ignoreReadOnly,
-            filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
-            destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders, context)
-            .flatMap(ignored -> Mono.empty());
+            filePermission, filePermissionKey, metadata, sourceLeaseAccessConditions, destinationLeaseAccessConditions,
+            copyFileSmbInfo, shareFileHttpHeaders, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7378,11 +7237,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7391,15 +7245,14 @@ public final class FilesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String renameSource, Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
-        SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders) {
         final String comp = "rename";
@@ -7442,7 +7295,7 @@ public final class FilesImpl {
         return FluxUtil.withContext(context -> service.renameNoCustomHeaders(this.client.getUrl(), shareName, fileName,
             comp, timeout, this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId,
             destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
-            filePermissionFormat, filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
+            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
             this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context));
     }
 
@@ -7467,11 +7320,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7481,15 +7329,14 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String renameSource, Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
-        SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "rename";
@@ -7531,9 +7378,9 @@ public final class FilesImpl {
         String contentType = contentTypeInternal;
         return service.renameNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId, destinationLeaseId,
-            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionFormat,
-            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
-            this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
+            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionKey,
+            metadata, contentType, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -7557,11 +7404,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7571,15 +7413,14 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesRenameHeaders, Void> renameWithResponse(String shareName, String fileName,
         String renameSource, Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
-        SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "rename";
@@ -7621,9 +7462,9 @@ public final class FilesImpl {
         String contentType = contentTypeInternal;
         return service.renameSync(this.client.getUrl(), shareName, fileName, comp, timeout, this.client.getVersion(),
             renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId, destinationLeaseId, fileAttributes,
-            fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionFormat,
-            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
-            this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
+            fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionKey, metadata,
+            contentType, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 
     /**
@@ -7647,11 +7488,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7660,18 +7496,18 @@ public final class FilesImpl {
      * @param copyFileSmbInfo Parameter group.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rename(String shareName, String fileName, String renameSource, Integer timeout, Boolean replaceIfExists,
-        Boolean ignoreReadOnly, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        Boolean ignoreReadOnly, String filePermission, String filePermissionKey, Map<String, String> metadata,
+        SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders) {
         renameWithResponse(shareName, fileName, renameSource, timeout, replaceIfExists, ignoreReadOnly, filePermission,
-            filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
-            destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders, Context.NONE);
+            filePermissionKey, metadata, sourceLeaseAccessConditions, destinationLeaseAccessConditions, copyFileSmbInfo,
+            shareFileHttpHeaders, Context.NONE);
     }
 
     /**
@@ -7695,11 +7531,6 @@ public final class FilesImpl {
      * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
      * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
-     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
-     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
-     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
-     * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
      * @param metadata A name-value pair to associate with a file storage object.
@@ -7709,15 +7540,14 @@ public final class FilesImpl {
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameNoCustomHeadersWithResponse(String shareName, String fileName, String renameSource,
         Integer timeout, Boolean replaceIfExists, Boolean ignoreReadOnly, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, Map<String, String> metadata,
-        SourceLeaseAccessConditions sourceLeaseAccessConditions,
+        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
         final String comp = "rename";
@@ -7759,8 +7589,8 @@ public final class FilesImpl {
         String contentType = contentTypeInternal;
         return service.renameNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
             this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId, destinationLeaseId,
-            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionFormat,
-            filePermissionKey, metadata, contentType, this.client.isAllowTrailingDot(),
-            this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
+            fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionKey,
+            metadata, contentType, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
+            this.client.getFileRequestIntent(), accept, context);
     }
 }

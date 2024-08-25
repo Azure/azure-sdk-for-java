@@ -12,7 +12,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAudience;
@@ -22,13 +21,11 @@ import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
-import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
-import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
@@ -202,21 +199,6 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(resp.getValue().getSmbProperties().getFileChangeTime());
         assertNotNull(resp.getValue().getSmbProperties().getParentId());
         assertNotNull(resp.getValue().getSmbProperties().getFileId());
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
-    public void createDirectoryFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
-        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setFilePermission(permission)
-            .setFilePermissionFormat(filePermissionFormat);
-
-        Response<ShareDirectoryInfo> response = primaryDirectoryClient.createWithResponse(options, null,
-            null);
-
-        FileShareTestHelper.assertResponseStatusCode(response, 201);
-        assertNotNull(response.getValue().getSmbProperties().getFilePermissionKey());
     }
 
     @Test
@@ -598,24 +580,6 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(resp.getValue().getSmbProperties().getFileChangeTime());
         assertNotNull(resp.getValue().getSmbProperties().getParentId());
         assertNotNull(resp.getValue().getSmbProperties().getFileId());
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
-    public void setDirectoryHttpHeadersFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        primaryDirectoryClient.create();
-
-        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
-
-        ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions()
-            .setFilePermissions(new ShareFilePermission().setPermission(permission).setPermissionFormat(filePermissionFormat));
-
-        Response<ShareDirectoryInfo> bagResponse = primaryDirectoryClient.setPropertiesWithResponse(options, null,
-            null);
-
-        FileShareTestHelper.assertResponseStatusCode(bagResponse, 200);
-        assertNotNull(bagResponse.getValue().getSmbProperties().getFilePermissionKey());
     }
 
     @Test
@@ -1217,24 +1181,6 @@ public class DirectoryApiTests extends FileShareTestBase {
             primaryDirectoryClient.renameWithResponse(options, null, null).getValue());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
-    public void renameDirectoryFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        primaryDirectoryClient.create();
-
-        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
-
-        ShareFileRenameOptions options = new ShareFileRenameOptions(generatePathName()).setFilePermission(permission)
-            .setFilePermissionFormat(filePermissionFormat);
-
-        Response<ShareDirectoryClient> destClientResponse = primaryDirectoryClient.renameWithResponse(options,
-            null, null);
-
-        FileShareTestHelper.assertResponseStatusCode(destClientResponse, 200);
-        assertNotNull(destClientResponse.getValue().getProperties().getSmbProperties().getFilePermissionKey());
-    }
-
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     public void renameFileSmbProperties() {
@@ -1746,7 +1692,7 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         ShareStorageException e = assertThrows(ShareStorageException.class, aadDirClient::exists);
-        assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+        assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
     }
 
     @Test

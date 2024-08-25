@@ -26,7 +26,6 @@ import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -41,7 +40,6 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
-import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
@@ -54,11 +52,9 @@ import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
-import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
-import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -182,21 +178,6 @@ class FileApiTests extends FileShareTestBase {
     public void createFile() {
         FileShareTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null, null,
             null, null), 201);
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
-    public void createFileFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
-
-        ShareFileCreateOptions options = new ShareFileCreateOptions(1024).setFilePermission(permission)
-            .setFilePermissionFormat(filePermissionFormat);
-
-        Response<ShareFileInfo> bagResponse = primaryFileClient.createWithResponse(options, null, null);
-
-        FileShareTestHelper.assertResponseStatusCode(bagResponse, 201);
-        assertNotNull(bagResponse.getValue().getSmbProperties().getFilePermissionKey());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
@@ -1969,23 +1950,6 @@ class FileApiTests extends FileShareTestBase {
         assertNotNull(resp.getValue().getSmbProperties().getFileId());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
-    public void setFileHttpHeadersFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        primaryFileClient.create(512);
-
-        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
-
-        ShareFileSetPropertiesOptions options = new ShareFileSetPropertiesOptions(512)
-            .setFilePermissions(new ShareFilePermission().setPermission(permission).setPermissionFormat(filePermissionFormat));
-
-        Response<ShareFileInfo> bagResponse = primaryFileClient.setPropertiesWithResponse(options, null, null);
-
-        FileShareTestHelper.assertResponseStatusCode(bagResponse, 200);
-        assertNotNull(bagResponse.getValue().getSmbProperties().getFilePermissionKey());
-    }
-
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
     @Test
     public void setHttpHeadersChangeTime() {
@@ -2667,23 +2631,6 @@ class FileApiTests extends FileShareTestBase {
         assertNotNull(destClient.getProperties().getSmbProperties().getFilePermissionKey());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
-    public void renameFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        primaryFileClient.create(512);
-
-        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
-
-        ShareFileRenameOptions options = new ShareFileRenameOptions(generatePathName()).setFilePermission(permission)
-            .setFilePermissionFormat(filePermissionFormat);
-
-        Response<ShareFileClient> destClientResponse = primaryFileClient.renameWithResponse(options, null, null);
-
-        FileShareTestHelper.assertResponseStatusCode(destClientResponse, 200);
-        assertNotNull(destClientResponse.getValue().getProperties().getSmbProperties().getFilePermissionKey());
-    }
-
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void renameFilePermissionAndKeySet() {
@@ -2942,7 +2889,7 @@ class FileApiTests extends FileShareTestBase {
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         ShareStorageException e = assertThrows(ShareStorageException.class, aadFileClient::exists);
-        assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+        assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
     }
 
     @Test

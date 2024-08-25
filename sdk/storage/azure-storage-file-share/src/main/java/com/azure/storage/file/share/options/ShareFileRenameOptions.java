@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileSmbProperties;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
 import java.util.Map;
@@ -28,7 +27,6 @@ public final class ShareFileRenameOptions {
     private FileSmbProperties smbProperties;
     private Map<String, String> metadata;
     private String contentType;
-    private FilePermissionFormat filePermissionFormat;
 
     /**
      * Creates a {@code ShareFileRenameOptions} object.
@@ -193,26 +191,6 @@ public final class ShareFileRenameOptions {
      */
     public ShareFileRenameOptions setContentType(String contentType) {
         this.contentType = contentType;
-        return this;
-    }
-
-    /**
-     * Gets the file permission format.
-     *
-     * @return The file permission format.
-     */
-    public FilePermissionFormat getFilePermissionFormat() {
-        return filePermissionFormat;
-    }
-
-    /**
-     * Sets the file permission format.
-     *
-     * @param filePermissionFormat the file permission format.
-     * @return The updated options.
-     */
-    public ShareFileRenameOptions setFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        this.filePermissionFormat = filePermissionFormat;
         return this;
     }
 }

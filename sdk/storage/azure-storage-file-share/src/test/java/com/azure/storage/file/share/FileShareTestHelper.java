@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.file.share.models.ClearRange;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareCorsRule;
@@ -258,19 +257,6 @@ public class FileShareTestHelper {
         }
     }
 
-    protected static String getPermissionFromFormat(FilePermissionFormat filePermissionFormat) {
-        if (filePermissionFormat == null || filePermissionFormat == FilePermissionFormat.SDDL) {
-            return "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527"
-                + "-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S"
-                + ":NO_ACCESS_CONTROL";
-        } else {
-            return "AQAUhGwAAACIAAAAAAAAABQAAAACAFgAAwAAAAAAFAD/AR8AAQEAAAAAAAUSAAAAAAAYAP8BHwABAgAAAAAABS"
-                + "AAAAAgAgAAAAAkAKkAEgABBQAAAAAABRUAAABZUbgXZnJdJWRjOwuMmS4AAQUAAAAAAAUVAAAAoGXPfnhLm1/nfIdwr"
-                + "/1IAQEFAAAAAAAFFQAAAKBlz354S5tf53yHcAECAAA=";
-        }
-    }
-
-
 //    protected static byte[] getBytes(InputStream is) {
 //        ByteArrayOutputStream answer = new ByteArrayOutputStream();
 //        // reading the content of the stream within a byte buffer
@@ -411,12 +397,5 @@ public class FileShareTestHelper {
             Arguments.of(Collections.singletonMap("invalid#", "value"), 1, 400, ShareErrorCode.INVALID_METADATA),
             Arguments.of(Collections.singletonMap("testmetadata", "value"), -1, 400,
                 ShareErrorCode.INVALID_HEADER_VALUE));
-    }
-
-    protected static Stream<Arguments> filePermissionFormatSupplier() {
-        return Stream.of(
-            Arguments.of(FilePermissionFormat.SDDL),
-            Arguments.of(FilePermissionFormat.BINARY),
-            Arguments.of((Object) null));
     }
 }
