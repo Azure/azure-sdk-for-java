@@ -48,13 +48,16 @@ If you want to take dependency on a particular version of the library that is no
 add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-attestation;current})
+
 ```xml
+<!-- Install the Azure Attestation SDK -->
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-attestation</artifactId>
-    <version>1.1.15</version>
+    <version>1.1.26</version>
 </dependency>
 ```
+
 [//]: # ({x-version-update-end})
 
 ### Prerequisites

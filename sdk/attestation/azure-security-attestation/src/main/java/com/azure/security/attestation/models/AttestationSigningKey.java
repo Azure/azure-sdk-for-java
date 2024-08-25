@@ -6,11 +6,13 @@ package com.azure.security.attestation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
-import java.security.PrivateKey;
+import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
+import java.security.SignatureException;
 import java.security.cert.X509Certificate;
+import java.security.PrivateKey;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.util.Objects;
@@ -20,14 +22,14 @@ import java.util.Objects;
  */
 @Fluent
 public final class AttestationSigningKey {
-    private static final ClientLogger LOGGER = new ClientLogger(AttestationSigningKey.class);
 
     /**
      * Creates a new instance of an AttestationSigningKey.
      *
      * @param privateKey The asymmetric key used to sign the request to be sent to the server.
-     * @param certificate An X.509 Certificate wrapping the public key associated with `privateKey`. This certificate
-     * will be sent to the attestation service to allow the service to validate the certificate.
+     * @param certificate An X.509 Certificate wrapping the public key associated with `privateKey`.
+     *                    This certificate will be sent to the attestation service to allow the service
+     *                    to validate the certificate.
      */
     public AttestationSigningKey(X509Certificate certificate, PrivateKey privateKey) {
         this.certificate = certificate;
@@ -36,18 +38,14 @@ public final class AttestationSigningKey {
     }
 
     /**
-     * Returns the X.509 certificate associated with this Signing Key.
-     *
-     * @return the X.509 certificate.
+     * @return Returns the X.509 certificate associated with this Signing Key.
      */
     public X509Certificate getCertificate() {
         return this.certificate;
     }
 
     /**
-     * Returns the private key associated with this signing key.
-     *
-     * @return the private key.
+     * @return Returns the private key associated with this signing key.
      */
     public PrivateKey getPrivateKey() {
         return this.privateKey;
@@ -65,9 +63,8 @@ public final class AttestationSigningKey {
     }
 
     /**
-     * Returns if a weak key is allowed on this signing key.
      *
-     * @return the boolean indicator.
+     * @return Returns if a weak key is allowed on this signing key.
      */
     public boolean isWeakKeyAllowed() {
         return this.weakKeyAllowed;
@@ -91,8 +88,8 @@ public final class AttestationSigningKey {
                 signer = Signature.getInstance("SHA256WITHECDSA");
                 verifier = Signature.getInstance("SHA256WITHECDSA");
             } else {
-                throw LOGGER.logExceptionAsError(new InvalidParameterException(
-                    "AttestationSigningKey privateKey must be an RSA or DSA private key"));
+                ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
+                throw logger.logExceptionAsError(new InvalidParameterException("AttestationSigningKey privateKey must be an RSA or DSA private key"));
             }
 
             /* Buffer to be signed - this can basically be anything, it doesn't really matter. */
@@ -107,12 +104,18 @@ public final class AttestationSigningKey {
             verifier.initVerify(certificate);
             verifier.update(bufferToSign);
             if (!verifier.verify(signedBuffer)) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key"));
+                ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
+                throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key"));
             }
-        } catch (GeneralSecurityException e) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
+        } catch (NoSuchAlgorithmException e) {
+            ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
+        } catch (InvalidKeyException e) {
+            ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
+        } catch (SignatureException e) {
+            ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
         }
     }
 
