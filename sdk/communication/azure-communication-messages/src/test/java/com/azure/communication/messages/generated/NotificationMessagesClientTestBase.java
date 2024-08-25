@@ -12,14 +12,16 @@ import com.azure.communication.messages.MessageTemplateClient;
 import com.azure.communication.messages.MessageTemplateClientBuilder;
 import com.azure.communication.messages.NotificationMessagesClient;
 import com.azure.communication.messages.NotificationMessagesClientBuilder;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.time.OffsetDateTime;
+import reactor.core.publisher.Mono;
 
 class NotificationMessagesClientTestBase extends TestProxyTestBase {
     protected NotificationMessagesClient notificationMessagesClient;
@@ -34,7 +36,7 @@ class NotificationMessagesClientTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             notificationMessagesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
             notificationMessagesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -49,7 +51,7 @@ class NotificationMessagesClientTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             messageTemplateClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
             messageTemplateClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
