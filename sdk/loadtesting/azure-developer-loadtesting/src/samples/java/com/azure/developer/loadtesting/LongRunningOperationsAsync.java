@@ -3,27 +3,25 @@
 
 package com.azure.developer.loadtesting;
 
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.ResourceNotFoundException;
+import java.io.File;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
-
-import java.io.File;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Sample demonstrates how to upload and validat a test file, and running a test run.
+ * Sample demonstrates how to uploading and validating a test file, and running a test run.
  *
- * Authenticates with the load testing resource and shows how to upload and validat a test file, and running a test run
- * in a given resource.
+ * Authenticates with the load testing resource and shows how to uploading and validating a test file, and running
+ * a test run in a given resource.
  *
  * @throws ClientAuthenticationException - when the credentials have insufficient permissions for load test resource.
  * @throws ResourceNotFoundException - when test with `testId` does not exist when uploading file.
@@ -32,9 +30,9 @@ public final class LongRunningOperationsAsync {
     public void beginUploadTestFile() {
         // BEGIN: java-longRunningOperationsAsync-sample-beginUploadTestFile
         LoadTestAdministrationAsyncClient client = new LoadTestAdministrationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildAsyncClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildAsyncClient();
 
         String inputTestId = "12345678-1234-1234-1234-123456789abc";
         String inputFileName = "input-test-file.jmx";
@@ -44,18 +42,17 @@ public final class LongRunningOperationsAsync {
         Duration pollInterval = Duration.ofSeconds(1);
 
         RequestOptions reqOpts = new RequestOptions()
-            .addQueryParam("fileType", "JMX_FILE");
+                .addQueryParam("fileType", "JMX_FILE");
 
         PollerFlux<BinaryData, BinaryData> poller = client.beginUploadTestFile(inputTestId, inputFileName, fileData, reqOpts);
         poller = poller.setPollInterval(pollInterval);
 
         poller.subscribe(pollResponse -> {
-            try (JsonReader jsonReader = JsonProviders.createReader(pollResponse.getValue().toBytes())) {
-                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-                String validationStatus = jsonTree.get("validationStatus").toString();
-                System.out.println("Validation Status: " + validationStatus);
-            } catch (IOException e) {
+            try {
+                JsonNode file = new ObjectMapper().readTree(pollResponse.getValue().toString());
+                String validationStatus = file.get("validationStatus").asText();
+                System.out.println("Validation Status: " + validationStatus.toString());
+            } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         });
@@ -63,15 +60,14 @@ public final class LongRunningOperationsAsync {
         AsyncPollResponse<BinaryData, BinaryData> pollResponse = poller.blockLast();
         BinaryData fileBinary = pollResponse.getFinalResult().block();
 
-        try (JsonReader jsonReader = JsonProviders.createReader(fileBinary.toBytes())) {
-            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-            String url = jsonTree.get("url").toString();
-            String fileName = jsonTree.get("fileName").toString();
-            String fileType = jsonTree.get("fileType").toString();
-            String validationStatus = jsonTree.get("validationStatus").toString();
+        try {
+            JsonNode file = new ObjectMapper().readTree(fileBinary.toString());
+            String url = file.get("url").asText();
+            String fileName = file.get("fileName").asText();
+            String fileType = file.get("fileType").asText();
+            String validationStatus = file.get("validationStatus").asText();
             System.out.println(String.format("%s\t%s\t%s\t%s", fileName, fileType, url, validationStatus));
-        } catch (IOException e) {
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         // END: java-longRunningOperationsAsync-sample-beginUploadTestFile
@@ -80,9 +76,9 @@ public final class LongRunningOperationsAsync {
     public void beginTestRun() {
         // BEGIN: java-longRunningOperationsAsync-sample-beginTestRun
         LoadTestRunAsyncClient client = new LoadTestRunClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildAsyncClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildAsyncClient();
 
         String inputTestRunId = "12345678-1234-1234-1234-123456789abc";
         String inputTestId = "87654321-1234-1234-1234-123456789abc";
@@ -107,14 +103,13 @@ public final class LongRunningOperationsAsync {
         AsyncPollResponse<BinaryData, BinaryData> pollResponse = poller.blockLast();
         BinaryData testRunBinary = pollResponse.getFinalResult().block();
 
-        try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
-            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
-
-            String testId = jsonTree.get("testId").toString();
-            String testRunId = jsonTree.get("testRunId").toString();
-            String status = jsonTree.get("status").toString();
+        try {
+            JsonNode file = new ObjectMapper().readTree(testRunBinary.toString());
+            String testId = file.get("testId").asText();
+            String testRunId = file.get("testRunId").asText();
+            String status = file.get("status").asText();
             System.out.println(String.format("%s\t%s\t%s", testId, testRunId, status));
-        } catch (IOException e) {
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         // END: java-longRunningOperationsAsync-sample-beginTestRun

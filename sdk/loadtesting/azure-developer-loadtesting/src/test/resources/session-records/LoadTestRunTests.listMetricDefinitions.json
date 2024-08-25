@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.eastus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012/metric-definitions?metricNamespace=LoadTestRunMetrics&api-version=2022-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6f873776-7143-4405-9649-4462f7fe2789"
+    },
+    "Response" : {
+      "content-length" : "1643",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "0b11116d-f932-486b-ae21-249df774581a",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"dimensions\":[{\"description\":\"Request Name\",\"name\":\"RequestName\"}],\"description\":\"No of concurrent virtual users\",\"name\":\"VirtualUsers\",\"namespace\":\"LoadTestRunMetrics\",\"primaryAggregationType\":\"Total\",\"supportedAggregationTypes\":[\"Total\"],\"unit\":\"Count\",\"metricAvailabilities\":[{\"timeGrain\":\"PT5S\"},{\"timeGrain\":\"PT10S\"},{\"timeGrain\":\"PT1M\"},{\"timeGrain\":\"PT5M\"},{\"timeGrain\":\"PT1H\"}]},{\"dimensions\":[{\"description\":\"Request Name\",\"name\":\"RequestName\"}],\"description\":\"Response time (Successful request)\",\"name\":\"ResponseTime\",\"namespace\":\"LoadTestRunMetrics\",\"primaryAggregationType\":\"Percentile90\",\"supportedAggregationTypes\":[\"Average\",\"Percentile90\",\"Percentile95\",\"Percentile99\"],\"unit\":\"Milliseconds\",\"metricAvailabilities\":[{\"timeGrain\":\"PT5S\"},{\"timeGrain\":\"PT10S\"},{\"timeGrain\":\"PT1M\"},{\"timeGrain\":\"PT5M\"},{\"timeGrain\":\"PT1H\"}]},{\"dimensions\":[{\"description\":\"Request Name\",\"name\":\"RequestName\"}],\"description\":\"Total Requests\",\"name\":\"TotalRequests\",\"namespace\":\"LoadTestRunMetrics\",\"primaryAggregationType\":\"Total\",\"supportedAggregationTypes\":[\"Total\"],\"unit\":\"Count\",\"metricAvailabilities\":[{\"timeGrain\":\"PT5S\"},{\"timeGrain\":\"PT10S\"},{\"timeGrain\":\"PT1M\"},{\"timeGrain\":\"PT5M\"},{\"timeGrain\":\"PT1H\"}]},{\"dimensions\":[{\"description\":\"Request Name\",\"name\":\"RequestName\"},{\"description\":\"Error response code\",\"name\":\"Errors\"}],\"description\":\"Total Errors\",\"name\":\"Errors\",\"namespace\":\"LoadTestRunMetrics\",\"primaryAggregationType\":\"Total\",\"supportedAggregationTypes\":[\"Total\"],\"unit\":\"Count\",\"metricAvailabilities\":[{\"timeGrain\":\"PT5S\"},{\"timeGrain\":\"PT10S\"},{\"timeGrain\":\"PT1M\"},{\"timeGrain\":\"PT5M\"},{\"timeGrain\":\"PT1H\"}]}]}",
+      "Date" : "Sun, 18 Dec 2022 18:59:25 GMT",
+      "x-ms-correlation-request-id" : "0903c621-b5a8-4d8a-bf6a-7a4bb906f5c2",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
