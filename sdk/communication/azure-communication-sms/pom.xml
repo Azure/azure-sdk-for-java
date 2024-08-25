@@ -15,7 +15,8 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+  <version>1.1.26</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+
   <name>Microsoft Azure library for sending SMS messages</name>
   <description>
     This package contains clients and data structures used to send SMS messages with Azure Communication SMS Service.
@@ -40,31 +41,26 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.62</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.48</jacoco.min.branchcoverage>
-    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
-    <javaModulesSurefireArgLine>
-      --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-    </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
+    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
+    <jacoco.skip>false</jacoco.skip>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.51.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.3.5</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.3.4</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -100,19 +96,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.20</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
+      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -122,6 +112,11 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <includes>
+            <include>com/azure/communication/sms/*.class</include>
+          </includes>
+        </configuration>
         <executions>
           <execution>
             <id>coverage-report</id>
@@ -148,20 +143,5 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>java12plus</id>
-      <activation>
-        <jdk>[12,)</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
+
 </project>
