@@ -3,22 +3,20 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.IOException;
+final class EncryptedRegionInfo {
 
-final class EncryptedRegionInfo implements JsonSerializable<EncryptedRegionInfo> {
     /**
      * The cipher text length.
      */
+    @JsonProperty(value = "DataLength")
     private int dataLength;
 
     /**
      * The nonce length.
      */
+    @JsonProperty(value = "NonceLength")
     private int nonceLength;
 
     EncryptedRegionInfo() {
@@ -51,40 +49,5 @@ final class EncryptedRegionInfo implements JsonSerializable<EncryptedRegionInfo>
      */
     public int getNonceLength() {
         return nonceLength;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeNumberField("DataLength", dataLength)
-            .writeNumberField("NonceLength", nonceLength)
-            .writeEndObject();
-    }
-
-    /**
-     * Reads an instance of EncryptedRegionInfo from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return The EncryptedRegionInfo read from the JsonReader.
-     * @throws IOException If an I/O error occurs.
-     */
-    public static EncryptedRegionInfo fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            EncryptedRegionInfo encryptedRegionInfo = new EncryptedRegionInfo();
-
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("DataLength".equals(fieldName)) {
-                    encryptedRegionInfo.dataLength = reader.getInt();
-                } else if ("NonceLength".equals(fieldName)) {
-                    encryptedRegionInfo.nonceLength = reader.getInt();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return encryptedRegionInfo;
-        });
     }
 }

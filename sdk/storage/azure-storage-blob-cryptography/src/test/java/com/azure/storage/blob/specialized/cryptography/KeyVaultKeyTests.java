@@ -15,7 +15,9 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
@@ -25,7 +27,6 @@ import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -119,7 +120,15 @@ public class KeyVaultKeyTests extends BlobCryptographyTestBase {
         Configuration global = Configuration.getGlobalConfiguration().clone();
         TokenCredential credential;
 
-        credential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+        if (getTestMode() != TestMode.PLAYBACK) {
+            credential = new ClientSecretCredentialBuilder()
+                .clientSecret(global.get("AZURE_CLIENT_SECRET"))
+                .clientId(global.get("AZURE_CLIENT_ID"))
+                .tenantId(global.get("AZURE_TENANT_ID"))
+                .build();
+        } else {
+            credential = new MockTokenCredential();
+        }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();

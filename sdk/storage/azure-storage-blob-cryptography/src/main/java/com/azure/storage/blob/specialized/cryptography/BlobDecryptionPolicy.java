@@ -5,7 +5,6 @@ package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -15,6 +14,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,7 +23,10 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.CONTENT_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.CONTENT_RANGE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_METADATA_HEADER;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.RANGE_HEADER;
@@ -92,7 +95,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                      * didn't expand the range at all.
                      */
                     EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
-                        httpResponse.getHeaderValue(ENCRYPTION_METADATA_HEADER), requiresEncryption);
+                        httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-"
+                            + ENCRYPTION_DATA_KEY), requiresEncryption);
                     // If there was no encryption data, it was either an error response or the blob is not encrypted.
                     if (!isEncryptedBlob(encryptionData)) {
                         return Mono.just(httpResponse);
@@ -106,7 +110,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                      */
                     EncryptedBlobRange encryptedRange = new EncryptedBlobRange(new BlobRange(0), encryptionData);
                     encryptedRange.setAdjustedDownloadCount(
-                        Long.parseLong(responseHeaders.getValue(HttpHeaderName.CONTENT_LENGTH)));
+                        Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
 
                     boolean padding = hasPadding(responseHeaders, encryptionData, encryptedRange);
 
@@ -143,7 +147,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                         return httpResponse;
                     }
                     encryptedRange.setAdjustedDownloadCount(
-                        Long.parseLong(responseHeaders.getValue(HttpHeaderName.CONTENT_LENGTH)));
+                        Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
 
                     /*
                      * We expect padding only if we are at the end of a blob and it is not a multiple of the
@@ -321,12 +325,12 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
     private Long blobSize(HttpHeaders headers) {
         // e.g. 0-5/1024
-        if (headers.getValue(HttpHeaderName.CONTENT_RANGE) != null) {
-            String range = headers.getValue(HttpHeaderName.CONTENT_RANGE);
+        if (headers.getValue(CONTENT_RANGE) != null) {
+            String range = headers.getValue(CONTENT_RANGE);
             return Long.valueOf(range.split("/")[1]);
         } else {
             // If there was no content range header, we requested a full blob, so the blobSize = contentLength
-            return Long.valueOf(headers.getValue(HttpHeaderName.CONTENT_LENGTH));
+            return Long.valueOf(headers.getValue(CONTENT_LENGTH));
         }
     }
 
