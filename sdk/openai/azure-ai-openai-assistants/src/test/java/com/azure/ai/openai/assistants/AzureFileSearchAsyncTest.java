@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.assistants;
 
+import com.azure.ai.openai.assistants.implementation.AsyncUtils;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
@@ -18,10 +19,8 @@ import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
-import com.azure.ai.openai.assistants.implementation.AsyncUtils;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
