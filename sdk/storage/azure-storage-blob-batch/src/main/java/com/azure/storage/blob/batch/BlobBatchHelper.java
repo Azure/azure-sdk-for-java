@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.batch;
 
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -62,7 +61,7 @@ class BlobBatchHelper {
          * Content-Type will contain the boundary for each batch response. The expected format is:
          * "Content-Type: multipart/mixed; boundary=batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"
          */
-        String contentType = rawResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+        String contentType = rawResponse.getHeaders().getValue(Constants.HeaderConstants.CONTENT_TYPE);
 
         // Split on the boundary [ "multipart/mixed; boundary", "batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"]
         String[] boundaryPieces = contentType.split("=", 2);
@@ -95,7 +94,7 @@ class BlobBatchHelper {
                     HttpHeaders headers = getHttpHeaders(exceptionSections[1]);
 
                     sink.error(logger.logExceptionAsError(new BlobStorageException(
-                        headers.getValue(Constants.HeaderConstants.ERROR_CODE_HEADER_NAME),
+                        headers.getValue(Constants.HeaderConstants.ERROR_CODE),
                         createHttpResponse(rawResponse.getRequest(), statusCode, headers, body), body)));
                 }
 
@@ -124,7 +123,7 @@ class BlobBatchHelper {
                     }
                 }
 
-                if (throwOnAnyFailure && !exceptions.isEmpty()) {
+                if (throwOnAnyFailure && exceptions.size() != 0) {
                     sink.error(logger.logExceptionAsError(new BlobBatchStorageException("Batch had operation failures.",
                         createHttpResponse(rawResponse), exceptions)));
                 }
