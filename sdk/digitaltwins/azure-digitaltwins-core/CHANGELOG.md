@@ -1,5 +1,17 @@
 # Release History
 
+## 1.3.23 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.14` to version `1.5.0`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `jackson-annotations` from `2.13.5` to version `2.17.2`.
+
+
 ## 1.3.22 (2024-07-26)
 
 ### Other Changes
