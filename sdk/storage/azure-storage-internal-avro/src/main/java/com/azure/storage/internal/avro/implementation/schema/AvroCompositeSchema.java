@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 /**
  * An abstract class that represents a composite Avro schema that can return an Object result.
- * <p>
+ *
  * Composite avro schemas depend on other avro schemas to populate the result.
  *
  * @see AvroSchema
@@ -18,7 +18,7 @@ public abstract class AvroCompositeSchema extends AvroSchema {
     /**
      * Constructs a new Schema.
      *
-     * @param state The state of the parser.
+     * @param state    The state of the parser.
      * @param onResult The result handler.
      */
     public AvroCompositeSchema(AvroParserState state, Consumer<Object> onResult) {

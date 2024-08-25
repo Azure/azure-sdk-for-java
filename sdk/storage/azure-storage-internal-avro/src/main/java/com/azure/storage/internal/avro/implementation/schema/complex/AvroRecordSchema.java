@@ -19,10 +19,10 @@ import java.util.function.Consumer;
  * A record is encoded by encoding the values of its fields in the order that they are declared.
  * In other words, a record is encoded as just the concatenation of the encodings of its fields.
  * Field values are encoded per their schema.
- * <p>
+ *
  * The field value schemas will do most of the work, so we need to just keep track of which field we are
  * working on and add them to the map as they come in.
- * <p>
+ *
  * Field1 Field2 Field3 ....
  */
 public class AvroRecordSchema extends AvroCompositeSchema {
@@ -30,7 +30,7 @@ public class AvroRecordSchema extends AvroCompositeSchema {
     private final List<AvroRecordField> fields;
     private Iterator<AvroRecordField> fieldIterator;
     private AvroRecordField currentField;
-    private final Map<String, Object> ret;
+    private Map<String, Object> ret;
 
     /**
      * Constructs a new AvroRecordSchema.
@@ -60,7 +60,11 @@ public class AvroRecordSchema extends AvroCompositeSchema {
         this.fieldIterator = this.fields.iterator();
         this.currentField = this.fieldIterator.next();
 
-        AvroSchema fieldSchema = getSchema(this.currentField.getType(), this.state, this::onField);
+        AvroSchema fieldSchema = getSchema(
+            this.currentField.getType(),
+            this.state,
+            this::onField
+        );
         fieldSchema.pushToStack();
     }
 
@@ -79,7 +83,11 @@ public class AvroRecordSchema extends AvroCompositeSchema {
         /* If there are more fields to be read, read the next field and call onField. */
         if (this.fieldIterator.hasNext()) {
             this.currentField = this.fieldIterator.next();
-            AvroSchema fieldSchema = getSchema(this.currentField.getType(), this.state, this::onField);
+            AvroSchema fieldSchema = getSchema(
+                this.currentField.getType(),
+                this.state,
+                this::onField
+            );
             fieldSchema.pushToStack();
             /* If there are no more fields, then we're done. */
         } else {
