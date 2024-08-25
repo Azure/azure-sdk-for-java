@@ -5,46 +5,41 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Request parameter to train a new custom model.
- */
+/** Request parameter to train a new custom model. */
 @Fluent
-public final class TrainRequest implements JsonSerializable<TrainRequest> {
+public final class TrainRequest {
     /*
      * Source path containing the training documents.
      */
+    @JsonProperty(value = "source", required = true)
     private String source;
 
     /*
      * Filter to apply to the documents in the source path for training.
      */
+    @JsonProperty(value = "sourceFilter")
     private TrainSourceFilter sourceFilter;
 
     /*
      * Use label file for training a model.
      */
+    @JsonProperty(value = "useLabelFile")
     private Boolean useLabelFile;
 
     /*
      * Optional user defined model name (max length: 1024).
      */
+    @JsonProperty(value = "modelName")
     private String modelName;
 
-    /**
-     * Creates an instance of TrainRequest class.
-     */
-    public TrainRequest() {
-    }
+    /** Creates an instance of TrainRequest class. */
+    public TrainRequest() {}
 
     /**
      * Get the source property: Source path containing the training documents.
-     * 
+     *
      * @return the source value.
      */
     public String getSource() {
@@ -53,7 +48,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
 
     /**
      * Set the source property: Source path containing the training documents.
-     * 
+     *
      * @param source the source value to set.
      * @return the TrainRequest object itself.
      */
@@ -64,7 +59,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
 
     /**
      * Get the sourceFilter property: Filter to apply to the documents in the source path for training.
-     * 
+     *
      * @return the sourceFilter value.
      */
     public TrainSourceFilter getSourceFilter() {
@@ -73,7 +68,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
 
     /**
      * Set the sourceFilter property: Filter to apply to the documents in the source path for training.
-     * 
+     *
      * @param sourceFilter the sourceFilter value to set.
      * @return the TrainRequest object itself.
      */
@@ -84,7 +79,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
 
     /**
      * Get the useLabelFile property: Use label file for training a model.
-     * 
+     *
      * @return the useLabelFile value.
      */
     public Boolean isUseLabelFile() {
@@ -93,7 +88,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
 
     /**
      * Set the useLabelFile property: Use label file for training a model.
-     * 
+     *
      * @param useLabelFile the useLabelFile value to set.
      * @return the TrainRequest object itself.
      */
@@ -104,7 +99,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
 
     /**
      * Get the modelName property: Optional user defined model name (max length: 1024).
-     * 
+     *
      * @return the modelName value.
      */
     public String getModelName() {
@@ -113,55 +108,12 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
 
     /**
      * Set the modelName property: Optional user defined model name (max length: 1024).
-     * 
+     *
      * @param modelName the modelName value to set.
      * @return the TrainRequest object itself.
      */
     public TrainRequest setModelName(String modelName) {
         this.modelName = modelName;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("source", this.source);
-        jsonWriter.writeJsonField("sourceFilter", this.sourceFilter);
-        jsonWriter.writeBooleanField("useLabelFile", this.useLabelFile);
-        jsonWriter.writeStringField("modelName", this.modelName);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TrainRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TrainRequest if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TrainRequest.
-     */
-    public static TrainRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            TrainRequest deserializedTrainRequest = new TrainRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("source".equals(fieldName)) {
-                    deserializedTrainRequest.source = reader.getString();
-                } else if ("sourceFilter".equals(fieldName)) {
-                    deserializedTrainRequest.sourceFilter = TrainSourceFilter.fromJson(reader);
-                } else if ("useLabelFile".equals(fieldName)) {
-                    deserializedTrainRequest.useLabelFile = reader.getNullable(JsonReader::getBoolean);
-                } else if ("modelName".equals(fieldName)) {
-                    deserializedTrainRequest.modelName = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedTrainRequest;
-        });
     }
 }

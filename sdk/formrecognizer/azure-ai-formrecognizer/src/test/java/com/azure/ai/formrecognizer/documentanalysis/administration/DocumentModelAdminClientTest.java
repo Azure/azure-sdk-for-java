@@ -45,6 +45,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.NON_EXIST_M
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DocumentModelAdminClientTest extends DocumentModelAdministrationClientTestBase {
     private DocumentModelAdministrationClient client;
@@ -58,8 +59,8 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
                                                                                    DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentModelAdminClientBuilder(
             buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
-            serviceVersion
-        )
+            serviceVersion,
+            true)
             .buildClient();
     }
 
@@ -438,8 +439,8 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             validateClassifierModelData(documentClassifierDetails);
             documentClassifierDetails.getDocumentTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertNotNull(((BlobContentSource) classifierDocumentTypeDetails.getContentSource())
-                .getContainerUrl()));
+                -> assertTrue(((BlobContentSource) classifierDocumentTypeDetails.getContentSource())
+                .getContainerUrl().contains("training-data-classifier")));
         });
     }
 
@@ -478,8 +479,8 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
 
             documentClassifierDetails.getDocumentTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertNotNull(((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource())
-                .getContainerUrl()));
+                -> assertTrue(((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource())
+                .getContainerUrl().contains("training-data-classifier")));
 
             validateClassifierModelData(documentClassifierDetails);
         });

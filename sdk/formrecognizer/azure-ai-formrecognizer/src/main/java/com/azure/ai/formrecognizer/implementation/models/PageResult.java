@@ -5,47 +5,42 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Extracted information from a single page.
- */
+/** Extracted information from a single page. */
 @Fluent
-public final class PageResult implements JsonSerializable<PageResult> {
+public final class PageResult {
     /*
      * Page number.
      */
+    @JsonProperty(value = "page", required = true)
     private int page;
 
     /*
      * Cluster identifier.
      */
+    @JsonProperty(value = "clusterId")
     private Integer clusterId;
 
     /*
      * List of key-value pairs extracted from the page.
      */
+    @JsonProperty(value = "keyValuePairs")
     private List<KeyValuePair> keyValuePairs;
 
     /*
      * List of data tables extracted from the page.
      */
+    @JsonProperty(value = "tables")
     private List<DataTable> tables;
 
-    /**
-     * Creates an instance of PageResult class.
-     */
-    public PageResult() {
-    }
+    /** Creates an instance of PageResult class. */
+    public PageResult() {}
 
     /**
      * Get the page property: Page number.
-     * 
+     *
      * @return the page value.
      */
     public int getPage() {
@@ -54,7 +49,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
 
     /**
      * Set the page property: Page number.
-     * 
+     *
      * @param page the page value to set.
      * @return the PageResult object itself.
      */
@@ -65,7 +60,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
 
     /**
      * Get the clusterId property: Cluster identifier.
-     * 
+     *
      * @return the clusterId value.
      */
     public Integer getClusterId() {
@@ -74,7 +69,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
 
     /**
      * Set the clusterId property: Cluster identifier.
-     * 
+     *
      * @param clusterId the clusterId value to set.
      * @return the PageResult object itself.
      */
@@ -85,7 +80,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
 
     /**
      * Get the keyValuePairs property: List of key-value pairs extracted from the page.
-     * 
+     *
      * @return the keyValuePairs value.
      */
     public List<KeyValuePair> getKeyValuePairs() {
@@ -94,7 +89,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
 
     /**
      * Set the keyValuePairs property: List of key-value pairs extracted from the page.
-     * 
+     *
      * @param keyValuePairs the keyValuePairs value to set.
      * @return the PageResult object itself.
      */
@@ -105,7 +100,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
 
     /**
      * Get the tables property: List of data tables extracted from the page.
-     * 
+     *
      * @return the tables value.
      */
     public List<DataTable> getTables() {
@@ -114,57 +109,12 @@ public final class PageResult implements JsonSerializable<PageResult> {
 
     /**
      * Set the tables property: List of data tables extracted from the page.
-     * 
+     *
      * @param tables the tables value to set.
      * @return the PageResult object itself.
      */
     public PageResult setTables(List<DataTable> tables) {
         this.tables = tables;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("page", this.page);
-        jsonWriter.writeNumberField("clusterId", this.clusterId);
-        jsonWriter.writeArrayField("keyValuePairs", this.keyValuePairs, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PageResult from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PageResult if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PageResult.
-     */
-    public static PageResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PageResult deserializedPageResult = new PageResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("page".equals(fieldName)) {
-                    deserializedPageResult.page = reader.getInt();
-                } else if ("clusterId".equals(fieldName)) {
-                    deserializedPageResult.clusterId = reader.getNullable(JsonReader::getInt);
-                } else if ("keyValuePairs".equals(fieldName)) {
-                    List<KeyValuePair> keyValuePairs = reader.readArray(reader1 -> KeyValuePair.fromJson(reader1));
-                    deserializedPageResult.keyValuePairs = keyValuePairs;
-                } else if ("tables".equals(fieldName)) {
-                    List<DataTable> tables = reader.readArray(reader1 -> DataTable.fromJson(reader1));
-                    deserializedPageResult.tables = tables;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPageResult;
-        });
     }
 }

@@ -16,6 +16,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMarkState;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -25,7 +26,8 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.FluxUtil;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import reactor.test.StepVerifier;
@@ -38,13 +40,18 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_CLIENT_ID;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_RECOGNIZER_CLIENT_SECRET;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENANT_ID;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXPECTED_MERCHANT_NAME;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.ONE_NANO_DURATION;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.REMOVE_SANITIZER_ID;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getTestProxySanitizers;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -55,8 +62,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         "{\"urlSource\":\"https://fakeuri.com/blank%20space\"}";
 
     Duration durationTestMode;
-    // Declare a class-level variable
-    private boolean sanitizersRemoved = false;
 
     /**
      * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
@@ -67,7 +72,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
     }
 
     public DocumentAnalysisClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
-                                                             DocumentAnalysisServiceVersion serviceVersion) {
+                                                             DocumentAnalysisServiceVersion serviceVersion,
+                                                             boolean useKeyCredential) {
         String endpoint = getEndpoint();
         DocumentAnalysisAudience audience = TestUtils.getAudience(endpoint);
 
@@ -78,18 +84,29 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             .serviceVersion(serviceVersion)
             .audience(audience);
 
-        if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new MockTokenCredential());
-            setMatchers();
-        } else if (interceptorManager.isRecordMode()) {
-            builder.credential(getCredentialByAuthority(endpoint));
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        } else if (interceptorManager.isLiveMode()) {
-            builder.credential(new AzurePowerShellCredentialBuilder().build());
+        if (useKeyCredential) {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new AzureKeyCredential(INVALID_KEY));
+                setMatchers();
+            } else if (interceptorManager.isRecordMode()) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            }
+        } else {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new MockTokenCredential());
+                setMatchers();
+            } else if (interceptorManager.isRecordMode()) {
+                builder.credential(getCredentialByAuthority(endpoint));
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(getCredentialByAuthority(endpoint));
+            }
         }
-        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
-            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
-            sanitizersRemoved = true;
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
         }
         return builder;
     }
@@ -98,7 +115,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }
     public DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
-                                                                                DocumentAnalysisServiceVersion serviceVersion) {
+                                                                                DocumentAnalysisServiceVersion serviceVersion,
+                                                                                boolean useKeyCredential) {
         String endpoint = getEndpoint();
         DocumentAnalysisAudience audience = TestUtils.getAudience(endpoint);
 
@@ -109,26 +127,46 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             .serviceVersion(serviceVersion)
             .audience(audience);
 
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new MockTokenCredential());
-            setMatchers();
-        } else if (interceptorManager.isRecordMode()) {
-            builder.credential(getCredentialByAuthority(endpoint));
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        } else if (interceptorManager.isLiveMode()) {
-            builder.credential(new AzurePowerShellCredentialBuilder().build());
+        if (useKeyCredential) {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new AzureKeyCredential(INVALID_KEY));
+                setMatchers();
+            } else if (interceptorManager.isRecordMode()) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            }
+        } else {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new MockTokenCredential());
+                setMatchers();
+            } else if (interceptorManager.isRecordMode()) {
+                builder.credential(getCredentialByAuthority(endpoint));
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(getCredentialByAuthority(endpoint));
+            }
         }
-        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
-            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
-            sanitizersRemoved = true;
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
         }
         return builder;
     }
     static TokenCredential getCredentialByAuthority(String endpoint) {
-        return new DefaultAzureCredentialBuilder()
-            .authorityHost(TestUtils.getAuthority(endpoint))
-            .build();
+        String authority = TestUtils.getAuthority(endpoint);
+        if (Objects.equals(authority, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)) {
+            return new DefaultAzureCredentialBuilder()
+                .authorityHost(TestUtils.getAuthority(endpoint))
+                .build();
+        } else {
+            return new ClientSecretCredentialBuilder()
+                .tenantId(AZURE_TENANT_ID)
+                .clientId(AZURE_CLIENT_ID)
+                .clientSecret(AZURE_FORM_RECOGNIZER_CLIENT_SECRET)
+                .authorityHost(authority)
+                .build();
+        }
     }
 
     static void validateEncodedUrlExceptionSource(HttpResponseException errorResponseException) {
@@ -654,7 +692,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
                 if ("Tax".equals(key)) {
                     assertEquals("$4.00", documentField.getValueAsString());
                 }
-                if ("Email".equals(key)) {
+                if ("Signature".equals(key)) {
+                    assertEquals("Bernie Sanders", documentField.getValueAsString());
+                } else if ("Email".equals(key)) {
                     assertEquals("accounts@herolimited.com", documentField.getValueAsString());
                 } else if ("PhoneNumber".equals(key)) {
                     assertEquals("555-348-6512", documentField.getValueAsString());

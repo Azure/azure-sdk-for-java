@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
@@ -158,8 +159,13 @@ public final class DocumentAnalysisClientBuilder implements
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        return new DocumentAnalysisClient(new FormRecognizerClientImpl(pipeline, endpoint,
-            serviceVersion.getVersion()));
+        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
+            .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
+            .pipeline(pipeline)
+            .buildClient();
+
+        return new DocumentAnalysisClient(formRecognizerAPI);
     }
 
     /**
@@ -197,8 +203,13 @@ public final class DocumentAnalysisClientBuilder implements
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        return new DocumentAnalysisAsyncClient(new FormRecognizerClientImpl(pipeline, endpoint,
-            serviceVersion.getVersion()), serviceVersion);
+        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
+            .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
+            .pipeline(pipeline)
+            .buildClient();
+
+        return new DocumentAnalysisAsyncClient(formRecognizerAPI, serviceVersion);
     }
 
     private HttpPipeline getHttpPipeline(Configuration buildConfiguration) {
