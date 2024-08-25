@@ -293,7 +293,7 @@ final class SessionsMessagePump {
         final int concurrency = maxConcurrentSessions * concurrencyPerSession;
         if (concurrencyPerSession > poolSize || concurrency > CONCURRENCY_PER_CORE * cores) {
             final String message = concurrency + " (ConcurrentSessions=" + maxConcurrentSessions + ", ConcurrencyPerSession=" + concurrencyPerSession + ")";
-            logger.atInfo().log(CORES_VS_CONCURRENCY_MESSAGE, poolSize, cores, message);
+            logger.atWarning().log(CORES_VS_CONCURRENCY_MESSAGE, poolSize, cores, message);
         }
     }
 

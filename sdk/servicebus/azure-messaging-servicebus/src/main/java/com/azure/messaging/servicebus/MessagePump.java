@@ -195,7 +195,7 @@ final class MessagePump {
         final int cores = Runtime.getRuntime().availableProcessors();
         final int poolSize = DEFAULT_BOUNDED_ELASTIC_SIZE;
         if (concurrency > poolSize || concurrency > CONCURRENCY_PER_CORE * cores) {
-            logger.atInfo().log(CORES_VS_CONCURRENCY_MESSAGE, poolSize, cores, concurrency);
+            logger.atWarning().log(CORES_VS_CONCURRENCY_MESSAGE, poolSize, cores, concurrency);
         }
     }
 
