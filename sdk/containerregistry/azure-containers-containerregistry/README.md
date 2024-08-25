@@ -56,7 +56,7 @@ and then include the direct dependency in the dependencies section without the v
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-containers-containerregistry</artifactId>
-  <version>1.2.10</version>
+  <version>1.2.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
