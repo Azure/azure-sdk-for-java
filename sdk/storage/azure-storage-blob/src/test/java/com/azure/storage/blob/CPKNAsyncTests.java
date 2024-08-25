@@ -4,13 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.rest.Response;
-import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
-import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
@@ -27,7 +23,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
@@ -140,8 +135,10 @@ public class CPKNAsyncTests extends BlobTestBase {
 
     @Test
     public void appendBlobAppendBlock() {
-        StepVerifier.create(cpknAppendBlob.create().then(cpknAppendBlob.appendBlockWithResponse(DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize(), null, null)))
+        cpknAppendBlob.create().block();
+
+        StepVerifier.create(cpknAppendBlob.appendBlockWithResponse(DATA.getDefaultFlux(),
+            DATA.getDefaultDataSize(), null, null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(r.getValue().isServerEncrypted());
@@ -152,18 +149,17 @@ public class CPKNAsyncTests extends BlobTestBase {
 
     @Test
     public void appendBlobAppendBlockFromURL() {
+        cpknAppendBlob.create().block();
         String blobName = generateBlobName();
         BlockBlobAsyncClient sourceBlob = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+        sourceBlob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
         String sas = ccAsync.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
             new BlobSasPermission().setReadPermission(true)));
 
-        Mono<Response<AppendBlobItem>> response = cpknAppendBlob.create()
-            .then(sourceBlob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()))
-            .then(cpknAppendBlob.appendBlockFromUrlWithResponse(
-                sourceBlob.getBlobUrl() + "?" + sas, null, null, null,
-                null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(cpknAppendBlob.appendBlockFromUrlWithResponse(
+            sourceBlob.getBlobUrl() + "?" + sas, null, null, null,
+            null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(r.getValue().isServerEncrypted());
@@ -186,10 +182,12 @@ public class CPKNAsyncTests extends BlobTestBase {
 
     @Test
     public void pageBlobPutPage() {
-        StepVerifier.create(cpknPageBlob.create(PageBlobClient.PAGE_BYTES).then(cpknPageBlob.uploadPagesWithResponse(
+        cpknPageBlob.create(PageBlobClient.PAGE_BYTES).block();
+
+        StepVerifier.create(cpknPageBlob.uploadPagesWithResponse(
             new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null,
-            null)))
+            null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(r.getValue().isServerEncrypted());
@@ -202,19 +200,18 @@ public class CPKNAsyncTests extends BlobTestBase {
     public void pageBlobPutPageFromURL() {
         String blobName = generateBlobName();
         PageBlobAsyncClient sourceBlob = ccAsync.getBlobAsyncClient(blobName).getPageBlobAsyncClient();
+        sourceBlob.create(PageBlobClient.PAGE_BYTES).block();
+        sourceBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null,
+            null).block();
+
+        cpknPageBlob.create(PageBlobClient.PAGE_BYTES).block();
         String sas = ccAsync.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
             new BlobSasPermission().setReadPermission(true)));
 
-        Mono<Response<PageBlobItem>> response = sourceBlob.create(PageBlobClient.PAGE_BYTES)
-            .then(sourceBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-                Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null,
-                null))
-            .then(cpknPageBlob.create(PageBlobClient.PAGE_BYTES))
-            .then(cpknPageBlob.uploadPagesFromUrlWithResponse(
-                new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), sourceBlob.getBlobUrl() + "?" + sas,
-                null, null, null, null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(cpknPageBlob.uploadPagesFromUrlWithResponse(
+            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), sourceBlob.getBlobUrl() + "?" + sas,
+            null, null, null, null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(r.getValue().isServerEncrypted());
@@ -225,10 +222,12 @@ public class CPKNAsyncTests extends BlobTestBase {
 
     @Test
     public void pageBlobPutMultiplePages() {
-        StepVerifier.create(cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2).then(cpknPageBlob.uploadPagesWithResponse(new PageRange().setStart(0)
+        cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2).block();
+
+        StepVerifier.create(cpknPageBlob.uploadPagesWithResponse(new PageRange().setStart(0)
             .setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
             Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2))), null,
-            null)))
+            null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 Assertions.assertTrue(r.getValue().isServerEncrypted());
@@ -239,23 +238,20 @@ public class CPKNAsyncTests extends BlobTestBase {
 
     @Test
     public void pageBlobClearPage() {
-        Mono<Response<PageBlobItem>> response = cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2)
-            .then(cpknPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-                Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null,
-                null))
-            .then(cpknPageBlob.clearPagesWithResponse(new PageRange().setStart(0)
-                .setEnd(PageBlobClient.PAGE_BYTES - 1), null));
+        cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2).block();
+        cpknPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null,
+            null).block();
 
-        assertAsyncResponseStatusCode(response, 201);
+        assertAsyncResponseStatusCode(cpknPageBlob.clearPagesWithResponse(new PageRange().setStart(0)
+            .setEnd(PageBlobClient.PAGE_BYTES - 1), null), 201);
     }
 
     @Test
     public void pageBlobResize() {
-        Mono<Response<PageBlobItem>> response = cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2)
-            .then(cpknPageBlob.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2,
-                null));
-
-        assertAsyncResponseStatusCode(response, 200);
+        cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2).block();
+        assertAsyncResponseStatusCode(cpknPageBlob.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2,
+            null), 200);
     }
 
     @Test
@@ -272,8 +268,9 @@ public class CPKNAsyncTests extends BlobTestBase {
 
     @Test
     public void blockBlobStageBlock() {
-        StepVerifier.create(cpknBlockBlob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).then(cpknBlockBlob.stageBlockWithResponse(getBlockID(), DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize(), null, null)))
+        cpknBlockBlob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+        StepVerifier.create(cpknBlockBlob.stageBlockWithResponse(getBlockID(), DATA.getDefaultFlux(),
+            DATA.getDefaultDataSize(), null, null))
             .assertNext(r -> {
                 HttpHeaders headers = r.getHeaders();
 
@@ -287,10 +284,11 @@ public class CPKNAsyncTests extends BlobTestBase {
     @Test
     public void blockBlobCommitBlockList() {
         String blockID = getBlockID();
+        cpknBlockBlob.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
         List<String> ids = Collections.singletonList(blockID);
 
-        StepVerifier.create(cpknBlockBlob.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize()).then(cpknBlockBlob.commitBlockListWithResponse(ids, null, null, null,
-            null)))
+        StepVerifier.create(cpknBlockBlob.commitBlockListWithResponse(ids, null, null, null,
+            null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 Assertions.assertTrue(r.getValue().isServerEncrypted());
@@ -303,14 +301,14 @@ public class CPKNAsyncTests extends BlobTestBase {
     @Test
     public void asyncCopyEncryptionScope() {
         BlobAsyncClient blobSource = ccAsync.getBlobAsyncClient(generateBlobName());
+        blobSource.upload(DATA.getDefaultBinaryData()).block();
+
         String sas = blobSource.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
 
-        Mono<BlobProperties> response = blobSource.upload(DATA.getDefaultBinaryData())
-            .then(cpknBlockBlob.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(blobSource.getBlobUrl() + "?" + sas)))
-            .then(cpknBlockBlob.getProperties());
+        cpknBlockBlob.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(blobSource.getBlobUrl() + "?" + sas)).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(cpknBlockBlob.getProperties())
             .assertNext(r -> assertEquals(scope1, r.getEncryptionScope()))
             .verifyComplete();
     }

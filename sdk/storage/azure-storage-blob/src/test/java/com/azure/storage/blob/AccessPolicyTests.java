@@ -13,7 +13,6 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -32,7 +31,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AccessPolicyTests extends BlobTestBase {
     //ContainerApiTests
     @Test
-    @PlaybackOnly
     public void setAccessPolicyMinAccess() {
         setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         assertEquals(PublicAccessType.CONTAINER, cc.getProperties().getBlobPublicAccess());
@@ -62,7 +60,6 @@ public class AccessPolicyTests extends BlobTestBase {
     }
 
     @Test
-    @PlaybackOnly
     public void getAccessPolicy() {
         BlobSignedIdentifier identifier = new BlobSignedIdentifier()
             .setId("0000")

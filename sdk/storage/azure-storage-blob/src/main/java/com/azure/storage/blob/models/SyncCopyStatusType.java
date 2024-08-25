@@ -4,6 +4,9 @@
 
 package com.azure.storage.blob.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for SyncCopyStatusType.
  */
@@ -28,6 +31,7 @@ public enum SyncCopyStatusType {
      * @param value the serialized value to parse.
      * @return the parsed SyncCopyStatusType object, or null if unable to parse.
      */
+    @JsonCreator
     public static SyncCopyStatusType fromString(String value) {
         SyncCopyStatusType[] items = SyncCopyStatusType.values();
         for (SyncCopyStatusType item : items) {
@@ -38,6 +42,7 @@ public enum SyncCopyStatusType {
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

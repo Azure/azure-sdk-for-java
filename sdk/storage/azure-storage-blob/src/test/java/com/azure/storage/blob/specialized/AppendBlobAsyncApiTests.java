@@ -4,12 +4,10 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
-import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -33,9 +31,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -105,8 +103,9 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
         String finalContentType = contentType;
 
-        StepVerifier.create(bc.createWithResponse(headers, null, null)
-            .then(bc.getPropertiesWithResponse(null)))
+        bc.createWithResponse(headers, null, null).block();
+
+        StepVerifier.create(bc.getPropertiesWithResponse(null))
             .assertNext(p -> validateBlobProperties(p, cacheControl, contentDisposition, contentEncoding,
                 contentLanguage, contentMD5, finalContentType))
             .verifyComplete();
@@ -133,8 +132,9 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             metadata.put(key2, value2);
         }
 
-        StepVerifier.create(bc.createWithResponse(null, metadata, null)
-            .then(bc.getProperties()))
+        bc.createWithResponse(null, metadata, null).block();
+
+        StepVerifier.create(bc.getProperties())
             .assertNext(p -> {
                 for (Map.Entry<String, String> entry : metadata.entrySet()) {
                     assertEquals(entry.getValue(), p.getMetadata().get(entry.getKey()));
@@ -162,8 +162,9 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             tags.put(key2, value2);
         }
 
-        StepVerifier.create(bc.createWithResponse(new AppendBlobCreateOptions().setTags(tags))
-            .then(bc.getTagsWithResponse(new BlobGetTagsOptions())))
+        bc.createWithResponse(new AppendBlobCreateOptions().setTags(tags)).block();
+
+        StepVerifier.create(bc.getTagsWithResponse(new BlobGetTagsOptions()))
             .assertNext(r -> {
                 for (Map.Entry<String, String> entry : tags.entrySet()) {
                     assertEquals(entry.getValue(), r.getValue().get(entry.getKey()));
@@ -185,29 +186,19 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
                          String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
+        bc.setTags(t).block();
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
 
-        Mono<Response<AppendBlobItem>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                BlobRequestConditions bac = new BlobRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setTagsConditions(tags);
-                return bc.createWithResponse(null, null, bac);
-            });
 
-        assertAsyncResponseStatusCode(response, 201);
+        assertAsyncResponseStatusCode(bc.createWithResponse(null, null, bac), 201);
     }
 
     private Stream<Arguments> createACSupplier() {
@@ -226,24 +217,17 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("createACFailSupplier")
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID, String tags) {
-        Mono<Response<AppendBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                BlobRequestConditions bac = new BlobRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setTagsConditions(tags);
-                return bc.createWithResponse(null, null, bac);
-            });
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
 
-        StepVerifier.create(response)
+        StepVerifier.create(bc.createWithResponse(null, null, bac))
             .verifyError(BlobStorageException.class);
     }
 
@@ -311,10 +295,13 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
         String finalContentType = contentType;
 
-        StepVerifier.create(bc.createIfNotExistsWithResponse(options)
-            .then(bc.getPropertiesWithResponse(null)))
-            .assertNext(p -> validateBlobProperties(p, cacheControl, contentDisposition, contentEncoding,
-                contentLanguage, contentMD5, finalContentType))
+        bc.createIfNotExistsWithResponse(options).block();
+
+        StepVerifier.create(bc.getPropertiesWithResponse(null))
+            .assertNext(p -> {
+                validateBlobProperties(p, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5,
+                    finalContentType);
+            })
             .verifyComplete();
     }
 
@@ -334,7 +321,9 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
         AppendBlobCreateOptions options = new AppendBlobCreateOptions().setMetadata(metadata);
 
-        StepVerifier.create(bc.createIfNotExistsWithResponse(options).then(bc.getProperties()))
+        bc.createIfNotExistsWithResponse(options).block();
+
+        StepVerifier.create(bc.getProperties())
             .assertNext(p -> {
                 for (Map.Entry<String, String> entry : metadata.entrySet()) {
                     assertEquals(entry.getValue(), p.getMetadata().get(entry.getKey()));
@@ -347,6 +336,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("createIfNotExistsTagsSupplier")
     public void createIfNotExistsTags(String key1, String value1, String key2, String value2) {
+        bc.delete().block();
         Map<String, String> tags = new HashMap<>();
         if (key1 != null) {
             tags.put(key1, value1);
@@ -355,11 +345,9 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             tags.put(key2, value2);
         }
 
-        Mono<Response<Map<String, String>>> response = bc.delete()
-            .then(bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setTags(tags)))
-            .then(bc.getTagsWithResponse(new BlobGetTagsOptions()));
+        bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setTags(tags)).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(bc.getTagsWithResponse(new BlobGetTagsOptions()))
             .assertNext(r -> {
                 for (Map.Entry<String, String> entry : tags.entrySet()) {
                     assertEquals(entry.getValue(), r.getValue().get(entry.getKey()));
@@ -449,31 +437,21 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
                               String leaseID, Long appendPosE, Long maxSizeLTE, String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
+        bc.setTags(t).block();
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags);
 
-        Mono<Response<AppendBlobItem>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setAppendPosition(appendPosE)
-                    .setMaxSize(maxSizeLTE)
-                    .setTagsConditions(tags);
-                return bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, bac);
-            });
-
-        assertAsyncResponseStatusCode(response, 201);
+        assertAsyncResponseStatusCode(bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
+            null, bac), 201);
     }
 
     private static Stream<Arguments> appendBlockSupplier() {
@@ -493,27 +471,22 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("appendBlockFailSupplier")
     public void appendBlockACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
-                                  String leaseID, Long appendPosE, Long maxSizeLTE, String tags) {
-        Mono<Response<AppendBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setAppendPosition(appendPosE)
-                    .setMaxSize(maxSizeLTE)
-                    .setTagsConditions(tags);
-                return bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, bac);
-            });
+                                  String leaseID, Long appendPosE, Long maxSizeLTE, String tags) throws IOException {
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        setupBlobLeaseCondition(bc, leaseID);
 
-        StepVerifier.create(response)
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags);
+
+        StepVerifier.create(bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+                bac))
             .verifyError(BlobStorageException.class);
     }
 
@@ -542,8 +515,9 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         AppendBlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             bc.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getAppendBlobAsyncClient();
 
-        StepVerifier.create(clientWithFailure.appendBlock(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
-            .then(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream())))
+        clientWithFailure.appendBlock(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()))
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
             .verifyComplete();
     }
@@ -566,20 +540,17 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void appendBlockFromURLMin() {
         byte[] data = getRandomByteArray(1024);
+        bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
 
         AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        destURL.create().block();
 
         BlobRange blobRange = new BlobRange(0, (long) PageBlobClient.PAGE_BYTES);
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-
-        Mono<Response<AppendBlobItem>> response = bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length)
-            .then(destURL.create())
-            .then(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, blobRange,
-                null, null, null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, blobRange, null,
+                null, null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 validateBasicHeaders(r.getHeaders());
@@ -604,18 +575,16 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void appendBlockFromURLRange() {
         byte[] data = getRandomByteArray(4 * 1024);
+        bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
 
         AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        destURL.create().block();
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        destURL.appendBlockFromUrl(bc.getBlobUrl() + "?" + sas, new BlobRange(2 * 1024, 1024L)).block();
 
-        Mono<byte[]> response = bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length)
-            .then(destURL.create())
-            .then(destURL.appendBlockFromUrl(bc.getBlobUrl() + "?" + sas, new BlobRange(2 * 1024, 1024L)))
-            .then(FluxUtil.collectBytesInByteBufferStream(destURL.downloadStream()));
-
-        StepVerifier.create(response)
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(destURL.downloadStream()))
             .assertNext(r -> TestUtils.assertArraysEqual(data, 2 * 1024, r, 0, 1024))
             .verifyComplete();
     }
@@ -623,18 +592,15 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void appendBlockFromURLMD5() throws NoSuchAlgorithmException {
         byte[] data = getRandomByteArray(1024);
+        bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
 
         AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        destURL.create().block();
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-
-        Mono<Response<AppendBlobItem>> response = bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length)
-            .then(destURL.create())
-            .then(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
-                MessageDigest.getInstance("MD5").digest(data), null, null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
+                MessageDigest.getInstance("MD5").digest(data), null, null))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -642,19 +608,16 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void appendBlockFromURLMD5Fail() throws NoSuchAlgorithmException {
         byte[] data = getRandomByteArray(1024);
+        bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
 
         AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        destURL.create().block();
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-
-        Mono<Response<AppendBlobItem>> response = bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length)
-            .then(destURL.create())
-            .then(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
+        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
                 MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null,
-                null));
-
-        StepVerifier.create(response)
+                null))
             .verifyError(BlobStorageException.class);
     }
 
@@ -666,40 +629,28 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
                                                 String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
+        bc.setTags(t).block();
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags);
 
-        Mono<Response<AppendBlobItem>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setAppendPosition(appendPosE)
-                    .setMaxSize(maxSizeLTE)
-                    .setTagsConditions(tags);
+        AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        sourceURL.create().block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+            null).block();
 
-                AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
-                String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-                    new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-
-                return sourceURL.create()
-                    .then(sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
-                        null))
-                    .then(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
-                        null, bac, null));
-            });
-
-        assertAsyncResponseStatusCode(response, 201);
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
+            null, bac, null), 201);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -708,35 +659,28 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     public void appendBlockFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                                     String noneMatch, String leaseID, Long maxSizeLTE, Long appendPosE,
                                                     String tags) {
-        Mono<Response<AppendBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setAppendPosition(appendPosE)
-                    .setMaxSize(maxSizeLTE)
-                    .setTagsConditions(tags);
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        setupBlobLeaseCondition(bc, leaseID);
 
-                AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
-                String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-                    new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags);
 
-                return sourceURL.create()
-                    .then(sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
-                        null))
-                    .then(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
-                        null, bac, null));
-            });
+        AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        sourceURL.create().block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+            null).block();
 
-        StepVerifier.create(response)
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        StepVerifier.create(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
+                null, bac, null))
             .verifyError(BlobStorageException.class);
     }
 
@@ -746,30 +690,20 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     public void appendBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
                                            String sourceIfMatch, String sourceIfNoneMatch) {
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        sourceURL.create().block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+            null).block();
 
-        Mono<Response<AppendBlobItem>> response = sourceURL.create()
-            .then(sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
-            null))
-            .then(setupBlobMatchConditionAsync(sourceURL, sourceIfMatch))
-            .flatMap(r -> {
-                String newMatch = r;
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                BlobRequestConditions smac = new BlobRequestConditions()
-                    .setIfModifiedSince(sourceIfModifiedSince)
-                    .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(sourceIfNoneMatch);
+        BlobRequestConditions smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(setupBlobMatchCondition(sourceURL, sourceIfMatch))
+            .setIfNoneMatch(sourceIfNoneMatch);
 
-                String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-                    new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-
-                return bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
-                    null, null, smac);
-            });
-
-        assertAsyncResponseStatusCode(response, 201);
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
+            null, null, smac), 201);
     }
 
     private static Stream<Arguments> appendBlockFromURLSupplier() {
@@ -789,30 +723,20 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
                                                OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
                                                String sourceIfNoneMatch) {
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        sourceURL.create().block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+            null).block();
 
-        Mono<Response<AppendBlobItem>> response = sourceURL.create()
-            .then(sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
-                null))
-            .then(setupBlobMatchConditionAsync(sourceURL, sourceIfNoneMatch))
-            .flatMap(r -> {
-                String newNoneMatch = r;
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                BlobRequestConditions smac = new BlobRequestConditions()
-                    .setIfModifiedSince(sourceIfModifiedSince)
-                    .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
-                    .setIfMatch(sourceIfMatch)
-                    .setIfNoneMatch(newNoneMatch);
+        BlobRequestConditions smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(sourceIfMatch)
+            .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
 
-                String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-                    new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-
-                return bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
-                    null, null, smac);
-            });
-
-        StepVerifier.create(response)
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        StepVerifier.create(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
+                null, null, smac))
             .verifyError(BlobStorageException.class);
     }
 
@@ -862,7 +786,9 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void sealMin() {
-        StepVerifier.create(bc.seal().then(bc.getProperties()))
+        bc.seal().block();
+
+        StepVerifier.create(bc.getProperties())
             .assertNext(p -> assertTrue(p.isSealed()))
             .verifyComplete();
 
@@ -885,29 +811,18 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("sealACSupplier")
     public void sealAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                        String leaseID, Long appendPosE) {
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE);
 
-        Mono<Response<Void>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setAppendPosition(appendPosE);
-                return bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac));
-            });
-
-        assertAsyncResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac)),
+            200);
 
     }
 
@@ -928,25 +843,18 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("sealACFailSupplier")
     public void sealACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                            String leaseID, Long appendPosE) {
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        setupBlobLeaseCondition(bc, leaseID);
 
-        Mono<Response<Void>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setAppendPosition(appendPosE);
-                return bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac));
-            });
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE);
 
-        StepVerifier.create(response)
+        StepVerifier.create(bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac)))
             .verifyError(BlobStorageException.class);
     }
 

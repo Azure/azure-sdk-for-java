@@ -4,23 +4,18 @@
 
 package com.azure.storage.blob.implementation.models;
 
-/**
- * Defines values for FilterBlobsIncludeItem.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for FilterBlobsIncludeItem. */
 public enum FilterBlobsIncludeItem {
-    /**
-     * Enum value none.
-     */
+    /** Enum value none. */
     NONE("none"),
 
-    /**
-     * Enum value versions.
-     */
+    /** Enum value versions. */
     VERSIONS("versions");
 
-    /**
-     * The actual serialized value for a FilterBlobsIncludeItem instance.
-     */
+    /** The actual serialized value for a FilterBlobsIncludeItem instance. */
     private final String value;
 
     FilterBlobsIncludeItem(String value) {
@@ -29,10 +24,11 @@ public enum FilterBlobsIncludeItem {
 
     /**
      * Parses a serialized value to a FilterBlobsIncludeItem instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed FilterBlobsIncludeItem object, or null if unable to parse.
      */
+    @JsonCreator
     public static FilterBlobsIncludeItem fromString(String value) {
         if (value == null) {
             return null;
@@ -46,9 +42,8 @@ public enum FilterBlobsIncludeItem {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

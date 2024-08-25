@@ -13,20 +13,9 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.AzureCliCredentialBuilder;
-import com.azure.identity.AzureDeveloperCliCredentialBuilder;
-import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.ChainedTokenCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -44,6 +33,7 @@ import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
@@ -64,6 +54,8 @@ import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,11 +67,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -103,14 +94,14 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     private static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
     private static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
     private static final String API_VERSION = "2021-04-01";
-    private static final TokenCredential CREDENTIAL = getTokenCredential(ENVIRONMENT.getTestMode());
+    private static final TokenCredential CREDENTIAL = new EnvironmentCredentialBuilder().build();
     private static final BearerTokenAuthenticationPolicy CREDENTIAL_POLICY =
         new BearerTokenAuthenticationPolicy(CREDENTIAL, "https://management.azure.com/.default");
     private BlobContainerClient vlwContainer;
     private BlobClient vlwBlob;
 
     @BeforeAll
-    public static void setupSpec() throws IOException {
+    public static void setupSpec() throws JsonProcessingException, MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             vlwContainerName = CoreUtils.randomUuid().toString();
 
@@ -133,13 +124,11 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
             body.setType("Microsoft.Storage/storageAccounts/blobServices/containers");
             body.setProperties(properties);
 
-            ByteArrayOutputStream json = new ByteArrayOutputStream();
-            try (JsonWriter jsonWriter = JsonProviders.createWriter(json)) {
-                body.toJson(jsonWriter);
-            }
+            String serializedBody = new ObjectMapper().writeValueAsString(body);
 
             HttpResponse response = httpPipeline.send(new HttpRequest(HttpMethod.PUT, new URL(url), new HttpHeaders(),
-                Flux.just(ByteBuffer.wrap(json.toByteArray())))).block();
+                    Flux.just(ByteBuffer.wrap(serializedBody.getBytes(StandardCharsets.UTF_8)))))
+                .block();
             assertNotNull(response);
             if (response.getStatusCode() != 201) {
                 LOGGER.warning(response.getBodyAsString().block());
@@ -156,7 +145,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         vlwBlob.upload(new ByteArrayInputStream(new byte[0]), 0);
     }
 
-    public static final class Body implements JsonSerializable<Body> {
+    public static final class Body {
         private String id;
         private String name;
         private String type;
@@ -193,18 +182,8 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         public void setProperties(Properties properties) {
             this.properties = properties;
         }
-
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject()
-                .writeStringField("id", this.id)
-                .writeStringField("name", this.name)
-                .writeStringField("type", this.type)
-                .writeJsonField("properties", this.properties);
-
-            return jsonWriter.writeEndObject();
-        }
     }
-    public static final class Properties implements JsonSerializable<Properties> {
+    public static final class Properties {
         private ImmutableStorageWithVersioning immutableStorageWithVersioning;
 
         public ImmutableStorageWithVersioning getImmutableStorageWithVersioning() {
@@ -214,14 +193,8 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         public void setImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
             this.immutableStorageWithVersioning = immutableStorageWithVersioning;
         }
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject()
-                .writeJsonField("immutableStorageWithVersioning", this.immutableStorageWithVersioning);
-
-            return jsonWriter.writeEndObject();
-        }
     }
-    public static final class ImmutableStorageWithVersioning implements JsonSerializable<ImmutableStorageWithVersioning> {
+    public static final class ImmutableStorageWithVersioning {
         private boolean enabled;
 
         public boolean isEnabled() {
@@ -230,13 +203,6 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
 
         public void setEnabled(boolean enabled) {
             this.enabled = enabled;
-        }
-
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject()
-                .writeBooleanField("enabled", this.enabled);
-
-            return jsonWriter.writeEndObject();
         }
     }
 
@@ -284,43 +250,6 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
                 LOGGER.warning(response.getBodyAsString().block());
             }
             assertEquals(200, response.getStatusCode());
-        }
-    }
-
-    public static TokenCredential getTokenCredential(TestMode testMode) {
-        if (testMode == TestMode.RECORD) {
-            return new DefaultAzureCredentialBuilder().build();
-        } else if (testMode == TestMode.LIVE) {
-            Configuration config = Configuration.getGlobalConfiguration();
-
-            ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
-                .addLast(new EnvironmentCredentialBuilder().build())
-                .addLast(new AzureCliCredentialBuilder().build())
-                .addLast(new AzureDeveloperCliCredentialBuilder().build());
-
-            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
-            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
-            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
-            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
-
-            if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
-                && !CoreUtils.isNullOrEmpty(clientId)
-                && !CoreUtils.isNullOrEmpty(tenantId)
-                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
-
-                builder.addLast(new AzurePipelinesCredentialBuilder()
-                    .systemAccessToken(systemAccessToken)
-                    .clientId(clientId)
-                    .tenantId(tenantId)
-                    .serviceConnectionId(serviceConnectionId)
-                    .build());
-            }
-
-            builder.addLast(new AzurePowerShellCredentialBuilder().build());
-
-            return builder.build();
-        } else { //playback or not set
-            return new MockTokenCredential();
         }
     }
 
@@ -684,6 +613,8 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void syncCopy() {
+        vlwContainer.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        sleepIfRunningAgainstService(30000); // Give time for the policy to take effect
         BlockBlobClient destination = vlwContainer.getBlobClient(generateBlobName()).getBlockBlobClient();
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
@@ -692,10 +623,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-        String sas = vlwBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-
-        destination.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(vlwBlob.getBlobUrl() + "?" + sas)
+        destination.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(vlwBlob.getBlobUrl())
             .setImmutabilityPolicy(immutabilityPolicy)
             .setLegalHold(true), null, null);
 
@@ -703,6 +631,9 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         assertEquals(expectedImmutabilityPolicyExpiry, response.getImmutabilityPolicy().getExpiryTime());
         assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, response.getImmutabilityPolicy().getPolicyMode());
         assertTrue(response.hasLegalHold());
+
+        // cleanup:
+        vlwContainer.setAccessPolicy(null, null);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")

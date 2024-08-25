@@ -5,7 +5,6 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpRange;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
@@ -23,11 +22,8 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ClearRange;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
-import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
-import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.blob.models.PageRangeItem;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.ListPageRangesDiffOptions;
@@ -46,9 +42,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.util.function.Tuple2;
 
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
@@ -104,8 +98,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void createSequenceNumber() {
-        StepVerifier.create(bc.createWithResponse(PageBlobClient.PAGE_BYTES, 2L, null,
-            null, null).then(bc.getProperties()))
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, 2L, null, null, null).block();
+        StepVerifier.create(bc.getProperties())
             .assertNext(r -> assertEquals(2, r.getBlobSequenceNumber()))
             .verifyComplete();
     }
@@ -121,11 +115,12 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .setContentMd5(contentMD5)
             .setContentType(contentType);
 
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, headers, null, null).block();
+
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
         String finalContentType = contentType;
 
-        StepVerifier.create(bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, headers,
-            null, null).then(bc.getPropertiesWithResponse(null)))
+        StepVerifier.create(bc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertTrue(validateBlobProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                     contentMD5, finalContentType));
@@ -150,8 +145,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         if (key2 != null) {
             metadata.put(key2, value2);
         }
-        StepVerifier.create(bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, metadata, null)
-            .then(bc.getPropertiesWithResponse(null)))
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, metadata, null).block();
+        StepVerifier.create(bc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
                 assertEquals(metadata, r.getValue().getMetadata());
@@ -178,8 +173,9 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             tags.put(key2, value2);
         }
 
-        StepVerifier.create(bc.createWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setTags(tags))
-            .then(bc.getTagsWithResponse(new BlobGetTagsOptions())))
+        bc.createWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setTags(tags)).block();
+
+        StepVerifier.create(bc.getTagsWithResponse(new BlobGetTagsOptions()))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
                 assertEquals(tags, r.getValue());
@@ -277,8 +273,9 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         String blobName = ccAsync.getBlobAsyncClient(generateBlobName()).getBlobName();
         bc = ccAsync.getBlobAsyncClient(blobName).getPageBlobAsyncClient();
 
-        StepVerifier.create(bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setSequenceNumber(2L))
-            .then(bc.getProperties()))
+        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setSequenceNumber(2L)).block();
+
+        StepVerifier.create(bc.getProperties())
             .assertNext(r -> assertEquals(2, r.getBlobSequenceNumber()))
             .verifyComplete();
     }
@@ -297,11 +294,12 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .setContentMd5(contentMD5)
             .setContentType(contentType);
 
+        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setHeaders(headers)).block();
+
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
         String finalContentType = contentType;
 
-        StepVerifier.create(bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setHeaders(headers))
-            .then(bc.getPropertiesWithResponse(null)))
+        StepVerifier.create(bc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertTrue(validateBlobProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
                     contentMD5, finalContentType));
@@ -330,8 +328,9 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             metadata.put(key2, value2);
         }
 
-        StepVerifier.create(bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setMetadata(metadata))
-            .then(bc.getPropertiesWithResponse(null)))
+        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setMetadata(metadata)).block();
+
+        StepVerifier.create(bc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
                 assertEquals(metadata, r.getValue().getMetadata());
@@ -360,8 +359,9 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             tags.put(key2, value2);
         }
 
-        StepVerifier.create(bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setTags(tags))
-            .then(bc.getTagsWithResponse(new BlobGetTagsOptions())))
+        bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setTags(tags)).block();
+
+        StepVerifier.create(bc.getTagsWithResponse(new BlobGetTagsOptions()))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
                 assertEquals(tags, r.getValue());
@@ -521,8 +521,10 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
 
-        StepVerifier.create(clientWithFailure.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            Flux.just(ByteBuffer.wrap(data))).then(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream())))
+        clientWithFailure.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            Flux.just(ByteBuffer.wrap(data))).block();
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()))
             .assertNext(r ->  TestUtils.assertArraysEqual(r, data))
             .verifyComplete();
     }
@@ -530,16 +532,14 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void uploadPageFromURLMin() {
         PageBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        destURL.create(PageBlobClient.PAGE_BYTES).block();
+        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+        destURL.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))).block();
+
         String sas = destURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
-
-        Mono<Response<PageBlobItem>> response = destURL.create(PageBlobClient.PAGE_BYTES)
-            .then(destURL.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
-            .then(bc.uploadPagesFromUrlWithResponse(pageRange, destURL.getBlobUrl() + "?" + sas,
-                null, null, null, null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(bc.uploadPagesFromUrlWithResponse(pageRange, destURL.getBlobUrl() + "?" + sas,
+            null, null, null, null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(validateBasicHeaders(r.getHeaders()));
@@ -568,20 +568,19 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES * 4);
 
         PageBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        sourceURL.create(PageBlobClient.PAGE_BYTES * 4).block();
+        sourceURL.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 4 - 1),
+            Flux.just(ByteBuffer.wrap(data))).block();
+
         PageBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        destURL.create(PageBlobClient.PAGE_BYTES * 2).block();
 
         String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        destURL.uploadPagesFromUrl(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
+            sourceURL.getBlobUrl() + "?" + sas, PageBlobClient.PAGE_BYTES * 2L).block();
 
-        Mono<byte[]> response = sourceURL.create(PageBlobClient.PAGE_BYTES * 4)
-            .then(sourceURL.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 4 - 1),
-                Flux.just(ByteBuffer.wrap(data))))
-            .then(destURL.create(PageBlobClient.PAGE_BYTES * 2))
-            .then(destURL.uploadPagesFromUrl(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
-                sourceURL.getBlobUrl() + "?" + sas, PageBlobClient.PAGE_BYTES * 2L))
-            .then(FluxUtil.collectBytesInByteBufferStream(destURL.downloadStream()));
-
-        StepVerifier.create(response)
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(destURL.downloadStream()))
             .assertNext(r -> TestUtils.assertArraysEqual(data, PageBlobClient.PAGE_BYTES * 2, r,
                 0, PageBlobClient.PAGE_BYTES * 2))
             .verifyComplete();
@@ -596,18 +595,17 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void uploadPageFromURLMD5() throws NoSuchAlgorithmException {
         PageBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        destURL.create(PageBlobClient.PAGE_BYTES).block();
+
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+        bc.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(data))).block();
+
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-
-        Mono<Response<PageBlobItem>> response = destURL.create(PageBlobClient.PAGE_BYTES)
-            .then(bc.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(data))))
-            .then(destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas,
-                null, MessageDigest.getInstance("MD5").digest(data), null,
-                null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas,
+            null, MessageDigest.getInstance("MD5").digest(data), null,
+            null))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -615,17 +613,16 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void uploadPageFromURLMD5Fail() throws NoSuchAlgorithmException {
         PageBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        destURL.create(PageBlobClient.PAGE_BYTES).block();
+
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+        bc.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))).block();
+
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-
-        Mono<Response<PageBlobItem>> response = destURL.create(PageBlobClient.PAGE_BYTES)
-            .then(bc.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
-            .then(destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas,
-                null, MessageDigest.getInstance("MD5").digest("garbage".getBytes()),
-                null, null));
-
-        StepVerifier.create(response)
+        StepVerifier.create(destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas,
+            null, MessageDigest.getInstance("MD5").digest("garbage".getBytes()),
+            null, null))
             .verifyError(BlobStorageException.class);
     }
 
@@ -755,9 +752,12 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void clearPage() {
-        StepVerifier.create(bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null, null)
-            .then(bc.clearPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), null)))
+        bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null,
+            null).block();
+
+        StepVerifier.create(bc.clearPagesWithResponse(
+            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), null))
             .assertNext(r -> {
                 assertTrue(validateBasicHeaders(r.getHeaders()));
                 assertNull(r.getValue().getContentMd5());
@@ -838,9 +838,11 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void getPageRanges() {
-        StepVerifier.create(bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))))
-            .then(bc.getPageRangesWithResponse(new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), null)))
+        bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))).block();
+
+        StepVerifier.create(bc.getPageRangesWithResponse(new BlobRange(0,
+            (long) PageBlobClient.PAGE_BYTES), null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
                 assertEquals(1, r.getValue().getPageRange().size());
@@ -908,15 +910,13 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPageRanges() {
+        bc.create(4 * Constants.KB, true).block();
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.KB)));
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)).block();
+        bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)).block();
 
-        Flux<PageRangeItem> response = bc.create(4 * Constants.KB, true)
-            .then(bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data))
-            .then(bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)))
-            .then(bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)))
-            .thenMany(bc.listPageRanges(new BlobRange(0, (long) 4 * Constants.KB)));
-
-        StepVerifier.create(response)
+        StepVerifier.create(bc.listPageRanges(new BlobRange(0, (long) 4 * Constants.KB)))
             .assertNext(r -> {
                 assertEquals(r.getRange(), new HttpRange(0, (long) Constants.KB));
                 assertFalse(r.isClear());
@@ -931,17 +931,15 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRangesPageSize() {
+        bc.create(4 * Constants.KB, true).block();
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.KB)));
-
-        Flux<PagedResponse<PageRangeItem>> response = bc.create(4 * Constants.KB, true)
-            .then(bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data))
-            .then(bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)))
-            .then(bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)))
-            .thenMany(bc.listPageRanges(new ListPageRangesOptions(
-                new BlobRange(0, 4L * Constants.KB)).setMaxResultsPerPage(1)).byPage());
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)).block();
+        bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)).block();
 
         // when: "max results on options"
-        StepVerifier.create(response)
+        StepVerifier.create(bc.listPageRanges(new ListPageRangesOptions(
+            new BlobRange(0, 4L * Constants.KB)).setMaxResultsPerPage(1)).byPage())
             .assertNext(r -> assertEquals(1, r.getValue().size()))
             .assertNext(r -> assertEquals(1, r.getValue().size()))
             .verifyComplete();
@@ -958,18 +956,17 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesContinuationToken() {
+        bc.create(4 * Constants.KB, true).block();
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.KB)));
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)).block();
+        bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)).block();
 
-        Flux<PagedResponse<PageRangeItem>> response = bc.create(4 * Constants.KB, true)
-            .then(bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data))
-            .then(bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)))
-            .then(bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)))
-            .thenMany(bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4L * Constants.KB))
-                .setMaxResultsPerPage(1)).byPage())
-            .flatMap(r -> bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4L * Constants.KB)))
-                .byPage(r.getContinuationToken()));
-
-        StepVerifier.create(response)
+        StepVerifier.create(bc.listPageRanges(new ListPageRangesOptions(
+            new BlobRange(0, 4L * Constants.KB)).setMaxResultsPerPage(1)).byPage()
+            .flatMap(r -> {
+                return bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4L * Constants.KB))).byPage(r.getContinuationToken());
+            }))
             .assertNext(r -> {
                 assertEquals(1, r.getValue().size());
             })
@@ -979,15 +976,14 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRange() {
+        bc.create(4 * Constants.KB, true).block();
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.KB)));
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)).block();
+        bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)).block();
 
-        Flux<PageRangeItem> response = bc.create(4 * Constants.KB, true)
-            .then(bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data))
-            .then(bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)))
-            .then(bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)))
-            .thenMany(bc.listPageRanges(new ListPageRangesOptions(new BlobRange(2 * Constants.KB + 1, 2L * Constants.KB))));
-
-        StepVerifier.create(response)
+        StepVerifier.create(bc.listPageRanges(new ListPageRangesOptions(
+            new BlobRange(2 * Constants.KB + 1, 2L * Constants.KB))))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -1041,7 +1037,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         bc.create(4 * Constants.MB, true).block();
 
         bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.MB - 1),
-            Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.MB)))).block();
+            Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.KB))));
 
         String snapId = bc.createSnapshot().block().getSnapshotId();
 
@@ -1119,10 +1115,9 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void getPageRangesDiffMin() {
-        Mono<PageList> response = bc.createSnapshot()
-            .flatMap(r -> bc.getPageRangesDiff(null, r.getSnapshotId()));
+        String snapId = bc.createSnapshot().block().getSnapshotId();
 
-        StepVerifier.create(response)
+        StepVerifier.create(bc.getPageRangesDiff(null, snapId))
             .assertNext(r -> assertDoesNotThrow(() -> r.getPageRange()))
             .verifyComplete();
     }
@@ -1179,19 +1174,17 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRangesDiff() {
+        bc.create(4 * Constants.KB, true).block();
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.KB)));
-        Flux<ByteBuffer> data2 = Flux.just(ByteBuffer.wrap(getRandomByteArray(Constants.KB)));
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data).block();
+        String snapshot = bc.createSnapshot().block().getSnapshotId();
+        data = Flux.just(ByteBuffer.wrap(getRandomByteArray(Constants.KB)));
+        bc.uploadPages(new PageRange().setStart(0).setEnd(Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)).block();
+        bc.uploadPages(new PageRange().setStart(2 * Constants.KB).setEnd(3 * Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)).block();
 
-        Flux<PageRangeItem> response = bc.create(4 * Constants.KB, true)
-            .then(bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data))
-            .then(bc.createSnapshot())
-            .flatMapMany(r -> bc.uploadPages(new PageRange().setStart(0).setEnd(Constants.KB - 1), data2)
-                .then(bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)))
-                .then(bc.uploadPages(new PageRange().setStart(2 * Constants.KB).setEnd(3 * Constants.KB - 1), data2))
-                .then(bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)))
-                .thenMany(bc.listPageRangesDiff(new BlobRange(0, 4L * Constants.KB), r.getSnapshotId())));
-
-        StepVerifier.create(response)
+        StepVerifier.create(bc.listPageRangesDiff(new BlobRange(0, 4L * Constants.KB), snapshot))
             .assertNext(r -> {
                 assertEquals(r.getRange(), new HttpRange(0L, (long) Constants.KB));
                 assertFalse(r.isClear());
@@ -1214,53 +1207,47 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRangesDiffPageSize() {
+        bc.create(4 * Constants.KB, true).block();
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.KB)));
-        Flux<ByteBuffer> data2 = Flux.just(ByteBuffer.wrap(getRandomByteArray(Constants.KB)));
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data).block();
+        String snapshot = bc.createSnapshot().block().getSnapshotId();
+        data = Flux.just(ByteBuffer.wrap(getRandomByteArray(Constants.KB)));
+        bc.uploadPages(new PageRange().setStart(0).setEnd(Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)).block();
+        bc.uploadPages(new PageRange().setStart(2 * Constants.KB).setEnd(3 * Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)).block();
 
-        Flux<Tuple2<PagedResponse<PageRangeItem>, PagedResponse<PageRangeItem>>> response = bc.create(4 * Constants.KB, true)
-            .then(bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data))
-            .then(bc.createSnapshot())
-            .flatMapMany(r -> bc.uploadPages(new PageRange().setStart(0).setEnd(Constants.KB - 1), data2)
-                .then(bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)))
-                .then(bc.uploadPages(new PageRange().setStart(2 * Constants.KB).setEnd(3 * Constants.KB - 1), data2))
-                .then(bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)))
-                .thenMany(Flux.zip(bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB),
-                    r.getSnapshotId()).setMaxResultsPerPage(2)).byPage(),
-                    bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB),
-                    r.getSnapshotId())).byPage(2))));
+        // when: "max results on options"
+        StepVerifier.create(bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot).setMaxResultsPerPage(2)).byPage())
+            .assertNext(r -> assertEquals(2, r.getValue().size()))
+            .assertNext(r -> assertEquals(2, r.getValue().size()))
+            .verifyComplete();
 
-        // when: "max results on options and on iterableByPage"
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertEquals(2, r.getT1().getValue().size());
-                assertEquals(2, r.getT2().getValue().size());
-            })
-            .assertNext(r -> {
-                assertEquals(2, r.getT1().getValue().size());
-                assertEquals(2, r.getT2().getValue().size());
-            })
+        // when: "max results on iterableByPage"
+        StepVerifier.create(bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot)).byPage(2))
+            .assertNext(r -> assertEquals(2, r.getValue().size()))
+            .assertNext(r -> assertEquals(2, r.getValue().size()))
             .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesDiffContinuationToken() {
+        bc.create(4 * Constants.KB, true).block();
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.KB)));
-        Flux<ByteBuffer> data2 = Flux.just(ByteBuffer.wrap(getRandomByteArray(Constants.KB)));
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data).block();
+        String snapshot = bc.createSnapshot().block().getSnapshotId();
+        data = Flux.just(ByteBuffer.wrap(getRandomByteArray(Constants.KB)));
+        bc.uploadPages(new PageRange().setStart(0).setEnd(Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)).block();
+        bc.uploadPages(new PageRange().setStart(2 * Constants.KB).setEnd(3 * Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)).block();
 
-        Flux<PagedResponse<PageRangeItem>> response = bc.create(4 * Constants.KB, true)
-            .then(bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data))
-            .then(bc.createSnapshot())
-            .flatMapMany(r -> bc.uploadPages(new PageRange().setStart(0).setEnd(Constants.KB - 1), data2)
-                .then(bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)))
-                .then(bc.uploadPages(new PageRange().setStart(2 * Constants.KB).setEnd(3 * Constants.KB - 1), data2))
-                .then(bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)))
-                .thenMany(Flux.zip(bc.listPageRangesDiff(new ListPageRangesDiffOptions(
-                    new BlobRange(0, 4L * Constants.KB), r.getSnapshotId()).setMaxResultsPerPage(2)).byPage(),
-                    Flux.just(r.getSnapshotId()))))
-            .flatMap(tuple -> bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), tuple.getT2())).byPage(tuple.getT1().getContinuationToken()));
-
-        StepVerifier.create(response)
+        StepVerifier.create(bc.listPageRangesDiff(new ListPageRangesDiffOptions(
+            new BlobRange(0, 4L * Constants.KB), snapshot).setMaxResultsPerPage(2)).byPage()
+            .flatMap(r -> {
+                return bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot)).byPage(r.getContinuationToken());
+            }))
             .assertNext(r -> assertEquals(2, r.getValue().size()))
             .verifyComplete();
     }
@@ -1268,21 +1255,18 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesDiffRange() {
+        bc.create(4 * Constants.KB, true).block();
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(getRandomByteArray(4 * Constants.KB)));
-        Flux<ByteBuffer> data2 = Flux.just(ByteBuffer.wrap(getRandomByteArray(Constants.KB)));
+        bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data).block();
+        String snapshot = bc.createSnapshot().block().getSnapshotId();
+        data = Flux.just(ByteBuffer.wrap(getRandomByteArray(Constants.KB)));
+        bc.uploadPages(new PageRange().setStart(0).setEnd(Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)).block();
+        bc.uploadPages(new PageRange().setStart(2 * Constants.KB).setEnd(3 * Constants.KB - 1), data).block();
+        bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)).block();
 
-
-        Flux<PageRangeItem> response = bc.create(4 * Constants.KB, true)
-            .then(bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data))
-            .then(bc.createSnapshot())
-            .flatMapMany(r -> bc.uploadPages(new PageRange().setStart(0).setEnd(Constants.KB - 1), data2)
-                .then(bc.clearPages(new PageRange().setStart(Constants.KB).setEnd(2 * Constants.KB - 1)))
-                .then(bc.uploadPages(new PageRange().setStart(2 * Constants.KB).setEnd(3 * Constants.KB - 1), data2))
-                .then(bc.clearPages(new PageRange().setStart(3 * Constants.KB).setEnd(4 * Constants.KB - 1)))
-                .thenMany(bc.listPageRangesDiff(new ListPageRangesDiffOptions(
-                    new BlobRange(2 * Constants.KB + 1, 2L * Constants.KB), r.getSnapshotId()))));
-
-        StepVerifier.create(response)
+        StepVerifier.create(bc.listPageRangesDiff(new ListPageRangesDiffOptions(
+            new BlobRange(2 * Constants.KB + 1, 2L * Constants.KB), snapshot)))
             .expectNextCount(2)
             .verifyComplete();
     }
@@ -1487,7 +1471,6 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void startIncrementalCopy() {
-        //todo isbr
         PageBlobAsyncClient bc2 = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         String snapId = bc.createSnapshot().block().getSnapshotId();
 
@@ -1518,14 +1501,12 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void startIncrementalCopyMin() {
         PageBlobAsyncClient bc2 = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        String snapshot = bc.createSnapshot().block().getSnapshotId();
+
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-
-        Mono<Response<CopyStatusType>> response = bc.createSnapshot()
-            .flatMap(r -> bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, r.getSnapshotId(),
-                null));
-
-        assertAsyncResponseStatusCode(response, 202);
+        assertAsyncResponseStatusCode(bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, snapshot,
+            null), 202);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")

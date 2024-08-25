@@ -3,8 +3,6 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRange;
@@ -14,7 +12,6 @@ import com.azure.storage.common.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple3;
-import reactor.util.function.Tuples;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -45,7 +42,7 @@ public class ChunkedDownloadUtils {
             // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic provided the same
             // functionality with the added benefit that it won't infinitely create threads if needed and will instead
             // queue.
-            .map(response -> {
+            .flatMap(response -> {
                 /*
                 Either the etag was set and it matches because the download succeeded, so this is a no-op, or there
                 was no etag, so we set it here. ETag locking is vital to ensure we download one, consistent view
@@ -65,7 +62,7 @@ public class ChunkedDownloadUtils {
                 long newCount = range.getCount() == null || range.getCount() > (totalLength - range.getOffset())
                     ? totalLength - range.getOffset() : range.getCount();
 
-                return Tuples.of(newCount, newConditions, response);
+                return Mono.zip(Mono.just(newCount), Mono.just(newConditions), Mono.just(response));
             })
             .onErrorResume(BlobStorageException.class, blobStorageException -> {
                 /*
@@ -76,23 +73,22 @@ public class ChunkedDownloadUtils {
                  */
                 if (blobStorageException.getErrorCode() == BlobErrorCode.INVALID_RANGE
                     && extractTotalBlobLength(blobStorageException.getResponse()
-                    .getHeaders().getValue(HttpHeaderName.CONTENT_RANGE)) == 0) {
+                    .getHeaders().getValue("Content-Range")) == 0) {
 
                     return downloader.apply(new BlobRange(0, 0L), requestConditions)
                         // Subscribe on boundElastic instead of elastic as elastic is deprecated and boundElastic
                         // provided the same functionality with the added benefit that it won't infinitely create
                         // threads if needed and will instead queue.
-                        .handle((response, sink) -> {
+                        .flatMap(response -> {
                             /*
                             Ensure the blob is still 0 length by checking our download was the full length.
                             (200 is for full blob; 206 is partial).
                              */
                             if (response.getStatusCode() != 200) {
-                                sink.error(new IllegalStateException("Blob was modified mid download. It was "
+                                return Mono.error(new IllegalStateException("Blob was modified mid download. It was "
                                     + "originally 0 bytes and is now larger."));
-                            } else {
-                                sink.next(Tuples.of(0L, requestConditions, response));
                             }
+                            return Mono.zip(Mono.just(0L), Mono.just(requestConditions), Mono.just(response));
                         });
                 }
 
@@ -132,7 +128,8 @@ public class ChunkedDownloadUtils {
     }
 
     public static long extractTotalBlobLength(String contentRange) {
-        return CoreUtils.extractSizeFromContentRange(contentRange);
+        int index = contentRange.indexOf('/');
+        return Long.parseLong(contentRange.substring(index + 1));
     }
 
     public static int calculateNumBlocks(long dataSize, long blockLength) {

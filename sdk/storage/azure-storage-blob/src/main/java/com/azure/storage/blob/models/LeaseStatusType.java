@@ -4,23 +4,18 @@
 
 package com.azure.storage.blob.models;
 
-/**
- * Defines values for LeaseStatusType.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for LeaseStatusType. */
 public enum LeaseStatusType {
-    /**
-     * Enum value locked.
-     */
+    /** Enum value locked. */
     LOCKED("locked"),
 
-    /**
-     * Enum value unlocked.
-     */
+    /** Enum value unlocked. */
     UNLOCKED("unlocked");
 
-    /**
-     * The actual serialized value for a LeaseStatusType instance.
-     */
+    /** The actual serialized value for a LeaseStatusType instance. */
     private final String value;
 
     LeaseStatusType(String value) {
@@ -29,10 +24,11 @@ public enum LeaseStatusType {
 
     /**
      * Parses a serialized value to a LeaseStatusType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed LeaseStatusType object, or null if unable to parse.
      */
+    @JsonCreator
     public static LeaseStatusType fromString(String value) {
         if (value == null) {
             return null;
@@ -46,9 +42,8 @@ public enum LeaseStatusType {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

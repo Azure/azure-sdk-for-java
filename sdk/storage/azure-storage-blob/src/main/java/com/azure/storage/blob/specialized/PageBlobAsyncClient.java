@@ -343,7 +343,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(),
             options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 PageBlobsCreateHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -544,7 +543,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfNoneMatch(), pageBlobRequestConditions.getTagsConditions(), null,
             getCustomerProvidedKey(), encryptionScope,
             context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 PageBlobsUploadPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -724,7 +722,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
             sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),
             encryptionScope, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 PageBlobsUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -819,7 +816,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
             pageBlobRequestConditions.getIfNoneMatch(), pageBlobRequestConditions.getTagsConditions(), null,
             getCustomerProvidedKey(), encryptionScope, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 PageBlobsClearPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -908,7 +904,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
                 requestConditions.getTagsConditions(), null, null, null,
                 context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue()));
     }
@@ -1023,8 +1018,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
                 requestConditions.getTagsConditions(), null, marker, options.getMaxResultsPerPage(),
                 context),
-            timeout)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            timeout);
     }
 
     private static PageRangeItem toPageBlobRange(PageRange range) {
@@ -1282,7 +1276,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null, null,
                 context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue()));
     }
@@ -1347,8 +1340,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
                 requestConditions.getTagsConditions(), null, marker, options.getMaxResultsPerPage(),
                 context),
-            timeout)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            timeout);
     }
 
     /**
@@ -1423,7 +1415,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             getCustomerProvidedKey(), encryptionScope,
             context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 PageBlobsResizeHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null, null,
@@ -1510,7 +1501,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), sequenceNumber, null,
             context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> {
                 PageBlobsUpdateSequenceNumberHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null, null,
@@ -1703,7 +1693,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 modifiedRequestConditions.getIfUnmodifiedSince(), modifiedRequestConditions.getIfMatch(),
                 modifiedRequestConditions.getIfNoneMatch(), modifiedRequestConditions.getTagsConditions(), null,
                 context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyStatus()));
     }
 }

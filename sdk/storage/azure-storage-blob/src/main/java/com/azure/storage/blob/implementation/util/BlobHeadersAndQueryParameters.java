@@ -41,7 +41,7 @@ public class BlobHeadersAndQueryParameters {
     /**
      * Gets the Storage Blob whitelist headers for log.
      *
-     * @return the set of Storage Blob whitelist headers.
+     * @return the list of Storage Blob whitelist headers.
      */
     public static Set<String> getBlobHeaders() {
         return BLOB_HEADERS;
@@ -56,7 +56,7 @@ public class BlobHeadersAndQueryParameters {
     /**
      * Gets the Storage Blob whitelist query parameters for log.
      *
-     * @return the set of Storage Blob whitelist query parameters.
+     * @return the list of Storage Blob whitelist query parameters.
      */
     public static Set<String> getBlobQueryParameters() {
         return BLOB_QUERY_PARAMETERS;

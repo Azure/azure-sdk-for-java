@@ -7,11 +7,8 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
-import com.azure.storage.blob.models.BlobContainerProperties;
-import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
@@ -37,15 +34,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -185,24 +177,26 @@ public class SasAsyncClientTests extends BlobTestBase {
 
             BlobServiceSasSignatureValues sasValues = generateValues(permissions);
 
-            Mono<Tuple2<byte[], BlobProperties>> response = getUserDelegationInfo().flatMap(r -> {
-                String sas = sasClient.generateUserDelegationSas(sasValues, r);
-                BlockBlobAsyncClient client = getBlobAsyncClient(sas, ccAsync.getBlobContainerUrl(), blobName, null)
-                    .getBlockBlobAsyncClient();
-                return Mono.zip(FluxUtil.collectBytesInByteBufferStream(client.downloadStream()), client.getProperties());
-            });
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
 
-            StepVerifier.create(response)
-                .assertNext(r -> {
-                    assertArrayEquals(DATA.getDefaultBytes(), r.getT1());
-                    assertTrue(validateSasProperties(r.getT2()));
-                })
+            BlockBlobAsyncClient client = getBlobAsyncClient(sas, ccAsync.getBlobContainerUrl(), blobName, null)
+                .getBlockBlobAsyncClient();
+
+            StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(client.downloadStream()))
+                .assertNext(r -> assertArrayEquals(DATA.getDefaultBytes(), r))
+                .verifyComplete();
+
+            StepVerifier.create(client.getProperties())
+                .assertNext(r -> assertTrue(validateSasProperties(r)))
                 .verifyComplete();
         });
     }
 
     @Test
     public void blobSasSnapshot() {
+        BlockBlobAsyncClient snapshotBlob = new SpecializedBlobClientBuilder()
+            .blobAsyncClient(sasClient.createSnapshot().block()).buildBlockBlobAsyncClient();
+        String snapshotId = snapshotBlob.getSnapshotId();
         BlobSasPermission permissions = new BlobSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
@@ -210,37 +204,25 @@ public class SasAsyncClientTests extends BlobTestBase {
             .setDeletePermission(true)
             .setAddPermission(true);
         BlobServiceSasSignatureValues sasValues = generateValues(permissions);
+        String sas = snapshotBlob.generateSas(sasValues);
 
-        Mono<Tuple2<String, String>> snapshotIDAndSasTuple = sasClient.createSnapshot()
-            .map(r -> {
-                BlockBlobAsyncClient snapshotBlob = new SpecializedBlobClientBuilder()
-                    .blobAsyncClient(r).buildBlockBlobAsyncClient();
-                String snapshotId = snapshotBlob.getSnapshotId();
-                String sas = snapshotBlob.generateSas(sasValues);
-                return Tuples.of(snapshotId, sas);
-            });
-
-        Flux<ByteBuffer> baseBlobWithSnapshotSasResponse = snapshotIDAndSasTuple.flatMapMany(tuple -> {
-            AppendBlobAsyncClient client = getBlobAsyncClient(tuple.getT2(), ccAsync.getBlobContainerUrl(), blobName, null)
-                .getAppendBlobAsyncClient();
-            return client.download();
-        });
-
+        // base blob with snapshot SAS
+        AppendBlobAsyncClient client = getBlobAsyncClient(sas, ccAsync.getBlobContainerUrl(), blobName, null)
+            .getAppendBlobAsyncClient();
         // snapshot-level SAS shouldn't be able to access base blob
-        StepVerifier.create(baseBlobWithSnapshotSasResponse)
+        StepVerifier.create(client.download())
             .verifyError(BlobStorageException.class);
 
-        Mono<Tuple2<byte[], BlobProperties>> blobSnapshotSasResponse = snapshotIDAndSasTuple.flatMap(tuple -> {
-            AppendBlobAsyncClient snapClient = getBlobAsyncClient(tuple.getT2(), ccAsync.getBlobContainerUrl(), blobName, tuple.getT1())
-                .getAppendBlobAsyncClient();
-            return Mono.zip(FluxUtil.collectBytesInByteBufferStream(snapClient.downloadStream()), snapClient.getProperties());
-        });
+        // blob snapshot with snapshot SAS
+        AppendBlobAsyncClient snapClient = getBlobAsyncClient(sas, ccAsync.getBlobContainerUrl(), blobName, snapshotId)
+            .getAppendBlobAsyncClient();
 
-        StepVerifier.create(blobSnapshotSasResponse)
-            .assertNext(r -> {
-                assertArrayEquals(DATA.getDefaultBytes(), r.getT1());
-                assertTrue(validateSasProperties(r.getT2()));
-            })
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(snapClient.downloadStream()))
+            .assertNext(r -> assertArrayEquals(DATA.getDefaultBytes(), r))
+            .verifyComplete();
+
+        StepVerifier.create(snapClient.getProperties())
+            .assertNext(r -> assertTrue(validateSasProperties(r)))
             .verifyComplete();
     }
 
@@ -248,6 +230,10 @@ public class SasAsyncClientTests extends BlobTestBase {
     @Test
     public void blobSasSnapshotUserDelegation() {
         liveTestScenarioWithRetry(() -> {
+            BlockBlobAsyncClient snapshotBlob = new SpecializedBlobClientBuilder().blobAsyncClient(sasClient.createSnapshot().block())
+                .buildBlockBlobAsyncClient();
+            String snapshotId = snapshotBlob.getSnapshotId();
+
             BlobSasPermission permissions = new BlobSasPermission()
                 .setReadPermission(true)
                 .setWritePermission(true)
@@ -255,36 +241,24 @@ public class SasAsyncClientTests extends BlobTestBase {
                 .setDeletePermission(true)
                 .setAddPermission(true);
             BlobServiceSasSignatureValues sasValues = generateValues(permissions);
+            String sas = snapshotBlob.generateUserDelegationSas(sasValues, getUserDelegationInfo());
 
-            Mono<Tuple2<String, String>> snapshotIDAndSasTuple = sasClient.createSnapshot()
-                .flatMap(r -> {
-                    BlockBlobAsyncClient snapshotBlob = new SpecializedBlobClientBuilder()
-                        .blobAsyncClient(r).buildBlockBlobAsyncClient();
-                    String snapshotId = snapshotBlob.getSnapshotId();
-                    return Mono.zip(Mono.just(snapshotId), getUserDelegationInfo().flatMap(info -> Mono.just(snapshotBlob.generateUserDelegationSas(sasValues, info))));
-                });
-
-            Flux<ByteBuffer> baseBlobWithSnapshotSasResponse = snapshotIDAndSasTuple.flatMapMany(tuple -> {
-                BlockBlobAsyncClient client = getBlobAsyncClient(tuple.getT2(), ccAsync.getBlobContainerUrl(), blobName, null)
-                    .getBlockBlobAsyncClient();
-                return client.download();
-            });
-
+            // base blob with snapshot SAS
+            BlockBlobAsyncClient client1 = getBlobAsyncClient(sas, ccAsync.getBlobContainerUrl(), blobName, null)
+                .getBlockBlobAsyncClient();
             // snapshot-level SAS shouldn't be able to access base blob
-            StepVerifier.create(baseBlobWithSnapshotSasResponse)
+            StepVerifier.create(client1.download())
                 .verifyError(BlobStorageException.class);
 
-            Mono<Tuple2<byte[], BlobProperties>> blobSnapshotSasResponse = snapshotIDAndSasTuple.flatMap(tuple -> {
-                BlockBlobAsyncClient snapClient = getBlobAsyncClient(tuple.getT2(), ccAsync.getBlobContainerUrl(), blobName, tuple.getT1())
-                    .getBlockBlobAsyncClient();
-                return Mono.zip(FluxUtil.collectBytesInByteBufferStream(snapClient.downloadStream()), snapClient.getProperties());
-            });
+            // blob snapshot with snapshot SAS
+            BlockBlobAsyncClient client2 = getBlobAsyncClient(sas, ccAsync.getBlobContainerUrl(), blobName, snapshotId)
+                .getBlockBlobAsyncClient();
+            StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(client2.downloadStream()))
+                .assertNext(r -> assertArrayEquals(DATA.getDefaultBytes(), r))
+                .verifyComplete();
 
-            StepVerifier.create(blobSnapshotSasResponse)
-                .assertNext(r -> {
-                    assertArrayEquals(DATA.getDefaultBytes(), r.getT1());
-                    assertTrue(validateSasProperties(r.getT2()));
-                })
+            StepVerifier.create(client2.getProperties())
+                .assertNext(r -> assertTrue(validateSasProperties(r)))
                 .verifyComplete();
         });
     }
@@ -303,14 +277,10 @@ public class SasAsyncClientTests extends BlobTestBase {
             OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
 
             BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions);
+            String sasWithPermissions = ccAsync.generateUserDelegationSas(sasValues, getUserDelegationInfo());
 
-            Flux<BlobItem> response = getUserDelegationInfo().flatMapMany(r -> {
-                String sasWithPermissions = ccAsync.generateUserDelegationSas(sasValues, r);
-                BlobContainerAsyncClient client = getContainerAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl());
-                return client.listBlobs();
-            });
-
-            StepVerifier.create(response)
+            BlobContainerAsyncClient client = getContainerAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl());
+            StepVerifier.create(client.listBlobs())
                 .expectNextCount(1)
                 .verifyComplete();
         });
@@ -333,9 +303,8 @@ public class SasAsyncClientTests extends BlobTestBase {
 
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
-
-        Mono<Map<String, String>> response = client.setTags(tags).then(client.getTags());
-        StepVerifier.create(response)
+        client.setTags(tags).block();
+        StepVerifier.create(client.getTags())
             .assertNext(r -> assertEquals(tags, r))
             .verifyComplete();
     }
@@ -380,9 +349,8 @@ public class SasAsyncClientTests extends BlobTestBase {
 
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
-
-        Mono<Map<String, String>> response = client.setTags(tags).then(client.getTags());
-        StepVerifier.create(response)
+        client.setTags(tags).block();
+        StepVerifier.create(client.getTags())
             .assertNext(r -> assertEquals(tags, r))
             .verifyComplete();
     }
@@ -429,11 +397,9 @@ public class SasAsyncClientTests extends BlobTestBase {
 
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
+        client.setTags(tags).block();
 
-        Flux<TaggedBlobItem> response = client.setTags(tags).thenMany(ccAsync.findBlobsByTags("\"foo\"='bar'"));
-        StepVerifier.create(response)
-            .thenConsumeWhile(x -> true)
-            .verifyComplete();
+        assertDoesNotThrow(() -> ccAsync.findBlobsByTags("\"foo\"='bar'").blockLast());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
@@ -469,29 +435,25 @@ public class SasAsyncClientTests extends BlobTestBase {
                 .setReadPermission(true);
 
             OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+            UserDelegationKey key = getOAuthServiceAsyncClient().getUserDelegationKey(null, expiryTime).block();
+
+            String keyOid = testResourceNamer.recordValueFromConfig(key.getSignedObjectId());
+            key.setSignedObjectId(keyOid);
+
+            String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTenantId());
+            key.setSignedTenantId(keyTid);
+
             String saoid = testResourceNamer.randomUuid();
+
             BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
                 .setPreauthorizedAgentObjectId(saoid);
+            String sasWithPermissions = sasClient.generateUserDelegationSas(sasValues, key);
 
-            Mono<BlobProperties> response = getOAuthServiceAsyncClient().getUserDelegationKey(null, expiryTime)
-                .flatMap(r -> {
-                    String keyOid = testResourceNamer.recordValueFromConfig(r.getSignedObjectId());
-                    r.setSignedObjectId(keyOid);
+            BlobAsyncClient client = getBlobAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl(), blobName,
+                null);
+            client.getProperties().block();
 
-                    String keyTid = testResourceNamer.recordValueFromConfig(r.getSignedTenantId());
-                    r.setSignedTenantId(keyTid);
-
-                    String sasWithPermissions = sasClient.generateUserDelegationSas(sasValues, r);
-                    assertDoesNotThrow(() -> sasWithPermissions.contains("saoid=" + saoid));
-
-                    BlobAsyncClient client = getBlobAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl(), blobName,
-                        null);
-                    return client.getProperties();
-                });
-
-            StepVerifier.create(response)
-                .expectNextCount(1)
-                .verifyComplete();
+            assertDoesNotThrow(() -> sasWithPermissions.contains("saoid=" + saoid));
         });
     }
 
@@ -501,30 +463,24 @@ public class SasAsyncClientTests extends BlobTestBase {
         liveTestScenarioWithRetry(() -> {
             BlobContainerSasPermission permissions = new BlobContainerSasPermission().setListPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+            UserDelegationKey key = getOAuthServiceAsyncClient().getUserDelegationKey(null, expiryTime).block();
+
+            String keyOid = testResourceNamer.recordValueFromConfig(key.getSignedObjectId());
+            key.setSignedObjectId(keyOid);
+
+            String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTenantId());
+            key.setSignedTenantId(keyTid);
 
             String cid = testResourceNamer.randomUuid();
+
             BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
                 .setCorrelationId(cid);
+            String sasWithPermissions = ccAsync.generateUserDelegationSas(sasValues, key);
 
-            Flux<BlobItem> response = getOAuthServiceAsyncClient().getUserDelegationKey(null, expiryTime)
-                .flatMapMany(r -> {
-                    String keyOid = testResourceNamer.recordValueFromConfig(r.getSignedObjectId());
-                    r.setSignedObjectId(keyOid);
+            BlobContainerAsyncClient client = getContainerAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl());
+            client.listBlobs().blockLast();
 
-                    String keyTid = testResourceNamer.recordValueFromConfig(r.getSignedTenantId());
-                    r.setSignedTenantId(keyTid);
-
-                    String sasWithPermissions = ccAsync.generateUserDelegationSas(sasValues, r);
-                    assertDoesNotThrow(() -> sasWithPermissions.contains("scid=" + cid));
-
-                    BlobContainerAsyncClient client = getContainerAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl());
-
-                    return client.listBlobs();
-                });
-
-            StepVerifier.create(response)
-                .expectNextCount(1)
-                .verifyComplete();
+            assertDoesNotThrow(() -> sasWithPermissions.contains("scid=" + cid));
         });
     }
 
@@ -534,25 +490,23 @@ public class SasAsyncClientTests extends BlobTestBase {
         BlobContainerSasPermission permissions = new BlobContainerSasPermission().setListPermission(true);
 
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+
+        UserDelegationKey key = getOAuthServiceAsyncClient().getUserDelegationKey(null, expiryTime).block();
+
+        String keyOid = testResourceNamer.recordValueFromConfig(key.getSignedObjectId());
+        key.setSignedObjectId(keyOid);
+
+        String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTenantId());
+        key.setSignedTenantId(keyTid);
+
         String cid = "invalidcid";
+
         BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
             .setCorrelationId(cid);
+        String sasWithPermissions = ccAsync.generateUserDelegationSas(sasValues, key);
 
-        Flux<BlobItem> response = getOAuthServiceAsyncClient().getUserDelegationKey(null, expiryTime)
-            .flatMapMany(r -> {
-                String keyOid = testResourceNamer.recordValueFromConfig(r.getSignedObjectId());
-                r.setSignedObjectId(keyOid);
-
-                String keyTid = testResourceNamer.recordValueFromConfig(r.getSignedTenantId());
-                r.setSignedTenantId(keyTid);
-
-                String sasWithPermissions = ccAsync.generateUserDelegationSas(sasValues, r);
-
-                BlobContainerAsyncClient client = getContainerAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl());
-                return client.listBlobs();
-            });
-
-        StepVerifier.create(response)
+        BlobContainerAsyncClient client = getContainerAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl());
+        StepVerifier.create(client.listBlobs())
             .verifyError(BlobStorageException.class);
     }
 
@@ -573,24 +527,21 @@ public class SasAsyncClientTests extends BlobTestBase {
         // Generate a sas token using a client that has an encryptionScope
         BlobServiceSasSignatureValues sasValues = generateValues(permissions);
 
-        Mono<BlobProperties> response = getUserDelegationInfo()
-            .flatMap(r -> {
-                String sas;
-                if (userDelegation) {
-                    sas = sharedKeyClient.generateUserDelegationSas(sasValues, r);
-                } else {
-                    sas = sharedKeyClient.generateSas(sasValues);
-                }
+        String sas;
+        if (userDelegation) {
+            sas = sharedKeyClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+        } else {
+            sas = sharedKeyClient.generateSas(sasValues);
+        }
 
-                // Generate a sasClient that does not have an encryptionScope
-                sasClient = builder.sasToken(sas).encryptionScope(null).buildAsyncClient()
-                    .getBlobAsyncClient(sharedKeyClient.getBlobName()).getBlockBlobAsyncClient();
+        // Generate a sasClient that does not have an encryptionScope
+        sasClient = builder.sasToken(sas).encryptionScope(null).buildAsyncClient()
+            .getBlobAsyncClient(sharedKeyClient.getBlobName()).getBlockBlobAsyncClient();
 
-                // Uploading using the encryption scope sas should force the use of the encryptionScope
-                return sasClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).then(sasClient.getProperties());
-            });
+        // Uploading using the encryption scope sas should force the use of the encryptionScope
+        sasClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(sasClient.getProperties())
             .assertNext(r -> assertEquals("testscope1", r.getEncryptionScope()))
             .verifyComplete();
     }
@@ -618,10 +569,9 @@ public class SasAsyncClientTests extends BlobTestBase {
             .getBlockBlobAsyncClient();
 
         // Uploading using the encryption scope sas should force the use of the encryptionScope
-        Mono<BlobProperties> response = client.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
-            .then(client.getProperties());
+        client.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true).block();
 
-        StepVerifier.create(response)
+        StepVerifier.create(client.getProperties())
             .assertNext(r -> assertEquals("testscope1", r.getEncryptionScope()))
             .verifyComplete();
     }
@@ -655,15 +605,15 @@ public class SasAsyncClientTests extends BlobTestBase {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        StepVerifier.create(client.setTags(tags).then(client.getTags()))
+        client.setTags(tags).block();
+
+        StepVerifier.create(client.getTags())
             .assertNext(r -> assertEquals(tags, r))
             .verifyComplete();
 
-        BlobServiceAsyncClient serviceClient = getServiceAsyncClient(sas, primaryBlobServiceAsyncClient.getAccountUrl());
 
-        StepVerifier.create(serviceClient.findBlobsByTags("\"foo\"='bar'"))
-            .thenConsumeWhile(x -> true)
-            .verifyComplete();
+        BlobServiceAsyncClient serviceClient = getServiceAsyncClient(sas, primaryBlobServiceAsyncClient.getAccountUrl());
+        assertDoesNotThrow(() -> serviceClient.findBlobsByTags("\"foo\"='bar'").blockLast());
     }
 
     @Test
@@ -829,12 +779,11 @@ public class SasAsyncClientTests extends BlobTestBase {
         String sas = primaryBlobServiceAsyncClient.generateAccountSas(sasValues);
 
         BlobServiceAsyncClient sc = getServiceAsyncClient(primaryBlobServiceAsyncClient.getAccountUrl() + "?" + sas);
+        sc.createBlobContainer(generateContainerName()).block();
+
         BlobContainerAsyncClient cc = getContainerClientBuilder(primaryBlobServiceAsyncClient.getAccountUrl()
             + "/" + containerName + "?" + sas).buildAsyncClient();
-        Mono<BlobContainerProperties> response = sc.createBlobContainer(generateContainerName())
-            .then(cc.getProperties());
-
-        StepVerifier.create(response)
+        StepVerifier.create(cc.getProperties())
             .expectNextCount(1)
             .verifyComplete();
 
@@ -980,16 +929,14 @@ public class SasAsyncClientTests extends BlobTestBase {
         return ret;
     }
 
-    private Mono<UserDelegationKey> getUserDelegationInfo() {
-        return getOAuthServiceAsyncClient().getUserDelegationKey(testResourceNamer.now().minusDays(1),
-            testResourceNamer.now().plusDays(1))
-            .flatMap(r -> {
-                String keyOid = testResourceNamer.recordValueFromConfig(r.getSignedObjectId());
-                r.setSignedObjectId(keyOid);
-                String keyTid = testResourceNamer.recordValueFromConfig(r.getSignedTenantId());
-                r.setSignedTenantId(keyTid);
-                return Mono.just(r);
-            });
+    private UserDelegationKey getUserDelegationInfo() {
+        UserDelegationKey key = getOAuthServiceAsyncClient().getUserDelegationKey(testResourceNamer.now().minusDays(1),
+            testResourceNamer.now().plusDays(1)).block();
+        String keyOid = testResourceNamer.recordValueFromConfig(key.getSignedObjectId());
+        key.setSignedObjectId(keyOid);
+        String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTenantId());
+        key.setSignedTenantId(keyTid);
+        return key;
     }
 
     /*

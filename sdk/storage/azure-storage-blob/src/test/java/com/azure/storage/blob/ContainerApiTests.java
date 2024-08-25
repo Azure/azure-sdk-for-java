@@ -91,11 +91,6 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
-    public void blobNameNull() {
-        assertThrows(NullPointerException.class, () -> cc.getBlobClient(null));
-    }
-
-    @Test
     public void createAllNull() {
         // Overwrite the existing cc, which has already been created
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
@@ -146,7 +141,6 @@ public class ContainerApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
-    @PlaybackOnly
     public void createPublicAccess(PublicAccessType publicAccess) {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
         cc.createWithResponse(null, publicAccess, null, null);
@@ -242,7 +236,6 @@ public class ContainerApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
-    @PlaybackOnly
     public void createIfNotExistsPublicAccess(PublicAccessType publicAccess) {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
         Response<Boolean> result = cc.createIfNotExistsWithResponse(new BlobContainerCreateOptions()
@@ -417,7 +410,6 @@ public class ContainerApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
-    @PlaybackOnly
     public void setAccessPolicy(PublicAccessType publicAccess) {
         Response<Void> response = cc.setAccessPolicyWithResponse(publicAccess, null, null, null, null);
 

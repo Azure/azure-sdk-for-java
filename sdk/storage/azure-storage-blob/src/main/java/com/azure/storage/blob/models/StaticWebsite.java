@@ -5,48 +5,43 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The properties that enable an account to host a static website.
- */
+/** The properties that enable an account to host a static website. */
+@JacksonXmlRootElement(localName = "StaticWebsite")
 @Fluent
-public final class StaticWebsite implements XmlSerializable<StaticWebsite> {
+public final class StaticWebsite {
     /*
      * Indicates whether this account is hosting a static website
      */
+    @JsonProperty(value = "Enabled", required = true)
     private boolean enabled;
 
     /*
      * The default name of the index page under each directory
      */
+    @JsonProperty(value = "IndexDocument")
     private String indexDocument;
 
     /*
      * The absolute path of the custom 404 page
      */
+    @JsonProperty(value = "ErrorDocument404Path")
     private String errorDocument404Path;
 
     /*
      * Absolute path of the default index page
      */
+    @JsonProperty(value = "DefaultIndexDocumentPath")
     private String defaultIndexDocumentPath;
 
-    /**
-     * Creates an instance of StaticWebsite class.
-     */
-    public StaticWebsite() {
-    }
+    /** Creates an instance of StaticWebsite class. */
+    public StaticWebsite() {}
 
     /**
      * Get the enabled property: Indicates whether this account is hosting a static website.
-     * 
+     *
      * @return the enabled value.
      */
     public boolean isEnabled() {
@@ -55,7 +50,7 @@ public final class StaticWebsite implements XmlSerializable<StaticWebsite> {
 
     /**
      * Set the enabled property: Indicates whether this account is hosting a static website.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the StaticWebsite object itself.
      */
@@ -66,7 +61,7 @@ public final class StaticWebsite implements XmlSerializable<StaticWebsite> {
 
     /**
      * Get the indexDocument property: The default name of the index page under each directory.
-     * 
+     *
      * @return the indexDocument value.
      */
     public String getIndexDocument() {
@@ -75,7 +70,7 @@ public final class StaticWebsite implements XmlSerializable<StaticWebsite> {
 
     /**
      * Set the indexDocument property: The default name of the index page under each directory.
-     * 
+     *
      * @param indexDocument the indexDocument value to set.
      * @return the StaticWebsite object itself.
      */
@@ -86,7 +81,7 @@ public final class StaticWebsite implements XmlSerializable<StaticWebsite> {
 
     /**
      * Get the errorDocument404Path property: The absolute path of the custom 404 page.
-     * 
+     *
      * @return the errorDocument404Path value.
      */
     public String getErrorDocument404Path() {
@@ -95,7 +90,7 @@ public final class StaticWebsite implements XmlSerializable<StaticWebsite> {
 
     /**
      * Set the errorDocument404Path property: The absolute path of the custom 404 page.
-     * 
+     *
      * @param errorDocument404Path the errorDocument404Path value to set.
      * @return the StaticWebsite object itself.
      */
@@ -106,7 +101,7 @@ public final class StaticWebsite implements XmlSerializable<StaticWebsite> {
 
     /**
      * Get the defaultIndexDocumentPath property: Absolute path of the default index page.
-     * 
+     *
      * @return the defaultIndexDocumentPath value.
      */
     public String getDefaultIndexDocumentPath() {
@@ -115,76 +110,12 @@ public final class StaticWebsite implements XmlSerializable<StaticWebsite> {
 
     /**
      * Set the defaultIndexDocumentPath property: Absolute path of the default index page.
-     * 
+     *
      * @param defaultIndexDocumentPath the defaultIndexDocumentPath value to set.
      * @return the StaticWebsite object itself.
      */
     public StaticWebsite setDefaultIndexDocumentPath(String defaultIndexDocumentPath) {
         this.defaultIndexDocumentPath = defaultIndexDocumentPath;
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StaticWebsite" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeBooleanElement("Enabled", this.enabled);
-        xmlWriter.writeStringElement("IndexDocument", this.indexDocument);
-        xmlWriter.writeStringElement("ErrorDocument404Path", this.errorDocument404Path);
-        xmlWriter.writeStringElement("DefaultIndexDocumentPath", this.defaultIndexDocumentPath);
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of StaticWebsite from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of StaticWebsite if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the StaticWebsite.
-     */
-    public static StaticWebsite fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of StaticWebsite from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of StaticWebsite if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the StaticWebsite.
-     */
-    public static StaticWebsite fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StaticWebsite" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            StaticWebsite deserializedStaticWebsite = new StaticWebsite();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("Enabled".equals(elementName.getLocalPart())) {
-                    deserializedStaticWebsite.enabled = reader.getBooleanElement();
-                } else if ("IndexDocument".equals(elementName.getLocalPart())) {
-                    deserializedStaticWebsite.indexDocument = reader.getStringElement();
-                } else if ("ErrorDocument404Path".equals(elementName.getLocalPart())) {
-                    deserializedStaticWebsite.errorDocument404Path = reader.getStringElement();
-                } else if ("DefaultIndexDocumentPath".equals(elementName.getLocalPart())) {
-                    deserializedStaticWebsite.defaultIndexDocumentPath = reader.getStringElement();
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedStaticWebsite;
-        });
     }
 }

@@ -4,38 +4,27 @@
 
 package com.azure.storage.blob.models;
 
-/**
- * Defines values for AccountKind.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for AccountKind. */
 public enum AccountKind {
-    /**
-     * Enum value Storage.
-     */
+    /** Enum value Storage. */
     STORAGE("Storage"),
 
-    /**
-     * Enum value BlobStorage.
-     */
+    /** Enum value BlobStorage. */
     BLOB_STORAGE("BlobStorage"),
 
-    /**
-     * Enum value StorageV2.
-     */
+    /** Enum value StorageV2. */
     STORAGE_V2("StorageV2"),
 
-    /**
-     * Enum value FileStorage.
-     */
+    /** Enum value FileStorage. */
     FILE_STORAGE("FileStorage"),
 
-    /**
-     * Enum value BlockBlobStorage.
-     */
+    /** Enum value BlockBlobStorage. */
     BLOCK_BLOB_STORAGE("BlockBlobStorage");
 
-    /**
-     * The actual serialized value for a AccountKind instance.
-     */
+    /** The actual serialized value for a AccountKind instance. */
     private final String value;
 
     AccountKind(String value) {
@@ -44,10 +33,11 @@ public enum AccountKind {
 
     /**
      * Parses a serialized value to a AccountKind instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed AccountKind object, or null if unable to parse.
      */
+    @JsonCreator
     public static AccountKind fromString(String value) {
         if (value == null) {
             return null;
@@ -61,9 +51,8 @@ public enum AccountKind {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

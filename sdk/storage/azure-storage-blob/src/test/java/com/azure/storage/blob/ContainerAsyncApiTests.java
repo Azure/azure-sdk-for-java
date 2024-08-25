@@ -86,11 +86,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    public void blobNameNull() {
-        assertThrows(NullPointerException.class, () -> cc.getBlobClient(null));
-    }
-
-    @Test
     public void createAllNull() {
         // Overwrite the existing cc, which has already been created
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
@@ -148,7 +143,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
-    @PlaybackOnly
     public void createPublicAccess(PublicAccessType publicAccess) {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
         ccAsync.createWithResponse(null, publicAccess).block();
@@ -254,7 +248,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
-    @PlaybackOnly
     public void createIfNotExistsPublicAccess(PublicAccessType publicAccess) {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
@@ -457,7 +450,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
-    @PlaybackOnly
     public void setAccessPolicy(PublicAccessType publicAccess) {
         StepVerifier.create(ccAsync.setAccessPolicyWithResponse(publicAccess, null, null))
             .assertNext(r -> assertTrue(validateBasicHeaders(r.getHeaders())))

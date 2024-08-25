@@ -10,53 +10,70 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.AccountKind;
 import com.azure.storage.blob.models.SkuName;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/**
- * The BlobsGetAccountInfoHeaders model.
- */
+/** The BlobsGetAccountInfoHeaders model. */
+@JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class BlobsGetAccountInfoHeaders {
     /*
      * The x-ms-version property.
      */
+    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The x-ms-account-kind property.
      */
+    @JsonProperty(value = "x-ms-account-kind")
     private AccountKind xMsAccountKind;
+
+    /*
+     * The x-ms-is-hns-enabled property.
+     */
+    @JsonProperty(value = "x-ms-is-hns-enabled")
+    private Boolean xMsIsHnsEnabled;
 
     /*
      * The x-ms-sku-name property.
      */
+    @JsonProperty(value = "x-ms-sku-name")
     private SkuName xMsSkuName;
 
     /*
      * The x-ms-request-id property.
      */
+    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
+    @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
+    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_ACCOUNT_KIND = HttpHeaderName.fromString("x-ms-account-kind");
 
+    private static final HttpHeaderName X_MS_IS_HNS_ENABLED = HttpHeaderName.fromString("x-ms-is-hns-enabled");
+
     private static final HttpHeaderName X_MS_SKU_NAME = HttpHeaderName.fromString("x-ms-sku-name");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of BlobsGetAccountInfoHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsGetAccountInfoHeaders(HttpHeaders rawHeaders) {
@@ -65,11 +82,15 @@ public final class BlobsGetAccountInfoHeaders {
         if (xMsAccountKind != null) {
             this.xMsAccountKind = AccountKind.fromString(xMsAccountKind);
         }
+        String xMsIsHnsEnabled = rawHeaders.getValue(X_MS_IS_HNS_ENABLED);
+        if (xMsIsHnsEnabled != null) {
+            this.xMsIsHnsEnabled = Boolean.parseBoolean(xMsIsHnsEnabled);
+        }
         String xMsSkuName = rawHeaders.getValue(X_MS_SKU_NAME);
         if (xMsSkuName != null) {
             this.xMsSkuName = SkuName.fromString(xMsSkuName);
         }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
@@ -79,7 +100,7 @@ public final class BlobsGetAccountInfoHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -88,7 +109,7 @@ public final class BlobsGetAccountInfoHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @param xMsVersion the xMsVersion value to set.
      * @return the BlobsGetAccountInfoHeaders object itself.
      */
@@ -99,7 +120,7 @@ public final class BlobsGetAccountInfoHeaders {
 
     /**
      * Get the xMsAccountKind property: The x-ms-account-kind property.
-     * 
+     *
      * @return the xMsAccountKind value.
      */
     public AccountKind getXMsAccountKind() {
@@ -108,7 +129,7 @@ public final class BlobsGetAccountInfoHeaders {
 
     /**
      * Set the xMsAccountKind property: The x-ms-account-kind property.
-     * 
+     *
      * @param xMsAccountKind the xMsAccountKind value to set.
      * @return the BlobsGetAccountInfoHeaders object itself.
      */
@@ -118,8 +139,28 @@ public final class BlobsGetAccountInfoHeaders {
     }
 
     /**
+     * Get the xMsIsHnsEnabled property: The x-ms-is-hns-enabled property.
+     *
+     * @return the xMsIsHnsEnabled value.
+     */
+    public Boolean isXMsIsHnsEnabled() {
+        return this.xMsIsHnsEnabled;
+    }
+
+    /**
+     * Set the xMsIsHnsEnabled property: The x-ms-is-hns-enabled property.
+     *
+     * @param xMsIsHnsEnabled the xMsIsHnsEnabled value to set.
+     * @return the BlobsGetAccountInfoHeaders object itself.
+     */
+    public BlobsGetAccountInfoHeaders setXMsIsHnsEnabled(Boolean xMsIsHnsEnabled) {
+        this.xMsIsHnsEnabled = xMsIsHnsEnabled;
+        return this;
+    }
+
+    /**
      * Get the xMsSkuName property: The x-ms-sku-name property.
-     * 
+     *
      * @return the xMsSkuName value.
      */
     public SkuName getXMsSkuName() {
@@ -128,7 +169,7 @@ public final class BlobsGetAccountInfoHeaders {
 
     /**
      * Set the xMsSkuName property: The x-ms-sku-name property.
-     * 
+     *
      * @param xMsSkuName the xMsSkuName value to set.
      * @return the BlobsGetAccountInfoHeaders object itself.
      */
@@ -139,7 +180,7 @@ public final class BlobsGetAccountInfoHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -148,7 +189,7 @@ public final class BlobsGetAccountInfoHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlobsGetAccountInfoHeaders object itself.
      */
@@ -159,7 +200,7 @@ public final class BlobsGetAccountInfoHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
+     *
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -168,7 +209,7 @@ public final class BlobsGetAccountInfoHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
+     *
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlobsGetAccountInfoHeaders object itself.
      */
@@ -179,7 +220,7 @@ public final class BlobsGetAccountInfoHeaders {
 
     /**
      * Get the date property: The Date property.
-     * 
+     *
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -191,7 +232,7 @@ public final class BlobsGetAccountInfoHeaders {
 
     /**
      * Set the date property: The Date property.
-     * 
+     *
      * @param date the date value to set.
      * @return the BlobsGetAccountInfoHeaders object itself.
      */

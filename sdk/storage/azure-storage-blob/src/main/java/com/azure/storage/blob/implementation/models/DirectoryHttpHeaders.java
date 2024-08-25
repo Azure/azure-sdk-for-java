@@ -5,33 +5,41 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Parameter group. */
+@JacksonXmlRootElement(localName = "DirectoryHttpHeaders")
 @Fluent
 public final class DirectoryHttpHeaders {
     /*
      * Cache control for given resource
      */
+    @JsonProperty(value = "cacheControl")
     private String cacheControl;
 
     /*
      * Content type for given resource
      */
+    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * Content encoding for given resource
      */
+    @JsonProperty(value = "contentEncoding")
     private String contentEncoding;
 
     /*
      * Content language for given resource
      */
+    @JsonProperty(value = "contentLanguage")
     private String contentLanguage;
 
     /*
      * Content disposition for given resource
      */
+    @JsonProperty(value = "contentDisposition")
     private String contentDisposition;
 
     /**
