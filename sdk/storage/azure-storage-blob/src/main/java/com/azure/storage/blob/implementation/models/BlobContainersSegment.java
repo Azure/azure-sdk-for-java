@@ -5,61 +5,70 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobContainerItem;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
-/**
- * An enumeration of containers.
- */
+/** An enumeration of containers. */
+@JacksonXmlRootElement(localName = "EnumerationResults")
 @Fluent
-public final class BlobContainersSegment implements XmlSerializable<BlobContainersSegment> {
+public final class BlobContainersSegment {
     /*
      * The ServiceEndpoint property.
      */
+    @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
     /*
      * The Prefix property.
      */
+    @JsonProperty(value = "Prefix")
     private String prefix;
 
     /*
      * The Marker property.
      */
+    @JsonProperty(value = "Marker")
     private String marker;
 
     /*
      * The MaxResults property.
      */
+    @JsonProperty(value = "MaxResults")
     private Integer maxResults;
 
     /*
      * The NextMarker property.
      */
+    @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
+
+    private static final class ContainersWrapper {
+        @JacksonXmlProperty(localName = "Container")
+        private final List<BlobContainerItem> items;
+
+        @JsonCreator
+        private ContainersWrapper(@JacksonXmlProperty(localName = "Container") List<BlobContainerItem> items) {
+            this.items = items;
+        }
+    }
 
     /*
      * The BlobContainerItems property.
      */
-    private List<BlobContainerItem> blobContainerItems;
+    @JsonProperty(value = "Containers")
+    private ContainersWrapper blobContainerItems;
 
-    /**
-     * Creates an instance of BlobContainersSegment class.
-     */
-    public BlobContainersSegment() {
-    }
+    /** Creates an instance of BlobContainersSegment class. */
+    public BlobContainersSegment() {}
 
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
-     * 
+     *
      * @return the serviceEndpoint value.
      */
     public String getServiceEndpoint() {
@@ -68,7 +77,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
 
     /**
      * Set the serviceEndpoint property: The ServiceEndpoint property.
-     * 
+     *
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the BlobContainersSegment object itself.
      */
@@ -79,7 +88,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
 
     /**
      * Get the prefix property: The Prefix property.
-     * 
+     *
      * @return the prefix value.
      */
     public String getPrefix() {
@@ -88,7 +97,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
 
     /**
      * Set the prefix property: The Prefix property.
-     * 
+     *
      * @param prefix the prefix value to set.
      * @return the BlobContainersSegment object itself.
      */
@@ -99,7 +108,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
 
     /**
      * Get the marker property: The Marker property.
-     * 
+     *
      * @return the marker value.
      */
     public String getMarker() {
@@ -108,7 +117,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
 
     /**
      * Set the marker property: The Marker property.
-     * 
+     *
      * @param marker the marker value to set.
      * @return the BlobContainersSegment object itself.
      */
@@ -119,7 +128,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
 
     /**
      * Get the maxResults property: The MaxResults property.
-     * 
+     *
      * @return the maxResults value.
      */
     public Integer getMaxResults() {
@@ -128,7 +137,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
 
     /**
      * Set the maxResults property: The MaxResults property.
-     * 
+     *
      * @param maxResults the maxResults value to set.
      * @return the BlobContainersSegment object itself.
      */
@@ -139,7 +148,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
 
     /**
      * Get the nextMarker property: The NextMarker property.
-     * 
+     *
      * @return the nextMarker value.
      */
     public String getNextMarker() {
@@ -148,7 +157,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
 
     /**
      * Set the nextMarker property: The NextMarker property.
-     * 
+     *
      * @param nextMarker the nextMarker value to set.
      * @return the BlobContainersSegment object itself.
      */
@@ -159,110 +168,24 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
 
     /**
      * Get the blobContainerItems property: The BlobContainerItems property.
-     * 
+     *
      * @return the blobContainerItems value.
      */
     public List<BlobContainerItem> getBlobContainerItems() {
         if (this.blobContainerItems == null) {
-            this.blobContainerItems = new ArrayList<>();
+            this.blobContainerItems = new ContainersWrapper(new ArrayList<BlobContainerItem>());
         }
-        return this.blobContainerItems;
+        return this.blobContainerItems.items;
     }
 
     /**
      * Set the blobContainerItems property: The BlobContainerItems property.
-     * 
+     *
      * @param blobContainerItems the blobContainerItems value to set.
      * @return the BlobContainersSegment object itself.
      */
     public BlobContainersSegment setBlobContainerItems(List<BlobContainerItem> blobContainerItems) {
-        this.blobContainerItems = blobContainerItems;
+        this.blobContainerItems = new ContainersWrapper(blobContainerItems);
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeStringAttribute("ServiceEndpoint", this.serviceEndpoint);
-        xmlWriter.writeStringElement("Prefix", this.prefix);
-        xmlWriter.writeStringElement("Marker", this.marker);
-        xmlWriter.writeNumberElement("MaxResults", this.maxResults);
-        xmlWriter.writeStringElement("NextMarker", this.nextMarker);
-        if (this.blobContainerItems != null) {
-            xmlWriter.writeStartElement("Containers");
-            for (BlobContainerItem element : this.blobContainerItems) {
-                xmlWriter.writeXml(element, "Container");
-            }
-            xmlWriter.writeEndElement();
-        }
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of BlobContainersSegment from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of BlobContainersSegment if the XmlReader was pointing to an instance of it, or null if it
-     * was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the BlobContainersSegment.
-     */
-    public static BlobContainersSegment fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of BlobContainersSegment from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of BlobContainersSegment if the XmlReader was pointing to an instance of it, or null if it
-     * was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the BlobContainersSegment.
-     */
-    public static BlobContainersSegment fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            BlobContainersSegment deserializedBlobContainersSegment = new BlobContainersSegment();
-            deserializedBlobContainersSegment.serviceEndpoint = reader.getStringAttribute(null, "ServiceEndpoint");
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("Prefix".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainersSegment.prefix = reader.getStringElement();
-                } else if ("Marker".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainersSegment.marker = reader.getStringElement();
-                } else if ("MaxResults".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainersSegment.maxResults = reader.getNullableElement(Integer::parseInt);
-                } else if ("NextMarker".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainersSegment.nextMarker = reader.getStringElement();
-                } else if ("Containers".equals(elementName.getLocalPart())) {
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        elementName = reader.getElementName();
-                        if ("Container".equals(elementName.getLocalPart())) {
-                            if (deserializedBlobContainersSegment.blobContainerItems == null) {
-                                deserializedBlobContainersSegment.blobContainerItems = new ArrayList<>();
-                            }
-                            deserializedBlobContainersSegment.blobContainerItems
-                                .add(BlobContainerItem.fromXml(reader, "Container"));
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedBlobContainersSegment;
-        });
     }
 }

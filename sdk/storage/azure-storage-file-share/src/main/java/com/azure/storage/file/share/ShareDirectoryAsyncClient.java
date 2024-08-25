@@ -25,7 +25,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -42,7 +41,6 @@ import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
-import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -55,7 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -311,55 +308,14 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
                                                                  Map<String, String> metadata) {
         try {
-            return withContext(context -> createWithResponse(smbProperties, filePermission, null,
-                metadata, context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
-     * Creates a directory in the file share and returns a response of ShareDirectoryInfo to interact with it.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Create the directory</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions -->
-     * <pre>
-     * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;
-     *         .setSmbProperties&#40;new FileSmbProperties&#40;&#41;&#41;
-     *         .setFilePermission&#40;&quot;filePermission&quot;&#41;
-     *         .setFilePermissionFormat&#40;FilePermissionFormat.BINARY&#41;
-     *         .setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
-     *
-     * shareDirectoryAsyncClient.createWithResponse&#40;options&#41;
-     *         .subscribe&#40;response -&gt;
-     *             System.out.println&#40;&quot;Completed creating the directory with status code:&quot; + response.getStatusCode&#40;&#41;&#41;,
-     *             error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createWithResponse#ShareDirectoryCreateOptions -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
-     *
-     * @param options {@link ShareDirectoryCreateOptions}
-     * @return A response containing the directory info and the status of creating the directory.
-     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
-     * directory name is an invalid resource name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareDirectoryInfo>> createWithResponse(ShareDirectoryCreateOptions options) {
-        try {
-            return withContext(context -> createWithResponse(options.getSmbProperties(), options.getFilePermission(),
-                options.getFilePermissionFormat(), options.getMetadata(), context));
+            return withContext(context -> createWithResponse(smbProperties, filePermission, metadata, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<ShareDirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
-        FilePermissionFormat filePermissionFormat, Map<String, String> metadata, Context context) {
+                                                          Map<String, String> metadata, Context context) {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
@@ -377,8 +333,7 @@ public class ShareDirectoryAsyncClient {
 
         return azureFileStorageClient.getDirectories()
             .createWithResponseAsync(shareName, directoryPath, fileAttributes, null, metadata, filePermission,
-                filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
             .map(ModelHelper::mapShareDirectoryInfo);
     }
 
@@ -457,9 +412,8 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options, Context context) {
         try {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
-            return createWithResponse(options.getSmbProperties(), options.getFilePermission(),
-                null, options.getMetadata(), context)
-                .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
+            return createWithResponse(options.getSmbProperties(), options.getFilePermission(), options.getMetadata(),
+                context).onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
                     .getStatusCode() == 409, t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -533,8 +487,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
-            .deleteNoCustomHeadersWithResponseAsync(shareName, directoryPath, null, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .deleteNoCustomHeadersWithResponseAsync(shareName, directoryPath, null, context);
     }
 
     /**
@@ -673,7 +626,6 @@ public class ShareDirectoryAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
             .getPropertiesWithResponseAsync(shareName, directoryPath, snapshot, null, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::mapShareDirectoryPropertiesResponse);
     }
 
@@ -734,50 +686,14 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties,
                                                                         String filePermission) {
         try {
-            return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, null,
-                context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
-     * Sets the properties of this directory. The properties include the file SMB properties and the file permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Set directory properties</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#ShareDirectorySetPropertiesOptions -->
-     * <pre>
-     * ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions&#40;&#41;;
-     * options.setSmbProperties&#40;new FileSmbProperties&#40;&#41;&#41;;
-     * options.setFilePermissions&#40;new ShareFilePermission&#40;&#41;.setPermission&#40;&quot;filePermission&quot;&#41;
-     *     .setPermissionFormat&#40;FilePermissionFormat.BINARY&#41;&#41;;
-     * shareDirectoryAsyncClient.setPropertiesWithResponse&#40;options&#41;.subscribe&#40;properties -&gt; &#123;
-     *     System.out.printf&#40;&quot;Directory latest modified date is %s:&quot;, properties.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#ShareDirectorySetPropertiesOptions -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
-     *
-     * @param options {@link ShareDirectorySetPropertiesOptions}
-     * @return A response containing the storage directory smb properties with headers and response status code
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(ShareDirectorySetPropertiesOptions options) {
-        try {
-            return withContext(context -> setPropertiesWithResponse(options.getSmbProperties(),
-                options.getFilePermissions().getPermission(), options.getFilePermissions().getPermissionFormat(), context));
+            return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
-        FilePermissionFormat filePermissionFormat, Context context) {
+                                                                 Context context) {
 
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
@@ -796,8 +712,7 @@ public class ShareDirectoryAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
             .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, null, filePermission,
-                filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
             .map(ModelHelper::mapSetPropertiesResponse);
     }
 
@@ -888,7 +803,6 @@ public class ShareDirectoryAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
             .setMetadataWithResponseAsync(shareName, directoryPath, null, metadata, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(ModelHelper::setShareDirectoryMetadataResponse);
     }
 
@@ -1019,7 +933,6 @@ public class ShareDirectoryAsyncClient {
                     modifiedOptions.getPrefix(), snapshot, marker,
                     pageSize == null ? modifiedOptions.getMaxResultsPerPage() : pageSize, null, finalIncludeTypes,
                     modifiedOptions.includeExtendedInfo(), context), timeout)
-                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), ModelHelper.convertResponseAndGetNumOfResults(response),
                     response.getValue().getNextMarker(), null));
@@ -1065,7 +978,6 @@ public class ShareDirectoryAsyncClient {
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
                 .listHandlesWithResponseAsync(shareName, directoryPath, marker, maxResultPerPage, null, snapshot,
                     recursive, context), timeout)
-                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -1138,7 +1050,6 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId, Context context) {
         return this.azureFileStorageClient.getDirectories().forceCloseHandlesWithResponseAsync(shareName, directoryPath,
             handleId, null, null, snapshot, false, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
             .map(response -> new SimpleResponse<>(response,
                 new CloseHandlesInfo(response.getDeserializedHeaders().getXMsNumberOfHandlesClosed(),
                     response.getDeserializedHeaders().getXMsNumberOfHandlesFailed())));
@@ -1183,7 +1094,6 @@ public class ShareDirectoryAsyncClient {
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
                 .forceCloseHandlesWithResponseAsync(shareName, directoryPath, "*", null, marker, snapshot,
                     recursive, context), timeout)
-                .onErrorMap(ModelHelper::mapToShareStorageException)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -1304,9 +1214,8 @@ public class ShareDirectoryAsyncClient {
         return destinationDirectoryClient.azureFileStorageClient.getDirectories().renameWithResponseAsync(
             destinationDirectoryClient.getShareName(), destinationDirectoryClient.getDirectoryPath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
-            options.getFilePermission(), options.getFilePermissionFormat(), filePermissionKey, options.getMetadata(),
-            sourceConditions, destinationConditions, smbInfo, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
+            destinationConditions, smbInfo, context)
             .map(response -> new SimpleResponse<>(response, destinationDirectoryClient));
     }
 
@@ -1399,7 +1308,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         ShareDirectoryAsyncClient createSubClient = getSubdirectoryClient(subdirectoryName);
-        return createSubClient.createWithResponse(smbProperties, filePermission, null, metadata, context)
+        return createSubClient.createWithResponse(smbProperties, filePermission, metadata, context)
             .map(response -> new SimpleResponse<>(response, createSubClient));
     }
 
@@ -1787,7 +1696,7 @@ public class ShareDirectoryAsyncClient {
         Map<String, String> metadata, ShareRequestConditions requestConditions, Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
-            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, metadata, requestConditions,
+            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions,
                 context).map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 
@@ -2154,24 +2063,7 @@ public class ShareDirectoryAsyncClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
-        return generateSas(shareServiceSasSignatureValues, null, context);
-    }
-
-    /**
-     * Generates a service SAS for the directory using the specified {@link ShareServiceSasSignatureValues}
-     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
-     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
-     *
-     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
-     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
-     * signature.
-     * @param context Additional context that is passed through the code when generating a SAS.
-     *
-     * @return A {@code String} representing the SAS query parameters.
-     */
-    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
-        Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getDirectoryPath())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 }

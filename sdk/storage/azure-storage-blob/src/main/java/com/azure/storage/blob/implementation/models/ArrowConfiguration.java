@@ -5,123 +5,56 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
-/**
- * Groups the settings used for formatting the response if the response should be Arrow formatted.
- */
+/** Groups the settings used for formatting the response if the response should be Arrow formatted. */
+@JacksonXmlRootElement(localName = "ArrowConfiguration")
 @Fluent
-public final class ArrowConfiguration implements XmlSerializable<ArrowConfiguration> {
+public final class ArrowConfiguration {
+    private static final class SchemaWrapper {
+        @JacksonXmlProperty(localName = "Field")
+        private final List<ArrowField> items;
+
+        @JsonCreator
+        private SchemaWrapper(@JacksonXmlProperty(localName = "Field") List<ArrowField> items) {
+            this.items = items;
+        }
+    }
+
     /*
      * The Schema property.
      */
-    private List<ArrowField> schema;
+    @JsonProperty(value = "Schema", required = true)
+    private SchemaWrapper schema;
 
-    /**
-     * Creates an instance of ArrowConfiguration class.
-     */
-    public ArrowConfiguration() {
-    }
+    /** Creates an instance of ArrowConfiguration class. */
+    public ArrowConfiguration() {}
 
     /**
      * Get the schema property: The Schema property.
-     * 
+     *
      * @return the schema value.
      */
     public List<ArrowField> getSchema() {
         if (this.schema == null) {
-            this.schema = new ArrayList<>();
+            this.schema = new SchemaWrapper(new ArrayList<ArrowField>());
         }
-        return this.schema;
+        return this.schema.items;
     }
 
     /**
      * Set the schema property: The Schema property.
-     * 
+     *
      * @param schema the schema value to set.
      * @return the ArrowConfiguration object itself.
      */
     public ArrowConfiguration setSchema(List<ArrowField> schema) {
-        this.schema = schema;
+        this.schema = new SchemaWrapper(schema);
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ArrowConfiguration" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        if (this.schema != null) {
-            xmlWriter.writeStartElement("Schema");
-            for (ArrowField element : this.schema) {
-                xmlWriter.writeXml(element, "Field");
-            }
-            xmlWriter.writeEndElement();
-        }
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of ArrowConfiguration from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of ArrowConfiguration if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the ArrowConfiguration.
-     */
-    public static ArrowConfiguration fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of ArrowConfiguration from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of ArrowConfiguration if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the ArrowConfiguration.
-     */
-    public static ArrowConfiguration fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ArrowConfiguration" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            ArrowConfiguration deserializedArrowConfiguration = new ArrowConfiguration();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("Schema".equals(elementName.getLocalPart())) {
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        elementName = reader.getElementName();
-                        if ("Field".equals(elementName.getLocalPart())) {
-                            if (deserializedArrowConfiguration.schema == null) {
-                                deserializedArrowConfiguration.schema = new ArrayList<>();
-                            }
-                            deserializedArrowConfiguration.schema.add(ArrowField.fromXml(reader, "Field"));
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedArrowConfiguration;
-        });
     }
 }

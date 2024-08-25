@@ -30,8 +30,8 @@ import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper;
-import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
 import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
+import com.azure.storage.queue.models.QueueStorageException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -67,7 +67,7 @@ public final class MessagesImpl {
     public interface MessagesService {
         @Get("/{queueName}/messages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper>> dequeue(
             @HostParam("url") String url, @PathParam("queueName") String queueName,
             @QueryParam("numofmessages") Integer numberOfMessages,
@@ -77,7 +77,7 @@ public final class MessagesImpl {
 
         @Get("/{queueName}/messages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<Response<QueueMessageItemInternalWrapper>> dequeueNoCustomHeaders(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("numofmessages") Integer numberOfMessages,
             @QueryParam("visibilitytimeout") Integer visibilitytimeout, @QueryParam("timeout") Integer timeout,
@@ -86,7 +86,7 @@ public final class MessagesImpl {
 
         @Get("/{queueName}/messages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper> dequeueSync(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("numofmessages") Integer numberOfMessages,
             @QueryParam("visibilitytimeout") Integer visibilitytimeout, @QueryParam("timeout") Integer timeout,
@@ -95,7 +95,7 @@ public final class MessagesImpl {
 
         @Get("/{queueName}/messages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Response<QueueMessageItemInternalWrapper> dequeueNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("numofmessages") Integer numberOfMessages,
             @QueryParam("visibilitytimeout") Integer visibilitytimeout, @QueryParam("timeout") Integer timeout,
@@ -104,7 +104,7 @@ public final class MessagesImpl {
 
         @Delete("/{queueName}/messages")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ResponseBase<MessagesClearHeaders, Void>> clear(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
@@ -112,7 +112,7 @@ public final class MessagesImpl {
 
         @Delete("/{queueName}/messages")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<Response<Void>> clearNoCustomHeaders(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
@@ -120,7 +120,7 @@ public final class MessagesImpl {
 
         @Delete("/{queueName}/messages")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         ResponseBase<MessagesClearHeaders, Void> clearSync(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
@@ -128,7 +128,7 @@ public final class MessagesImpl {
 
         @Delete("/{queueName}/messages")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Response<Void> clearNoCustomHeadersSync(@HostParam("url") String url, @PathParam("queueName") String queueName,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
@@ -136,7 +136,7 @@ public final class MessagesImpl {
 
         @Post("/{queueName}/messages")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper>> enqueue(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("visibilitytimeout") Integer visibilitytimeout,
             @QueryParam("messagettl") Integer messageTimeToLive, @QueryParam("timeout") Integer timeout,
@@ -146,7 +146,7 @@ public final class MessagesImpl {
 
         @Post("/{queueName}/messages")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<Response<SendMessageResultWrapper>> enqueueNoCustomHeaders(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("visibilitytimeout") Integer visibilitytimeout,
             @QueryParam("messagettl") Integer messageTimeToLive, @QueryParam("timeout") Integer timeout,
@@ -156,7 +156,7 @@ public final class MessagesImpl {
 
         @Post("/{queueName}/messages")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper> enqueueSync(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("visibilitytimeout") Integer visibilitytimeout,
             @QueryParam("messagettl") Integer messageTimeToLive, @QueryParam("timeout") Integer timeout,
@@ -166,7 +166,7 @@ public final class MessagesImpl {
 
         @Post("/{queueName}/messages")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Response<SendMessageResultWrapper> enqueueNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("visibilitytimeout") Integer visibilitytimeout,
             @QueryParam("messagettl") Integer messageTimeToLive, @QueryParam("timeout") Integer timeout,
@@ -176,7 +176,7 @@ public final class MessagesImpl {
 
         @Get("/{queueName}/messages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper>> peek(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("peekonly") String peekonly,
             @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("timeout") Integer timeout,
@@ -185,7 +185,7 @@ public final class MessagesImpl {
 
         @Get("/{queueName}/messages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<Response<PeekedMessageItemInternalWrapper>> peekNoCustomHeaders(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("peekonly") String peekonly,
             @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("timeout") Integer timeout,
@@ -194,7 +194,7 @@ public final class MessagesImpl {
 
         @Get("/{queueName}/messages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> peekSync(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("peekonly") String peekonly,
             @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("timeout") Integer timeout,
@@ -203,7 +203,7 @@ public final class MessagesImpl {
 
         @Get("/{queueName}/messages")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(QueueStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Response<PeekedMessageItemInternalWrapper> peekNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("queueName") String queueName, @QueryParam("peekonly") String peekonly,
             @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("timeout") Integer timeout,
@@ -228,7 +228,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Get Messages on a Queue along with {@link ResponseBase} on successful
      * completion of {@link Mono}.
@@ -259,7 +259,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Get Messages on a Queue along with {@link ResponseBase} on successful
      * completion of {@link Mono}.
@@ -290,7 +290,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Get Messages on a Queue on successful completion of {@link Mono}.
      */
@@ -319,7 +319,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Get Messages on a Queue on successful completion of {@link Mono}.
      */
@@ -347,7 +347,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Get Messages on a Queue along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -378,7 +378,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Get Messages on a Queue along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -409,7 +409,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Get Messages on a Queue along with {@link ResponseBase}.
      */
@@ -438,7 +438,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Get Messages on a Queue.
      */
@@ -467,7 +467,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Get Messages on a Queue along with {@link Response}.
      */
@@ -489,7 +489,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -512,7 +512,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -534,7 +534,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -554,7 +554,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -573,7 +573,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -596,7 +596,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -619,7 +619,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -641,7 +641,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -660,7 +660,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -695,7 +695,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Put Message on a Queue along with {@link ResponseBase} on successful
      * completion of {@link Mono}.
@@ -733,7 +733,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Put Message on a Queue along with {@link ResponseBase} on successful
      * completion of {@link Mono}.
@@ -770,7 +770,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Put Message on a Queue on successful completion of {@link Mono}.
      */
@@ -805,7 +805,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Put Message on a Queue on successful completion of {@link Mono}.
      */
@@ -839,7 +839,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Put Message on a Queue along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -878,7 +878,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Put Message on a Queue along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -916,7 +916,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Put Message on a Queue along with {@link ResponseBase}.
      */
@@ -952,7 +952,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Put Message on a Queue.
      */
@@ -987,7 +987,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Put Message on a Queue along with {@link Response}.
      */
@@ -1014,7 +1014,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Peek Messages on a Queue along with {@link ResponseBase} on successful
      * completion of {@link Mono}.
@@ -1043,7 +1043,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Peek Messages on a Queue along with {@link ResponseBase} on successful
      * completion of {@link Mono}.
@@ -1071,7 +1071,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Peek Messages on a Queue on successful completion of {@link Mono}.
      */
@@ -1097,7 +1097,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Peek Messages on a Queue on successful completion of {@link Mono}.
      */
@@ -1122,7 +1122,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Peek Messages on a Queue along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -1151,7 +1151,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Peek Messages on a Queue along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -1180,7 +1180,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Peek Messages on a Queue along with {@link ResponseBase}.
      */
@@ -1207,7 +1207,7 @@ public final class MessagesImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Peek Messages on a Queue.
      */
@@ -1232,7 +1232,7 @@ public final class MessagesImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws QueueStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Peek Messages on a Queue along with {@link Response}.
      */

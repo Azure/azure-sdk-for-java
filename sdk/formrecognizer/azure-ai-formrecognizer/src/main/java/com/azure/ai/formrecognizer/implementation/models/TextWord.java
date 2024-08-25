@@ -5,42 +5,36 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * An object representing a word.
- */
+/** An object representing a word. */
 @Fluent
-public final class TextWord implements JsonSerializable<TextWord> {
+public final class TextWord {
     /*
      * The text content of the word.
      */
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * Bounding box of an extracted word.
      */
+    @JsonProperty(value = "boundingBox", required = true)
     private List<Float> boundingBox;
 
     /*
      * Confidence value.
      */
+    @JsonProperty(value = "confidence")
     private Float confidence;
 
-    /**
-     * Creates an instance of TextWord class.
-     */
-    public TextWord() {
-    }
+    /** Creates an instance of TextWord class. */
+    public TextWord() {}
 
     /**
      * Get the text property: The text content of the word.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -49,7 +43,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
 
     /**
      * Set the text property: The text content of the word.
-     * 
+     *
      * @param text the text value to set.
      * @return the TextWord object itself.
      */
@@ -60,7 +54,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
 
     /**
      * Get the boundingBox property: Bounding box of an extracted word.
-     * 
+     *
      * @return the boundingBox value.
      */
     public List<Float> getBoundingBox() {
@@ -69,7 +63,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
 
     /**
      * Set the boundingBox property: Bounding box of an extracted word.
-     * 
+     *
      * @param boundingBox the boundingBox value to set.
      * @return the TextWord object itself.
      */
@@ -80,7 +74,7 @@ public final class TextWord implements JsonSerializable<TextWord> {
 
     /**
      * Get the confidence property: Confidence value.
-     * 
+     *
      * @return the confidence value.
      */
     public Float getConfidence() {
@@ -89,53 +83,12 @@ public final class TextWord implements JsonSerializable<TextWord> {
 
     /**
      * Set the confidence property: Confidence value.
-     * 
+     *
      * @param confidence the confidence value to set.
      * @return the TextWord object itself.
      */
     public TextWord setConfidence(Float confidence) {
         this.confidence = confidence;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeArrayField("boundingBox", this.boundingBox, (writer, element) -> writer.writeFloat(element));
-        jsonWriter.writeNumberField("confidence", this.confidence);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TextWord from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TextWord if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TextWord.
-     */
-    public static TextWord fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            TextWord deserializedTextWord = new TextWord();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("text".equals(fieldName)) {
-                    deserializedTextWord.text = reader.getString();
-                } else if ("boundingBox".equals(fieldName)) {
-                    List<Float> boundingBox = reader.readArray(reader1 -> reader1.getFloat());
-                    deserializedTextWord.boundingBox = boundingBox;
-                } else if ("confidence".equals(fieldName)) {
-                    deserializedTextWord.confidence = reader.getNullable(JsonReader::getFloat);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedTextWord;
-        });
     }
 }

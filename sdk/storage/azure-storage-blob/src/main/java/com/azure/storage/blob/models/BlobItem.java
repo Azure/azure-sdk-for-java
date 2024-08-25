@@ -8,6 +8,9 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorPr
 import com.azure.storage.blob.implementation.accesshelpers.BlobItemPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.util.List;
 import java.util.Map;
@@ -21,8 +24,10 @@ import static com.azure.storage.blob.implementation.util.ModelHelper.transformOb
 /**
  * An Azure Storage blob.
  */
+@JacksonXmlRootElement(localName = "Blob")
 @Fluent
 public final class BlobItem {
+    @JsonUnwrapped
     private final BlobItemInternal blobItemInternal;
 
     static {
@@ -42,12 +47,16 @@ public final class BlobItem {
         this.blobItemInternal = new BlobItemInternal();
     }
 
+    @JsonIgnore
     private String convertedName;
 
+    @JsonIgnore
     private BlobItemProperties convertedProperties;
 
+    @JsonIgnore
     private Map<String, String> convertedTags;
 
+    @JsonIgnore
     private List<ObjectReplicationPolicy> convertedObjectReplicationSourcePolicies;
 
     /**

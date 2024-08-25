@@ -5,48 +5,45 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Groups the set of query request settings.
- */
+/** Groups the set of query request settings. */
+@JacksonXmlRootElement(localName = "QueryRequest")
 @Fluent
-public final class QueryRequest implements XmlSerializable<QueryRequest> {
+public final class QueryRequest {
     /*
      * Required. The type of the provided query expression.
      */
-    private String queryType = "SQL";
+    @JsonProperty(value = "QueryType", required = true)
+    private String queryType;
 
     /*
      * The query expression in SQL. The maximum size of the query expression is 256KiB.
      */
+    @JsonProperty(value = "Expression", required = true)
     private String expression;
 
     /*
      * The InputSerialization property.
      */
+    @JsonProperty(value = "InputSerialization")
     private QuerySerialization inputSerialization;
 
     /*
      * The OutputSerialization property.
      */
+    @JsonProperty(value = "OutputSerialization")
     private QuerySerialization outputSerialization;
 
-    /**
-     * Creates an instance of QueryRequest class.
-     */
+    /** Creates an instance of QueryRequest class. */
     public QueryRequest() {
+        queryType = "SQL";
     }
 
     /**
      * Get the queryType property: Required. The type of the provided query expression.
-     * 
+     *
      * @return the queryType value.
      */
     public String getQueryType() {
@@ -55,7 +52,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
 
     /**
      * Set the queryType property: Required. The type of the provided query expression.
-     * 
+     *
      * @param queryType the queryType value to set.
      * @return the QueryRequest object itself.
      */
@@ -66,7 +63,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
 
     /**
      * Get the expression property: The query expression in SQL. The maximum size of the query expression is 256KiB.
-     * 
+     *
      * @return the expression value.
      */
     public String getExpression() {
@@ -75,7 +72,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
 
     /**
      * Set the expression property: The query expression in SQL. The maximum size of the query expression is 256KiB.
-     * 
+     *
      * @param expression the expression value to set.
      * @return the QueryRequest object itself.
      */
@@ -86,7 +83,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
 
     /**
      * Get the inputSerialization property: The InputSerialization property.
-     * 
+     *
      * @return the inputSerialization value.
      */
     public QuerySerialization getInputSerialization() {
@@ -95,7 +92,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
 
     /**
      * Set the inputSerialization property: The InputSerialization property.
-     * 
+     *
      * @param inputSerialization the inputSerialization value to set.
      * @return the QueryRequest object itself.
      */
@@ -106,7 +103,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
 
     /**
      * Get the outputSerialization property: The OutputSerialization property.
-     * 
+     *
      * @return the outputSerialization value.
      */
     public QuerySerialization getOutputSerialization() {
@@ -115,78 +112,12 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
 
     /**
      * Set the outputSerialization property: The OutputSerialization property.
-     * 
+     *
      * @param outputSerialization the outputSerialization value to set.
      * @return the QueryRequest object itself.
      */
     public QueryRequest setOutputSerialization(QuerySerialization outputSerialization) {
         this.outputSerialization = outputSerialization;
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueryRequest" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeStringElement("QueryType", this.queryType);
-        xmlWriter.writeStringElement("Expression", this.expression);
-        xmlWriter.writeXml(this.inputSerialization, "InputSerialization");
-        xmlWriter.writeXml(this.outputSerialization, "OutputSerialization");
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of QueryRequest from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of QueryRequest if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the QueryRequest.
-     */
-    public static QueryRequest fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of QueryRequest from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of QueryRequest if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the QueryRequest.
-     */
-    public static QueryRequest fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueryRequest" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            QueryRequest deserializedQueryRequest = new QueryRequest();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("QueryType".equals(elementName.getLocalPart())) {
-                    deserializedQueryRequest.queryType = reader.getStringElement();
-                } else if ("Expression".equals(elementName.getLocalPart())) {
-                    deserializedQueryRequest.expression = reader.getStringElement();
-                } else if ("InputSerialization".equals(elementName.getLocalPart())) {
-                    deserializedQueryRequest.inputSerialization
-                        = QuerySerialization.fromXml(reader, "InputSerialization");
-                } else if ("OutputSerialization".equals(elementName.getLocalPart())) {
-                    deserializedQueryRequest.outputSerialization
-                        = QuerySerialization.fromXml(reader, "OutputSerialization");
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedQueryRequest;
-        });
     }
 }

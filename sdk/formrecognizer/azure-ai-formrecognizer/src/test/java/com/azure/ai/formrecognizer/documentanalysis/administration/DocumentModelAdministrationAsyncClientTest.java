@@ -70,8 +70,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         return getDocumentModelAdminClientBuilder(
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
-            serviceVersion
-        )
+            serviceVersion,
+            true)
             .buildAsyncClient();
     }
 
@@ -251,7 +251,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
             validateDocumentModelData(composedModel);
             Assertions.assertEquals(TestUtils.EXPECTED_DESC, composedModel.getDescription());
-            Assertions.assertNotNull(composedModel.getTags());
+            Assertions.assertEquals(TestUtils.EXPECTED_MODEL_TAGS, composedModel.getTags());
             Assertions.assertEquals(composedModelId, composedModel.getModelId());
 
             client.deleteDocumentModel(createdModel1.getModelId()).block();
@@ -297,7 +297,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                         .getFinalResult());
 
                 ResponseError actualError = (ResponseError) httpResponseException.getValue();
-                Assertions.assertNotNull(actualError.getCode());
+                Assertions.assertEquals("InvalidRequest", actualError.getCode());
             } else {
                 HttpResponseException httpResponseException
                     = Assertions.assertThrows(HttpResponseException.class, () ->
@@ -336,7 +336,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
             validateDocumentModelData(createdModel);
             Assertions.assertEquals(TestUtils.EXPECTED_DESC, createdModel.getDescription());
-            Assertions.assertNotNull(createdModel.getTags());
+            Assertions.assertEquals(TestUtils.EXPECTED_MODEL_TAGS, createdModel.getTags());
             Assertions.assertEquals(modelId, createdModel.getModelId());
 
             client.deleteDocumentModel(createdModel.getModelId()).block();
@@ -430,7 +430,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             Assertions.assertEquals(target.getTargetModelId(), copiedModel.getModelId());
             validateDocumentModelData(copiedModel);
             Assertions.assertEquals(TestUtils.EXPECTED_DESC, copiedModel.getDescription());
-            Assertions.assertNotNull(copiedModel.getTags());
+            Assertions.assertEquals(TestUtils.EXPECTED_MODEL_TAGS, copiedModel.getTags());
             Assertions.assertEquals(modelId, target.getTargetModelId());
 
             client.deleteDocumentModel(actualModel.getModelId()).block();
@@ -534,7 +534,6 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildClassifier(HttpClient httpClient,
                                      DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
@@ -563,8 +562,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             validateClassifierModelData(buildModelPoller.getFinalResult());
             assertNotNull(documentClassifierDetails.getDocumentTypes());
             documentClassifierDetails.getDocumentTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertNotNull(((BlobContentSource) classifierDocumentTypeDetails.getContentSource())
-                .getContainerUrl()));
+                -> assertTrue(((BlobContentSource) classifierDocumentTypeDetails.getContentSource())
+                .getContainerUrl().contains("training-data-classifier")));
         });
     }
 
@@ -574,7 +573,6 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildClassifierWithJsonL(HttpClient httpClient,
                                               DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
@@ -602,8 +600,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             assertNotNull(documentClassifierDetails.getDocumentTypes());
             documentClassifierDetails.getDocumentTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertNotNull(((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource())
-                .getContainerUrl()));
+                -> assertTrue(((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource())
+                .getContainerUrl().contains("training-data-classifier")));
 
             validateClassifierModelData(buildModelPoller.getFinalResult());
         });

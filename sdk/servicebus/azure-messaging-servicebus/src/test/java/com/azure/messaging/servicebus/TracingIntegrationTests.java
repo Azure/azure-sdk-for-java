@@ -68,7 +68,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        spanProcessor = new TestSpanProcessor(TestUtils.getFullyQualifiedDomainName(true), getQueueName(0));
+        spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getQueueName(0));
         OpenTelemetryTracingOptions tracingOptions = new OpenTelemetryTracingOptions()
             .setOpenTelemetry(OpenTelemetrySdk.builder()
                 .setTracerProvider(
@@ -78,15 +78,15 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 .build());
         clientOptions = new ClientOptions().setTracingOptions(tracingOptions);
 
-        final ServiceBusClientBuilder senderBuilder = getAuthenticatedBuilder();
-        sender = toClose(senderBuilder
+        sender = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .sender()
             .queueName(getQueueName(0))
             .buildAsyncClient());
 
-        final ServiceBusClientBuilder receiverBuilder = getAuthenticatedBuilder();
-        receiver = toClose(receiverBuilder
+        receiver = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .receiver()
             .maxAutoLockRenewDuration(Duration.ZERO)
@@ -94,8 +94,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .disableAutoComplete()
             .buildAsyncClient());
 
-        final ServiceBusClientBuilder receiverSyncBuilder = getAuthenticatedBuilder();
-        receiverSync = toClose(receiverSyncBuilder
+        receiverSync = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .receiver()
             .queueName(getQueueName(0))
@@ -189,16 +189,16 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES)
             .setSessionId(sessionId);
 
-        OpenTelemetry otel = configureOTel(TestUtils.getFullyQualifiedDomainName(true), getSessionQueueName(0));
-        final ServiceBusClientBuilder senderBuilder = getAuthenticatedBuilder();
-        sender = toClose(senderBuilder
+        OpenTelemetry otel = configureOTel(getFullyQualifiedDomainName(), getSessionQueueName(0));
+        sender = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel)))
             .sender()
             .queueName(getSessionQueueName(0))
             .buildAsyncClient());
 
-        final ServiceBusClientBuilder receiverBuilder = getAuthenticatedBuilder();
-        ServiceBusSessionReceiverAsyncClient sessionReceiver = toClose(receiverBuilder
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel)))
             .sessionReceiver()
             .disableAutoComplete()
@@ -287,8 +287,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch processedFound = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process"));
 
-        final ServiceBusClientBuilder receiverBuilder = getAuthenticatedBuilder();
-        ServiceBusReceiverAsyncClient receiverWithLockRenewal = toClose(receiverBuilder
+        ServiceBusReceiverAsyncClient receiverWithLockRenewal = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .receiver()
             .queueName(getQueueName(0))
@@ -348,8 +348,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch processedFound = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process"));
 
-        final ServiceBusClientBuilder receiverBuilder = getAuthenticatedBuilder();
-        ServiceBusReceiverAsyncClient receiverAutoComplete = toClose(receiverBuilder
+        ServiceBusReceiverAsyncClient receiverAutoComplete = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .receiver()
             .queueName(getQueueName(0))
@@ -548,8 +548,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
-        final ServiceBusClientBuilder processorBuilder = getAuthenticatedBuilder();
-        processor = toClose(processorBuilder
+        processor = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))
@@ -598,10 +598,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         String sessionId = UUID.randomUUID().toString();
         ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES).setSessionId(sessionId);
 
-        OpenTelemetry otel = configureOTel(TestUtils.getFullyQualifiedDomainName(true), sessionQueueName);
+        OpenTelemetry otel = configureOTel(getFullyQualifiedDomainName(), sessionQueueName);
         clientOptions = new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel));
-        final ServiceBusClientBuilder senderBuilder = getAuthenticatedBuilder();
-        sender = toClose(senderBuilder
+        sender = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .sender()
             .queueName(sessionQueueName)
@@ -614,8 +614,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
-        final ServiceBusClientBuilder processorBuilder = getAuthenticatedBuilder();
-        processor = toClose(processorBuilder
+        processor = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .sessionProcessor()
             .maxConcurrentSessions(1)
@@ -668,8 +668,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch processedFound = new CountDownLatch(messageCount * 2);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process") || span.getName().equals("ServiceBus.complete"));
 
-        final ServiceBusClientBuilder processorBuilder = getAuthenticatedBuilder();
-        processor = toClose(processorBuilder
+        processor = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))
@@ -710,8 +710,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch processedFound = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process"));
 
-        final ServiceBusClientBuilder processorBuilder = getAuthenticatedBuilder();
-        processor = toClose(processorBuilder
+        processor = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))
@@ -753,8 +753,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             "ServiceBus.process".equals(span.getName()) && span.getParentSpanContext().getSpanId().equals(message1SpanId));
 
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
-        final ServiceBusClientBuilder processorBuilder = getAuthenticatedBuilder();
-        processor = toClose(processorBuilder
+        processor = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))

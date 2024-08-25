@@ -7,7 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
 
 /**
  * A {@code DataLakeStorageException} is thrown whenever Azure Storage successfully returns an error code that is not
@@ -38,7 +38,7 @@ public final class DataLakeStorageException extends HttpResponseException {
      * @return The error code returned by the service.
      */
     public String getErrorCode() {
-        return super.getResponse().getHeaders().getValue(ERROR_CODE_HEADER_NAME);
+        return super.getResponse().getHeaders().getValue(ERROR_CODE);
     }
 
     /**

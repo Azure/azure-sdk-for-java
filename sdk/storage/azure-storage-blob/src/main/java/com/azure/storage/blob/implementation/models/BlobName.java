@@ -5,36 +5,31 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlWriter;
-import javax.xml.stream.XMLStreamException;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
 
-/**
- * The BlobName model.
- */
+/** The BlobName model. */
+@JacksonXmlRootElement(localName = "BlobName")
 @Fluent
-public final class BlobName implements XmlSerializable<BlobName> {
+public final class BlobName {
     /*
      * Indicates if the blob name is encoded.
      */
+    @JacksonXmlProperty(localName = "Encoded", isAttribute = true)
     private Boolean encoded;
 
     /*
      * The name of the blob.
      */
-    private String content;
+    @JacksonXmlText private String content;
 
-    /**
-     * Creates an instance of BlobName class.
-     */
-    public BlobName() {
-    }
+    /** Creates an instance of BlobName class. */
+    public BlobName() {}
 
     /**
      * Get the encoded property: Indicates if the blob name is encoded.
-     * 
+     *
      * @return the encoded value.
      */
     public Boolean isEncoded() {
@@ -43,7 +38,7 @@ public final class BlobName implements XmlSerializable<BlobName> {
 
     /**
      * Set the encoded property: Indicates if the blob name is encoded.
-     * 
+     *
      * @param encoded the encoded value to set.
      * @return the BlobName object itself.
      */
@@ -54,7 +49,7 @@ public final class BlobName implements XmlSerializable<BlobName> {
 
     /**
      * Get the content property: The name of the blob.
-     * 
+     *
      * @return the content value.
      */
     public String getContent() {
@@ -63,59 +58,12 @@ public final class BlobName implements XmlSerializable<BlobName> {
 
     /**
      * Set the content property: The name of the blob.
-     * 
+     *
      * @param content the content value to set.
      * @return the BlobName object itself.
      */
     public BlobName setContent(String content) {
         this.content = content;
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobName" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeBooleanAttribute("Encoded", this.encoded);
-        xmlWriter.writeString(this.content);
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of BlobName from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of BlobName if the XmlReader was pointing to an instance of it, or null if it was pointing to
-     * XML null.
-     * @throws XMLStreamException If an error occurs while reading the BlobName.
-     */
-    public static BlobName fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of BlobName from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of BlobName if the XmlReader was pointing to an instance of it, or null if it was pointing to
-     * XML null.
-     * @throws XMLStreamException If an error occurs while reading the BlobName.
-     */
-    public static BlobName fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobName" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            BlobName deserializedBlobName = new BlobName();
-            deserializedBlobName.encoded = reader.getNullableAttribute(null, "Encoded", Boolean::parseBoolean);
-            deserializedBlobName.content = reader.getStringElement();
-
-            return deserializedBlobName;
-        });
     }
 }

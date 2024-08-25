@@ -3,14 +3,14 @@
 
 package com.azure.storage.internal.avro.implementation.schema;
 
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import static com.azure.storage.internal.avro.implementation.AvroConstants.Types.ARRAY;
 import static com.azure.storage.internal.avro.implementation.AvroConstants.Types.BOOLEAN;
@@ -31,15 +31,15 @@ import static com.azure.storage.internal.avro.implementation.AvroConstants.Types
 /**
  * A class that represents an Avro type.
  * AvroTypes function as a type that stores all the data a schema may need.
- *
- * @see AvroType#getType(Object)
+ * @see AvroType#getType(JsonNode)
  */
 public class AvroType {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     private final String type;
 
     /**
      * Creates a new instance of an AvroType.
-     *
      * @param type The type associated with the AvroType.
      */
     AvroType(String type) {
@@ -61,7 +61,6 @@ public class AvroType {
 
         /**
          * Creates a new instance of an AvroPrimitiveType.
-         *
          * @param type The type associated with the AvroType.
          * @see AvroConstants.Types#PRIMITIVE_TYPES
          */
@@ -73,7 +72,6 @@ public class AvroType {
     /**
      * An avro record type.
      * A record is defined by an array of fields.
-     *
      * @see AvroRecordField
      */
     static class AvroRecordType extends AvroType {
@@ -83,7 +81,6 @@ public class AvroType {
 
         /**
          * Creates a new instance of an AvroRecordType.
-         *
          * @param name The name of the record.
          * @param fields The fields in the record.
          */
@@ -119,7 +116,6 @@ public class AvroType {
 
         /**
          * Creates a new instance of an AvroEnumType.
-         *
          * @param name The name of the enum.
          * @param symbols The symbols associated with the enum.
          */
@@ -154,7 +150,6 @@ public class AvroType {
 
         /**
          * Creates a new instance of an AvroArrayType.
-         *
          * @param itemType The type of the items in the array.
          */
         AvroArrayType(AvroType itemType) {
@@ -180,7 +175,6 @@ public class AvroType {
 
         /**
          * Creates a new instance of an AvroMapType.
-         *
          * @param valueType The type of the values in the map.
          */
         AvroMapType(AvroType valueType) {
@@ -206,7 +200,6 @@ public class AvroType {
 
         /**
          * Creates a new instance of an AvroUnionType.
-         *
          * @param types The types that define a union.
          */
         AvroUnionType(List<AvroType> types) {
@@ -232,7 +225,6 @@ public class AvroType {
 
         /**
          * Creates a new instance of an AvroFixedType.
-         *
          * @param size The number of bytes to read.
          */
         AvroFixedType(Long size) {
@@ -255,11 +247,13 @@ public class AvroType {
      * @return {@link AvroType}
      */
     public static AvroType getType(String jsonString) {
-        try (JsonReader jsonReader = JsonProviders.createReader(jsonString)) {
-            return AvroType.getType(jsonReader.readUntyped());
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
+        JsonNode schemaJson;
+        try {
+            schemaJson = MAPPER.readTree(jsonString);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e.getMessage());
         }
+        return AvroType.getType(schemaJson);
     }
 
     /**
@@ -268,19 +262,20 @@ public class AvroType {
      * @param jsonSchema the json node that specifies the schema.
      * @return {@link AvroType}
      */
-    @SuppressWarnings("unchecked")
-    private static AvroType getType(Object jsonSchema) {
-        if (jsonSchema instanceof String) {
+    private static AvroType getType(JsonNode jsonSchema) {
+        JsonNodeType nodeType = jsonSchema.getNodeType();
+        switch (nodeType) {
             /* Primitive Avro Types. */
-            return getJsonStringType((String) jsonSchema);
-        } else if (jsonSchema instanceof List<?>) {
+            case STRING:
+                return getJsonStringType(jsonSchema);
             /* Union Avro Types. */
-            return getJsonArrayType((List<Object>) jsonSchema);
-        } else if (jsonSchema instanceof Map<?, ?>) {
+            case ARRAY:
+                return getJsonArrayType(jsonSchema);
             /* Complex Avro Types. */
-            return getJsonObjectType((Map<String, Object>) jsonSchema);
-        } else {
-            throw new RuntimeException("Unsupported type");
+            case OBJECT:
+                return getJsonObjectType(jsonSchema);
+            default:
+                throw new RuntimeException("Unsupported type");
         }
     }
 
@@ -290,11 +285,12 @@ public class AvroType {
      * @param jsonSchema the json node that specifies the schema.
      * @return {@link AvroType}
      */
-    private static AvroType getJsonStringType(String jsonSchema) {
+    private static AvroType getJsonStringType(JsonNode jsonSchema) {
         /* TODO (gapra): This could also be another named type. Not required for QQ/CF. */
         /* Example: "long" */
-        if (PRIMITIVE_TYPES.contains(jsonSchema)) {
-            return new AvroPrimitiveType(jsonSchema);
+        String type = jsonSchema.asText();
+        if (PRIMITIVE_TYPES.contains(type)) {
+            return new AvroPrimitiveType(type);
         } else {
             throw new RuntimeException("Unsupported type");
         }
@@ -306,7 +302,7 @@ public class AvroType {
      * @param jsonSchema the json node that specifies the schema.
      * @return {@link AvroType}
      */
-    private static AvroType getJsonArrayType(List<Object> jsonSchema) {
+    private static AvroType getJsonArrayType(JsonNode jsonSchema) {
         /* Example: ["null","string"] */
         List<AvroType> types = getUnionTypes(jsonSchema);
         return new AvroUnionType(types);
@@ -318,9 +314,8 @@ public class AvroType {
      * @param jsonSchema the json node that specifies the schema.
      * @return {@link AvroType}
      */
-    @SuppressWarnings("unchecked")
-    private static AvroType getJsonObjectType(Map<String, Object> jsonSchema) {
-        String type = String.valueOf(jsonSchema.get("type"));
+    private static AvroType getJsonObjectType(JsonNode jsonSchema) {
+        String type = jsonSchema.get("type").asText();
         switch (type) {
             /* Primitive Types. */
             case NULL:
@@ -333,8 +328,7 @@ public class AvroType {
             case STRING:
                 /* Example: {"type": "string"} */
                 return new AvroPrimitiveType(type);
-
-            case RECORD:
+            case RECORD: {
                 /* Example: { "type": "record",
                               "name": "test",
                               "fields" : [
@@ -345,12 +339,12 @@ public class AvroType {
                 if (jsonSchema.get("aliases") != null) {
                     throw new IllegalArgumentException("Unexpected aliases in schema.");
                 }
-                String fullName = String.valueOf(jsonSchema.get("name"));
+                String fullName = jsonSchema.get("name").asText();
                 String name = fullName.substring(fullName.lastIndexOf('.') + 1);
-                List<AvroRecordField> fields = getRecordFields((List<Map<String, Object>>) jsonSchema.get("fields"));
+                List<AvroRecordField> fields = getRecordFields(jsonSchema.withArray("fields"));
                 return new AvroRecordType(name, fields);
-
-            case ENUM:
+            }
+            case ENUM: {
                 /* Example: { "type": "enum",
                               "name": "Suit",
                               "symbols" : ["SPADES", "HEARTS", "DIAMONDS", "CLUBS"]
@@ -358,23 +352,25 @@ public class AvroType {
                 if (jsonSchema.get("aliases") != null) {
                     throw new IllegalArgumentException("Unexpected aliases in schema.");
                 }
-                List<String> symbols = getEnumSymbols((List<Object>) jsonSchema.get("symbols"));
-                return new AvroEnumType(String.valueOf(jsonSchema.get("name")), symbols);
-
-            case ARRAY:
+                String name = jsonSchema.get("name").asText();
+                List<String> symbols = getEnumSymbols(jsonSchema.withArray("symbols"));
+                return new AvroEnumType(name, symbols);
+            }
+            case ARRAY: {
                 /* Example: {"type": "array", "items": "string"} */
                 AvroType items = getType(jsonSchema.get("items"));
                 return new AvroArrayType(items);
-
-            case MAP:
+            }
+            case MAP: {
                 /* Example: {"type": "map", "values": "long"} */
                 AvroType values = getType(jsonSchema.get("values"));
                 return new AvroMapType(values);
-
-            case FIXED:
+            }
+            case FIXED: {
                 /* Example: {"type": "fixed", "size": 16, "name": "md5"} */
-                return new AvroFixedType(Long.parseLong(String.valueOf(jsonSchema.get("size"))));
-
+                Long size = jsonSchema.get("size").asLong();
+                return new AvroFixedType(size);
+            }
             default:
                 throw new RuntimeException("Unsupported type");
         }
@@ -386,12 +382,13 @@ public class AvroType {
      * @param parent the JsonNode array
      * @return The types of the union.
      */
-    private static List<AvroType> getUnionTypes(List<Object> parent) {
+    private static List<AvroType> getUnionTypes(JsonNode parent) {
         /* Example: ["null","string"] */
-        List<AvroType> types = new ArrayList<>(parent.size());
+        List<AvroType> types = new LinkedList<>();
         /* Get the type of each JsonNode in parent. */
-        for (Object child : parent) {
-            types.add(getType(child));
+        for (JsonNode child : parent) {
+            AvroType type = getType(child);
+            types.add(type);
         }
         return types;
     }
@@ -402,11 +399,11 @@ public class AvroType {
      * @param parent The JsonNode array
      * @return The symbols of the enum.
      */
-    private static List<String> getEnumSymbols(List<Object> parent) {
+    private static List<String> getEnumSymbols(JsonNode parent) {
         /* Example: ["A", "B", "C", "D"] */
-        List<String> symbols = new ArrayList<>(parent.size());
-        for (Object child : parent) {
-            symbols.add(String.valueOf(child));
+        List<String> symbols = new LinkedList<>();
+        for (JsonNode child : parent) {
+            symbols.add(child.asText());
         }
         return symbols;
     }
@@ -417,12 +414,15 @@ public class AvroType {
      * @param parent The JsonNode array
      * @return The fields of the record.
      */
-    private static List<AvroRecordField> getRecordFields(List<Map<String, Object>> parent) {
+    private static List<AvroRecordField> getRecordFields(JsonNode parent) {
         /* Example: [ {"name": "a", "type": "long"}, {"name": "b", "type": "string"} ] */
-        List<AvroRecordField> fields = new ArrayList<>(parent.size());
+        List<AvroRecordField> fields = new LinkedList<>();
         /* Get the name and type of each JsonNode in parent. */
-        for (Map<String, Object> child : parent) {
-            fields.add(new AvroRecordField(String.valueOf(child.get("name")), getType(child.get("type"))));
+        for (JsonNode child : parent) {
+            String name = child.get("name").asText();
+            AvroType type = getType(child.get("type"));
+
+            fields.add(new AvroRecordField(name, type));
         }
         return fields;
     }

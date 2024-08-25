@@ -9,6 +9,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -19,8 +22,10 @@ import java.util.Map;
 /**
  * Defines headers for Download operation.
  */
+@JacksonXmlRootElement(localName = "Blob-Download-Headers")
 @Fluent
 public final class BlobDownloadHeaders {
+    @JsonUnwrapped
     private final BlobsDownloadHeaders internalHeaders;
 
     static {
@@ -43,6 +48,7 @@ public final class BlobDownloadHeaders {
     /*
      * The errorCode property.
      */
+    @JsonProperty(value = "x-ms-error-code")
     private String errorCode;
 
     /**

@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-query</artifactId>
-  <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
+  <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
 
   <name>Microsoft Azure SDK for Azure Monitor Logs and Metrics Query</name>
   <description>This package contains the Microsoft Azure SDK for querying Azure Monitor's Logs and Metrics data sources.</description>
@@ -36,7 +36,6 @@
       --add-exports com.azure.core.serializer.json/com.azure.core.serializer.json.jackson.implementation=ALL-UNNAMED
       --add-opens com.azure.monitor.query/com.azure.monitor.query=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <spotless.skip>false</spotless.skip>
     <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
   </properties>
   <dependencies>

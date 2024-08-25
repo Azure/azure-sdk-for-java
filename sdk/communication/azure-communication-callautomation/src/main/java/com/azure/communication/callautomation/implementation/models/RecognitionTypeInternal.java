@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,6 +43,7 @@ public final class RecognitionTypeInternal extends ExpandableStringEnum<Recognit
      * @param name a name to look for.
      * @return the corresponding RecognitionTypeInternal.
      */
+    @JsonCreator
     public static RecognitionTypeInternal fromString(String name) {
         return fromString(name, RecognitionTypeInternal.class);
     }

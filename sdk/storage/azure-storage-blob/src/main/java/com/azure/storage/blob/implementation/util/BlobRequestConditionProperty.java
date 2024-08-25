@@ -3,6 +3,9 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum BlobRequestConditionProperty {
     LEASE_ID("LeaseId"),
     TAGS_CONDITIONS("TagsConditions"),
@@ -24,6 +27,7 @@ public enum BlobRequestConditionProperty {
      * @param value the serialized value to parse.
      * @return the parsed BlobRequestConditionProperty object, or null if unable to parse.
      */
+    @JsonCreator
     public static BlobRequestConditionProperty fromString(String value) {
         BlobRequestConditionProperty[] items = BlobRequestConditionProperty.values();
         for (BlobRequestConditionProperty item : items) {
@@ -34,6 +38,7 @@ public enum BlobRequestConditionProperty {
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

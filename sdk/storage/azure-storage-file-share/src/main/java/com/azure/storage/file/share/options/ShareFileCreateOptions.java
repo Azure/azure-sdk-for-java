@@ -5,7 +5,6 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
-import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import java.util.Map;
@@ -19,8 +18,7 @@ public class ShareFileCreateOptions {
     private final long size;
     private ShareFileHttpHeaders httpHeaders;
     private FileSmbProperties smbProperties;
-    private String filePermissionKey;
-    private FilePermissionFormat filePermissionFormat;
+    private String filePermission;
     private Map<String, String> metadata;
     private ShareRequestConditions requestConditions;
 
@@ -52,6 +50,24 @@ public class ShareFileCreateOptions {
      */
     public ShareFileCreateOptions setShareFileHttpHeaders(ShareFileHttpHeaders headers) {
         httpHeaders = headers;
+        return this;
+    }
+
+    /**
+     * @return The file's permission key.
+     */
+    public String getFilePermission() {
+        return filePermission;
+    }
+
+    /**
+     * Sets the file permission key.
+     *
+     * @param filePermissionKey The file permission key.
+     * @return the updated options.
+     */
+    public ShareFileCreateOptions setFilePermission(String filePermissionKey) {
+        this.filePermission = filePermissionKey;
         return this;
     }
 
@@ -109,46 +125,6 @@ public class ShareFileCreateOptions {
      */
     public ShareFileCreateOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
-        return this;
-    }
-
-    /**
-     * Gets the file permission.
-     *
-     * @return file permission.
-     */
-    public String getFilePermission() {
-        return filePermissionKey;
-    }
-
-    /**
-     * Sets the file permission.
-     *
-     * @param filePermissionKey the file permission.
-     * @return The updated options.
-     */
-    public ShareFileCreateOptions setFilePermission(String filePermissionKey) {
-        this.filePermissionKey = filePermissionKey;
-        return this;
-    }
-
-    /**
-     * Gets the file permission format.
-     *
-     * @return file permission format.
-     */
-    public FilePermissionFormat getFilePermissionFormat() {
-        return filePermissionFormat;
-    }
-
-    /**
-     * Sets the file permission format.
-     *
-     * @param filePermissionFormat the file permission format.
-     * @return The updated options.
-     */
-    public ShareFileCreateOptions setFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
-        this.filePermissionFormat = filePermissionFormat;
         return this;
     }
 }

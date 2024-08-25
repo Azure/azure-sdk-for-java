@@ -5,9 +5,6 @@ package com.azure.ai.formrecognizer.training;
 
 import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
-import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
-import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
@@ -35,28 +32,32 @@ import java.util.List;
  *
  * <ol>
  *     <li>Train a custom model: Train a custom model to analyze and extract data from forms and documents specific to
- *     your business using the {@link #beginTraining(String, boolean) beginTraining} method.</li>
+ *     your business using the {@link com.azure.ai.formrecognizer.training.FormTrainingClient#beginTraining(String, boolean) beginTraining}
+ *     method.</li>
  *     <li>Copy custom model: Copy a custom Form Recognizer model to a target Form Recognizer resource using the
- *     {@link #beginCopyModel(String, CopyAuthorization) beginCopyModel} method.</li>
+ *     {@link com.azure.ai.formrecognizer.training.FormTrainingClient#beginCopyModel(String, CopyAuthorization) beginCopyModel}
+ *     method.</li>
  *     <li>List custom models: Get information about all custom models using the
- *     {@link #getCustomModel(String) getCustomModel} and {@link #listCustomModels() listCustomModels} methods
- *     respectively.</li>
+ *     {@link com.azure.ai.formrecognizer.training.FormTrainingClient#getCustomModel(String) getCustomModel} and
+ *     {@link FormTrainingClient#listCustomModels() listCustomModels} methods respectively.</li>
  *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
  *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
- * <p><strong>Note: </strong>This client only supports {@link FormRecognizerServiceVersion#V2_1} and lower.
- * Recommended to use a newer service version, {@link DocumentModelAdministrationAsyncClient} and
- * {@link DocumentModelAdministrationClient}.</p>
+ * <p><strong>Note: </strong>This client only supports
+ * {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
+ * Recommended to use a newer service version,
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient}.</p>
  *
  * <p><strong>Refer to the
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md">Migration guide</a> to use API versions 2022-08-31 and up.</strong></p>
  *
  * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
- * {@link FormTrainingClient} is the synchronous service client and {@link FormTrainingAsyncClient} is the asynchronous
- * service client. The examples shown in this document use a credential object named DefaultAzureCredential for
- * authentication, which is appropriate for most scenarios, including local development and production environments.
- * Additionally, we recommend using
+ * {@link com.azure.ai.formrecognizer.training.FormTrainingClient} is the synchronous service client and
+ * {@link com.azure.ai.formrecognizer.training.FormTrainingAsyncClient} is the asynchronous service client. The examples
+ * shown in this document use a credential object named DefaultAzureCredential for authentication, which is appropriate
+ * for most scenarios, including local development and production environments. Additionally, we recommend using
  * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
  * for authentication in production environments.
  * You can find more information on different ways of authenticating and their corresponding credential types in the
@@ -65,8 +66,9 @@ import java.util.List;
  *
  * <p><strong>Sample: Construct a FormTrainingClient with DefaultAzureCredential</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link FormTrainingClient}, using the
- * `DefaultAzureCredentialBuilder` to configure it.</p>
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.formrecognizer.training.FormTrainingClient}, using the `DefaultAzureCredentialBuilder` to
+ * configure it.</p>
  *
  * <!-- src_embed readme-sample-createFormTrainingClientWithAAD -->
  * <pre>
@@ -211,8 +213,10 @@ public final class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels, TrainingOptions trainingOptions, Context context) {
-        return client.beginTraining(trainingFilesUrl, useTrainingLabels, trainingOptions, context).getSyncPoller();
+        boolean useTrainingLabels,
+        TrainingOptions trainingOptions, Context context) {
+        return client.beginTraining(trainingFilesUrl, useTrainingLabels,
+            trainingOptions, context).getSyncPoller();
     }
 
     /**

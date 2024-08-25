@@ -5,34 +5,20 @@
 package com.azure.mixedreality.remoterendering.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RemoteRenderingsCreateSessionHeaders model.
- */
+/** The RemoteRenderingsCreateSessionHeaders model. */
 @Fluent
 public final class RemoteRenderingsCreateSessionHeaders {
     /*
      * The MS-CV property.
      */
+    @JsonProperty(value = "MS-CV")
     private String msCV;
-
-    private static final HttpHeaderName MS_CV = HttpHeaderName.fromString("MS-CV");
-
-    // HttpHeaders containing the raw property values.
-    /**
-     * Creates an instance of RemoteRenderingsCreateSessionHeaders class.
-     * 
-     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
-     */
-    public RemoteRenderingsCreateSessionHeaders(HttpHeaders rawHeaders) {
-        this.msCV = rawHeaders.getValue(MS_CV);
-    }
 
     /**
      * Get the msCV property: The MS-CV property.
-     * 
+     *
      * @return the msCV value.
      */
     public String getMsCV() {
@@ -41,7 +27,7 @@ public final class RemoteRenderingsCreateSessionHeaders {
 
     /**
      * Set the msCV property: The MS-CV property.
-     * 
+     *
      * @param msCV the msCV value to set.
      * @return the RemoteRenderingsCreateSessionHeaders object itself.
      */

@@ -36,33 +36,35 @@ public class ConcurrencyLimitingSpliteratorTest {
     @Test
     public void invalidParams() {
         assertThrows(NullPointerException.class, () -> new ConcurrencyLimitingSpliterator<Integer>(null, 1));
-        assertThrows(IllegalArgumentException.class,
-            () -> new ConcurrencyLimitingSpliterator<>(Arrays.asList(1, 2, 3).iterator(), 0));
+        assertThrows(IllegalArgumentException.class, () -> new ConcurrencyLimitingSpliterator<>(Arrays.asList(1, 2, 3).iterator(), 0));
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 4, 5, 7, 11, 15 })
+    @ValueSource(ints = {1, 2, 4, 5, 7, 11, 15})
     public void concurrentCalls(int concurrency) throws ExecutionException, InterruptedException {
         assumeTrue(Runtime.getRuntime().availableProcessors() > concurrency);
 
         List<Integer> list = IntStream.range(0, 11).boxed().collect(Collectors.toList());
-        ConcurrencyLimitingSpliterator<Integer> spliterator
-            = new ConcurrencyLimitingSpliterator<>(list.iterator(), concurrency);
+        ConcurrencyLimitingSpliterator<Integer> spliterator = new ConcurrencyLimitingSpliterator<>(list.iterator(), concurrency);
 
         Stream<Integer> stream = StreamSupport.stream(spliterator, true);
 
         int effectiveConcurrency = Math.min(list.size(), concurrency);
         CountDownLatch latch = new CountDownLatch(effectiveConcurrency);
-        List<Integer> processed = TEST_THREAD_POOL.submit(() -> stream.map(r -> {
-            latch.countDown();
-            try {
-                Thread.sleep(10);
-                assertTrue(latch.await(TEST_TIMEOUT_SEC, TimeUnit.SECONDS));
-            } catch (InterruptedException e) {
-                fail("countdown await interrupted");
-            }
-            return r;
-        }).collect(Collectors.toList())).get();
+        List<Integer> processed = TEST_THREAD_POOL
+            .submit(() ->
+                stream.map(r -> {
+                    latch.countDown();
+                    try {
+                        Thread.sleep(10);
+                        assertTrue(latch.await(TEST_TIMEOUT_SEC, TimeUnit.SECONDS));
+                    } catch (InterruptedException e) {
+                        fail("countdown await interrupted");
+                    }
+                    return r;
+                })
+                .collect(Collectors.toList())
+            ).get();
 
         assertArrayEquals(list.toArray(), processed.stream().sorted().toArray());
     }
@@ -71,29 +73,32 @@ public class ConcurrencyLimitingSpliteratorTest {
     public void concurrencyHigherThanItemsCount() throws ExecutionException, InterruptedException {
         int concurrency = 100;
         List<Integer> list = IntStream.range(0, 7).boxed().collect(Collectors.toList());
-        ConcurrencyLimitingSpliterator<Integer> spliterator
-            = new ConcurrencyLimitingSpliterator<>(list.iterator(), concurrency);
+        ConcurrencyLimitingSpliterator<Integer> spliterator = new ConcurrencyLimitingSpliterator<>(list.iterator(), concurrency);
 
         Stream<Integer> stream = StreamSupport.stream(spliterator, true);
 
         AtomicInteger parallel = new AtomicInteger(0);
         AtomicInteger maxParallel = new AtomicInteger(0);
-        List<Integer> processed = TEST_THREAD_POOL.submit(() -> stream.map(r -> {
-            int cur = parallel.incrementAndGet();
-            int curMax = maxParallel.get();
-            while (cur > curMax && !maxParallel.compareAndSet(curMax, cur)) {
-                curMax = maxParallel.get();
-            }
+        List<Integer> processed = TEST_THREAD_POOL
+            .submit(() ->
+                stream.map(r -> {
+                    int cur = parallel.incrementAndGet();
+                    int curMax = maxParallel.get();
+                    while (cur > curMax && !maxParallel.compareAndSet(curMax, cur)) {
+                        curMax = maxParallel.get();
+                    }
 
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                fail("timeout");
-            }
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        fail("timeout");
+                    }
 
-            parallel.decrementAndGet();
-            return r;
-        }).collect(Collectors.toList())).get();
+                    parallel.decrementAndGet();
+                    return r;
+                })
+                .collect(Collectors.toList())
+            ).get();
 
         assertTrue(maxParallel.get() <= list.size());
         assertArrayEquals(list.toArray(), processed.stream().sorted().toArray());

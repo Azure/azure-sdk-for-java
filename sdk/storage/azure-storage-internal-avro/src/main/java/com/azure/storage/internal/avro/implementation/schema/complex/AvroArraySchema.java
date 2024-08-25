@@ -29,7 +29,7 @@ public class AvroArraySchema extends AvroCompositeSchema {
 
     private final AvroType itemType;
     private Long blockCount;
-    private final List<Object> ret;
+    private List<Object> ret;
 
     /**
      * Constructs a new AvroArraySchema.
@@ -48,7 +48,10 @@ public class AvroArraySchema extends AvroCompositeSchema {
     public void pushToStack() {
         this.state.pushToStack(this);
         /* Read the block size, call onBlockCount. */
-        AvroLongSchema blockCountSchema = new AvroLongSchema(this.state, this::onBlockCount);
+        AvroLongSchema blockCountSchema = new AvroLongSchema(
+            this.state,
+            this::onBlockCount
+        );
         blockCountSchema.pushToStack();
     }
 
@@ -59,7 +62,7 @@ public class AvroArraySchema extends AvroCompositeSchema {
      */
     private void onBlockCount(Object blockCount) {
         checkType("blockCount", blockCount, Long.class);
-        long bc = (long) blockCount;
+        Long bc = (Long) blockCount;
         /* If blockCount = 0, then we're done.*/
         if (bc == 0) {
             this.result = this.ret;
@@ -67,12 +70,19 @@ public class AvroArraySchema extends AvroCompositeSchema {
             /* If blockCount > 0, read the item, call onItem. */
         } else if (bc > 0) {
             this.blockCount = bc;
-            AvroSchema itemSchema = getSchema(this.itemType, this.state, this::onItem);
+            AvroSchema itemSchema = getSchema(
+                this.itemType,
+                this.state,
+                this::onItem
+            );
             itemSchema.pushToStack();
             /* If blockCount < 0, use absolute value, read the byteCount, call onByteCount. */
         } else {
             this.blockCount = -bc;
-            AvroLongSchema byteCountSchema = new AvroLongSchema(this.state, this::onByteCount);
+            AvroLongSchema byteCountSchema = new AvroLongSchema(
+                this.state,
+                this::onByteCount
+            );
             byteCountSchema.pushToStack();
         }
     }
@@ -84,7 +94,11 @@ public class AvroArraySchema extends AvroCompositeSchema {
      */
     private void onByteCount(Object byteCount) {
         /* Read the item, call onItem. */
-        AvroSchema itemSchema = getSchema(this.itemType, this.state, this::onItem);
+        AvroSchema itemSchema = getSchema(
+            this.itemType,
+            this.state,
+            this::onItem
+        );
         itemSchema.pushToStack();
     }
 
@@ -102,11 +116,18 @@ public class AvroArraySchema extends AvroCompositeSchema {
 
         /* If blockCount = 0, there are no more items in the block, read another blockCount and call onBlockCount. */
         if (this.blockCount == 0) {
-            AvroLongSchema blockCountSchema = new AvroLongSchema(this.state, this::onBlockCount);
+            AvroLongSchema blockCountSchema = new AvroLongSchema(
+                this.state,
+                this::onBlockCount
+            );
             blockCountSchema.pushToStack();
             /* If blockCount != 0, there are more items in the block, read another item and call onItem. */
         } else {
-            AvroSchema itemSchema = getSchema(this.itemType, this.state, this::onItem);
+            AvroSchema itemSchema = getSchema(
+                this.itemType,
+                this.state,
+                this::onItem
+            );
             itemSchema.pushToStack();
         }
     }

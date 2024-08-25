@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 import java.util.Map;
@@ -33,6 +34,7 @@ public final class BlockBlobSeekableByteChannelWriteOptions {
          * @param name a name to look for.
          * @return the corresponding AccessTier.
          */
+        @JsonCreator
         public static WriteMode fromString(String name) {
             return fromString(name, WriteMode.class);
         }

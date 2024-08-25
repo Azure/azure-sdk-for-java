@@ -23,10 +23,10 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.file.datalake.implementation.models.DataLakeStorageExceptionInternal;
 import com.azure.storage.file.datalake.implementation.models.FileSystem;
 import com.azure.storage.file.datalake.implementation.models.FileSystemList;
 import com.azure.storage.file.datalake.implementation.models.ServicesListFileSystemsHeaders;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -62,7 +62,7 @@ public final class ServicesImpl {
     public interface ServicesService {
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<ServicesListFileSystemsHeaders, FileSystemList>> listFileSystems(@HostParam("url") String url,
             @QueryParam("resource") String resource, @QueryParam("prefix") String prefix,
             @QueryParam("continuation") String continuation, @QueryParam("maxResults") Integer maxResults,
@@ -71,7 +71,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<FileSystemList>> listFileSystemsNoCustomHeaders(@HostParam("url") String url,
             @QueryParam("resource") String resource, @QueryParam("prefix") String prefix,
             @QueryParam("continuation") String continuation, @QueryParam("maxResults") Integer maxResults,
@@ -80,7 +80,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         ResponseBase<ServicesListFileSystemsHeaders, FileSystemList> listFileSystemsSync(@HostParam("url") String url,
             @QueryParam("resource") String resource, @QueryParam("prefix") String prefix,
             @QueryParam("continuation") String continuation, @QueryParam("maxResults") Integer maxResults,
@@ -89,7 +89,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Response<FileSystemList> listFileSystemsNoCustomHeadersSync(@HostParam("url") String url,
             @QueryParam("resource") String resource, @QueryParam("prefix") String prefix,
             @QueryParam("continuation") String continuation, @QueryParam("maxResults") Integer maxResults,
@@ -115,7 +115,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -150,7 +150,7 @@ public final class ServicesImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -184,7 +184,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedFlux}.
      */
@@ -214,7 +214,7 @@ public final class ServicesImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedFlux}.
      */
@@ -243,7 +243,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -278,7 +278,7 @@ public final class ServicesImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -312,7 +312,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedFlux}.
      */
@@ -342,7 +342,7 @@ public final class ServicesImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedFlux}.
      */
@@ -371,7 +371,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse}.
      */
@@ -406,7 +406,7 @@ public final class ServicesImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse}.
      */
@@ -440,7 +440,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
@@ -470,7 +470,7 @@ public final class ServicesImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
@@ -499,7 +499,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse}.
      */
@@ -533,7 +533,7 @@ public final class ServicesImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse}.
      */
@@ -566,7 +566,7 @@ public final class ServicesImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
@@ -596,7 +596,7 @@ public final class ServicesImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */

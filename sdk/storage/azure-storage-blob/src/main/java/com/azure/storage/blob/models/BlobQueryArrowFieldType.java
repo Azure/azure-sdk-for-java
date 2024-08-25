@@ -3,6 +3,9 @@
 
 package com.azure.storage.blob.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for BlobQueryArrowFieldType.
  */
@@ -53,6 +56,7 @@ public enum BlobQueryArrowFieldType {
      * @param value the serialized value to parse.
      * @return the parsed BlobQueryArrowFieldType object, or null if unable to parse.
      */
+    @JsonCreator
     public static BlobQueryArrowFieldType fromString(String value) {
         BlobQueryArrowFieldType[] items = BlobQueryArrowFieldType.values();
         for (BlobQueryArrowFieldType item : items) {
@@ -63,6 +67,7 @@ public enum BlobQueryArrowFieldType {
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

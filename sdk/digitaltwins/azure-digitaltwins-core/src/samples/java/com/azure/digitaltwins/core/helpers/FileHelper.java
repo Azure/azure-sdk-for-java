@@ -16,7 +16,7 @@ public class FileHelper {
     /**
      * Loads all json file contents in a path.
      * @param path Path to the target directory.
-     * @return All file names and their content in map format.
+     * @return List of all file names and their content in map format.
      * @throws IOException If an I/O error is thrown when accessing the starting file.
      */
     public static Map<String, String> loadAllFilesInPath(Path path) throws IOException {

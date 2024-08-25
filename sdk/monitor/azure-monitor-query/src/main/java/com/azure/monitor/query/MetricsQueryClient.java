@@ -83,8 +83,9 @@ public final class MetricsQueryClient {
     private final MetricsNamespacesClientImpl metricsNamespaceClient;
     private final MetricsDefinitionsClientImpl metricsDefinitionsClient;
 
-    MetricsQueryClient(MonitorManagementClientImpl metricsClient, MetricsNamespacesClientImpl metricsNamespaceClient,
-        MetricsDefinitionsClientImpl metricsDefinitionsClients) {
+    MetricsQueryClient(MonitorManagementClientImpl metricsClient,
+                       MetricsNamespacesClientImpl metricsNamespaceClient,
+                       MetricsDefinitionsClientImpl metricsDefinitionsClients) {
         this.metricsClient = metricsClient;
         this.metricsNamespaceClient = metricsNamespaceClient;
         this.metricsDefinitionsClient = metricsDefinitionsClients;
@@ -134,16 +135,17 @@ public final class MetricsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricsQueryResult> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
-        MetricsQueryOptions options, Context context) {
+                                                                  MetricsQueryOptions options, Context context) {
         Objects.requireNonNull(resourceUri, "'resourceUri' cannot be null");
 
         String aggregation = null;
         if (options != null && !CoreUtils.isNullOrEmpty(options.getAggregations())) {
-            aggregation
-                = options.getAggregations().stream().map(type -> type.toString()).collect(Collectors.joining(","));
+            aggregation = options.getAggregations()
+                .stream()
+                .map(type -> type.toString())
+                .collect(Collectors.joining(","));
         }
-        String timespan = options == null || options.getTimeInterval() == null
-            ? null
+        String timespan = options == null || options.getTimeInterval() == null ? null
             : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
         Duration granularity = options == null ? null : options.getGranularity();
         Integer top = options == null ? null : options.getTop();
@@ -151,9 +153,10 @@ public final class MetricsQueryClient {
         String filter = options == null ? null : options.getFilter();
         String metricNamespace = options == null ? null : options.getMetricNamespace();
 
-        Response<MetricsResponse> metricsResponseResponse = metricsClient.getMetrics()
-            .listWithResponse(resourceUri, timespan, granularity, String.join(",", metricsNames), aggregation, top,
-                orderBy, filter, ResultType.DATA, metricNamespace, null, null, null, context);
+        Response<MetricsResponse> metricsResponseResponse = metricsClient
+            .getMetrics()
+            .listWithResponse(resourceUri, timespan, granularity, String.join(",", metricsNames),
+                aggregation, top, orderBy, filter, ResultType.DATA, metricNamespace, null, null, null, context);
         return convertToMetricsQueryResult(metricsResponseResponse);
     }
 
@@ -182,13 +185,15 @@ public final class MetricsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime,
-        Context context) {
+                                                               Context context) {
         Objects.requireNonNull(resourceUri, "'resourceUri' cannot be null");
-        PagedResponse<com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace> response
-            = metricsNamespaceClient.getMetricNamespaces()
-                .listSinglePage(resourceUri, startTime == null ? null : startTime.toString(), context);
-        List<MetricNamespace> metricNamespaces
-            = response.getValue().stream().map(MetricsHelper::mapMetricNamespace).collect(Collectors.toList());
+        PagedResponse<com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace> response = metricsNamespaceClient.getMetricNamespaces().listSinglePage(resourceUri,
+            startTime == null ? null : startTime.toString(), context);
+        List<MetricNamespace> metricNamespaces = response.getValue()
+            .stream()
+            .map(MetricsHelper::mapMetricNamespace)
+            .collect(Collectors.toList());
+
 
         return new PagedIterable<>(() -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
             response.getHeaders(), metricNamespaces, response.getContinuationToken(), null));
@@ -218,12 +223,13 @@ public final class MetricsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace,
-        Context context) {
+                                                                 Context context) {
         Objects.requireNonNull(resourceUri, "'resourceUri' cannot be null");
-        PagedResponse<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricDefinition> response
-            = metricsDefinitionsClient.getMetricDefinitions().listSinglePage(resourceUri, metricsNamespace, context);
-        List<MetricDefinition> metricDefinitions
-            = response.getValue().stream().map(MetricsHelper::mapToMetricDefinition).collect(Collectors.toList());
+        PagedResponse<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricDefinition> response = metricsDefinitionsClient.getMetricDefinitions().listSinglePage(resourceUri, metricsNamespace, context);
+        List<MetricDefinition> metricDefinitions = response.getValue()
+            .stream()
+            .map(MetricsHelper::mapToMetricDefinition)
+            .collect(Collectors.toList());
 
         return new PagedIterable<>(() -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
             response.getHeaders(), metricDefinitions, response.getContinuationToken(), null));

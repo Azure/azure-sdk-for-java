@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
@@ -25,6 +24,7 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
     private final String clientName;
     private final String clientVersion;
 
+    private static final String USER_AGENT = "User-Agent";
     private static final String REGEX = "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?)( .*?)?";
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
@@ -41,7 +41,8 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String userAgent = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.USER_AGENT);
+
+        String userAgent = context.getHttpRequest().getHeaders().getValue(USER_AGENT);
         Matcher matcher = PATTERN.matcher(userAgent);
         StringBuilder builder = new StringBuilder();
         if (matcher.matches()) {
@@ -49,9 +50,10 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
                 .append(matcher.group(2) == null ? "" : matcher.group(2))
                 .append(" ").append("azsdk-java-").append(clientName).append("/").append(clientVersion)
                 .append(matcher.group(3) == null ? "" : matcher.group(3));
-            context.getHttpRequest().getHeaders().set(HttpHeaderName.USER_AGENT, builder.toString());
+        } else {
+            builder.append(userAgent);
         }
-
+        context.getHttpRequest().getHeaders().put("User-Agent", builder.toString());
         return next.process();
     }
 

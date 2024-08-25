@@ -43,11 +43,10 @@ public final class LogsBatchQueryResultCollection {
      */
     public <T> List<T> getResult(String queryId, Class<T> type) {
         return batchResults.stream()
-            .filter(result -> result.getId().equals(queryId))
-            .map(queryResult -> LogsQueryHelper.toObject(queryResult.getTable(), type))
-            .findFirst()
-            .orElseThrow(() -> logger
-                .logExceptionAsError(new IllegalArgumentException(queryId + " not found in the batch result")));
+                .filter(result -> result.getId().equals(queryId))
+                .map(queryResult -> LogsQueryHelper.toObject(queryResult.getTable(), type))
+                .findFirst()
+                .orElseThrow(() -> logger.logExceptionAsError(new IllegalArgumentException(queryId + " not found in the batch result")));
     }
 
     /**
@@ -58,9 +57,8 @@ public final class LogsBatchQueryResultCollection {
      */
     public LogsBatchQueryResult getResult(String queryId) {
         return batchResults.stream()
-            .filter(result -> result.getId().equals(queryId))
-            .findFirst()
-            .orElseThrow(() -> logger
-                .logExceptionAsError(new IllegalArgumentException(queryId + " not found in the batch result")));
+                .filter(result -> result.getId().equals(queryId))
+                .findFirst()
+                .orElseThrow(() -> logger.logExceptionAsError(new IllegalArgumentException(queryId + " not found in the batch result")));
     }
 }

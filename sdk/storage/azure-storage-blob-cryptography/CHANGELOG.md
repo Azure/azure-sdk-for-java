@@ -1,19 +1,16 @@
 # Release History
 
-## 12.27.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.26.1 (2024-08-24)
 
 ### Other Changes
 
-## 12.27.0-beta.1 (2024-08-06)
+#### Dependency Updates
 
-### Features Added
-- Added support for service version 2024-11-04.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `jackson-dataformat-xml` from `2.13.5` to version `2.17.2`.
+- Upgraded `azure-storage-blob` from `12.27.0` to version `12.28.0-beta.2`.
+
 
 ## 12.26.0 (2024-07-18)
 

@@ -5,35 +5,33 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.ClearRange;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /** The PageListSegment model. */
+@JacksonXmlRootElement(localName = "PageListSegment")
 @Fluent
-public final class PageListSegment implements XmlSerializable<BlobHierarchyListSegment> {
+public final class PageListSegment {
     /*
      * The PageRanges property.
      */
+    @JsonProperty("PageRange")
     private List<PageRange> pageRanges = new ArrayList<>();
 
     /*
      * The ClearRanges property.
      */
+    @JsonProperty("ClearRange")
     private List<ClearRange> clearRanges = new ArrayList<>();
 
     /*
      * The NextMarker property.
      */
+    @JsonProperty(value = "NextMarker")
     private String nextMarker;
 
     /**
@@ -94,79 +92,5 @@ public final class PageListSegment implements XmlSerializable<BlobHierarchyListS
     public PageListSegment setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageListSegment" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        if (this.pageRanges != null) {
-            for (PageRange element : this.pageRanges) {
-                xmlWriter.writeXml(element, "PageRange");
-            }
-        }
-        if (this.clearRanges != null) {
-            for (ClearRange element : this.clearRanges) {
-                xmlWriter.writeXml(element, "ClearRange");
-            }
-        }
-        xmlWriter.writeStringElement(this.nextMarker, "NextMarker");
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of PageListSegment from the XmlReader.
-     *
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of PageListSegment if the XmlReader was pointing to an instance of it, or null if it
-     * was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the PageListSegment.
-     */
-    public static PageListSegment fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of PageListSegment from the XmlReader.
-     *
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of PageListSegment if the XmlReader was pointing to an instance of it, or null if it
-     * was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the PageListSegment.
-     */
-    public static PageListSegment fromXml(XmlReader xmlReader, String rootElementName)
-        throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageListSegment" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            PageListSegment deserializedPageListSegment = new PageListSegment();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-                if ("PageRange".equals(elementName.getLocalPart())) {
-                    if (deserializedPageListSegment.pageRanges == null) {
-                        deserializedPageListSegment.pageRanges = new ArrayList<>();
-                    }
-                    deserializedPageListSegment.pageRanges.add(PageRange.fromXml(reader, "PageRange"));
-                } else if ("ClearRange".equals(elementName.getLocalPart())) {
-                    if (deserializedPageListSegment.clearRanges == null) {
-                        deserializedPageListSegment.clearRanges = new ArrayList<>();
-                    }
-                    deserializedPageListSegment.clearRanges.add(ClearRange.fromXml(reader, "ClearRange"));
-                } else if ("NextMarker".equals(elementName.getLocalPart())) {
-                    deserializedPageListSegment.nextMarker = reader.getStringElement();
-                } else {
-                    reader.skipElement();
-                }
-            }
-            return deserializedPageListSegment;
-        });
     }
 }

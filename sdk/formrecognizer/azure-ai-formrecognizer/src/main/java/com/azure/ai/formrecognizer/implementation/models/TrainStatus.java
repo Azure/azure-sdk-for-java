@@ -4,28 +4,21 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
-/**
- * Status of the training operation.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Status of the training operation. */
 public enum TrainStatus {
-    /**
-     * Enum value succeeded.
-     */
+    /** Enum value succeeded. */
     SUCCEEDED("succeeded"),
 
-    /**
-     * Enum value partiallySucceeded.
-     */
+    /** Enum value partiallySucceeded. */
     PARTIALLY_SUCCEEDED("partiallySucceeded"),
 
-    /**
-     * Enum value failed.
-     */
+    /** Enum value failed. */
     FAILED("failed");
 
-    /**
-     * The actual serialized value for a TrainStatus instance.
-     */
+    /** The actual serialized value for a TrainStatus instance. */
     private final String value;
 
     TrainStatus(String value) {
@@ -34,10 +27,11 @@ public enum TrainStatus {
 
     /**
      * Parses a serialized value to a TrainStatus instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed TrainStatus object, or null if unable to parse.
      */
+    @JsonCreator
     public static TrainStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -51,9 +45,8 @@ public enum TrainStatus {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

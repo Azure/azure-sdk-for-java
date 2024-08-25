@@ -19,8 +19,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
@@ -49,6 +47,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy;
 import com.microsoft.azure.storage.blob.BlobRequestOptions;
@@ -296,11 +295,9 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         byte[] plaintextOriginal = data.array();
         ByteArrayOutputStream plaintextOutputStream = new ByteArrayOutputStream();
 
-        EncryptionData encryptionData;
-        try (JsonReader jsonReader = JsonProviders.createReader(downloadResponse.getDeserializedHeaders().getMetadata()
-            .get(ENCRYPTION_DATA_KEY))) {
-            encryptionData = EncryptionData.fromJson(jsonReader);
-        }
+        EncryptionData encryptionData = new ObjectMapper().readValue(
+            downloadResponse.getDeserializedHeaders().getMetadata().get(ENCRYPTION_DATA_KEY),
+            EncryptionData.class);
         byte[] cek = fakeKey.unwrapKey(encryptionData.getWrappedContentKey().getAlgorithm(),
             encryptionData.getWrappedContentKey().getEncryptedKey()).block();
         ByteArrayInputStream keyStream = new ByteArrayInputStream(cek);

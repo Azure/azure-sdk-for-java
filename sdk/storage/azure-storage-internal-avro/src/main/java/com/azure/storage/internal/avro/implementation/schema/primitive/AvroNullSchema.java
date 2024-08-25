@@ -43,11 +43,8 @@ public class AvroNullSchema extends AvroSimpleSchema {
         return true;
     }
 
-    /**
-     * A custom type to represent null.
-     * This is necessary since null cannot be emitted in a Flux.
-     * Users of the AvroParser must transform all NullSchema.Null objects to null if necessary.
-     */
+    /* We use a custom type to return null since null cannot be emitted in a Flux.
+       Users of the AvroParser must transform all NullSchema.Null objects to null if necessary. */
     public static class Null {
     }
 

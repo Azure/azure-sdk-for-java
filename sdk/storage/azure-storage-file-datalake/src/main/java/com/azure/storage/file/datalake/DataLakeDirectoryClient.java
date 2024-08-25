@@ -15,6 +15,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
@@ -44,8 +45,6 @@ import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import static com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils.wrapServiceCallWithExceptionMapping;
-
 /**
  * This class provides a client that contains directory operations for Azure Storage Data Lake. Operations provided by
  * this client include creating a directory, deleting a directory, renaming a directory, setting metadata and
@@ -64,6 +63,7 @@ import static com.azure.storage.file.datalake.implementation.util.DataLakeImplUt
  */
 @ServiceClient(builder = DataLakePathClientBuilder.class)
 public class DataLakeDirectoryClient extends DataLakePathClient {
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeDirectoryClient.class);
     private final DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
 
     DataLakeDirectoryClient(DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient, BlockBlobClient blockBlobClient,
@@ -1153,10 +1153,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public PagedIterable<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults,
         Duration timeout) {
         BiFunction<String, Integer, PagedResponse<PathItem>> retriever = (marker, pageSize) -> {
-            Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation
-                = wrapServiceCallWithExceptionMapping(() -> this.fileSystemDataLakeStorage.getFileSystems()
-                .listPathsWithResponse(recursive, null, null, marker, getDirectoryPath(),
-                    pageSize == null ? maxResults : pageSize, userPrincipleNameReturned, Context.NONE));
+            Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation = () ->
+                this.fileSystemDataLakeStorage.getFileSystems().listPathsWithResponse(recursive, null, null, marker,
+                    getDirectoryPath(), pageSize == null ? maxResults : pageSize, userPrincipleNameReturned,
+                    Context.NONE);
 
             ResponseBase<FileSystemsListPathsHeaders, PathList> response = StorageImplUtils.sendRequest(operation,
                 timeout, DataLakeStorageException.class);

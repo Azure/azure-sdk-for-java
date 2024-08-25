@@ -149,8 +149,8 @@ public final class MessageTemplateClientImpl {
     }
 
     /**
-     * The interface defining all the services for MessageTemplateClient to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for MessageTemplateClient to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "MessageTemplateClien")
@@ -198,18 +198,30 @@ public final class MessageTemplateClientImpl {
 
     /**
      * List all templates for given Azure Communication Services channel.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
-     *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
@@ -238,18 +250,30 @@ public final class MessageTemplateClientImpl {
 
     /**
      * List all templates for given Azure Communication Services channel.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
-     *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
@@ -295,18 +319,30 @@ public final class MessageTemplateClientImpl {
 
     /**
      * List all templates for given Azure Communication Services channel.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
-     *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
@@ -332,18 +368,30 @@ public final class MessageTemplateClientImpl {
 
     /**
      * List all templates for given Azure Communication Services channel.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
-     *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
@@ -389,18 +437,20 @@ public final class MessageTemplateClientImpl {
 
     /**
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
-     *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -422,18 +472,20 @@ public final class MessageTemplateClientImpl {
 
     /**
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
-     *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

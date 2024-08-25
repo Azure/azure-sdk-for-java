@@ -8,16 +8,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
-import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
-import com.azure.storage.queue.models.QueueStorageException;
 
 import java.util.Base64;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
@@ -88,34 +85,4 @@ public class ModelHelper {
         return new QueueProperties(headers.getXMsMeta(), headers.getXMsApproximateMessagesCount());
     }
 
-    /**
-     * Maps the internal exception to a public exception, if and only if {@code internal} is an instance of
-     * {@link QueueStorageExceptionInternal} and it will be mapped to {@link QueueStorageException}.
-     * <p>
-     * The internal exception is required as the public exception was created using Object as the exception value. This
-     * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
-     * added to handle this and we map that to the public exception, keeping the API the same.
-     *
-     * @param internal The internal exception.
-     * @return The public exception.
-     */
-    public static Throwable mapToQueueStorageException(Throwable internal) {
-        if (internal instanceof QueueStorageExceptionInternal) {
-            QueueStorageExceptionInternal internalException = (QueueStorageExceptionInternal) internal;
-            return new QueueStorageException(internalException.getMessage(), internalException.getResponse(),
-                internalException.getValue());
-        }
-
-        return internal;
-    }
-
-    public static <T> Supplier<T> wrapCallWithExceptionMapping(Supplier<T> serviceCall) {
-        return () -> {
-            try {
-                return serviceCall.get();
-            } catch (QueueStorageExceptionInternal internal) {
-                throw (QueueStorageException) mapToQueueStorageException(internal);
-            }
-        };
-    }
 }

@@ -57,7 +57,7 @@ public abstract class AvroSchema {
     /**
      * Constructs a new Schema.
      *
-     * @param state The state of the parser.
+     * @param state    The state of the parser.
      * @param onResult The result handler.
      */
     public AvroSchema(AvroParserState state, Consumer<Object> onResult) {
@@ -72,9 +72,7 @@ public abstract class AvroSchema {
     public abstract void pushToStack();
 
     /**
-     * Whether the schema is done. Also indicates that the result is ready.
-     *
-     * @return Whether the schema is done. Also indicates that the result is ready.
+     * @return Whether or not the schema is done. Also indicates that the result is ready.
      */
     public boolean isDone() {
         return this.done;
@@ -90,8 +88,8 @@ public abstract class AvroSchema {
     /**
      * Gets the schema associated with the type.
      *
-     * @param type The {@link AvroType type} that defines the schema.
-     * @param state {@link AvroParserState}
+     * @param type     The {@link AvroType type} that defines the schema.
+     * @param state    {@link AvroParserState}
      * @param onResult {@link Consumer}
      * @return {@link AvroSchema}
      * @see AvroType
@@ -114,36 +112,36 @@ public abstract class AvroSchema {
                 return new AvroBytesSchema(state, onResult);
             case STRING:
                 return new AvroStringSchema(state, onResult);
-            case RECORD:
+            case RECORD: {
                 checkType("type", type, AvroType.AvroRecordType.class);
                 AvroType.AvroRecordType recordType = (AvroType.AvroRecordType) type;
                 return new AvroRecordSchema(recordType.getName(), recordType.getFields(), state, onResult);
-
-            case ENUM:
+            }
+            case ENUM: {
                 checkType("type", type, AvroType.AvroEnumType.class);
                 AvroType.AvroEnumType enumType = (AvroType.AvroEnumType) type;
                 return new AvroEnumSchema(enumType.getSymbols(), state, onResult);
-
-            case ARRAY:
+            }
+            case ARRAY: {
                 checkType("type", type, AvroType.AvroArrayType.class);
                 AvroType.AvroArrayType arrayType = (AvroType.AvroArrayType) type;
                 return new AvroArraySchema(arrayType.getItemType(), state, onResult);
-
-            case MAP:
+            }
+            case MAP: {
                 checkType("type", type, AvroType.AvroMapType.class);
                 AvroType.AvroMapType mapType = (AvroType.AvroMapType) type;
                 return new AvroMapSchema(mapType.getValueType(), state, onResult);
-
-            case UNION:
+            }
+            case UNION: {
                 checkType("type", type, AvroType.AvroUnionType.class);
                 AvroType.AvroUnionType unionType = (AvroType.AvroUnionType) type;
                 return new AvroUnionSchema(unionType.getTypes(), state, onResult);
-
-            case FIXED:
+            }
+            case FIXED: {
                 checkType("type", type, AvroType.AvroFixedType.class);
                 AvroType.AvroFixedType fixedType = (AvroType.AvroFixedType) type;
                 return new AvroFixedSchema(fixedType.getSize(), state, onResult);
-
+            }
             default:
                 throw new RuntimeException("Unsupported type " + type.getType());
         }
@@ -152,14 +150,14 @@ public abstract class AvroSchema {
     /**
      * Checks if the object matches the expected type.
      *
-     * @param name The name of the variable.
-     * @param obj The object.
+     * @param name         The name of the variable.
+     * @param obj          The object.
      * @param expectedType The expected type.
      */
     public static void checkType(String name, Object obj, Class<?> expectedType) {
         if (!expectedType.isAssignableFrom(obj.getClass())) {
-            throw new IllegalStateException(
-                String.format("Expected '%s' to be of type %s", name, expectedType.getSimpleName()));
+            throw new IllegalStateException(String.format(
+                "Expected '%s' to be of type %s", name, expectedType.getSimpleName()));
         }
     }
 
@@ -170,10 +168,13 @@ public abstract class AvroSchema {
      * @return The byte array.
      */
     public static byte[] getBytes(List<?> bytes) {
-        long longTotalBytes = bytes.stream().mapToLong(buffer -> {
-            checkType("buffer", buffer, ByteBuffer.class);
-            return ((ByteBuffer) buffer).remaining();
-        }).sum();
+        long longTotalBytes = bytes
+            .stream()
+            .mapToLong(buffer -> {
+                checkType("buffer", buffer, ByteBuffer.class);
+                return ((ByteBuffer) buffer).remaining();
+            })
+            .sum();
 
         if (longTotalBytes > Integer.MAX_VALUE) {
             throw new IllegalArgumentException("Bytes can not fit into a single array.");
@@ -193,5 +194,4 @@ public abstract class AvroSchema {
 
         return ret;
     }
-
 }

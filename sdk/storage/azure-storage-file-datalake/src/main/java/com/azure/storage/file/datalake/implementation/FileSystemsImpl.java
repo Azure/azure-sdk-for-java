@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.file.datalake.implementation.models.DataLakeStorageExceptionInternal;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsCreateHeaders;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsDeleteHeaders;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsGetPropertiesHeaders;
@@ -37,6 +36,7 @@ import com.azure.storage.file.datalake.implementation.models.ListBlobsIncludeIte
 import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathList;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -77,7 +77,7 @@ public final class FileSystemsImpl {
     public interface FileSystemsService {
         @Put("/{filesystem}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<FileSystemsCreateHeaders, Void>> create(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -86,7 +86,7 @@ public final class FileSystemsImpl {
 
         @Put("/{filesystem}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<Void>> createNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -95,7 +95,7 @@ public final class FileSystemsImpl {
 
         @Put("/{filesystem}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         ResponseBase<FileSystemsCreateHeaders, Void> createSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -104,7 +104,7 @@ public final class FileSystemsImpl {
 
         @Put("/{filesystem}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Response<Void> createNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -113,7 +113,7 @@ public final class FileSystemsImpl {
 
         @Patch("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<FileSystemsSetPropertiesHeaders, Void>> setProperties(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -124,7 +124,7 @@ public final class FileSystemsImpl {
 
         @Patch("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<Void>> setPropertiesNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -135,7 +135,7 @@ public final class FileSystemsImpl {
 
         @Patch("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         ResponseBase<FileSystemsSetPropertiesHeaders, Void> setPropertiesSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -146,7 +146,7 @@ public final class FileSystemsImpl {
 
         @Patch("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Response<Void> setPropertiesNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -157,7 +157,7 @@ public final class FileSystemsImpl {
 
         @Head("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<FileSystemsGetPropertiesHeaders, Void>> getProperties(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -165,7 +165,7 @@ public final class FileSystemsImpl {
 
         @Head("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<Void>> getPropertiesNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -173,7 +173,7 @@ public final class FileSystemsImpl {
 
         @Head("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         ResponseBase<FileSystemsGetPropertiesHeaders, Void> getPropertiesSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -181,7 +181,7 @@ public final class FileSystemsImpl {
 
         @Head("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Response<Void> getPropertiesNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -189,7 +189,7 @@ public final class FileSystemsImpl {
 
         @Delete("/{filesystem}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<FileSystemsDeleteHeaders, Void>> delete(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -200,7 +200,7 @@ public final class FileSystemsImpl {
 
         @Delete("/{filesystem}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<Void>> deleteNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -211,7 +211,7 @@ public final class FileSystemsImpl {
 
         @Delete("/{filesystem}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         ResponseBase<FileSystemsDeleteHeaders, Void> deleteSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -222,7 +222,7 @@ public final class FileSystemsImpl {
 
         @Delete("/{filesystem}")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Response<Void> deleteNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -233,7 +233,7 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPaths(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -244,7 +244,7 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<PathList>> listPathsNoCustomHeaders(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -255,7 +255,7 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         ResponseBase<FileSystemsListPathsHeaders, PathList> listPathsSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -266,7 +266,7 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Response<PathList> listPathsNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @QueryParam("resource") String resource,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
@@ -277,7 +277,7 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
             listBlobHierarchySegment(@HostParam("url") String url, @PathParam("filesystem") String fileSystem,
                 @QueryParam("restype") String restype, @QueryParam("comp") String comp,
@@ -290,7 +290,7 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<ListBlobsHierarchySegmentResponse>> listBlobHierarchySegmentNoCustomHeaders(
             @HostParam("url") String url, @PathParam("filesystem") String fileSystem,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
@@ -302,7 +302,7 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>
             listBlobHierarchySegmentSync(@HostParam("url") String url, @PathParam("filesystem") String fileSystem,
                 @QueryParam("restype") String restype, @QueryParam("comp") String comp,
@@ -315,7 +315,7 @@ public final class FileSystemsImpl {
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DataLakeStorageExceptionInternal.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Response<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentNoCustomHeadersSync(
             @HostParam("url") String url, @PathParam("filesystem") String fileSystem,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
@@ -344,7 +344,7 @@ public final class FileSystemsImpl {
      * merge new and existing properties, first get all existing properties and the current E-Tag, then make a
      * conditional request with the E-Tag and include values for all properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -375,7 +375,7 @@ public final class FileSystemsImpl {
      * conditional request with the E-Tag and include values for all properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -405,7 +405,7 @@ public final class FileSystemsImpl {
      * merge new and existing properties, first get all existing properties and the current E-Tag, then make a
      * conditional request with the E-Tag and include values for all properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -433,7 +433,7 @@ public final class FileSystemsImpl {
      * conditional request with the E-Tag and include values for all properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -460,7 +460,7 @@ public final class FileSystemsImpl {
      * merge new and existing properties, first get all existing properties and the current E-Tag, then make a
      * conditional request with the E-Tag and include values for all properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -492,7 +492,7 @@ public final class FileSystemsImpl {
      * conditional request with the E-Tag and include values for all properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -523,7 +523,7 @@ public final class FileSystemsImpl {
      * conditional request with the E-Tag and include values for all properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -553,7 +553,7 @@ public final class FileSystemsImpl {
      * merge new and existing properties, first get all existing properties and the current E-Tag, then make a
      * conditional request with the E-Tag and include values for all properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -580,7 +580,7 @@ public final class FileSystemsImpl {
      * conditional request with the E-Tag and include values for all properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -612,7 +612,7 @@ public final class FileSystemsImpl {
      * conditional request with the E-Tag and include values for all properties.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -660,7 +660,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -707,7 +707,7 @@ public final class FileSystemsImpl {
      * conditional request with the E-Tag and include values for all properties.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -739,7 +739,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -770,7 +770,7 @@ public final class FileSystemsImpl {
      * conditional request with the E-Tag and include values for all properties.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -818,7 +818,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -866,7 +866,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -913,7 +913,7 @@ public final class FileSystemsImpl {
      * conditional request with the E-Tag and include values for all properties.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -943,7 +943,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -981,7 +981,7 @@ public final class FileSystemsImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1005,7 +1005,7 @@ public final class FileSystemsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1028,7 +1028,7 @@ public final class FileSystemsImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1049,7 +1049,7 @@ public final class FileSystemsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1069,7 +1069,7 @@ public final class FileSystemsImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1093,7 +1093,7 @@ public final class FileSystemsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1117,7 +1117,7 @@ public final class FileSystemsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -1140,7 +1140,7 @@ public final class FileSystemsImpl {
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1160,7 +1160,7 @@ public final class FileSystemsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -1190,7 +1190,7 @@ public final class FileSystemsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1237,7 +1237,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1282,7 +1282,7 @@ public final class FileSystemsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1312,7 +1312,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1342,7 +1342,7 @@ public final class FileSystemsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1389,7 +1389,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1436,7 +1436,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -1482,7 +1482,7 @@ public final class FileSystemsImpl {
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1510,7 +1510,7 @@ public final class FileSystemsImpl {
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -1562,7 +1562,7 @@ public final class FileSystemsImpl {
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1601,7 +1601,7 @@ public final class FileSystemsImpl {
      * translated because they do not have unique friendly names.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1640,7 +1640,7 @@ public final class FileSystemsImpl {
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1677,7 +1677,7 @@ public final class FileSystemsImpl {
      * translated because they do not have unique friendly names.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -1713,7 +1713,7 @@ public final class FileSystemsImpl {
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1752,7 +1752,7 @@ public final class FileSystemsImpl {
      * translated because they do not have unique friendly names.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1791,7 +1791,7 @@ public final class FileSystemsImpl {
      * translated because they do not have unique friendly names.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link ResponseBase}.
      */
@@ -1830,7 +1830,7 @@ public final class FileSystemsImpl {
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1867,7 +1867,7 @@ public final class FileSystemsImpl {
      * translated because they do not have unique friendly names.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -1902,7 +1902,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of blobs along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1946,7 +1946,7 @@ public final class FileSystemsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of blobs along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1990,7 +1990,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of blobs on successful completion of {@link Mono}.
      */
@@ -2025,7 +2025,7 @@ public final class FileSystemsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of blobs on successful completion of {@link Mono}.
      */
@@ -2059,7 +2059,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of blobs along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -2103,7 +2103,7 @@ public final class FileSystemsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of blobs along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -2147,7 +2147,7 @@ public final class FileSystemsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of blobs along with {@link ResponseBase}.
      */
@@ -2191,7 +2191,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of blobs.
      */
@@ -2226,7 +2226,7 @@ public final class FileSystemsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an enumeration of blobs along with {@link Response}.
      */

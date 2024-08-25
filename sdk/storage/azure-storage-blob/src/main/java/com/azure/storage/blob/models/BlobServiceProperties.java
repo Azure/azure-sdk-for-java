@@ -5,65 +5,76 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
-/**
- * Storage Service Properties.
- */
+/** Storage Service Properties. */
+@JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
-public final class BlobServiceProperties implements XmlSerializable<BlobServiceProperties> {
+public final class BlobServiceProperties {
     /*
      * Azure Analytics Logging settings.
      */
+    @JsonProperty(value = "Logging")
     private BlobAnalyticsLogging logging;
 
     /*
      * a summary of request statistics grouped by API in hour or minute aggregates for blobs
      */
+    @JsonProperty(value = "HourMetrics")
     private BlobMetrics hourMetrics;
 
     /*
      * a summary of request statistics grouped by API in hour or minute aggregates for blobs
      */
+    @JsonProperty(value = "MinuteMetrics")
     private BlobMetrics minuteMetrics;
+
+    private static final class CorsWrapper {
+        @JacksonXmlProperty(localName = "CorsRule")
+        private final List<BlobCorsRule> items;
+
+        @JsonCreator
+        private CorsWrapper(@JacksonXmlProperty(localName = "CorsRule") List<BlobCorsRule> items) {
+            this.items = items;
+        }
+    }
 
     /*
      * The set of CORS rules.
      */
-    private List<BlobCorsRule> cors;
+    @JsonProperty(value = "Cors")
+    private CorsWrapper cors;
 
     /*
-     * The default version to use for requests to the Blob service if an incoming request's version is not specified. Possible values include version 2008-10-27 and all more recent versions
+     * The default version to use for requests to the Blob service if an incoming request's version is not specified.
+     * Possible values include version 2008-10-27 and all more recent versions
      */
+    @JsonProperty(value = "DefaultServiceVersion")
     private String defaultServiceVersion;
 
     /*
      * the retention policy which determines how long the associated data should persist
      */
+    @JsonProperty(value = "DeleteRetentionPolicy")
     private BlobRetentionPolicy deleteRetentionPolicy;
 
     /*
      * The properties that enable an account to host a static website
      */
+    @JsonProperty(value = "StaticWebsite")
     private StaticWebsite staticWebsite;
 
-    /**
-     * Creates an instance of BlobServiceProperties class.
-     */
-    public BlobServiceProperties() {
-    }
+    /** Creates an instance of BlobServiceProperties class. */
+    public BlobServiceProperties() {}
 
     /**
      * Get the logging property: Azure Analytics Logging settings.
-     * 
+     *
      * @return the logging value.
      */
     public BlobAnalyticsLogging getLogging() {
@@ -72,7 +83,7 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
 
     /**
      * Set the logging property: Azure Analytics Logging settings.
-     * 
+     *
      * @param logging the logging value to set.
      * @return the BlobServiceProperties object itself.
      */
@@ -84,7 +95,7 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
     /**
      * Get the hourMetrics property: a summary of request statistics grouped by API in hour or minute aggregates for
      * blobs.
-     * 
+     *
      * @return the hourMetrics value.
      */
     public BlobMetrics getHourMetrics() {
@@ -94,7 +105,7 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
     /**
      * Set the hourMetrics property: a summary of request statistics grouped by API in hour or minute aggregates for
      * blobs.
-     * 
+     *
      * @param hourMetrics the hourMetrics value to set.
      * @return the BlobServiceProperties object itself.
      */
@@ -106,7 +117,7 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
     /**
      * Get the minuteMetrics property: a summary of request statistics grouped by API in hour or minute aggregates for
      * blobs.
-     * 
+     *
      * @return the minuteMetrics value.
      */
     public BlobMetrics getMinuteMetrics() {
@@ -116,7 +127,7 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
     /**
      * Set the minuteMetrics property: a summary of request statistics grouped by API in hour or minute aggregates for
      * blobs.
-     * 
+     *
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the BlobServiceProperties object itself.
      */
@@ -127,24 +138,24 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
 
     /**
      * Get the cors property: The set of CORS rules.
-     * 
+     *
      * @return the cors value.
      */
     public List<BlobCorsRule> getCors() {
         if (this.cors == null) {
-            this.cors = new ArrayList<>();
+            this.cors = new CorsWrapper(new ArrayList<BlobCorsRule>());
         }
-        return this.cors;
+        return this.cors.items;
     }
 
     /**
      * Set the cors property: The set of CORS rules.
-     * 
+     *
      * @param cors the cors value to set.
      * @return the BlobServiceProperties object itself.
      */
     public BlobServiceProperties setCors(List<BlobCorsRule> cors) {
-        this.cors = cors;
+        this.cors = new CorsWrapper(cors);
         return this;
     }
 
@@ -152,7 +163,7 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * Get the defaultServiceVersion property: The default version to use for requests to the Blob service if an
      * incoming request's version is not specified. Possible values include version 2008-10-27 and all more recent
      * versions.
-     * 
+     *
      * @return the defaultServiceVersion value.
      */
     public String getDefaultServiceVersion() {
@@ -163,7 +174,7 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      * Set the defaultServiceVersion property: The default version to use for requests to the Blob service if an
      * incoming request's version is not specified. Possible values include version 2008-10-27 and all more recent
      * versions.
-     * 
+     *
      * @param defaultServiceVersion the defaultServiceVersion value to set.
      * @return the BlobServiceProperties object itself.
      */
@@ -175,7 +186,7 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
     /**
      * Get the deleteRetentionPolicy property: the retention policy which determines how long the associated data should
      * persist.
-     * 
+     *
      * @return the deleteRetentionPolicy value.
      */
     public BlobRetentionPolicy getDeleteRetentionPolicy() {
@@ -185,7 +196,7 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
     /**
      * Set the deleteRetentionPolicy property: the retention policy which determines how long the associated data should
      * persist.
-     * 
+     *
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
      * @return the BlobServiceProperties object itself.
      */
@@ -196,7 +207,7 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
 
     /**
      * Get the staticWebsite property: The properties that enable an account to host a static website.
-     * 
+     *
      * @return the staticWebsite value.
      */
     public StaticWebsite getStaticWebsite() {
@@ -205,101 +216,12 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
 
     /**
      * Set the staticWebsite property: The properties that enable an account to host a static website.
-     * 
+     *
      * @param staticWebsite the staticWebsite value to set.
      * @return the BlobServiceProperties object itself.
      */
     public BlobServiceProperties setStaticWebsite(StaticWebsite staticWebsite) {
         this.staticWebsite = staticWebsite;
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeXml(this.logging, "Logging");
-        xmlWriter.writeXml(this.hourMetrics, "HourMetrics");
-        xmlWriter.writeXml(this.minuteMetrics, "MinuteMetrics");
-        if (this.cors != null) {
-            xmlWriter.writeStartElement("Cors");
-            for (BlobCorsRule element : this.cors) {
-                xmlWriter.writeXml(element, "CorsRule");
-            }
-            xmlWriter.writeEndElement();
-        }
-        xmlWriter.writeStringElement("DefaultServiceVersion", this.defaultServiceVersion);
-        xmlWriter.writeXml(this.deleteRetentionPolicy, "DeleteRetentionPolicy");
-        xmlWriter.writeXml(this.staticWebsite, "StaticWebsite");
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of BlobServiceProperties from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of BlobServiceProperties if the XmlReader was pointing to an instance of it, or null if it
-     * was pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the BlobServiceProperties.
-     */
-    public static BlobServiceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of BlobServiceProperties from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of BlobServiceProperties if the XmlReader was pointing to an instance of it, or null if it
-     * was pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the BlobServiceProperties.
-     */
-    public static BlobServiceProperties fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            BlobServiceProperties deserializedBlobServiceProperties = new BlobServiceProperties();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("Logging".equals(elementName.getLocalPart())) {
-                    deserializedBlobServiceProperties.logging = BlobAnalyticsLogging.fromXml(reader, "Logging");
-                } else if ("HourMetrics".equals(elementName.getLocalPart())) {
-                    deserializedBlobServiceProperties.hourMetrics = BlobMetrics.fromXml(reader, "HourMetrics");
-                } else if ("MinuteMetrics".equals(elementName.getLocalPart())) {
-                    deserializedBlobServiceProperties.minuteMetrics = BlobMetrics.fromXml(reader, "MinuteMetrics");
-                } else if ("Cors".equals(elementName.getLocalPart())) {
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        elementName = reader.getElementName();
-                        if ("CorsRule".equals(elementName.getLocalPart())) {
-                            if (deserializedBlobServiceProperties.cors == null) {
-                                deserializedBlobServiceProperties.cors = new ArrayList<>();
-                            }
-                            deserializedBlobServiceProperties.cors.add(BlobCorsRule.fromXml(reader, "CorsRule"));
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
-                } else if ("DefaultServiceVersion".equals(elementName.getLocalPart())) {
-                    deserializedBlobServiceProperties.defaultServiceVersion = reader.getStringElement();
-                } else if ("DeleteRetentionPolicy".equals(elementName.getLocalPart())) {
-                    deserializedBlobServiceProperties.deleteRetentionPolicy
-                        = BlobRetentionPolicy.fromXml(reader, "DeleteRetentionPolicy");
-                } else if ("StaticWebsite".equals(elementName.getLocalPart())) {
-                    deserializedBlobServiceProperties.staticWebsite = StaticWebsite.fromXml(reader, "StaticWebsite");
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedBlobServiceProperties;
-        });
     }
 }

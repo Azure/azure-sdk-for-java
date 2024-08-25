@@ -867,7 +867,7 @@ public class QueueApiTests extends QueueTestBase {
     @Test
     public void defaultAudience() {
         queueClient.createIfNotExists();
-        QueueClient aadQueue = getOAuthQueueClientBuilder()
+        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
             .audience(null) // should default to "https://storage.azure.com/"
             .queueName(queueClient.getQueueName())
             .buildClient();
@@ -878,7 +878,7 @@ public class QueueApiTests extends QueueTestBase {
     @Test
     public void storageAccountAudience() {
         queueClient.createIfNotExists();
-        QueueClient aadQueue = getOAuthQueueClientBuilder()
+        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
             .audience(QueueAudience.createQueueServiceAccountAudience(queueClient.getAccountName()))
             .queueName(queueClient.getQueueName())
             .buildClient();
@@ -893,7 +893,7 @@ public class QueueApiTests extends QueueTestBase {
      */
     public void audienceErrorBearerChallengeRetry() {
         queueClient.createIfNotExists();
-        QueueClient aadQueue = getOAuthQueueClientBuilder()
+        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
             .queueName(queueClient.getQueueName())
             .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
             .buildClient();
@@ -907,7 +907,7 @@ public class QueueApiTests extends QueueTestBase {
         QueueAudience audience = QueueAudience.fromString(url);
 
         queueClient.createIfNotExists();
-        QueueClient aadQueue = getOAuthQueueClientBuilder()
+        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
             .audience(audience)
             .queueName(queueClient.getQueueName())
             .buildClient();

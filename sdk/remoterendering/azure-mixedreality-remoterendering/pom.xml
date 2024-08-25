@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-mixedreality-remoterendering</artifactId>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-remoterendering;current} -->
+  <version>1.1.32</version> <!-- {x-version-update;com.azure:azure-mixedreality-remoterendering;current} -->
 
   <name>Microsoft Azure SDK for Remote Rendering</name>
   <description>This package contains Microsoft Azure SDK for Remote Rendering.</description>
@@ -53,12 +53,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.20</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
@@ -94,27 +88,5 @@
       <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-      <scope>compile</scope>
-    </dependency>
   </dependencies>
-  <profiles>
-    <profile>
-      <id>java12plus</id>
-      <activation>
-        <jdk>[12,)</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>

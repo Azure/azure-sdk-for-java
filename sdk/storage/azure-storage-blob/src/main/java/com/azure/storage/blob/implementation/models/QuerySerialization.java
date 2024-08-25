@@ -5,33 +5,25 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The QuerySerialization model.
- */
+/** The QuerySerialization model. */
+@JacksonXmlRootElement(localName = "QuerySerialization")
 @Fluent
-public final class QuerySerialization implements XmlSerializable<QuerySerialization> {
+public final class QuerySerialization {
     /*
      * The Format property.
      */
+    @JsonProperty(value = "Format", required = true)
     private QueryFormat format;
 
-    /**
-     * Creates an instance of QuerySerialization class.
-     */
-    public QuerySerialization() {
-    }
+    /** Creates an instance of QuerySerialization class. */
+    public QuerySerialization() {}
 
     /**
      * Get the format property: The Format property.
-     * 
+     *
      * @return the format value.
      */
     public QueryFormat getFormat() {
@@ -40,67 +32,12 @@ public final class QuerySerialization implements XmlSerializable<QuerySerializat
 
     /**
      * Set the format property: The Format property.
-     * 
+     *
      * @param format the format value to set.
      * @return the QuerySerialization object itself.
      */
     public QuerySerialization setFormat(QueryFormat format) {
         this.format = format;
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QuerySerialization" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeXml(this.format, "Format");
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of QuerySerialization from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of QuerySerialization if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the QuerySerialization.
-     */
-    public static QuerySerialization fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of QuerySerialization from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of QuerySerialization if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the QuerySerialization.
-     */
-    public static QuerySerialization fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QuerySerialization" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            QuerySerialization deserializedQuerySerialization = new QuerySerialization();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("Format".equals(elementName.getLocalPart())) {
-                    deserializedQuerySerialization.format = QueryFormat.fromXml(reader, "Format");
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedQuerySerialization;
-        });
     }
 }

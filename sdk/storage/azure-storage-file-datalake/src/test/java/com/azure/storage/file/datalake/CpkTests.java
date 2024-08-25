@@ -4,7 +4,6 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
@@ -77,8 +76,7 @@ public class CpkTests extends DataLakeTestBase {
 
         assertEquals(200, response.getStatusCode());
         assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-        assertEquals(key.getKeySha256(),
-            response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
+        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
     }
 
     @Test
@@ -97,8 +95,7 @@ public class CpkTests extends DataLakeTestBase {
             DATA.getDefaultDataSizeLong(), null, null, null, null);
 
         assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-        assertEquals(key.getKeySha256(),
-            response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
+        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
     }
 
     @Test
@@ -122,8 +119,7 @@ public class CpkTests extends DataLakeTestBase {
 
         assertEquals(key.getKeySha256(), response.getValue().getCustomerProvidedKey().getKeySha256());
         assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-        assertEquals(key.getKeySha256(),
-            response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
+        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
     }
 
     @Test

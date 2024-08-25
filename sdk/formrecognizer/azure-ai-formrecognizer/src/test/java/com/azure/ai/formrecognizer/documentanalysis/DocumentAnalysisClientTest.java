@@ -82,8 +82,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                                                              DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentAnalysisBuilder(
             buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
-            serviceVersion
-        )
+            serviceVersion,
+            true)
             .buildClient();
     }
 
@@ -91,8 +91,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                                                                           DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentModelAdminClientBuilder(
             buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
-            serviceVersion
-        )
+            serviceVersion,
+            true)
             .buildClient();
     }
 
@@ -1467,7 +1467,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient,
                                            DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
@@ -1517,7 +1516,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyze(HttpClient httpClient,
                                     DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);

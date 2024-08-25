@@ -24,7 +24,6 @@ import com.azure.storage.file.share.models.ShareRetentionPolicy;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareSmbSettings;
 import com.azure.storage.file.share.models.ShareStorageException;
-import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.models.SmbMultichannel;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
@@ -52,7 +51,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -281,22 +279,6 @@ public class FileServiceApiTests extends FileShareTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @Test
-    public void listSharesOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        oAuthServiceClient.createShare(shareName);
-
-        for (ShareItem shareItem : oAuthServiceClient.listShares()) {
-            if (Objects.equals(shareItem.getName(), shareName)) {
-                assertNotNull(shareItem.getProperties().getETag());
-                assertNotNull(shareItem.getProperties().getLastModified());
-            }
-            assertNull(shareItem.getProperties().getMetadata());
-        }
-    }
-
     @ResourceLock("ServiceProperties")
     @Test
     public void setAndGetProperties() {
@@ -377,37 +359,6 @@ public class FileServiceApiTests extends FileShareTestBase {
             Arguments.of(INVALID_ALLOWED_METHOD, 400, ShareErrorCode.INVALID_XML_NODE_VALUE));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @ResourceLock("ServiceProperties")
-    @Test
-    public void setAndGetPropertiesOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-
-        ShareServiceProperties originalProperties = oAuthServiceClient.getProperties();
-        ShareRetentionPolicy retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3);
-        ShareMetrics metrics = new ShareMetrics().setEnabled(true).setIncludeApis(false)
-            .setRetentionPolicy(retentionPolicy).setVersion("1.0");
-        ShareServiceProperties updatedProperties = new ShareServiceProperties().setHourMetrics(metrics)
-            .setMinuteMetrics(metrics).setCors(new ArrayList<>());
-
-        Response<ShareServiceProperties> getPropertiesBeforeResponse =
-            oAuthServiceClient.getPropertiesWithResponse(null, null);
-        Response<Void> setPropertiesResponse =
-            oAuthServiceClient.setPropertiesWithResponse(updatedProperties, null, null);
-        Response<ShareServiceProperties> getPropertiesAfterResponse =
-            oAuthServiceClient.getPropertiesWithResponse(null, null);
-
-        FileShareTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200);
-        FileShareTestHelper.assertFileServicePropertiesAreEqual(originalProperties,
-            getPropertiesBeforeResponse.getValue());
-        FileShareTestHelper.assertResponseStatusCode(setPropertiesResponse, 202);
-        FileShareTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200);
-        FileShareTestHelper.assertFileServicePropertiesAreEqual(updatedProperties,
-            getPropertiesAfterResponse.getValue());
-
-    }
-
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreShareMin() {
@@ -424,30 +375,6 @@ public class FileServiceApiTests extends FileShareTestBase {
             null, Context.NONE).iterator().next();
 
         ShareClient restoredShareClient = primaryFileServiceClient.undeleteShare(shareItem.getName(),
-            shareItem.getVersion());
-
-        restoredShareClient.getFileClient(fileName).exists();
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @Test
-    public void restoreShareOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
-
-        shareClient.create();
-        String fileName = generatePathName();
-        shareClient.getFileClient(fileName).create(2);
-        shareClient.delete();
-        sleepIfRunningAgainstService(30000);
-        ShareItem shareItem = oAuthServiceClient.listShares(
-            new ListSharesOptions()
-                .setPrefix(shareClient.getShareName())
-                .setIncludeDeleted(true),
-            null, Context.NONE).iterator().next();
-
-        ShareClient restoredShareClient = oAuthServiceClient.undeleteShare(shareItem.getName(),
             shareItem.getVersion());
 
         restoredShareClient.getFileClient(fileName).exists();
@@ -500,38 +427,11 @@ public class FileServiceApiTests extends FileShareTestBase {
         options.setProtocols(protocols);
         options.setSnapshotVirtualDirectoryAccessEnabled(true);
 
-        String shareName = generateShareName();
-
-        ShareClient shareClient = premiumFileServiceClient.getShareClient(shareName);
+        ShareClient shareClient = premiumFileServiceClient.getShareClient(generateShareName());
         shareClient.createWithResponse(options, null, null);
 
-        Stream<ShareItem> shares = premiumFileServiceClient.listShares().stream();
-
-        ShareItem share = shares.filter(r -> r.getName().equals(shareName)).findFirst().get();
-
+        ShareItem share = premiumFileServiceClient.listShares().iterator().next();
         assertEquals(protocols.toString(), share.getProperties().getProtocols().toString());
         assertTrue(share.getProperties().isSnapshotVirtualDirectoryAccessEnabled());
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @Test
-    public void listSharePaidBursting() {
-        ShareCreateOptions options = new ShareCreateOptions()
-            .setPaidBurstingEnabled(true)
-            .setPaidBurstingMaxIops(5000L)
-            .setPaidBurstingMaxBandwidthMibps(1000L);
-
-        String shareName = generateShareName();
-
-        ShareClient shareClient = premiumFileServiceClient.getShareClient(shareName);
-        shareClient.createWithResponse(options, null, null);
-
-        Stream<ShareItem> shares = premiumFileServiceClient.listShares().stream();
-
-        ShareItem share = shares.filter(r -> r.getName().equals(shareName)).findFirst().get();
-
-        assertTrue(share.getProperties().isPaidBurstingEnabled());
-        assertEquals(5000L, share.getProperties().getPaidBurstingMaxIops());
-        assertEquals(1000L, share.getProperties().getPaidBurstingMaxBandwidthMibps());
     }
 }

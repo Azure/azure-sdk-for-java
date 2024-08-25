@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/management/groups/dpokluda-test?api-version=2022-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.4 (1.8.0_342; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "166d8c3a-0dbd-4ee0-91ab-d97d9b290832"
+    },
+    "Response" : {
+      "content-length" : "340",
+      "traceparent" : "00-81c4f66891d02b47b5d9f5df51b35df2-64ea3dbf25ac3b4f-00",
+      "mise-correlation-id" : "f2c0bf5c-7be2-4d4d-aae4-5290b78a5f4b",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"groupId\": \"dpokluda-test\",\r\n  \"groupType\": \"IoTHubTag\",\r\n  \"createdDateTime\": \"2022-06-09T00:08:48.4487+00:00\",\r\n  \"deviceCount\": 1,\r\n  \"subgroupsWithNewUpdatesAvailableCount\": 1,\r\n  \"subgroupsWithUpdatesInProgressCount\": 0,\r\n  \"subgroupsWithOnLatestUpdateCount\": 0,\r\n  \"deployments\": [\r\n    \"3706728501f54ef4b4d6574eaef7fb6c\"\r\n  ]\r\n}",
+      "Date" : "Wed, 31 Aug 2022 20:16:25 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

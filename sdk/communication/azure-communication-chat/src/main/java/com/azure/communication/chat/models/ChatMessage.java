@@ -3,17 +3,9 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -21,38 +13,44 @@ import java.util.Map;
  * The ChatMessage model.
  */
 @Fluent
-public final class ChatMessage implements JsonSerializable<ChatMessage> {
+public final class ChatMessage {
     /**
      * The id of the chat message.
      */
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
      * Type of the chat message.
      *
      */
+    @JsonProperty(value = "type", required = true)
     private ChatMessageType type;
 
     /**
      * Version of the chat message.
      */
+    @JsonProperty(value = "version", required = true)
     private String version;
 
     /**
      * Content of the chat message.
      */
+    @JsonProperty(value = "content")
     private ChatMessageContent content;
 
     /**
      * The display name of the chat message sender. This property is used to
      * populate sender name for push notifications.
      */
+    @JsonProperty(value = "senderDisplayName")
     private String senderDisplayName;
 
     /**
      * The timestamp when the chat message arrived at the server. The timestamp
      * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @JsonProperty(value = "createdOn")
     private OffsetDateTime createdOn;
 
     /**
@@ -61,23 +59,27 @@ public final class ChatMessage implements JsonSerializable<ChatMessage> {
      * model must be interpreted as a union: Apart from rawId, at most one
      * further property may be set.
      */
+    @JsonProperty(value = "senderCommunicationIdentifier")
     private CommunicationIdentifier sender;
 
     /**
      * The timestamp when the chat message was deleted. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
 
     /**
      * The timestamp when the chat message was edited. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
+    @JsonProperty(value = "editedOn")
     private OffsetDateTime editedOn;
 
     /**
      * Message metadata.
      */
+    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
@@ -294,76 +296,5 @@ public final class ChatMessage implements JsonSerializable<ChatMessage> {
     public ChatMessage setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", id);
-        jsonWriter.writeStringField("type", type != null ? type.toString() : null);
-        jsonWriter.writeJsonField("content", content);
-        jsonWriter.writeStringField("senderDisplayName", senderDisplayName);
-        jsonWriter.writeStringField("createdOn", createdOn != null ? createdOn.toString() : null);
-        // final CommunicationIdentifierModel identifier = CommunicationIdentifierConverter.convert(sender);
-        // jsonWriter.writeJsonField("senderCommunicationIdentifier", identifier);
-        jsonWriter.writeStringField("deletedOn", deletedOn != null ? deletedOn.toString() : null);
-        jsonWriter.writeStringField("editedOn", editedOn != null ? editedOn.toString() : null);
-        jsonWriter.writeMapField("metadata", metadata, JsonWriter::writeString);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SendChatMessageOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SendChatMessageOptions if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SendChatMessageOptions.
-     */
-    public static ChatMessage fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            final ChatMessage message = new ChatMessage();
-            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    message.setId(reader.getString());
-                } else if ("type".equals(fieldName)) {
-                    message.setType(ChatMessageType.fromString(reader.getString()));
-                } else if ("version".equals(fieldName)) {
-                    message.setVersion(reader.getString());
-                } else if ("content".equals(fieldName)) {
-                    message.setContent(ChatMessageContent.fromJson(reader));
-                } else if ("senderDisplayName".equals(fieldName)) {
-                    message.setSenderDisplayName(reader.getString());
-                } else if ("createdOn".equals(fieldName)) {
-                    final String value = reader.getString();
-                    if (!CoreUtils.isNullOrEmpty(value)) {
-                        message.setCreatedOn(OffsetDateTime.parse(value));
-                    }
-                } else if ("senderCommunicationIdentifier".equals(fieldName)) {
-                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
-                    message.setSender(CommunicationIdentifierConverter.convert(identifier));
-                } else if ("deletedOn".equals(fieldName)) {
-                    final String value = reader.getString();
-                    if (!CoreUtils.isNullOrEmpty(value)) {
-                        message.setDeletedOn(OffsetDateTime.parse(value));
-                    }
-                } else if ("editedOn".equals(fieldName)) {
-                    final String value = reader.getString();
-                    if (!CoreUtils.isNullOrEmpty(value)) {
-                        message.setEditedOn(OffsetDateTime.parse(value));
-                    }
-                } else if ("metadata".equals(fieldName)) {
-                    message.setMetadata(reader.readMap(JsonReader::getString));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return message;
-        });
     }
 }

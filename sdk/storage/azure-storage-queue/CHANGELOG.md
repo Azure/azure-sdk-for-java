@@ -1,20 +1,16 @@
 # Release History
 
-## 12.23.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.22.1 (2024-08-24)
 
 ### Other Changes
 
-## 12.23.0-beta.1 (2024-08-06)
+#### Dependency Updates
 
-### Features Added
-- Added ability to retrieve SAS string to sign for debugging purposes.
-- Added support for service version 2024-11-04.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-storage-common` from `12.26.0` to version `12.27.0-beta.2`.
+- Upgraded `azure-xml` from `1.0.0` to version `1.1.0`.
+
 
 ## 12.22.0 (2024-07-18)
 

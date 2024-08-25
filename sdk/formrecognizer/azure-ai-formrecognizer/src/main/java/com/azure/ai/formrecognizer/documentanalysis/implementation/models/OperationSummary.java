@@ -4,71 +4,72 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-/**
- * Operation info.
- */
-@Fluent
-public final class OperationSummary implements JsonSerializable<OperationSummary> {
+/** Operation info. */
+@Immutable
+public final class OperationSummary {
     /*
      * Operation ID
      */
-    private final String operationId;
+    @JsonProperty(value = "operationId", required = true)
+    private String operationId;
 
     /*
      * Operation status.
      */
-    private final OperationStatus status;
+    @JsonProperty(value = "status", required = true)
+    private OperationStatus status;
 
     /*
      * Operation progress (0-100).
      */
+    @JsonProperty(value = "percentCompleted")
     private Integer percentCompleted;
 
     /*
      * Date and time (UTC) when the operation was created.
      */
-    private final OffsetDateTime createdDateTime;
+    @JsonProperty(value = "createdDateTime", required = true)
+    private OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
-    private final OffsetDateTime lastUpdatedDateTime;
+    @JsonProperty(value = "lastUpdatedDateTime", required = true)
+    private OffsetDateTime lastUpdatedDateTime;
 
     /*
      * Type of operation.
      */
-    private final OperationKind kind;
+    @JsonProperty(value = "kind", required = true)
+    private OperationKind kind;
 
     /*
      * URL of the resource targeted by this operation.
      */
-    private final String resourceLocation;
+    @JsonProperty(value = "resourceLocation", required = true)
+    private String resourceLocation;
 
     /*
      * API version used to create this operation.
      */
+    @JsonProperty(value = "apiVersion")
     private String apiVersion;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
      * Creates an instance of OperationSummary class.
-     * 
+     *
      * @param operationId the operationId value to set.
      * @param status the status value to set.
      * @param createdDateTime the createdDateTime value to set.
@@ -76,8 +77,14 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * @param kind the kind value to set.
      * @param resourceLocation the resourceLocation value to set.
      */
-    public OperationSummary(String operationId, OperationStatus status, OffsetDateTime createdDateTime,
-        OffsetDateTime lastUpdatedDateTime, OperationKind kind, String resourceLocation) {
+    @JsonCreator
+    private OperationSummary(
+            @JsonProperty(value = "operationId", required = true) String operationId,
+            @JsonProperty(value = "status", required = true) OperationStatus status,
+            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
+            @JsonProperty(value = "lastUpdatedDateTime", required = true) OffsetDateTime lastUpdatedDateTime,
+            @JsonProperty(value = "kind", required = true) OperationKind kind,
+            @JsonProperty(value = "resourceLocation", required = true) String resourceLocation) {
         this.operationId = operationId;
         this.status = status;
         this.createdDateTime = createdDateTime;
@@ -88,7 +95,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
 
     /**
      * Get the operationId property: Operation ID.
-     * 
+     *
      * @return the operationId value.
      */
     public String getOperationId() {
@@ -97,7 +104,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
 
     /**
      * Get the status property: Operation status.
-     * 
+     *
      * @return the status value.
      */
     public OperationStatus getStatus() {
@@ -106,7 +113,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
 
     /**
      * Get the percentCompleted property: Operation progress (0-100).
-     * 
+     *
      * @return the percentCompleted value.
      */
     public Integer getPercentCompleted() {
@@ -114,19 +121,8 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
     }
 
     /**
-     * Set the percentCompleted property: Operation progress (0-100).
-     * 
-     * @param percentCompleted the percentCompleted value to set.
-     * @return the OperationSummary object itself.
-     */
-    public OperationSummary setPercentCompleted(Integer percentCompleted) {
-        this.percentCompleted = percentCompleted;
-        return this;
-    }
-
-    /**
      * Get the createdDateTime property: Date and time (UTC) when the operation was created.
-     * 
+     *
      * @return the createdDateTime value.
      */
     public OffsetDateTime getCreatedDateTime() {
@@ -135,7 +131,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
 
     /**
      * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
-     * 
+     *
      * @return the lastUpdatedDateTime value.
      */
     public OffsetDateTime getLastUpdatedDateTime() {
@@ -144,7 +140,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
 
     /**
      * Get the kind property: Type of operation.
-     * 
+     *
      * @return the kind value.
      */
     public OperationKind getKind() {
@@ -153,7 +149,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
 
     /**
      * Get the resourceLocation property: URL of the resource targeted by this operation.
-     * 
+     *
      * @return the resourceLocation value.
      */
     public String getResourceLocation() {
@@ -162,7 +158,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
 
     /**
      * Get the apiVersion property: API version used to create this operation.
-     * 
+     *
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -170,145 +166,11 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
     }
 
     /**
-     * Set the apiVersion property: API version used to create this operation.
-     * 
-     * @param apiVersion the apiVersion value to set.
-     * @return the OperationSummary object itself.
-     */
-    public OperationSummary setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
-    /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
         return this.tags;
-    }
-
-    /**
-     * Set the tags property: List of key-value tag attributes associated with the document model.
-     * 
-     * @param tags the tags value to set.
-     * @return the OperationSummary object itself.
-     */
-    public OperationSummary setTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("operationId", this.operationId);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeStringField("createdDateTime",
-            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
-        jsonWriter.writeStringField("lastUpdatedDateTime", this.lastUpdatedDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
-        jsonWriter.writeNumberField("percentCompleted", this.percentCompleted);
-        jsonWriter.writeStringField("apiVersion", this.apiVersion);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of OperationSummary from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of OperationSummary if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OperationSummary.
-     */
-    public static OperationSummary fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean operationIdFound = false;
-            String operationId = null;
-            boolean statusFound = false;
-            OperationStatus status = null;
-            boolean createdDateTimeFound = false;
-            OffsetDateTime createdDateTime = null;
-            boolean lastUpdatedDateTimeFound = false;
-            OffsetDateTime lastUpdatedDateTime = null;
-            boolean kindFound = false;
-            OperationKind kind = null;
-            boolean resourceLocationFound = false;
-            String resourceLocation = null;
-            Integer percentCompleted = null;
-            String apiVersion = null;
-            Map<String, String> tags = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("operationId".equals(fieldName)) {
-                    operationId = reader.getString();
-                    operationIdFound = true;
-                } else if ("status".equals(fieldName)) {
-                    status = OperationStatus.fromString(reader.getString());
-                    statusFound = true;
-                } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                    createdDateTimeFound = true;
-                } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    lastUpdatedDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                    lastUpdatedDateTimeFound = true;
-                } else if ("kind".equals(fieldName)) {
-                    kind = OperationKind.fromString(reader.getString());
-                    kindFound = true;
-                } else if ("resourceLocation".equals(fieldName)) {
-                    resourceLocation = reader.getString();
-                    resourceLocationFound = true;
-                } else if ("percentCompleted".equals(fieldName)) {
-                    percentCompleted = reader.getNullable(JsonReader::getInt);
-                } else if ("apiVersion".equals(fieldName)) {
-                    apiVersion = reader.getString();
-                } else if ("tags".equals(fieldName)) {
-                    tags = reader.readMap(reader1 -> reader1.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (operationIdFound && statusFound && createdDateTimeFound && lastUpdatedDateTimeFound && kindFound
-                && resourceLocationFound) {
-                OperationSummary deserializedOperationSummary = new OperationSummary(operationId, status,
-                    createdDateTime, lastUpdatedDateTime, kind, resourceLocation);
-                deserializedOperationSummary.percentCompleted = percentCompleted;
-                deserializedOperationSummary.apiVersion = apiVersion;
-                deserializedOperationSummary.tags = tags;
-
-                return deserializedOperationSummary;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!operationIdFound) {
-                missingProperties.add("operationId");
-            }
-            if (!statusFound) {
-                missingProperties.add("status");
-            }
-            if (!createdDateTimeFound) {
-                missingProperties.add("createdDateTime");
-            }
-            if (!lastUpdatedDateTimeFound) {
-                missingProperties.add("lastUpdatedDateTime");
-            }
-            if (!kindFound) {
-                missingProperties.add("kind");
-            }
-            if (!resourceLocationFound) {
-                missingProperties.add("resourceLocation");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
     }
 }

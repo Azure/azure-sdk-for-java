@@ -152,26 +152,6 @@ public final class ContentSafetyClientImpl {
     @Host("{endpoint}/contentsafety")
     @ServiceInterface(name = "ContentSafetyClient")
     public interface ContentSafetyClientService {
-        @Post("/image:analyze")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> analyzeImage(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
-
-        @Post("/image:analyze")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> analyzeImageSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
-
         @Post("/text:analyze")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -191,102 +171,26 @@ public final class ContentSafetyClientImpl {
         Response<BinaryData> analyzeTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
-    }
 
-    /**
-     * Analyze Image
-     * 
-     * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
-     * Hate, SelfHarm, Sexual, and Violence.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     image (Required): {
-     *         content: byte[] (Optional)
-     *         blobUrl: String (Optional)
-     *     }
-     *     categories (Optional): [
-     *         String(Hate/SelfHarm/Sexual/Violence) (Optional)
-     *     ]
-     *     outputType: String(FourSeverityLevels) (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     categoriesAnalysis (Required): [
-     *          (Required){
-     *             category: String(Hate/SelfHarm/Sexual/Violence) (Required)
-     *             severity: Integer (Optional)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     * 
-     * @param options The image analysis request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the image analysis response along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> analyzeImageWithResponseAsync(BinaryData options, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.analyzeImage(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, options, requestOptions, context));
-    }
+        @Post("/image:analyze")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> analyzeImage(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
 
-    /**
-     * Analyze Image
-     * 
-     * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
-     * Hate, SelfHarm, Sexual, and Violence.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     image (Required): {
-     *         content: byte[] (Optional)
-     *         blobUrl: String (Optional)
-     *     }
-     *     categories (Optional): [
-     *         String(Hate/SelfHarm/Sexual/Violence) (Optional)
-     *     ]
-     *     outputType: String(FourSeverityLevels) (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     categoriesAnalysis (Required): [
-     *          (Required){
-     *             category: String(Hate/SelfHarm/Sexual/Violence) (Required)
-     *             severity: Integer (Optional)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     * 
-     * @param options The image analysis request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the image analysis response along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> analyzeImageWithResponse(BinaryData options, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.analyzeImageSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, options,
-            requestOptions, Context.NONE);
+        @Post("/image:analyze")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> analyzeImageSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -294,8 +198,9 @@ public final class ContentSafetyClientImpl {
      * 
      * A synchronous API for the analysis of potentially harmful text content. Currently, it supports four categories:
      * Hate, SelfHarm, Sexual, and Violence.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -309,9 +214,9 @@ public final class ContentSafetyClientImpl {
      *     outputType: String(FourSeverityLevels/EightSeverityLevels) (Optional)
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistsMatch (Optional): [
@@ -350,8 +255,9 @@ public final class ContentSafetyClientImpl {
      * 
      * A synchronous API for the analysis of potentially harmful text content. Currently, it supports four categories:
      * Hate, SelfHarm, Sexual, and Violence.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -365,9 +271,9 @@ public final class ContentSafetyClientImpl {
      *     outputType: String(FourSeverityLevels/EightSeverityLevels) (Optional)
      * }
      * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistsMatch (Optional): [
@@ -398,6 +304,104 @@ public final class ContentSafetyClientImpl {
     public Response<BinaryData> analyzeTextWithResponse(BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.analyzeTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, options,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Analyze Image
+     * 
+     * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     image (Required): {
+     *         content: byte[] (Optional)
+     *         blobUrl: String (Optional)
+     *     }
+     *     categories (Optional): [
+     *         String(Hate/SelfHarm/Sexual/Violence) (Optional)
+     *     ]
+     *     outputType: String(FourSeverityLevels) (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     categoriesAnalysis (Required): [
+     *          (Required){
+     *             category: String(Hate/SelfHarm/Sexual/Violence) (Required)
+     *             severity: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * @param options The image analysis request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the image analysis response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> analyzeImageWithResponseAsync(BinaryData options, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.analyzeImage(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, options, requestOptions, context));
+    }
+
+    /**
+     * Analyze Image
+     * 
+     * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
+     * Hate, SelfHarm, Sexual, and Violence.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     image (Required): {
+     *         content: byte[] (Optional)
+     *         blobUrl: String (Optional)
+     *     }
+     *     categories (Optional): [
+     *         String(Hate/SelfHarm/Sexual/Violence) (Optional)
+     *     ]
+     *     outputType: String(FourSeverityLevels) (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     categoriesAnalysis (Required): [
+     *          (Required){
+     *             category: String(Hate/SelfHarm/Sexual/Violence) (Required)
+     *             severity: Integer (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * @param options The image analysis request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the image analysis response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> analyzeImageWithResponse(BinaryData options, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.analyzeImageSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, options,
             requestOptions, Context.NONE);
     }
 }

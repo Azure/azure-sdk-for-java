@@ -5,29 +5,26 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /** The PageListCollection model. */
+@JacksonXmlRootElement(localName = "PageList")
 @Fluent
-public final class PageListCollection  implements XmlSerializable<PageRange> {
+public final class PageListCollection {
     /*
      * The value property.
      */
+    @JsonProperty("PageRange")
     private List<PageRange> value = new ArrayList<>();
 
     /*
      * The nextMarker property.
      */
+    @JsonProperty(value = "nextMarker")
     private String nextMarker;
 
     /**
@@ -68,71 +65,5 @@ public final class PageListCollection  implements XmlSerializable<PageRange> {
     public PageListCollection setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
-    }
-
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageList" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        if (this.value != null) {
-            for (PageRange element: this.value) {
-                xmlWriter.writeXml(element, "PageRange");
-            }
-        }
-        xmlWriter.writeStringElement("nextMarker", this.nextMarker);
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of PageListCollection from the XmlReader.
-     *
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of PageListCollection if the XmlReader was pointing to an instance of it, or null if it was pointing
-     * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the PageListCollection.
-     */
-    public static PageListCollection fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of PageListCollection from the XmlReader.
-     *
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of PageListCollection if the XmlReader was pointing to an instance of it, or null if it was pointing
-     * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the PageListCollection.
-     */
-    public static PageListCollection fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageList" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            PageListCollection deserializedPageListCollection = new PageListCollection();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("PageRange".equals(elementName.getLocalPart())) {
-                    if (deserializedPageListCollection.value == null) {
-                        deserializedPageListCollection.value = new ArrayList<>();
-                    }
-                    deserializedPageListCollection.value.add(PageRange.fromXml(reader, "PageRange"));
-                } else if ("nextMarker".equals(elementName.getLocalPart())) {
-                    deserializedPageListCollection.nextMarker = reader.getStringElement();
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedPageListCollection;
-        });
     }
 }

@@ -8,56 +8,66 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/**
- * The BlobsCreateSnapshotHeaders model.
- */
+/** The BlobsCreateSnapshotHeaders model. */
+@JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class BlobsCreateSnapshotHeaders {
     /*
      * The x-ms-snapshot property.
      */
+    @JsonProperty(value = "x-ms-snapshot")
     private String xMsSnapshot;
 
     /*
      * The x-ms-version property.
      */
+    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
+    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The Last-Modified property.
      */
+    @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-version-id property.
      */
+    @JsonProperty(value = "x-ms-version-id")
     private String xMsVersionId;
 
     /*
      * The x-ms-request-id property.
      */
+    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
+    @JsonProperty(value = "x-ms-request-server-encrypted")
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The x-ms-client-request-id property.
      */
+    @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
+    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_SNAPSHOT = HttpHeaderName.fromString("x-ms-snapshot");
@@ -66,13 +76,15 @@ public final class BlobsCreateSnapshotHeaders {
 
     private static final HttpHeaderName X_MS_VERSION_ID = HttpHeaderName.fromString("x-ms-version-id");
 
-    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
-        = HttpHeaderName.fromString("x-ms-request-server-encrypted");
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
+            HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of BlobsCreateSnapshotHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsCreateSnapshotHeaders(HttpHeaders rawHeaders) {
@@ -84,7 +96,7 @@ public final class BlobsCreateSnapshotHeaders {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
         this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
@@ -98,7 +110,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Get the xMsSnapshot property: The x-ms-snapshot property.
-     * 
+     *
      * @return the xMsSnapshot value.
      */
     public String getXMsSnapshot() {
@@ -107,7 +119,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Set the xMsSnapshot property: The x-ms-snapshot property.
-     * 
+     *
      * @param xMsSnapshot the xMsSnapshot value to set.
      * @return the BlobsCreateSnapshotHeaders object itself.
      */
@@ -118,7 +130,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -127,7 +139,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @param xMsVersion the xMsVersion value to set.
      * @return the BlobsCreateSnapshotHeaders object itself.
      */
@@ -138,7 +150,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     * 
+     *
      * @return the eTag value.
      */
     public String getETag() {
@@ -147,7 +159,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     * 
+     *
      * @param eTag the eTag value to set.
      * @return the BlobsCreateSnapshotHeaders object itself.
      */
@@ -158,7 +170,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     * 
+     *
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -170,7 +182,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     * 
+     *
      * @param lastModified the lastModified value to set.
      * @return the BlobsCreateSnapshotHeaders object itself.
      */
@@ -185,7 +197,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Get the xMsVersionId property: The x-ms-version-id property.
-     * 
+     *
      * @return the xMsVersionId value.
      */
     public String getXMsVersionId() {
@@ -194,7 +206,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Set the xMsVersionId property: The x-ms-version-id property.
-     * 
+     *
      * @param xMsVersionId the xMsVersionId value to set.
      * @return the BlobsCreateSnapshotHeaders object itself.
      */
@@ -205,7 +217,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -214,7 +226,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlobsCreateSnapshotHeaders object itself.
      */
@@ -225,7 +237,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     * 
+     *
      * @return the xMsRequestServerEncrypted value.
      */
     public Boolean isXMsRequestServerEncrypted() {
@@ -234,7 +246,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     * 
+     *
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the BlobsCreateSnapshotHeaders object itself.
      */
@@ -245,7 +257,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
+     *
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -254,7 +266,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
+     *
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlobsCreateSnapshotHeaders object itself.
      */
@@ -265,7 +277,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Get the date property: The Date property.
-     * 
+     *
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -277,7 +289,7 @@ public final class BlobsCreateSnapshotHeaders {
 
     /**
      * Set the date property: The Date property.
-     * 
+     *
      * @param date the date value to set.
      * @return the BlobsCreateSnapshotHeaders object itself.
      */

@@ -4,99 +4,100 @@
 
 package com.azure.storage.blob.models;
 
-import java.time.OffsetDateTime;
-import java.util.Objects;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.time.OffsetDateTime;
 
-/**
- * Properties of a container.
- */
+/** Properties of a container. */
+@JacksonXmlRootElement(localName = "BlobContainerItemProperties")
 @Fluent
-public final class BlobContainerItemProperties implements XmlSerializable<BlobContainerItemProperties> {
+public final class BlobContainerItemProperties {
     /*
      * The Last-Modified property.
      */
+    @JsonProperty(value = "Last-Modified", required = true)
     private DateTimeRfc1123 lastModified;
 
     /*
      * The Etag property.
      */
+    @JsonProperty(value = "Etag", required = true)
     private String eTag;
 
     /*
      * The LeaseStatus property.
      */
+    @JsonProperty(value = "LeaseStatus")
     private LeaseStatusType leaseStatus;
 
     /*
      * The LeaseState property.
      */
+    @JsonProperty(value = "LeaseState")
     private LeaseStateType leaseState;
 
     /*
      * The LeaseDuration property.
      */
+    @JsonProperty(value = "LeaseDuration")
     private LeaseDurationType leaseDuration;
 
     /*
      * The PublicAccess property.
      */
+    @JsonProperty(value = "PublicAccess")
     private PublicAccessType publicAccess;
 
     /*
      * The HasImmutabilityPolicy property.
      */
+    @JsonProperty(value = "HasImmutabilityPolicy")
     private Boolean hasImmutabilityPolicy;
 
     /*
      * The HasLegalHold property.
      */
+    @JsonProperty(value = "HasLegalHold")
     private Boolean hasLegalHold;
 
     /*
      * The DefaultEncryptionScope property.
      */
+    @JsonProperty(value = "DefaultEncryptionScope")
     private String defaultEncryptionScope;
 
     /*
      * The DenyEncryptionScopeOverride property.
      */
+    @JsonProperty(value = "DenyEncryptionScopeOverride")
     private Boolean encryptionScopeOverridePrevented;
 
     /*
      * The DeletedTime property.
      */
+    @JsonProperty(value = "DeletedTime")
     private DateTimeRfc1123 deletedTime;
 
     /*
      * The RemainingRetentionDays property.
      */
+    @JsonProperty(value = "RemainingRetentionDays")
     private Integer remainingRetentionDays;
 
     /*
      * Indicates if version level worm is enabled on this container.
      */
+    @JsonProperty(value = "ImmutableStorageWithVersioningEnabled")
     private Boolean isImmutableStorageWithVersioningEnabled;
 
-    /**
-     * Creates an instance of BlobContainerItemProperties class.
-     */
-    public BlobContainerItemProperties() {
-    }
+    /** Creates an instance of BlobContainerItemProperties class. */
+    public BlobContainerItemProperties() {}
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     * 
+     *
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -108,7 +109,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     * 
+     *
      * @param lastModified the lastModified value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -123,7 +124,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Get the eTag property: The Etag property.
-     * 
+     *
      * @return the eTag value.
      */
     public String getETag() {
@@ -132,7 +133,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the eTag property: The Etag property.
-     * 
+     *
      * @param eTag the eTag value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -143,7 +144,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Get the leaseStatus property: The LeaseStatus property.
-     * 
+     *
      * @return the leaseStatus value.
      */
     public LeaseStatusType getLeaseStatus() {
@@ -152,7 +153,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the leaseStatus property: The LeaseStatus property.
-     * 
+     *
      * @param leaseStatus the leaseStatus value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -163,7 +164,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Get the leaseState property: The LeaseState property.
-     * 
+     *
      * @return the leaseState value.
      */
     public LeaseStateType getLeaseState() {
@@ -172,7 +173,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the leaseState property: The LeaseState property.
-     * 
+     *
      * @param leaseState the leaseState value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -183,7 +184,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Get the leaseDuration property: The LeaseDuration property.
-     * 
+     *
      * @return the leaseDuration value.
      */
     public LeaseDurationType getLeaseDuration() {
@@ -192,7 +193,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the leaseDuration property: The LeaseDuration property.
-     * 
+     *
      * @param leaseDuration the leaseDuration value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -203,7 +204,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Get the publicAccess property: The PublicAccess property.
-     * 
+     *
      * @return the publicAccess value.
      */
     public PublicAccessType getPublicAccess() {
@@ -212,7 +213,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the publicAccess property: The PublicAccess property.
-     * 
+     *
      * @param publicAccess the publicAccess value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -223,7 +224,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Get the hasImmutabilityPolicy property: The HasImmutabilityPolicy property.
-     * 
+     *
      * @return the hasImmutabilityPolicy value.
      */
     public Boolean isHasImmutabilityPolicy() {
@@ -232,7 +233,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the hasImmutabilityPolicy property: The HasImmutabilityPolicy property.
-     * 
+     *
      * @param hasImmutabilityPolicy the hasImmutabilityPolicy value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -243,7 +244,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Get the hasLegalHold property: The HasLegalHold property.
-     * 
+     *
      * @return the hasLegalHold value.
      */
     public Boolean isHasLegalHold() {
@@ -252,7 +253,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the hasLegalHold property: The HasLegalHold property.
-     * 
+     *
      * @param hasLegalHold the hasLegalHold value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -263,7 +264,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Get the defaultEncryptionScope property: The DefaultEncryptionScope property.
-     * 
+     *
      * @return the defaultEncryptionScope value.
      */
     public String getDefaultEncryptionScope() {
@@ -272,7 +273,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the defaultEncryptionScope property: The DefaultEncryptionScope property.
-     * 
+     *
      * @param defaultEncryptionScope the defaultEncryptionScope value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -283,7 +284,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Get the encryptionScopeOverridePrevented property: The DenyEncryptionScopeOverride property.
-     * 
+     *
      * @return the encryptionScopeOverridePrevented value.
      */
     public boolean isEncryptionScopeOverridePrevented() {
@@ -293,7 +294,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the encryptionScopeOverridePrevented property: The DenyEncryptionScopeOverride property.
-     * 
+     *
      * @param encryptionScopeOverridePrevented the encryptionScopeOverridePrevented value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -304,7 +305,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Get the deletedTime property: The DeletedTime property.
-     * 
+     *
      * @return the deletedTime value.
      */
     public OffsetDateTime getDeletedTime() {
@@ -316,7 +317,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the deletedTime property: The DeletedTime property.
-     * 
+     *
      * @param deletedTime the deletedTime value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -331,7 +332,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Get the remainingRetentionDays property: The RemainingRetentionDays property.
-     * 
+     *
      * @return the remainingRetentionDays value.
      */
     public Integer getRemainingRetentionDays() {
@@ -340,7 +341,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
 
     /**
      * Set the remainingRetentionDays property: The RemainingRetentionDays property.
-     * 
+     *
      * @param remainingRetentionDays the remainingRetentionDays value to set.
      * @return the BlobContainerItemProperties object itself.
      */
@@ -352,7 +353,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
     /**
      * Get the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this
      * container.
-     * 
+     *
      * @return the isImmutableStorageWithVersioningEnabled value.
      */
     public Boolean isImmutableStorageWithVersioningEnabled() {
@@ -362,119 +363,13 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
     /**
      * Set the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this
      * container.
-     * 
+     *
      * @param isImmutableStorageWithVersioningEnabled the isImmutableStorageWithVersioningEnabled value to set.
      * @return the BlobContainerItemProperties object itself.
      */
-    public BlobContainerItemProperties
-        setImmutableStorageWithVersioningEnabled(Boolean isImmutableStorageWithVersioningEnabled) {
+    public BlobContainerItemProperties setImmutableStorageWithVersioningEnabled(
+            Boolean isImmutableStorageWithVersioningEnabled) {
         this.isImmutableStorageWithVersioningEnabled = isImmutableStorageWithVersioningEnabled;
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobContainerItemProperties" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeStringElement("Last-Modified", Objects.toString(this.lastModified, null));
-        xmlWriter.writeStringElement("Etag", this.eTag);
-        xmlWriter.writeStringElement("LeaseStatus", this.leaseStatus == null ? null : this.leaseStatus.toString());
-        xmlWriter.writeStringElement("LeaseState", this.leaseState == null ? null : this.leaseState.toString());
-        xmlWriter.writeStringElement("LeaseDuration",
-            this.leaseDuration == null ? null : this.leaseDuration.toString());
-        xmlWriter.writeStringElement("PublicAccess", this.publicAccess == null ? null : this.publicAccess.toString());
-        xmlWriter.writeBooleanElement("HasImmutabilityPolicy", this.hasImmutabilityPolicy);
-        xmlWriter.writeBooleanElement("HasLegalHold", this.hasLegalHold);
-        xmlWriter.writeStringElement("DefaultEncryptionScope", this.defaultEncryptionScope);
-        xmlWriter.writeBooleanElement("DenyEncryptionScopeOverride", this.encryptionScopeOverridePrevented);
-        xmlWriter.writeStringElement("DeletedTime", Objects.toString(this.deletedTime, null));
-        xmlWriter.writeNumberElement("RemainingRetentionDays", this.remainingRetentionDays);
-        xmlWriter.writeBooleanElement("ImmutableStorageWithVersioningEnabled",
-            this.isImmutableStorageWithVersioningEnabled);
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of BlobContainerItemProperties from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of BlobContainerItemProperties if the XmlReader was pointing to an instance of it, or null if
-     * it was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the BlobContainerItemProperties.
-     */
-    public static BlobContainerItemProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of BlobContainerItemProperties from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of BlobContainerItemProperties if the XmlReader was pointing to an instance of it, or null if
-     * it was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
-     * @throws XMLStreamException If an error occurs while reading the BlobContainerItemProperties.
-     */
-    public static BlobContainerItemProperties fromXml(XmlReader xmlReader, String rootElementName)
-        throws XMLStreamException {
-        String finalRootElementName
-            = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobContainerItemProperties" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            BlobContainerItemProperties deserializedBlobContainerItemProperties = new BlobContainerItemProperties();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("Last-Modified".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.lastModified
-                        = reader.getNullableElement(DateTimeRfc1123::new);
-                } else if ("Etag".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.eTag = reader.getStringElement();
-                } else if ("LeaseStatus".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.leaseStatus
-                        = LeaseStatusType.fromString(reader.getStringElement());
-                } else if ("LeaseState".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.leaseState
-                        = LeaseStateType.fromString(reader.getStringElement());
-                } else if ("LeaseDuration".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.leaseDuration
-                        = LeaseDurationType.fromString(reader.getStringElement());
-                } else if ("PublicAccess".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.publicAccess
-                        = PublicAccessType.fromString(reader.getStringElement());
-                } else if ("HasImmutabilityPolicy".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.hasImmutabilityPolicy
-                        = reader.getNullableElement(Boolean::parseBoolean);
-                } else if ("HasLegalHold".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.hasLegalHold
-                        = reader.getNullableElement(Boolean::parseBoolean);
-                } else if ("DefaultEncryptionScope".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.defaultEncryptionScope = reader.getStringElement();
-                } else if ("DenyEncryptionScopeOverride".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.encryptionScopeOverridePrevented
-                        = reader.getNullableElement(Boolean::parseBoolean);
-                } else if ("DeletedTime".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.deletedTime
-                        = reader.getNullableElement(DateTimeRfc1123::new);
-                } else if ("RemainingRetentionDays".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.remainingRetentionDays
-                        = reader.getNullableElement(Integer::parseInt);
-                } else if ("ImmutableStorageWithVersioningEnabled".equals(elementName.getLocalPart())) {
-                    deserializedBlobContainerItemProperties.isImmutableStorageWithVersioningEnabled
-                        = reader.getNullableElement(Boolean::parseBoolean);
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedBlobContainerItemProperties;
-        });
     }
 }

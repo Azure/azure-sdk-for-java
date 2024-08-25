@@ -18,6 +18,7 @@ import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
@@ -522,7 +523,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             syncPoller.waitForCompletion();
             List<FormPage> formPages = syncPoller.getFinalResult();
             validateContentData(formPages, true);
-            assertNotNull(formPages.get(0).getLines().get(0).getAppearance().getStyleName());
+            assertEquals(TextStyleName.OTHER,
+                formPages.get(0).getLines().get(0).getAppearance().getStyleName());
         }, CONTENT_FORM_JPG);
     }
 
@@ -897,7 +899,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
@@ -926,7 +927,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                      FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -954,7 +954,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormMultiPageUnlabeled(HttpClient httpClient,
                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -984,7 +983,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUnlabeledDataWithJpgContentType(HttpClient httpClient,
                                                                    FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1014,7 +1012,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUnlabeledDataWithBlankPdfContentType(HttpClient httpClient,
                                                                         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1045,7 +1042,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient,
                                                     FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1071,7 +1067,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUrlUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1095,7 +1090,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
                                                          FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1248,7 +1242,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormDamagedPdf(HttpClient httpClient,
                                               FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1355,7 +1348,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
-                FormRecognizerClient formRecognizerClient = getFormRecognizerClient(httpClient, serviceVersion);
+                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+                    .getFormRecognizerClient();
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
                     = formRecognizerClient.beginRecognizeCustomForms(
                         createdModel.getModelId(),
@@ -1382,7 +1376,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void checkRecognizedFormTypeUnlabeledModel(
         HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
@@ -1394,7 +1387,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
-                FormRecognizerClient formRecognizerClient = getFormRecognizerClient(httpClient, serviceVersion);
+                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+                    .getFormRecognizerClient();
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
                     = formRecognizerClient.beginRecognizeCustomForms(
                         createdModel.getModelId(),
@@ -1420,7 +1414,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void checkRecognizedFormTypeUnlabeledModelWithModelName(
         HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
@@ -1435,7 +1428,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
-                FormRecognizerClient formRecognizerClient = getFormRecognizerClient(httpClient, serviceVersion);
+                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+                    .getFormRecognizerClient();
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
                     = formRecognizerClient.beginRecognizeCustomForms(
                         createdModel.getModelId(),
@@ -1485,7 +1479,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller2.waitForCompletion();
                 CustomFormModel composedModel = syncPoller2.getFinalResult();
 
-                FormRecognizerClient formRecognizerClient = getFormRecognizerClient(httpClient, serviceVersion);
+                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+                    .getFormRecognizerClient();
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3
                     = formRecognizerClient.beginRecognizeCustomForms(
                         composedModel.getModelId(),
@@ -1558,7 +1553,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller2.waitForCompletion();
                 CustomFormModel composedModel = syncPoller2.getFinalResult();
 
-                FormRecognizerClient formRecognizerClient = getFormRecognizerClient(httpClient, serviceVersion);
+                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
+                    .getFormRecognizerClient();
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3
                     = formRecognizerClient.beginRecognizeCustomForms(
                         composedModel.getModelId(),

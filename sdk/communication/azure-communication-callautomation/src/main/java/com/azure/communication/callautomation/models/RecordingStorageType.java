@@ -1,20 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecordingStorageType. */
+/** Defines the kind of external storage. */
 public final class RecordingStorageType extends ExpandableStringEnum<RecordingStorageType> {
+    
+    /** Static value AzureCommunicationServices for RecordingStorageType. */
+    public static final RecordingStorageType ACS = fromString("AzureCommunicationServices");
 
-    /** Static value acs for RecordingStorageType. */
-    public static final RecordingStorageType ACS = fromString("acs");
+    /** Static value AzureBlobStorage for RecordingStorageType. */
+    public static final RecordingStorageType AZURE_BLOB_STORAGE = fromString("AzureBlobStorage");
 
-    /** Static value azureblobStorage for RecordingStorageType. */
-    public static final RecordingStorageType AZURE_BLOB_STORAGE = fromString("blobStorage");
+    /**
+     * Creates a new instance of RecordingStorageType value.
+     */
+    public RecordingStorageType() {}
 
     /**
      * Creates or finds a RecordingStorageType from its string representation.
@@ -22,6 +28,7 @@ public final class RecordingStorageType extends ExpandableStringEnum<RecordingSt
      * @param name a name to look for.
      * @return the corresponding RecordingStorageType.
      */
+    @JsonCreator
     public static RecordingStorageType fromString(String name) {
         return fromString(name, RecordingStorageType.class);
     }

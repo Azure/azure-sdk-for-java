@@ -207,7 +207,7 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
 
     @Test
     public void defaultAudience() {
-        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder()
+        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
             .audience(null) // should default to "https://storage.azure.com/"
             .buildAsyncClient();
 
@@ -218,7 +218,7 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
 
     @Test
     public void storageAccountAudience() {
-        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder()
+        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
             .audience(QueueAudience.createQueueServiceAccountAudience(primaryQueueServiceAsyncClient.getAccountName()))
             .buildAsyncClient();
 
@@ -234,7 +234,7 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
     the default audience, and the request gets retried with this default audience, making the call function as expected.
      */
     public void audienceErrorBearerChallengeRetry() {
-        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder()
+        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
             .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
             .buildAsyncClient();
 
@@ -248,7 +248,7 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
         String url = String.format("https://%s.queue.core.windows.net/", primaryQueueServiceAsyncClient.getAccountName());
         QueueAudience audience = QueueAudience.fromString(url);
 
-        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder()
+        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
             .audience(audience)
             .buildAsyncClient();
 

@@ -4,28 +4,21 @@
 
 package com.azure.storage.blob.models;
 
-/**
- * Defines values for SequenceNumberActionType.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for SequenceNumberActionType. */
 public enum SequenceNumberActionType {
-    /**
-     * Enum value max.
-     */
+    /** Enum value max. */
     MAX("max"),
 
-    /**
-     * Enum value update.
-     */
+    /** Enum value update. */
     UPDATE("update"),
 
-    /**
-     * Enum value increment.
-     */
+    /** Enum value increment. */
     INCREMENT("increment");
 
-    /**
-     * The actual serialized value for a SequenceNumberActionType instance.
-     */
+    /** The actual serialized value for a SequenceNumberActionType instance. */
     private final String value;
 
     SequenceNumberActionType(String value) {
@@ -34,10 +27,11 @@ public enum SequenceNumberActionType {
 
     /**
      * Parses a serialized value to a SequenceNumberActionType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed SequenceNumberActionType object, or null if unable to parse.
      */
+    @JsonCreator
     public static SequenceNumberActionType fromString(String value) {
         if (value == null) {
             return null;
@@ -51,9 +45,8 @@ public enum SequenceNumberActionType {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;
