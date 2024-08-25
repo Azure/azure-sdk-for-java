@@ -78,7 +78,7 @@ com.azure:azure-communication-jobrouter;1.1.6;2.0.0-beta.1
 com.azure:azure-communication-messages;1.0.5;1.0.6
 com.azure:azure-communication-phonenumbers;1.1.15;1.2.0-beta.4
 com.azure:azure-communication-rooms;1.1.4;1.2.0-beta.1
-com.azure:azure-communication-sms;1.1.26;1.2.0-beta.1
+com.azure:azure-communication-sms;1.1.26;1.1.27
 com.azure:azure-compute-batch;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-containers-containerregistry;1.2.10;1.3.0-beta.1
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
