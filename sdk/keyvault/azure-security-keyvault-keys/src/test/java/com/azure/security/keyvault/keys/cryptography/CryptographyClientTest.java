@@ -4,8 +4,6 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -42,8 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CryptographyClientTest extends CryptographyClientTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(CryptographyClientTest.class);
-
     private KeyClient client;
 
     @Override
@@ -353,7 +349,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException e) {
                 // Could not generate a KeyPair from the given JsonWebKey.
                 // It's likely this happened for key curve secp256k1, which is not supported on Java 16+.
-                LOGGER.log(LogLevel.VERBOSE, () -> "Failed to generate key pair from JsonWebKey.", e);
+                e.printStackTrace();
 
                 return;
             }
