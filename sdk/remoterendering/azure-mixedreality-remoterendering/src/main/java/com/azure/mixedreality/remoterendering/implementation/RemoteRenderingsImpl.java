@@ -7,7 +7,6 @@ package com.azure.mixedreality.remoterendering.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
@@ -20,13 +19,11 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.mixedreality.remoterendering.implementation.models.Conversion;
 import com.azure.mixedreality.remoterendering.implementation.models.CreateConversionSettings;
 import com.azure.mixedreality.remoterendering.implementation.models.CreateSessionSettings;
@@ -43,28 +40,23 @@ import com.azure.mixedreality.remoterendering.implementation.models.UpdateSessio
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in RemoteRenderings.
- */
+/** An instance of this class provides access to all the operations defined in RemoteRenderings. */
 public final class RemoteRenderingsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final RemoteRenderingsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final MixedRealityRemoteRenderingImpl client;
 
     /**
      * Initializes an instance of RemoteRenderingsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     RemoteRenderingsImpl(MixedRealityRemoteRenderingImpl client) {
-        this.service
-            = RestProxy.create(RemoteRenderingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(
+                        RemoteRenderingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -76,744 +68,319 @@ public final class RemoteRenderingsImpl {
     @ServiceInterface(name = "MixedRealityRemoteRe")
     public interface RemoteRenderingsService {
         @Put("/accounts/{account_id}/conversions/{conversion_id}")
-        @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
-        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 400, 409, 500 })
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<RemoteRenderingsCreateConversionResponse> createConversion(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
-            @PathParam("conversion_id") String conversionId,
-            @BodyParam("application/json") CreateConversionSettings body, @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<RemoteRenderingsCreateConversionResponse> createConversion(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("account_id") UUID accountId,
+                @PathParam("conversion_id") String conversionId,
+                @BodyParam("application/json") CreateConversionSettings body,
+                Context context);
 
         @Get("/accounts/{account_id}/conversions/{conversion_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
-        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<RemoteRenderingsGetConversionResponse> getConversion(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
-            @PathParam("conversion_id") String conversionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<RemoteRenderingsGetConversionResponse> getConversion(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("account_id") UUID accountId,
+                @PathParam("conversion_id") String conversionId,
+                Context context);
 
         @Get("/accounts/{account_id}/conversions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
-        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<RemoteRenderingsListConversionsResponse> listConversions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<RemoteRenderingsListConversionsResponse> listConversions(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("account_id") UUID accountId,
+                Context context);
 
         @Put("/accounts/{account_id}/sessions/{session_id}")
-        @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
-        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 400, 409, 500 })
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<RemoteRenderingsCreateSessionResponse> createSession(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
-            @PathParam("session_id") String sessionId, @BodyParam("application/json") CreateSessionSettings body,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<RemoteRenderingsCreateSessionResponse> createSession(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("account_id") UUID accountId,
+                @PathParam("session_id") String sessionId,
+                @BodyParam("application/json") CreateSessionSettings body,
+                Context context);
 
         @Get("/accounts/{account_id}/sessions/{session_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
-        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SessionProperties>> getSession(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
-            @PathParam("session_id") String sessionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SessionProperties>> getSession(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("account_id") UUID accountId,
+                @PathParam("session_id") String sessionId,
+                Context context);
 
         @Patch("/accounts/{account_id}/sessions/{session_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
-        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500, 422 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SessionProperties>> updateSession(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
-            @PathParam("session_id") String sessionId, @BodyParam("application/json") UpdateSessionSettings body,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SessionProperties>> updateSession(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("account_id") UUID accountId,
+                @PathParam("session_id") String sessionId,
+                @BodyParam("application/json") UpdateSessionSettings body,
+                Context context);
 
         @Post("/accounts/{account_id}/sessions/{session_id}/:stop")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 404, 429 })
-        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<RemoteRenderingsStopSessionResponse> stopSession(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
-            @PathParam("session_id") String sessionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<RemoteRenderingsStopSessionResponse> stopSession(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("account_id") UUID accountId,
+                @PathParam("session_id") String sessionId,
+                Context context);
 
         @Get("/accounts/{account_id}/sessions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
-        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SessionsList>> listSessions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SessionsList>> listSessions(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("account_id") UUID accountId,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
-        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<RemoteRenderingsListConversionsNextResponse> listConversionsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = HttpResponseException.class, code = { 401, 403, 429 })
-        @UnexpectedResponseExceptionType(value = ErrorResponseException.class, code = { 500 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SessionsList>> listSessionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SessionsList>> listSessionsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                Context context);
     }
 
     /**
      * Creates a conversion using an asset stored in an Azure Blob Storage account.
-     * 
+     *
      * @param accountId The Azure Remote Rendering account ID.
      * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
-     * can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more
-     * than 256 characters.
-     * @param body Request body configuring the settings for an asset conversion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the conversion on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsCreateConversionResponse> createConversionWithResponseAsync(UUID accountId,
-        String conversionId, CreateConversionSettings body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createConversion(this.client.getEndpoint(),
-            this.client.getApiVersion(), accountId, conversionId, body, accept, context));
-    }
-
-    /**
-     * Creates a conversion using an asset stored in an Azure Blob Storage account.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
-     * can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more
-     * than 256 characters.
-     * @param body Request body configuring the settings for an asset conversion.
+     *     can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain
+     *     more than 256 characters.
+     * @param body Request to start a conversion.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the conversion on successful completion of {@link Mono}.
+     * @return the properties of the conversion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsCreateConversionResponse> createConversionWithResponseAsync(UUID accountId,
-        String conversionId, CreateConversionSettings body, Context context) {
-        final String accept = "application/json";
-        return service.createConversion(this.client.getEndpoint(), this.client.getApiVersion(), accountId, conversionId,
-            body, accept, context);
-    }
-
-    /**
-     * Creates a conversion using an asset stored in an Azure Blob Storage account.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
-     * can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more
-     * than 256 characters.
-     * @param body Request body configuring the settings for an asset conversion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the conversion on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Conversion> createConversionAsync(UUID accountId, String conversionId, CreateConversionSettings body) {
-        return createConversionWithResponseAsync(accountId, conversionId, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates a conversion using an asset stored in an Azure Blob Storage account.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
-     * can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more
-     * than 256 characters.
-     * @param body Request body configuring the settings for an asset conversion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the conversion on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Conversion> createConversionAsync(UUID accountId, String conversionId, CreateConversionSettings body,
-        Context context) {
-        return createConversionWithResponseAsync(accountId, conversionId, body, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<RemoteRenderingsCreateConversionResponse> createConversionWithResponseAsync(
+            UUID accountId, String conversionId, CreateConversionSettings body, Context context) {
+        return service.createConversion(
+                this.client.getEndpoint(), this.client.getApiVersion(), accountId, conversionId, body, context);
     }
 
     /**
      * Gets the status of a particular conversion.
-     * 
+     *
      * @param accountId The Azure Remote Rendering account ID.
      * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
-     * can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more
-     * than 256 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a particular conversion on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsGetConversionResponse> getConversionWithResponseAsync(UUID accountId,
-        String conversionId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getConversion(this.client.getEndpoint(),
-            this.client.getApiVersion(), accountId, conversionId, accept, context));
-    }
-
-    /**
-     * Gets the status of a particular conversion.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
-     * can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more
-     * than 256 characters.
+     *     can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain
+     *     more than 256 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a particular conversion on successful completion of {@link Mono}.
+     * @return the status of a particular conversion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsGetConversionResponse> getConversionWithResponseAsync(UUID accountId,
-        String conversionId, Context context) {
-        final String accept = "application/json";
-        return service.getConversion(this.client.getEndpoint(), this.client.getApiVersion(), accountId, conversionId,
-            accept, context);
-    }
-
-    /**
-     * Gets the status of a particular conversion.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
-     * can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more
-     * than 256 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a particular conversion on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Conversion> getConversionAsync(UUID accountId, String conversionId) {
-        return getConversionWithResponseAsync(accountId, conversionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the status of a particular conversion.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
-     * can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more
-     * than 256 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a particular conversion on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Conversion> getConversionAsync(UUID accountId, String conversionId, Context context) {
-        return getConversionWithResponseAsync(accountId, conversionId, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<RemoteRenderingsGetConversionResponse> getConversionWithResponseAsync(
+            UUID accountId, String conversionId, Context context) {
+        return service.getConversion(
+                this.client.getEndpoint(), this.client.getApiVersion(), accountId, conversionId, context);
     }
 
     /**
      * Gets a list of all conversions.
-     * 
+     *
      * @param accountId The Azure Remote Rendering account ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all conversions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all conversions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Conversion>> listConversionsSinglePageAsync(UUID accountId, Context context) {
-        final String accept = "application/json";
-        return service
-            .listConversions(this.client.getEndpoint(), this.client.getApiVersion(), accountId, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getConversions(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
-    }
-
-    /**
-     * Gets a list of all conversions.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all conversions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Conversion> listConversionsAsync(UUID accountId, Context context) {
-        return new PagedFlux<>(() -> listConversionsSinglePageAsync(accountId, context),
-            nextLink -> listConversionsNextSinglePageAsync(nextLink, context));
+        return service.listConversions(this.client.getEndpoint(), this.client.getApiVersion(), accountId, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getConversions(),
+                                        res.getValue().getNextLink(),
+                                        res.getDeserializedHeaders()));
     }
 
     /**
      * Creates a new rendering session.
-     * 
+     *
      * @param accountId The Azure Remote Rendering account ID.
      * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @param body Settings of the session to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a rendering session on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsCreateSessionResponse> createSessionWithResponseAsync(UUID accountId, String sessionId,
-        CreateSessionSettings body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createSession(this.client.getEndpoint(),
-            this.client.getApiVersion(), accountId, sessionId, body, accept, context));
-    }
-
-    /**
-     * Creates a new rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
+     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
+     *     cannot contain more than 256 characters.
      * @param body Settings of the session to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a rendering session on successful completion of {@link Mono}.
+     * @return the properties of a rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsCreateSessionResponse> createSessionWithResponseAsync(UUID accountId, String sessionId,
-        CreateSessionSettings body, Context context) {
-        final String accept = "application/json";
-        return service.createSession(this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, body,
-            accept, context);
-    }
-
-    /**
-     * Creates a new rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @param body Settings of the session to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a rendering session on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionProperties> createSessionAsync(UUID accountId, String sessionId, CreateSessionSettings body) {
-        return createSessionWithResponseAsync(accountId, sessionId, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates a new rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @param body Settings of the session to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 409, 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a rendering session on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionProperties> createSessionAsync(UUID accountId, String sessionId, CreateSessionSettings body,
-        Context context) {
-        return createSessionWithResponseAsync(accountId, sessionId, body, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<RemoteRenderingsCreateSessionResponse> createSessionWithResponseAsync(
+            UUID accountId, String sessionId, CreateSessionSettings body, Context context) {
+        return service.createSession(
+                this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, body, context);
     }
 
     /**
      * Gets the properties of a particular rendering session.
-     * 
+     *
      * @param accountId The Azure Remote Rendering account ID.
      * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a particular rendering session along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SessionProperties>> getSessionWithResponseAsync(UUID accountId, String sessionId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSession(this.client.getEndpoint(),
-            this.client.getApiVersion(), accountId, sessionId, accept, context));
-    }
-
-    /**
-     * Gets the properties of a particular rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
+     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
+     *     cannot contain more than 256 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a particular rendering session along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the properties of a particular rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SessionProperties>> getSessionWithResponseAsync(UUID accountId, String sessionId,
-        Context context) {
-        final String accept = "application/json";
-        return service.getSession(this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, accept,
-            context);
-    }
-
-    /**
-     * Gets the properties of a particular rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a particular rendering session on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionProperties> getSessionAsync(UUID accountId, String sessionId) {
-        return getSessionWithResponseAsync(accountId, sessionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the properties of a particular rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a particular rendering session on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionProperties> getSessionAsync(UUID accountId, String sessionId, Context context) {
-        return getSessionWithResponseAsync(accountId, sessionId, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Response<SessionProperties>> getSessionWithResponseAsync(
+            UUID accountId, String sessionId, Context context) {
+        return service.getSession(
+                this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, context);
     }
 
     /**
      * Updates the max lease time of a particular rendering session.
-     * 
+     *
      * @param accountId The Azure Remote Rendering account ID.
      * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @param body Settings used to update the session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500, 422.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a rendering session along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SessionProperties>> updateSessionWithResponseAsync(UUID accountId, String sessionId,
-        UpdateSessionSettings body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateSession(this.client.getEndpoint(),
-            this.client.getApiVersion(), accountId, sessionId, body, accept, context));
-    }
-
-    /**
-     * Updates the max lease time of a particular rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
+     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
+     *     cannot contain more than 256 characters.
      * @param body Settings used to update the session.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500, 422.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a rendering session along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the properties of a rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SessionProperties>> updateSessionWithResponseAsync(UUID accountId, String sessionId,
-        UpdateSessionSettings body, Context context) {
-        final String accept = "application/json";
-        return service.updateSession(this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, body,
-            accept, context);
+    public Mono<Response<SessionProperties>> updateSessionWithResponseAsync(
+            UUID accountId, String sessionId, UpdateSessionSettings body, Context context) {
+        return service.updateSession(
+                this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, body, context);
     }
 
     /**
-     * Updates the max lease time of a particular rendering session.
-     * 
+     * Stops a particular rendering session.
+     *
      * @param accountId The Azure Remote Rendering account ID.
      * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @param body Settings used to update the session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500, 422.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a rendering session on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionProperties> updateSessionAsync(UUID accountId, String sessionId, UpdateSessionSettings body) {
-        return updateSessionWithResponseAsync(accountId, sessionId, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates the max lease time of a particular rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @param body Settings used to update the session.
+     *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
+     *     cannot contain more than 256 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500, 422.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a rendering session on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionProperties> updateSessionAsync(UUID accountId, String sessionId, UpdateSessionSettings body,
-        Context context) {
-        return updateSessionWithResponseAsync(accountId, sessionId, body, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Stops a particular rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsStopSessionResponse> stopSessionWithResponseAsync(UUID accountId, String sessionId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.stopSession(this.client.getEndpoint(),
-            this.client.getApiVersion(), accountId, sessionId, accept, context));
-    }
-
-    /**
-     * Stops a particular rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsStopSessionResponse> stopSessionWithResponseAsync(UUID accountId, String sessionId,
-        Context context) {
-        final String accept = "application/json";
-        return service.stopSession(this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, accept,
-            context);
-    }
-
-    /**
-     * Stops a particular rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopSessionAsync(UUID accountId, String sessionId) {
-        return stopSessionWithResponseAsync(accountId, sessionId).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Stops a particular rendering session.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
-     * sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
-     * contain more than 256 characters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 404, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopSessionAsync(UUID accountId, String sessionId, Context context) {
-        return stopSessionWithResponseAsync(accountId, sessionId, context).flatMap(ignored -> Mono.empty());
+    public Mono<RemoteRenderingsStopSessionResponse> stopSessionWithResponseAsync(
+            UUID accountId, String sessionId, Context context) {
+        return service.stopSession(
+                this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, context);
     }
 
     /**
      * Gets a list of all rendering sessions.
-     * 
+     *
      * @param accountId The Azure Remote Rendering account ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all rendering sessions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of all rendering sessions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SessionProperties>> listSessionsSinglePageAsync(UUID accountId, Context context) {
-        final String accept = "application/json";
-        return service.listSessions(this.client.getEndpoint(), this.client.getApiVersion(), accountId, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getSessions(), res.getValue().getNextLink(), null));
-    }
-
-    /**
-     * Gets a list of all rendering sessions.
-     * 
-     * @param accountId The Azure Remote Rendering account ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all rendering sessions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SessionProperties> listSessionsAsync(UUID accountId, Context context) {
-        return new PagedFlux<>(() -> listSessionsSinglePageAsync(accountId, context),
-            nextLink -> listSessionsNextSinglePageAsync(nextLink, context));
+        return service.listSessions(this.client.getEndpoint(), this.client.getApiVersion(), accountId, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getSessions(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of conversions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of conversions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Conversion>> listConversionsNextSinglePageAsync(String nextLink, Context context) {
-        final String accept = "application/json";
-        return service.listConversionsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getConversions(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
+        return service.listConversionsNext(nextLink, this.client.getEndpoint(), context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getConversions(),
+                                        res.getValue().getNextLink(),
+                                        res.getDeserializedHeaders()));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
+     *
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 401, 403, 429.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a list sessions request along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the result of a list sessions request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SessionProperties>> listSessionsNextSinglePageAsync(String nextLink, Context context) {
-        final String accept = "application/json";
-        return service.listSessionsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getSessions(), res.getValue().getNextLink(), null));
+        return service.listSessionsNext(nextLink, this.client.getEndpoint(), context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getSessions(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 }
