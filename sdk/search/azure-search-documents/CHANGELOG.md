@@ -1,17 +1,5 @@
 # Release History
 
-## 11.8.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-- Migrate Search test from local auth to Microsoft Entra authentication.
-
 ## 11.7.0 (2024-07-17)
 
 ### Features Added
