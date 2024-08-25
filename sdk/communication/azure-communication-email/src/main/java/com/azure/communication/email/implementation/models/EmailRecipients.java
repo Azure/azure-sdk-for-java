@@ -6,42 +6,36 @@ package com.azure.communication.email.implementation.models;
 
 import com.azure.communication.email.models.EmailAddress;
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Recipients of the email.
- */
+/** Recipients of the email. */
 @Fluent
-public final class EmailRecipients implements JsonSerializable<EmailRecipients> {
+public final class EmailRecipients {
     /*
      * Email To recipients
      */
+    @JsonProperty(value = "to")
     private List<EmailAddress> to;
 
     /*
      * Email CC recipients
      */
+    @JsonProperty(value = "cc")
     private List<EmailAddress> cc;
 
     /*
      * Email BCC recipients
      */
+    @JsonProperty(value = "bcc")
     private List<EmailAddress> bCC;
 
-    /**
-     * Creates an instance of EmailRecipients class.
-     */
-    public EmailRecipients() {
-    }
+    /** Creates an instance of EmailRecipients class. */
+    public EmailRecipients() {}
 
     /**
      * Get the to property: Email To recipients.
-     * 
+     *
      * @return the to value.
      */
     public List<EmailAddress> getTo() {
@@ -50,7 +44,7 @@ public final class EmailRecipients implements JsonSerializable<EmailRecipients> 
 
     /**
      * Set the to property: Email To recipients.
-     * 
+     *
      * @param to the to value to set.
      * @return the EmailRecipients object itself.
      */
@@ -61,7 +55,7 @@ public final class EmailRecipients implements JsonSerializable<EmailRecipients> 
 
     /**
      * Get the cc property: Email CC recipients.
-     * 
+     *
      * @return the cc value.
      */
     public List<EmailAddress> getCc() {
@@ -70,7 +64,7 @@ public final class EmailRecipients implements JsonSerializable<EmailRecipients> 
 
     /**
      * Set the cc property: Email CC recipients.
-     * 
+     *
      * @param cc the cc value to set.
      * @return the EmailRecipients object itself.
      */
@@ -81,7 +75,7 @@ public final class EmailRecipients implements JsonSerializable<EmailRecipients> 
 
     /**
      * Get the bCC property: Email BCC recipients.
-     * 
+     *
      * @return the bCC value.
      */
     public List<EmailAddress> getBCC() {
@@ -90,57 +84,12 @@ public final class EmailRecipients implements JsonSerializable<EmailRecipients> 
 
     /**
      * Set the bCC property: Email BCC recipients.
-     * 
+     *
      * @param bCC the bCC value to set.
      * @return the EmailRecipients object itself.
      */
     public EmailRecipients setBCC(List<EmailAddress> bCC) {
         this.bCC = bCC;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("to", this.to, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("cc", this.cc, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("bcc", this.bCC, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of EmailRecipients from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of EmailRecipients if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the EmailRecipients.
-     */
-    public static EmailRecipients fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            EmailRecipients deserializedEmailRecipients = new EmailRecipients();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("to".equals(fieldName)) {
-                    List<EmailAddress> to = reader.readArray(reader1 -> EmailAddress.fromJson(reader1));
-                    deserializedEmailRecipients.to = to;
-                } else if ("cc".equals(fieldName)) {
-                    List<EmailAddress> cc = reader.readArray(reader1 -> EmailAddress.fromJson(reader1));
-                    deserializedEmailRecipients.cc = cc;
-                } else if ("bcc".equals(fieldName)) {
-                    List<EmailAddress> bCC = reader.readArray(reader1 -> EmailAddress.fromJson(reader1));
-                    deserializedEmailRecipients.bCC = bCC;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedEmailRecipients;
-        });
     }
 }
