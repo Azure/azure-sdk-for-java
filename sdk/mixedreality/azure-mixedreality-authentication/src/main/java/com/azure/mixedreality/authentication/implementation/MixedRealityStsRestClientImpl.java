@@ -18,15 +18,14 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.mixedreality.authentication.implementation.models.GetTokenResponse;
-import com.azure.mixedreality.authentication.implementation.models.StsTokenResponseMessage;
 import com.azure.mixedreality.authentication.implementation.models.TokenRequestOptions;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -92,7 +91,9 @@ public final class MixedRealityStsRestClientImpl {
      */
     MixedRealityStsRestClientImpl(String host, String apiVersion) {
         this(
-                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 host,
                 apiVersion);
@@ -137,9 +138,6 @@ public final class MixedRealityStsRestClientImpl {
     public interface MixedRealityStsRestClientService {
         @Get("/Accounts/{accountId}/token")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = HttpResponseException.class,
-                code = {400, 401, 429})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<GetTokenResponse> getToken(
                 @HostParam("$host") String host,
@@ -155,37 +153,11 @@ public final class MixedRealityStsRestClientImpl {
      *
      * @param accountId The Mixed Reality account identifier.
      * @param tokenRequestOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 401, 429.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token to be used with Mixed Reality services on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetTokenResponse> getTokenWithResponseAsync(UUID accountId, TokenRequestOptions tokenRequestOptions) {
-        final String accept = "application/json";
-        String clientRequestIdInternal = null;
-        if (tokenRequestOptions != null) {
-            clientRequestIdInternal = tokenRequestOptions.getClientRequestId();
-        }
-        String clientRequestId = clientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.getToken(
-                                this.getHost(), accountId, clientRequestId, this.getApiVersion(), accept, context));
-    }
-
-    /**
-     * Gets an access token to be used with Mixed Reality services.
-     *
-     * @param accountId The Mixed Reality account identifier.
-     * @param tokenRequestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 401, 429.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token to be used with Mixed Reality services on successful completion of {@link Mono}.
+     * @return an access token to be used with Mixed Reality services.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetTokenResponse> getTokenWithResponseAsync(
@@ -197,41 +169,5 @@ public final class MixedRealityStsRestClientImpl {
         }
         String clientRequestId = clientRequestIdInternal;
         return service.getToken(this.getHost(), accountId, clientRequestId, this.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets an access token to be used with Mixed Reality services.
-     *
-     * @param accountId The Mixed Reality account identifier.
-     * @param tokenRequestOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 401, 429.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token to be used with Mixed Reality services on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StsTokenResponseMessage> getTokenAsync(UUID accountId, TokenRequestOptions tokenRequestOptions) {
-        return getTokenWithResponseAsync(accountId, tokenRequestOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets an access token to be used with Mixed Reality services.
-     *
-     * @param accountId The Mixed Reality account identifier.
-     * @param tokenRequestOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws HttpResponseException thrown if the request is rejected by server on status code 400, 401, 429.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token to be used with Mixed Reality services on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StsTokenResponseMessage> getTokenAsync(
-            UUID accountId, TokenRequestOptions tokenRequestOptions, Context context) {
-        return getTokenWithResponseAsync(accountId, tokenRequestOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 }
