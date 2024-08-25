@@ -1,5 +1,16 @@
 # Release History
 
+## 12.12.1 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-storage-common` from `12.26.0` to version `12.27.0-beta.2`.
+- Upgraded `jackson-dataformat-xml` from `2.13.5` to version `2.17.2`.
+
+
 ## 12.12.0 (2024-07-18)
 
 ### Features Added
