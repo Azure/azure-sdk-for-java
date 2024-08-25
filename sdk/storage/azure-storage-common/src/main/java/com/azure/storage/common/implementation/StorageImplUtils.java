@@ -41,7 +41,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
 import static com.azure.storage.common.Utility.urlDecode;
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
 
 /**
  * Utility class which is used internally.
@@ -307,11 +307,11 @@ public class StorageImplUtils {
             }
             if (response.getRequest() != null && response.getRequest().getHttpMethod() != null
                 && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
-                && response.getHeaders().getValue(ERROR_CODE_HEADER_NAME) != null) {
+                && response.getHeaders().getValue(ERROR_CODE) != null) {
                 int indexOfEmptyBody = message.indexOf("(empty body)");
                 if (indexOfEmptyBody >= 0) {
                     return message.substring(0, indexOfEmptyBody)
-                        + response.getHeaders().getValue(ERROR_CODE_HEADER_NAME)
+                        + response.getHeaders().getValue(ERROR_CODE)
                         + message.substring(indexOfEmptyBody + 12);
                 }
             }
