@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-servicebus</artifactId>
-            <version>7.18.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+            <version>7.17.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
         </dependency>
 
         <!-- Dependencies required for Log4j2 -->
