@@ -1,5 +1,17 @@
 # Release History
 
+## 1.1.20 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-data-schemaregistry` from `1.4.8` to version `1.4.9`.
+- Upgraded `jackson-databind` from `2.13.5` to version `2.17.2`.
+- Upgraded `jackson-core` from `2.13.5` to version `2.17.2`.
+
+
 ## 1.1.19 (2024-07-26)
 
 ### Other Changes
