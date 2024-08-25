@@ -38,7 +38,6 @@ public class AzureFileSearchSyncTest extends FileSearchTestBase {
 
     AssistantsClient client;
 
-    @Disabled("Retrieval tools are not supported in Azure")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void basicFileSearch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {

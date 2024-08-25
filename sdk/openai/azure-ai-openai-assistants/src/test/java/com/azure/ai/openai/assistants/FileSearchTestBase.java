@@ -15,6 +15,8 @@ import java.util.function.BiConsumer;
 
 public abstract class FileSearchTestBase extends AssistantsClientTestBase {
     private static final String JAVA_SDK_TESTS_ASSISTANTS_TXT = "java_sdk_tests_assistants.txt";
+    private static final String GPT_4_TURBO = "gpt-4-turbo";
+
     public abstract void basicFileSearch(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
     public abstract void fileSearchWithMaxNumberResult(HttpClient httpClient, AssistantsServiceVersion serviceVersion);
 
@@ -23,7 +25,7 @@ public abstract class FileSearchTestBase extends AssistantsClientTestBase {
             BinaryData.fromFile(openResourceFile(JAVA_SDK_TESTS_ASSISTANTS_TXT)),
             JAVA_SDK_TESTS_ASSISTANTS_TXT);
 
-        AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+        AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_TURBO)
             .setName("Java SDK Retrieval Sample")
             .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
             .setTools(Arrays.asList(new FileSearchToolDefinition()));
