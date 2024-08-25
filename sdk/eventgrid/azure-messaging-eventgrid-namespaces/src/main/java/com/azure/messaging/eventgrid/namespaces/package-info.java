@@ -57,12 +57,14 @@
  * </pre>
  *
  * <!-- src_embed com.azure.messaging.eventgrid.namespaces.AccessKeyExample -->
+ * 
  * <pre>
  * EventGridSenderClient client = new EventGridSenderClientBuilder&#40;&#41;.endpoint&#40;&quot;your endpoint&quot;&#41;
  *     .topicName&#40;&quot;your topic&quot;&#41;
  *     .credential&#40;new AzureKeyCredential&#40;&quot;your access key&quot;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
+ * 
  * <!-- end com.azure.messaging.eventgrid.namespaces.AccessKeyExample -->
  *
  * <h2>Key concepts</h2>
@@ -82,24 +84,29 @@
  * <h2>Examples</h2>
  * <h3>Sending an event</h3>
  * <!-- src_embed com.azure.messaging.eventgrid.namespaces.TokenCredentialExample -->
+ * 
  * <pre>
  * EventGridSenderClient client = new EventGridSenderClientBuilder&#40;&#41;.endpoint&#40;&quot;your endpoint&quot;&#41;
  *     .topicName&#40;&quot;your topic&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
+ * 
  * <!-- end com.azure.messaging.eventgrid.namespaces.TokenCredentialExample -->
  * <!-- src_embed com.azure.messaging.eventgrid.namespaces.SendEventExample -->
+ * 
  * <pre>
  * User user = new User&#40;&quot;John&quot;, &quot;Doe&quot;&#41;;
  * CloudEvent cloudEvent
  *     = new CloudEvent&#40;&quot;source&quot;, &quot;type&quot;, BinaryData.fromObject&#40;user&#41;, CloudEventDataFormat.JSON, &quot;application&#47;json&quot;&#41;;
  * client.send&#40;cloudEvent&#41;;
  * </pre>
+ * 
  * <!-- end com.azure.messaging.eventgrid.namespaces.SendEventExample -->
  *
  * <h3>Receiving and Settling events</h3>
  * <!-- src_embed com.azure.messaging.eventgrid.namespaces.ReceiveEventExample -->
+ * 
  * <pre>
  *
  * EventGridReceiverClient client = new EventGridReceiverClientBuilder&#40;&#41;.endpoint&#40;&quot;your endpoint&quot;&#41;
@@ -133,6 +140,7 @@
  * &#125;&#41;;
  *
  * </pre>
+ * 
  * <!-- end com.azure.messaging.eventgrid.namespaces.ReceiveEventExample -->
  */
 package com.azure.messaging.eventgrid.namespaces;
