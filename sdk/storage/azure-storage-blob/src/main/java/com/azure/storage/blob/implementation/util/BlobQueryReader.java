@@ -48,7 +48,7 @@ import java.util.function.Consumer;
  */
 public class BlobQueryReader {
 
-    private final ClientLogger LOGGER = new ClientLogger(BlobQueryReader.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobQueryReader.class);
     private final Flux<ByteBuffer> avro;
     private final Consumer<BlobQueryProgress> progressConsumer;
     private final Consumer<BlobQueryError> errorConsumer;
@@ -149,7 +149,7 @@ public class BlobQueryReader {
             try {
                 Object potentialMap = avroObject.getObject();
                 if (!(potentialMap instanceof Map)) {
-                    throw new IllegalArgumentException("Expected object to be of type Map");
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Expected object to be of type Map"));
                 }
                 Map<?, ?> recordMap = (Map<?, ?>) potentialMap; // Safely cast it to a Map
                 ByteBuffer buffer = parseSyncRecord(recordMap); // Use the Map directly
