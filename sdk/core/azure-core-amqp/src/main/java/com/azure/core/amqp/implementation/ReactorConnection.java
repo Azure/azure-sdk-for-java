@@ -175,8 +175,8 @@ public class ReactorConnection implements AmqpConnection {
                 }
             }).cache(1);
 
-        this.subscriptions = Disposables.composite(this.endpointStates.subscribe(null,
-            e -> logger.warning("Error occurred while processing connection state.", e)));
+        this.subscriptions = Disposables.composite(
+            this.endpointStates.subscribe(null, e -> logger.warning("Connection endpoint state signaled error .", e)));
     }
 
     /**

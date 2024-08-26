@@ -148,7 +148,8 @@ public class ReactorSession implements AmqpSession {
         }).doOnError(error -> handleError(error)).doOnComplete(() -> handleClose()).cache(1);
 
         shutdownSignals = amqpConnection.getShutdownSignals();
-        subscriptions.add(this.endpointStates.subscribe());
+        subscriptions
+            .add(this.endpointStates.subscribe(null, e -> logger.warning("Session endpoint state signaled error.", e)));
         subscriptions.add(shutdownSignals
             .flatMap(signal -> closeAsync("Shutdown signal received (" + signal.toString() + ")", null, false))
             .subscribe());

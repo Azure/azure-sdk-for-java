@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+Fixes the endpoint state subscription to log errors using ClientLogger so that error do not reach Reactor global OnErrorDropped hook. ([41637](https://github.com/Azure/azure-sdk-for-java/issues/41637))
+
 ### Other Changes
 
 ## 2.9.8 (2024-07-31)
@@ -21,7 +23,7 @@
 ## 2.9.7 (2024-07-12)
 
 ### Bugs Fixed
-- Removing duplicate ReactorSession::closeAsync call in session-endpoint error-handler. (#40667)[https://github.com/Azure/azure-sdk-for-java/pull/40667]
+- Removing duplicate ReactorSession::closeAsync call in session-endpoint error-handler. ([#40667](https://github.com/Azure/azure-sdk-for-java/pull/40667))
 
 ## 2.9.6 (2024-06-11)
 
@@ -33,7 +35,7 @@
 
 ### Bugs Fixed
 
-- Expose and use port when parsing `ConnectionStringProperties`. (#40415)[https://github.com/Azure/azure-sdk-for-java/pull/40415]
+- Expose and use port when parsing `ConnectionStringProperties`. ([#40415](https://github.com/Azure/azure-sdk-for-java/pull/40415))
 
 ### Other Changes
 
