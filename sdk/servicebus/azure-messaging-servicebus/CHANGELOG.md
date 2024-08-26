@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added runtime inspection for cores, pool size and Processor concurrency and a log statement linking to troubleshooting guideline on resourcing. This is based on the discussion here ([41489](https://github.com/Azure/azure-sdk-for-java/issues/41489))
+
 ### Breaking Changes
 
 ### Bugs Fixed
