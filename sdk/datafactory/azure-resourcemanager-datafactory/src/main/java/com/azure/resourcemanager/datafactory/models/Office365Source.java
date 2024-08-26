@@ -5,61 +5,53 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity source for an Office 365 service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = Office365Source.class, visible = true)
-@JsonTypeName("Office365Source")
 @Fluent
 public final class Office365Source extends CopySource {
     /*
      * Copy source type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "Office365Source";
 
     /*
      * The groups containing all the users. Type: array of strings (or Expression with resultType array of strings).
      */
-    @JsonProperty(value = "allowedGroups")
     private Object allowedGroups;
 
     /*
      * The user scope uri. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userScopeFilterUri")
     private Object userScopeFilterUri;
 
     /*
      * The Column to apply the <paramref name="StartTime"/> and <paramref name="EndTime"/>. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "dateFilterColumn")
     private Object dateFilterColumn;
 
     /*
      * Start time of the requested range for this dataset. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "startTime")
     private Object startTime;
 
     /*
      * End time of the requested range for this dataset. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "endTime")
     private Object endTime;
 
     /*
      * The columns to be read out from the Office 365 table. Type: array of objects (or Expression with resultType array
      * of objects). itemType: OutputColumn. Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
      */
-    @JsonProperty(value = "outputColumns")
     private Object outputColumns;
 
     /**
@@ -254,5 +246,82 @@ public final class Office365Source extends CopySource {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("allowedGroups", this.allowedGroups);
+        jsonWriter.writeUntypedField("userScopeFilterUri", this.userScopeFilterUri);
+        jsonWriter.writeUntypedField("dateFilterColumn", this.dateFilterColumn);
+        jsonWriter.writeUntypedField("startTime", this.startTime);
+        jsonWriter.writeUntypedField("endTime", this.endTime);
+        jsonWriter.writeUntypedField("outputColumns", this.outputColumns);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Office365Source from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Office365Source if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Office365Source.
+     */
+    public static Office365Source fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Office365Source deserializedOffice365Source = new Office365Source();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedOffice365Source.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedOffice365Source.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedOffice365Source.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedOffice365Source.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedOffice365Source.type = reader.getString();
+                } else if ("allowedGroups".equals(fieldName)) {
+                    deserializedOffice365Source.allowedGroups = reader.readUntyped();
+                } else if ("userScopeFilterUri".equals(fieldName)) {
+                    deserializedOffice365Source.userScopeFilterUri = reader.readUntyped();
+                } else if ("dateFilterColumn".equals(fieldName)) {
+                    deserializedOffice365Source.dateFilterColumn = reader.readUntyped();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOffice365Source.startTime = reader.readUntyped();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOffice365Source.endTime = reader.readUntyped();
+                } else if ("outputColumns".equals(fieldName)) {
+                    deserializedOffice365Source.outputColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedOffice365Source.withAdditionalProperties(additionalProperties);
+
+            return deserializedOffice365Source;
+        });
     }
 }

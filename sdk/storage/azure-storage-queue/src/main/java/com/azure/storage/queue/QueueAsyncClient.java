@@ -225,7 +225,8 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getQueues().createNoCustomHeadersWithResponseAsync(queueName, null, metadata, null, context);
+        return client.getQueues().createNoCustomHeadersWithResponseAsync(queueName, null, metadata, null, context)
+            .onErrorMap(ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -361,7 +362,8 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getQueues().deleteNoCustomHeadersWithResponseAsync(queueName, null, null, context);
+        return client.getQueues().deleteNoCustomHeadersWithResponseAsync(queueName, null, null, context)
+            .onErrorMap(ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -495,6 +497,7 @@ public final class QueueAsyncClient {
         try {
             return withContext(context -> client.getQueues().getPropertiesWithResponseAsync(queueName, null, null,
                     context)
+                .onErrorMap(ModelHelper::mapToQueueStorageException)
                 .map(response -> new SimpleResponse<>(response,
                     ModelHelper.transformQueueProperties(response.getDeserializedHeaders()))));
         } catch (RuntimeException ex) {
@@ -577,7 +580,8 @@ public final class QueueAsyncClient {
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata) {
         try {
             return withContext(context -> client.getQueues()
-                .setMetadataNoCustomHeadersWithResponseAsync(queueName, null, metadata, null, context));
+                .setMetadataNoCustomHeadersWithResponseAsync(queueName, null, metadata, null, context))
+                .onErrorMap(ModelHelper::mapToQueueStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -609,6 +613,7 @@ public final class QueueAsyncClient {
         try {
             Function<String, Mono<PagedResponse<QueueSignedIdentifier>>> retriever = marker -> this.client.getQueues()
                 .getAccessPolicyWithResponseAsync(queueName, null, null, Context.NONE)
+                .onErrorMap(ModelHelper::mapToQueueStorageException)
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), response.getValue().items(), null, response.getDeserializedHeaders()));
 
@@ -711,7 +716,8 @@ public final class QueueAsyncClient {
             .collect(Collectors.toList());
 
         return client.getQueues()
-            .setAccessPolicyNoCustomHeadersWithResponseAsync(queueName, null, null, permissionsList, context);
+            .setAccessPolicyNoCustomHeadersWithResponseAsync(queueName, null, null, permissionsList, context)
+            .onErrorMap(ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -764,7 +770,8 @@ public final class QueueAsyncClient {
     public Mono<Response<Void>> clearMessagesWithResponse() {
         try {
             return withContext(context -> client.getMessages()
-                .clearNoCustomHeadersWithResponseAsync(queueName, null, null, context));
+                .clearNoCustomHeadersWithResponseAsync(queueName, null, null, context))
+                .onErrorMap(ModelHelper::mapToQueueStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -949,6 +956,7 @@ public final class QueueAsyncClient {
                     QueueMessage queueMessage = new QueueMessage().setMessageText(messageText);
                     return client.getMessages().enqueueWithResponseAsync(queueName, queueMessage,
                             visibilityTimeoutInSeconds, timeToLiveInSeconds, null, null, context)
+                        .onErrorMap(ModelHelper::mapToQueueStorageException)
                         .map(response -> new SimpleResponse<>(response, response.getValue().items().get(0)));
                 }));
         } catch (RuntimeException ex) {
@@ -1065,6 +1073,7 @@ public final class QueueAsyncClient {
             Function<String, Mono<PagedResponse<QueueMessageItem>>> retriever = marker -> withContext(context ->
                 this.client.getMessages().dequeueWithResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context))
+                .onErrorMap(ModelHelper::mapToQueueStorageException)
                 .flatMap(this::transformMessagesDequeueResponse);
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
@@ -1174,6 +1183,7 @@ public final class QueueAsyncClient {
         try {
             Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever = marker -> withContext(context ->
                 this.client.getMessages().peekWithResponseAsync(queueName, maxMessages, null, null, context)
+                    .onErrorMap(ModelHelper::mapToQueueStorageException)
                     .flatMap(this::transformMessagesPeekResponse));
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
@@ -1318,6 +1328,7 @@ public final class QueueAsyncClient {
         try {
             return withContext(context -> client.getMessageIds().updateWithResponseAsync(queueName, messageId,
                     popReceipt, (int) visTimeout.getSeconds(), null, null, message, context)
+                .onErrorMap(ModelHelper::mapToQueueStorageException)
                 .map(response -> new SimpleResponse<>(response, new UpdateMessageResult(
                     response.getDeserializedHeaders().getXMsPopreceipt(),
                     response.getDeserializedHeaders().getXMsTimeNextVisible()))));
@@ -1402,7 +1413,8 @@ public final class QueueAsyncClient {
     public Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt) {
         try {
             return withContext(context -> client.getMessageIds()
-                .deleteNoCustomHeadersWithResponseAsync(queueName, messageId, popReceipt, null, null, context));
+                .deleteNoCustomHeadersWithResponseAsync(queueName, messageId, popReceipt, null, null, context))
+                .onErrorMap(ModelHelper::mapToQueueStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

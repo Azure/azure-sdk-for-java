@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Trino Cluster profile.
  */
 @Fluent
-public final class TrinoProfile {
+public final class TrinoProfile implements JsonSerializable<TrinoProfile> {
     /*
      * Trino cluster catalog options.
      */
-    @JsonProperty(value = "catalogOptions")
     private CatalogOptions catalogOptions;
 
     /*
      * Trino Coordinator.
      */
-    @JsonProperty(value = "coordinator")
     private TrinoCoordinator coordinator;
 
     /*
      * Trino user plugins spec
      */
-    @JsonProperty(value = "userPluginsSpec")
     private TrinoUserPlugins userPluginsSpec;
 
     /*
      * User telemetry
      */
-    @JsonProperty(value = "userTelemetrySpec")
     private TrinoUserTelemetry userTelemetrySpec;
 
     /*
      * Trino worker.
      */
-    @JsonProperty(value = "worker")
     private TrinoWorker worker;
 
     /**
@@ -169,5 +168,53 @@ public final class TrinoProfile {
         if (worker() != null) {
             worker().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("catalogOptions", this.catalogOptions);
+        jsonWriter.writeJsonField("coordinator", this.coordinator);
+        jsonWriter.writeJsonField("userPluginsSpec", this.userPluginsSpec);
+        jsonWriter.writeJsonField("userTelemetrySpec", this.userTelemetrySpec);
+        jsonWriter.writeJsonField("worker", this.worker);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrinoProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrinoProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrinoProfile.
+     */
+    public static TrinoProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrinoProfile deserializedTrinoProfile = new TrinoProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("catalogOptions".equals(fieldName)) {
+                    deserializedTrinoProfile.catalogOptions = CatalogOptions.fromJson(reader);
+                } else if ("coordinator".equals(fieldName)) {
+                    deserializedTrinoProfile.coordinator = TrinoCoordinator.fromJson(reader);
+                } else if ("userPluginsSpec".equals(fieldName)) {
+                    deserializedTrinoProfile.userPluginsSpec = TrinoUserPlugins.fromJson(reader);
+                } else if ("userTelemetrySpec".equals(fieldName)) {
+                    deserializedTrinoProfile.userTelemetrySpec = TrinoUserTelemetry.fromJson(reader);
+                } else if ("worker".equals(fieldName)) {
+                    deserializedTrinoProfile.worker = TrinoWorker.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrinoProfile;
+        });
     }
 }

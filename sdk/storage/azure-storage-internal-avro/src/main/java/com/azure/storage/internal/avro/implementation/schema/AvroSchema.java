@@ -193,4 +193,5 @@ public abstract class AvroSchema {
 
         return ret;
     }
+
 }

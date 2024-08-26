@@ -74,6 +74,7 @@ extends:
           CalledFromClient: true
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
+          UseFederatedAuth: false
           EnvVars:
             SYSTEM_ACCESSTOKEN: $(System.AccessToken)
           CloudConfig:

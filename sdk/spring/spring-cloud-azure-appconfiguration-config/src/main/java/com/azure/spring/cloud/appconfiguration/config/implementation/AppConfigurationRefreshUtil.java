@@ -19,7 +19,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
 
-class AppConfigurationRefreshUtil {
+public class AppConfigurationRefreshUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPullRefresh.class);
 
@@ -29,8 +29,8 @@ class AppConfigurationRefreshUtil {
      *
      * @return If a refresh event is called.
      */
-    static RefreshEventData refreshStoresCheck(AppConfigurationReplicaClientFactory clientFactory,
-        Duration refreshInterval, Long defaultMinBackoff, ReplicaLookUp replicaLookUp) {
+    RefreshEventData refreshStoresCheck(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
+        Long defaultMinBackoff, ReplicaLookUp replicaLookUp) {
         RefreshEventData eventData = new RefreshEventData();
         BaseAppConfigurationPolicy.setWatchRequests(true);
 

@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class SecureStringTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecureString model = BinaryData.fromString("{\"type\":\"SecureString\",\"value\":\"vlbpktgdstyou\"}")
+        SecureString model = BinaryData.fromString("{\"type\":\"SecureString\",\"value\":\"qxvztpbnfnqtxjt\"}")
             .toObject(SecureString.class);
-        Assertions.assertEquals("vlbpktgdstyou", model.value());
+        Assertions.assertEquals("qxvztpbnfnqtxjt", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecureString model = new SecureString().withValue("vlbpktgdstyou");
+        SecureString model = new SecureString().withValue("qxvztpbnfnqtxjt");
         model = BinaryData.fromObject(model).toObject(SecureString.class);
-        Assertions.assertEquals("vlbpktgdstyou", model.value());
+        Assertions.assertEquals("qxvztpbnfnqtxjt", model.value());
     }
 }

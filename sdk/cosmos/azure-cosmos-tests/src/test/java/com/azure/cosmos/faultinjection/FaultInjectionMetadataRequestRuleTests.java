@@ -71,6 +71,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             { FaultInjectionOperationType.READ_ITEM, OperationType.Read },
             { FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace },
             { FaultInjectionOperationType.CREATE_ITEM, OperationType.Create },
+            { FaultInjectionOperationType.UPSERT_ITEM, OperationType.Upsert },
             { FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete },
             { FaultInjectionOperationType.QUERY_ITEM, OperationType.Query },
             { FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch }

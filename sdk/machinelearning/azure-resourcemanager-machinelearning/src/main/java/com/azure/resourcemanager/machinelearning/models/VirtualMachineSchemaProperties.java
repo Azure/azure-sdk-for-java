@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The VirtualMachineSchemaProperties model. */
+/**
+ * The VirtualMachineSchemaProperties model.
+ */
 @Fluent
-public final class VirtualMachineSchemaProperties {
+public final class VirtualMachineSchemaProperties implements JsonSerializable<VirtualMachineSchemaProperties> {
     /*
      * Virtual Machine size
      */
-    @JsonProperty(value = "virtualMachineSize")
     private String virtualMachineSize;
 
     /*
      * Port open for ssh connections.
      */
-    @JsonProperty(value = "sshPort")
     private Integer sshPort;
 
     /*
      * Notebook server port open for ssh connections.
      */
-    @JsonProperty(value = "notebookServerPort")
     private Integer notebookServerPort;
 
     /*
      * Public IP address of the virtual machine.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * Admin credentials for virtual machine
      */
-    @JsonProperty(value = "administratorAccount")
     private VirtualMachineSshCredentials administratorAccount;
 
     /*
      * Indicates whether this compute will be used for running notebooks.
      */
-    @JsonProperty(value = "isNotebookInstanceCompute")
     private Boolean isNotebookInstanceCompute;
 
-    /** Creates an instance of VirtualMachineSchemaProperties class. */
+    /**
+     * Creates an instance of VirtualMachineSchemaProperties class.
+     */
     public VirtualMachineSchemaProperties() {
     }
 
     /**
      * Get the virtualMachineSize property: Virtual Machine size.
-     *
+     * 
      * @return the virtualMachineSize value.
      */
     public String virtualMachineSize() {
@@ -61,7 +63,7 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Set the virtualMachineSize property: Virtual Machine size.
-     *
+     * 
      * @param virtualMachineSize the virtualMachineSize value to set.
      * @return the VirtualMachineSchemaProperties object itself.
      */
@@ -72,7 +74,7 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Get the sshPort property: Port open for ssh connections.
-     *
+     * 
      * @return the sshPort value.
      */
     public Integer sshPort() {
@@ -81,7 +83,7 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Set the sshPort property: Port open for ssh connections.
-     *
+     * 
      * @param sshPort the sshPort value to set.
      * @return the VirtualMachineSchemaProperties object itself.
      */
@@ -92,7 +94,7 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Get the notebookServerPort property: Notebook server port open for ssh connections.
-     *
+     * 
      * @return the notebookServerPort value.
      */
     public Integer notebookServerPort() {
@@ -101,7 +103,7 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Set the notebookServerPort property: Notebook server port open for ssh connections.
-     *
+     * 
      * @param notebookServerPort the notebookServerPort value to set.
      * @return the VirtualMachineSchemaProperties object itself.
      */
@@ -112,7 +114,7 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Get the address property: Public IP address of the virtual machine.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -121,7 +123,7 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Set the address property: Public IP address of the virtual machine.
-     *
+     * 
      * @param address the address value to set.
      * @return the VirtualMachineSchemaProperties object itself.
      */
@@ -132,7 +134,7 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Get the administratorAccount property: Admin credentials for virtual machine.
-     *
+     * 
      * @return the administratorAccount value.
      */
     public VirtualMachineSshCredentials administratorAccount() {
@@ -141,7 +143,7 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Set the administratorAccount property: Admin credentials for virtual machine.
-     *
+     * 
      * @param administratorAccount the administratorAccount value to set.
      * @return the VirtualMachineSchemaProperties object itself.
      */
@@ -152,7 +154,7 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Get the isNotebookInstanceCompute property: Indicates whether this compute will be used for running notebooks.
-     *
+     * 
      * @return the isNotebookInstanceCompute value.
      */
     public Boolean isNotebookInstanceCompute() {
@@ -161,7 +163,7 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Set the isNotebookInstanceCompute property: Indicates whether this compute will be used for running notebooks.
-     *
+     * 
      * @param isNotebookInstanceCompute the isNotebookInstanceCompute value to set.
      * @return the VirtualMachineSchemaProperties object itself.
      */
@@ -172,12 +174,67 @@ public final class VirtualMachineSchemaProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (administratorAccount() != null) {
             administratorAccount().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualMachineSize", this.virtualMachineSize);
+        jsonWriter.writeNumberField("sshPort", this.sshPort);
+        jsonWriter.writeNumberField("notebookServerPort", this.notebookServerPort);
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeJsonField("administratorAccount", this.administratorAccount);
+        jsonWriter.writeBooleanField("isNotebookInstanceCompute", this.isNotebookInstanceCompute);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineSchemaProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineSchemaProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineSchemaProperties.
+     */
+    public static VirtualMachineSchemaProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineSchemaProperties deserializedVirtualMachineSchemaProperties
+                = new VirtualMachineSchemaProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualMachineSize".equals(fieldName)) {
+                    deserializedVirtualMachineSchemaProperties.virtualMachineSize = reader.getString();
+                } else if ("sshPort".equals(fieldName)) {
+                    deserializedVirtualMachineSchemaProperties.sshPort = reader.getNullable(JsonReader::getInt);
+                } else if ("notebookServerPort".equals(fieldName)) {
+                    deserializedVirtualMachineSchemaProperties.notebookServerPort
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("address".equals(fieldName)) {
+                    deserializedVirtualMachineSchemaProperties.address = reader.getString();
+                } else if ("administratorAccount".equals(fieldName)) {
+                    deserializedVirtualMachineSchemaProperties.administratorAccount
+                        = VirtualMachineSshCredentials.fromJson(reader);
+                } else if ("isNotebookInstanceCompute".equals(fieldName)) {
+                    deserializedVirtualMachineSchemaProperties.isNotebookInstanceCompute
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineSchemaProperties;
+        });
     }
 }

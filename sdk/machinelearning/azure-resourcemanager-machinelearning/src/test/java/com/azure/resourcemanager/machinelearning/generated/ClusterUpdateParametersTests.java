@@ -6,18 +6,33 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ClusterUpdateParameters;
+import com.azure.resourcemanager.machinelearning.models.ScaleSettings;
 import com.azure.resourcemanager.machinelearning.models.ScaleSettingsInformation;
+import java.time.Duration;
+import org.junit.jupiter.api.Assertions;
 
 public final class ClusterUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterUpdateParameters model =
-            BinaryData.fromString("{\"properties\":{\"properties\":{}}}").toObject(ClusterUpdateParameters.class);
+        ClusterUpdateParameters model = BinaryData.fromString(
+            "{\"properties\":{\"properties\":{\"scaleSettings\":{\"maxNodeCount\":932562427,\"minNodeCount\":2103137599,\"nodeIdleTimeBeforeScaleDown\":\"PT10H3M4S\"}}}}")
+            .toObject(ClusterUpdateParameters.class);
+        Assertions.assertEquals(932562427, model.properties().scaleSettings().maxNodeCount());
+        Assertions.assertEquals(2103137599, model.properties().scaleSettings().minNodeCount());
+        Assertions.assertEquals(Duration.parse("PT10H3M4S"),
+            model.properties().scaleSettings().nodeIdleTimeBeforeScaleDown());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterUpdateParameters model = new ClusterUpdateParameters().withProperties(new ScaleSettingsInformation());
+        ClusterUpdateParameters model = new ClusterUpdateParameters().withProperties(
+            new ScaleSettingsInformation().withScaleSettings(new ScaleSettings().withMaxNodeCount(932562427)
+                .withMinNodeCount(2103137599)
+                .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT10H3M4S"))));
         model = BinaryData.fromObject(model).toObject(ClusterUpdateParameters.class);
+        Assertions.assertEquals(932562427, model.properties().scaleSettings().maxNodeCount());
+        Assertions.assertEquals(2103137599, model.properties().scaleSettings().minNodeCount());
+        Assertions.assertEquals(Duration.parse("PT10H3M4S"),
+            model.properties().scaleSettings().nodeIdleTimeBeforeScaleDown());
     }
 }

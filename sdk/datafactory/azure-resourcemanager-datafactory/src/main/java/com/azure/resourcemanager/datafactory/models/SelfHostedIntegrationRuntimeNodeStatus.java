@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -63,7 +62,6 @@ public final class SelfHostedIntegrationRuntimeNodeStatus
      * @param name a name to look for.
      * @return the corresponding SelfHostedIntegrationRuntimeNodeStatus.
      */
-    @JsonCreator
     public static SelfHostedIntegrationRuntimeNodeStatus fromString(String name) {
         return fromString(name, SelfHostedIntegrationRuntimeNodeStatus.class);
     }

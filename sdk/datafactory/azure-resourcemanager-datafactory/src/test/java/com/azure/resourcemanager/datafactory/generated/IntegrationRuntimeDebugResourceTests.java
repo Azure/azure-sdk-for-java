@@ -15,20 +15,20 @@ public final class IntegrationRuntimeDebugResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeDebugResource model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"xbzlmc\",\"\":{\"onqzinkfkbgbzbow\":\"datapcvhdbevwqqxeys\",\"qkjjeokbz\":\"dataeqocljmygvk\"}},\"name\":\"ezrxcczurtleipqx\"}")
+            "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"rvzmlovuana\",\"\":{\"erbdk\":\"dataxlpm\",\"bccxjmonfdgn\":\"datalvidizozs\",\"ypuuwwltvuqjctze\":\"datan\"}},\"name\":\"eifzzhmk\"}")
             .toObject(IntegrationRuntimeDebugResource.class);
-        Assertions.assertEquals("ezrxcczurtleipqx", model.name());
-        Assertions.assertEquals("xbzlmc", model.properties().description());
+        Assertions.assertEquals("eifzzhmk", model.name());
+        Assertions.assertEquals("rvzmlovuana", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeDebugResource model = new IntegrationRuntimeDebugResource().withName("ezrxcczurtleipqx")
-            .withProperties(new IntegrationRuntime().withDescription("xbzlmc")
+        IntegrationRuntimeDebugResource model = new IntegrationRuntimeDebugResource().withName("eifzzhmk")
+            .withProperties(new IntegrationRuntime().withDescription("rvzmlovuana")
                 .withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeDebugResource.class);
-        Assertions.assertEquals("ezrxcczurtleipqx", model.name());
-        Assertions.assertEquals("xbzlmc", model.properties().description());
+        Assertions.assertEquals("eifzzhmk", model.name());
+        Assertions.assertEquals("rvzmlovuana", model.properties().description());
     }
 
     // Use "Map.of" if available

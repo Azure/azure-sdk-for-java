@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ListViewType. */
+/**
+ * Defines values for ListViewType.
+ */
 public final class ListViewType extends ExpandableStringEnum<ListViewType> {
-    /** Static value ActiveOnly for ListViewType. */
+    /**
+     * Static value ActiveOnly for ListViewType.
+     */
     public static final ListViewType ACTIVE_ONLY = fromString("ActiveOnly");
 
-    /** Static value ArchivedOnly for ListViewType. */
+    /**
+     * Static value ArchivedOnly for ListViewType.
+     */
     public static final ListViewType ARCHIVED_ONLY = fromString("ArchivedOnly");
 
-    /** Static value All for ListViewType. */
+    /**
+     * Static value All for ListViewType.
+     */
     public static final ListViewType ALL = fromString("All");
 
     /**
      * Creates a new instance of ListViewType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ListViewType extends ExpandableStringEnum<ListViewType> {
 
     /**
      * Creates or finds a ListViewType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ListViewType.
      */
-    @JsonCreator
     public static ListViewType fromString(String name) {
         return fromString(name, ListViewType.class);
     }
 
     /**
      * Gets known ListViewType values.
-     *
+     * 
      * @return known ListViewType values.
      */
     public static Collection<ListViewType> values() {

@@ -5,35 +5,28 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Azure data lake store write settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AzureDataLakeStoreWriteSettings.class,
-    visible = true)
-@JsonTypeName("AzureDataLakeStoreWriteSettings")
 @Fluent
 public final class AzureDataLakeStoreWriteSettings extends StoreWriteSettings {
     /*
      * The write setting type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AzureDataLakeStoreWriteSettings";
 
     /*
      * Specifies the expiry time of the written files. The time is applied to the UTC time zone in the format of
      * "2018-12-01T05:00:00Z". Default value is NULL. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "expiryDateTime")
     private Object expiryDateTime;
 
     /**
@@ -120,5 +113,69 @@ public final class AzureDataLakeStoreWriteSettings extends StoreWriteSettings {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeUntypedField("copyBehavior", copyBehavior());
+        jsonWriter.writeArrayField("metadata", metadata(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("expiryDateTime", this.expiryDateTime);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDataLakeStoreWriteSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDataLakeStoreWriteSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureDataLakeStoreWriteSettings.
+     */
+    public static AzureDataLakeStoreWriteSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDataLakeStoreWriteSettings deserializedAzureDataLakeStoreWriteSettings
+                = new AzureDataLakeStoreWriteSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreWriteSettings.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreWriteSettings.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("copyBehavior".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreWriteSettings.withCopyBehavior(reader.readUntyped());
+                } else if ("metadata".equals(fieldName)) {
+                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    deserializedAzureDataLakeStoreWriteSettings.withMetadata(metadata);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreWriteSettings.type = reader.getString();
+                } else if ("expiryDateTime".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreWriteSettings.expiryDateTime = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureDataLakeStoreWriteSettings.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureDataLakeStoreWriteSettings;
+        });
     }
 }
