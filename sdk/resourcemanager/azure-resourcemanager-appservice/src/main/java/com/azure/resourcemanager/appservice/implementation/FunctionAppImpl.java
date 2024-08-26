@@ -834,7 +834,7 @@ class FunctionAppImpl
     @Override
     public Mono<Void> deployAsync(DeployType type, File file, DeployOptions deployOptions) {
         return this.pushDeployAsync(type, file, null)
-            .flatMap(result -> kuduClient.pollDeploymentStatus(result));
+            .flatMap(result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
     }
 
     @Override
@@ -855,7 +855,7 @@ class FunctionAppImpl
     @Override
     public Mono<Void> deployAsync(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
         return this.pushDeployAsync(type, file, length, null)
-            .flatMap(result -> kuduClient.pollDeploymentStatus(result));
+            .flatMap(result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
     }
 
     @Override
@@ -865,6 +865,8 @@ class FunctionAppImpl
 
     @Override
     public Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, File file, DeployOptions deployOptions) {
+        // If tier of the AppServicePlan is "FlexConsumption", use /api/publish; else, use /api/zipdeploy
+
         // deployOptions is ignored
         if (type != DeployType.ZIP) {
             return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
@@ -875,6 +877,8 @@ class FunctionAppImpl
                     return kuduClient.pushDeployFlexConsumptionAsync(file);
                 } else {
                     return kuduClient.pushZipDeployAsync(file)
+                        // it appears that "getDeploymentStatus" must first be called with deploymentId="latest"
+                        // this "latest" also works, if polling is done via kudu "api/deployments/{deploymentId}" API
                         .then(Mono.just(new KuduDeploymentResult("latest")));
                 }
             } catch (IOException e) {

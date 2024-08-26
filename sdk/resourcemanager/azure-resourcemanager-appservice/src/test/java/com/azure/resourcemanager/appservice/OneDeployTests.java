@@ -143,7 +143,7 @@ public class OneDeployTests extends AppServiceTest {
     // test uses storage account key and connection string to configure the function app
     @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
-    @ValueSource(booleans = {false})
+    @ValueSource(booleans = {false, true})
     public void canDeployFlexConsumptionFunctionApp(boolean pushDeploy) throws FileNotFoundException {
         final PricingTier flexConsumptionTier = new PricingTier("FlexConsumption", "FC1");
 
@@ -231,7 +231,7 @@ public class OneDeployTests extends AppServiceTest {
 
     @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
-    @ValueSource(booleans = {false})
+    @ValueSource(booleans = {false, true})
     public void canDeployFunctionApp(boolean pushDeploy) {
         String functionAppName = generateRandomResourceName("functionapp", 20);
 
@@ -241,12 +241,14 @@ public class OneDeployTests extends AppServiceTest {
                 .define(functionAppName)
                 .withRegion(Region.US_WEST2)
                 .withNewResourceGroup(rgName)
-                .withNewLinuxConsumptionPlan()
+                // zipDeploy does not work for LinuxConsumptionPlan
+                // Use "WEBSITE_RUN_FROM_PACKAGE" in AppSettings for LinuxConsumptionPlan
+                .withNewLinuxAppServicePlan(PricingTier.BASIC_B1)
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_11)
                 .withHttpsOnly(true)
                 .create();
 
-        // test one deploy
+        // test deploy (currently it would call "zipDeploy", as one deploy is not supported for non-Flex consumption plan)
         if (!isPlaybackMode()) {
             File zipFile = new File(OneDeployTests.class.getResource("/java-functions.zip").getPath());
 

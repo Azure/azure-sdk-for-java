@@ -126,7 +126,7 @@ class FunctionDeploymentSlotImpl
     @Override
     public Mono<Void> deployAsync(DeployType type, File file, DeployOptions deployOptions) {
         return this.pushDeployAsync(type, file, null)
-            .flatMap(result -> kuduClient.pollDeploymentStatus(result));
+            .flatMap(result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
     }
 
     @Override
@@ -147,7 +147,7 @@ class FunctionDeploymentSlotImpl
     @Override
     public Mono<Void> deployAsync(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
         return this.pushDeployAsync(type, file, length, null)
-            .flatMap(result -> kuduClient.pollDeploymentStatus(result));
+            .flatMap(result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
     }
 
     @Override
