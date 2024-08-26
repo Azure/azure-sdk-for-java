@@ -4,7 +4,6 @@
 package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
