@@ -18,6 +18,7 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -51,6 +52,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubReactorSession.class);
+    private final boolean isV2;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -70,9 +72,10 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
     EventHubReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
         String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
         Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-        AmqpRetryOptions retryOptions, MessageSerializer messageSerializer) {
+        AmqpRetryOptions retryOptions, MessageSerializer messageSerializer, boolean isV2) {
         super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, linkProvider, cbsNodeSupplier,
             tokenManagerProvider, messageSerializer, retryOptions);
+        this.isV2 = isV2;
     }
 
     @Override
@@ -116,9 +119,17 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             ? new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME}
             : null;
 
+
+        final ConsumerFactory consumerFactory;
+        if (isV2) {
+            consumerFactory = new ConsumerFactory(DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY, false);
+        } else {
+            consumerFactory = new ConsumerFactory();
+        }
+
         // Use explicit settlement via dispositions (not pre-settled)
         return createConsumer(linkName, entityPath, timeout, retry, filter, properties, desiredCapabilities,
-            SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND, new ConsumerFactory());
+            SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND, consumerFactory);
     }
 
     private String getExpression(EventPosition eventPosition) {

@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
@@ -14,6 +15,8 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestCounter;
@@ -30,6 +33,7 @@ import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
+import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.Proton;
@@ -72,6 +76,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
@@ -121,11 +126,11 @@ class EventHubProducerAsyncClientTest {
     private AmqpSendLink sendLink3;
 
     @Mock
-    private EventHubAmqpConnection connection;
+    private EventHubReactorAmqpConnection connection;
     @Mock
-    private EventHubAmqpConnection connection2;
+    private EventHubReactorAmqpConnection connection2;
     @Mock
-    private EventHubAmqpConnection connection3;
+    private EventHubReactorAmqpConnection connection3;
     @Mock
     private TokenCredential tokenCredential;
     @Mock
@@ -144,7 +149,7 @@ class EventHubProducerAsyncClientTest {
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private EventHubProducerAsyncClient producer;
-    private EventHubConnectionProcessor connectionProcessor;
+    private ConnectionCacheWrapper connectionProcessor;
     private ConnectionOptions connectionOptions;
     private final Scheduler testScheduler = Schedulers.newBoundedElastic(10, 10, "test");
 
@@ -163,9 +168,7 @@ class EventHubProducerAsyncClientTest {
 
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
-        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
-            new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                "event-hub-path", connectionOptions.getRetry()));
+        connectionProcessor = createConnectionProcessor(connection, retryOptions, false);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
@@ -1258,7 +1261,7 @@ class EventHubProducerAsyncClientTest {
     @Test
     void doesNotCloseSharedConnection() {
         // Arrange
-        EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
+        ConnectionCacheWrapper hubConnection = mock(ConnectionCacheWrapper.class);
         EventHubProducerAsyncClient sharedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             hubConnection, retryOptions, messageSerializer, Schedulers.parallel(),
             true, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
@@ -1277,7 +1280,7 @@ class EventHubProducerAsyncClientTest {
     @Test
     void closesDedicatedConnection() {
         // Arrange
-        EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
+        ConnectionCacheWrapper hubConnection = mock(ConnectionCacheWrapper.class);
         EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             hubConnection, retryOptions, messageSerializer, Schedulers.parallel(),
             false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
@@ -1296,7 +1299,7 @@ class EventHubProducerAsyncClientTest {
     @Test
     void closesDedicatedConnectionOnlyOnce() {
         // Arrange
-        EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
+        ConnectionCacheWrapper hubConnection = mock(ConnectionCacheWrapper.class);
         EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             hubConnection, retryOptions, messageSerializer, Schedulers.parallel(),
             false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
@@ -1319,21 +1322,10 @@ class EventHubProducerAsyncClientTest {
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
 
-        EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
+        EventHubReactorAmqpConnection[] connections = new EventHubReactorAmqpConnection[]{
             connection, connection2, connection3
         };
-        connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> {
-            final AtomicInteger count = new AtomicInteger();
-            sink.onRequest(request -> {
-                for (int i = 0; i < request; i++) {
-                    final int current = count.getAndIncrement();
-                    final int index = current % connections.length;
-                    sink.next(connections[index]);
-                }
-            });
-        }).subscribeWith(
-            new EventHubConnectionProcessor(EVENT_HUB_NAME, connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getRetry()));
+        connectionProcessor = createConnectionProcessor(connections, connectionOptions.getRetry(), false);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
@@ -1396,21 +1388,10 @@ class EventHubProducerAsyncClientTest {
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
 
-        EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
+        EventHubReactorAmqpConnection[] connections = new EventHubReactorAmqpConnection[]{
             connection, connection2, connection3
         };
-        connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> {
-            final AtomicInteger count = new AtomicInteger();
-            sink.onRequest(request -> {
-                for (int i = 0; i < request; i++) {
-                    final int current = count.getAndIncrement();
-                    final int index = current % connections.length;
-                    sink.next(connections[index]);
-                }
-            });
-        }).subscribeWith(
-            new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                EVENT_HUB_NAME, connectionOptions.getRetry()));
+        connectionProcessor = createConnectionProcessor(connections, connectionOptions.getRetry(), false);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
@@ -1475,19 +1456,8 @@ class EventHubProducerAsyncClientTest {
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
 
-        EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{connection, connection2};
-        connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> {
-            final AtomicInteger count = new AtomicInteger();
-            sink.onRequest(request -> {
-                for (int i = 0; i < request; i++) {
-                    final int current = count.getAndIncrement();
-                    final int index = current % connections.length;
-                    sink.next(connections[index]);
-                }
-            });
-        }).subscribeWith(
-            new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                EVENT_HUB_NAME, connectionOptions.getRetry()));
+        EventHubReactorAmqpConnection[] connections = new EventHubReactorAmqpConnection[]{connection, connection2};
+        connectionProcessor = createConnectionProcessor(connections, connectionOptions.getRetry(), false);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
@@ -1584,6 +1554,52 @@ class EventHubProducerAsyncClientTest {
             assertNull(startOpts.getLinks());
         } else {
             assertEquals(linkCount, startOpts.getLinks().size());
+        }
+    }
+
+    private ConnectionCacheWrapper createConnectionProcessor(EventHubReactorAmqpConnection connection, AmqpRetryOptions retryOptions, boolean isV2) {
+        if (isV2) {
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+            int[] calls = new int[1];
+            final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
+                calls[0] = calls[0] + 1;
+                if (calls[0] == 10) {
+                    throw new UnsupportedOperationException("connection requests is limited to 10");
+                }
+                return connection;
+            };
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> cache = new ReactorConnectionCache<>(null, HOSTNAME, EVENT_HUB_NAME, retryPolicy, new HashMap<>(0));
+            return new ConnectionCacheWrapper(cache);
+        } else {
+            final EventHubConnectionProcessor processor = Mono.fromCallable(() -> connection).repeat(10)
+                .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, "event-hub-name", retryOptions));
+            return new ConnectionCacheWrapper(processor);
+        }
+    }
+
+    private ConnectionCacheWrapper createConnectionProcessor(EventHubReactorAmqpConnection[] connections, AmqpRetryOptions retryOptions, boolean isV2) {
+        if (isV2) {
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+            final AtomicInteger count = new AtomicInteger();
+            final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
+                final int current = count.getAndIncrement();
+                final int index = current % connections.length;
+                return connections[index];
+            };
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> cache = new ReactorConnectionCache<>(null, HOSTNAME, EVENT_HUB_NAME, retryPolicy, new HashMap<>(0));
+            return new ConnectionCacheWrapper(cache);
+        } else {
+            final EventHubConnectionProcessor processor = Flux.<EventHubAmqpConnection>create(sink -> {
+                final AtomicInteger count = new AtomicInteger();
+                sink.onRequest(request -> {
+                    for (int i = 0; i < request; i++) {
+                        final int current = count.getAndIncrement();
+                        final int index = current % connections.length;
+                        sink.next(connections[index]);
+                    }
+                });
+            }).subscribeWith(new EventHubConnectionProcessor(HOSTNAME, EVENT_HUB_NAME, retryOptions));
+            return new ConnectionCacheWrapper(processor);
         }
     }
 
