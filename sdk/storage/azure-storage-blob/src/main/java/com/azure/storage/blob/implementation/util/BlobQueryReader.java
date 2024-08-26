@@ -166,7 +166,6 @@ public class BlobQueryReader {
                     buffer.clear(); // Prepare buffer for next iteration if reusing
                 }
             } catch (IOException e) {
-                System.out.println("Error occurred while serializing AvroObjects to bytes: " + e.getMessage());
                 throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
             }
         }

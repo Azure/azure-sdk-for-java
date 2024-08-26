@@ -521,8 +521,9 @@ public class BlobBaseApiTests extends BlobTestBase {
 
         liveTestScenarioWithRetry(() -> {
             /* Input Stream. */
-            InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
-            assertThrows(Throwable.class, () -> readFromInputStream(qqStream, Constants.KB));
+            //InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
+            //assertThrows(Throwable.class, () -> readFromInputStream(qqStream, Constants.KB));
+            assertThrows(Throwable.class, () -> bc.openQueryInputStreamWithResponse(options).getValue());
 
             /* Output Stream. */
             //Exceptions.ReactiveException.class
