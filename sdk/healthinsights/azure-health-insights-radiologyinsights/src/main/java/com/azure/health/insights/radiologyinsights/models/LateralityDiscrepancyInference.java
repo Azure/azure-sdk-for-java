@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -24,14 +23,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("lateralityDiscrepancy")
 @Immutable
 public final class LateralityDiscrepancyInference extends RadiologyInsightsInference {
-
-    /*
-     * Discriminator property for RadiologyInsightsInference.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY;
 
     /*
      * Laterality indication : SNOMED CT code for laterality qualifier value.
@@ -57,17 +48,7 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
     private LateralityDiscrepancyInference(
         @JsonProperty(value = "discrepancyType") LateralityDiscrepancyType discrepancyType) {
         this.discrepancyType = discrepancyType;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for RadiologyInsightsInference.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
+        this.kind = RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY;
     }
 
     /**

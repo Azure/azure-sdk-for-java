@@ -17,12 +17,6 @@ import java.io.IOException;
 public final class MessageDeltaTextFileCitationAnnotationObject extends MessageDeltaTextAnnotation {
 
     /*
-     * The type of the text content annotation.
-     */
-    @Generated
-    private String type = "file_citation";
-
-    /*
      * The file citation information.
      */
     @Generated
@@ -48,17 +42,7 @@ public final class MessageDeltaTextFileCitationAnnotationObject extends MessageD
     @Generated
     private MessageDeltaTextFileCitationAnnotationObject(int index) {
         super(index);
-    }
-
-    /**
-     * Get the type property: The type of the text content annotation.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "file_citation";
     }
 
     /**
@@ -98,8 +82,7 @@ public final class MessageDeltaTextFileCitationAnnotationObject extends MessageD
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", getIndex());
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("file_citation", this.fileCitation);
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeNumberField("start_index", this.startIndex);

@@ -17,12 +17,6 @@ import java.io.IOException;
 public final class MessageTemplateText extends MessageTemplateValue {
 
     /*
-     * The type discriminator describing a template parameter type.
-     */
-    @Generated
-    private MessageTemplateValueKind kind = MessageTemplateValueKind.TEXT;
-
-    /*
      * The text value.
      */
     @Generated
@@ -38,17 +32,7 @@ public final class MessageTemplateText extends MessageTemplateValue {
     public MessageTemplateText(String refValue, String text) {
         super(refValue);
         this.text = text;
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a template parameter type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public MessageTemplateValueKind getKind() {
-        return this.kind;
+        this.kind = MessageTemplateValueKind.TEXT;
     }
 
     /**
@@ -68,9 +52,8 @@ public final class MessageTemplateText extends MessageTemplateValue {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getRefValue());
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 

@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-healthdataaiservices</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Health Data AI Services Management</name>

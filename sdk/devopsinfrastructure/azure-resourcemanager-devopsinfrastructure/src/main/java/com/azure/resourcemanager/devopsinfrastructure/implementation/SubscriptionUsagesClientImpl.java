@@ -68,14 +68,14 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PagedQuota>> usages(@HostParam("endpoint") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PagedQuota>> usagesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -203,6 +203,8 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
     }
 
     /**
+     * List Quota resources by subscription ID
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -229,6 +231,8 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
     }
 
     /**
+     * List Quota resources by subscription ID
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

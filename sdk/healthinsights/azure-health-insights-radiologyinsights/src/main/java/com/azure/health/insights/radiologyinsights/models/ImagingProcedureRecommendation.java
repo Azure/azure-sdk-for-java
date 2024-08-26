@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -23,14 +22,6 @@ import java.util.List;
 @JsonTypeName("imagingProcedureRecommendation")
 @Immutable
 public final class ImagingProcedureRecommendation extends ProcedureRecommendation {
-
-    /*
-     * Discriminator property for ProcedureRecommendation.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private String kind = "imagingProcedureRecommendation";
 
     /*
      * LOINC codes for the procedure.
@@ -56,17 +47,7 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     private ImagingProcedureRecommendation(
         @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures) {
         this.imagingProcedures = imagingProcedures;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for ProcedureRecommendation.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public String getKind() {
-        return this.kind;
+        this.kind = "imagingProcedureRecommendation";
     }
 
     /**

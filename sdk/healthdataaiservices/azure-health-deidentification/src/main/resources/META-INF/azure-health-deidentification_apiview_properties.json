@@ -1,7 +1,7 @@
 {
   "flavor": "azure", 
   "CrossLanguageDefinitionId": {
-    "com.azure.health.deidentification.DeidentificationAsyncClient": "HealthDataAIServices.DeidServices.DeidentificationClient",
+    "com.azure.health.deidentification.DeidentificationAsyncClient": "HealthDataAIServices.DeidServices",
     "com.azure.health.deidentification.DeidentificationAsyncClient.beginCreateJob": "HealthDataAIServices.DeidServices.createJob",
     "com.azure.health.deidentification.DeidentificationAsyncClient.beginCreateJobWithModel": "HealthDataAIServices.DeidServices.createJob",
     "com.azure.health.deidentification.DeidentificationAsyncClient.cancelJob": "HealthDataAIServices.DeidServices.cancelJob",
@@ -14,7 +14,7 @@
     "com.azure.health.deidentification.DeidentificationAsyncClient.getJobWithResponse": "HealthDataAIServices.DeidServices.getJob",
     "com.azure.health.deidentification.DeidentificationAsyncClient.listJobDocuments": "HealthDataAIServices.DeidServices.listJobDocuments",
     "com.azure.health.deidentification.DeidentificationAsyncClient.listJobs": "HealthDataAIServices.DeidServices.listJobs",
-    "com.azure.health.deidentification.DeidentificationClient": "HealthDataAIServices.DeidServices.DeidentificationClient",
+    "com.azure.health.deidentification.DeidentificationClient": "HealthDataAIServices.DeidServices",
     "com.azure.health.deidentification.DeidentificationClient.beginCreateJob": "HealthDataAIServices.DeidServices.createJob",
     "com.azure.health.deidentification.DeidentificationClient.beginCreateJobWithModel": "HealthDataAIServices.DeidServices.createJob",
     "com.azure.health.deidentification.DeidentificationClient.cancelJob": "HealthDataAIServices.DeidServices.cancelJob",
@@ -27,7 +27,7 @@
     "com.azure.health.deidentification.DeidentificationClient.getJobWithResponse": "HealthDataAIServices.DeidServices.getJob",
     "com.azure.health.deidentification.DeidentificationClient.listJobDocuments": "HealthDataAIServices.DeidServices.listJobDocuments",
     "com.azure.health.deidentification.DeidentificationClient.listJobs": "HealthDataAIServices.DeidServices.listJobs",
-    "com.azure.health.deidentification.DeidentificationClientBuilder": "HealthDataAIServices.DeidServices.DeidentificationClient",
+    "com.azure.health.deidentification.DeidentificationClientBuilder": "HealthDataAIServices.DeidServices",
     "com.azure.health.deidentification.models.DeidentificationContent": "HealthDataAIServices.DeidServices.DeidentificationContent",
     "com.azure.health.deidentification.models.DeidentificationJob": "HealthDataAIServices.DeidServices.DeidentificationJob",
     "com.azure.health.deidentification.models.DeidentificationResult": "HealthDataAIServices.DeidServices.DeidentificationResult",

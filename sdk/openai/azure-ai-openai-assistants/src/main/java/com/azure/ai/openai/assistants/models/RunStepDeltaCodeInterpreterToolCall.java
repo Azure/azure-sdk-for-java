@@ -17,12 +17,6 @@ import java.io.IOException;
 public final class RunStepDeltaCodeInterpreterToolCall extends RunStepDeltaToolCall {
 
     /*
-     * The type of the tool call detail item in a streaming run step's details.
-     */
-    @Generated
-    private String type = "code_interpreter";
-
-    /*
      * The Code Interpreter data for the tool call.
      */
     @Generated
@@ -37,17 +31,7 @@ public final class RunStepDeltaCodeInterpreterToolCall extends RunStepDeltaToolC
     @Generated
     private RunStepDeltaCodeInterpreterToolCall(int index, String id) {
         super(index, id);
-    }
-
-    /**
-     * Get the type property: The type of the tool call detail item in a streaming run step's details.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "code_interpreter";
     }
 
     /**
@@ -67,9 +51,7 @@ public final class RunStepDeltaCodeInterpreterToolCall extends RunStepDeltaToolC
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("index", getIndex());
-        jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("code_interpreter", this.codeInterpreter);
         return jsonWriter.writeEndObject();
     }

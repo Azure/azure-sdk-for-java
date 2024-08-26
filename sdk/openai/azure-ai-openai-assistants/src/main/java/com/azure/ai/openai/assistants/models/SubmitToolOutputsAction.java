@@ -30,6 +30,7 @@ public final class SubmitToolOutputsAction extends RequiredAction {
     @Generated
     private SubmitToolOutputsAction(SubmitToolOutputsDetails submitToolOutputs) {
         this.submitToolOutputs = submitToolOutputs;
+        this.type = "submit_tool_outputs";
     }
 
     /**
@@ -49,8 +50,8 @@ public final class SubmitToolOutputsAction extends RequiredAction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("submit_tool_outputs", this.submitToolOutputs);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,22 +85,5 @@ public final class SubmitToolOutputsAction extends RequiredAction {
             deserializedSubmitToolOutputsAction.type = type;
             return deserializedSubmitToolOutputsAction;
         });
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type = "submit_tool_outputs";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

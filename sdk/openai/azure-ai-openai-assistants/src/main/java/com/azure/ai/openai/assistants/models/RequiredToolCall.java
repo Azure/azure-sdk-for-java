@@ -31,6 +31,7 @@ public class RequiredToolCall implements JsonSerializable<RequiredToolCall> {
     @Generated
     protected RequiredToolCall(String id) {
         this.id = id;
+        this.type = "RequiredToolCall";
     }
 
     /**
@@ -50,8 +51,7 @@ public class RequiredToolCall implements JsonSerializable<RequiredToolCall> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -111,7 +111,7 @@ public class RequiredToolCall implements JsonSerializable<RequiredToolCall> {
      * The object type for the required tool call.
      */
     @Generated
-    private String type = "RequiredToolCall";
+    String type;
 
     /**
      * Get the type property: The object type for the required tool call.
@@ -121,5 +121,10 @@ public class RequiredToolCall implements JsonSerializable<RequiredToolCall> {
     @Generated
     public String getType() {
         return this.type;
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
     }
 }

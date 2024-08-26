@@ -38,6 +38,7 @@ public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourData
     public OnYourDataKeyAndKeyIdAuthenticationOptions(String key, String keyId) {
         this.key = key;
         this.keyId = keyId;
+        this.type = OnYourDataAuthenticationType.KEY_AND_KEY_ID;
     }
 
     /**
@@ -60,23 +61,6 @@ public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourData
         return this.keyId;
     }
 
-    /*
-     * The authentication type.
-     */
-    @Generated
-    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.KEY_AND_KEY_ID;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -84,9 +68,9 @@ public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeStringField("key", this.key);
         jsonWriter.writeStringField("key_id", this.keyId);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

@@ -30,6 +30,7 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
     @Generated
     public ChatMessageImageContentItem(ChatMessageImageUrl imageUrl) {
         this.imageUrl = imageUrl;
+        this.type = "image_url";
     }
 
     /**
@@ -43,23 +44,6 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
         return this.imageUrl;
     }
 
-    /*
-     * The discriminated object type.
-     */
-    @Generated
-    private String type = "image_url";
-
-    /**
-     * Get the type property: The discriminated object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -67,8 +51,8 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        toJsonShared(jsonWriter);
         jsonWriter.writeJsonField("image_url", this.imageUrl);
-        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 

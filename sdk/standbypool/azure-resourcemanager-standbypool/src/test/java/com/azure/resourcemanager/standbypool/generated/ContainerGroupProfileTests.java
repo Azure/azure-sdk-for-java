@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ContainerGroupProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContainerGroupProfile model = BinaryData.fromString("{\"id\":\"jaoyfhrtx\",\"revision\":1026697425330169103}")
+        ContainerGroupProfile model = BinaryData.fromString("{\"id\":\"j\",\"revision\":3716992416544598775}")
             .toObject(ContainerGroupProfile.class);
-        Assertions.assertEquals("jaoyfhrtx", model.id());
-        Assertions.assertEquals(1026697425330169103L, model.revision());
+        Assertions.assertEquals("j", model.id());
+        Assertions.assertEquals(3716992416544598775L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContainerGroupProfile model
-            = new ContainerGroupProfile().withId("jaoyfhrtx").withRevision(1026697425330169103L);
+        ContainerGroupProfile model = new ContainerGroupProfile().withId("j").withRevision(3716992416544598775L);
         model = BinaryData.fromObject(model).toObject(ContainerGroupProfile.class);
-        Assertions.assertEquals("jaoyfhrtx", model.id());
-        Assertions.assertEquals(1026697425330169103L, model.revision());
+        Assertions.assertEquals("j", model.id());
+        Assertions.assertEquals(3716992416544598775L, model.revision());
     }
 }

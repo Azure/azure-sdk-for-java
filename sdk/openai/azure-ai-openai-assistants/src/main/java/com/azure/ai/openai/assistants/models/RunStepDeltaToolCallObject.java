@@ -18,12 +18,6 @@ import java.util.List;
 public final class RunStepDeltaToolCallObject extends RunStepDeltaDetail {
 
     /*
-     * The object type for the run step detail object.
-     */
-    @Generated
-    private String type = "tool_calls";
-
-    /*
      * The collection of tool calls for the tool call detail item.
      */
     @Generated
@@ -34,17 +28,7 @@ public final class RunStepDeltaToolCallObject extends RunStepDeltaDetail {
      */
     @Generated
     private RunStepDeltaToolCallObject() {
-    }
-
-    /**
-     * Get the type property: The object type for the run step detail object.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
+        this.type = "tool_calls";
     }
 
     /**
@@ -64,7 +48,7 @@ public final class RunStepDeltaToolCallObject extends RunStepDeltaDetail {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -84,8 +68,8 @@ public final class RunStepDeltaToolCallObject extends RunStepDeltaDetail {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedRunStepDeltaToolCallObject.type = reader.getString();
+                if (RunStepDeltaDetail.fromJsonShared(reader, fieldName, deserializedRunStepDeltaToolCallObject)) {
+                    continue;
                 } else if ("tool_calls".equals(fieldName)) {
                     List<RunStepDeltaToolCall> toolCalls
                         = reader.readArray(reader1 -> RunStepDeltaToolCall.fromJson(reader1));

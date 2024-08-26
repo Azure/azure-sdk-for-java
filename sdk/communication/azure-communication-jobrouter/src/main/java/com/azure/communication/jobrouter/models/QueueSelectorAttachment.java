@@ -24,7 +24,7 @@ public class QueueSelectorAttachment implements JsonSerializable<QueueSelectorAt
      * The type discriminator describing a sub-type of QueueSelectorAttachment.
      */
     @Generated
-    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.fromString("QueueSelectorAttachment");
+    QueueSelectorAttachmentKind kind;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -63,6 +63,7 @@ public class QueueSelectorAttachment implements JsonSerializable<QueueSelectorAt
      */
     @Generated
     public QueueSelectorAttachment() {
+        this.kind = QueueSelectorAttachmentKind.fromString("QueueSelectorAttachment");
     }
 
     /**
@@ -147,14 +148,21 @@ public class QueueSelectorAttachment implements JsonSerializable<QueueSelectorAt
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    deserializedQueueSelectorAttachment.kind
-                        = QueueSelectorAttachmentKind.fromString(reader.getString());
-                } else {
+                if (!QueueSelectorAttachment.fromJsonShared(reader, fieldName, deserializedQueueSelectorAttachment)) {
                     reader.skipChildren();
                 }
             }
             return deserializedQueueSelectorAttachment;
         });
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        QueueSelectorAttachment deserializedQueueSelectorAttachment) throws IOException {
+        if ("kind".equals(fieldName)) {
+            deserializedQueueSelectorAttachment.kind = QueueSelectorAttachmentKind.fromString(reader.getString());
+            return true;
+        }
+        return false;
     }
 }

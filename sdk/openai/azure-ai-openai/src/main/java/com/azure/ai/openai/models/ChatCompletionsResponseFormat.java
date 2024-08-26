@@ -23,13 +23,14 @@ public class ChatCompletionsResponseFormat implements JsonSerializable<ChatCompl
      */
     @Generated
     public ChatCompletionsResponseFormat() {
+        this.type = "ChatCompletionsResponseFormat";
     }
 
     /*
      * The discriminated type for the response format.
      */
     @Generated
-    private String type = "ChatCompletionsResponseFormat";
+    String type;
 
     /**
      * Get the type property: The discriminated type for the response format.
@@ -48,7 +49,7 @@ public class ChatCompletionsResponseFormat implements JsonSerializable<ChatCompl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -97,13 +98,26 @@ public class ChatCompletionsResponseFormat implements JsonSerializable<ChatCompl
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedChatCompletionsResponseFormat.type = reader.getString();
-                } else {
+                if (!ChatCompletionsResponseFormat.fromJsonShared(reader, fieldName,
+                    deserializedChatCompletionsResponseFormat)) {
                     reader.skipChildren();
                 }
             }
             return deserializedChatCompletionsResponseFormat;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        ChatCompletionsResponseFormat deserializedChatCompletionsResponseFormat) throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedChatCompletionsResponseFormat.type = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

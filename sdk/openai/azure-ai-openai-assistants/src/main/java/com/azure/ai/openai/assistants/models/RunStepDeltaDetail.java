@@ -21,13 +21,14 @@ public class RunStepDeltaDetail implements JsonSerializable<RunStepDeltaDetail> 
      * The object type for the run step detail object.
      */
     @Generated
-    private String type = "RunStepDeltaDetail";
+    String type;
 
     /**
      * Creates an instance of RunStepDeltaDetail class.
      */
     @Generated
     protected RunStepDeltaDetail() {
+        this.type = "RunStepDeltaDetail";
     }
 
     /**
@@ -47,7 +48,7 @@ public class RunStepDeltaDetail implements JsonSerializable<RunStepDeltaDetail> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        toJsonShared(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -95,13 +96,25 @@ public class RunStepDeltaDetail implements JsonSerializable<RunStepDeltaDetail> 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedRunStepDeltaDetail.type = reader.getString();
-                } else {
+                if (!RunStepDeltaDetail.fromJsonShared(reader, fieldName, deserializedRunStepDeltaDetail)) {
                     reader.skipChildren();
                 }
             }
             return deserializedRunStepDeltaDetail;
         });
+    }
+
+    void toJsonShared(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("type", this.type);
+    }
+
+    @Generated
+    static boolean fromJsonShared(JsonReader reader, String fieldName,
+        RunStepDeltaDetail deserializedRunStepDeltaDetail) throws IOException {
+        if ("type".equals(fieldName)) {
+            deserializedRunStepDeltaDetail.type = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

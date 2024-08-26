@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -25,14 +24,6 @@ import java.util.List;
 @JsonTypeName("followupCommunication")
 @Immutable
 public final class FollowupCommunicationInference extends RadiologyInsightsInference {
-
-    /*
-     * Discriminator property for RadiologyInsightsInference.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION;
 
     /*
      * Communication date and time.
@@ -64,17 +55,7 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     @JsonCreator
     private FollowupCommunicationInference(@JsonProperty(value = "wasAcknowledged") boolean wasAcknowledged) {
         this.wasAcknowledged = wasAcknowledged;
-    }
-
-    /**
-     * Get the kind property: Discriminator property for RadiologyInsightsInference.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
+        this.kind = RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION;
     }
 
     /**
