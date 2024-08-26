@@ -92,7 +92,8 @@ foreach($artifact in $ArtifactsList) {
             -Path $packageInfoFile `
             -Value $packageInfoJson
     } else {
-        Write-Host "Fetch-Namespaces-From-Javadoc::returned no namespaces to add"
+        LogError "Unable to determine namespaces for $($packageInfo.Group):$($packageInfo.Name). Please ensure that skipPublishDocMs isn't incorrectly set to true or that the library isn't producing an empty java doc jar."
+        $foundError = $true
     }
 }
 
