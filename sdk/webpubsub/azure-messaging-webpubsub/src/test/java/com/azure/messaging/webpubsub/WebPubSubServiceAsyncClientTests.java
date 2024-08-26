@@ -22,8 +22,9 @@ import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -391,7 +392,8 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     }
 
     @Test
-    @Disabled("This test requires a connectionId with SEND_TO_GROUP permission.")
+    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live|RECORD|record|Record)")
+    @DisabledIfSystemProperty(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live|RECORD|record|Record)")
     public void testCheckPermission() {
         // This test requires a connectionId with SEND_TO_GROUP permission. Fails consistently in LIVE mode and
         // needs to be fixed. Github issue: https://github.com/Azure/azure-sdk-for-java/issues/41343

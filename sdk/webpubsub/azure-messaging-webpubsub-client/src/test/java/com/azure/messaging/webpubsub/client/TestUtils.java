@@ -25,14 +25,6 @@ final class TestUtils {
     private TestUtils() {
     }
 
-    public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
-        if (interceptorManager.isPlaybackMode()) {
-            return new MockTokenCredential();
-        }
-        return getIdentityTestCredentialHelper();
-    }
-
-
     public static TokenCredential getIdentityTestCredential(TestMode testMode) {
         if (testMode == TestMode.PLAYBACK) {
             return new MockTokenCredential();
