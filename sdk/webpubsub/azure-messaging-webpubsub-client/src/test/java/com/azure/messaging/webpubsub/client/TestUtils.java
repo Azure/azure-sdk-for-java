@@ -1,64 +1,37 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.webpubsub;
+package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.FixedDelayOptions;
-import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.test.InterceptorManager;
-import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
-import com.azure.identity.AzurePipelinesCredential;
-import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import reactor.core.scheduler.Schedulers;
-
-import java.time.Duration;
 
 /**
  * Common properties used in testing.
  */
 final class TestUtils {
-    static final String HUB_NAME = "Hub";
-
-    static String getEndpoint() {
-        return Configuration.getGlobalConfiguration()
-            .get("WEB_PUB_SUB_ENDPOINT", "http://testendpoint.webpubsubdev.azure.com");
-    }
-
-    static String getConnectionString() {
-        return Configuration.getGlobalConfiguration()
-            .get("WEB_PUB_SUB_CONNECTION_STRING", "Endpoint=https://testendpoint.webpubsubdev.azure.com;AccessKey=LoremIpsumDolorSitAmetConsectetur;Version=1.0;");
-    }
-
-    static RetryOptions getRetryOptions() {
-        return new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(20)));
-    }
-
-    static HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
-            .skipRequest((httpRequest, context) -> false)
-            .build();
-    }
-
     private TestUtils() {
     }
 
-
-    public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
-        if (interceptorManager.isPlaybackMode()) {
+    public static TokenCredential getIdentityTestCredential(TestMode testMode) {
+        if (testMode == TestMode.PLAYBACK) {
             return new MockTokenCredential();
         }
+        return getIdentityTestCredentialHelper();
+    }
 
+    private static TokenCredential getIdentityTestCredentialHelper() {
         Configuration config = Configuration.getGlobalConfiguration();
 
         ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
