@@ -125,7 +125,7 @@ extends:
               parameters:
                 JdkVersion: ${{ parameters.JavaBuildVersion }}
 
-            - task: Maven@3
+            - task: Maven@4
               displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavadocSafeJavaBuildVersion }}'
               inputs:
                 mavenPomFile: ClientFromSourcePom.xml
