@@ -6,23 +6,25 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The UserArtifactManage model.
  */
 @Fluent
-public final class UserArtifactManage {
+public final class UserArtifactManage implements JsonSerializable<UserArtifactManage> {
     /*
      * Required. The path and arguments to install the gallery application. This is limited to 4096 characters.
      */
-    @JsonProperty(value = "install", required = true)
     private String install;
 
     /*
      * Required. The path and arguments to remove the gallery application. This is limited to 4096 characters.
      */
-    @JsonProperty(value = "remove", required = true)
     private String remove;
 
     /*
@@ -30,7 +32,6 @@ public final class UserArtifactManage {
      * invoke remove command on the previous version and install command on the current version of the gallery
      * application. This is limited to 4096 characters.
      */
-    @JsonProperty(value = "update")
     private String update;
 
     /**
@@ -124,4 +125,47 @@ public final class UserArtifactManage {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserArtifactManage.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("install", this.install);
+        jsonWriter.writeStringField("remove", this.remove);
+        jsonWriter.writeStringField("update", this.update);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserArtifactManage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserArtifactManage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserArtifactManage.
+     */
+    public static UserArtifactManage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserArtifactManage deserializedUserArtifactManage = new UserArtifactManage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("install".equals(fieldName)) {
+                    deserializedUserArtifactManage.install = reader.getString();
+                } else if ("remove".equals(fieldName)) {
+                    deserializedUserArtifactManage.remove = reader.getString();
+                } else if ("update".equals(fieldName)) {
+                    deserializedUserArtifactManage.update = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserArtifactManage;
+        });
+    }
 }

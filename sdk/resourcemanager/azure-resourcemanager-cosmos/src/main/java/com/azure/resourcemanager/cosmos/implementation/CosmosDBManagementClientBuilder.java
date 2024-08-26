@@ -12,7 +12,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
-
 import java.time.Duration;
 
 /**
@@ -27,7 +26,7 @@ public final class CosmosDBManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the CosmosDBManagementClientBuilder.
      */
@@ -43,7 +42,7 @@ public final class CosmosDBManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the CosmosDBManagementClientBuilder.
      */
@@ -59,7 +58,7 @@ public final class CosmosDBManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the CosmosDBManagementClientBuilder.
      */
@@ -75,7 +74,7 @@ public final class CosmosDBManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the CosmosDBManagementClientBuilder.
      */
@@ -91,7 +90,7 @@ public final class CosmosDBManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the CosmosDBManagementClientBuilder.
      */
@@ -107,7 +106,7 @@ public final class CosmosDBManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the CosmosDBManagementClientBuilder.
      */
@@ -118,7 +117,7 @@ public final class CosmosDBManagementClientBuilder {
 
     /**
      * Builds an instance of CosmosDBManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of CosmosDBManagementClientImpl.
      */
     public CosmosDBManagementClientImpl buildClient() {

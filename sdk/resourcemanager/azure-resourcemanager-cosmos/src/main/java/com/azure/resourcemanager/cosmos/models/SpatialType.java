@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class SpatialType extends ExpandableStringEnum<SpatialType> {
      * @param name a name to look for.
      * @return the corresponding SpatialType.
      */
-    @JsonCreator
     public static SpatialType fromString(String name) {
         return fromString(name, SpatialType.class);
     }

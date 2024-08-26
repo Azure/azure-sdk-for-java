@@ -17,22 +17,18 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.LoadTestAdministrationsImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.Duration;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 /**
  * Initializes a new instance of the asynchronous LoadTestingClient type.
  */
 @ServiceClient(builder = LoadTestAdministrationClientBuilder.class, isAsync = true)
 public final class LoadTestAdministrationAsyncClient {
-
     private static final ClientLogger LOGGER = new ClientLogger(LoadTestAdministrationAsyncClient.class);
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Generated
     private final LoadTestAdministrationsImpl serviceClient;
@@ -133,20 +129,19 @@ public final class LoadTestAdministrationAsyncClient {
         if (fileUploadRequestOptions != null) {
             defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
         }
-        return new PollerFlux<>(Duration.ofSeconds(2), (context) -> {
-            Mono<BinaryData> fileMono = uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions)
-                .flatMap(FluxUtil::toMono);
-            Mono<PollResponse<BinaryData>> fileValidationPollRespMono = fileMono.flatMap(fileBinaryData -> PollingUtils
-                .getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData, OBJECT_MAPPER)));
-            return fileValidationPollRespMono
-                .flatMap(fileValidationPollResp -> Mono.just(fileValidationPollResp.getValue()));
-        }, (context) -> {
-            Mono<BinaryData> fileMono
-                = getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono);
-            return fileMono.flatMap(fileBinaryData -> PollingUtils
-                .getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData, OBJECT_MAPPER)));
-        }, (activationResponse, context) -> Mono
-            .error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+        return new PollerFlux<>(Duration.ofSeconds(2),
+            (context) ->
+                uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions)
+                    .flatMap(FluxUtil::toMono)
+                    .flatMap(fileBinaryData ->
+                        PollingUtils.getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData)))
+                    .flatMap(fileValidationPollResp -> Mono.just(fileValidationPollResp.getValue())),
+            (context) ->
+                getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono)
+                    .flatMap(fileBinaryData ->
+                        PollingUtils.getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData))),
+            (activationResponse, context) ->
+                Mono.error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
             (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono));
     }
 

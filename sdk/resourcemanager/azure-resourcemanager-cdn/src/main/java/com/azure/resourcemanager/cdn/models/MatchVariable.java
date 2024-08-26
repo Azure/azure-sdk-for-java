@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -122,7 +121,6 @@ public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
      * @param name a name to look for.
      * @return the corresponding MatchVariable.
      */
-    @JsonCreator
     public static MatchVariable fromString(String name) {
         return fromString(name, MatchVariable.class);
     }

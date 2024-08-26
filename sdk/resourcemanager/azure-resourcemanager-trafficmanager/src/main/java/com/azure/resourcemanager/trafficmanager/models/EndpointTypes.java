@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.trafficmanager.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for EndpointTypes. */
+/**
+ * Defines values for EndpointTypes.
+ */
 public enum EndpointTypes {
-    /** Enum value AzureEndpoints. */
+    /**
+     * Enum value AzureEndpoints.
+     */
     AZURE_ENDPOINTS("AzureEndpoints"),
 
-    /** Enum value ExternalEndpoints. */
+    /**
+     * Enum value ExternalEndpoints.
+     */
     EXTERNAL_ENDPOINTS("ExternalEndpoints"),
 
-    /** Enum value NestedEndpoints. */
+    /**
+     * Enum value NestedEndpoints.
+     */
     NESTED_ENDPOINTS("NestedEndpoints");
 
-    /** The actual serialized value for a EndpointTypes instance. */
+    /**
+     * The actual serialized value for a EndpointTypes instance.
+     */
     private final String value;
 
     EndpointTypes(String value) {
@@ -27,11 +34,10 @@ public enum EndpointTypes {
 
     /**
      * Parses a serialized value to a EndpointTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed EndpointTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static EndpointTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum EndpointTypes {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

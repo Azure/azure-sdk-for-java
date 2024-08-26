@@ -5,37 +5,37 @@ package com.azure.communication.rooms;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImpl;
-import com.azure.communication.rooms.implementation.RoomsImpl;
 import com.azure.communication.rooms.implementation.ParticipantsImpl;
-import com.azure.communication.rooms.implementation.converters.ParticipantRoleConverter;
+import com.azure.communication.rooms.implementation.RoomsImpl;
 import com.azure.communication.rooms.implementation.converters.RoomModelConverter;
 import com.azure.communication.rooms.implementation.converters.RoomParticipantConverter;
-import com.azure.communication.rooms.implementation.models.RoomModel;
 import com.azure.communication.rooms.implementation.models.ParticipantProperties;
+import com.azure.communication.rooms.implementation.models.RoomModel;
+import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.CreateRoomOptions;
 import com.azure.communication.rooms.models.RemoveParticipantsResult;
 import com.azure.communication.rooms.models.RoomParticipant;
 import com.azure.communication.rooms.models.UpdateRoomOptions;
-import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
-import com.azure.communication.rooms.implementation.models.UpdateParticipantsRequest;
-import com.azure.communication.rooms.implementation.models.UpdateRoomRequest;
-import com.azure.communication.rooms.implementation.models.CreateRoomRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.time.OffsetDateTime;
+import java.io.IOException;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Objects;
+
+import static com.azure.communication.rooms.implementation.Transforms.convertRoomIdentifiersToMapForRemove;
+import static com.azure.communication.rooms.implementation.Transforms.convertRoomParticipantsToMapForAddOrUpdate;
+import static com.azure.communication.rooms.implementation.Transforms.getCommunicationRoomFromResponse;
+import static com.azure.communication.rooms.implementation.Transforms.getUpdateRequest;
+import static com.azure.communication.rooms.implementation.Transforms.toCreateRoomRequest;
+import static com.azure.communication.rooms.implementation.Transforms.toUpdateRoomRequest;
 
 /**
  * Client for Rooms operations of Azure Communication Room Service
@@ -229,13 +229,11 @@ public final class RoomsClient {
             Objects.requireNonNull(participants, "'participants' cannot be null.");
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
             Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
-            ObjectMapper mapper = new ObjectMapper();
-            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest = getUpdateRequest(participantMap);
 
             this.participantsClient.update(roomId, updateRequest);
             return new AddOrUpdateParticipantsResult();
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
         }
     }
@@ -255,15 +253,13 @@ public final class RoomsClient {
             Objects.requireNonNull(participants, "'participants' cannot be null.");
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
             Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
-            ObjectMapper mapper = new ObjectMapper();
-            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest = getUpdateRequest(participantMap);
 
             Response<Object> response = this.participantsClient
-                    .updateWithResponse(roomId, updateRequest, context);
+                .updateWithResponse(roomId, updateRequest, context);
             return new SimpleResponse<AddOrUpdateParticipantsResult>(
                 response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
         }
     }
@@ -282,13 +278,11 @@ public final class RoomsClient {
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
             Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
                 identifiers);
-            ObjectMapper mapper = new ObjectMapper();
-            String updateRequest =  mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest = getUpdateRequest(participantMap);
 
             this.participantsClient.update(roomId, updateRequest);
             return new RemoveParticipantsResult();
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
         }
     }
@@ -309,15 +303,14 @@ public final class RoomsClient {
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
             Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
                 identifiers);
-            ObjectMapper mapper = new ObjectMapper();
-            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            String updateRequest = getUpdateRequest(participantMap);
+
             Response<Object> response = this.participantsClient
                 .updateWithResponse(roomId, updateRequest, context);
 
             return new SimpleResponse<RemoveParticipantsResult>(
                 response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
         }
     }
@@ -354,107 +347,5 @@ public final class RoomsClient {
                 () -> this.participantsClient.listSinglePage(roomId, serviceContext),
                 nextLink -> this.participantsClient.listNextSinglePage(nextLink, serviceContext))
             .mapPage(f -> RoomParticipantConverter.convert(f));
-    }
-
-    private CommunicationRoom getCommunicationRoomFromResponse(RoomModel room) {
-        return new CommunicationRoom(
-                room.getId(),
-                room.getValidFrom(),
-                room.getValidUntil(),
-                room.getCreatedAt(),
-                room.isPstnDialOutEnabled());
-    }
-
-    /**
-     * Translate to create room request.
-     *
-     * @return The create room request.
-     */
-    private CreateRoomRequest toCreateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil,
-            Boolean pstnDialOutEnabled, Iterable<RoomParticipant> participants) {
-        CreateRoomRequest createRoomRequest = new CreateRoomRequest();
-        if (validFrom != null) {
-            createRoomRequest.setValidFrom(validFrom);
-        }
-
-        if (validUntil != null) {
-            createRoomRequest.setValidUntil(validUntil);
-        }
-
-        if (pstnDialOutEnabled != null) {
-            createRoomRequest.setPstnDialOutEnabled(pstnDialOutEnabled);
-        }
-
-        Map<String, ParticipantProperties> roomParticipants = new HashMap<>();
-
-        if (participants != null) {
-            roomParticipants = convertRoomParticipantsToMapForAddOrUpdate(participants);
-        }
-
-        if (participants != null) {
-            createRoomRequest.setParticipants(roomParticipants);
-        }
-
-        return createRoomRequest;
-    }
-
-    /**
-     * Translate to update room request.
-     *
-     * @return The update room request.
-     */
-    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil, Boolean isPstnDialOutEnabled) {
-        UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
-
-        if (validFrom != null) {
-            updateRoomRequest.setValidFrom(validFrom);
-        }
-
-        if (validUntil != null) {
-            updateRoomRequest.setValidUntil(validUntil);
-        }
-
-        if (isPstnDialOutEnabled != null) {
-            updateRoomRequest.setPstnDialOutEnabled(isPstnDialOutEnabled);
-        }
-
-        return updateRoomRequest;
-    }
-
-    /**
-     * Translate to map for add or update participants.
-     *
-     * @return Map of participants.
-     */
-    private Map<String, ParticipantProperties> convertRoomParticipantsToMapForAddOrUpdate(
-            Iterable<RoomParticipant> participants) {
-        Map<String, ParticipantProperties> participantMap = new HashMap<>();
-
-        if (participants != null) {
-            for (RoomParticipant participant : participants) {
-                participantMap.put(participant.getCommunicationIdentifier().getRawId(),
-                        new ParticipantProperties().setRole(ParticipantRoleConverter.convert(participant.getRole())));
-            }
-        }
-
-        return participantMap;
-    }
-
-    /**
-     * Translate to map for remove participants.
-     *
-     * @return Map of participants.
-     */
-    private Map<String, ParticipantProperties> convertRoomIdentifiersToMapForRemove(
-            Iterable<CommunicationIdentifier> identifiers) {
-        Map<String, ParticipantProperties> participantMap = new HashMap<>();
-
-        if (identifiers != null) {
-            for (CommunicationIdentifier identifier : identifiers) {
-                participantMap.put(identifier.getRawId(), null);
-            }
-        }
-
-        return participantMap;
     }
 }

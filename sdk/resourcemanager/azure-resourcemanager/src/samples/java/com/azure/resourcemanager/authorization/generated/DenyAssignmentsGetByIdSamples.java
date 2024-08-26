@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-/** Samples for DenyAssignments GetById. */
+/**
+ * Samples for DenyAssignments GetById.
+ */
 public final class DenyAssignmentsGetByIdSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/GetDenyAssignmentById.json
+     * x-ms-original-file:
+     * specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/
+     * GetDenyAssignmentById.json
      */
     /**
      * Sample code: Get deny assignment by ID.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDenyAssignmentByID(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .accessManagement()
+        azure.accessManagement()
             .roleAssignments()
             .manager()
             .roleServiceClient()

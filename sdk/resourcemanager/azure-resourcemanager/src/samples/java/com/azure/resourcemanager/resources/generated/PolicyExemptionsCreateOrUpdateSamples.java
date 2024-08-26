@@ -20,7 +20,9 @@ import java.util.Arrays;
  */
 public final class PolicyExemptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/createOrUpdatePolicyExemption.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/
+     * createOrUpdatePolicyExemption.json
      */
     /**
      * Sample code: Create or update a policy exemption.
@@ -48,7 +50,9 @@ public final class PolicyExemptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/createOrUpdatePolicyExemptionWithResourceSelectors.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/
+     * createOrUpdatePolicyExemptionWithResourceSelectors.json
      */
     /**
      * Sample code: Create or update a policy exemption with resource selectors.

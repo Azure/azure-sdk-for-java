@@ -90,8 +90,8 @@ public final class LogsIngestionClientBuilder
             this.endpoint = endpoint;
             return this;
         } catch (MalformedURLException exception) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'endpoint' must be a valid URL.", exception));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'endpoint' must be a valid URL.", exception));
         }
     }
 
@@ -204,8 +204,8 @@ public final class LogsIngestionClientBuilder
      * @return the updated {@link LogsIngestionClientBuilder}.
      */
     public LogsIngestionClientBuilder serviceVersion(LogsIngestionServiceVersion serviceVersion) {
-        innerLogBuilder.serviceVersion(
-            IngestionUsingDataCollectionRulesServiceVersion.valueOf(serviceVersion.getVersion()));
+        innerLogBuilder
+            .serviceVersion(IngestionUsingDataCollectionRulesServiceVersion.valueOf(serviceVersion.getVersion()));
         return this;
     }
 

@@ -31,7 +31,7 @@ parameters:
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
 
 steps:
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
@@ -44,7 +44,7 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Run tests'
     inputs:
       mavenPomFile: pom.xml
@@ -67,7 +67,7 @@ steps:
       arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }} --type coverage'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Generate aggregate code coverage report'
     condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
@@ -78,7 +78,7 @@ steps:
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       goals: jacoco:report-aggregate
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Build for From Source run'
     inputs:
       mavenPomFile: ClientFromSourcePom.xml
@@ -96,7 +96,7 @@ steps:
     env:  ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Run tests for From Source run'
     inputs:
       mavenPomFile: ClientFromSourcePom.xml

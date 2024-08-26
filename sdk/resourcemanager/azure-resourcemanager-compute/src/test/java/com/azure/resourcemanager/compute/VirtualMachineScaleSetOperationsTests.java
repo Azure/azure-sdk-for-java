@@ -79,7 +79,7 @@ import java.util.stream.Collectors;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_WEST;
+    private final Region region = Region.US_WEST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -488,7 +488,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .defineAccessPolicy()
-                .forServicePrincipal(clientIdFromFile())
+                .forUser(azureCliSignedInUser().userPrincipalName())
                 .allowSecretAllPermissions()
                 .attach()
                 .withDeploymentEnabled()

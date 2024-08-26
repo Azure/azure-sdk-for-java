@@ -207,6 +207,10 @@ parameters:
   displayName: 'spring-cloud-azure-starter-jdbc-postgresql'
   type: boolean
   default: true
+- name: release_springcloudazuretestcontainers
+  displayName: 'spring-cloud-azure-testcontainers'
+  type: boolean
+  default: true
 - name: release_springcloudazureappconfigurationconfig
   displayName: 'spring-cloud-azure-appconfiguration-config'
   type: boolean
@@ -555,35 +559,53 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterjdbcpostgresql }}
+      - name: spring-cloud-azure-testcontainers
+        groupId: com.azure.spring
+        safeName: springcloudazuretestcontainers
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazuretestcontainers }}
       - name: spring-cloud-azure-appconfiguration-config
         groupId: com.azure.spring
         safeName: springcloudazureappconfigurationconfig
         skipPublishDocGithubIo: false
         skipPublishDocMs: false
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazureappconfigurationconfig }}
       - name: spring-cloud-azure-appconfiguration-config-web
         groupId: com.azure.spring
         safeName: springcloudazureappconfigurationconfigweb
         skipPublishDocGithubIo: false
         skipPublishDocMs: false
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazureappconfigurationconfigweb }}
       - name: spring-cloud-azure-feature-management
         groupId: com.azure.spring
         safeName: springcloudazurefeaturemanagement
         skipPublishDocGithubIo: false
         skipPublishDocMs: false
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurefeaturemanagement }}
       - name: spring-cloud-azure-feature-management-web
         groupId: com.azure.spring
         safeName: springcloudazurefeaturemanagementweb
         skipPublishDocGithubIo: false
         skipPublishDocMs: false
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurefeaturemanagementweb }}
       - name: spring-cloud-azure-starter-appconfiguration-config
         groupId: com.azure.spring
         safeName: springcloudazurestarterappconfigurationconfig
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterappconfigurationconfig }}
     MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*

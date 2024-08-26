@@ -6,41 +6,41 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * OpenShiftManagedClusterMaterPoolProfile contains configuration for OpenShift master VMs.
  */
 @Fluent
-public final class OpenShiftManagedClusterMasterPoolProfile {
+public final class OpenShiftManagedClusterMasterPoolProfile
+    implements JsonSerializable<OpenShiftManagedClusterMasterPoolProfile> {
     /*
      * Unique name of the master pool profile in the context of the subscription and resource group.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Number of masters (VMs) to host docker containers. The default value is 3.
      */
-    @JsonProperty(value = "count", required = true)
     private int count;
 
     /*
      * Size of agent VMs.
      */
-    @JsonProperty(value = "vmSize", required = true)
     private OpenShiftContainerServiceVMSize vmSize;
 
     /*
      * Subnet CIDR for the peering.
      */
-    @JsonProperty(value = "subnetCidr")
     private String subnetCidr;
 
     /*
      * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
-    @JsonProperty(value = "osType")
     private OSType osType;
 
     /**
@@ -165,4 +165,55 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterMasterPoolProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("count", this.count);
+        jsonWriter.writeStringField("vmSize", this.vmSize == null ? null : this.vmSize.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("subnetCidr", this.subnetCidr);
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OpenShiftManagedClusterMasterPoolProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OpenShiftManagedClusterMasterPoolProfile if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OpenShiftManagedClusterMasterPoolProfile.
+     */
+    public static OpenShiftManagedClusterMasterPoolProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OpenShiftManagedClusterMasterPoolProfile deserializedOpenShiftManagedClusterMasterPoolProfile
+                = new OpenShiftManagedClusterMasterPoolProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterMasterPoolProfile.count = reader.getInt();
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterMasterPoolProfile.vmSize
+                        = OpenShiftContainerServiceVMSize.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterMasterPoolProfile.name = reader.getString();
+                } else if ("subnetCidr".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterMasterPoolProfile.subnetCidr = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterMasterPoolProfile.osType = OSType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOpenShiftManagedClusterMasterPoolProfile;
+        });
+    }
 }

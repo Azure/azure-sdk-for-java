@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The validation error information. */
+/**
+ * The validation error information.
+ */
 @Fluent
-public final class ValidationErrorInfo {
+public final class ValidationErrorInfo implements JsonSerializable<ValidationErrorInfo> {
     /*
      * The error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The error message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The error resource.
      */
-    @JsonProperty(value = "errorResource")
     private String errorResource;
 
     /*
      * The message arguments
      */
-    @JsonProperty(value = "messageArguments")
     private List<String> messageArguments;
 
-    /** Creates an instance of ValidationErrorInfo class. */
+    /**
+     * Creates an instance of ValidationErrorInfo class.
+     */
     public ValidationErrorInfo() {
     }
 
     /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -50,7 +54,7 @@ public final class ValidationErrorInfo {
 
     /**
      * Set the code property: The error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ValidationErrorInfo object itself.
      */
@@ -61,7 +65,7 @@ public final class ValidationErrorInfo {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -70,7 +74,7 @@ public final class ValidationErrorInfo {
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ValidationErrorInfo object itself.
      */
@@ -81,7 +85,7 @@ public final class ValidationErrorInfo {
 
     /**
      * Get the errorResource property: The error resource.
-     *
+     * 
      * @return the errorResource value.
      */
     public String errorResource() {
@@ -90,7 +94,7 @@ public final class ValidationErrorInfo {
 
     /**
      * Set the errorResource property: The error resource.
-     *
+     * 
      * @param errorResource the errorResource value to set.
      * @return the ValidationErrorInfo object itself.
      */
@@ -101,7 +105,7 @@ public final class ValidationErrorInfo {
 
     /**
      * Get the messageArguments property: The message arguments.
-     *
+     * 
      * @return the messageArguments value.
      */
     public List<String> messageArguments() {
@@ -110,7 +114,7 @@ public final class ValidationErrorInfo {
 
     /**
      * Set the messageArguments property: The message arguments.
-     *
+     * 
      * @param messageArguments the messageArguments value to set.
      * @return the ValidationErrorInfo object itself.
      */
@@ -121,9 +125,56 @@ public final class ValidationErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("errorResource", this.errorResource);
+        jsonWriter.writeArrayField("messageArguments", this.messageArguments,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationErrorInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidationErrorInfo.
+     */
+    public static ValidationErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationErrorInfo deserializedValidationErrorInfo = new ValidationErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedValidationErrorInfo.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedValidationErrorInfo.message = reader.getString();
+                } else if ("errorResource".equals(fieldName)) {
+                    deserializedValidationErrorInfo.errorResource = reader.getString();
+                } else if ("messageArguments".equals(fieldName)) {
+                    List<String> messageArguments = reader.readArray(reader1 -> reader1.getString());
+                    deserializedValidationErrorInfo.messageArguments = messageArguments;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidationErrorInfo;
+        });
     }
 }

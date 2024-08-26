@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The container Http Get settings, for liveness or readiness probe. */
+/**
+ * The container Http Get settings, for liveness or readiness probe.
+ */
 @Fluent
-public final class ContainerHttpGet {
+public final class ContainerHttpGet implements JsonSerializable<ContainerHttpGet> {
     /*
      * The path to probe.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * The port number to probe.
      */
-    @JsonProperty(value = "port", required = true)
     private int port;
 
     /*
      * The scheme.
      */
-    @JsonProperty(value = "scheme")
     private Scheme scheme;
 
     /*
      * The HTTP headers.
      */
-    @JsonProperty(value = "httpHeaders")
     private List<HttpHeader> httpHeaders;
 
-    /** Creates an instance of ContainerHttpGet class. */
+    /**
+     * Creates an instance of ContainerHttpGet class.
+     */
     public ContainerHttpGet() {
     }
 
     /**
      * Get the path property: The path to probe.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -50,7 +54,7 @@ public final class ContainerHttpGet {
 
     /**
      * Set the path property: The path to probe.
-     *
+     * 
      * @param path the path value to set.
      * @return the ContainerHttpGet object itself.
      */
@@ -61,7 +65,7 @@ public final class ContainerHttpGet {
 
     /**
      * Get the port property: The port number to probe.
-     *
+     * 
      * @return the port value.
      */
     public int port() {
@@ -70,7 +74,7 @@ public final class ContainerHttpGet {
 
     /**
      * Set the port property: The port number to probe.
-     *
+     * 
      * @param port the port value to set.
      * @return the ContainerHttpGet object itself.
      */
@@ -81,7 +85,7 @@ public final class ContainerHttpGet {
 
     /**
      * Get the scheme property: The scheme.
-     *
+     * 
      * @return the scheme value.
      */
     public Scheme scheme() {
@@ -90,7 +94,7 @@ public final class ContainerHttpGet {
 
     /**
      * Set the scheme property: The scheme.
-     *
+     * 
      * @param scheme the scheme value to set.
      * @return the ContainerHttpGet object itself.
      */
@@ -101,7 +105,7 @@ public final class ContainerHttpGet {
 
     /**
      * Get the httpHeaders property: The HTTP headers.
-     *
+     * 
      * @return the httpHeaders value.
      */
     public List<HttpHeader> httpHeaders() {
@@ -110,7 +114,7 @@ public final class ContainerHttpGet {
 
     /**
      * Set the httpHeaders property: The HTTP headers.
-     *
+     * 
      * @param httpHeaders the httpHeaders value to set.
      * @return the ContainerHttpGet object itself.
      */
@@ -121,12 +125,59 @@ public final class ContainerHttpGet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (httpHeaders() != null) {
             httpHeaders().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("port", this.port);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("scheme", this.scheme == null ? null : this.scheme.toString());
+        jsonWriter.writeArrayField("httpHeaders", this.httpHeaders, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerHttpGet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerHttpGet if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerHttpGet.
+     */
+    public static ContainerHttpGet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerHttpGet deserializedContainerHttpGet = new ContainerHttpGet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("port".equals(fieldName)) {
+                    deserializedContainerHttpGet.port = reader.getInt();
+                } else if ("path".equals(fieldName)) {
+                    deserializedContainerHttpGet.path = reader.getString();
+                } else if ("scheme".equals(fieldName)) {
+                    deserializedContainerHttpGet.scheme = Scheme.fromString(reader.getString());
+                } else if ("httpHeaders".equals(fieldName)) {
+                    List<HttpHeader> httpHeaders = reader.readArray(reader1 -> HttpHeader.fromJson(reader1));
+                    deserializedContainerHttpGet.httpHeaders = httpHeaders;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerHttpGet;
+        });
     }
 }

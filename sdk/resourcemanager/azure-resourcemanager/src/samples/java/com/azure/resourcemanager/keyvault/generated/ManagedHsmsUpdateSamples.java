@@ -8,25 +8,25 @@ import com.azure.resourcemanager.keyvault.fluent.models.ManagedHsmInner;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ManagedHsms Update. */
+/**
+ * Samples for ManagedHsms Update.
+ */
 public final class ManagedHsmsUpdateSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/ManagedHsm_Update.json
+     * x-ms-original-file:
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/ManagedHsm_Update.json
      */
     /**
      * Sample code: Update an existing managed HSM Pool.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAnExistingManagedHSMPool(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .vaults()
+        azure.vaults()
             .manager()
             .serviceClient()
             .getManagedHsms()
-            .update(
-                "hsm-group",
-                "hsm1",
+            .update("hsm-group", "hsm1",
                 new ManagedHsmInner().withTags(mapOf("Dept", "hsm", "Environment", "dogfood", "Slice", "A")),
                 com.azure.core.util.Context.NONE);
     }

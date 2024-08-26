@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.StackPreferredOs;
 import com.azure.resourcemanager.appservice.models.WebAppMajorVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,14 +22,27 @@ public final class WebAppStackInner extends ProxyOnlyResource {
     /*
      * Web App stack location.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * WebAppStack resource specific properties
      */
-    @JsonProperty(value = "properties")
     private WebAppStackProperties innerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of WebAppStackInner class.
@@ -50,6 +66,36 @@ public final class WebAppStackInner extends ProxyOnlyResource {
      */
     private WebAppStackProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -108,5 +154,53 @@ public final class WebAppStackInner extends ProxyOnlyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebAppStackInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebAppStackInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebAppStackInner.
+     */
+    public static WebAppStackInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebAppStackInner deserializedWebAppStackInner = new WebAppStackInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWebAppStackInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebAppStackInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebAppStackInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedWebAppStackInner.withKind(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedWebAppStackInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebAppStackInner.innerProperties = WebAppStackProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebAppStackInner;
+        });
     }
 }

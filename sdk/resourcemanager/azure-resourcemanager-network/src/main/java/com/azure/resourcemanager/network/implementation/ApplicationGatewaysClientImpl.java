@@ -48,11 +48,10 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.nio.ByteBuffer;
 import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in ApplicationGatewaysClient.
@@ -71,7 +70,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Initializes an instance of ApplicationGatewaysClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationGatewaysClientImpl(NetworkManagementClientImpl client) {
@@ -272,7 +271,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,7 +308,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -346,7 +345,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,7 +363,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -385,7 +384,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,7 +399,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -417,7 +416,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -433,7 +432,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -450,7 +449,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -464,7 +463,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -479,7 +478,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -516,7 +515,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -553,7 +552,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -570,7 +569,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -587,7 +586,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -602,7 +601,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -645,7 +644,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -688,7 +687,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -709,7 +708,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -731,7 +730,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -748,7 +747,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -767,7 +766,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -785,7 +784,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -804,7 +803,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -821,7 +820,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -839,7 +838,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -882,7 +881,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -925,7 +924,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -943,7 +942,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -961,7 +960,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -978,7 +977,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1012,7 +1011,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1048,7 +1047,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1063,7 +1062,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1079,7 +1078,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1093,7 +1092,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1108,7 +1107,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the application gateways in a subscription along with {@link PagedResponse} on successful completion
@@ -1136,7 +1135,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1164,7 +1163,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the application gateways in a subscription as paginated response with {@link PagedFlux}.
@@ -1176,7 +1175,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1191,7 +1190,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the application gateways in a subscription as paginated response with {@link PagedIterable}.
@@ -1203,7 +1202,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1217,7 +1216,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1254,7 +1253,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1291,7 +1290,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1308,7 +1307,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1329,7 +1328,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1344,7 +1343,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1361,7 +1360,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1377,7 +1376,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1394,7 +1393,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1408,7 +1407,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1423,7 +1422,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1460,7 +1459,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1497,7 +1496,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1514,7 +1513,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1535,7 +1534,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1550,7 +1549,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1567,7 +1566,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1583,7 +1582,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1600,7 +1599,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1614,7 +1613,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -1629,7 +1628,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1668,7 +1667,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1707,7 +1706,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1729,7 +1728,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1751,7 +1750,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1776,7 +1775,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1794,7 +1793,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1813,7 +1812,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1832,7 +1831,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1851,7 +1850,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1871,7 +1870,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1887,7 +1886,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -1906,7 +1905,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -1953,7 +1952,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -1999,7 +1998,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2026,7 +2025,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2053,7 +2052,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2082,7 +2081,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2105,7 +2104,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2130,7 +2129,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2151,7 +2150,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2172,7 +2171,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2195,7 +2194,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2215,7 +2214,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
     /**
      * Gets the backend health for given combination of backend pool and http setting of the specified application
      * gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param probeRequest Request body for on-demand test probe operation.
@@ -2236,7 +2235,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableServerVariables API service call along with {@link Response} on
@@ -2262,7 +2261,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2289,7 +2288,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableServerVariables API service call on successful completion of
@@ -2302,7 +2301,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2316,7 +2315,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableServerVariables API service call.
@@ -2328,7 +2327,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableRequestHeaders API service call along with {@link Response} on
@@ -2354,7 +2353,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2381,7 +2380,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableRequestHeaders API service call on successful completion of
@@ -2394,7 +2393,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2408,7 +2407,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableRequestHeaders API service call.
@@ -2420,7 +2419,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableResponseHeaders API service call along with {@link Response} on
@@ -2446,7 +2445,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2473,7 +2472,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableResponseHeaders API service call on successful completion of
@@ -2486,7 +2485,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -2500,7 +2499,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableResponseHeaders API service call.
@@ -2512,7 +2511,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableWafRuleSets API service call along with {@link Response} on
@@ -2539,7 +2538,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2567,7 +2566,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableWafRuleSets API service call on successful completion of
@@ -2580,7 +2579,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2595,7 +2594,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableWafRuleSets API service call.
@@ -2607,7 +2606,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call along with {@link Response} on
@@ -2633,7 +2632,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2661,7 +2660,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call on successful completion of
@@ -2674,7 +2673,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2688,7 +2687,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call.
@@ -2700,7 +2699,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call along with {@link PagedResponse} on
@@ -2730,7 +2729,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2761,7 +2760,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call as paginated response with
@@ -2775,7 +2774,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2792,7 +2791,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call as paginated response with
@@ -2805,7 +2804,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2821,7 +2820,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2854,7 +2853,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2887,7 +2886,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2902,7 +2901,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2918,7 +2917,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2932,7 +2931,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2958,7 +2957,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2985,7 +2984,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3012,7 +3011,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3039,7 +3038,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3069,7 +3068,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

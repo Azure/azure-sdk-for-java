@@ -5,60 +5,57 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Linux Java Container settings.
  */
 @Immutable
-public final class LinuxJavaContainerSettings {
+public final class LinuxJavaContainerSettings implements JsonSerializable<LinuxJavaContainerSettings> {
     /*
      * Java 11 version (runtime only).
      */
-    @JsonProperty(value = "java11Runtime", access = JsonProperty.Access.WRITE_ONLY)
     private String java11Runtime;
 
     /*
      * Java 8 version (runtime only).
      */
-    @JsonProperty(value = "java8Runtime", access = JsonProperty.Access.WRITE_ONLY)
     private String java8Runtime;
 
     /*
      * <code>true</code> if the stack is in preview; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isPreview", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPreview;
 
     /*
      * <code>true</code> if the stack is deprecated; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isDeprecated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDeprecated;
 
     /*
      * <code>true</code> if the stack should be hidden; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isHidden", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isHidden;
 
     /*
      * End-of-life date for the minor version.
      */
-    @JsonProperty(value = "endOfLifeDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endOfLifeDate;
 
     /*
      * <code>true</code> if the stack version is auto-updated; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isAutoUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isAutoUpdate;
 
     /*
      * <code>true</code> if the minor version is early-access; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isEarlyAccess", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEarlyAccess;
 
     /**
@@ -150,5 +147,55 @@ public final class LinuxJavaContainerSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinuxJavaContainerSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinuxJavaContainerSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinuxJavaContainerSettings.
+     */
+    public static LinuxJavaContainerSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinuxJavaContainerSettings deserializedLinuxJavaContainerSettings = new LinuxJavaContainerSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("java11Runtime".equals(fieldName)) {
+                    deserializedLinuxJavaContainerSettings.java11Runtime = reader.getString();
+                } else if ("java8Runtime".equals(fieldName)) {
+                    deserializedLinuxJavaContainerSettings.java8Runtime = reader.getString();
+                } else if ("isPreview".equals(fieldName)) {
+                    deserializedLinuxJavaContainerSettings.isPreview = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDeprecated".equals(fieldName)) {
+                    deserializedLinuxJavaContainerSettings.isDeprecated = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isHidden".equals(fieldName)) {
+                    deserializedLinuxJavaContainerSettings.isHidden = reader.getNullable(JsonReader::getBoolean);
+                } else if ("endOfLifeDate".equals(fieldName)) {
+                    deserializedLinuxJavaContainerSettings.endOfLifeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isAutoUpdate".equals(fieldName)) {
+                    deserializedLinuxJavaContainerSettings.isAutoUpdate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isEarlyAccess".equals(fieldName)) {
+                    deserializedLinuxJavaContainerSettings.isEarlyAccess = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinuxJavaContainerSettings;
+        });
     }
 }

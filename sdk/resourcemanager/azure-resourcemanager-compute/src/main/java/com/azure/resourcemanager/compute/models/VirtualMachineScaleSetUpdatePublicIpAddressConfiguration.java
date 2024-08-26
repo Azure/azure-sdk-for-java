@@ -6,24 +6,27 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration.
  */
 @Fluent
-public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
+public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration
+    implements JsonSerializable<VirtualMachineScaleSetUpdatePublicIpAddressConfiguration> {
     /*
      * The publicIP address configuration name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties innerProperties;
 
     /**
@@ -165,5 +168,48 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetUpdatePublicIpAddressConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetUpdatePublicIpAddressConfiguration if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * VirtualMachineScaleSetUpdatePublicIpAddressConfiguration.
+     */
+    public static VirtualMachineScaleSetUpdatePublicIpAddressConfiguration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetUpdatePublicIpAddressConfiguration deserializedVirtualMachineScaleSetUpdatePublicIpAddressConfiguration
+                = new VirtualMachineScaleSetUpdatePublicIpAddressConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdatePublicIpAddressConfiguration.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdatePublicIpAddressConfiguration.innerProperties
+                        = VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetUpdatePublicIpAddressConfiguration;
+        });
     }
 }

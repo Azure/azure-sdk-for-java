@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -26,7 +25,6 @@ public final class ForceDeletionResourceType extends ExpandableStringEnum<ForceD
      * @param name a name to look for
      * @return the corresponding ForceDeletionResourceType
      */
-    @JsonCreator
     public static ForceDeletionResourceType fromString(String name) {
         return fromString(name, ForceDeletionResourceType.class);
     }

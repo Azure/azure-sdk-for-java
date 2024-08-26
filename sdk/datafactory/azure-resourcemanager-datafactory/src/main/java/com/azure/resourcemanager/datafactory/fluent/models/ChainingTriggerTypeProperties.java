@@ -6,25 +6,27 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.PipelineReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Chaining Trigger properties.
  */
 @Fluent
-public final class ChainingTriggerTypeProperties {
+public final class ChainingTriggerTypeProperties implements JsonSerializable<ChainingTriggerTypeProperties> {
     /*
      * Upstream Pipelines.
      */
-    @JsonProperty(value = "dependsOn", required = true)
     private List<PipelineReference> dependsOn;
 
     /*
      * Run Dimension property that needs to be emitted by upstream pipelines.
      */
-    @JsonProperty(value = "runDimension", required = true)
     private String runDimension;
 
     /**
@@ -94,4 +96,47 @@ public final class ChainingTriggerTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ChainingTriggerTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dependsOn", this.dependsOn, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("runDimension", this.runDimension);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChainingTriggerTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChainingTriggerTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChainingTriggerTypeProperties.
+     */
+    public static ChainingTriggerTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChainingTriggerTypeProperties deserializedChainingTriggerTypeProperties
+                = new ChainingTriggerTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dependsOn".equals(fieldName)) {
+                    List<PipelineReference> dependsOn
+                        = reader.readArray(reader1 -> PipelineReference.fromJson(reader1));
+                    deserializedChainingTriggerTypeProperties.dependsOn = dependsOn;
+                } else if ("runDimension".equals(fieldName)) {
+                    deserializedChainingTriggerTypeProperties.runDimension = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChainingTriggerTypeProperties;
+        });
+    }
 }

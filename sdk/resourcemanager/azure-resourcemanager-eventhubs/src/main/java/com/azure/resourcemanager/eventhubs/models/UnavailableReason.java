@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.eventhubs.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the reason for the unavailability of the service.
  */
@@ -56,7 +53,6 @@ public enum UnavailableReason {
      * @param value the serialized value to parse.
      * @return the parsed UnavailableReason object, or null if unable to parse.
      */
-    @JsonCreator
     public static UnavailableReason fromString(String value) {
         if (value == null) {
             return null;
@@ -73,7 +69,6 @@ public enum UnavailableReason {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.machinelearning.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ListNotebookKeysResult model. */
+/**
+ * The ListNotebookKeysResult model.
+ */
 @Immutable
-public final class ListNotebookKeysResultInner {
+public final class ListNotebookKeysResultInner implements JsonSerializable<ListNotebookKeysResultInner> {
     /*
      * The primaryAccessKey property.
      */
-    @JsonProperty(value = "primaryAccessKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryAccessKey;
 
     /*
      * The secondaryAccessKey property.
      */
-    @JsonProperty(value = "secondaryAccessKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryAccessKey;
 
-    /** Creates an instance of ListNotebookKeysResultInner class. */
+    /**
+     * Creates an instance of ListNotebookKeysResultInner class.
+     */
     public ListNotebookKeysResultInner() {
     }
 
     /**
      * Get the primaryAccessKey property: The primaryAccessKey property.
-     *
+     * 
      * @return the primaryAccessKey value.
      */
     public String primaryAccessKey() {
@@ -37,7 +43,7 @@ public final class ListNotebookKeysResultInner {
 
     /**
      * Get the secondaryAccessKey property: The secondaryAccessKey property.
-     *
+     * 
      * @return the secondaryAccessKey value.
      */
     public String secondaryAccessKey() {
@@ -46,9 +52,46 @@ public final class ListNotebookKeysResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListNotebookKeysResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListNotebookKeysResultInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListNotebookKeysResultInner.
+     */
+    public static ListNotebookKeysResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListNotebookKeysResultInner deserializedListNotebookKeysResultInner = new ListNotebookKeysResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryAccessKey".equals(fieldName)) {
+                    deserializedListNotebookKeysResultInner.primaryAccessKey = reader.getString();
+                } else if ("secondaryAccessKey".equals(fieldName)) {
+                    deserializedListNotebookKeysResultInner.secondaryAccessKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListNotebookKeysResultInner;
+        });
     }
 }

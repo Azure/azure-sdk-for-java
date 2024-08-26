@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.EnabledState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The JSON object containing endpoint update parameters.
  */
 @Fluent
-public class AfdEndpointPropertiesUpdateParameters {
+public class AfdEndpointPropertiesUpdateParameters implements JsonSerializable<AfdEndpointPropertiesUpdateParameters> {
     /*
      * The name of the profile which holds the endpoint.
      */
-    @JsonProperty(value = "profileName", access = JsonProperty.Access.WRITE_ONLY)
     private String profileName;
 
     /*
      * Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
      */
-    @JsonProperty(value = "enabledState")
     private EnabledState enabledState;
 
     /**
@@ -38,6 +40,17 @@ public class AfdEndpointPropertiesUpdateParameters {
      */
     public String profileName() {
         return this.profileName;
+    }
+
+    /**
+     * Set the profileName property: The name of the profile which holds the endpoint.
+     * 
+     * @param profileName the profileName value to set.
+     * @return the AfdEndpointPropertiesUpdateParameters object itself.
+     */
+    AfdEndpointPropertiesUpdateParameters withProfileName(String profileName) {
+        this.profileName = profileName;
+        return this;
     }
 
     /**
@@ -66,5 +79,45 @@ public class AfdEndpointPropertiesUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdEndpointPropertiesUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdEndpointPropertiesUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AfdEndpointPropertiesUpdateParameters.
+     */
+    public static AfdEndpointPropertiesUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdEndpointPropertiesUpdateParameters deserializedAfdEndpointPropertiesUpdateParameters
+                = new AfdEndpointPropertiesUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("profileName".equals(fieldName)) {
+                    deserializedAfdEndpointPropertiesUpdateParameters.profileName = reader.getString();
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedAfdEndpointPropertiesUpdateParameters.enabledState
+                        = EnabledState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdEndpointPropertiesUpdateParameters;
+        });
     }
 }

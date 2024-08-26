@@ -20,8 +20,11 @@ public final class GatewaysValidateDomainSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gatewaysValidateDomain(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getGateways().validateDomainWithResponse("myResourceGroup",
-            "myservice", "default", new CustomDomainValidatePayload().withName("mydomain.io"),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getGateways()
+            .validateDomainWithResponse("myResourceGroup", "myservice", "default",
+                new CustomDomainValidatePayload().withName("mydomain.io"), com.azure.core.util.Context.NONE);
     }
 }

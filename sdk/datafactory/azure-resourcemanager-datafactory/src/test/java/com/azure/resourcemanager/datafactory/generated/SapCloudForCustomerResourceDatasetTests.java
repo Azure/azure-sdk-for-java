@@ -19,31 +19,34 @@ public final class SapCloudForCustomerResourceDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapCloudForCustomerResourceDataset model = BinaryData.fromString(
-            "{\"type\":\"SapCloudForCustomerResource\",\"typeProperties\":{\"path\":\"datawequfl\"},\"description\":\"yopoa\",\"structure\":\"datawwgw\",\"schema\":\"datab\",\"linkedServiceName\":{\"referenceName\":\"tbvufrkwjiemim\",\"parameters\":{\"reeedddrftfquul\":\"datapowewjs\"}},\"parameters\":{\"b\":{\"type\":\"Bool\",\"defaultValue\":\"dataiigeeu\"}},\"annotations\":[\"datayxfedqnetd\",\"datawynxoqgvbz\"],\"folder\":{\"name\":\"pw\"},\"\":{\"a\":\"dataobqajejir\"}}")
+            "{\"type\":\"SapCloudForCustomerResource\",\"typeProperties\":{\"path\":\"dataebjuymtevaebzm\"},\"description\":\"whrjkejvaedogzo\",\"structure\":\"dataxbxxgjogcphivfhr\",\"schema\":\"dataenfdvdoea\",\"linkedServiceName\":{\"referenceName\":\"ywusrjzhdtr\",\"parameters\":{\"wnmwtqiljknn\":\"dataezfsmyljdzyy\",\"aqjyih\":\"dataynkstdtfwhjfphf\",\"vhkhpsp\":\"datacwwvaosckf\",\"exnguwnrdpuz\":\"dataweifdyfa\"}},\"parameters\":{\"ybsz\":{\"type\":\"Array\",\"defaultValue\":\"dataujtg\"},\"yelrnh\":{\"type\":\"Array\",\"defaultValue\":\"datajxejpdcliqwzut\"}},\"annotations\":[\"datavhqsz\"],\"folder\":{\"name\":\"ovqmqcudptoqwr\"},\"\":{\"kmxwawfu\":\"datakjthl\"}}")
             .toObject(SapCloudForCustomerResourceDataset.class);
-        Assertions.assertEquals("yopoa", model.description());
-        Assertions.assertEquals("tbvufrkwjiemim", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("b").type());
-        Assertions.assertEquals("pw", model.folder().name());
+        Assertions.assertEquals("whrjkejvaedogzo", model.description());
+        Assertions.assertEquals("ywusrjzhdtr", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("ybsz").type());
+        Assertions.assertEquals("ovqmqcudptoqwr", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapCloudForCustomerResourceDataset model = new SapCloudForCustomerResourceDataset().withDescription("yopoa")
-            .withStructure("datawwgw")
-            .withSchema("datab")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tbvufrkwjiemim")
-                .withParameters(mapOf("reeedddrftfquul", "datapowewjs")))
-            .withParameters(
-                mapOf("b", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataiigeeu")))
-            .withAnnotations(Arrays.asList("datayxfedqnetd", "datawynxoqgvbz"))
-            .withFolder(new DatasetFolder().withName("pw"))
-            .withPath("datawequfl");
+        SapCloudForCustomerResourceDataset model
+            = new SapCloudForCustomerResourceDataset().withDescription("whrjkejvaedogzo")
+                .withStructure("dataxbxxgjogcphivfhr")
+                .withSchema("dataenfdvdoea")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ywusrjzhdtr")
+                    .withParameters(mapOf("wnmwtqiljknn", "dataezfsmyljdzyy", "aqjyih", "dataynkstdtfwhjfphf",
+                        "vhkhpsp", "datacwwvaosckf", "exnguwnrdpuz", "dataweifdyfa")))
+                .withParameters(mapOf("ybsz",
+                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataujtg"), "yelrnh",
+                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datajxejpdcliqwzut")))
+                .withAnnotations(Arrays.asList("datavhqsz"))
+                .withFolder(new DatasetFolder().withName("ovqmqcudptoqwr"))
+                .withPath("dataebjuymtevaebzm");
         model = BinaryData.fromObject(model).toObject(SapCloudForCustomerResourceDataset.class);
-        Assertions.assertEquals("yopoa", model.description());
-        Assertions.assertEquals("tbvufrkwjiemim", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("b").type());
-        Assertions.assertEquals("pw", model.folder().name());
+        Assertions.assertEquals("whrjkejvaedogzo", model.description());
+        Assertions.assertEquals("ywusrjzhdtr", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("ybsz").type());
+        Assertions.assertEquals("ovqmqcudptoqwr", model.folder().name());
     }
 
     // Use "Map.of" if available

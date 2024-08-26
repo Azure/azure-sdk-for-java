@@ -6,31 +6,37 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerinstance.fluent.models.DeploymentExtensionSpecProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Extension sidecars to be added to the deployment. */
+/**
+ * Extension sidecars to be added to the deployment.
+ */
 @Fluent
-public final class DeploymentExtensionSpec {
+public final class DeploymentExtensionSpec implements JsonSerializable<DeploymentExtensionSpec> {
     /*
      * Name of the extension.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Extension specific properties
      */
-    @JsonProperty(value = "properties")
     private DeploymentExtensionSpecProperties innerProperties;
 
-    /** Creates an instance of DeploymentExtensionSpec class. */
+    /**
+     * Creates an instance of DeploymentExtensionSpec class.
+     */
     public DeploymentExtensionSpec() {
     }
 
     /**
      * Get the name property: Name of the extension.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +45,7 @@ public final class DeploymentExtensionSpec {
 
     /**
      * Set the name property: Name of the extension.
-     *
+     * 
      * @param name the name value to set.
      * @return the DeploymentExtensionSpec object itself.
      */
@@ -50,7 +56,7 @@ public final class DeploymentExtensionSpec {
 
     /**
      * Get the innerProperties property: Extension specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeploymentExtensionSpecProperties innerProperties() {
@@ -59,7 +65,7 @@ public final class DeploymentExtensionSpec {
 
     /**
      * Get the extensionType property: Type of extension to be added.
-     *
+     * 
      * @return the extensionType value.
      */
     public String extensionType() {
@@ -68,7 +74,7 @@ public final class DeploymentExtensionSpec {
 
     /**
      * Set the extensionType property: Type of extension to be added.
-     *
+     * 
      * @param extensionType the extensionType value to set.
      * @return the DeploymentExtensionSpec object itself.
      */
@@ -82,7 +88,7 @@ public final class DeploymentExtensionSpec {
 
     /**
      * Get the version property: Version of the extension being used.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -91,7 +97,7 @@ public final class DeploymentExtensionSpec {
 
     /**
      * Set the version property: Version of the extension being used.
-     *
+     * 
      * @param version the version value to set.
      * @return the DeploymentExtensionSpec object itself.
      */
@@ -105,7 +111,7 @@ public final class DeploymentExtensionSpec {
 
     /**
      * Get the settings property: Settings for the extension.
-     *
+     * 
      * @return the settings value.
      */
     public Object settings() {
@@ -114,7 +120,7 @@ public final class DeploymentExtensionSpec {
 
     /**
      * Set the settings property: Settings for the extension.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the DeploymentExtensionSpec object itself.
      */
@@ -128,7 +134,7 @@ public final class DeploymentExtensionSpec {
 
     /**
      * Get the protectedSettings property: Protected settings for the extension.
-     *
+     * 
      * @return the protectedSettings value.
      */
     public Object protectedSettings() {
@@ -137,7 +143,7 @@ public final class DeploymentExtensionSpec {
 
     /**
      * Set the protectedSettings property: Protected settings for the extension.
-     *
+     * 
      * @param protectedSettings the protectedSettings value to set.
      * @return the DeploymentExtensionSpec object itself.
      */
@@ -151,14 +157,13 @@ public final class DeploymentExtensionSpec {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model DeploymentExtensionSpec"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model DeploymentExtensionSpec"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -166,4 +171,45 @@ public final class DeploymentExtensionSpec {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeploymentExtensionSpec.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentExtensionSpec from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentExtensionSpec if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeploymentExtensionSpec.
+     */
+    public static DeploymentExtensionSpec fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentExtensionSpec deserializedDeploymentExtensionSpec = new DeploymentExtensionSpec();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDeploymentExtensionSpec.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDeploymentExtensionSpec.innerProperties
+                        = DeploymentExtensionSpecProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentExtensionSpec;
+        });
+    }
 }

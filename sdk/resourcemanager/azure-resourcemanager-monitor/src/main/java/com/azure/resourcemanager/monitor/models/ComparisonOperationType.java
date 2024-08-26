@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * the operator that is used to compare the metric data and the threshold.
  */
@@ -56,7 +53,6 @@ public enum ComparisonOperationType {
      * @param value the serialized value to parse.
      * @return the parsed ComparisonOperationType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ComparisonOperationType fromString(String value) {
         if (value == null) {
             return null;
@@ -73,7 +69,6 @@ public enum ComparisonOperationType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

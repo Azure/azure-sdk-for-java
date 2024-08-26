@@ -22,7 +22,7 @@ public final class JobsListDetectorsMockTests {
     @Test
     public void testListDetectors() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"tqgkujd\",\"name\":\"oxrqw\",\"description\":\"urbti\",\"author\":\"pdyarikeejdpd\",\"category\":\"twmmkfqbriqu\",\"supportTopicList\":[{\"id\":\"rjmeqkvyhz\",\"pesId\":\"poyu\"},{\"id\":\"uensn\",\"pesId\":\"jphmpoejnglpws\"},{\"id\":\"axj\",\"pesId\":\"mxpezco\"},{\"id\":\"yjrmfqzwqd\",\"pesId\":\"keedcnw\"}],\"analysisTypes\":[\"xfqzkvemyzd\"],\"type\":\"zaqpqi\",\"score\":58.71759},\"dataset\":[{\"table\":{\"tableName\":\"wtxzuisam\",\"columns\":[{}],\"rows\":[\"dataizexroqsqj\"]},\"renderingProperties\":{\"type\":1289621459,\"title\":\"hsplwsttxsrgxf\",\"description\":\"aniceovxgzwh\",\"isVisible\":false}},{\"table\":{\"tableName\":\"jmtikes\",\"columns\":[{},{}],\"rows\":[\"datahzixyqhfnkvy\",\"dataqqqdseipnquwz\",\"datahrptyodlhkfktltd\",\"datasobjop\"]},\"renderingProperties\":{\"type\":777460932,\"title\":\"qezkqxs\",\"description\":\"uzyigfcvcewbwqhd\",\"isVisible\":false}},{\"table\":{\"tableName\":\"tmrncma\",\"columns\":[{}],\"rows\":[\"dataxhyqmr\",\"datajparnpvgrszrbwt\"]},\"renderingProperties\":{\"type\":1077805593,\"title\":\"zwllxzlhhf\",\"description\":\"acfculzjrmhpf\",\"isVisible\":true}},{\"table\":{\"tableName\":\"dqpz\",\"columns\":[{},{}],\"rows\":[\"dataxi\",\"dataunjlzkdrocq\",\"dataxytqq\"]},\"renderingProperties\":{\"type\":1957395389,\"title\":\"dwisvnmeyl\",\"description\":\"amcajyhftpzcrryk\",\"isVisible\":false}}],\"status\":{\"message\":\"qanhkigg\",\"statusId\":1710211884},\"dataProviderMetadata\":{\"providerName\":\"lhv\",\"propertyBag\":[{\"name\":\"zphetxdqcm\",\"value\":\"tajqzj\"}]}},\"id\":\"lecxbibiwks\",\"name\":\"egyxsbfpzvoik\",\"type\":\"ntwczfzwushlc\"}]}";
+            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"eeksnbksdqhjvyk\",\"name\":\"eslk\",\"description\":\"ustcpoq\",\"author\":\"vnwqjwgo\",\"category\":\"lejjjkxy\",\"supportTopicList\":[{\"id\":\"bkjbz\",\"pesId\":\"nsvk\"}],\"analysisTypes\":[\"jtjknsxf\",\"us\"],\"type\":\"dpkupnqrmgjf\",\"score\":95.03275},\"dataset\":[{\"table\":{\"tableName\":\"oiojfizfavkjzwfb\",\"columns\":[{},{}],\"rows\":[\"datammfz\",\"databfw\"]},\"renderingProperties\":{\"type\":1740416627,\"title\":\"dew\",\"description\":\"sxkrpl\",\"isVisible\":false}},{\"table\":{\"tableName\":\"jwwviy\",\"columns\":[{}],\"rows\":[\"datahbrnnhjx\",\"dataqwjhqkbiwetpozyc\",\"dataqiqyhgfsetzlexbs\"]},\"renderingProperties\":{\"type\":805982929,\"title\":\"no\",\"description\":\"ziu\",\"isVisible\":false}},{\"table\":{\"tableName\":\"kdtnhqsyclj\",\"columns\":[{},{},{}],\"rows\":[\"datapbafvafhlbylc\",\"databevxrhyzd\",\"datawrso\"]},\"renderingProperties\":{\"type\":417832295,\"title\":\"bmairrhvhfnracwn\",\"description\":\"igtuu\",\"isVisible\":true}},{\"table\":{\"tableName\":\"dawsigrbjb\",\"columns\":[{},{}],\"rows\":[\"datavitvqkjyaz\",\"dataumtggmuwdchozfn\",\"datafexl\"]},\"renderingProperties\":{\"type\":133463775,\"title\":\"kizvoa\",\"description\":\"naqln\",\"isVisible\":true}}],\"status\":{\"message\":\"yxl\",\"statusId\":1391539520},\"dataProviderMetadata\":{\"providerName\":\"vx\",\"propertyBag\":[{\"name\":\"hmpejtlkexaonw\",\"value\":\"kcq\"}]}},\"id\":\"xhxknlc\",\"name\":\"rmmkyupiju\",\"type\":\"yqjf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,26 +32,25 @@ public final class JobsListDetectorsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Diagnostics> response
-            = manager.jobs().listDetectors("qmawzjdrpizfu", "gyc", com.azure.core.util.Context.NONE);
+            = manager.jobs().listDetectors("xaptefhexcgjok", "ljnhvlqj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xfqzkvemyzd",
-            response.iterator().next().properties().metadata().analysisTypes().get(0));
-        Assertions.assertEquals("wtxzuisam",
+        Assertions.assertEquals("jtjknsxf", response.iterator().next().properties().metadata().analysisTypes().get(0));
+        Assertions.assertEquals("oiojfizfavkjzwfb",
             response.iterator().next().properties().dataset().get(0).table().tableName());
-        Assertions.assertEquals(1289621459,
+        Assertions.assertEquals(1740416627,
             response.iterator().next().properties().dataset().get(0).renderingProperties().type());
-        Assertions.assertEquals("hsplwsttxsrgxf",
+        Assertions.assertEquals("dew",
             response.iterator().next().properties().dataset().get(0).renderingProperties().title());
-        Assertions.assertEquals("aniceovxgzwh",
+        Assertions.assertEquals("sxkrpl",
             response.iterator().next().properties().dataset().get(0).renderingProperties().description());
         Assertions.assertEquals(false,
             response.iterator().next().properties().dataset().get(0).renderingProperties().isVisible());
-        Assertions.assertEquals("qanhkigg", response.iterator().next().properties().status().message());
-        Assertions.assertEquals(1710211884, response.iterator().next().properties().status().statusId());
-        Assertions.assertEquals("lhv", response.iterator().next().properties().dataProviderMetadata().providerName());
-        Assertions.assertEquals("zphetxdqcm",
+        Assertions.assertEquals("yxl", response.iterator().next().properties().status().message());
+        Assertions.assertEquals(1391539520, response.iterator().next().properties().status().statusId());
+        Assertions.assertEquals("vx", response.iterator().next().properties().dataProviderMetadata().providerName());
+        Assertions.assertEquals("hmpejtlkexaonw",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).name());
-        Assertions.assertEquals("tajqzj",
+        Assertions.assertEquals("kcq",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).value());
     }
 }

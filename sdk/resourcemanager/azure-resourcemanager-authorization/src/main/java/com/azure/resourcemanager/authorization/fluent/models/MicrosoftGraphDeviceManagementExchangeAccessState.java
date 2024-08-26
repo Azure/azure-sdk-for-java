@@ -5,30 +5,41 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** deviceManagementExchangeAccessState. */
+/**
+ * deviceManagementExchangeAccessState.
+ */
 public final class MicrosoftGraphDeviceManagementExchangeAccessState
     extends ExpandableStringEnum<MicrosoftGraphDeviceManagementExchangeAccessState> {
-    /** Static value none for MicrosoftGraphDeviceManagementExchangeAccessState. */
+    /**
+     * Static value none for MicrosoftGraphDeviceManagementExchangeAccessState.
+     */
     public static final MicrosoftGraphDeviceManagementExchangeAccessState NONE = fromString("none");
 
-    /** Static value unknown for MicrosoftGraphDeviceManagementExchangeAccessState. */
+    /**
+     * Static value unknown for MicrosoftGraphDeviceManagementExchangeAccessState.
+     */
     public static final MicrosoftGraphDeviceManagementExchangeAccessState UNKNOWN = fromString("unknown");
 
-    /** Static value allowed for MicrosoftGraphDeviceManagementExchangeAccessState. */
+    /**
+     * Static value allowed for MicrosoftGraphDeviceManagementExchangeAccessState.
+     */
     public static final MicrosoftGraphDeviceManagementExchangeAccessState ALLOWED = fromString("allowed");
 
-    /** Static value blocked for MicrosoftGraphDeviceManagementExchangeAccessState. */
+    /**
+     * Static value blocked for MicrosoftGraphDeviceManagementExchangeAccessState.
+     */
     public static final MicrosoftGraphDeviceManagementExchangeAccessState BLOCKED = fromString("blocked");
 
-    /** Static value quarantined for MicrosoftGraphDeviceManagementExchangeAccessState. */
+    /**
+     * Static value quarantined for MicrosoftGraphDeviceManagementExchangeAccessState.
+     */
     public static final MicrosoftGraphDeviceManagementExchangeAccessState QUARANTINED = fromString("quarantined");
 
     /**
      * Creates a new instance of MicrosoftGraphDeviceManagementExchangeAccessState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,18 +48,17 @@ public final class MicrosoftGraphDeviceManagementExchangeAccessState
 
     /**
      * Creates or finds a MicrosoftGraphDeviceManagementExchangeAccessState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphDeviceManagementExchangeAccessState.
      */
-    @JsonCreator
     public static MicrosoftGraphDeviceManagementExchangeAccessState fromString(String name) {
         return fromString(name, MicrosoftGraphDeviceManagementExchangeAccessState.class);
     }
 
     /**
      * Gets known MicrosoftGraphDeviceManagementExchangeAccessState values.
-     *
+     * 
      * @return known MicrosoftGraphDeviceManagementExchangeAccessState values.
      */
     public static Collection<MicrosoftGraphDeviceManagementExchangeAccessState> values() {

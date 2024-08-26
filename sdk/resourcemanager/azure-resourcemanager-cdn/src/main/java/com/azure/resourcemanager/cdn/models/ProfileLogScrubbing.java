@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
  */
 @Fluent
-public final class ProfileLogScrubbing {
+public final class ProfileLogScrubbing implements JsonSerializable<ProfileLogScrubbing> {
     /*
      * State of the log scrubbing config. Default value is Enabled.
      */
-    @JsonProperty(value = "state")
     private ProfileScrubbingState state;
 
     /*
      * List of log scrubbing rules applied to the Azure Front Door profile logs.
      */
-    @JsonProperty(value = "scrubbingRules")
     private List<ProfileScrubbingRules> scrubbingRules;
 
     /**
@@ -80,5 +82,47 @@ public final class ProfileLogScrubbing {
         if (scrubbingRules() != null) {
             scrubbingRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeArrayField("scrubbingRules", this.scrubbingRules,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileLogScrubbing from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileLogScrubbing if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProfileLogScrubbing.
+     */
+    public static ProfileLogScrubbing fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileLogScrubbing deserializedProfileLogScrubbing = new ProfileLogScrubbing();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedProfileLogScrubbing.state = ProfileScrubbingState.fromString(reader.getString());
+                } else if ("scrubbingRules".equals(fieldName)) {
+                    List<ProfileScrubbingRules> scrubbingRules
+                        = reader.readArray(reader1 -> ProfileScrubbingRules.fromJson(reader1));
+                    deserializedProfileLogScrubbing.scrubbingRules = scrubbingRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileLogScrubbing;
+        });
     }
 }

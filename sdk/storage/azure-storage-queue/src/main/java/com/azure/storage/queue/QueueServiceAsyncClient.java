@@ -19,6 +19,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.implementation.util.ModelHelper;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
@@ -345,7 +346,8 @@ public final class QueueServiceAsyncClient {
             (nextMarker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
                 .listQueuesSegmentSinglePageAsync(prefix, nextMarker,
                     pageSize == null ? maxResultsPerPage : pageSize, include,
-                    null, null, context), timeout);
+                    null, null, context), timeout)
+                .onErrorMap(ModelHelper::mapToQueueStorageException);
 
         return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
@@ -416,6 +418,7 @@ public final class QueueServiceAsyncClient {
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return client.getServices().getPropertiesWithResponseAsync(null, null, context)
+            .onErrorMap(ModelHelper::mapToQueueStorageException)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -539,7 +542,8 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getServices().setPropertiesNoCustomHeadersWithResponseAsync(properties, null, null, context);
+        return client.getServices().setPropertiesNoCustomHeadersWithResponseAsync(properties, null, null, context)
+            .onErrorMap(ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -604,6 +608,7 @@ public final class QueueServiceAsyncClient {
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return client.getServices().getStatisticsWithResponseAsync(null, null, context)
+            .onErrorMap(ModelHelper::mapToQueueStorageException)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -688,12 +693,24 @@ public final class QueueServiceAsyncClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return generateAccountSas(accountSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new AccountSasImplUtil(accountSasSignatureValues, null)
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
-
-    AzureQueueStorageImpl getAzureQueueStorage() {
-        return client;
-    }
-
 }

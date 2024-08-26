@@ -5,44 +5,44 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The properties of a cache rule.
  */
 @Fluent
-public final class CacheRuleProperties {
+public final class CacheRuleProperties implements JsonSerializable<CacheRuleProperties> {
     /*
      * The ARM resource ID of the credential store which is associated with the cache rule.
      */
-    @JsonProperty(value = "credentialSetResourceId")
     private String credentialSetResourceId;
 
     /*
      * Source repository pulled from upstream.
      */
-    @JsonProperty(value = "sourceRepository")
     private String sourceRepository;
 
     /*
      * Target repository specified in docker pull command.
      * Eg: docker pull myregistry.azurecr.io/{targetRepository}:{tag}
      */
-    @JsonProperty(value = "targetRepository")
     private String targetRepository;
 
     /*
      * The creation date of the cache rule.
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -139,5 +139,53 @@ public final class CacheRuleProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("credentialSetResourceId", this.credentialSetResourceId);
+        jsonWriter.writeStringField("sourceRepository", this.sourceRepository);
+        jsonWriter.writeStringField("targetRepository", this.targetRepository);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheRuleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CacheRuleProperties.
+     */
+    public static CacheRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheRuleProperties deserializedCacheRuleProperties = new CacheRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("credentialSetResourceId".equals(fieldName)) {
+                    deserializedCacheRuleProperties.credentialSetResourceId = reader.getString();
+                } else if ("sourceRepository".equals(fieldName)) {
+                    deserializedCacheRuleProperties.sourceRepository = reader.getString();
+                } else if ("targetRepository".equals(fieldName)) {
+                    deserializedCacheRuleProperties.targetRepository = reader.getString();
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedCacheRuleProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCacheRuleProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheRuleProperties;
+        });
     }
 }

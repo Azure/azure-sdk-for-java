@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the column in the table of database full schema. */
+/**
+ * Properties of the column in the table of database full schema.
+ */
 @Immutable
-public final class SyncFullSchemaTableColumn {
+public final class SyncFullSchemaTableColumn implements JsonSerializable<SyncFullSchemaTableColumn> {
     /*
      * Data size of the column.
      */
-    @JsonProperty(value = "dataSize", access = JsonProperty.Access.WRITE_ONLY)
     private String dataSize;
 
     /*
      * Data type of the column.
      */
-    @JsonProperty(value = "dataType", access = JsonProperty.Access.WRITE_ONLY)
     private String dataType;
 
     /*
      * Error id of the column.
      */
-    @JsonProperty(value = "errorId", access = JsonProperty.Access.WRITE_ONLY)
     private String errorId;
 
     /*
      * If there is error in the table.
      */
-    @JsonProperty(value = "hasError", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasError;
 
     /*
      * If it is the primary key of the table.
      */
-    @JsonProperty(value = "isPrimaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPrimaryKey;
 
     /*
      * Name of the column.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Quoted name of the column.
      */
-    @JsonProperty(value = "quotedName", access = JsonProperty.Access.WRITE_ONLY)
     private String quotedName;
 
-    /** Creates an instance of SyncFullSchemaTableColumn class. */
+    /**
+     * Creates an instance of SyncFullSchemaTableColumn class.
+     */
     public SyncFullSchemaTableColumn() {
     }
 
     /**
      * Get the dataSize property: Data size of the column.
-     *
+     * 
      * @return the dataSize value.
      */
     public String dataSize() {
@@ -67,7 +68,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the dataType property: Data type of the column.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -76,7 +77,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the errorId property: Error id of the column.
-     *
+     * 
      * @return the errorId value.
      */
     public String errorId() {
@@ -85,7 +86,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the hasError property: If there is error in the table.
-     *
+     * 
      * @return the hasError value.
      */
     public Boolean hasError() {
@@ -94,7 +95,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the isPrimaryKey property: If it is the primary key of the table.
-     *
+     * 
      * @return the isPrimaryKey value.
      */
     public Boolean isPrimaryKey() {
@@ -103,7 +104,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the name property: Name of the column.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -112,7 +113,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the quotedName property: Quoted name of the column.
-     *
+     * 
      * @return the quotedName value.
      */
     public String quotedName() {
@@ -121,9 +122,56 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncFullSchemaTableColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncFullSchemaTableColumn if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncFullSchemaTableColumn.
+     */
+    public static SyncFullSchemaTableColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncFullSchemaTableColumn deserializedSyncFullSchemaTableColumn = new SyncFullSchemaTableColumn();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSize".equals(fieldName)) {
+                    deserializedSyncFullSchemaTableColumn.dataSize = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedSyncFullSchemaTableColumn.dataType = reader.getString();
+                } else if ("errorId".equals(fieldName)) {
+                    deserializedSyncFullSchemaTableColumn.errorId = reader.getString();
+                } else if ("hasError".equals(fieldName)) {
+                    deserializedSyncFullSchemaTableColumn.hasError = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isPrimaryKey".equals(fieldName)) {
+                    deserializedSyncFullSchemaTableColumn.isPrimaryKey = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSyncFullSchemaTableColumn.name = reader.getString();
+                } else if ("quotedName".equals(fieldName)) {
+                    deserializedSyncFullSchemaTableColumn.quotedName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncFullSchemaTableColumn;
+        });
     }
 }

@@ -14,13 +14,15 @@ import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyIn
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatabaseSecurityAlertPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabaseSecurityAlertPoliciesClient.
+ */
 public interface DatabaseSecurityAlertPoliciesClient {
     /**
      * Gets a list of database's security alert policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,14 +31,14 @@ public interface DatabaseSecurityAlertPoliciesClient {
      * @return a list of database's security alert policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseSecurityAlertPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    PagedFlux<DatabaseSecurityAlertPolicyInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Gets a list of database's security alert policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,14 +47,14 @@ public interface DatabaseSecurityAlertPoliciesClient {
      * @return a list of database's security alert policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName);
+    PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Gets a list of database's security alert policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param context The context to associate with this operation.
@@ -62,14 +64,14 @@ public interface DatabaseSecurityAlertPoliciesClient {
      * @return a list of database's security alert policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName, Context context);
 
     /**
      * Gets a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -79,17 +81,14 @@ public interface DatabaseSecurityAlertPoliciesClient {
      * @return a database's security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName);
+    Mono<Response<DatabaseSecurityAlertPolicyInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, SecurityAlertPolicyName securityAlertPolicyName);
 
     /**
      * Gets a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -99,17 +98,14 @@ public interface DatabaseSecurityAlertPoliciesClient {
      * @return a database's security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseSecurityAlertPolicyInner> getAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
+    Mono<DatabaseSecurityAlertPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         SecurityAlertPolicyName securityAlertPolicyName);
 
     /**
      * Gets a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -120,18 +116,14 @@ public interface DatabaseSecurityAlertPoliciesClient {
      * @return a database's security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseSecurityAlertPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        Context context);
+    Response<DatabaseSecurityAlertPolicyInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, SecurityAlertPolicyName securityAlertPolicyName, Context context);
 
     /**
      * Gets a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -141,17 +133,14 @@ public interface DatabaseSecurityAlertPoliciesClient {
      * @return a database's security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseSecurityAlertPolicyInner get(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
+    DatabaseSecurityAlertPolicyInner get(String resourceGroupName, String serverName, String databaseName,
         SecurityAlertPolicyName securityAlertPolicyName);
 
     /**
      * Creates or updates a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -162,18 +151,15 @@ public interface DatabaseSecurityAlertPoliciesClient {
      * @return a database security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
+    Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
         DatabaseSecurityAlertPolicyInner parameters);
 
     /**
      * Creates or updates a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -184,18 +170,15 @@ public interface DatabaseSecurityAlertPoliciesClient {
      * @return a database security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseSecurityAlertPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
+    Mono<DatabaseSecurityAlertPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
         DatabaseSecurityAlertPolicyInner parameters);
 
     /**
      * Creates or updates a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -207,19 +190,15 @@ public interface DatabaseSecurityAlertPoliciesClient {
      * @return a database security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        DatabaseSecurityAlertPolicyInner parameters,
-        Context context);
+    Response<DatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
+        String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
+        DatabaseSecurityAlertPolicyInner parameters, Context context);
 
     /**
      * Creates or updates a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -230,10 +209,6 @@ public interface DatabaseSecurityAlertPoliciesClient {
      * @return a database security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseSecurityAlertPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        DatabaseSecurityAlertPolicyInner parameters);
+    DatabaseSecurityAlertPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName, DatabaseSecurityAlertPolicyInner parameters);
 }

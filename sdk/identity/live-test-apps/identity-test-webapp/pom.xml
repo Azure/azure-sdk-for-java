@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.azure</groupId>
 	<artifactId>identity-test-webapp</artifactId>
-	<version>0.0.1-SNAPSHOT</version> <!-- {x-version-update;com.azure:identity-test-webapp;current} -->
+	<version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:identity-test-webapp;current} -->
 	<name>identity-test-webapp</name>
 	<description>Web App MI Test</description>
 
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.26.1</version><!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.27.0</version><!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
 	</dependencies>
 

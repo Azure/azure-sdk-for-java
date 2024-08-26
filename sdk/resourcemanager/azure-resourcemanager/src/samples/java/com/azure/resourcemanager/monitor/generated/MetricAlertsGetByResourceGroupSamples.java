@@ -19,8 +19,12 @@ public final class MetricAlertsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnAlertRuleOnResourceGroupS(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().getByResourceGroupWithResponse(
-            "gigtest1", "MetricAlertAtResourceGroupLevel", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .getByResourceGroupWithResponse("gigtest1", "MetricAlertAtResourceGroupLevel",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -33,8 +37,12 @@ public final class MetricAlertsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getADynamicAlertRuleForMultipleResources(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().getByResourceGroupWithResponse("gigtest",
-            "MetricAlertOnMultipleResources", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .getByResourceGroupWithResponse("gigtest", "MetricAlertOnMultipleResources",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -47,7 +55,10 @@ public final class MetricAlertsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAWebTestAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
             .getByResourceGroupWithResponse("rg-example", "webtest-name-example", com.azure.core.util.Context.NONE);
     }
 
@@ -62,8 +73,11 @@ public final class MetricAlertsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnAlertRuleForSingleResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().getByResourceGroupWithResponse("gigtest",
-            "chiricutin", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .getByResourceGroupWithResponse("gigtest", "chiricutin", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -77,8 +91,12 @@ public final class MetricAlertsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnAlertRuleOnSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().getByResourceGroupWithResponse("gigtest",
-            "MetricAlertAtSubscriptionLevel", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .getByResourceGroupWithResponse("gigtest", "MetricAlertAtSubscriptionLevel",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -91,8 +109,11 @@ public final class MetricAlertsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getADynamicAlertRuleForSingleResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().getByResourceGroupWithResponse("gigtest",
-            "chiricutin", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .getByResourceGroupWithResponse("gigtest", "chiricutin", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -105,7 +126,11 @@ public final class MetricAlertsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnAlertRuleForMultipleResources(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().getByResourceGroupWithResponse("gigtest",
-            "MetricAlertOnMultipleResources", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .getByResourceGroupWithResponse("gigtest", "MetricAlertOnMultipleResources",
+                com.azure.core.util.Context.NONE);
     }
 }

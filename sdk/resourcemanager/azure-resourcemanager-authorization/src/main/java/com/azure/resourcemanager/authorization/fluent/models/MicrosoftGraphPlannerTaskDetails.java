@@ -5,55 +5,52 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** plannerTaskDetails. */
+/**
+ * plannerTaskDetails.
+ */
 @Fluent
 public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity {
     /*
      * plannerChecklistItems
      */
-    @JsonProperty(value = "checklist")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> checklist;
 
     /*
      * Description of the task
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * plannerPreviewType
      */
-    @JsonProperty(value = "previewType")
     private MicrosoftGraphPlannerPreviewType previewType;
 
     /*
      * plannerExternalReferences
      */
-    @JsonProperty(value = "references")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> references;
 
     /*
      * plannerTaskDetails
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPlannerTaskDetails class. */
+    /**
+     * Creates an instance of MicrosoftGraphPlannerTaskDetails class.
+     */
     public MicrosoftGraphPlannerTaskDetails() {
     }
 
     /**
      * Get the checklist property: plannerChecklistItems.
-     *
+     * 
      * @return the checklist value.
      */
     public Map<String, Object> checklist() {
@@ -62,7 +59,7 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
 
     /**
      * Set the checklist property: plannerChecklistItems.
-     *
+     * 
      * @param checklist the checklist value to set.
      * @return the MicrosoftGraphPlannerTaskDetails object itself.
      */
@@ -73,7 +70,7 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
 
     /**
      * Get the description property: Description of the task.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -82,7 +79,7 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
 
     /**
      * Set the description property: Description of the task.
-     *
+     * 
      * @param description the description value to set.
      * @return the MicrosoftGraphPlannerTaskDetails object itself.
      */
@@ -93,7 +90,7 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
 
     /**
      * Get the previewType property: plannerPreviewType.
-     *
+     * 
      * @return the previewType value.
      */
     public MicrosoftGraphPlannerPreviewType previewType() {
@@ -102,7 +99,7 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
 
     /**
      * Set the previewType property: plannerPreviewType.
-     *
+     * 
      * @param previewType the previewType value to set.
      * @return the MicrosoftGraphPlannerTaskDetails object itself.
      */
@@ -113,7 +110,7 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
 
     /**
      * Get the references property: plannerExternalReferences.
-     *
+     * 
      * @return the references value.
      */
     public Map<String, Object> references() {
@@ -122,7 +119,7 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
 
     /**
      * Set the references property: plannerExternalReferences.
-     *
+     * 
      * @param references the references value to set.
      * @return the MicrosoftGraphPlannerTaskDetails object itself.
      */
@@ -133,17 +130,16 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
 
     /**
      * Get the additionalProperties property: plannerTaskDetails.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: plannerTaskDetails.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPlannerTaskDetails object itself.
      */
@@ -152,15 +148,9 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPlannerTaskDetails withId(String id) {
         super.withId(id);
@@ -169,11 +159,74 @@ public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeMapField("checklist", this.checklist, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("previewType", this.previewType == null ? null : this.previewType.toString());
+        jsonWriter.writeMapField("references", this.references, (writer, element) -> writer.writeUntyped(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPlannerTaskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPlannerTaskDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPlannerTaskDetails.
+     */
+    public static MicrosoftGraphPlannerTaskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPlannerTaskDetails deserializedMicrosoftGraphPlannerTaskDetails
+                = new MicrosoftGraphPlannerTaskDetails();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerTaskDetails.withId(reader.getString());
+                } else if ("checklist".equals(fieldName)) {
+                    Map<String, Object> checklist = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphPlannerTaskDetails.checklist = checklist;
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerTaskDetails.description = reader.getString();
+                } else if ("previewType".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerTaskDetails.previewType
+                        = MicrosoftGraphPlannerPreviewType.fromString(reader.getString());
+                } else if ("references".equals(fieldName)) {
+                    Map<String, Object> references = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphPlannerTaskDetails.references = references;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPlannerTaskDetails.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPlannerTaskDetails;
+        });
     }
 }

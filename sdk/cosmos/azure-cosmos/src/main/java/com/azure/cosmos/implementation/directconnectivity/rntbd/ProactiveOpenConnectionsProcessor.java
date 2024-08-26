@@ -109,7 +109,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         // and RntbdTransportClient / RntbdEndpointProvider are also closed
         // this prevents netty executor classes from entering into IllegalStateException
         if (this.endpointProvider.isClosed() || this.isClosed.get()) {
-            openConnectionTask.completeExceptionally(new TransportException(lenientFormat("%s is closed", this), null));
+            openConnectionTask.completeExceptionally(new ClosedClientTransportException(lenientFormat("%s is closed", this), null));
             return;
         }
 
@@ -159,7 +159,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             // Fail all pending tasks
             this.endpointsUnderMonitorMap.forEach((addresses, taskList) -> {
                 for (OpenConnectionTask openConnectionTask : taskList) {
-                    openConnectionTask.completeExceptionally(new TransportException(lenientFormat("%s is closed", this), null));
+                    openConnectionTask.completeExceptionally(new ClosedClientTransportException(lenientFormat("%s is closed", this), null));
                 }
             });
         }

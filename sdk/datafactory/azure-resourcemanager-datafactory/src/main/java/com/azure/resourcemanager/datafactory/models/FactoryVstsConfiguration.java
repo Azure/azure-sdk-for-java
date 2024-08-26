@@ -6,39 +6,29 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Factory's VSTS repo information.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = FactoryVstsConfiguration.class,
-    visible = true)
-@JsonTypeName("FactoryVSTSConfiguration")
 @Fluent
 public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
     /*
      * Type of repo configuration.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "FactoryVSTSConfiguration";
 
     /*
      * VSTS project name.
      */
-    @JsonProperty(value = "projectName", required = true)
     private String projectName;
 
     /*
      * VSTS tenant id.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /**
@@ -167,4 +157,65 @@ public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FactoryVstsConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", accountName());
+        jsonWriter.writeStringField("repositoryName", repositoryName());
+        jsonWriter.writeStringField("collaborationBranch", collaborationBranch());
+        jsonWriter.writeStringField("rootFolder", rootFolder());
+        jsonWriter.writeStringField("lastCommitId", lastCommitId());
+        jsonWriter.writeBooleanField("disablePublish", disablePublish());
+        jsonWriter.writeStringField("projectName", this.projectName);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FactoryVstsConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FactoryVstsConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FactoryVstsConfiguration.
+     */
+    public static FactoryVstsConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FactoryVstsConfiguration deserializedFactoryVstsConfiguration = new FactoryVstsConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedFactoryVstsConfiguration.withAccountName(reader.getString());
+                } else if ("repositoryName".equals(fieldName)) {
+                    deserializedFactoryVstsConfiguration.withRepositoryName(reader.getString());
+                } else if ("collaborationBranch".equals(fieldName)) {
+                    deserializedFactoryVstsConfiguration.withCollaborationBranch(reader.getString());
+                } else if ("rootFolder".equals(fieldName)) {
+                    deserializedFactoryVstsConfiguration.withRootFolder(reader.getString());
+                } else if ("lastCommitId".equals(fieldName)) {
+                    deserializedFactoryVstsConfiguration.withLastCommitId(reader.getString());
+                } else if ("disablePublish".equals(fieldName)) {
+                    deserializedFactoryVstsConfiguration.withDisablePublish(reader.getNullable(JsonReader::getBoolean));
+                } else if ("projectName".equals(fieldName)) {
+                    deserializedFactoryVstsConfiguration.projectName = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFactoryVstsConfiguration.type = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedFactoryVstsConfiguration.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFactoryVstsConfiguration;
+        });
+    }
 }

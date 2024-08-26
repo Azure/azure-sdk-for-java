@@ -6,37 +6,56 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.GeoBackupPolicyState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A Geo backup policy. */
+/**
+ * A Geo backup policy.
+ */
 @Fluent
 public final class GeoBackupPolicyInner extends ProxyResource {
     /*
      * Backup policy location.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
-     * Kind of geo backup policy.  This is metadata used for the Azure portal experience.
+     * Kind of geo backup policy. This is metadata used for the Azure portal experience.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private GeoBackupPolicyProperties innerProperties;
 
-    /** Creates an instance of GeoBackupPolicyInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of GeoBackupPolicyInner class.
+     */
     public GeoBackupPolicyInner() {
     }
 
     /**
      * Get the location property: Backup policy location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -45,7 +64,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
 
     /**
      * Get the kind property: Kind of geo backup policy. This is metadata used for the Azure portal experience.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -54,7 +73,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GeoBackupPolicyProperties innerProperties() {
@@ -62,8 +81,38 @@ public final class GeoBackupPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the state property: The state of the geo backup policy.
-     *
+     * 
      * @return the state value.
      */
     public GeoBackupPolicyState state() {
@@ -72,7 +121,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
 
     /**
      * Set the state property: The state of the geo backup policy.
-     *
+     * 
      * @param state the state value to set.
      * @return the GeoBackupPolicyInner object itself.
      */
@@ -86,7 +135,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
 
     /**
      * Get the storageType property: The storage type of the geo backup policy.
-     *
+     * 
      * @return the storageType value.
      */
     public String storageType() {
@@ -95,12 +144,59 @@ public final class GeoBackupPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GeoBackupPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GeoBackupPolicyInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GeoBackupPolicyInner.
+     */
+    public static GeoBackupPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GeoBackupPolicyInner deserializedGeoBackupPolicyInner = new GeoBackupPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGeoBackupPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGeoBackupPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGeoBackupPolicyInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedGeoBackupPolicyInner.location = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedGeoBackupPolicyInner.kind = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGeoBackupPolicyInner.innerProperties = GeoBackupPolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGeoBackupPolicyInner;
+        });
     }
 }

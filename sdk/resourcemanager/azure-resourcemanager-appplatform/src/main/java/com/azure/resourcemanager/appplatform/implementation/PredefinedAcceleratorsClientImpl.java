@@ -616,8 +616,10 @@ public final class PredefinedAcceleratorsClientImpl implements PredefinedAcceler
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisable(String resourceGroupName, String serviceName,
         String applicationAcceleratorName, String predefinedAcceleratorName, Context context) {
-        return this.beginDisableAsync(resourceGroupName, serviceName, applicationAcceleratorName,
-            predefinedAcceleratorName, context).getSyncPoller();
+        return this
+            .beginDisableAsync(resourceGroupName, serviceName, applicationAcceleratorName, predefinedAcceleratorName,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -637,7 +639,8 @@ public final class PredefinedAcceleratorsClientImpl implements PredefinedAcceler
     public Mono<Void> disableAsync(String resourceGroupName, String serviceName, String applicationAcceleratorName,
         String predefinedAcceleratorName) {
         return beginDisableAsync(resourceGroupName, serviceName, applicationAcceleratorName, predefinedAcceleratorName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -876,8 +879,10 @@ public final class PredefinedAcceleratorsClientImpl implements PredefinedAcceler
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnable(String resourceGroupName, String serviceName,
         String applicationAcceleratorName, String predefinedAcceleratorName, Context context) {
-        return this.beginEnableAsync(resourceGroupName, serviceName, applicationAcceleratorName,
-            predefinedAcceleratorName, context).getSyncPoller();
+        return this
+            .beginEnableAsync(resourceGroupName, serviceName, applicationAcceleratorName, predefinedAcceleratorName,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -897,7 +902,8 @@ public final class PredefinedAcceleratorsClientImpl implements PredefinedAcceler
     public Mono<Void> enableAsync(String resourceGroupName, String serviceName, String applicationAcceleratorName,
         String predefinedAcceleratorName) {
         return beginEnableAsync(resourceGroupName, serviceName, applicationAcceleratorName, predefinedAcceleratorName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -962,9 +968,7 @@ public final class PredefinedAcceleratorsClientImpl implements PredefinedAcceler
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -989,9 +993,7 @@ public final class PredefinedAcceleratorsClientImpl implements PredefinedAcceler
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -5,28 +5,22 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Azure File Storage write settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AzureFileStorageWriteSettings.class,
-    visible = true)
-@JsonTypeName("AzureFileStorageWriteSettings")
 @Fluent
 public final class AzureFileStorageWriteSettings extends StoreWriteSettings {
     /*
      * The write setting type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AzureFileStorageWriteSettings";
 
     /**
@@ -89,5 +83,66 @@ public final class AzureFileStorageWriteSettings extends StoreWriteSettings {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeUntypedField("copyBehavior", copyBehavior());
+        jsonWriter.writeArrayField("metadata", metadata(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileStorageWriteSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileStorageWriteSettings if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileStorageWriteSettings.
+     */
+    public static AzureFileStorageWriteSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileStorageWriteSettings deserializedAzureFileStorageWriteSettings
+                = new AzureFileStorageWriteSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAzureFileStorageWriteSettings.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedAzureFileStorageWriteSettings.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("copyBehavior".equals(fieldName)) {
+                    deserializedAzureFileStorageWriteSettings.withCopyBehavior(reader.readUntyped());
+                } else if ("metadata".equals(fieldName)) {
+                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    deserializedAzureFileStorageWriteSettings.withMetadata(metadata);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureFileStorageWriteSettings.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureFileStorageWriteSettings.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureFileStorageWriteSettings;
+        });
     }
 }

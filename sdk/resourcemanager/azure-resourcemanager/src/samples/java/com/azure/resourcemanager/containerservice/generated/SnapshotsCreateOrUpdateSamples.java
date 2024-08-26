@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerservice.generated;
 
 import com.azure.resourcemanager.containerservice.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.containerservice.models.CreationData;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +20,7 @@ public final class SnapshotsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create/Update Snapshot.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateSnapshot(com.azure.resourcemanager.AzureResourceManager azure) {

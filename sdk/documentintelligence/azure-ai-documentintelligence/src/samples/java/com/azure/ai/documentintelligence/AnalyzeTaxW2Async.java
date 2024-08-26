@@ -45,6 +45,7 @@ public class AnalyzeTaxW2Async {
                 null,
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setUrlSource(w2Url));
 
         Mono<AnalyzeResult> w2Mono = analyzeW2Poller

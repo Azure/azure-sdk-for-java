@@ -14,19 +14,21 @@ import com.azure.resourcemanager.sql.fluent.models.DatabaseColumnInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedDatabaseColumnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedDatabaseColumnsClient.
+ */
 public interface ManagedDatabaseColumnsClient {
     /**
      * List managed database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param schema Array of Get3ItemsItem.
-     * @param table Array of Get4ItemsItem.
-     * @param column Array of Get5ItemsItem.
-     * @param orderBy Array of Get6ItemsItem.
+     * @param schema The schema parameter.
+     * @param table The table parameter.
+     * @param column The column parameter.
+     * @param orderBy The orderBy parameter.
      * @param skiptoken An opaque token that identifies a starting point in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -34,21 +36,15 @@ public interface ManagedDatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseColumnInner> listByDatabaseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        List<String> schema,
-        List<String> table,
-        List<String> column,
-        List<String> orderBy,
+    PagedFlux<DatabaseColumnInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, List<String> schema, List<String> table, List<String> column, List<String> orderBy,
         String skiptoken);
 
     /**
      * List managed database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -57,14 +53,14 @@ public interface ManagedDatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseColumnInner> listByDatabaseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName);
+    PagedFlux<DatabaseColumnInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName);
 
     /**
      * List managed database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,20 +69,20 @@ public interface ManagedDatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseColumnInner> listByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName);
+    PagedIterable<DatabaseColumnInner> listByDatabase(String resourceGroupName, String managedInstanceName,
+        String databaseName);
 
     /**
      * List managed database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param schema Array of Get3ItemsItem.
-     * @param table Array of Get4ItemsItem.
-     * @param column Array of Get5ItemsItem.
-     * @param orderBy Array of Get6ItemsItem.
+     * @param schema The schema parameter.
+     * @param table The table parameter.
+     * @param column The column parameter.
+     * @param orderBy The orderBy parameter.
      * @param skiptoken An opaque token that identifies a starting point in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -95,22 +91,15 @@ public interface ManagedDatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseColumnInner> listByDatabase(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        List<String> schema,
-        List<String> table,
-        List<String> column,
-        List<String> orderBy,
-        String skiptoken,
-        Context context);
+    PagedIterable<DatabaseColumnInner> listByDatabase(String resourceGroupName, String managedInstanceName,
+        String databaseName, List<String> schema, List<String> table, List<String> column, List<String> orderBy,
+        String skiptoken, Context context);
 
     /**
      * List managed database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -122,19 +111,14 @@ public interface ManagedDatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseColumnInner> listByTableAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String filter);
+    PagedFlux<DatabaseColumnInner> listByTableAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName, String tableName, String filter);
 
     /**
      * List managed database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -145,14 +129,14 @@ public interface ManagedDatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseColumnInner> listByTableAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName);
+    PagedFlux<DatabaseColumnInner> listByTableAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName, String tableName);
 
     /**
      * List managed database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -163,14 +147,14 @@ public interface ManagedDatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseColumnInner> listByTable(
-        String resourceGroupName, String managedInstanceName, String databaseName, String schemaName, String tableName);
+    PagedIterable<DatabaseColumnInner> listByTable(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName, String tableName);
 
     /**
      * List managed database columns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -183,20 +167,14 @@ public interface ManagedDatabaseColumnsClient {
      * @return a list of database columns as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseColumnInner> listByTable(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String filter,
-        Context context);
+    PagedIterable<DatabaseColumnInner> listByTable(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName, String tableName, String filter, Context context);
 
     /**
      * Get managed database column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -208,19 +186,14 @@ public interface ManagedDatabaseColumnsClient {
      * @return managed database column along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseColumnInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName);
+    Mono<Response<DatabaseColumnInner>> getWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName, String tableName, String columnName);
 
     /**
      * Get managed database column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -232,19 +205,14 @@ public interface ManagedDatabaseColumnsClient {
      * @return managed database column on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseColumnInner> getAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName);
+    Mono<DatabaseColumnInner> getAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        String schemaName, String tableName, String columnName);
 
     /**
      * Get managed database column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -257,20 +225,14 @@ public interface ManagedDatabaseColumnsClient {
      * @return managed database column along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseColumnInner> getWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context);
+    Response<DatabaseColumnInner> getWithResponse(String resourceGroupName, String managedInstanceName,
+        String databaseName, String schemaName, String tableName, String columnName, Context context);
 
     /**
      * Get managed database column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param schemaName The name of the schema.
@@ -282,11 +244,6 @@ public interface ManagedDatabaseColumnsClient {
      * @return managed database column.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseColumnInner get(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName);
+    DatabaseColumnInner get(String resourceGroupName, String managedInstanceName, String databaseName,
+        String schemaName, String tableName, String columnName);
 }

@@ -6,33 +6,39 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Read-write endpoint of the failover group instance. */
+/**
+ * Read-write endpoint of the failover group instance.
+ */
 @Fluent
-public final class FailoverGroupReadWriteEndpoint {
+public final class FailoverGroupReadWriteEndpoint implements JsonSerializable<FailoverGroupReadWriteEndpoint> {
     /*
      * Failover policy of the read-write endpoint for the failover group. If failoverPolicy is Automatic then
      * failoverWithDataLossGracePeriodMinutes is required.
      */
-    @JsonProperty(value = "failoverPolicy", required = true)
     private ReadWriteEndpointFailoverPolicy failoverPolicy;
 
     /*
      * Grace period before failover with data loss is attempted for the read-write endpoint. If failoverPolicy is
      * Automatic then failoverWithDataLossGracePeriodMinutes is required.
      */
-    @JsonProperty(value = "failoverWithDataLossGracePeriodMinutes")
     private Integer failoverWithDataLossGracePeriodMinutes;
 
-    /** Creates an instance of FailoverGroupReadWriteEndpoint class. */
+    /**
+     * Creates an instance of FailoverGroupReadWriteEndpoint class.
+     */
     public FailoverGroupReadWriteEndpoint() {
     }
 
     /**
      * Get the failoverPolicy property: Failover policy of the read-write endpoint for the failover group. If
      * failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes is required.
-     *
+     * 
      * @return the failoverPolicy value.
      */
     public ReadWriteEndpointFailoverPolicy failoverPolicy() {
@@ -42,7 +48,7 @@ public final class FailoverGroupReadWriteEndpoint {
     /**
      * Set the failoverPolicy property: Failover policy of the read-write endpoint for the failover group. If
      * failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes is required.
-     *
+     * 
      * @param failoverPolicy the failoverPolicy value to set.
      * @return the FailoverGroupReadWriteEndpoint object itself.
      */
@@ -55,7 +61,7 @@ public final class FailoverGroupReadWriteEndpoint {
      * Get the failoverWithDataLossGracePeriodMinutes property: Grace period before failover with data loss is attempted
      * for the read-write endpoint. If failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes is
      * required.
-     *
+     * 
      * @return the failoverWithDataLossGracePeriodMinutes value.
      */
     public Integer failoverWithDataLossGracePeriodMinutes() {
@@ -66,29 +72,73 @@ public final class FailoverGroupReadWriteEndpoint {
      * Set the failoverWithDataLossGracePeriodMinutes property: Grace period before failover with data loss is attempted
      * for the read-write endpoint. If failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes is
      * required.
-     *
+     * 
      * @param failoverWithDataLossGracePeriodMinutes the failoverWithDataLossGracePeriodMinutes value to set.
      * @return the FailoverGroupReadWriteEndpoint object itself.
      */
-    public FailoverGroupReadWriteEndpoint withFailoverWithDataLossGracePeriodMinutes(
-        Integer failoverWithDataLossGracePeriodMinutes) {
+    public FailoverGroupReadWriteEndpoint
+        withFailoverWithDataLossGracePeriodMinutes(Integer failoverWithDataLossGracePeriodMinutes) {
         this.failoverWithDataLossGracePeriodMinutes = failoverWithDataLossGracePeriodMinutes;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (failoverPolicy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property failoverPolicy in model FailoverGroupReadWriteEndpoint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property failoverPolicy in model FailoverGroupReadWriteEndpoint"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FailoverGroupReadWriteEndpoint.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("failoverPolicy",
+            this.failoverPolicy == null ? null : this.failoverPolicy.toString());
+        jsonWriter.writeNumberField("failoverWithDataLossGracePeriodMinutes",
+            this.failoverWithDataLossGracePeriodMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailoverGroupReadWriteEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailoverGroupReadWriteEndpoint if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FailoverGroupReadWriteEndpoint.
+     */
+    public static FailoverGroupReadWriteEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailoverGroupReadWriteEndpoint deserializedFailoverGroupReadWriteEndpoint
+                = new FailoverGroupReadWriteEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("failoverPolicy".equals(fieldName)) {
+                    deserializedFailoverGroupReadWriteEndpoint.failoverPolicy
+                        = ReadWriteEndpointFailoverPolicy.fromString(reader.getString());
+                } else if ("failoverWithDataLossGracePeriodMinutes".equals(fieldName)) {
+                    deserializedFailoverGroupReadWriteEndpoint.failoverWithDataLossGracePeriodMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailoverGroupReadWriteEndpoint;
+        });
+    }
 }

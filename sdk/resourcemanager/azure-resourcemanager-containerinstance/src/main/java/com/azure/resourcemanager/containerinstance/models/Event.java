@@ -5,55 +5,58 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A container group or container instance event. */
+/**
+ * A container group or container instance event.
+ */
 @Immutable
-public final class Event {
+public final class Event implements JsonSerializable<Event> {
     /*
      * The count of the event.
      */
-    @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
 
     /*
      * The date-time of the earliest logged event.
      */
-    @JsonProperty(value = "firstTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime firstTimestamp;
 
     /*
      * The date-time of the latest logged event.
      */
-    @JsonProperty(value = "lastTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastTimestamp;
 
     /*
      * The event name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The event message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * The event type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of Event class. */
+    /**
+     * Creates an instance of Event class.
+     */
     public Event() {
     }
 
     /**
      * Get the count property: The count of the event.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -62,7 +65,7 @@ public final class Event {
 
     /**
      * Get the firstTimestamp property: The date-time of the earliest logged event.
-     *
+     * 
      * @return the firstTimestamp value.
      */
     public OffsetDateTime firstTimestamp() {
@@ -71,7 +74,7 @@ public final class Event {
 
     /**
      * Get the lastTimestamp property: The date-time of the latest logged event.
-     *
+     * 
      * @return the lastTimestamp value.
      */
     public OffsetDateTime lastTimestamp() {
@@ -80,7 +83,7 @@ public final class Event {
 
     /**
      * Get the name property: The event name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +92,7 @@ public final class Event {
 
     /**
      * Get the message property: The event message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -98,7 +101,7 @@ public final class Event {
 
     /**
      * Get the type property: The event type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -107,9 +110,56 @@ public final class Event {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Event from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Event if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Event.
+     */
+    public static Event fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Event deserializedEvent = new Event();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedEvent.count = reader.getNullable(JsonReader::getInt);
+                } else if ("firstTimestamp".equals(fieldName)) {
+                    deserializedEvent.firstTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastTimestamp".equals(fieldName)) {
+                    deserializedEvent.lastTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedEvent.name = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedEvent.message = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEvent.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEvent;
+        });
     }
 }
