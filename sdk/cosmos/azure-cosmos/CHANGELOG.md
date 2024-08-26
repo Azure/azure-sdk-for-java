@@ -1,15 +1,12 @@
 ## Release History
 
-### 4.64.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.63.2 (2024-08-23)
 
 #### Bugs Fixed
 * Fixed a direct buffer memory leak due to not explicitly stopping the partition recovery flow in per-partition circuit breaker. - See [PR 41486](https://github.com/Azure/azure-sdk-for-java/pull/41486)
 
 #### Other Changes
+* Fixed an issue to avoid transient `IllegalArgumentException` due to duplicate json properties for the `uniqueKeyPolicy` property. - See [PR 41608](https://github.com/Azure/azure-sdk-for-java/pull/41608)
 
 ### 4.63.1 (2024-08-12)
 
