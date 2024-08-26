@@ -17,6 +17,7 @@ import com.azure.resourcemanager.appservice.models.DeploymentBuildStatus;
 import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppConfig;
+import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.FunctionsDeployment;
 import com.azure.resourcemanager.appservice.models.FunctionsDeploymentStorage;
@@ -209,9 +210,8 @@ public class OneDeployTests extends AppServiceTest {
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName, functionAppName);
 
         // test one deploy
+        File zipFile = new File(OneDeployTests.class.getResource("/java-functions.zip").getPath());
         if (!isPlaybackMode()) {
-            File zipFile = new File(OneDeployTests.class.getResource("/java-functions.zip").getPath());
-
             if (pushDeploy) {
                 KuduDeploymentResult deploymentResult = functionApp.pushDeploy(DeployType.ZIP, zipFile, null);
 
@@ -227,6 +227,8 @@ public class OneDeployTests extends AppServiceTest {
 
             assertFunctionAppRunning(functionApp);
         }
+
+        // Flex does not support slot
     }
 
     @DoNotRecord(skipInPlayback = true)
@@ -243,15 +245,14 @@ public class OneDeployTests extends AppServiceTest {
                 .withNewResourceGroup(rgName)
                 // zipDeploy does not work for LinuxConsumptionPlan
                 // Use "WEBSITE_RUN_FROM_PACKAGE" in AppSettings for LinuxConsumptionPlan
-                .withNewLinuxAppServicePlan(PricingTier.BASIC_B1)
+                .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_11)
                 .withHttpsOnly(true)
                 .create();
 
+        File zipFile = new File(OneDeployTests.class.getResource("/java-functions.zip").getPath());
         // test deploy (currently it would call "zipDeploy", as one deploy is not supported for non-Flex consumption plan)
         if (!isPlaybackMode()) {
-            File zipFile = new File(OneDeployTests.class.getResource("/java-functions.zip").getPath());
-
             if (pushDeploy) {
                 KuduDeploymentResult deploymentResult = functionApp.pushDeploy(DeployType.ZIP, zipFile, null);
 
@@ -266,6 +267,27 @@ public class OneDeployTests extends AppServiceTest {
             }
 
             assertFunctionAppRunning(functionApp);
+        }
+
+        String slotName = generateRandomResourceName("slot", 10);
+        FunctionDeploymentSlot slot = functionApp.deploymentSlots()
+            .define(slotName)
+            .withConfigurationFromParent()
+            .create();
+
+        if (!isPlaybackMode()) {
+            if (pushDeploy) {
+                KuduDeploymentResult deploymentResult = slot.pushDeploy(DeployType.ZIP, zipFile, null);
+
+                String deploymentId = deploymentResult.deploymentId();
+                Assertions.assertNotNull(deploymentId);
+
+                // waitForRuntimeSuccess(functionApp, deploymentId);
+                CsmDeploymentStatus deploymentStatus = functionApp.getDeploymentStatus(deploymentId);
+                Assertions.assertNotNull(deploymentStatus.deploymentId());
+            } else {
+                slot.deploy(DeployType.ZIP, zipFile);
+            }
         }
     }
 
