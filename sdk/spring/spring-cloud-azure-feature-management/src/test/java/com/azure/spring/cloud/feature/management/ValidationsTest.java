@@ -54,18 +54,18 @@ public class ValidationsTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ValidationsTest.class);
 
-    private static final ObjectMapper objectMapper = JsonMapper.builder()
+    private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
-    private static final String testCaseFolderPath = "validations-tests";
+    private static final String TEST_CASE_FOLDER_PATH = "validations-tests";
 
     private final String inputsUser = "user";
 
     private final String inputsGroups = "groups";
 
-    private static final String sampleFileNameFilter = "sample";
+    private static final String SAMPLE_FILE_NAME_FILTER = "sample";
 
-    private static final String testsFileNameFilter = "tests";
+    private static final String TESTS_FILE_NAME_FILTER = "tests";
 
     @BeforeEach
     public void setup() {
@@ -90,7 +90,7 @@ public class ValidationsTest {
     }
 
     private static File[] getFileList(String fileNameFilter) {
-        final URL folderUrl = Thread.currentThread().getContextClassLoader().getResource(testCaseFolderPath);
+        final URL folderUrl = Thread.currentThread().getContextClassLoader().getResource(TEST_CASE_FOLDER_PATH);
         assert folderUrl != null;
 
         final File folderFile = new File(folderUrl.getFile());
@@ -106,13 +106,13 @@ public class ValidationsTest {
         final String jsonString = Files.readString(testFile.toPath());
         final CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class,
             ValidationTestCase.class);
-        return objectMapper.readValue(jsonString, typeReference);
+        return OBJECT_MAPPER.readValue(jsonString, typeReference);
     }
 
     @SuppressWarnings("unchecked")
     private static LinkedHashMap<String, Object> readConfigurationFromFile(File sampleFile) throws IOException {
         final String jsonString = Files.readString(sampleFile.toPath());
-        final LinkedHashMap<String, Object> configurations = objectMapper.readValue(jsonString, new TypeReference<>() {
+        final LinkedHashMap<String, Object> configurations = OBJECT_MAPPER.readValue(jsonString, new TypeReference<>() {
         });
         final Object featureManagementSection = configurations.get("feature_management");
         if (featureManagementSection.getClass().isAssignableFrom(LinkedHashMap.class)) {
@@ -123,23 +123,23 @@ public class ValidationsTest {
 
     static Stream<Arguments> testProvider() throws IOException {
         List<Arguments> arguments = new ArrayList<>();
-        File[] files = getFileList(testsFileNameFilter);
-        
-        final File[] sampleFiles = getFileList(sampleFileNameFilter);
+        File[] files = getFileList(TESTS_FILE_NAME_FILTER);
+
+        final File[] sampleFiles = getFileList(SAMPLE_FILE_NAME_FILTER);
         List<FeatureManagementProperties> properties = new ArrayList<>();
         for (File sampleFile : sampleFiles) {
             final FeatureManagementProperties managementProperties = new FeatureManagementProperties();
             managementProperties.putAll(readConfigurationFromFile(sampleFile));
             properties.add(managementProperties);
         }
-        
-        for(int i = 0; i<files.length; i++) {
+
+        for (int i = 0; i < files.length; i++) {
             if (files[i].getName().contains(("TargetingFilter.tests"))) {
                 continue; // TODO(mametcal). Not run the test case until we release the little endian fix
             }
             arguments.add(Arguments.of(files[i].getName(), files[i], properties.get(i)));
         }
-        
+
         return arguments.stream();
     }
 
