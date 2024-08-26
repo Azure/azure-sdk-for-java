@@ -22,7 +22,7 @@ public final class PrivateEndPointConnectionsListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"xjqqozxtnowv\",\"privateEndpoint\":{\"id\":\"y\"},\"privateLinkServiceConnectionState\":{\"status\":\"syym\",\"description\":\"ueeokvqwmwvdm\",\"actionsRequired\":\"amqfeqsbjyg\"}},\"name\":\"ke\",\"type\":\"tqaomihrtbksd\",\"etag\":\"pxwficzzoxnl\",\"id\":\"xndsiqxzaolzko\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"pmbtmcp\",\"privateEndpoint\":{\"id\":\"p\"},\"privateLinkServiceConnectionState\":{\"status\":\"xamsgfvuffd\",\"description\":\"k\",\"actionsRequired\":\"kmd\"}},\"name\":\"rgmjpckefw\",\"type\":\"u\",\"etag\":\"a\",\"id\":\"ysyprskjii\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class PrivateEndPointConnectionsListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateEndpointConnectionResource> response = manager.privateEndPointConnections()
-            .listByFactory("ptqxksi", "njfhajgizzrlxn", com.azure.core.util.Context.NONE);
+            .listByFactory("uyoydzafknnl", "sfbpjyvuhy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xndsiqxzaolzko", response.iterator().next().id());
-        Assertions.assertEquals("syym",
+        Assertions.assertEquals("ysyprskjii", response.iterator().next().id());
+        Assertions.assertEquals("xamsgfvuffd",
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ueeokvqwmwvdm",
+        Assertions.assertEquals("k",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("amqfeqsbjyg",
+        Assertions.assertEquals("kmd",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

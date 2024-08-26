@@ -4,7 +4,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>identity-test-container</artifactId>
-    <version>1.0-SNAPSHOT</version> <!-- {x-version-update;com.azure:identity-test-container;current} -->
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:identity-test-container;current} -->
     <packaging>jar</packaging>
 
     <name>Azure Identity Java Test Container</name>

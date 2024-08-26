@@ -7,8 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.ManagedVirtualNetwork;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Managed Virtual Network resource type.
@@ -18,25 +21,21 @@ public final class ManagedVirtualNetworkResourceInner extends SubResource {
     /*
      * Managed Virtual Network properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private ManagedVirtualNetwork properties;
 
     /*
      * The resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Etag identifies change in the resource.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -117,4 +116,51 @@ public final class ManagedVirtualNetworkResourceInner extends SubResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedVirtualNetworkResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedVirtualNetworkResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedVirtualNetworkResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedVirtualNetworkResourceInner.
+     */
+    public static ManagedVirtualNetworkResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedVirtualNetworkResourceInner deserializedManagedVirtualNetworkResourceInner
+                = new ManagedVirtualNetworkResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedVirtualNetworkResourceInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedVirtualNetworkResourceInner.properties = ManagedVirtualNetwork.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedVirtualNetworkResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedVirtualNetworkResourceInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedManagedVirtualNetworkResourceInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedVirtualNetworkResourceInner;
+        });
+    }
 }

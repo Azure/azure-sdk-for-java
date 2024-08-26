@@ -61,27 +61,23 @@ public final class EnvironmentContainerImpl
     }
 
     public EnvironmentContainer create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentContainers()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public EnvironmentContainer create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentContainers()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    EnvironmentContainerImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
+    EnvironmentContainerImpl(String name,
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new EnvironmentContainerInner();
         this.serviceManager = serviceManager;
         this.name = name;
@@ -92,52 +88,43 @@ public final class EnvironmentContainerImpl
     }
 
     public EnvironmentContainer apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentContainers()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public EnvironmentContainer apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentContainers()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentContainers()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    EnvironmentContainerImpl(
-        EnvironmentContainerInner innerObject,
+    EnvironmentContainerImpl(EnvironmentContainerInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "environments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "environments");
     }
 
     public EnvironmentContainer refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentContainers()
-                .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentContainers()
+            .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EnvironmentContainer refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentContainers()
-                .getWithResponse(resourceGroupName, workspaceName, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentContainers()
+            .getWithResponse(resourceGroupName, workspaceName, name, context)
+            .getValue();
         return this;
     }
 

@@ -27,8 +27,7 @@ public final class GlobalParametersDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.globalParameters()
-            .deleteWithResponse("lff", "fjskndwywbptvym", "mpdcddbe", com.azure.core.util.Context.NONE);
+        manager.globalParameters().deleteWithResponse("g", "xrifyr", "prgiaeqcgdl", com.azure.core.util.Context.NONE);
 
     }
 }

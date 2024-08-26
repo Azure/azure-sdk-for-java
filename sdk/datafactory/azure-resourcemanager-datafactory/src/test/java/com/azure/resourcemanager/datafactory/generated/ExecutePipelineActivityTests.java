@@ -22,64 +22,52 @@ public final class ExecutePipelineActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutePipelineActivity model = BinaryData.fromString(
-            "{\"type\":\"ExecutePipeline\",\"policy\":{\"secureInput\":false,\"\":{\"fxx\":\"datawf\"}},\"typeProperties\":{\"pipeline\":{\"referenceName\":\"oyisk\",\"name\":\"asxak\"},\"parameters\":{\"kgccldxuweweeeg\":\"datawjtnfaum\",\"hbcrib\":\"datazwsnryfaprhfc\",\"nfrhbkn\":\"datadszuxhaqlywty\",\"xhfg\":\"dataagpnmcqud\"},\"waitOnCompletion\":false},\"name\":\"egm\",\"description\":\"ebzoujhijlduuvxk\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"ordzwbskf\",\"dependencyConditions\":[\"Succeeded\",\"Failed\",\"Completed\",\"Succeeded\"],\"\":{\"pmowlsrxytev\":\"dataojzlia\",\"nzzhyl\":\"dataqxpmfhehtrpql\"}},{\"activity\":\"zuxqqrmck\",\"dependencyConditions\":[\"Succeeded\"],\"\":{\"zg\":\"dataeutbym\"}},{\"activity\":\"zhbnbnjpiecnriv\",\"dependencyConditions\":[\"Succeeded\",\"Succeeded\"],\"\":{\"uvpcjyh\":\"datahsuhkik\",\"anrirrnqloomsy\":\"dataznmj\",\"gdvknqui\":\"datayqgaska\",\"jzborwzpfgks\":\"dataipgvfchzcpv\"}},{\"activity\":\"vbrxlsbgl\",\"dependencyConditions\":[\"Failed\",\"Failed\",\"Completed\",\"Failed\"],\"\":{\"cabsmrfx\":\"dataneopxdbhcfswpdar\"}}],\"userProperties\":[{\"name\":\"vzgwvmhbiziij\",\"value\":\"dataseexdboatvsfyxdf\"},{\"name\":\"qrnawnqy\",\"value\":\"datagfxacojca\"},{\"name\":\"axor\",\"value\":\"dataj\"},{\"name\":\"oyngxogqvwchyn\",\"value\":\"datadtnaptwmawypk\"}],\"\":{\"gvvizaygtbmluyyc\":\"dataidoqvcjspjpmt\",\"uijpay\":\"datazvqpnjqpwxf\",\"i\":\"datalnz\",\"n\":\"dataqopwmbdleegwlh\"}}")
+            "{\"type\":\"ExecutePipeline\",\"policy\":{\"secureInput\":true,\"\":{\"atpdxpo\":\"datatqvbahi\",\"chnhj\":\"dataogvpsmx\",\"mlplqgp\":\"dataaqpwxuyik\",\"zb\":\"datakynkkezkvnlvwts\"}},\"typeProperties\":{\"pipeline\":{\"referenceName\":\"gvezhimx\",\"name\":\"qwlxkyoysyutn\"},\"parameters\":{\"xmyblway\":\"datazkovtjnmcaprxh\",\"wyfy\":\"datapaggkrumpu\"},\"waitOnCompletion\":false},\"name\":\"boipxh\",\"description\":\"icwvhjdrvj\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"ooytilsmise\",\"dependencyConditions\":[\"Skipped\",\"Succeeded\",\"Failed\"],\"\":{\"crzgluqacebcn\":\"dataqu\",\"aumjuruspflvgl\":\"datazh\",\"ekbrqg\":\"datawkgcpfz\"}},{\"activity\":\"vxwq\",\"dependencyConditions\":[\"Completed\",\"Completed\"],\"\":{\"ob\":\"datamfobtml\",\"cwhebyczweg\":\"datauoyownygbra\",\"razqxxvksqifr\":\"datazd\",\"cmegoll\":\"datamidvturdgl\"}}],\"userProperties\":[{\"name\":\"pryhz\",\"value\":\"datawxuizakejom\"}],\"\":{\"bqii\":\"dataxjhrzgnfqqlgqez\",\"krarzkzatznvye\":\"dataeoace\"}}")
             .toObject(ExecutePipelineActivity.class);
-        Assertions.assertEquals("egm", model.name());
-        Assertions.assertEquals("ebzoujhijlduuvxk", model.description());
-        Assertions.assertEquals(ActivityState.INACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SUCCEEDED, model.onInactiveMarkAs());
-        Assertions.assertEquals("ordzwbskf", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("vzgwvmhbiziij", model.userProperties().get(0).name());
-        Assertions.assertEquals(false, model.policy().secureInput());
-        Assertions.assertEquals("oyisk", model.pipeline().referenceName());
-        Assertions.assertEquals("asxak", model.pipeline().name());
+        Assertions.assertEquals("boipxh", model.name());
+        Assertions.assertEquals("icwvhjdrvj", model.description());
+        Assertions.assertEquals(ActivityState.ACTIVE, model.state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
+        Assertions.assertEquals("ooytilsmise", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("pryhz", model.userProperties().get(0).name());
+        Assertions.assertEquals(true, model.policy().secureInput());
+        Assertions.assertEquals("gvezhimx", model.pipeline().referenceName());
+        Assertions.assertEquals("qwlxkyoysyutn", model.pipeline().name());
         Assertions.assertEquals(false, model.waitOnCompletion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecutePipelineActivity model = new ExecutePipelineActivity().withName("egm")
-            .withDescription("ebzoujhijlduuvxk")
-            .withState(ActivityState.INACTIVE)
-            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SUCCEEDED)
+        ExecutePipelineActivity model = new ExecutePipelineActivity().withName("boipxh")
+            .withDescription("icwvhjdrvj")
+            .withState(ActivityState.ACTIVE)
+            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
             .withDependsOn(Arrays.asList(
-                new ActivityDependency().withActivity("ordzwbskf")
-                    .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED, DependencyCondition.FAILED,
-                        DependencyCondition.COMPLETED, DependencyCondition.SUCCEEDED))
+                new ActivityDependency().withActivity("ooytilsmise")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED, DependencyCondition.SUCCEEDED,
+                        DependencyCondition.FAILED))
                     .withAdditionalProperties(mapOf()),
-                new ActivityDependency().withActivity("zuxqqrmck")
-                    .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED))
-                    .withAdditionalProperties(mapOf()),
-                new ActivityDependency().withActivity("zhbnbnjpiecnriv")
+                new ActivityDependency().withActivity("vxwq")
                     .withDependencyConditions(
-                        Arrays.asList(DependencyCondition.SUCCEEDED, DependencyCondition.SUCCEEDED))
-                    .withAdditionalProperties(mapOf()),
-                new ActivityDependency().withActivity("vbrxlsbgl")
-                    .withDependencyConditions(Arrays.asList(DependencyCondition.FAILED, DependencyCondition.FAILED,
-                        DependencyCondition.COMPLETED, DependencyCondition.FAILED))
+                        Arrays.asList(DependencyCondition.COMPLETED, DependencyCondition.COMPLETED))
                     .withAdditionalProperties(mapOf())))
-            .withUserProperties(
-                Arrays.asList(new UserProperty().withName("vzgwvmhbiziij").withValue("dataseexdboatvsfyxdf"),
-                    new UserProperty().withName("qrnawnqy").withValue("datagfxacojca"),
-                    new UserProperty().withName("axor").withValue("dataj"),
-                    new UserProperty().withName("oyngxogqvwchyn").withValue("datadtnaptwmawypk")))
-            .withPolicy(new ExecutePipelineActivityPolicy().withSecureInput(false).withAdditionalProperties(mapOf()))
-            .withPipeline(new PipelineReference().withReferenceName("oyisk").withName("asxak"))
-            .withParameters(mapOf("kgccldxuweweeeg", "datawjtnfaum", "hbcrib", "datazwsnryfaprhfc", "nfrhbkn",
-                "datadszuxhaqlywty", "xhfg", "dataagpnmcqud"))
+            .withUserProperties(Arrays.asList(new UserProperty().withName("pryhz").withValue("datawxuizakejom")))
+            .withPolicy(new ExecutePipelineActivityPolicy().withSecureInput(true).withAdditionalProperties(mapOf()))
+            .withPipeline(new PipelineReference().withReferenceName("gvezhimx").withName("qwlxkyoysyutn"))
+            .withParameters(mapOf("xmyblway", "datazkovtjnmcaprxh", "wyfy", "datapaggkrumpu"))
             .withWaitOnCompletion(false);
         model = BinaryData.fromObject(model).toObject(ExecutePipelineActivity.class);
-        Assertions.assertEquals("egm", model.name());
-        Assertions.assertEquals("ebzoujhijlduuvxk", model.description());
-        Assertions.assertEquals(ActivityState.INACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SUCCEEDED, model.onInactiveMarkAs());
-        Assertions.assertEquals("ordzwbskf", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("vzgwvmhbiziij", model.userProperties().get(0).name());
-        Assertions.assertEquals(false, model.policy().secureInput());
-        Assertions.assertEquals("oyisk", model.pipeline().referenceName());
-        Assertions.assertEquals("asxak", model.pipeline().name());
+        Assertions.assertEquals("boipxh", model.name());
+        Assertions.assertEquals("icwvhjdrvj", model.description());
+        Assertions.assertEquals(ActivityState.ACTIVE, model.state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
+        Assertions.assertEquals("ooytilsmise", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("pryhz", model.userProperties().get(0).name());
+        Assertions.assertEquals(true, model.policy().secureInput());
+        Assertions.assertEquals("gvezhimx", model.pipeline().referenceName());
+        Assertions.assertEquals("qwlxkyoysyutn", model.pipeline().name());
         Assertions.assertEquals(false, model.waitOnCompletion());
     }
 

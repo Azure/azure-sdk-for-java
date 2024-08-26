@@ -6,40 +6,42 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.SelfHostedIntegrationRuntimeNodeInner;
 import com.azure.resourcemanager.datafactory.fluent.models.SelfHostedIntegrationRuntimeStatusTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Self-hosted integration runtime status.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = SelfHostedIntegrationRuntimeStatus.class,
-    visible = true)
-@JsonTypeName("SelfHosted")
 @Fluent
 public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
     /*
      * Type of integration runtime.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private IntegrationRuntimeType type = IntegrationRuntimeType.SELF_HOSTED;
 
     /*
      * Self-hosted integration runtime status type properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties
         = new SelfHostedIntegrationRuntimeStatusTypeProperties();
+
+    /*
+     * The data factory name which the integration runtime belong to.
+     */
+    private String dataFactoryName;
+
+    /*
+     * The state of integration runtime.
+     */
+    private IntegrationRuntimeState state;
 
     /**
      * Creates an instance of SelfHostedIntegrationRuntimeStatus class.
@@ -64,6 +66,26 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
      */
     private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * Get the dataFactoryName property: The data factory name which the integration runtime belong to.
+     * 
+     * @return the dataFactoryName value.
+     */
+    @Override
+    public String dataFactoryName() {
+        return this.dataFactoryName;
+    }
+
+    /**
+     * Get the state property: The state of integration runtime.
+     * 
+     * @return the state value.
+     */
+    @Override
+    public IntegrationRuntimeState state() {
+        return this.state;
     }
 
     /**
@@ -273,4 +295,63 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SelfHostedIntegrationRuntimeStatus.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SelfHostedIntegrationRuntimeStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SelfHostedIntegrationRuntimeStatus if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SelfHostedIntegrationRuntimeStatus.
+     */
+    public static SelfHostedIntegrationRuntimeStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SelfHostedIntegrationRuntimeStatus deserializedSelfHostedIntegrationRuntimeStatus
+                = new SelfHostedIntegrationRuntimeStatus();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataFactoryName".equals(fieldName)) {
+                    deserializedSelfHostedIntegrationRuntimeStatus.dataFactoryName = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedSelfHostedIntegrationRuntimeStatus.state
+                        = IntegrationRuntimeState.fromString(reader.getString());
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedSelfHostedIntegrationRuntimeStatus.innerTypeProperties
+                        = SelfHostedIntegrationRuntimeStatusTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSelfHostedIntegrationRuntimeStatus.type
+                        = IntegrationRuntimeType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSelfHostedIntegrationRuntimeStatus.withAdditionalProperties(additionalProperties);
+
+            return deserializedSelfHostedIntegrationRuntimeStatus;
+        });
+    }
 }

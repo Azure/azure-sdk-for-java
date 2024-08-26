@@ -6,9 +6,14 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.JobBaseInner;
+import com.azure.resourcemanager.machinelearning.models.EmailNotificationEnableType;
 import com.azure.resourcemanager.machinelearning.models.IdentityConfiguration;
 import com.azure.resourcemanager.machinelearning.models.JobBaseProperties;
 import com.azure.resourcemanager.machinelearning.models.JobService;
+import com.azure.resourcemanager.machinelearning.models.Nodes;
+import com.azure.resourcemanager.machinelearning.models.NotificationSetting;
+import com.azure.resourcemanager.machinelearning.models.Webhook;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -16,61 +21,86 @@ import org.junit.jupiter.api.Assertions;
 public final class JobBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobBaseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"jobType\":\"JobBaseProperties\",\"componentId\":\"fvjlboxqvkjlmx\",\"computeId\":\"mdy\",\"displayName\":\"dwdigumb\",\"experimentName\":\"aauzzptjazysd\",\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"isArchived\":false,\"services\":{\"y\":{\"endpoint\":\"aiqyuvvfo\",\"errorMessage\":\"p\",\"jobServiceType\":\"qyikvy\",\"port\":1053518025,\"properties\":{},\"status\":\"vluwmncsttij\"}},\"status\":\"NotResponding\",\"description\":\"ekrsgs\",\"properties\":{\"dgkynscliqhzvhxn\":\"huzqgn\",\"tppn\":\"omtkub\",\"frbbc\":\"dxzxhi\"},\"tags\":{\"ykvgtrdcnifmz\":\"agtltdhlfkqoj\"}},\"id\":\"dymbrny\",\"name\":\"u\",\"type\":\"m\"}")
-                .toObject(JobBaseInner.class);
-        Assertions.assertEquals("ekrsgs", model.properties().description());
-        Assertions.assertEquals("huzqgn", model.properties().properties().get("dgkynscliqhzvhxn"));
-        Assertions.assertEquals("agtltdhlfkqoj", model.properties().tags().get("ykvgtrdcnifmz"));
-        Assertions.assertEquals("fvjlboxqvkjlmx", model.properties().componentId());
-        Assertions.assertEquals("mdy", model.properties().computeId());
-        Assertions.assertEquals("dwdigumb", model.properties().displayName());
-        Assertions.assertEquals("aauzzptjazysd", model.properties().experimentName());
+        JobBaseInner model = BinaryData.fromString(
+            "{\"properties\":{\"jobType\":\"JobBaseProperties\",\"displayName\":\"agxnvhycvdimw\",\"status\":\"CancelRequested\",\"experimentName\":\"gzgy\",\"services\":{\"auzpjlx\":{\"jobServiceType\":\"rw\",\"port\":1907482272,\"endpoint\":\"ye\",\"status\":\"kdhmeottawjyosx\",\"errorMessage\":\"hnhjtfvpndpmi\",\"properties\":{\"l\":\"nwynudq\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}},\"abnsmj\":{\"jobServiceType\":\"huxiqhzlraymez\",\"port\":161523803,\"endpoint\":\"ihmxrfdsajredn\",\"status\":\"yshtuwgmev\",\"errorMessage\":\"fpwzyifrkgwltx\",\"properties\":{\"r\":\"pxgzdyimsfayor\",\"oge\":\"vk\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}},\"f\":{\"jobServiceType\":\"ynq\",\"port\":1693738620,\"endpoint\":\"qs\",\"status\":\"vwjtqpkevmyltjc\",\"errorMessage\":\"pxklurccl\",\"properties\":{\"gpxvkqmaupxvpi\":\"annnoytzposewx\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}}},\"computeId\":\"fyzyzeyuub\",\"isArchived\":false,\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"componentId\":\"l\",\"notificationSetting\":{\"emails\":[\"ith\",\"ygvfltgvdihoyn\"],\"emailOn\":[\"JobCancelled\",\"JobFailed\",\"JobCompleted\",\"JobFailed\"],\"webhooks\":{\"ucpcunnuzdqumoen\":{\"webhookType\":\"Webhook\",\"eventType\":\"cy\"},\"hqhsknd\":{\"webhookType\":\"Webhook\",\"eventType\":\"naie\"},\"anniyopetxivcnr\":{\"webhookType\":\"Webhook\",\"eventType\":\"lqkaadlknwf\"}}},\"description\":\"xnucaephblkwqp\",\"tags\":{\"uzqymtuowog\":\"bqsdtcjbctvi\",\"vbrzcdb\":\"gitsqh\"},\"properties\":{\"rdjyibqb\":\"zndscxmxeatkdbmw\",\"alfihcjmobcancd\":\"aomhjrmkuhmaxl\",\"vaknokzwjj\":\"xxqcwgaxf\",\"tixldzyyfytpqs\":\"r\"}},\"id\":\"ymmpujivy\",\"name\":\"lkjuvsmbmslzoyov\",\"type\":\"zdbpqv\"}")
+            .toObject(JobBaseInner.class);
+        Assertions.assertEquals("xnucaephblkwqp", model.properties().description());
+        Assertions.assertEquals("bqsdtcjbctvi", model.properties().tags().get("uzqymtuowog"));
+        Assertions.assertEquals("zndscxmxeatkdbmw", model.properties().properties().get("rdjyibqb"));
+        Assertions.assertEquals("agxnvhycvdimw", model.properties().displayName());
+        Assertions.assertEquals("gzgy", model.properties().experimentName());
+        Assertions.assertEquals("rw", model.properties().services().get("auzpjlx").jobServiceType());
+        Assertions.assertEquals(1907482272, model.properties().services().get("auzpjlx").port());
+        Assertions.assertEquals("ye", model.properties().services().get("auzpjlx").endpoint());
+        Assertions.assertEquals("nwynudq", model.properties().services().get("auzpjlx").properties().get("l"));
+        Assertions.assertEquals("fyzyzeyuub", model.properties().computeId());
         Assertions.assertEquals(false, model.properties().isArchived());
-        Assertions.assertEquals("aiqyuvvfo", model.properties().services().get("y").endpoint());
-        Assertions.assertEquals("qyikvy", model.properties().services().get("y").jobServiceType());
-        Assertions.assertEquals(1053518025, model.properties().services().get("y").port());
+        Assertions.assertEquals("l", model.properties().componentId());
+        Assertions.assertEquals("ith", model.properties().notificationSetting().emails().get(0));
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_CANCELLED,
+            model.properties().notificationSetting().emailOn().get(0));
+        Assertions.assertEquals("cy",
+            model.properties().notificationSetting().webhooks().get("ucpcunnuzdqumoen").eventType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobBaseInner model =
-            new JobBaseInner()
-                .withProperties(
-                    new JobBaseProperties()
-                        .withDescription("ekrsgs")
-                        .withProperties(mapOf("dgkynscliqhzvhxn", "huzqgn", "tppn", "omtkub", "frbbc", "dxzxhi"))
-                        .withTags(mapOf("ykvgtrdcnifmz", "agtltdhlfkqoj"))
-                        .withComponentId("fvjlboxqvkjlmx")
-                        .withComputeId("mdy")
-                        .withDisplayName("dwdigumb")
-                        .withExperimentName("aauzzptjazysd")
-                        .withIdentity(new IdentityConfiguration())
-                        .withIsArchived(false)
-                        .withServices(
-                            mapOf(
-                                "y",
-                                new JobService()
-                                    .withEndpoint("aiqyuvvfo")
-                                    .withJobServiceType("qyikvy")
-                                    .withPort(1053518025)
-                                    .withProperties(mapOf()))));
+        JobBaseInner model = new JobBaseInner().withProperties(new JobBaseProperties().withDescription("xnucaephblkwqp")
+            .withTags(mapOf("uzqymtuowog", "bqsdtcjbctvi", "vbrzcdb", "gitsqh"))
+            .withProperties(mapOf("rdjyibqb", "zndscxmxeatkdbmw", "alfihcjmobcancd", "aomhjrmkuhmaxl", "vaknokzwjj",
+                "xxqcwgaxf", "tixldzyyfytpqs", "r"))
+            .withDisplayName("agxnvhycvdimw")
+            .withExperimentName("gzgy")
+            .withServices(mapOf("auzpjlx",
+                new JobService().withJobServiceType("rw")
+                    .withPort(1907482272)
+                    .withEndpoint("ye")
+                    .withProperties(mapOf("l", "nwynudq"))
+                    .withNodes(new Nodes()),
+                "abnsmj",
+                new JobService().withJobServiceType("huxiqhzlraymez")
+                    .withPort(161523803)
+                    .withEndpoint("ihmxrfdsajredn")
+                    .withProperties(mapOf("r", "pxgzdyimsfayor", "oge", "vk"))
+                    .withNodes(new Nodes()),
+                "f",
+                new JobService().withJobServiceType("ynq")
+                    .withPort(1693738620)
+                    .withEndpoint("qs")
+                    .withProperties(mapOf("gpxvkqmaupxvpi", "annnoytzposewx"))
+                    .withNodes(new Nodes())))
+            .withComputeId("fyzyzeyuub")
+            .withIsArchived(false)
+            .withIdentity(new IdentityConfiguration())
+            .withComponentId("l")
+            .withNotificationSetting(new NotificationSetting().withEmails(Arrays.asList("ith", "ygvfltgvdihoyn"))
+                .withEmailOn(
+                    Arrays.asList(EmailNotificationEnableType.JOB_CANCELLED, EmailNotificationEnableType.JOB_FAILED,
+                        EmailNotificationEnableType.JOB_COMPLETED, EmailNotificationEnableType.JOB_FAILED))
+                .withWebhooks(mapOf("ucpcunnuzdqumoen", new Webhook().withEventType("cy"), "hqhsknd",
+                    new Webhook().withEventType("naie"), "anniyopetxivcnr",
+                    new Webhook().withEventType("lqkaadlknwf")))));
         model = BinaryData.fromObject(model).toObject(JobBaseInner.class);
-        Assertions.assertEquals("ekrsgs", model.properties().description());
-        Assertions.assertEquals("huzqgn", model.properties().properties().get("dgkynscliqhzvhxn"));
-        Assertions.assertEquals("agtltdhlfkqoj", model.properties().tags().get("ykvgtrdcnifmz"));
-        Assertions.assertEquals("fvjlboxqvkjlmx", model.properties().componentId());
-        Assertions.assertEquals("mdy", model.properties().computeId());
-        Assertions.assertEquals("dwdigumb", model.properties().displayName());
-        Assertions.assertEquals("aauzzptjazysd", model.properties().experimentName());
+        Assertions.assertEquals("xnucaephblkwqp", model.properties().description());
+        Assertions.assertEquals("bqsdtcjbctvi", model.properties().tags().get("uzqymtuowog"));
+        Assertions.assertEquals("zndscxmxeatkdbmw", model.properties().properties().get("rdjyibqb"));
+        Assertions.assertEquals("agxnvhycvdimw", model.properties().displayName());
+        Assertions.assertEquals("gzgy", model.properties().experimentName());
+        Assertions.assertEquals("rw", model.properties().services().get("auzpjlx").jobServiceType());
+        Assertions.assertEquals(1907482272, model.properties().services().get("auzpjlx").port());
+        Assertions.assertEquals("ye", model.properties().services().get("auzpjlx").endpoint());
+        Assertions.assertEquals("nwynudq", model.properties().services().get("auzpjlx").properties().get("l"));
+        Assertions.assertEquals("fyzyzeyuub", model.properties().computeId());
         Assertions.assertEquals(false, model.properties().isArchived());
-        Assertions.assertEquals("aiqyuvvfo", model.properties().services().get("y").endpoint());
-        Assertions.assertEquals("qyikvy", model.properties().services().get("y").jobServiceType());
-        Assertions.assertEquals(1053518025, model.properties().services().get("y").port());
+        Assertions.assertEquals("l", model.properties().componentId());
+        Assertions.assertEquals("ith", model.properties().notificationSetting().emails().get(0));
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_CANCELLED,
+            model.properties().notificationSetting().emailOn().get(0));
+        Assertions.assertEquals("cy",
+            model.properties().notificationSetting().webhooks().get("ucpcunnuzdqumoen").eventType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

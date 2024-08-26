@@ -5,72 +5,66 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Details about an operation related to metrics.
  */
 @Fluent
-public final class OperationMetricSpecification {
+public final class OperationMetricSpecification implements JsonSerializable<OperationMetricSpecification> {
     /*
      * The name of the metric.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Localized display name of the metric.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description of the metric.
      */
-    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * The unit that the metric is measured in.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * The type of metric aggregation.
      */
-    @JsonProperty(value = "aggregationType")
     private String aggregationType;
 
     /*
      * Whether or not the service is using regional MDM accounts.
      */
-    @JsonProperty(value = "enableRegionalMdmAccount")
     private String enableRegionalMdmAccount;
 
     /*
      * The name of the MDM account.
      */
-    @JsonProperty(value = "sourceMdmAccount")
     private String sourceMdmAccount;
 
     /*
      * The name of the MDM namespace.
      */
-    @JsonProperty(value = "sourceMdmNamespace")
     private String sourceMdmNamespace;
 
     /*
      * Defines how often data for metrics becomes available.
      */
-    @JsonProperty(value = "availabilities")
     private List<OperationMetricAvailability> availabilities;
 
     /*
      * Defines the metric dimension.
      */
-    @JsonProperty(value = "dimensions")
     private List<OperationMetricDimension> dimensions;
 
     /**
@@ -291,5 +285,73 @@ public final class OperationMetricSpecification {
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("aggregationType", this.aggregationType);
+        jsonWriter.writeStringField("enableRegionalMdmAccount", this.enableRegionalMdmAccount);
+        jsonWriter.writeStringField("sourceMdmAccount", this.sourceMdmAccount);
+        jsonWriter.writeStringField("sourceMdmNamespace", this.sourceMdmNamespace);
+        jsonWriter.writeArrayField("availabilities", this.availabilities,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationMetricSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationMetricSpecification if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationMetricSpecification.
+     */
+    public static OperationMetricSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationMetricSpecification deserializedOperationMetricSpecification = new OperationMetricSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationMetricSpecification.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedOperationMetricSpecification.displayName = reader.getString();
+                } else if ("displayDescription".equals(fieldName)) {
+                    deserializedOperationMetricSpecification.displayDescription = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedOperationMetricSpecification.unit = reader.getString();
+                } else if ("aggregationType".equals(fieldName)) {
+                    deserializedOperationMetricSpecification.aggregationType = reader.getString();
+                } else if ("enableRegionalMdmAccount".equals(fieldName)) {
+                    deserializedOperationMetricSpecification.enableRegionalMdmAccount = reader.getString();
+                } else if ("sourceMdmAccount".equals(fieldName)) {
+                    deserializedOperationMetricSpecification.sourceMdmAccount = reader.getString();
+                } else if ("sourceMdmNamespace".equals(fieldName)) {
+                    deserializedOperationMetricSpecification.sourceMdmNamespace = reader.getString();
+                } else if ("availabilities".equals(fieldName)) {
+                    List<OperationMetricAvailability> availabilities
+                        = reader.readArray(reader1 -> OperationMetricAvailability.fromJson(reader1));
+                    deserializedOperationMetricSpecification.availabilities = availabilities;
+                } else if ("dimensions".equals(fieldName)) {
+                    List<OperationMetricDimension> dimensions
+                        = reader.readArray(reader1 -> OperationMetricDimension.fromJson(reader1));
+                    deserializedOperationMetricSpecification.dimensions = dimensions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationMetricSpecification;
+        });
     }
 }

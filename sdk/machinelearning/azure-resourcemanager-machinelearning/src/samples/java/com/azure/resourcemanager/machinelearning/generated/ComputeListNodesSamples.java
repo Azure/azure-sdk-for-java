@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for Compute ListNodes. */
+/**
+ * Samples for Compute ListNodes.
+ */
 public final class ComputeListNodesSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/listNodes.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/listNodes.json
      */
     /**
      * Sample code: Get compute nodes information for a compute.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getComputeNodesInformationForACompute(

@@ -15,8 +15,7 @@ public final class VirtualMachineSizeListResultImpl implements VirtualMachineSiz
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    VirtualMachineSizeListResultImpl(
-        VirtualMachineSizeListResultInner innerObject,
+    VirtualMachineSizeListResultImpl(VirtualMachineSizeListResultInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

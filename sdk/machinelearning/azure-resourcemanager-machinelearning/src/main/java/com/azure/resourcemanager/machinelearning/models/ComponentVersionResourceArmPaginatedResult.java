@@ -5,54 +5,39 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.machinelearning.fluent.models.ComponentVersionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A paginated list of ComponentVersion entities. */
+/**
+ * A paginated list of ComponentVersion entities.
+ */
 @Fluent
-public final class ComponentVersionResourceArmPaginatedResult {
-    /*
-     * The link to the next page of ComponentVersion objects. If null, there are no additional pages.
-     */
-    @JsonProperty(value = "nextLink")
-    private String nextLink;
-
+public final class ComponentVersionResourceArmPaginatedResult
+    implements JsonSerializable<ComponentVersionResourceArmPaginatedResult> {
     /*
      * An array of objects of type ComponentVersion.
      */
-    @JsonProperty(value = "value")
     private List<ComponentVersionInner> value;
 
-    /** Creates an instance of ComponentVersionResourceArmPaginatedResult class. */
+    /*
+     * The link to the next page of ComponentVersion objects. If null, there are no additional pages.
+     */
+    private String nextLink;
+
+    /**
+     * Creates an instance of ComponentVersionResourceArmPaginatedResult class.
+     */
     public ComponentVersionResourceArmPaginatedResult() {
     }
 
     /**
-     * Get the nextLink property: The link to the next page of ComponentVersion objects. If null, there are no
-     * additional pages.
-     *
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The link to the next page of ComponentVersion objects. If null, there are no
-     * additional pages.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the ComponentVersionResourceArmPaginatedResult object itself.
-     */
-    public ComponentVersionResourceArmPaginatedResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Get the value property: An array of objects of type ComponentVersion.
-     *
+     * 
      * @return the value value.
      */
     public List<ComponentVersionInner> value() {
@@ -61,7 +46,7 @@ public final class ComponentVersionResourceArmPaginatedResult {
 
     /**
      * Set the value property: An array of objects of type ComponentVersion.
-     *
+     * 
      * @param value the value value to set.
      * @return the ComponentVersionResourceArmPaginatedResult object itself.
      */
@@ -71,13 +56,77 @@ public final class ComponentVersionResourceArmPaginatedResult {
     }
 
     /**
+     * Get the nextLink property: The link to the next page of ComponentVersion objects. If null, there are no
+     * additional pages.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link to the next page of ComponentVersion objects. If null, there are no
+     * additional pages.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the ComponentVersionResourceArmPaginatedResult object itself.
+     */
+    public ComponentVersionResourceArmPaginatedResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComponentVersionResourceArmPaginatedResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComponentVersionResourceArmPaginatedResult if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComponentVersionResourceArmPaginatedResult.
+     */
+    public static ComponentVersionResourceArmPaginatedResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComponentVersionResourceArmPaginatedResult deserializedComponentVersionResourceArmPaginatedResult
+                = new ComponentVersionResourceArmPaginatedResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ComponentVersionInner> value
+                        = reader.readArray(reader1 -> ComponentVersionInner.fromJson(reader1));
+                    deserializedComponentVersionResourceArmPaginatedResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedComponentVersionResourceArmPaginatedResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComponentVersionResourceArmPaginatedResult;
+        });
     }
 }

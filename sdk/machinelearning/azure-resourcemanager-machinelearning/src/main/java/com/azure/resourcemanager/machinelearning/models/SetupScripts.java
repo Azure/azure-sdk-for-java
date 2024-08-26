@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of customized scripts to execute for setting up the cluster. */
+/**
+ * Details of customized scripts to execute for setting up the cluster.
+ */
 @Fluent
-public final class SetupScripts {
+public final class SetupScripts implements JsonSerializable<SetupScripts> {
     /*
      * Customized setup scripts
      */
-    @JsonProperty(value = "scripts")
     private ScriptsToExecute scripts;
 
-    /** Creates an instance of SetupScripts class. */
+    /**
+     * Creates an instance of SetupScripts class.
+     */
     public SetupScripts() {
     }
 
     /**
      * Get the scripts property: Customized setup scripts.
-     *
+     * 
      * @return the scripts value.
      */
     public ScriptsToExecute scripts() {
@@ -31,7 +38,7 @@ public final class SetupScripts {
 
     /**
      * Set the scripts property: Customized setup scripts.
-     *
+     * 
      * @param scripts the scripts value to set.
      * @return the SetupScripts object itself.
      */
@@ -42,12 +49,48 @@ public final class SetupScripts {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scripts() != null) {
             scripts().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("scripts", this.scripts);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SetupScripts from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SetupScripts if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SetupScripts.
+     */
+    public static SetupScripts fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SetupScripts deserializedSetupScripts = new SetupScripts();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scripts".equals(fieldName)) {
+                    deserializedSetupScripts.scripts = ScriptsToExecute.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSetupScripts;
+        });
     }
 }

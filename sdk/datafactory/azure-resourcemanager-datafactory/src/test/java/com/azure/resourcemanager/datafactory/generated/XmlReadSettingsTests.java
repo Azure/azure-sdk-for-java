@@ -14,7 +14,7 @@ public final class XmlReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         XmlReadSettings model = BinaryData.fromString(
-            "{\"type\":\"XmlReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"jnpatazfyxegkly\":\"datayzrpqehrdldvxcjj\",\"xm\":\"datad\",\"w\":\"dataoqmamascqqtq\",\"mdwi\":\"datatnlyrp\"}},\"validationMode\":\"datasucfor\",\"detectDataType\":\"dataufiphnroiz\",\"namespaces\":\"dataknybfsoayatqk\",\"namespacePrefixes\":\"datauxpldzkvbebdj\",\"\":{\"ccjd\":\"dataggdpjjkox\",\"djhqqlbwid\":\"dataoyxcozzog\"}}")
+            "{\"type\":\"XmlReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"byvsfqu\":\"datanadykmvou\",\"xqbknoxjhedwh\":\"datar\",\"rpajbiig\":\"datamwb\"}},\"validationMode\":\"datarezpuzkwi\",\"detectDataType\":\"datafin\",\"namespaces\":\"datasdtlpshxjhans\",\"namespacePrefixes\":\"dataoalcnkgqs\",\"\":{\"ksstaljiqlxjjlt\":\"datay\",\"anddlvccuvc\":\"dataymnaaqhsc\",\"jgdjvyclas\":\"dataaflsb\"}}")
             .toObject(XmlReadSettings.class);
     }
 
@@ -23,10 +23,10 @@ public final class XmlReadSettingsTests {
         XmlReadSettings model = new XmlReadSettings()
             .withCompressionProperties(
                 new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings")))
-            .withValidationMode("datasucfor")
-            .withDetectDataType("dataufiphnroiz")
-            .withNamespaces("dataknybfsoayatqk")
-            .withNamespacePrefixes("datauxpldzkvbebdj");
+            .withValidationMode("datarezpuzkwi")
+            .withDetectDataType("datafin")
+            .withNamespaces("datasdtlpshxjhans")
+            .withNamespacePrefixes("dataoalcnkgqs");
         model = BinaryData.fromObject(model).toObject(XmlReadSettings.class);
     }
 

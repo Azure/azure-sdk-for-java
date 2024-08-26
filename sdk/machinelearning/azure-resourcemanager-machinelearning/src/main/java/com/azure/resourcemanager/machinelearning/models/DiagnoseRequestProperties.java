@@ -5,83 +5,72 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The DiagnoseRequestProperties model. */
+/**
+ * The DiagnoseRequestProperties model.
+ */
 @Fluent
-public final class DiagnoseRequestProperties {
+public final class DiagnoseRequestProperties implements JsonSerializable<DiagnoseRequestProperties> {
     /*
      * Setting for diagnosing user defined routing
      */
-    @JsonProperty(value = "udr")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> udr;
 
     /*
      * Setting for diagnosing network security group
      */
-    @JsonProperty(value = "nsg")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> nsg;
 
     /*
      * Setting for diagnosing resource lock
      */
-    @JsonProperty(value = "resourceLock")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> resourceLock;
 
     /*
      * Setting for diagnosing dns resolution
      */
-    @JsonProperty(value = "dnsResolution")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> dnsResolution;
 
     /*
      * Setting for diagnosing dependent storage account
      */
-    @JsonProperty(value = "storageAccount")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> storageAccount;
 
     /*
      * Setting for diagnosing dependent key vault
      */
-    @JsonProperty(value = "keyVault")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> keyVault;
 
     /*
      * Setting for diagnosing dependent container registry
      */
-    @JsonProperty(value = "containerRegistry")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> containerRegistry;
 
     /*
      * Setting for diagnosing dependent application insights
      */
-    @JsonProperty(value = "applicationInsights")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> applicationInsights;
 
     /*
      * Setting for diagnosing unclassified category of problems
      */
-    @JsonProperty(value = "others")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> others;
 
-    /** Creates an instance of DiagnoseRequestProperties class. */
+    /**
+     * Creates an instance of DiagnoseRequestProperties class.
+     */
     public DiagnoseRequestProperties() {
     }
 
     /**
      * Get the udr property: Setting for diagnosing user defined routing.
-     *
+     * 
      * @return the udr value.
      */
     public Map<String, Object> udr() {
@@ -90,7 +79,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Set the udr property: Setting for diagnosing user defined routing.
-     *
+     * 
      * @param udr the udr value to set.
      * @return the DiagnoseRequestProperties object itself.
      */
@@ -101,7 +90,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Get the nsg property: Setting for diagnosing network security group.
-     *
+     * 
      * @return the nsg value.
      */
     public Map<String, Object> nsg() {
@@ -110,7 +99,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Set the nsg property: Setting for diagnosing network security group.
-     *
+     * 
      * @param nsg the nsg value to set.
      * @return the DiagnoseRequestProperties object itself.
      */
@@ -121,7 +110,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Get the resourceLock property: Setting for diagnosing resource lock.
-     *
+     * 
      * @return the resourceLock value.
      */
     public Map<String, Object> resourceLock() {
@@ -130,7 +119,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Set the resourceLock property: Setting for diagnosing resource lock.
-     *
+     * 
      * @param resourceLock the resourceLock value to set.
      * @return the DiagnoseRequestProperties object itself.
      */
@@ -141,7 +130,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Get the dnsResolution property: Setting for diagnosing dns resolution.
-     *
+     * 
      * @return the dnsResolution value.
      */
     public Map<String, Object> dnsResolution() {
@@ -150,7 +139,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Set the dnsResolution property: Setting for diagnosing dns resolution.
-     *
+     * 
      * @param dnsResolution the dnsResolution value to set.
      * @return the DiagnoseRequestProperties object itself.
      */
@@ -161,7 +150,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Get the storageAccount property: Setting for diagnosing dependent storage account.
-     *
+     * 
      * @return the storageAccount value.
      */
     public Map<String, Object> storageAccount() {
@@ -170,7 +159,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Set the storageAccount property: Setting for diagnosing dependent storage account.
-     *
+     * 
      * @param storageAccount the storageAccount value to set.
      * @return the DiagnoseRequestProperties object itself.
      */
@@ -181,7 +170,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Get the keyVault property: Setting for diagnosing dependent key vault.
-     *
+     * 
      * @return the keyVault value.
      */
     public Map<String, Object> keyVault() {
@@ -190,7 +179,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Set the keyVault property: Setting for diagnosing dependent key vault.
-     *
+     * 
      * @param keyVault the keyVault value to set.
      * @return the DiagnoseRequestProperties object itself.
      */
@@ -201,7 +190,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Get the containerRegistry property: Setting for diagnosing dependent container registry.
-     *
+     * 
      * @return the containerRegistry value.
      */
     public Map<String, Object> containerRegistry() {
@@ -210,7 +199,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Set the containerRegistry property: Setting for diagnosing dependent container registry.
-     *
+     * 
      * @param containerRegistry the containerRegistry value to set.
      * @return the DiagnoseRequestProperties object itself.
      */
@@ -221,7 +210,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Get the applicationInsights property: Setting for diagnosing dependent application insights.
-     *
+     * 
      * @return the applicationInsights value.
      */
     public Map<String, Object> applicationInsights() {
@@ -230,7 +219,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Set the applicationInsights property: Setting for diagnosing dependent application insights.
-     *
+     * 
      * @param applicationInsights the applicationInsights value to set.
      * @return the DiagnoseRequestProperties object itself.
      */
@@ -241,7 +230,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Get the others property: Setting for diagnosing unclassified category of problems.
-     *
+     * 
      * @return the others value.
      */
     public Map<String, Object> others() {
@@ -250,7 +239,7 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Set the others property: Setting for diagnosing unclassified category of problems.
-     *
+     * 
      * @param others the others value to set.
      * @return the DiagnoseRequestProperties object itself.
      */
@@ -261,9 +250,82 @@ public final class DiagnoseRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("udr", this.udr, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("nsg", this.nsg, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("resourceLock", this.resourceLock, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("dnsResolution", this.dnsResolution,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("storageAccount", this.storageAccount,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("keyVault", this.keyVault, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("containerRegistry", this.containerRegistry,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("applicationInsights", this.applicationInsights,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("others", this.others, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnoseRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnoseRequestProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnoseRequestProperties.
+     */
+    public static DiagnoseRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnoseRequestProperties deserializedDiagnoseRequestProperties = new DiagnoseRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("udr".equals(fieldName)) {
+                    Map<String, Object> udr = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDiagnoseRequestProperties.udr = udr;
+                } else if ("nsg".equals(fieldName)) {
+                    Map<String, Object> nsg = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDiagnoseRequestProperties.nsg = nsg;
+                } else if ("resourceLock".equals(fieldName)) {
+                    Map<String, Object> resourceLock = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDiagnoseRequestProperties.resourceLock = resourceLock;
+                } else if ("dnsResolution".equals(fieldName)) {
+                    Map<String, Object> dnsResolution = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDiagnoseRequestProperties.dnsResolution = dnsResolution;
+                } else if ("storageAccount".equals(fieldName)) {
+                    Map<String, Object> storageAccount = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDiagnoseRequestProperties.storageAccount = storageAccount;
+                } else if ("keyVault".equals(fieldName)) {
+                    Map<String, Object> keyVault = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDiagnoseRequestProperties.keyVault = keyVault;
+                } else if ("containerRegistry".equals(fieldName)) {
+                    Map<String, Object> containerRegistry = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDiagnoseRequestProperties.containerRegistry = containerRegistry;
+                } else if ("applicationInsights".equals(fieldName)) {
+                    Map<String, Object> applicationInsights = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDiagnoseRequestProperties.applicationInsights = applicationInsights;
+                } else if ("others".equals(fieldName)) {
+                    Map<String, Object> others = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDiagnoseRequestProperties.others = others;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnoseRequestProperties;
+        });
     }
 }

@@ -10,16 +10,16 @@ import com.azure.resourcemanager.datafactory.fluent.models.PhoenixDatasetTypePro
 public final class PhoenixDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PhoenixDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"datahwbdpsesboynpy\",\"table\":\"dataorrvk\",\"schema\":\"datafctaneti\"}")
-            .toObject(PhoenixDatasetTypeProperties.class);
+        PhoenixDatasetTypeProperties model
+            = BinaryData.fromString("{\"tableName\":\"datambdqra\",\"table\":\"datad\",\"schema\":\"dataluobbva\"}")
+                .toObject(PhoenixDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PhoenixDatasetTypeProperties model = new PhoenixDatasetTypeProperties().withTableName("datahwbdpsesboynpy")
-            .withTable("dataorrvk")
-            .withSchema("datafctaneti");
+        PhoenixDatasetTypeProperties model = new PhoenixDatasetTypeProperties().withTableName("datambdqra")
+            .withTable("datad")
+            .withSchema("dataluobbva");
         model = BinaryData.fromObject(model).toObject(PhoenixDatasetTypeProperties.class);
     }
 }

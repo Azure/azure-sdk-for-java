@@ -13,16 +13,16 @@ public final class CopySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CopySource model = BinaryData.fromString(
-            "{\"type\":\"CopySource\",\"sourceRetryCount\":\"dataqyirupsuyq\",\"sourceRetryWait\":\"dataxnavxzpyaptex\",\"maxConcurrentConnections\":\"datalqhewhcchexc\",\"disableMetricsCollection\":\"datamy\",\"\":{\"wolfmfazxwcaic\":\"dataggmit\",\"liikkosqpl\":\"datapjttzfswohd\",\"uukydi\":\"dataegemtnbke\",\"jfayftohdlp\":\"datasncrzbtlrbzqtuhg\"}}")
+            "{\"type\":\"CopySource\",\"sourceRetryCount\":\"databz\",\"sourceRetryWait\":\"datasspwwe\",\"maxConcurrentConnections\":\"dataotbrepe\",\"disableMetricsCollection\":\"datalie\",\"\":{\"sfzgcscoot\":\"datayar\"}}")
             .toObject(CopySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CopySource model = new CopySource().withSourceRetryCount("dataqyirupsuyq")
-            .withSourceRetryWait("dataxnavxzpyaptex")
-            .withMaxConcurrentConnections("datalqhewhcchexc")
-            .withDisableMetricsCollection("datamy")
+        CopySource model = new CopySource().withSourceRetryCount("databz")
+            .withSourceRetryWait("datasspwwe")
+            .withMaxConcurrentConnections("dataotbrepe")
+            .withDisableMetricsCollection("datalie")
             .withAdditionalProperties(mapOf("type", "CopySource"));
         model = BinaryData.fromObject(model).toObject(CopySource.class);
     }

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.hdinsight.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateLinkResources. */
+/**
+ * Resource collection API of PrivateLinkResources.
+ */
 public interface PrivateLinkResources {
     /**
      * Lists the private link resources in a HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -20,12 +22,12 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private link resources along with {@link Response}.
      */
-    Response<PrivateLinkResourceListResult> listByClusterWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<PrivateLinkResourceListResult> listByClusterWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Lists the private link resources in a HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface PrivateLinkResources {
 
     /**
      * Gets the specific private link resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateLinkResourceName The name of the private link resource.
@@ -47,12 +49,12 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific private link resource along with {@link Response}.
      */
-    Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String clusterName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String clusterName,
+        String privateLinkResourceName, Context context);
 
     /**
      * Gets the specific private link resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateLinkResourceName The name of the private link resource.
