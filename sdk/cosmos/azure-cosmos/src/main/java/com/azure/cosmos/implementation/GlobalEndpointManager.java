@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Endpoint region cache manager implementation. Supports cross region address routing based on
@@ -188,7 +189,7 @@ public class GlobalEndpointManager implements AutoCloseable {
             if (forceRefresh) {
                 Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                     this.defaultEndpoint,
-                    new ArrayList<>(this.connectionPolicy.getPreferredRegions()),
+                    new ArrayList<>(getEffectivePreferredReadRegions()),
                     this::getDatabaseAccountAsync);
 
                 return databaseAccountObs.map(dbAccount -> {
@@ -220,7 +221,9 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     public int getPreferredLocationCount() {
-        return this.connectionPolicy.getPreferredRegions() != null ? this.connectionPolicy.getPreferredRegions().size() : 0;
+        List<String> effectivePreferredReadRegions = getEffectivePreferredReadRegions();
+
+        return effectivePreferredReadRegions != null ? effectivePreferredReadRegions.size() : 0;
     }
 
     private Mono<Void> refreshLocationPrivateAsync(DatabaseAccount databaseAccount) {
@@ -240,7 +243,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                             this.defaultEndpoint,
-                            new ArrayList<>(this.connectionPolicy.getPreferredRegions()),
+                            new ArrayList<>(getEffectivePreferredReadRegions()),
                             this::getDatabaseAccountAsync);
 
                     return databaseAccountObs.map(dbAccount -> {
@@ -300,7 +303,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             }
 
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
-                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.connectionPolicy.getPreferredRegions()),
+                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(getEffectivePreferredReadRegions()),
                                     this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {
@@ -339,5 +342,21 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public ConnectionPolicy getConnectionPolicy() {
         return this.connectionPolicy;
+    }
+
+    private List<String> getEffectivePreferredReadRegions() {
+        if (this.connectionPolicy.getPreferredRegions() != null && !this.connectionPolicy.getPreferredRegions().isEmpty()) {
+            return this.connectionPolicy.getPreferredRegions();
+        }
+
+        if (this.locationCache.getReadEndpoints() != null) {
+            return this.locationCache
+                .getReadEndpoints()
+                .stream()
+                .map(locationEndpoint -> this.getRegionName(locationEndpoint, OperationType.Read))
+                .collect(Collectors.toList());
+        }
+
+        return Collections.emptyList();
     }
 }

@@ -594,12 +594,23 @@ public class LocationCache {
                 // If client can use multiple write locations, preferred locations list should be used for determining
                 // both read and write endpoints order.
 
-                for (String location: currentLocationInfo.preferredLocations) {
-                    Utils.ValueHolder<URI> endpoint = new Utils.ValueHolder<>();
-                    if (Utils.tryGetValue(endpointsByLocation, location, endpoint)) {
-                        if (this.isEndpointUnavailable(endpoint.v, expectedAvailableOperation)) {
-                            unavailableEndpoints.add(endpoint.v);
-                        } else {
+                if (currentLocationInfo.preferredLocations != null && !currentLocationInfo.preferredLocations.isEmpty()) {
+                    for (String location: currentLocationInfo.preferredLocations) {
+                        Utils.ValueHolder<URI> endpoint = new Utils.ValueHolder<>();
+                        if (Utils.tryGetValue(endpointsByLocation, location, endpoint)) {
+                            if (this.isEndpointUnavailable(endpoint.v, expectedAvailableOperation)) {
+                                unavailableEndpoints.add(endpoint.v);
+                            } else {
+                                endpoints.add(endpoint.v);
+                            }
+                        }
+                    }
+                } else {
+                    for (String location : orderedLocations) {
+
+                        Utils.ValueHolder<URI> endpoint = Utils.ValueHolder.initialize(null);
+                        if (!Strings.isNullOrEmpty(location) && // location is empty during manual failover
+                            Utils.tryGetValue(endpointsByLocation, location, endpoint)) {
                             endpoints.add(endpoint.v);
                         }
                     }
