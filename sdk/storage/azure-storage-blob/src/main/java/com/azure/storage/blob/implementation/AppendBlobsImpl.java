@@ -28,10 +28,10 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUr
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsSealHeaders;
+import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
-import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import java.nio.ByteBuffer;
@@ -74,7 +74,7 @@ public final class AppendBlobsImpl {
     public interface AppendBlobsService {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<AppendBlobsCreateHeaders, Void>> create(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @HeaderParam("x-ms-blob-type") String blobType, @QueryParam("timeout") Integer timeout,
@@ -101,7 +101,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> createNoCustomHeaders(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @HeaderParam("x-ms-blob-type") String blobType, @QueryParam("timeout") Integer timeout,
@@ -128,7 +128,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<AppendBlobsAppendBlockHeaders, Void>> appendBlock(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -151,7 +151,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> appendBlockNoCustomHeaders(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -174,7 +174,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<AppendBlobsAppendBlockHeaders, Void>> appendBlock(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -197,7 +197,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> appendBlockNoCustomHeaders(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -220,7 +220,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<AppendBlobsAppendBlockFromUrlHeaders, Void>> appendBlockFromUrl(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-copy-source") String sourceUrl,
@@ -249,7 +249,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> appendBlockFromUrlNoCustomHeaders(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @HeaderParam("x-ms-copy-source") String sourceUrl,
@@ -278,7 +278,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<AppendBlobsSealHeaders, Void>> seal(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -292,7 +292,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> sealNoCustomHeaders(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
@@ -338,7 +338,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -450,7 +450,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -560,7 +560,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -610,7 +610,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -659,7 +659,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -771,7 +771,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -884,7 +884,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -965,7 +965,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1045,7 +1045,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1095,7 +1095,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1145,7 +1145,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1226,7 +1226,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1306,7 +1306,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1387,7 +1387,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1467,7 +1467,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1517,7 +1517,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1567,7 +1567,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1648,7 +1648,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -1739,7 +1739,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1841,7 +1841,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -1941,7 +1941,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2007,7 +2007,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2072,7 +2072,7 @@ public final class AppendBlobsImpl {
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2173,7 +2173,7 @@ public final class AppendBlobsImpl {
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2249,7 +2249,7 @@ public final class AppendBlobsImpl {
      * is not, the request will fail with the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition
      * Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2292,7 +2292,7 @@ public final class AppendBlobsImpl {
      * Failed).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
@@ -2334,7 +2334,7 @@ public final class AppendBlobsImpl {
      * is not, the request will fail with the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition
      * Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2370,7 +2370,7 @@ public final class AppendBlobsImpl {
      * Failed).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -2405,7 +2405,7 @@ public final class AppendBlobsImpl {
      * is not, the request will fail with the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition
      * Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -2448,7 +2448,7 @@ public final class AppendBlobsImpl {
      * Failed).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */

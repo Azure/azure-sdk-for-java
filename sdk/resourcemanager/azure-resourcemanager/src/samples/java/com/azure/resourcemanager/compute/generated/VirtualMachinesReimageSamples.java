@@ -13,7 +13,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineReimageParameters;
 public final class VirtualMachinesReimageSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Reimage.json
      */
     /**
@@ -32,7 +32,7 @@ public final class VirtualMachinesReimageSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_Reimage_NonEphemeralVMs.json
      */
     /**
