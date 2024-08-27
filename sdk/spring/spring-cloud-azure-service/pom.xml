@@ -132,13 +132,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.19</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.19</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -150,7 +150,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.1.11</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>6.1.12</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

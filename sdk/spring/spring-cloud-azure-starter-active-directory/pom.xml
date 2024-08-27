@@ -93,12 +93,12 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
-      <version>6.3.1</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-web;external_dependency} -->
+      <version>6.3.3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>6.3.1</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
+      <version>6.3.3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
