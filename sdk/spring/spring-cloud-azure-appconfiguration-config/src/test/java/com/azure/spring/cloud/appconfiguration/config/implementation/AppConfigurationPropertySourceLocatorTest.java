@@ -194,7 +194,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         properties.getStores().get(0).setMonitoring(monitoring);
 
-        when(replicaClientMock.getWatchKey(Mockito.eq(watchKey), Mockito.anyString()))
+        when(replicaClientMock.getWatchKey(Mockito.eq(watchKey), Mockito.anyString(), Mockito.anyBoolean()))
             .thenReturn(TestUtils.createItem("", watchKey, "0", EMPTY_LABEL, ""));
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
@@ -213,7 +213,8 @@ public class AppConfigurationPropertySourceLocatorTest {
             };
             assertEquals(expectedSourceNames.length, sources.size());
             assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
-            verify(replicaClientMock, times(1)).getWatchKey(Mockito.eq(watchKey), Mockito.anyString());
+            verify(replicaClientMock, times(1)).getWatchKey(Mockito.eq(watchKey), Mockito.anyString(),
+                Mockito.anyBoolean());
         }
     }
 
@@ -234,7 +235,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         properties.getStores().get(0).setMonitoring(monitoring);
 
-        when(replicaClientMock.getWatchKey(Mockito.eq(watchKey), Mockito.anyString()))
+        when(replicaClientMock.getWatchKey(Mockito.eq(watchKey), Mockito.anyString(), Mockito.anyBoolean()))
             .thenReturn(null);
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
@@ -253,7 +254,8 @@ public class AppConfigurationPropertySourceLocatorTest {
             };
             assertEquals(expectedSourceNames.length, sources.size());
             assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
-            verify(replicaClientMock, times(1)).getWatchKey(Mockito.eq(watchKey), Mockito.anyString());
+            verify(replicaClientMock, times(1)).getWatchKey(Mockito.eq(watchKey), Mockito.anyString(),
+                Mockito.anyBoolean());
         }
     }
 
@@ -262,7 +264,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(devEnvironment.getActiveProfiles()).thenReturn(new String[] { PROFILE_NAME_1 });
         when(devEnvironment.getPropertySources()).thenReturn(sources);
         when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true))).thenReturn(Arrays.asList(replicaClientMock));
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(List.of());
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(List.of());
         when(featureFlagClientMock.getProperties()).thenReturn(Map.of());
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
@@ -288,7 +290,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(multiEnvironment.getActiveProfiles()).thenReturn(new String[] { PROFILE_NAME_1, PROFILE_NAME_2 });
         when(multiEnvironment.getPropertySources()).thenReturn(sources);
         when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true))).thenReturn(Arrays.asList(replicaClientMock));
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(List.of());
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(List.of());
         when(featureFlagClientMock.getProperties()).thenReturn(Map.of());
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
@@ -323,7 +325,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         properties.getStores().get(0).setFeatureFlags(featureFlagStore);
 
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(List.of(featureFlag));
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(List.of(featureFlag));
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
             null, stores, replicaLookUpMock, featureFlagClientMock);
@@ -360,7 +362,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         properties.getStores().get(0).setFeatureFlags(featureFlagStore);
         properties.getStores().get(0).setMonitoring(monitoring);
 
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(List.of(featureFlag));
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(List.of(featureFlag));
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
             null, stores, replicaLookUpMock, featureFlagClientMock);
@@ -423,7 +425,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
             null, List.of(configStoreMock), replicaLookUpMock, featureFlagClientMock);
 
-        when(replicaClientMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
+        when(replicaClientMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyBoolean())).thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
         assertEquals("Failed to generate property sources for " + TEST_STORE_NAME, e.getMessage());
         verify(configStoreMock, times(1)).isFailFast();
@@ -432,7 +434,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     @Test
     public void refreshThrowException() throws IllegalArgumentException {
         setupEmptyEnvironment();
-        when(replicaClientMock.listSettings(any())).thenThrow(new RuntimeException());
+        when(replicaClientMock.listSettings(any(), Mockito.anyBoolean())).thenThrow(new RuntimeException());
 
         AppConfigurationPropertySourceLocator.STARTUP.set(false);
 
@@ -499,7 +501,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     @Test
     public void awaitOnError() {
         when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true))).thenReturn(Arrays.asList(replicaClientMock));
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(List.of());
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(List.of());
         when(appPropertiesMock.getPrekillTime()).thenReturn(5);
 
         ConfigurableEnvironment env = Mockito.mock(ConfigurableEnvironment.class);
@@ -526,7 +528,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMockError.isFailFast()).thenReturn(true);
         when(configStoreMockError.getEndpoint()).thenReturn("");
 
-        when(replicaClientMock.listSettings(Mockito.any())).thenThrow(new NullPointerException(""));
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenThrow(new NullPointerException(""));
         when(appPropertiesMock.getPrekillTime()).thenReturn(-60);
         when(appPropertiesMock.getStartDate()).thenReturn(Instant.now());
 
@@ -561,6 +563,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(emptyEnvironment.getActiveProfiles()).thenReturn(new String[] {});
         when(emptyEnvironment.getPropertySources()).thenReturn(sources);
         when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true))).thenReturn(Arrays.asList(replicaClientMock));
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(List.of());
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(List.of());
     }
 }
