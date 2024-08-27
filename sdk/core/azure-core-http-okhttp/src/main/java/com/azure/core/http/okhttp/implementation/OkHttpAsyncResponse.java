@@ -82,15 +82,6 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
     }
 
     @Override
-    public Mono<InputStream> getBodyAsInputStream() {
-        if (responseBody == null) {
-            return Mono.empty();
-        }
-
-        return Mono.using(responseBody::byteStream, Mono::just, ignored -> this.close(), false);
-    }
-
-    @Override
     public void writeBodyTo(WritableByteChannel channel) throws IOException {
         if (responseBody != null) {
             try {
