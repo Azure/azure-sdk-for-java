@@ -17,7 +17,6 @@ import com.azure.storage.queue.models.QueueStorageException;
 
 import java.util.Base64;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
@@ -99,23 +98,7 @@ public class ModelHelper {
      * @param internal The internal exception.
      * @return The public exception.
      */
-    public static Throwable mapToQueueStorageException(Throwable internal) {
-        if (internal instanceof QueueStorageExceptionInternal) {
-            QueueStorageExceptionInternal internalException = (QueueStorageExceptionInternal) internal;
-            return new QueueStorageException(internalException.getMessage(), internalException.getResponse(),
-                internalException.getValue());
-        }
-
-        return internal;
-    }
-
-    public static <T> Supplier<T> wrapCallWithExceptionMapping(Supplier<T> serviceCall) {
-        return () -> {
-            try {
-                return serviceCall.get();
-            } catch (QueueStorageExceptionInternal internal) {
-                throw (QueueStorageException) mapToQueueStorageException(internal);
-            }
-        };
+    public static QueueStorageException mapToQueueStorageException(QueueStorageExceptionInternal internal) {
+        return new QueueStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
 }
