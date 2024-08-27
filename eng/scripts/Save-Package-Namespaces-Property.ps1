@@ -21,17 +21,17 @@ com.azure.
 .PARAMETER ArtifactsList
 The list of artifacts to gather namespaces for, this is only done for libraries that are
 producing docs.
--ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId, skipPublishDocMs | Where-Object -Not "skipPublishDocMs")
+-ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json)
 #>
 [CmdletBinding()]
 Param (
     [Parameter(Mandatory = $True)]
     [string] $ArtifactStagingDirectory,
-    # -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId, skipPublishDocMs | Where-Object -Not "skipPublishDocMs")
     [Parameter(Mandatory=$true)]
-    [AllowNull()]
     [array] $ArtifactsList
 )
+
+$ArtifactsList = $ArtifactsList | Where-Object -Not "skipPublishDocMs"
 
 . (Join-Path $PSScriptRoot ".." common scripts common.ps1)
 

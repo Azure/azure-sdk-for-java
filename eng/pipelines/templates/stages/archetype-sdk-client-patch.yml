@@ -165,7 +165,7 @@ extends:
                 filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-Namespaces-Property.ps1
                 arguments: >
                   -ArtifactStagingDirectory $(Build.ArtifactStagingDirectory)
-                  -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId, skipPublishDocMs | Where-Object -Not "skipPublishDocMs")
+                  -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json)
                 pwsh: true
                 workingDirectory: $(Pipeline.Workspace)
               displayName: Update package properties with namespaces
