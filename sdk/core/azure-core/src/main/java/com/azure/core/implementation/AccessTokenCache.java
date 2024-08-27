@@ -228,7 +228,7 @@ public final class AccessTokenCache {
             try {
                 if (tokenRefresh != null) {
                     AccessToken token = tokenRefresh.get();
-                    buildTokenRefreshLog(LogLevel.INFORMATIONAL, cachedToken, now).log("Acquired a new access token.");
+                    buildTokenRefreshLog(LogLevel.VERBOSE, cachedToken, now).log("Acquired a new access token.");
                     OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now().plus(REFRESH_DELAY);
                     AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(token, nextTokenRefreshTime);
                     this.cacheInfo.set(updatedInfo);
@@ -267,7 +267,7 @@ public final class AccessTokenCache {
             Throwable error = signal.getThrowable();
             AccessToken cache = cacheInfo.get().getCachedAccessToken();
             if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                buildTokenRefreshLog(LogLevel.INFORMATIONAL, cache, now).log("Acquired a new access token.");
+                buildTokenRefreshLog(LogLevel.VERBOSE, cache, now).log("Acquired a new access token.");
                 sinksOne.tryEmitValue(accessToken);
                 OffsetDateTime nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                 cacheInfo.set(new AccessTokenCacheInfo(accessToken, nextTokenRefresh));
