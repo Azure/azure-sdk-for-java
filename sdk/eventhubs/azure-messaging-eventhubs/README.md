@@ -95,7 +95,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.18.6</version>
+    <version>5.19.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

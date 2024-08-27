@@ -72,7 +72,6 @@ import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
-import static com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils.wrapServiceCallWithExceptionMapping;
 
 /**
  * This class provides a client that contains all operations that apply to any path object.
@@ -435,13 +434,13 @@ public class DataLakePathClient {
 
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = wrapServiceCallWithExceptionMapping(() ->
-            this.dataLakeStorage.getPaths().createWithResponse(null, null, pathResourceType, null, null, null,
-                finalOptions.getSourceLeaseId(), ModelHelper.buildMetadataString(finalOptions.getMetadata()),
-                finalOptions.getPermissions(), finalOptions.getUmask(), finalOptions.getOwner(),
-                finalOptions.getGroup(), acl, finalOptions.getProposedLeaseId(), leaseDuration, expiryOptions,
-                finalExpiresOnString, finalOptions.getEncryptionContext(), finalOptions.getPathHttpHeaders(), lac, mac,
-                null, customerProvidedKey, finalContext));
+        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = () -> this.dataLakeStorage.getPaths()
+            .createWithResponse(null, null, pathResourceType, null, null, null, finalOptions.getSourceLeaseId(),
+                ModelHelper.buildMetadataString(finalOptions.getMetadata()), finalOptions.getPermissions(),
+                finalOptions.getUmask(), finalOptions.getOwner(), finalOptions.getGroup(), acl,
+                finalOptions.getProposedLeaseId(), leaseDuration, expiryOptions, finalExpiresOnString,
+                finalOptions.getEncryptionContext(), finalOptions.getPathHttpHeaders(), lac, mac, null,
+                customerProvidedKey, finalContext);
 
         ResponseBase<PathsCreateHeaders, Void> response = sendRequest(operation, timeout,
             DataLakeStorageException.class);
@@ -638,7 +637,7 @@ public class DataLakePathClient {
 
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<ResponseBase<PathsDeleteHeaders, Void>> operation = wrapServiceCallWithExceptionMapping(() -> {
+        Callable<ResponseBase<PathsDeleteHeaders, Void>> operation = () -> {
             String continuation = null;
             ResponseBase<PathsDeleteHeaders, Void> lastResponse;
             do {
@@ -648,7 +647,7 @@ public class DataLakePathClient {
             } while (continuation != null && !continuation.isEmpty());
 
             return lastResponse;
-        });
+        };
 
         ResponseBase<PathsDeleteHeaders, Void> response = sendRequest(operation, timeout, DataLakeStorageException.class);
         return new SimpleResponse<>(response, null);
@@ -865,10 +864,9 @@ public class DataLakePathClient {
 
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<ResponseBase<PathsSetAccessControlHeaders, Void>> operation
-            = wrapServiceCallWithExceptionMapping(() -> this.dataLakeStorage.getPaths()
+        Callable<ResponseBase<PathsSetAccessControlHeaders, Void>> operation = () -> this.dataLakeStorage.getPaths()
             .setAccessControlWithResponse(null, owner, group, permissionsString, accessControlListString, null, lac,
-                mac, finalContext));
+                mac, finalContext);
         ResponseBase<PathsSetAccessControlHeaders, Void> response = sendRequest(operation, timeout,
             DataLakeStorageException.class);
 
@@ -1370,9 +1368,9 @@ public class DataLakePathClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<PathsGetPropertiesHeaders, Void>> operation =
-            wrapServiceCallWithExceptionMapping(() -> this.dataLakeStorage.getPaths().getPropertiesWithResponse(null,
-                null, PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, lac, mac, finalContext));
+        Callable<ResponseBase<PathsGetPropertiesHeaders, Void>> operation = () -> this.dataLakeStorage.getPaths()
+            .getPropertiesWithResponse(null, null, PathGetPropertiesAction.GET_ACCESS_CONTROL,
+                userPrincipalNameReturned, lac, mac, finalContext);
         ResponseBase<PathsGetPropertiesHeaders, Void> response = sendRequest(operation, timeout,
             DataLakeStorageException.class);
 
@@ -1419,14 +1417,13 @@ public class DataLakePathClient {
         }
         String finalRenameSource = signature != null ? renameSource + "?" + signature : renameSource;
 
-        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = wrapServiceCallWithExceptionMapping(() ->
-            dataLakePathClient.dataLakeStorage.getPaths().createWithResponse(null /* request id */, null /* timeout */,
-                null /* pathResourceType */, null /* continuation */, PathRenameMode.LEGACY, finalRenameSource,
+        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = () -> dataLakePathClient.dataLakeStorage.getPaths()
+            .createWithResponse(null /* request id */, null /* timeout */, null /* pathResourceType */,
+                null /* continuation */, PathRenameMode.LEGACY, finalRenameSource,
                 finalSourceRequestConditions.getLeaseId(), null /* properties */, null /* permissions */,
                 null /* umask */, null /* owner */, null /* group */, null /* acl */, null /* proposedLeaseId */,
-                null /* leaseDuration */, null /* expiryOptions */, null /* expiresOn */,
-                null /* encryptionContext */, null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
-                null /* cpkInfo */, finalContext));
+                null /* leaseDuration */, null /* expiryOptions */, null /* expiresOn */, null /* encryptionContext */,
+                null /* pathHttpHeaders */, destLac, destMac, sourceConditions, null /* cpkInfo */, finalContext);
 
         ResponseBase<PathsCreateHeaders, Void> response = sendRequest(operation, timeout,
             DataLakeStorageException.class);
