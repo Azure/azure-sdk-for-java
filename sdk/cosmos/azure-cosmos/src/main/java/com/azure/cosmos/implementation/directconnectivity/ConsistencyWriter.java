@@ -20,7 +20,9 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.SessionTokenMismatchRetryPolicy;
 import com.azure.cosmos.implementation.Strings;
@@ -122,6 +124,12 @@ public class ConsistencyWriter {
         }
 
         String sessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+
+        if (entity.getOperationType().equals(OperationType.Create) && entity.getResourceType().equals(ResourceType.Document)) {
+            if (!(entity.requestContext.locationEndpointToRoute.toString().contains("east") || entity.requestContext.locationEndpointToRoute.toString().contains("west"))) {
+                return Mono.error(new ServiceUnavailableException("", null, entity.requestContext.locationEndpointToRoute, HttpConstants.SubStatusCodes.SERVER_GENERATED_503));
+            }
+        }
 
         return  BackoffRetryUtility
             .executeRetry(
