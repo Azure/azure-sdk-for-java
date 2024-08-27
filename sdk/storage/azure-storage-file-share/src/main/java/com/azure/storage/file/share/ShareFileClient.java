@@ -1269,7 +1269,7 @@ public class ShareFileClient {
             : options.getRetryOptions();
         Boolean getRangeContentMd5 = options.isRangeContentMd5Requested();
 
-        Callable<ShareFileDownloadResponse> operation = wrapTimeoutServiceCallWithExceptionMapping(() -> {
+        Callable<ShareFileDownloadResponse> operation = () -> {
             String initialETag = null;
             String currentETag = null;
             int retryCount = 0;
@@ -1310,13 +1310,12 @@ public class ShareFileClient {
                         throw new ConcurrentModificationException("File has been modified concurrently. Expected eTag: "
                         + initialETag + ", Received eTag: " + currentETag);
                     } else {
-                        System.out.println("in here");
                         throw LOGGER.logExceptionAsError(new RuntimeException(e));
                     }
                 }
             }
             throw new IllegalStateException("Failed to download file. Max retry attempts reached.");
-        });
+        };
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
 
