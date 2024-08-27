@@ -585,7 +585,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     * secrets in here. Minimum api-version: 2021-03-01.
      * 
      * @return the userData value.
      */
@@ -595,7 +595,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     * secrets in here. Minimum api-version: 2021-03-01.
      * 
      * @param userData the userData value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
