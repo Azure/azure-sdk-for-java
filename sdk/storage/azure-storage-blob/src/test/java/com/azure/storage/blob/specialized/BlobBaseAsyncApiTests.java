@@ -547,7 +547,7 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<BlobQueryAsyncResponse> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -593,8 +593,8 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void queryACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                             String leaseID, String tags) {
-        Mono<BlobQueryAsyncResponse> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
+        Mono<BlobQueryAsyncResponse> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+            setupBlobMatchCondition(bc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if ("null".equals(newNoneMatch)) {

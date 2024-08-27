@@ -258,15 +258,7 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
-        if (Objects.equals(match, RECEIVED_ETAG)) {
-            return Objects.requireNonNull(bac.getProperties().block()).getETag();
-        } else {
-            return match;
-        }
-    }
-
-    protected Mono<String> setupBlobMatchConditionAsync(BlobAsyncClientBase bac, String match) {
+    protected Mono<String> setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
         if (Objects.equals(match, RECEIVED_ETAG)) {
             return bac.getProperties().map(BlobProperties::getETag);
         } else {
@@ -298,23 +290,7 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
-        String responseLeaseId = null;
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID) || Objects.equals(leaseID, GARBAGE_LEASE_ID)) {
-            responseLeaseId = new BlobLeaseClientBuilder()
-                .blobAsyncClient(bac)
-                .buildAsyncClient()
-                .acquireLease(-1)
-                .block();
-        }
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
-            return responseLeaseId;
-        } else {
-            return leaseID;
-        }
-    }
-
-    protected Mono<String> setupBlobLeaseConditionAsync(BlobAsyncClientBase bac, String leaseID) {
+    protected Mono<String> setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
         Mono<String> responseLeaseId = null;
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID) || Objects.equals(leaseID, GARBAGE_LEASE_ID)) {
             responseLeaseId = new BlobLeaseClientBuilder()

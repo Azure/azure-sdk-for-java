@@ -206,7 +206,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<PageBlobItem>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -234,7 +234,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID, String tags) {
 
-        Mono<Response<PageBlobItem>> response = setupBlobMatchConditionAsync(bc, noneMatch).flatMap(r -> {
+        Mono<Response<PageBlobItem>> response = setupBlobMatchCondition(bc, noneMatch).flatMap(r -> {
             if ("null".equals(r)) {
                 r = null;
             }
@@ -462,7 +462,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         Mono<Response<PageBlobItem>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -507,8 +507,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("uploadPageACFailSupplier")
     public void uploadPageACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual, String tags) {
-        Mono<Response<PageBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
+        Mono<Response<PageBlobItem>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+            setupBlobMatchCondition(bc, noneMatch))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
@@ -689,7 +689,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         Mono<Response<PageBlobItem>> response = bc.setTags(t)
             .then(sourceURL.create(PageBlobClient.PAGE_BYTES))
             .then(sourceURL.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -730,7 +730,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         Mono<Response<PageBlobItem>> response = sourceURL.create(PageBlobClient.PAGE_BYTES)
             .then(sourceURL.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
-            .then(setupBlobMatchConditionAsync(bc, noneMatch))
+            .then(setupBlobMatchCondition(bc, noneMatch))
             .flatMap(r -> {
                 if ("null".equals(r)) {
                     r = null;
@@ -766,7 +766,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         Mono<Response<PageBlobItem>> response = sourceURL.create(PageBlobClient.PAGE_BYTES)
             .then(sourceURL.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
-            .then(setupBlobMatchConditionAsync(sourceURL, sourceIfMatch))
+            .then(setupBlobMatchCondition(sourceURL, sourceIfMatch))
             .flatMap(r -> {
                 if ("null".equals(r)) {
                     r = null;
@@ -804,7 +804,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         Mono<Response<PageBlobItem>> response = sourceURL.create(PageBlobClient.PAGE_BYTES)
             .then(sourceURL.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES)))))
-            .then(setupBlobMatchConditionAsync(sourceURL, sourceIfNoneMatch))
+            .then(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
             .flatMap(r -> {
                 if ("null".equals(r)) {
                     r = null;
@@ -869,7 +869,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         Mono<Response<PageBlobItem>> response = bc.uploadPages(new PageRange().setStart(0)
             .setEnd(PageBlobClient.PAGE_BYTES - 1), Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))))
             .then(bc.setTags(t))
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -903,7 +903,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                                  String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual, String tags) {
         Mono<Response<PageBlobItem>> response = bc.uploadPages(new PageRange().setStart(0)
             .setEnd(PageBlobClient.PAGE_BYTES - 1), Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))))
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, noneMatch)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, noneMatch)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
@@ -970,7 +970,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<PageList>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -1002,8 +1002,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     public void getPageRangesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                     String leaseID, String tags) {
 
-        Mono<Response<PageList>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
+        Mono<Response<PageList>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+            setupBlobMatchCondition(bc, noneMatch))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
@@ -1130,7 +1130,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Flux<PageRangeItem> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match)))
             .flatMapMany(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -1161,8 +1161,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void listPageRangesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID, String tags) {
-        Mono<Long> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
+        Mono<Long> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+            setupBlobMatchCondition(bc, noneMatch))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
@@ -1291,7 +1291,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         Mono<Response<PageList>> response = bc.setTags(t).then(bc.createSnapshot())
             .flatMap(snapId ->
-                Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match))
+                Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match))
                     .flatMap(tuple -> {
                         String newLease = tuple.getT1();
                         String newMatch = tuple.getT2();
@@ -1325,7 +1325,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                                         String noneMatch, String leaseID, String tags) {
 
         Mono<Response<PageList>> response = bc.createSnapshot().flatMap(snapId ->
-            Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, noneMatch))
+            Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, noneMatch))
                 .flatMap(tuple -> {
                     String newLease = tuple.getT1();
                     String newNoneMatch = tuple.getT2();
@@ -1483,8 +1483,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .then(bc.uploadPages(new PageRange().setStart(0).setEnd(4 * Constants.KB - 1), data))
             .then(bc.createSnapshot())
             .flatMapMany(snapId ->
-                bc.setTags(t).then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-                    setupBlobMatchConditionAsync(bc, match)))
+                bc.setTags(t).then(Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+                    setupBlobMatchCondition(bc, match)))
                     .flatMapMany(tuple -> {
                         String newLease = tuple.getT1();
                         String newMatch = tuple.getT2();
@@ -1518,7 +1518,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     public void listPageRangesDiffACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                          String noneMatch, String leaseID, String tags) {
         Mono<Long> response = bc.createSnapshot().flatMap(snapId ->
-            Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, noneMatch))
+            Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, noneMatch))
                 .flatMap(tuple -> {
                     String newLease = tuple.getT1();
                     String newNoneMatch = tuple.getT2();
@@ -1591,7 +1591,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<PageBlobItem>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -1619,8 +1619,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void resizeACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID, String tags) {
-        Mono<Response<PageBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
+        Mono<Response<PageBlobItem>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+            setupBlobMatchCondition(bc, noneMatch))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
@@ -1689,7 +1689,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<PageBlobItem>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -1717,8 +1717,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void sequenceNumberACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID, String tags) {
-        Mono<Response<PageBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
+        Mono<Response<PageBlobItem>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+            setupBlobMatchCondition(bc, noneMatch))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
@@ -1845,7 +1845,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .flatMap(status -> bc2.setTags(t))
             .then(bc.createSnapshot())
             .flatMap(snapId ->
-                setupBlobMatchConditionAsync(bc2, match).flatMap(r -> {
+                setupBlobMatchCondition(bc2, match).flatMap(r -> {
                     if ("null".equals(r)) {
                         r = null;
                     }
@@ -1885,7 +1885,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             bc2.copyIncremental(bc.getBlobUrl() + "?" + sas, snapId.getSnapshotId())
                 .then(bc.createSnapshot())
                 .flatMap(finalSnapshot ->
-                    setupBlobMatchConditionAsync(bc2, noneMatch).flatMap(r -> {
+                    setupBlobMatchCondition(bc2, noneMatch).flatMap(r -> {
                         if ("null".equals(r)) {
                             r = null;
                         }
