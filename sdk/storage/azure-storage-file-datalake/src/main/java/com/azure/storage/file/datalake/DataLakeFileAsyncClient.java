@@ -1178,8 +1178,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         return this.dataLakeStorage.getPaths().appendDataNoCustomHeadersWithResponseAsync(
             data, fileOffset, null, length, null, appendOptions.getLeaseAction(), leaseDuration,
                 appendOptions.getProposedLeaseId(), null, appendOptions.isFlush(), headers, leaseAccessConditions,
-                getCpkInfo(), context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+                getCpkInfo(), context);
     }
 
     /**
@@ -1368,7 +1367,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         return this.dataLakeStorage.getPaths().flushDataWithResponseAsync(null, position, flushOptions.isUncommittedDataRetained(),
                 flushOptions.isClose(), (long) 0, flushOptions.getLeaseAction(), leaseDuration, flushOptions.getProposedLeaseId(),
                 null, httpHeaders, lac, mac, getCpkInfo(), context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
                 response.getDeserializedHeaders().isXMsRequestServerEncrypted() != null,
@@ -1849,8 +1847,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             pathExpiryOptions = PathExpiryOptions.NEVER_EXPIRE;
         }
         return this.blobDataLakeStorage.getPaths()
-            .setExpiryNoCustomHeadersWithResponseAsync(pathExpiryOptions, null, null, expiresOn, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .setExpiryNoCustomHeadersWithResponseAsync(pathExpiryOptions, null, null, expiresOn, context);
     }
 
 }

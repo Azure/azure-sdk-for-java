@@ -64,8 +64,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
-import static com.azure.storage.file.share.implementation.util.ModelHelper.wrapServiceCallWithExceptionMapping;
-import static com.azure.storage.file.share.implementation.util.ModelHelper.wrapTimeoutServiceCallWithExceptionMapping;
 
 /**
  * This class provides a client that contains all the operations for interacting with a share in Azure Storage Share.
@@ -364,11 +362,11 @@ public class ShareClient {
         String enabledProtocol = finalOptions.getProtocols() == null ? null : finalOptions.getProtocols().toString();
         String finalEnabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
 
-        Callable<Response<Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(() -> azureFileStorageClient.getShares()
+        Callable<Response<Void>> operation = () -> azureFileStorageClient.getShares()
             .createNoCustomHeadersWithResponse(shareName, null, finalOptions.getMetadata(), finalOptions.getQuotaInGb(),
                 finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(),
                 finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalOptions.isPaidBurstingEnabled(),
-                finalOptions.getPaidBurstingMaxBandwidthMibps(), finalOptions.getPaidBurstingMaxIops(), finalContext));
+                finalOptions.getPaidBurstingMaxBandwidthMibps(), finalOptions.getPaidBurstingMaxIops(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -503,9 +501,8 @@ public class ShareClient {
     public Response<ShareSnapshotInfo> createSnapshotWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<SharesCreateSnapshotHeaders, Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
-            this.azureFileStorageClient.getShares().createSnapshotWithResponse(shareName, null, metadata,
-                finalContext));
+        Callable<ResponseBase<SharesCreateSnapshotHeaders, Void>> operation = () -> azureFileStorageClient.getShares()
+            .createSnapshotWithResponse(shareName, null, metadata, finalContext);
 
         return ModelHelper.mapCreateSnapshotResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -597,10 +594,10 @@ public class ShareClient {
         ShareRequestConditions requestConditions = finalOptions.getRequestConditions() == null
             ? new ShareRequestConditions() : finalOptions.getRequestConditions();
 
-        Callable<Response<Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
-            this.azureFileStorageClient.getShares().deleteNoCustomHeadersWithResponse(shareName, snapshot, null,
+        Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
+            .deleteNoCustomHeadersWithResponse(shareName, snapshot, null,
                 ModelHelper.toDeleteSnapshotsOptionType(finalOptions.getDeleteSnapshotsOptions()),
-                requestConditions.getLeaseId(), finalContext));
+                requestConditions.getLeaseId(), finalContext);
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -764,9 +761,8 @@ public class ShareClient {
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
-        Callable<ResponseBase<SharesGetPropertiesHeaders, Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
-            this.azureFileStorageClient.getShares()
-                .getPropertiesWithResponse(shareName, snapshot, null, requestConditions.getLeaseId(), finalContext));
+        Callable<ResponseBase<SharesGetPropertiesHeaders, Void>> operation = () -> azureFileStorageClient.getShares()
+            .getPropertiesWithResponse(shareName, snapshot, null, requestConditions.getLeaseId(), finalContext);
 
         return ModelHelper.mapGetPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -891,12 +887,11 @@ public class ShareClient {
             ? new ShareRequestConditions() : options.getRequestConditions();
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<Response<Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
-            this.azureFileStorageClient.getShares().setPropertiesNoCustomHeadersWithResponse(shareName, null,
-                options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(),
-                options.getRootSquash(), options.isSnapshotVirtualDirectoryAccessEnabled(),
-                options.isPaidBurstingEnabled(), options.getPaidBurstingMaxBandwidthMibps(),
-                options.getPaidBurstingMaxIops(), finalContext));
+        Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
+            .setPropertiesNoCustomHeadersWithResponse(shareName, null, options.getQuotaInGb(), options.getAccessTier(),
+                requestConditions.getLeaseId(), options.getRootSquash(),
+                options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
+                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1012,9 +1007,9 @@ public class ShareClient {
             ? new ShareRequestConditions() : options.getRequestConditions();
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<Response<Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(
-            () -> this.azureFileStorageClient.getShares().setMetadataNoCustomHeadersWithResponse(shareName, null,
-                options.getMetadata(), requestConditions.getLeaseId(), finalContext));
+        Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
+            .setMetadataNoCustomHeadersWithResponse(shareName, null, options.getMetadata(),
+                requestConditions.getLeaseId(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1077,9 +1072,9 @@ public class ShareClient {
         ShareRequestConditions requestConditions = finalOptions.getRequestConditions() == null
             ? new ShareRequestConditions() : finalOptions.getRequestConditions();
 
-        ResponseBase<SharesGetAccessPolicyHeaders, ShareSignedIdentifierWrapper> responseBase =
-            wrapServiceCallWithExceptionMapping(() -> this.azureFileStorageClient.getShares()
-                .getAccessPolicyWithResponse(shareName, null, requestConditions.getLeaseId(), Context.NONE));
+        ResponseBase<SharesGetAccessPolicyHeaders, ShareSignedIdentifierWrapper> responseBase
+            = this.azureFileStorageClient.getShares().getAccessPolicyWithResponse(shareName, null,
+            requestConditions.getLeaseId(), Context.NONE);
 
         Supplier<PagedResponse<ShareSignedIdentifier>> response = () -> new PagedResponseBase<>(
             responseBase.getRequest(),
@@ -1212,9 +1207,9 @@ public class ShareClient {
             ModelHelper.truncateAccessPolicyPermissionsToSeconds(options.getPermissions());
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<Response<Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
-            this.azureFileStorageClient.getShares().setAccessPolicyNoCustomHeadersWithResponse(shareName, null,
-                requestConditions.getLeaseId(), permissions, finalContext));
+        Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
+            .setAccessPolicyNoCustomHeadersWithResponse(shareName, null, requestConditions.getLeaseId(), permissions,
+                finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1306,9 +1301,8 @@ public class ShareClient {
             ? new ShareRequestConditions() : options.getRequestConditions();
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<Response<ShareStats>> operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
-            this.azureFileStorageClient.getShares().getStatisticsNoCustomHeadersWithResponse(shareName, null,
-                requestConditions.getLeaseId(), finalContext));
+        Callable<Response<ShareStats>> operation = () -> this.azureFileStorageClient.getShares()
+            .getStatisticsNoCustomHeadersWithResponse(shareName, null, requestConditions.getLeaseId(), finalContext);
 
         return ModelHelper.mapGetStatisticsResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1976,9 +1970,8 @@ public class ShareClient {
     public Response<String> createPermissionWithResponse(String filePermission, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         SharePermission sharePermission = new SharePermission().setPermission(filePermission);
-        ResponseBase<SharesCreatePermissionHeaders, Void> response = wrapServiceCallWithExceptionMapping(() ->
-            this.azureFileStorageClient.getShares().createPermissionWithResponse(shareName, sharePermission, null,
-                finalContext));
+        ResponseBase<SharesCreatePermissionHeaders, Void> response = this.azureFileStorageClient.getShares()
+            .createPermissionWithResponse(shareName, sharePermission, null, finalContext);
 
         return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsFilePermissionKey());
     }
@@ -2007,9 +2000,8 @@ public class ShareClient {
         Context finalContext = context == null ? Context.NONE : context;
         SharePermission sharePermission = new SharePermission().setPermission(filePermission.getPermission())
             .setFormat(filePermission.getPermissionFormat());
-        ResponseBase<SharesCreatePermissionHeaders, Void> response = wrapServiceCallWithExceptionMapping(() ->
-            this.azureFileStorageClient.getShares().createPermissionWithResponse(shareName, sharePermission, null,
-                finalContext));
+        ResponseBase<SharesCreatePermissionHeaders, Void> response = this.azureFileStorageClient.getShares()
+            .createPermissionWithResponse(shareName, sharePermission, null, finalContext);
 
         return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsFilePermissionKey());
     }
@@ -2078,9 +2070,8 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> getPermissionWithResponse(String filePermissionKey, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        ResponseBase<SharesGetPermissionHeaders, SharePermission> response = wrapServiceCallWithExceptionMapping(() ->
-            this.azureFileStorageClient.getShares().getPermissionWithResponse(shareName, filePermissionKey, null, null,
-                finalContext));
+        ResponseBase<SharesGetPermissionHeaders, SharePermission> response = this.azureFileStorageClient.getShares()
+            .getPermissionWithResponse(shareName, filePermissionKey, null, null, finalContext);
 
         return new SimpleResponse<>(response, response.getValue().getPermission());
     }
@@ -2110,9 +2101,8 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> getPermissionWithResponse(String filePermissionKey, FilePermissionFormat filePermissionFormat, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        ResponseBase<SharesGetPermissionHeaders, SharePermission> response = wrapServiceCallWithExceptionMapping(() ->
-            this.azureFileStorageClient.getShares().getPermissionWithResponse(shareName, filePermissionKey,
-                filePermissionFormat, null, finalContext));
+        ResponseBase<SharesGetPermissionHeaders, SharePermission> response = this.azureFileStorageClient.getShares()
+            .getPermissionWithResponse(shareName, filePermissionKey, filePermissionFormat, null, finalContext);
 
         return new SimpleResponse<>(response, response.getValue().getPermission());
     }

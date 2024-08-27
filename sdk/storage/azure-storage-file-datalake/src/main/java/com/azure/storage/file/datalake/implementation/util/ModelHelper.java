@@ -197,13 +197,7 @@ public class ModelHelper {
      * @param internal The internal exception.
      * @return The public exception.
      */
-    public static Throwable mapToDataLakeStorageException(Throwable internal) {
-        if (internal instanceof DataLakeStorageExceptionInternal) {
-            DataLakeStorageExceptionInternal internalException = (DataLakeStorageExceptionInternal) internal;
-            return new DataLakeStorageException(internalException.getMessage(), internalException.getResponse(),
-                internalException.getValue());
-        }
-
-        return internal;
+    public static DataLakeStorageException mapToDataLakeStorageException(DataLakeStorageExceptionInternal internal) {
+        return new DataLakeStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
 }

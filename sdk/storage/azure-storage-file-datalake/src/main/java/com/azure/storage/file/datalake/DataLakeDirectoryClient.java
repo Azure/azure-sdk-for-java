@@ -44,8 +44,6 @@ import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import static com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils.wrapServiceCallWithExceptionMapping;
-
 /**
  * This class provides a client that contains directory operations for Azure Storage Data Lake. Operations provided by
  * this client include creating a directory, deleting a directory, renaming a directory, setting metadata and
@@ -1154,9 +1152,9 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         Duration timeout) {
         BiFunction<String, Integer, PagedResponse<PathItem>> retriever = (marker, pageSize) -> {
             Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation
-                = wrapServiceCallWithExceptionMapping(() -> this.fileSystemDataLakeStorage.getFileSystems()
+                = () -> this.fileSystemDataLakeStorage.getFileSystems()
                 .listPathsWithResponse(recursive, null, null, marker, getDirectoryPath(),
-                    pageSize == null ? maxResults : pageSize, userPrincipleNameReturned, Context.NONE));
+                    pageSize == null ? maxResults : pageSize, userPrincipleNameReturned, Context.NONE);
 
             ResponseBase<FileSystemsListPathsHeaders, PathList> response = StorageImplUtils.sendRequest(operation,
                 timeout, DataLakeStorageException.class);
