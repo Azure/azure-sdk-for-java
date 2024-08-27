@@ -34,7 +34,7 @@ public final class TextEmbeddingsSample {
 
         for (EmbeddingItem item : embeddings.getData()) {
             System.out.printf("Index: %d.%n", item.getIndex());
-            for (Float embedding : item.getEmbedding()) {
+            for (Float embedding : item.getEmbeddingList()) {
                 System.out.printf("%f;", embedding);
             }
         }

@@ -13,7 +13,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 /**
@@ -52,7 +51,16 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      *
      * @return the embedding value.
      */
-    public List<Float> getEmbedding() {
+    @Generated
+    public BinaryData getEmbedding() { return this.embedding; }
+
+    /**
+     * Get the embedding property: List of embedding values for the input prompt. These represent a measurement of the
+     * vector-based relatedness of the provided input. Or a base64 encoded string of the embedding vector.
+     *
+     * @return the embeddings as a list of floats.
+     */
+    public List<Float> getEmbeddingList() {
         return this.embedding.toObject(new TypeReference<List<Float>>() { });
     }
 

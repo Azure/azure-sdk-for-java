@@ -5,7 +5,6 @@
 package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.EmbeddingsAsyncClient;
-import com.azure.ai.inference.EmbeddingsClient;
 import com.azure.ai.inference.EmbeddingsClientBuilder;
 import com.azure.ai.inference.models.*;
 import com.azure.core.credential.AzureKeyCredential;
@@ -36,7 +35,7 @@ public final class TextEmbeddingsAsyncSample {
                 for (EmbeddingItem item : embeddings.getData()) {
                     System.out.printf("Index: %d.%n", item.getIndex());
                     System.out.println("Embedding as list of floats: ");
-                    for (Float embedding : item.getEmbedding()) {
+                    for (Float embedding : item.getEmbeddingList()) {
                         System.out.printf("%f;", embedding);
                     }
                 }

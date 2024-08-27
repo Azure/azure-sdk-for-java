@@ -122,7 +122,7 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
         assertFalse(data.isEmpty());
 
         for (EmbeddingItem item : data) {
-            List<Float> embedding = item.getEmbedding();
+            List<Float> embedding = item.getEmbeddingList();
             assertNotNull(embedding);
             assertFalse(embedding.isEmpty());
         }

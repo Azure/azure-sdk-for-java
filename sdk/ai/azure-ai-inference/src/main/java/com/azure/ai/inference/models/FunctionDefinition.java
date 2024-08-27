@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * The definition of a caller-specified function that chat completions may invoke in response to matching user input.
@@ -100,7 +99,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      * @return the FunctionDefinition object itself.
      */
     @Generated
-    public FunctionDefinition setParameters(Map<String, Object> parameters) {
+    public FunctionDefinition setParameters(Object parameters) {
         this.parameters = parameters;
         return this;
     }
