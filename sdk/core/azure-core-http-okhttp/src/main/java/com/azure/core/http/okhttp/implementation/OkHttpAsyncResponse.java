@@ -13,6 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -78,6 +79,15 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
             // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
             return content;
         });
+    }
+
+    @Override
+    public Mono<InputStream> getBodyAsInputStream() {
+        if (responseBody == null) {
+            return Mono.empty();
+        }
+
+        return Mono.just(responseBody.byteStream());
     }
 
     @Override
