@@ -33,7 +33,6 @@ import com.azure.storage.queue.implementation.models.QueueStorageExceptionIntern
 import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
 import reactor.core.publisher.Mono;
 import com.azure.storage.queue.implementation.util.ModelHelper;
-import com.azure.storage.queue.models.QueueStorageException;
 
 /**
  * An instance of this class provides access to all the operations defined in Messages.
@@ -243,7 +242,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.dequeue(this.client.getUrl(), queueName, numberOfMessages,
                 visibilitytimeout, timeout, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -277,7 +276,7 @@ public final class MessagesImpl {
         return service
             .dequeue(this.client.getUrl(), queueName, numberOfMessages, visibilitytimeout, timeout,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -305,7 +304,7 @@ public final class MessagesImpl {
     public Mono<QueueMessageItemInternalWrapper> dequeueAsync(String queueName, Integer numberOfMessages,
         Integer visibilitytimeout, Integer timeout, String requestId) {
         return dequeueWithResponseAsync(queueName, numberOfMessages, visibilitytimeout, timeout, requestId)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -335,7 +334,7 @@ public final class MessagesImpl {
     public Mono<QueueMessageItemInternalWrapper> dequeueAsync(String queueName, Integer numberOfMessages,
         Integer visibilitytimeout, Integer timeout, String requestId, Context context) {
         return dequeueWithResponseAsync(queueName, numberOfMessages, visibilitytimeout, timeout, requestId, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -368,7 +367,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.dequeueNoCustomHeaders(this.client.getUrl(), queueName, numberOfMessages,
                 visibilitytimeout, timeout, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -401,7 +400,7 @@ public final class MessagesImpl {
         return service
             .dequeueNoCustomHeaders(this.client.getUrl(), queueName, numberOfMessages, visibilitytimeout, timeout,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -434,7 +433,7 @@ public final class MessagesImpl {
             return service.dequeueSync(this.client.getUrl(), queueName, numberOfMessages, visibilitytimeout, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -466,7 +465,7 @@ public final class MessagesImpl {
             return dequeueWithResponse(queueName, numberOfMessages, visibilitytimeout, timeout, requestId, Context.NONE)
                 .getValue();
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -500,7 +499,7 @@ public final class MessagesImpl {
             return service.dequeueNoCustomHeadersSync(this.client.getUrl(), queueName, numberOfMessages,
                 visibilitytimeout, timeout, this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -525,7 +524,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.clear(this.client.getUrl(), queueName, timeout, this.client.getVersion(),
                 requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -549,7 +548,7 @@ public final class MessagesImpl {
         final String accept = "application/xml";
         return service
             .clear(this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -568,7 +567,8 @@ public final class MessagesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> clearAsync(String queueName, Integer timeout, String requestId) {
-        return clearWithResponseAsync(queueName, timeout, requestId).onErrorMap(ModelHelper::mapToQueueStorageException)
+        return clearWithResponseAsync(queueName, timeout, requestId)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -590,7 +590,7 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> clearAsync(String queueName, Integer timeout, String requestId, Context context) {
         return clearWithResponseAsync(queueName, timeout, requestId, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -615,7 +615,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.clearNoCustomHeaders(this.client.getUrl(), queueName, timeout,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -640,7 +640,7 @@ public final class MessagesImpl {
         return service
             .clearNoCustomHeaders(this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId, accept,
                 context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -666,7 +666,7 @@ public final class MessagesImpl {
             return service.clearSync(this.client.getUrl(), queueName, timeout, this.client.getVersion(), requestId,
                 accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -711,7 +711,7 @@ public final class MessagesImpl {
             return service.clearNoCustomHeadersSync(this.client.getUrl(), queueName, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -751,7 +751,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.enqueue(this.client.getUrl(), queueName, visibilitytimeout,
                 messageTimeToLive, timeout, this.client.getVersion(), requestId, queueMessage, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -791,7 +791,7 @@ public final class MessagesImpl {
         return service
             .enqueue(this.client.getUrl(), queueName, visibilitytimeout, messageTimeToLive, timeout,
                 this.client.getVersion(), requestId, queueMessage, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -825,7 +825,7 @@ public final class MessagesImpl {
     public Mono<SendMessageResultWrapper> enqueueAsync(String queueName, QueueMessage queueMessage,
         Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout, String requestId) {
         return enqueueWithResponseAsync(queueName, queueMessage, visibilitytimeout, messageTimeToLive, timeout,
-            requestId).onErrorMap(ModelHelper::mapToQueueStorageException)
+            requestId).onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -861,7 +861,7 @@ public final class MessagesImpl {
     public Mono<SendMessageResultWrapper> enqueueAsync(String queueName, QueueMessage queueMessage,
         Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout, String requestId, Context context) {
         return enqueueWithResponseAsync(queueName, queueMessage, visibilitytimeout, messageTimeToLive, timeout,
-            requestId, context).onErrorMap(ModelHelper::mapToQueueStorageException)
+            requestId, context).onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -901,7 +901,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.enqueueNoCustomHeaders(this.client.getUrl(), queueName, visibilitytimeout,
                 messageTimeToLive, timeout, this.client.getVersion(), requestId, queueMessage, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -941,7 +941,7 @@ public final class MessagesImpl {
         return service
             .enqueueNoCustomHeaders(this.client.getUrl(), queueName, visibilitytimeout, messageTimeToLive, timeout,
                 this.client.getVersion(), requestId, queueMessage, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -981,7 +981,7 @@ public final class MessagesImpl {
             return service.enqueueSync(this.client.getUrl(), queueName, visibilitytimeout, messageTimeToLive, timeout,
                 this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1019,7 +1019,7 @@ public final class MessagesImpl {
             return enqueueWithResponse(queueName, queueMessage, visibilitytimeout, messageTimeToLive, timeout,
                 requestId, Context.NONE).getValue();
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1060,7 +1060,7 @@ public final class MessagesImpl {
             return service.enqueueNoCustomHeadersSync(this.client.getUrl(), queueName, visibilitytimeout,
                 messageTimeToLive, timeout, this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1091,7 +1091,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.peek(this.client.getUrl(), queueName, peekonly, numberOfMessages, timeout,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -1122,7 +1122,7 @@ public final class MessagesImpl {
         return service
             .peek(this.client.getUrl(), queueName, peekonly, numberOfMessages, timeout, this.client.getVersion(),
                 requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -1147,7 +1147,7 @@ public final class MessagesImpl {
     public Mono<PeekedMessageItemInternalWrapper> peekAsync(String queueName, Integer numberOfMessages, Integer timeout,
         String requestId) {
         return peekWithResponseAsync(queueName, numberOfMessages, timeout, requestId)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1174,7 +1174,7 @@ public final class MessagesImpl {
     public Mono<PeekedMessageItemInternalWrapper> peekAsync(String queueName, Integer numberOfMessages, Integer timeout,
         String requestId, Context context) {
         return peekWithResponseAsync(queueName, numberOfMessages, timeout, requestId, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1205,7 +1205,7 @@ public final class MessagesImpl {
         return FluxUtil
             .withContext(context -> service.peekNoCustomHeaders(this.client.getUrl(), queueName, peekonly,
                 numberOfMessages, timeout, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -1236,7 +1236,7 @@ public final class MessagesImpl {
         return service
             .peekNoCustomHeaders(this.client.getUrl(), queueName, peekonly, numberOfMessages, timeout,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -1267,7 +1267,7 @@ public final class MessagesImpl {
             return service.peekSync(this.client.getUrl(), queueName, peekonly, numberOfMessages, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1295,7 +1295,7 @@ public final class MessagesImpl {
         try {
             return peekWithResponse(queueName, numberOfMessages, timeout, requestId, Context.NONE).getValue();
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1327,7 +1327,7 @@ public final class MessagesImpl {
             return service.peekNoCustomHeadersSync(this.client.getUrl(), queueName, peekonly, numberOfMessages, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 }

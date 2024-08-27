@@ -28,7 +28,6 @@ import com.azure.storage.file.datalake.implementation.models.FileSystemList;
 import com.azure.storage.file.datalake.implementation.models.ServicesListFileSystemsHeaders;
 import reactor.core.publisher.Mono;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
-import com.azure.storage.file.datalake.models.DataLakeStorageException;
 
 /**
  * An instance of this class provides access to all the operations defined in Services.
@@ -130,7 +129,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.listFileSystems(this.client.getUrl(), resource, prefix, continuation,
                 maxResults, requestId, timeout, this.client.getVersion(), accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, res.getDeserializedHeaders()));
     }
@@ -166,7 +165,7 @@ public final class ServicesImpl {
         return service
             .listFileSystems(this.client.getUrl(), resource, prefix, continuation, maxResults, requestId, timeout,
                 this.client.getVersion(), accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, res.getDeserializedHeaders()));
     }
@@ -260,7 +259,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.listFileSystemsNoCustomHeaders(this.client.getUrl(), resource, prefix,
                 continuation, maxResults, requestId, timeout, this.client.getVersion(), accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, null));
     }
@@ -296,7 +295,7 @@ public final class ServicesImpl {
         return service
             .listFileSystemsNoCustomHeaders(this.client.getUrl(), resource, prefix, continuation, maxResults, requestId,
                 timeout, this.client.getVersion(), accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, null));
     }
@@ -394,7 +393,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, res.getDeserializedHeaders());
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -433,7 +432,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, res.getDeserializedHeaders());
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -529,7 +528,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, null);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -567,7 +566,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getFilesystems(), null, null);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 

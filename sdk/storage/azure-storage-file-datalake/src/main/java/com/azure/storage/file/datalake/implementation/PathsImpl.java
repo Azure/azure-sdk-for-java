@@ -63,7 +63,6 @@ import java.time.OffsetDateTime;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
-import com.azure.storage.file.datalake.models.DataLakeStorageException;
 
 /**
  * An instance of this class provides access to all the operations defined in Paths.
@@ -1207,7 +1206,7 @@ public final class PathsImpl {
                 ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, owner, group,
                 acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn, encryptionContext, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1387,7 +1386,7 @@ public final class PathsImpl {
                 sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, encryptionKey,
                 encryptionKeySha256, encryptionAlgorithm, owner, group, acl, proposedLeaseId, leaseDuration,
                 expiryOptions, expiresOn, encryptionContext, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1466,7 +1465,8 @@ public final class PathsImpl {
         return createWithResponseAsync(requestId, timeout, resource, continuation, mode, renameSource, sourceLeaseId,
             properties, permissions, umask, owner, group, acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn,
             encryptionContext, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
-            sourceModifiedAccessConditions, cpkInfo).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            sourceModifiedAccessConditions, cpkInfo)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1547,7 +1547,8 @@ public final class PathsImpl {
         return createWithResponseAsync(requestId, timeout, resource, continuation, mode, renameSource, sourceLeaseId,
             properties, permissions, umask, owner, group, acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn,
             encryptionContext, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
-            sourceModifiedAccessConditions, cpkInfo, context).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            sourceModifiedAccessConditions, cpkInfo, context)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1727,7 +1728,7 @@ public final class PathsImpl {
                 ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, owner, group,
                 acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn, encryptionContext, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1907,7 +1908,7 @@ public final class PathsImpl {
                 sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, owner, group, acl, proposedLeaseId,
                 leaseDuration, expiryOptions, expiresOn, encryptionContext, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -2088,7 +2089,7 @@ public final class PathsImpl {
                 sourceIfUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, owner, group,
                 acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn, encryptionContext, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -2348,7 +2349,7 @@ public final class PathsImpl {
                 sourceIfUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, owner, group,
                 acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn, encryptionContext, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -2498,12 +2499,14 @@ public final class PathsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.update(this.client.getUrl(), this.client.getFileSystem(),
-            this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation, mode,
-            forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
-            cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner, group,
-            permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept,
-            context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.update(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation,
+                mode, forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
+                cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner,
+                group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                body, accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -2659,7 +2662,7 @@ public final class PathsImpl {
                 retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl, contentType,
                 contentDisposition, contentEncoding, contentLanguage, properties, owner, group, permissions, acl,
                 ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -2750,7 +2753,7 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2843,7 +2846,7 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2993,12 +2996,14 @@ public final class PathsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.updateNoCustomHeaders(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getPath(), requestId, timeout, this.client.getVersion(), action,
-            maxRecords, continuation, mode, forceFlag, position, retainUncommittedData, close, contentLength,
-            contentMd5Converted, leaseId, cacheControl, contentType, contentDisposition, contentEncoding,
-            contentLanguage, properties, owner, group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, body, accept, context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.updateNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation,
+                mode, forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
+                cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner,
+                group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                body, accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -3154,7 +3159,7 @@ public final class PathsImpl {
                 retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl, contentType,
                 contentDisposition, contentEncoding, contentLanguage, properties, owner, group, permissions, acl,
                 ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -3303,12 +3308,14 @@ public final class PathsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.update(this.client.getUrl(), this.client.getFileSystem(),
-            this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation, mode,
-            forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
-            cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner, group,
-            permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept,
-            context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.update(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation,
+                mode, forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
+                cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner,
+                group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                body, accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -3464,7 +3471,7 @@ public final class PathsImpl {
                 retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl, contentType,
                 contentDisposition, contentEncoding, contentLanguage, properties, owner, group, permissions, acl,
                 ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -3555,7 +3562,7 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3648,7 +3655,7 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3798,12 +3805,14 @@ public final class PathsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.updateNoCustomHeaders(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getPath(), requestId, timeout, this.client.getVersion(), action,
-            maxRecords, continuation, mode, forceFlag, position, retainUncommittedData, close, contentLength,
-            contentMd5Converted, leaseId, cacheControl, contentType, contentDisposition, contentEncoding,
-            contentLanguage, properties, owner, group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, body, accept, context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.updateNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation,
+                mode, forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
+                cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner,
+                group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                body, accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -3959,7 +3968,7 @@ public final class PathsImpl {
                 retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl, contentType,
                 contentDisposition, contentEncoding, contentLanguage, properties, owner, group, permissions, acl,
                 ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -4117,7 +4126,7 @@ public final class PathsImpl {
                 permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body,
                 accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -4210,7 +4219,7 @@ public final class PathsImpl {
                 position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
                 pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, Context.NONE).getValue();
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -4369,7 +4378,7 @@ public final class PathsImpl {
                 group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 body, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -4444,7 +4453,7 @@ public final class PathsImpl {
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), xMsLeaseAction,
                 this.client.getXMsLeaseDuration(), xMsLeaseBreakPeriod, leaseId, proposedLeaseId, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -4520,7 +4529,7 @@ public final class PathsImpl {
                 this.client.getVersion(), xMsLeaseAction, this.client.getXMsLeaseDuration(), xMsLeaseBreakPeriod,
                 leaseId, proposedLeaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -4560,7 +4569,8 @@ public final class PathsImpl {
         Integer xMsLeaseBreakPeriod, String proposedLeaseId, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
         return leaseWithResponseAsync(xMsLeaseAction, requestId, timeout, xMsLeaseBreakPeriod, proposedLeaseId,
-            leaseAccessConditions, modifiedAccessConditions).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            leaseAccessConditions, modifiedAccessConditions)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -4603,7 +4613,7 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return leaseWithResponseAsync(xMsLeaseAction, requestId, timeout, xMsLeaseBreakPeriod, proposedLeaseId,
             leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -4678,7 +4688,7 @@ public final class PathsImpl {
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), xMsLeaseAction,
                 this.client.getXMsLeaseDuration(), xMsLeaseBreakPeriod, leaseId, proposedLeaseId, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -4754,7 +4764,7 @@ public final class PathsImpl {
                 timeout, this.client.getVersion(), xMsLeaseAction, this.client.getXMsLeaseDuration(),
                 xMsLeaseBreakPeriod, leaseId, proposedLeaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -4831,7 +4841,7 @@ public final class PathsImpl {
                 xMsLeaseBreakPeriod, leaseId, proposedLeaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -4948,7 +4958,7 @@ public final class PathsImpl {
                 this.client.getXMsLeaseDuration(), xMsLeaseBreakPeriod, leaseId, proposedLeaseId, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -5032,7 +5042,7 @@ public final class PathsImpl {
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), range, leaseId,
                 xMsRangeGetContentMd5, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -5116,7 +5126,7 @@ public final class PathsImpl {
                 this.client.getVersion(), range, leaseId, xMsRangeGetContentMd5, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256,
                 encryptionAlgorithm, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -5150,7 +5160,8 @@ public final class PathsImpl {
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
         CpkInfo cpkInfo) {
         return readWithResponseAsync(requestId, timeout, range, xMsRangeGetContentMd5, leaseAccessConditions,
-            modifiedAccessConditions, cpkInfo).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            modifiedAccessConditions, cpkInfo)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
@@ -5186,7 +5197,8 @@ public final class PathsImpl {
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo,
         Context context) {
         return readWithResponseAsync(requestId, timeout, range, xMsRangeGetContentMd5, leaseAccessConditions,
-            modifiedAccessConditions, cpkInfo, context).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            modifiedAccessConditions, cpkInfo, context)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
@@ -5270,7 +5282,7 @@ public final class PathsImpl {
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), range, leaseId,
                 xMsRangeGetContentMd5, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -5354,7 +5366,7 @@ public final class PathsImpl {
                 timeout, this.client.getVersion(), range, leaseId, xMsRangeGetContentMd5, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256,
                 encryptionAlgorithm, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -5439,7 +5451,7 @@ public final class PathsImpl {
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256,
                 encryptionAlgorithm, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -5477,7 +5489,7 @@ public final class PathsImpl {
             return readWithResponse(requestId, timeout, range, xMsRangeGetContentMd5, leaseAccessConditions,
                 modifiedAccessConditions, cpkInfo, Context.NONE).getValue();
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -5563,7 +5575,7 @@ public final class PathsImpl {
                 xMsRangeGetContentMd5, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -5634,7 +5646,7 @@ public final class PathsImpl {
             .withContext(context -> service.getProperties(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch,
                 ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -5705,7 +5717,7 @@ public final class PathsImpl {
             .getProperties(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), requestId, timeout,
                 this.client.getVersion(), action, upn, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -5741,7 +5753,8 @@ public final class PathsImpl {
     public Mono<Void> getPropertiesAsync(String requestId, Integer timeout, PathGetPropertiesAction action, Boolean upn,
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return getPropertiesWithResponseAsync(requestId, timeout, action, upn, leaseAccessConditions,
-            modifiedAccessConditions).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            modifiedAccessConditions)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -5780,7 +5793,8 @@ public final class PathsImpl {
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
         Context context) {
         return getPropertiesWithResponseAsync(requestId, timeout, action, upn, leaseAccessConditions,
-            modifiedAccessConditions, context).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            modifiedAccessConditions, context)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -5852,7 +5866,7 @@ public final class PathsImpl {
                 context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
                     this.client.getPath(), requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch,
                     ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -5923,7 +5937,7 @@ public final class PathsImpl {
             .getPropertiesNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
                 requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -5994,7 +6008,7 @@ public final class PathsImpl {
                 requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -6100,7 +6114,7 @@ public final class PathsImpl {
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch,
                 ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -6170,7 +6184,7 @@ public final class PathsImpl {
             .withContext(context -> service.delete(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), recursive, continuation, leaseId,
                 ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -6240,7 +6254,7 @@ public final class PathsImpl {
             .delete(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), requestId, timeout,
                 this.client.getVersion(), recursive, continuation, leaseId, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -6276,7 +6290,8 @@ public final class PathsImpl {
         Boolean paginated, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
         return deleteWithResponseAsync(requestId, timeout, recursive, continuation, paginated, leaseAccessConditions,
-            modifiedAccessConditions).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            modifiedAccessConditions)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -6314,7 +6329,8 @@ public final class PathsImpl {
         Boolean paginated, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return deleteWithResponseAsync(requestId, timeout, recursive, continuation, paginated, leaseAccessConditions,
-            modifiedAccessConditions, context).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            modifiedAccessConditions, context)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -6384,7 +6400,7 @@ public final class PathsImpl {
             .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), recursive, continuation, leaseId,
                 ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -6454,7 +6470,7 @@ public final class PathsImpl {
             .deleteNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), requestId,
                 timeout, this.client.getVersion(), recursive, continuation, leaseId, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -6525,7 +6541,7 @@ public final class PathsImpl {
                 requestId, timeout, this.client.getVersion(), recursive, continuation, leaseId, ifMatch, ifNoneMatch,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -6631,7 +6647,7 @@ public final class PathsImpl {
                 this.client.getPath(), requestId, timeout, this.client.getVersion(), recursive, continuation, leaseId,
                 ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -6694,10 +6710,12 @@ public final class PathsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.setAccessControl(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getPath(), action, timeout, leaseId, owner, group, permissions,
-            acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId,
-            this.client.getVersion(), accept, context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.setAccessControl(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), action, timeout, leaseId, owner, group, permissions, acl, ifMatch, ifNoneMatch,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), accept,
+                context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -6765,7 +6783,7 @@ public final class PathsImpl {
             .setAccessControl(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), action, timeout,
                 leaseId, owner, group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -6797,7 +6815,8 @@ public final class PathsImpl {
         String requestId, LeaseAccessConditions leaseAccessConditions,
         ModifiedAccessConditions modifiedAccessConditions) {
         return setAccessControlWithResponseAsync(timeout, owner, group, permissions, acl, requestId,
-            leaseAccessConditions, modifiedAccessConditions).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            leaseAccessConditions, modifiedAccessConditions)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -6832,7 +6851,7 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return setAccessControlWithResponseAsync(timeout, owner, group, permissions, acl, requestId,
             leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -6895,10 +6914,12 @@ public final class PathsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.setAccessControlNoCustomHeaders(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getPath(), action, timeout, leaseId, owner, group, permissions,
-            acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId,
-            this.client.getVersion(), accept, context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.setAccessControlNoCustomHeaders(this.client.getUrl(),
+                this.client.getFileSystem(), this.client.getPath(), action, timeout, leaseId, owner, group, permissions,
+                acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId,
+                this.client.getVersion(), accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -6964,7 +6985,7 @@ public final class PathsImpl {
         return service.setAccessControlNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
             this.client.getPath(), action, timeout, leaseId, owner, group, permissions, acl, ifMatch, ifNoneMatch,
             ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -7033,7 +7054,7 @@ public final class PathsImpl {
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), accept,
                 context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -7134,7 +7155,7 @@ public final class PathsImpl {
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), accept,
                 context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -7173,10 +7194,11 @@ public final class PathsImpl {
             String continuation, Boolean forceFlag, Integer maxRecords, String acl, String requestId) {
         final String action = "setAccessControlRecursive";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.setAccessControlRecursive(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getPath(), action, timeout, continuation, mode, forceFlag,
-            maxRecords, acl, requestId, this.client.getVersion(), accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.setAccessControlRecursive(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), action, timeout, continuation, mode, forceFlag, maxRecords, acl, requestId,
+                this.client.getVersion(), accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -7219,7 +7241,7 @@ public final class PathsImpl {
             .setAccessControlRecursive(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), action,
                 timeout, continuation, mode, forceFlag, maxRecords, acl, requestId, this.client.getVersion(), accept,
                 context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -7256,7 +7278,7 @@ public final class PathsImpl {
         PathSetAccessControlRecursiveMode mode, Integer timeout, String continuation, Boolean forceFlag,
         Integer maxRecords, String acl, String requestId) {
         return setAccessControlRecursiveWithResponseAsync(mode, timeout, continuation, forceFlag, maxRecords, acl,
-            requestId).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            requestId).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -7295,7 +7317,8 @@ public final class PathsImpl {
         PathSetAccessControlRecursiveMode mode, Integer timeout, String continuation, Boolean forceFlag,
         Integer maxRecords, String acl, String requestId, Context context) {
         return setAccessControlRecursiveWithResponseAsync(mode, timeout, continuation, forceFlag, maxRecords, acl,
-            requestId, context).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            requestId, context)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -7338,7 +7361,7 @@ public final class PathsImpl {
             .withContext(context -> service.setAccessControlRecursiveNoCustomHeaders(this.client.getUrl(),
                 this.client.getFileSystem(), this.client.getPath(), action, timeout, continuation, mode, forceFlag,
                 maxRecords, acl, requestId, this.client.getVersion(), accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -7381,7 +7404,7 @@ public final class PathsImpl {
             .setAccessControlRecursiveNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getPath(), action, timeout, continuation, mode, forceFlag, maxRecords, acl, requestId,
                 this.client.getVersion(), accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -7425,7 +7448,7 @@ public final class PathsImpl {
                 this.client.getPath(), action, timeout, continuation, mode, forceFlag, maxRecords, acl, requestId,
                 this.client.getVersion(), accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -7465,7 +7488,7 @@ public final class PathsImpl {
             return setAccessControlRecursiveWithResponse(mode, timeout, continuation, forceFlag, maxRecords, acl,
                 requestId, Context.NONE).getValue();
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -7510,7 +7533,7 @@ public final class PathsImpl {
                 this.client.getFileSystem(), this.client.getPath(), action, timeout, continuation, mode, forceFlag,
                 maxRecords, acl, requestId, this.client.getVersion(), accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -7642,12 +7665,14 @@ public final class PathsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.flushData(this.client.getUrl(), this.client.getFileSystem(),
-            this.client.getPath(), action, timeout, position, retainUncommittedData, close, contentLength,
-            contentMd5Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, cacheControl, contentType,
-            contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), encryptionKey, encryptionKeySha256,
-            encryptionAlgorithm, accept, context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.flushData(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), action, timeout, position, retainUncommittedData, close, contentLength,
+                contentMd5Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, cacheControl, contentType,
+                contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), encryptionKey, encryptionKeySha256,
+                encryptionAlgorithm, accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -7785,7 +7810,7 @@ public final class PathsImpl {
                 leaseDuration, proposedLeaseId, cacheControl, contentType, contentDisposition, contentEncoding,
                 contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId,
                 this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -7840,7 +7865,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo) {
         return flushDataWithResponseAsync(timeout, position, retainUncommittedData, close, contentLength, leaseAction,
             leaseDuration, proposedLeaseId, requestId, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
-            cpkInfo).onErrorMap(ModelHelper::mapToDataLakeStorageException).flatMap(ignored -> Mono.empty());
+            cpkInfo).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7896,7 +7922,9 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo, Context context) {
         return flushDataWithResponseAsync(timeout, position, retainUncommittedData, close, contentLength, leaseAction,
             leaseDuration, proposedLeaseId, requestId, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
-            cpkInfo, context).onErrorMap(ModelHelper::mapToDataLakeStorageException).flatMap(ignored -> Mono.empty());
+            cpkInfo, context)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -8027,13 +8055,14 @@ public final class PathsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.flushDataNoCustomHeaders(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getPath(), action, timeout, position, retainUncommittedData, close,
-            contentLength, contentMd5Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, cacheControl,
-            contentType, contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), encryptionKey,
-            encryptionKeySha256, encryptionAlgorithm, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.flushDataNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), action, timeout, position, retainUncommittedData, close, contentLength,
+                contentMd5Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, cacheControl, contentType,
+                contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), encryptionKey, encryptionKeySha256,
+                encryptionAlgorithm, accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -8172,7 +8201,7 @@ public final class PathsImpl {
                 contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), encryptionKey, encryptionKeySha256,
                 encryptionAlgorithm, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -8312,7 +8341,7 @@ public final class PathsImpl {
                 ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), encryptionKey, encryptionKeySha256,
                 encryptionAlgorithm, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -8507,7 +8536,7 @@ public final class PathsImpl {
                 ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), encryptionKey, encryptionKeySha256,
                 encryptionAlgorithm, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -8580,11 +8609,13 @@ public final class PathsImpl {
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return FluxUtil.withContext(context -> service.appendData(this.client.getUrl(), this.client.getFileSystem(),
-            this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
-            transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
-            this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
-            context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.appendData(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
+                transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
+                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
+                context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -8662,7 +8693,7 @@ public final class PathsImpl {
                 timeout, contentLength, transactionalContentHashConverted, transactionalContentCrc64Converted, leaseId,
                 leaseAction, leaseDuration, proposedLeaseId, requestId, this.client.getVersion(), encryptionKey,
                 encryptionKeySha256, encryptionAlgorithm, flush, body, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -8707,7 +8738,8 @@ public final class PathsImpl {
         CpkInfo cpkInfo) {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
-            cpkInfo).onErrorMap(ModelHelper::mapToDataLakeStorageException).flatMap(ignored -> Mono.empty());
+            cpkInfo).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -8753,7 +8785,9 @@ public final class PathsImpl {
         CpkInfo cpkInfo, Context context) {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
-            cpkInfo, context).onErrorMap(ModelHelper::mapToDataLakeStorageException).flatMap(ignored -> Mono.empty());
+            cpkInfo, context)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -8825,11 +8859,13 @@ public final class PathsImpl {
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return FluxUtil.withContext(context -> service.appendDataNoCustomHeaders(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getPath(), action, position, timeout, contentLength,
-            transactionalContentHashConverted, transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration,
-            proposedLeaseId, requestId, this.client.getVersion(), encryptionKey, encryptionKeySha256,
-            encryptionAlgorithm, flush, body, accept, context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.appendDataNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
+                transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
+                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
+                context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -8907,7 +8943,7 @@ public final class PathsImpl {
                 position, timeout, contentLength, transactionalContentHashConverted, transactionalContentCrc64Converted,
                 leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId, this.client.getVersion(),
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -8979,11 +9015,13 @@ public final class PathsImpl {
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return FluxUtil.withContext(context -> service.appendData(this.client.getUrl(), this.client.getFileSystem(),
-            this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
-            transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
-            this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
-            context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.appendData(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
+                transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
+                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
+                context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9061,7 +9099,7 @@ public final class PathsImpl {
                 timeout, contentLength, transactionalContentHashConverted, transactionalContentCrc64Converted, leaseId,
                 leaseAction, leaseDuration, proposedLeaseId, requestId, this.client.getVersion(), encryptionKey,
                 encryptionKeySha256, encryptionAlgorithm, flush, body, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9106,7 +9144,8 @@ public final class PathsImpl {
         CpkInfo cpkInfo) {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
-            cpkInfo).onErrorMap(ModelHelper::mapToDataLakeStorageException).flatMap(ignored -> Mono.empty());
+            cpkInfo).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -9152,7 +9191,9 @@ public final class PathsImpl {
         CpkInfo cpkInfo, Context context) {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
-            cpkInfo, context).onErrorMap(ModelHelper::mapToDataLakeStorageException).flatMap(ignored -> Mono.empty());
+            cpkInfo, context)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -9224,11 +9265,13 @@ public final class PathsImpl {
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return FluxUtil.withContext(context -> service.appendDataNoCustomHeaders(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getPath(), action, position, timeout, contentLength,
-            transactionalContentHashConverted, transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration,
-            proposedLeaseId, requestId, this.client.getVersion(), encryptionKey, encryptionKeySha256,
-            encryptionAlgorithm, flush, body, accept, context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.appendDataNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
+                transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
+                this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
+                context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9306,7 +9349,7 @@ public final class PathsImpl {
                 position, timeout, contentLength, transactionalContentHashConverted, transactionalContentCrc64Converted,
                 leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId, this.client.getVersion(),
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9386,7 +9429,7 @@ public final class PathsImpl {
                 this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
                 context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -9511,7 +9554,7 @@ public final class PathsImpl {
                 this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
                 context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -9539,7 +9582,7 @@ public final class PathsImpl {
             .withContext(
                 context -> service.setExpiry(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
                     comp, timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9566,7 +9609,7 @@ public final class PathsImpl {
         return service
             .setExpiry(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), comp, timeout,
                 this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9588,7 +9631,7 @@ public final class PathsImpl {
     public Mono<Void> setExpiryAsync(PathExpiryOptions expiryOptions, Integer timeout, String requestId,
         String expiresOn) {
         return setExpiryWithResponseAsync(expiryOptions, timeout, requestId, expiresOn)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -9612,7 +9655,7 @@ public final class PathsImpl {
     public Mono<Void> setExpiryAsync(PathExpiryOptions expiryOptions, Integer timeout, String requestId,
         String expiresOn, Context context) {
         return setExpiryWithResponseAsync(expiryOptions, timeout, requestId, expiresOn, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -9636,9 +9679,11 @@ public final class PathsImpl {
         Integer timeout, String requestId, String expiresOn) {
         final String comp = "expiry";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.setExpiryNoCustomHeaders(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getPath(), comp, timeout, this.client.getVersion(), requestId,
-            expiryOptions, expiresOn, accept, context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.setExpiryNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), comp, timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn,
+                accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9665,7 +9710,7 @@ public final class PathsImpl {
         return service
             .setExpiryNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), comp,
                 timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9693,7 +9738,7 @@ public final class PathsImpl {
             return service.setExpirySync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), comp,
                 timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -9742,7 +9787,7 @@ public final class PathsImpl {
                 this.client.getPath(), comp, timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn,
                 accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -9770,7 +9815,7 @@ public final class PathsImpl {
             .withContext(
                 context -> service.undelete(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
                     comp, timeout, undeleteSource, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9797,7 +9842,7 @@ public final class PathsImpl {
         return service
             .undelete(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), comp, timeout,
                 undeleteSource, this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9818,7 +9863,7 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> undeleteAsync(Integer timeout, String undeleteSource, String requestId) {
         return undeleteWithResponseAsync(timeout, undeleteSource, requestId)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -9841,7 +9886,7 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> undeleteAsync(Integer timeout, String undeleteSource, String requestId, Context context) {
         return undeleteWithResponseAsync(timeout, undeleteSource, requestId, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -9865,9 +9910,11 @@ public final class PathsImpl {
         String requestId) {
         final String comp = "undelete";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.undeleteNoCustomHeaders(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getPath(), comp, timeout, undeleteSource, this.client.getVersion(),
-            requestId, accept, context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.undeleteNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getPath(), comp, timeout, undeleteSource, this.client.getVersion(), requestId, accept,
+                context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9894,7 +9941,7 @@ public final class PathsImpl {
         return service
             .undeleteNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), comp,
                 timeout, undeleteSource, this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -9922,7 +9969,7 @@ public final class PathsImpl {
             return service.undeleteSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), comp,
                 timeout, undeleteSource, this.client.getVersion(), requestId, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -9971,7 +10018,7 @@ public final class PathsImpl {
                 this.client.getPath(), comp, timeout, undeleteSource, this.client.getVersion(), requestId, accept,
                 context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 }

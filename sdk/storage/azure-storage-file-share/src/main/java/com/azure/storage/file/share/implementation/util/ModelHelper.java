@@ -630,14 +630,7 @@ public class ModelHelper {
      * @param internal The internal exception.
      * @return The public exception.
      */
-    public static Throwable mapToShareStorageException(Throwable internal) {
-        if (internal instanceof ShareStorageExceptionInternal) {
-            ShareStorageExceptionInternal internalException = (ShareStorageExceptionInternal) internal;
-            return new ShareStorageException(internalException.getMessage(), internalException.getResponse(),
-                internalException.getValue());
-        }
-
-        return internal;
+    public static ShareStorageException mapToShareStorageException(ShareStorageExceptionInternal internal) {
+        return new ShareStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
-
 }

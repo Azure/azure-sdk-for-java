@@ -206,12 +206,12 @@ public class DataLakeStorageCustomization extends Customization {
      * <p>
      * - Check for the return of the method not equaling to PagedFlux, PagedIterable, PollerFlux, or SyncPoller. Those
      * types wrap other APIs and those APIs being update is the correct change.
-     * - For asynchronous methods, add a call to {@code .onErrorMap(ModelHelper::mapToDataLakeStorageException} to
+     * - For asynchronous methods, add a call to
+     * {@code .onErrorMap(DataLakeStorageException.class, ModelHelper::mapToDataLakeStorageException)} to
      * handle mapping DataLakeStorageExceptionInternal to DataLakeStorageException.
      * - For synchronous methods, wrap the return statement in a try-catch block that catches
-     * DataLakeStorageExceptionInternal and rethrows
-     * {@code (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(e)}. Or, for void methods wrap the last
-     * statement.
+     * DataLakeStorageExceptionInternal and rethrows {@code ModelHelper.mapToDataLakeStorageException(e)}. Or, for void
+     * methods wrap the last statement.
      *
      * @param implPackage The implementation package.
      */
@@ -263,8 +263,8 @@ public class DataLakeStorageCustomization extends Customization {
             .getExpression().get().toString();
         int insertionPoint = findAsyncOnErrorMapInsertionPoint(originalReturnStatement);
         String newReturnStatement = "return " + originalReturnStatement.substring(0, insertionPoint)
-            + ".onErrorMap(ModelHelper::mapToDataLakeStorageException)" + originalReturnStatement.substring(insertionPoint)
-            + ";";
+            + ".onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)"
+            + originalReturnStatement.substring(insertionPoint) + ";";
         try {
             Statement newReturn = StaticJavaParser.parseStatement(newReturnStatement);
             body.getStatements().set(body.getStatements().size() - 1, newReturn);
@@ -296,7 +296,7 @@ public class DataLakeStorageCustomization extends Customization {
         // Turn the last statement into a BlockStmt that will be used as the try block.
         BlockStmt tryBlock = new BlockStmt(new NodeList<>(body.getStatement(body.getStatements().size() - 1)));
         BlockStmt catchBlock = new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement(
-            "throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);")));
+            "throw ModelHelper.mapToDataLakeStorageException(internalException);")));
         Parameter catchParameter = new Parameter().setType("DataLakeStorageExceptionInternal")
             .setName("internalException");
         CatchClause catchClause = new CatchClause(catchParameter, catchBlock);

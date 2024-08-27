@@ -45,7 +45,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
-import com.azure.storage.file.share.models.ShareStorageException;
 
 /**
  * An instance of this class provides access to all the operations defined in Directories.
@@ -659,7 +658,7 @@ public final class DirectoriesImpl {
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -705,7 +704,7 @@ public final class DirectoriesImpl {
                 metadata, this.client.getVersion(), filePermission, filePermissionFormat, filePermissionKey,
                 fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.getFileRequestIntent(),
                 accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -744,7 +743,7 @@ public final class DirectoriesImpl {
         String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime) {
         return createWithResponseAsync(shareName, directory, fileAttributes, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -786,7 +785,7 @@ public final class DirectoriesImpl {
         Context context) {
         return createWithResponseAsync(shareName, directory, fileAttributes, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -832,7 +831,7 @@ public final class DirectoriesImpl {
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -878,7 +877,7 @@ public final class DirectoriesImpl {
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -925,7 +924,7 @@ public final class DirectoriesImpl {
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1010,7 +1009,7 @@ public final class DirectoriesImpl {
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1039,7 +1038,7 @@ public final class DirectoriesImpl {
             .withContext(context -> service.getProperties(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1067,7 +1066,7 @@ public final class DirectoriesImpl {
         return service
             .getProperties(this.client.getUrl(), shareName, directory, restype, this.client.isAllowTrailingDot(),
                 sharesnapshot, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1089,7 +1088,7 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getPropertiesAsync(String shareName, String directory, String sharesnapshot, Integer timeout) {
         return getPropertiesWithResponseAsync(shareName, directory, sharesnapshot, timeout)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1114,7 +1113,7 @@ public final class DirectoriesImpl {
     public Mono<Void> getPropertiesAsync(String shareName, String directory, String sharesnapshot, Integer timeout,
         Context context) {
         return getPropertiesWithResponseAsync(shareName, directory, sharesnapshot, timeout, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1143,7 +1142,7 @@ public final class DirectoriesImpl {
             .withContext(context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), shareName, directory,
                 restype, this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1172,7 +1171,7 @@ public final class DirectoriesImpl {
             .getPropertiesNoCustomHeaders(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1202,7 +1201,7 @@ public final class DirectoriesImpl {
                 this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1253,7 +1252,7 @@ public final class DirectoriesImpl {
                 this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1275,9 +1274,11 @@ public final class DirectoriesImpl {
         String directory, Integer timeout) {
         final String restype = "directory";
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.delete(this.client.getUrl(), shareName, directory, restype,
-            this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
-            accept, context)).onErrorMap(ModelHelper::mapToShareStorageException);
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getUrl(), shareName, directory, restype,
+                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
+                accept, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1302,7 +1303,7 @@ public final class DirectoriesImpl {
         return service
             .delete(this.client.getUrl(), shareName, directory, restype, this.client.isAllowTrailingDot(), timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1321,7 +1322,7 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String shareName, String directory, Integer timeout) {
         return deleteWithResponseAsync(shareName, directory, timeout)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1342,7 +1343,7 @@ public final class DirectoriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String shareName, String directory, Integer timeout, Context context) {
         return deleteWithResponseAsync(shareName, directory, timeout, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1364,9 +1365,11 @@ public final class DirectoriesImpl {
         Integer timeout) {
         final String restype = "directory";
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), shareName, directory,
-            restype, this.client.isAllowTrailingDot(), timeout, this.client.getVersion(),
-            this.client.getFileRequestIntent(), accept, context)).onErrorMap(ModelHelper::mapToShareStorageException);
+        return FluxUtil
+            .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), shareName, directory, restype,
+                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
+                accept, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1392,7 +1395,7 @@ public final class DirectoriesImpl {
             .deleteNoCustomHeaders(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
                 accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1419,7 +1422,7 @@ public final class DirectoriesImpl {
                 this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
                 accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1464,7 +1467,7 @@ public final class DirectoriesImpl {
                 this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
                 accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1510,7 +1513,7 @@ public final class DirectoriesImpl {
                 timeout, this.client.getVersion(), filePermission, filePermissionFormat, filePermissionKey,
                 fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1556,7 +1559,7 @@ public final class DirectoriesImpl {
                 filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
                 fileLastWriteTime, fileChangeTime, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
                 accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1594,7 +1597,7 @@ public final class DirectoriesImpl {
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime) {
         return setPropertiesWithResponseAsync(shareName, directory, fileAttributes, timeout, filePermission,
             filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1634,7 +1637,7 @@ public final class DirectoriesImpl {
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, Context context) {
         return setPropertiesWithResponseAsync(shareName, directory, fileAttributes, timeout, filePermission,
             filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1679,7 +1682,7 @@ public final class DirectoriesImpl {
                 restype, comp, timeout, this.client.getVersion(), filePermission, filePermissionFormat,
                 filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime,
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1725,7 +1728,7 @@ public final class DirectoriesImpl {
                 this.client.getVersion(), filePermission, filePermissionFormat, filePermissionKey, fileAttributes,
                 fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1772,7 +1775,7 @@ public final class DirectoriesImpl {
                 fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1856,7 +1859,7 @@ public final class DirectoriesImpl {
                 fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1884,7 +1887,7 @@ public final class DirectoriesImpl {
             .withContext(context -> service.setMetadata(this.client.getUrl(), shareName, directory, restype, comp,
                 timeout, metadata, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1912,7 +1915,7 @@ public final class DirectoriesImpl {
             .setMetadata(this.client.getUrl(), shareName, directory, restype, comp, timeout, metadata,
                 this.client.getVersion(), this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept,
                 context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1933,7 +1936,7 @@ public final class DirectoriesImpl {
     public Mono<Void> setMetadataAsync(String shareName, String directory, Integer timeout,
         Map<String, String> metadata) {
         return setMetadataWithResponseAsync(shareName, directory, timeout, metadata)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1956,7 +1959,7 @@ public final class DirectoriesImpl {
     public Mono<Void> setMetadataAsync(String shareName, String directory, Integer timeout,
         Map<String, String> metadata, Context context) {
         return setMetadataWithResponseAsync(shareName, directory, timeout, metadata, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1984,7 +1987,7 @@ public final class DirectoriesImpl {
             .withContext(context -> service.setMetadataNoCustomHeaders(this.client.getUrl(), shareName, directory,
                 restype, comp, timeout, metadata, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2012,7 +2015,7 @@ public final class DirectoriesImpl {
             .setMetadataNoCustomHeaders(this.client.getUrl(), shareName, directory, restype, comp, timeout, metadata,
                 this.client.getVersion(), this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept,
                 context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2041,7 +2044,7 @@ public final class DirectoriesImpl {
                 this.client.getVersion(), this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept,
                 context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -2089,7 +2092,7 @@ public final class DirectoriesImpl {
                 timeout, metadata, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -2137,7 +2140,7 @@ public final class DirectoriesImpl {
                 restype, comp, prefix, sharesnapshot, marker, maxresults, timeout, this.client.getVersion(),
                 includeConverted, includeExtendedInfo, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2183,7 +2186,7 @@ public final class DirectoriesImpl {
         return service.listFilesAndDirectoriesSegment(this.client.getUrl(), shareName, directory, restype, comp, prefix,
             sharesnapshot, marker, maxresults, timeout, this.client.getVersion(), includeConverted, includeExtendedInfo,
             this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2216,7 +2219,8 @@ public final class DirectoriesImpl {
         String directory, String prefix, String sharesnapshot, String marker, Integer maxresults, Integer timeout,
         List<ListFilesIncludeType> include, Boolean includeExtendedInfo) {
         return listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directory, prefix, sharesnapshot, marker,
-            maxresults, timeout, include, includeExtendedInfo).onErrorMap(ModelHelper::mapToShareStorageException)
+            maxresults, timeout, include, includeExtendedInfo)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2252,7 +2256,7 @@ public final class DirectoriesImpl {
         List<ListFilesIncludeType> include, Boolean includeExtendedInfo, Context context) {
         return listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directory, prefix, sharesnapshot, marker,
             maxresults, timeout, include, includeExtendedInfo, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2300,7 +2304,7 @@ public final class DirectoriesImpl {
                 shareName, directory, restype, comp, prefix, sharesnapshot, marker, maxresults, timeout,
                 this.client.getVersion(), includeConverted, includeExtendedInfo, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2348,7 +2352,7 @@ public final class DirectoriesImpl {
                 prefix, sharesnapshot, marker, maxresults, timeout, this.client.getVersion(), includeConverted,
                 includeExtendedInfo, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept,
                 context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2396,7 +2400,7 @@ public final class DirectoriesImpl {
                 includeExtendedInfo, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept,
                 context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -2433,7 +2437,7 @@ public final class DirectoriesImpl {
             return listFilesAndDirectoriesSegmentWithResponse(shareName, directory, prefix, sharesnapshot, marker,
                 maxresults, timeout, include, includeExtendedInfo, Context.NONE).getValue();
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -2481,7 +2485,7 @@ public final class DirectoriesImpl {
                 includeConverted, includeExtendedInfo, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -2518,7 +2522,7 @@ public final class DirectoriesImpl {
             .withContext(context -> service.listHandles(this.client.getUrl(), shareName, directory, comp, marker,
                 maxresults, timeout, sharesnapshot, recursive, this.client.getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2555,7 +2559,7 @@ public final class DirectoriesImpl {
             .listHandles(this.client.getUrl(), shareName, directory, comp, marker, maxresults, timeout, sharesnapshot,
                 recursive, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2585,7 +2589,7 @@ public final class DirectoriesImpl {
     public Mono<ListHandlesResponse> listHandlesAsync(String shareName, String directory, String marker,
         Integer maxresults, Integer timeout, String sharesnapshot, Boolean recursive) {
         return listHandlesWithResponseAsync(shareName, directory, marker, maxresults, timeout, sharesnapshot, recursive)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2617,7 +2621,7 @@ public final class DirectoriesImpl {
     public Mono<ListHandlesResponse> listHandlesAsync(String shareName, String directory, String marker,
         Integer maxresults, Integer timeout, String sharesnapshot, Boolean recursive, Context context) {
         return listHandlesWithResponseAsync(shareName, directory, marker, maxresults, timeout, sharesnapshot, recursive,
-            context).onErrorMap(ModelHelper::mapToShareStorageException)
+            context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2653,7 +2657,7 @@ public final class DirectoriesImpl {
             .withContext(context -> service.listHandlesNoCustomHeaders(this.client.getUrl(), shareName, directory, comp,
                 marker, maxresults, timeout, sharesnapshot, recursive, this.client.getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2690,7 +2694,7 @@ public final class DirectoriesImpl {
             .listHandlesNoCustomHeaders(this.client.getUrl(), shareName, directory, comp, marker, maxresults, timeout,
                 sharesnapshot, recursive, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2728,7 +2732,7 @@ public final class DirectoriesImpl {
                 timeout, sharesnapshot, recursive, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -2762,7 +2766,7 @@ public final class DirectoriesImpl {
             return listHandlesWithResponse(shareName, directory, marker, maxresults, timeout, sharesnapshot, recursive,
                 Context.NONE).getValue();
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -2800,7 +2804,7 @@ public final class DirectoriesImpl {
                 maxresults, timeout, sharesnapshot, recursive, this.client.getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -2837,7 +2841,7 @@ public final class DirectoriesImpl {
             .withContext(context -> service.forceCloseHandles(this.client.getUrl(), shareName, directory, comp, timeout,
                 marker, sharesnapshot, handleId, recursive, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2874,7 +2878,7 @@ public final class DirectoriesImpl {
             .forceCloseHandles(this.client.getUrl(), shareName, directory, comp, timeout, marker, sharesnapshot,
                 handleId, recursive, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -2904,7 +2908,8 @@ public final class DirectoriesImpl {
     public Mono<Void> forceCloseHandlesAsync(String shareName, String directory, String handleId, Integer timeout,
         String marker, String sharesnapshot, Boolean recursive) {
         return forceCloseHandlesWithResponseAsync(shareName, directory, handleId, timeout, marker, sharesnapshot,
-            recursive).onErrorMap(ModelHelper::mapToShareStorageException).flatMap(ignored -> Mono.empty());
+            recursive).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2935,7 +2940,8 @@ public final class DirectoriesImpl {
     public Mono<Void> forceCloseHandlesAsync(String shareName, String directory, String handleId, Integer timeout,
         String marker, String sharesnapshot, Boolean recursive, Context context) {
         return forceCloseHandlesWithResponseAsync(shareName, directory, handleId, timeout, marker, sharesnapshot,
-            recursive, context).onErrorMap(ModelHelper::mapToShareStorageException).flatMap(ignored -> Mono.empty());
+            recursive, context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2970,7 +2976,7 @@ public final class DirectoriesImpl {
             .withContext(context -> service.forceCloseHandlesNoCustomHeaders(this.client.getUrl(), shareName, directory,
                 comp, timeout, marker, sharesnapshot, handleId, recursive, this.client.getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3006,7 +3012,7 @@ public final class DirectoriesImpl {
             .forceCloseHandlesNoCustomHeaders(this.client.getUrl(), shareName, directory, comp, timeout, marker,
                 sharesnapshot, handleId, recursive, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3044,7 +3050,7 @@ public final class DirectoriesImpl {
                 sharesnapshot, handleId, recursive, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -3111,7 +3117,7 @@ public final class DirectoriesImpl {
                 timeout, marker, sharesnapshot, handleId, recursive, this.client.getVersion(),
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -3197,7 +3203,7 @@ public final class DirectoriesImpl {
                 destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
                 filePermissionFormat, filePermissionKey, metadata, this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3284,7 +3290,7 @@ public final class DirectoriesImpl {
                 fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission, filePermissionFormat,
                 filePermissionKey, metadata, this.client.isAllowTrailingDot(), this.client.isAllowSourceTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3332,7 +3338,8 @@ public final class DirectoriesImpl {
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo) {
         return renameWithResponseAsync(shareName, directory, renameSource, timeout, replaceIfExists, ignoreReadOnly,
             filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
-            destinationLeaseAccessConditions, copyFileSmbInfo).onErrorMap(ModelHelper::mapToShareStorageException)
+            destinationLeaseAccessConditions, copyFileSmbInfo)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3384,7 +3391,7 @@ public final class DirectoriesImpl {
         return renameWithResponseAsync(shareName, directory, renameSource, timeout, replaceIfExists, ignoreReadOnly,
             filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
             destinationLeaseAccessConditions, copyFileSmbInfo, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3470,7 +3477,7 @@ public final class DirectoriesImpl {
                 destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
                 filePermissionFormat, filePermissionKey, metadata, this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3557,7 +3564,7 @@ public final class DirectoriesImpl {
                 destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
                 filePermissionFormat, filePermissionKey, metadata, this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -3645,7 +3652,7 @@ public final class DirectoriesImpl {
                 filePermissionFormat, filePermissionKey, metadata, this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -3781,7 +3788,7 @@ public final class DirectoriesImpl {
                 filePermissionFormat, filePermissionKey, metadata, this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 }

@@ -42,7 +42,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
-import com.azure.storage.file.datalake.models.DataLakeStorageException;
 
 /**
  * An instance of this class provides access to all the operations defined in FileSystems.
@@ -358,7 +357,7 @@ public final class FileSystemsImpl {
         return FluxUtil
             .withContext(context -> service.create(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -391,7 +390,7 @@ public final class FileSystemsImpl {
         return service
             .create(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(), requestId, timeout,
                 this.client.getVersion(), properties, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -419,7 +418,7 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAsync(String requestId, Integer timeout, String properties) {
         return createWithResponseAsync(requestId, timeout, properties)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -449,7 +448,7 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAsync(String requestId, Integer timeout, String properties, Context context) {
         return createWithResponseAsync(requestId, timeout, properties, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -482,7 +481,7 @@ public final class FileSystemsImpl {
         return FluxUtil
             .withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -515,7 +514,7 @@ public final class FileSystemsImpl {
         return service
             .createNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), properties, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -549,7 +548,7 @@ public final class FileSystemsImpl {
             return service.createSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), properties, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -610,7 +609,7 @@ public final class FileSystemsImpl {
             return service.createNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -660,7 +659,7 @@ public final class FileSystemsImpl {
             .withContext(context -> service.setProperties(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -710,7 +709,7 @@ public final class FileSystemsImpl {
             .setProperties(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(), requestId,
                 timeout, this.client.getVersion(), properties, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -741,7 +740,7 @@ public final class FileSystemsImpl {
     public Mono<Void> setPropertiesAsync(String requestId, Integer timeout, String properties,
         ModifiedAccessConditions modifiedAccessConditions) {
         return setPropertiesWithResponseAsync(requestId, timeout, properties, modifiedAccessConditions)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -774,7 +773,7 @@ public final class FileSystemsImpl {
     public Mono<Void> setPropertiesAsync(String requestId, Integer timeout, String properties,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return setPropertiesWithResponseAsync(requestId, timeout, properties, modifiedAccessConditions, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -824,7 +823,7 @@ public final class FileSystemsImpl {
             .withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(),
                 this.client.getFileSystem(), this.client.getResource(), requestId, timeout, this.client.getVersion(),
                 properties, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -874,7 +873,7 @@ public final class FileSystemsImpl {
             .setPropertiesNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), properties, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -925,7 +924,7 @@ public final class FileSystemsImpl {
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -1006,7 +1005,7 @@ public final class FileSystemsImpl {
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), properties,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -1032,7 +1031,7 @@ public final class FileSystemsImpl {
         return FluxUtil
             .withContext(context -> service.getProperties(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1058,7 +1057,7 @@ public final class FileSystemsImpl {
         return service
             .getProperties(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(), requestId,
                 timeout, this.client.getVersion(), accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1078,7 +1077,8 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getPropertiesAsync(String requestId, Integer timeout) {
-        return getPropertiesWithResponseAsync(requestId, timeout).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+        return getPropertiesWithResponseAsync(requestId, timeout)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1101,7 +1101,7 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getPropertiesAsync(String requestId, Integer timeout, Context context) {
         return getPropertiesWithResponseAsync(requestId, timeout, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1127,7 +1127,7 @@ public final class FileSystemsImpl {
             .withContext(
                 context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
                     this.client.getResource(), requestId, timeout, this.client.getVersion(), accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1153,7 +1153,7 @@ public final class FileSystemsImpl {
         return service
             .getPropertiesNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1180,7 +1180,7 @@ public final class FileSystemsImpl {
             return service.getPropertiesSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -1226,7 +1226,7 @@ public final class FileSystemsImpl {
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -1271,9 +1271,11 @@ public final class FileSystemsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.delete(this.client.getUrl(), this.client.getFileSystem(),
-            this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, accept, context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1321,7 +1323,7 @@ public final class FileSystemsImpl {
         return service
             .delete(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(), requestId, timeout,
                 this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1351,7 +1353,7 @@ public final class FileSystemsImpl {
     public Mono<Void> deleteAsync(String requestId, Integer timeout,
         ModifiedAccessConditions modifiedAccessConditions) {
         return deleteWithResponseAsync(requestId, timeout, modifiedAccessConditions)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1383,7 +1385,7 @@ public final class FileSystemsImpl {
     public Mono<Void> deleteAsync(String requestId, Integer timeout, ModifiedAccessConditions modifiedAccessConditions,
         Context context) {
         return deleteWithResponseAsync(requestId, timeout, modifiedAccessConditions, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1428,10 +1430,11 @@ public final class FileSystemsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getResource(), requestId, timeout, this.client.getVersion(),
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1480,7 +1483,7 @@ public final class FileSystemsImpl {
             .deleteNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1530,7 +1533,7 @@ public final class FileSystemsImpl {
                 requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -1608,7 +1611,7 @@ public final class FileSystemsImpl {
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -1645,9 +1648,11 @@ public final class FileSystemsImpl {
     public Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsWithResponseAsync(boolean recursive,
         String requestId, Integer timeout, String continuation, String path, Integer maxResults, Boolean upn) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listPaths(this.client.getUrl(), this.client.getFileSystem(),
-            this.client.getResource(), requestId, timeout, this.client.getVersion(), continuation, path, recursive,
-            maxResults, upn, accept, context)).onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.listPaths(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getResource(), requestId, timeout, this.client.getVersion(), continuation, path, recursive,
+                maxResults, upn, accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1688,7 +1693,7 @@ public final class FileSystemsImpl {
         return service
             .listPaths(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(), requestId, timeout,
                 this.client.getVersion(), continuation, path, recursive, maxResults, upn, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1724,7 +1729,7 @@ public final class FileSystemsImpl {
     public Mono<PathList> listPathsAsync(boolean recursive, String requestId, Integer timeout, String continuation,
         String path, Integer maxResults, Boolean upn) {
         return listPathsWithResponseAsync(recursive, requestId, timeout, continuation, path, maxResults, upn)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1762,7 +1767,7 @@ public final class FileSystemsImpl {
     public Mono<PathList> listPathsAsync(boolean recursive, String requestId, Integer timeout, String continuation,
         String path, Integer maxResults, Boolean upn, Context context) {
         return listPathsWithResponseAsync(recursive, requestId, timeout, continuation, path, maxResults, upn, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1799,10 +1804,11 @@ public final class FileSystemsImpl {
     public Mono<Response<PathList>> listPathsNoCustomHeadersWithResponseAsync(boolean recursive, String requestId,
         Integer timeout, String continuation, String path, Integer maxResults, Boolean upn) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listPathsNoCustomHeaders(this.client.getUrl(),
-            this.client.getFileSystem(), this.client.getResource(), requestId, timeout, this.client.getVersion(),
-            continuation, path, recursive, maxResults, upn, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+        return FluxUtil
+            .withContext(context -> service.listPathsNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+                this.client.getResource(), requestId, timeout, this.client.getVersion(), continuation, path, recursive,
+                maxResults, upn, accept, context))
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1843,7 +1849,7 @@ public final class FileSystemsImpl {
             .listPathsNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
                 requestId, timeout, this.client.getVersion(), continuation, path, recursive, maxResults, upn, accept,
                 context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -1886,7 +1892,7 @@ public final class FileSystemsImpl {
                 requestId, timeout, this.client.getVersion(), continuation, path, recursive, maxResults, upn, accept,
                 context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -1926,7 +1932,7 @@ public final class FileSystemsImpl {
             return listPathsWithResponse(recursive, requestId, timeout, continuation, path, maxResults, upn,
                 Context.NONE).getValue();
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -1969,7 +1975,7 @@ public final class FileSystemsImpl {
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), continuation, path, recursive,
                 maxResults, upn, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -2015,7 +2021,7 @@ public final class FileSystemsImpl {
             .withContext(context -> service.listBlobHierarchySegment(this.client.getUrl(), this.client.getFileSystem(),
                 restype, comp, prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -2062,7 +2068,7 @@ public final class FileSystemsImpl {
             .listBlobHierarchySegment(this.client.getUrl(), this.client.getFileSystem(), restype, comp, prefix,
                 delimiter, marker, maxResults, includeConverted, showonly, timeout, this.client.getVersion(), requestId,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -2096,7 +2102,8 @@ public final class FileSystemsImpl {
         String marker, Integer maxResults, List<ListBlobsIncludeItem> include, ListBlobsShowOnly showonly,
         Integer timeout, String requestId) {
         return listBlobHierarchySegmentWithResponseAsync(prefix, delimiter, marker, maxResults, include, showonly,
-            timeout, requestId).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            timeout, requestId)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2132,7 +2139,8 @@ public final class FileSystemsImpl {
         String marker, Integer maxResults, List<ListBlobsIncludeItem> include, ListBlobsShowOnly showonly,
         Integer timeout, String requestId, Context context) {
         return listBlobHierarchySegmentWithResponseAsync(prefix, delimiter, marker, maxResults, include, showonly,
-            timeout, requestId, context).onErrorMap(ModelHelper::mapToDataLakeStorageException)
+            timeout, requestId, context)
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -2178,7 +2186,7 @@ public final class FileSystemsImpl {
             .withContext(context -> service.listBlobHierarchySegmentNoCustomHeaders(this.client.getUrl(),
                 this.client.getFileSystem(), restype, comp, prefix, delimiter, marker, maxResults, includeConverted,
                 showonly, timeout, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -2224,7 +2232,7 @@ public final class FileSystemsImpl {
             .listBlobHierarchySegmentNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), restype, comp,
                 prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout, this.client.getVersion(),
                 requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToDataLakeStorageException);
+            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
     /**
@@ -2272,7 +2280,7 @@ public final class FileSystemsImpl {
                 comp, prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -2310,7 +2318,7 @@ public final class FileSystemsImpl {
             return listBlobHierarchySegmentWithResponse(prefix, delimiter, marker, maxResults, include, showonly,
                 timeout, requestId, Context.NONE).getValue();
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 
@@ -2358,7 +2366,7 @@ public final class FileSystemsImpl {
                 this.client.getFileSystem(), restype, comp, prefix, delimiter, marker, maxResults, includeConverted,
                 showonly, timeout, this.client.getVersion(), requestId, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
-            throw (DataLakeStorageException) ModelHelper.mapToDataLakeStorageException(internalException);
+            throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
     }
 }

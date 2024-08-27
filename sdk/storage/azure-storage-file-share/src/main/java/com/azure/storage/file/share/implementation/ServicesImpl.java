@@ -40,7 +40,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
-import com.azure.storage.file.share.models.ShareStorageException;
 
 /**
  * An instance of this class provides access to all the operations defined in Services.
@@ -252,7 +251,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.setProperties(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), shareServiceProperties, accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -278,7 +277,7 @@ public final class ServicesImpl {
         return service
             .setProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), shareServiceProperties, accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -297,7 +296,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setPropertiesAsync(ShareServiceProperties shareServiceProperties, Integer timeout) {
         return setPropertiesWithResponseAsync(shareServiceProperties, timeout)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -319,7 +318,7 @@ public final class ServicesImpl {
     public Mono<Void> setPropertiesAsync(ShareServiceProperties shareServiceProperties, Integer timeout,
         Context context) {
         return setPropertiesWithResponseAsync(shareServiceProperties, timeout, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -345,7 +344,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), shareServiceProperties, accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -371,7 +370,7 @@ public final class ServicesImpl {
         return service
             .setPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), shareServiceProperties, accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -398,7 +397,7 @@ public final class ServicesImpl {
             return service.setPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), shareServiceProperties, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -443,7 +442,7 @@ public final class ServicesImpl {
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), shareServiceProperties, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -470,7 +469,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.getProperties(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -497,7 +496,7 @@ public final class ServicesImpl {
         return service
             .getProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -515,7 +514,8 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareServiceProperties> getPropertiesAsync(Integer timeout) {
-        return getPropertiesWithResponseAsync(timeout).onErrorMap(ModelHelper::mapToShareStorageException)
+        return getPropertiesWithResponseAsync(timeout)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -535,7 +535,8 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareServiceProperties> getPropertiesAsync(Integer timeout, Context context) {
-        return getPropertiesWithResponseAsync(timeout, context).onErrorMap(ModelHelper::mapToShareStorageException)
+        return getPropertiesWithResponseAsync(timeout, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -561,7 +562,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -588,7 +589,7 @@ public final class ServicesImpl {
         return service
             .getPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -615,7 +616,7 @@ public final class ServicesImpl {
             return service.getPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -637,7 +638,7 @@ public final class ServicesImpl {
         try {
             return getPropertiesWithResponse(timeout, Context.NONE).getValue();
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -664,7 +665,7 @@ public final class ServicesImpl {
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -701,7 +702,7 @@ public final class ServicesImpl {
             .withContext(context -> service.listSharesSegment(this.client.getUrl(), comp, prefix, marker, maxresults,
                 includeConverted, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
                 context))
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -739,7 +740,7 @@ public final class ServicesImpl {
         return service
             .listSharesSegment(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -831,7 +832,7 @@ public final class ServicesImpl {
             .withContext(context -> service.listSharesSegmentNoCustomHeaders(this.client.getUrl(), comp, prefix, marker,
                 maxresults, includeConverted, timeout, this.client.getVersion(), this.client.getFileRequestIntent(),
                 accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null));
     }
@@ -869,7 +870,7 @@ public final class ServicesImpl {
         return service
             .listSharesSegmentNoCustomHeaders(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
                 timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null));
     }
@@ -964,7 +965,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1005,7 +1006,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1100,7 +1101,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1141,7 +1142,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1216,7 +1217,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.listSharesSegmentNext(nextLink, this.client.getUrl(),
                 this.client.getVersion(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -1240,7 +1241,7 @@ public final class ServicesImpl {
         return service
             .listSharesSegmentNext(nextLink, this.client.getUrl(), this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -1262,7 +1263,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.listSharesSegmentNextNoCustomHeaders(nextLink, this.client.getUrl(),
                 this.client.getVersion(), this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null));
     }
@@ -1286,7 +1287,7 @@ public final class ServicesImpl {
         return service
             .listSharesSegmentNextNoCustomHeaders(nextLink, this.client.getUrl(), this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context)
-            .onErrorMap(ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null));
     }
@@ -1312,7 +1313,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1338,7 +1339,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1362,7 +1363,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
@@ -1388,7 +1389,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
-            throw (ShareStorageException) ModelHelper.mapToShareStorageException(internalException);
+            throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 }

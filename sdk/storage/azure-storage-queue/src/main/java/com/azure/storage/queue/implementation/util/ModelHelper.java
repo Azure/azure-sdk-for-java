@@ -98,14 +98,7 @@ public class ModelHelper {
      * @param internal The internal exception.
      * @return The public exception.
      */
-    public static Throwable mapToQueueStorageException(Throwable internal) {
-        if (internal instanceof QueueStorageExceptionInternal) {
-            QueueStorageExceptionInternal internalException = (QueueStorageExceptionInternal) internal;
-            return new QueueStorageException(internalException.getMessage(), internalException.getResponse(),
-                internalException.getValue());
-        }
-
-        return internal;
+    public static QueueStorageException mapToQueueStorageException(QueueStorageExceptionInternal internal) {
+        return new QueueStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
-
 }

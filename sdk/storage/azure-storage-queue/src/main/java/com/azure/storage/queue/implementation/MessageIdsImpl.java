@@ -27,7 +27,6 @@ import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
 import reactor.core.publisher.Mono;
 import com.azure.storage.queue.implementation.util.ModelHelper;
-import com.azure.storage.queue.models.QueueStorageException;
 
 /**
  * An instance of this class provides access to all the operations defined in MessageIds.
@@ -175,7 +174,7 @@ public final class MessageIdsImpl {
         return FluxUtil
             .withContext(context -> service.update(this.client.getUrl(), queueName, messageid, popReceipt,
                 visibilitytimeout, timeout, this.client.getVersion(), requestId, queueMessage, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -212,7 +211,7 @@ public final class MessageIdsImpl {
         return service
             .update(this.client.getUrl(), queueName, messageid, popReceipt, visibilitytimeout, timeout,
                 this.client.getVersion(), requestId, queueMessage, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -244,7 +243,8 @@ public final class MessageIdsImpl {
     public Mono<Void> updateAsync(String queueName, String messageid, String popReceipt, int visibilitytimeout,
         Integer timeout, String requestId, QueueMessage queueMessage) {
         return updateWithResponseAsync(queueName, messageid, popReceipt, visibilitytimeout, timeout, requestId,
-            queueMessage).onErrorMap(ModelHelper::mapToQueueStorageException).flatMap(ignored -> Mono.empty());
+            queueMessage).onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -277,7 +277,9 @@ public final class MessageIdsImpl {
     public Mono<Void> updateAsync(String queueName, String messageid, String popReceipt, int visibilitytimeout,
         Integer timeout, String requestId, QueueMessage queueMessage, Context context) {
         return updateWithResponseAsync(queueName, messageid, popReceipt, visibilitytimeout, timeout, requestId,
-            queueMessage, context).onErrorMap(ModelHelper::mapToQueueStorageException).flatMap(ignored -> Mono.empty());
+            queueMessage, context)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -313,7 +315,7 @@ public final class MessageIdsImpl {
             .withContext(
                 context -> service.updateNoCustomHeaders(this.client.getUrl(), queueName, messageid, popReceipt,
                     visibilitytimeout, timeout, this.client.getVersion(), requestId, queueMessage, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -350,7 +352,7 @@ public final class MessageIdsImpl {
         return service
             .updateNoCustomHeaders(this.client.getUrl(), queueName, messageid, popReceipt, visibilitytimeout, timeout,
                 this.client.getVersion(), requestId, queueMessage, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -388,7 +390,7 @@ public final class MessageIdsImpl {
             return service.updateSync(this.client.getUrl(), queueName, messageid, popReceipt, visibilitytimeout,
                 timeout, this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -457,7 +459,7 @@ public final class MessageIdsImpl {
             return service.updateNoCustomHeadersSync(this.client.getUrl(), queueName, messageid, popReceipt,
                 visibilitytimeout, timeout, this.client.getVersion(), requestId, queueMessage, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -485,7 +487,7 @@ public final class MessageIdsImpl {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getUrl(), queueName, messageid, popReceipt, timeout,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -513,7 +515,7 @@ public final class MessageIdsImpl {
         return service
             .delete(this.client.getUrl(), queueName, messageid, popReceipt, timeout, this.client.getVersion(),
                 requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -537,7 +539,7 @@ public final class MessageIdsImpl {
     public Mono<Void> deleteAsync(String queueName, String messageid, String popReceipt, Integer timeout,
         String requestId) {
         return deleteWithResponseAsync(queueName, messageid, popReceipt, timeout, requestId)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -563,7 +565,7 @@ public final class MessageIdsImpl {
     public Mono<Void> deleteAsync(String queueName, String messageid, String popReceipt, Integer timeout,
         String requestId, Context context) {
         return deleteWithResponseAsync(queueName, messageid, popReceipt, timeout, requestId, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -591,7 +593,7 @@ public final class MessageIdsImpl {
         return FluxUtil
             .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), queueName, messageid,
                 popReceipt, timeout, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -619,7 +621,7 @@ public final class MessageIdsImpl {
         return service
             .deleteNoCustomHeaders(this.client.getUrl(), queueName, messageid, popReceipt, timeout,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -648,7 +650,7 @@ public final class MessageIdsImpl {
             return service.deleteSync(this.client.getUrl(), queueName, messageid, popReceipt, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -699,7 +701,7 @@ public final class MessageIdsImpl {
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), queueName, messageid, popReceipt, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 }

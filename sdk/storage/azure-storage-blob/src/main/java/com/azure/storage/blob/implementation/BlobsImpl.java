@@ -883,7 +883,7 @@ public final class BlobsImpl {
                 timeout, range, leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256,
                 encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -954,7 +954,7 @@ public final class BlobsImpl {
                 rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1000,7 +1000,7 @@ public final class BlobsImpl {
         String ifTags, String requestId, CpkInfo cpkInfo) {
         return downloadWithResponseAsync(containerName, blob, snapshot, versionId, timeout, range, leaseId,
             rangeGetContentMD5, rangeGetContentCRC64, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
-            requestId, cpkInfo).onErrorMap(ModelHelper::mapToBlobStorageException)
+            requestId, cpkInfo).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
@@ -1048,7 +1048,8 @@ public final class BlobsImpl {
         String ifTags, String requestId, CpkInfo cpkInfo, Context context) {
         return downloadWithResponseAsync(containerName, blob, snapshot, versionId, timeout, range, leaseId,
             rangeGetContentMD5, rangeGetContentCRC64, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
-            requestId, cpkInfo, context).onErrorMap(ModelHelper::mapToBlobStorageException)
+            requestId, cpkInfo, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
@@ -1118,7 +1119,7 @@ public final class BlobsImpl {
                 versionId, timeout, range, leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey,
                 encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1188,7 +1189,7 @@ public final class BlobsImpl {
                 leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256,
                 encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1252,7 +1253,7 @@ public final class BlobsImpl {
                 versionId, timeout, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1317,7 +1318,7 @@ public final class BlobsImpl {
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
                 context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1357,7 +1358,7 @@ public final class BlobsImpl {
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo) {
         return getPropertiesWithResponseAsync(containerName, blob, snapshot, versionId, timeout, leaseId,
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1399,7 +1400,7 @@ public final class BlobsImpl {
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, Context context) {
         return getPropertiesWithResponseAsync(containerName, blob, snapshot, versionId, timeout, leaseId,
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1464,7 +1465,7 @@ public final class BlobsImpl {
                 snapshot, versionId, timeout, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1529,7 +1530,7 @@ public final class BlobsImpl {
                 leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
                 context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1594,7 +1595,7 @@ public final class BlobsImpl {
             .withContext(context -> service.delete(this.client.getUrl(), containerName, blob, snapshot, versionId,
                 timeout, leaseId, deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobDeleteType, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1660,7 +1661,7 @@ public final class BlobsImpl {
             .delete(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, leaseId, deleteSnapshots,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, blobDeleteType, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1718,7 +1719,7 @@ public final class BlobsImpl {
         BlobDeleteType blobDeleteType) {
         return deleteWithResponseAsync(containerName, blob, snapshot, versionId, timeout, leaseId, deleteSnapshots,
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobDeleteType)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1778,7 +1779,7 @@ public final class BlobsImpl {
         BlobDeleteType blobDeleteType, Context context) {
         return deleteWithResponseAsync(containerName, blob, snapshot, versionId, timeout, leaseId, deleteSnapshots,
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobDeleteType, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1844,7 +1845,7 @@ public final class BlobsImpl {
             .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), containerName, blob, snapshot,
                 versionId, timeout, leaseId, deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobDeleteType, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1910,7 +1911,7 @@ public final class BlobsImpl {
             .deleteNoCustomHeaders(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, leaseId,
                 deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, blobDeleteType, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1936,7 +1937,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.undelete(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1963,7 +1964,7 @@ public final class BlobsImpl {
         return service
             .undelete(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(), requestId,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1984,7 +1985,7 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> undeleteAsync(String containerName, String blob, Integer timeout, String requestId) {
         return undeleteWithResponseAsync(containerName, blob, timeout, requestId)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2008,7 +2009,7 @@ public final class BlobsImpl {
     public Mono<Void> undeleteAsync(String containerName, String blob, Integer timeout, String requestId,
         Context context) {
         return undeleteWithResponseAsync(containerName, blob, timeout, requestId, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2035,7 +2036,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.undeleteNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 timeout, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2062,7 +2063,7 @@ public final class BlobsImpl {
         return service
             .undeleteNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
                 requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2090,7 +2091,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.setExpiry(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2119,7 +2120,7 @@ public final class BlobsImpl {
         return service
             .setExpiry(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(), requestId,
                 expiryOptions, expiresOn, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2143,7 +2144,7 @@ public final class BlobsImpl {
     public Mono<Void> setExpiryAsync(String containerName, String blob, BlobExpiryOptions expiryOptions,
         Integer timeout, String requestId, String expiresOn) {
         return setExpiryWithResponseAsync(containerName, blob, expiryOptions, timeout, requestId, expiresOn)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2169,7 +2170,7 @@ public final class BlobsImpl {
     public Mono<Void> setExpiryAsync(String containerName, String blob, BlobExpiryOptions expiryOptions,
         Integer timeout, String requestId, String expiresOn, Context context) {
         return setExpiryWithResponseAsync(containerName, blob, expiryOptions, timeout, requestId, expiresOn, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2198,7 +2199,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.setExpiryNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2227,7 +2228,7 @@ public final class BlobsImpl {
         return service
             .setExpiryNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2300,7 +2301,7 @@ public final class BlobsImpl {
                 cacheControl, contentType, contentMd5Converted, contentEncoding, contentLanguage, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, contentDisposition,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2375,7 +2376,7 @@ public final class BlobsImpl {
                 contentMd5Converted, contentEncoding, contentLanguage, leaseId, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, contentDisposition, this.client.getVersion(),
                 requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2408,7 +2409,7 @@ public final class BlobsImpl {
         String ifTags, String requestId, BlobHttpHeaders blobHttpHeaders) {
         return setHttpHeadersWithResponseAsync(containerName, blob, timeout, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobHttpHeaders)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2443,7 +2444,7 @@ public final class BlobsImpl {
         String ifTags, String requestId, BlobHttpHeaders blobHttpHeaders, Context context) {
         return setHttpHeadersWithResponseAsync(containerName, blob, timeout, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobHttpHeaders, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2517,7 +2518,7 @@ public final class BlobsImpl {
                 comp, timeout, cacheControl, contentType, contentMd5Converted, contentEncoding, contentLanguage,
                 leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 contentDisposition, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2592,7 +2593,7 @@ public final class BlobsImpl {
                 contentType, contentMd5Converted, contentEncoding, contentLanguage, leaseId, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, contentDisposition, this.client.getVersion(),
                 requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2628,7 +2629,7 @@ public final class BlobsImpl {
             .withContext(context -> service.setImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp,
                 timeout, this.client.getVersion(), requestId, ifUnmodifiedSinceConverted,
                 immutabilityPolicyExpiryConverted, immutabilityPolicyMode, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2665,7 +2666,7 @@ public final class BlobsImpl {
             .setImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
                 requestId, ifUnmodifiedSinceConverted, immutabilityPolicyExpiryConverted, immutabilityPolicyMode,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2692,7 +2693,8 @@ public final class BlobsImpl {
         OffsetDateTime ifUnmodifiedSince, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode) {
         return setImmutabilityPolicyWithResponseAsync(containerName, blob, timeout, requestId, ifUnmodifiedSince,
-            immutabilityPolicyExpiry, immutabilityPolicyMode).onErrorMap(ModelHelper::mapToBlobStorageException)
+            immutabilityPolicyExpiry, immutabilityPolicyMode)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2722,7 +2724,7 @@ public final class BlobsImpl {
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Context context) {
         return setImmutabilityPolicyWithResponseAsync(containerName, blob, timeout, requestId, ifUnmodifiedSince,
             immutabilityPolicyExpiry, immutabilityPolicyMode, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2759,7 +2761,7 @@ public final class BlobsImpl {
             .withContext(context -> service.setImmutabilityPolicyNoCustomHeaders(this.client.getUrl(), containerName,
                 blob, comp, timeout, this.client.getVersion(), requestId, ifUnmodifiedSinceConverted,
                 immutabilityPolicyExpiryConverted, immutabilityPolicyMode, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2796,7 +2798,7 @@ public final class BlobsImpl {
             .setImmutabilityPolicyNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, ifUnmodifiedSinceConverted, immutabilityPolicyExpiryConverted,
                 immutabilityPolicyMode, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2822,7 +2824,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.deleteImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp,
                 timeout, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2849,7 +2851,7 @@ public final class BlobsImpl {
         return service
             .deleteImmutabilityPolicy(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2871,7 +2873,7 @@ public final class BlobsImpl {
     public Mono<Void> deleteImmutabilityPolicyAsync(String containerName, String blob, Integer timeout,
         String requestId) {
         return deleteImmutabilityPolicyWithResponseAsync(containerName, blob, timeout, requestId)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2895,7 +2897,7 @@ public final class BlobsImpl {
     public Mono<Void> deleteImmutabilityPolicyAsync(String containerName, String blob, Integer timeout,
         String requestId, Context context) {
         return deleteImmutabilityPolicyWithResponseAsync(containerName, blob, timeout, requestId, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2922,7 +2924,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.deleteImmutabilityPolicyNoCustomHeaders(this.client.getUrl(), containerName,
                 blob, comp, timeout, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2949,7 +2951,7 @@ public final class BlobsImpl {
         return service
             .deleteImmutabilityPolicyNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2976,7 +2978,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.setLegalHold(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, legalHold, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3004,7 +3006,7 @@ public final class BlobsImpl {
         return service
             .setLegalHold(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(), requestId,
                 legalHold, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3027,7 +3029,7 @@ public final class BlobsImpl {
     public Mono<Void> setLegalHoldAsync(String containerName, String blob, boolean legalHold, Integer timeout,
         String requestId) {
         return setLegalHoldWithResponseAsync(containerName, blob, legalHold, timeout, requestId)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3052,7 +3054,7 @@ public final class BlobsImpl {
     public Mono<Void> setLegalHoldAsync(String containerName, String blob, boolean legalHold, Integer timeout,
         String requestId, Context context) {
         return setLegalHoldWithResponseAsync(containerName, blob, legalHold, timeout, requestId, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3080,7 +3082,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.setLegalHoldNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 timeout, this.client.getVersion(), requestId, legalHold, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3108,7 +3110,7 @@ public final class BlobsImpl {
         return service
             .setLegalHoldNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, legalHold, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3179,7 +3181,7 @@ public final class BlobsImpl {
                 metadata, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3251,7 +3253,7 @@ public final class BlobsImpl {
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
                 context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3292,7 +3294,7 @@ public final class BlobsImpl {
         String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         return setMetadataWithResponseAsync(containerName, blob, timeout, metadata, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3336,7 +3338,7 @@ public final class BlobsImpl {
         Context context) {
         return setMetadataWithResponseAsync(containerName, blob, timeout, metadata, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3408,7 +3410,7 @@ public final class BlobsImpl {
                 timeout, metadata, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3480,7 +3482,7 @@ public final class BlobsImpl {
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
                 context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3526,7 +3528,7 @@ public final class BlobsImpl {
             .withContext(context -> service.acquireLease(this.client.getUrl(), containerName, blob, comp, action,
                 timeout, duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3574,7 +3576,7 @@ public final class BlobsImpl {
             .acquireLease(this.client.getUrl(), containerName, blob, comp, action, timeout, duration, proposedLeaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3611,7 +3613,7 @@ public final class BlobsImpl {
         String ifNoneMatch, String ifTags, String requestId) {
         return acquireLeaseWithResponseAsync(containerName, blob, timeout, duration, proposedLeaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3650,7 +3652,7 @@ public final class BlobsImpl {
         String ifNoneMatch, String ifTags, String requestId, Context context) {
         return acquireLeaseWithResponseAsync(containerName, blob, timeout, duration, proposedLeaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3697,7 +3699,7 @@ public final class BlobsImpl {
             .withContext(context -> service.acquireLeaseNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 action, timeout, duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3745,7 +3747,7 @@ public final class BlobsImpl {
             .acquireLeaseNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, action, timeout, duration,
                 proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3786,7 +3788,7 @@ public final class BlobsImpl {
             .withContext(context -> service.releaseLease(this.client.getUrl(), containerName, blob, comp, action,
                 timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3828,7 +3830,7 @@ public final class BlobsImpl {
             .releaseLease(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3859,7 +3861,8 @@ public final class BlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId) {
         return releaseLeaseWithResponseAsync(containerName, blob, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
-            ifMatch, ifNoneMatch, ifTags, requestId).onErrorMap(ModelHelper::mapToBlobStorageException)
+            ifMatch, ifNoneMatch, ifTags, requestId)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3892,7 +3895,8 @@ public final class BlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, Context context) {
         return releaseLeaseWithResponseAsync(containerName, blob, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
-            ifMatch, ifNoneMatch, ifTags, requestId, context).onErrorMap(ModelHelper::mapToBlobStorageException)
+            ifMatch, ifNoneMatch, ifTags, requestId, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3934,7 +3938,7 @@ public final class BlobsImpl {
             .withContext(context -> service.releaseLeaseNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 action, timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
                 ifTags, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3976,7 +3980,7 @@ public final class BlobsImpl {
             .releaseLeaseNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4017,7 +4021,7 @@ public final class BlobsImpl {
             .withContext(context -> service.renewLease(this.client.getUrl(), containerName, blob, comp, action, timeout,
                 leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4059,7 +4063,7 @@ public final class BlobsImpl {
             .renewLease(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4090,7 +4094,8 @@ public final class BlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId) {
         return renewLeaseWithResponseAsync(containerName, blob, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
-            ifMatch, ifNoneMatch, ifTags, requestId).onErrorMap(ModelHelper::mapToBlobStorageException)
+            ifMatch, ifNoneMatch, ifTags, requestId)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -4123,7 +4128,8 @@ public final class BlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, Context context) {
         return renewLeaseWithResponseAsync(containerName, blob, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
-            ifMatch, ifNoneMatch, ifTags, requestId, context).onErrorMap(ModelHelper::mapToBlobStorageException)
+            ifMatch, ifNoneMatch, ifTags, requestId, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -4165,7 +4171,7 @@ public final class BlobsImpl {
             .withContext(context -> service.renewLeaseNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 action, timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
                 ifTags, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4207,7 +4213,7 @@ public final class BlobsImpl {
             .renewLeaseNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4251,7 +4257,7 @@ public final class BlobsImpl {
             .withContext(context -> service.changeLease(this.client.getUrl(), containerName, blob, comp, action,
                 timeout, leaseId, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4297,7 +4303,7 @@ public final class BlobsImpl {
             .changeLease(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId, proposedLeaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4332,7 +4338,7 @@ public final class BlobsImpl {
         String ifNoneMatch, String ifTags, String requestId) {
         return changeLeaseWithResponseAsync(containerName, blob, leaseId, proposedLeaseId, timeout, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -4369,7 +4375,7 @@ public final class BlobsImpl {
         String ifNoneMatch, String ifTags, String requestId, Context context) {
         return changeLeaseWithResponseAsync(containerName, blob, leaseId, proposedLeaseId, timeout, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -4414,7 +4420,7 @@ public final class BlobsImpl {
             .withContext(context -> service.changeLeaseNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 action, timeout, leaseId, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4460,7 +4466,7 @@ public final class BlobsImpl {
             .changeLeaseNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
                 proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4506,7 +4512,7 @@ public final class BlobsImpl {
             .withContext(context -> service.breakLease(this.client.getUrl(), containerName, blob, comp, action, timeout,
                 breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4554,7 +4560,7 @@ public final class BlobsImpl {
             .breakLease(this.client.getUrl(), containerName, blob, comp, action, timeout, breakPeriod,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4591,7 +4597,7 @@ public final class BlobsImpl {
         String ifTags, String requestId) {
         return breakLeaseWithResponseAsync(containerName, blob, timeout, breakPeriod, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -4630,7 +4636,7 @@ public final class BlobsImpl {
         String ifTags, String requestId, Context context) {
         return breakLeaseWithResponseAsync(containerName, blob, timeout, breakPeriod, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -4677,7 +4683,7 @@ public final class BlobsImpl {
             .withContext(context -> service.breakLeaseNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 action, timeout, breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4724,7 +4730,7 @@ public final class BlobsImpl {
             .breakLeaseNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, action, timeout, breakPeriod,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4794,7 +4800,7 @@ public final class BlobsImpl {
                 metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4865,7 +4871,7 @@ public final class BlobsImpl {
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId, this.client.getVersion(), requestId,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -4906,7 +4912,7 @@ public final class BlobsImpl {
         EncryptionScope encryptionScopeParam) {
         return createSnapshotWithResponseAsync(containerName, blob, timeout, metadata, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, leaseId, requestId, cpkInfo, encryptionScopeParam)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -4949,7 +4955,7 @@ public final class BlobsImpl {
         EncryptionScope encryptionScopeParam, Context context) {
         return createSnapshotWithResponseAsync(containerName, blob, timeout, metadata, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, leaseId, requestId, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -5020,7 +5026,7 @@ public final class BlobsImpl {
                 comp, timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -5091,7 +5097,7 @@ public final class BlobsImpl {
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId, this.client.getVersion(), requestId,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -5165,7 +5171,7 @@ public final class BlobsImpl {
                 sourceIfMatch, sourceIfNoneMatch, sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 ifMatch, ifNoneMatch, ifTags, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString,
                 sealBlob, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -5241,7 +5247,7 @@ public final class BlobsImpl {
                 sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob,
                 immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -5302,7 +5308,7 @@ public final class BlobsImpl {
             rehydratePriority, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch,
             sourceIfTags, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, leaseId, requestId,
             blobTagsString, sealBlob, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -5365,7 +5371,7 @@ public final class BlobsImpl {
             rehydratePriority, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch,
             sourceIfTags, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, leaseId, requestId,
             blobTagsString, sealBlob, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -5434,13 +5440,14 @@ public final class BlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return FluxUtil.withContext(
-            context -> service.startCopyFromURLNoCustomHeaders(this.client.getUrl(), containerName, blob, timeout,
-                metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
-                sourceIfMatch, sourceIfNoneMatch, sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                ifMatch, ifNoneMatch, ifTags, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString,
-                sealBlob, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+        return FluxUtil
+            .withContext(context -> service.startCopyFromURLNoCustomHeaders(this.client.getUrl(), containerName, blob,
+                timeout, metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted,
+                sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfTags,
+                ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource, leaseId,
+                this.client.getVersion(), requestId, blobTagsString, sealBlob, immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode, legalHold, accept, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -5516,7 +5523,7 @@ public final class BlobsImpl {
                 sourceIfNoneMatch, sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob,
                 immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -5603,7 +5610,7 @@ public final class BlobsImpl {
                 ifNoneMatch, ifTags, copySource, leaseId, this.client.getVersion(), requestId,
                 sourceContentMD5Converted, blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode,
                 legalHold, copySourceAuthorization, encryptionScope, copySourceTags, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -5691,7 +5698,7 @@ public final class BlobsImpl {
                 this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString,
                 immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, copySourceAuthorization,
                 encryptionScope, copySourceTags, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -5756,7 +5763,8 @@ public final class BlobsImpl {
             sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, leaseId, requestId, sourceContentMD5, blobTagsString,
             immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, copySourceAuthorization, copySourceTags,
-            encryptionScopeParam).onErrorMap(ModelHelper::mapToBlobStorageException).flatMap(ignored -> Mono.empty());
+            encryptionScopeParam).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5823,7 +5831,8 @@ public final class BlobsImpl {
             sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, leaseId, requestId, sourceContentMD5, blobTagsString,
             immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, copySourceAuthorization, copySourceTags,
-            encryptionScopeParam, context).onErrorMap(ModelHelper::mapToBlobStorageException)
+            encryptionScopeParam, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -5912,7 +5921,7 @@ public final class BlobsImpl {
                 requestId, sourceContentMD5Converted, blobTagsString, immutabilityPolicyExpiryConverted,
                 immutabilityPolicyMode, legalHold, copySourceAuthorization, encryptionScope, copySourceTags, accept,
                 context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6000,7 +6009,7 @@ public final class BlobsImpl {
                 copySource, leaseId, this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString,
                 immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, copySourceAuthorization,
                 encryptionScope, copySourceTags, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6029,7 +6038,7 @@ public final class BlobsImpl {
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.abortCopyFromURL(this.client.getUrl(), containerName, blob, comp,
             copyActionAbortConstant, copyId, timeout, leaseId, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6061,7 +6070,7 @@ public final class BlobsImpl {
         return service
             .abortCopyFromURL(this.client.getUrl(), containerName, blob, comp, copyActionAbortConstant, copyId, timeout,
                 leaseId, this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6086,7 +6095,7 @@ public final class BlobsImpl {
     public Mono<Void> abortCopyFromURLAsync(String containerName, String blob, String copyId, Integer timeout,
         String leaseId, String requestId) {
         return abortCopyFromURLWithResponseAsync(containerName, blob, copyId, timeout, leaseId, requestId)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -6113,7 +6122,7 @@ public final class BlobsImpl {
     public Mono<Void> abortCopyFromURLAsync(String containerName, String blob, String copyId, Integer timeout,
         String leaseId, String requestId, Context context) {
         return abortCopyFromURLWithResponseAsync(containerName, blob, copyId, timeout, leaseId, requestId, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -6143,7 +6152,8 @@ public final class BlobsImpl {
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.abortCopyFromURLNoCustomHeaders(this.client.getUrl(),
             containerName, blob, comp, copyActionAbortConstant, copyId, timeout, leaseId, this.client.getVersion(),
-            requestId, accept, context)).onErrorMap(ModelHelper::mapToBlobStorageException);
+            requestId, accept, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6174,7 +6184,7 @@ public final class BlobsImpl {
         return service
             .abortCopyFromURLNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, copyActionAbortConstant,
                 copyId, timeout, leaseId, this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6215,7 +6225,7 @@ public final class BlobsImpl {
             .withContext(context -> service.setTier(this.client.getUrl(), containerName, blob, comp, snapshot,
                 versionId, timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags,
                 accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6256,7 +6266,7 @@ public final class BlobsImpl {
         return service
             .setTier(this.client.getUrl(), containerName, blob, comp, snapshot, versionId, timeout, tier,
                 rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6292,7 +6302,8 @@ public final class BlobsImpl {
         String versionId, Integer timeout, RehydratePriority rehydratePriority, String requestId, String leaseId,
         String ifTags) {
         return setTierWithResponseAsync(containerName, blob, tier, snapshot, versionId, timeout, rehydratePriority,
-            requestId, leaseId, ifTags).onErrorMap(ModelHelper::mapToBlobStorageException)
+            requestId, leaseId, ifTags)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -6330,7 +6341,8 @@ public final class BlobsImpl {
         String versionId, Integer timeout, RehydratePriority rehydratePriority, String requestId, String leaseId,
         String ifTags, Context context) {
         return setTierWithResponseAsync(containerName, blob, tier, snapshot, versionId, timeout, rehydratePriority,
-            requestId, leaseId, ifTags, context).onErrorMap(ModelHelper::mapToBlobStorageException)
+            requestId, leaseId, ifTags, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -6372,7 +6384,7 @@ public final class BlobsImpl {
             .withContext(context -> service.setTierNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 snapshot, versionId, timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId,
                 ifTags, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6413,7 +6425,7 @@ public final class BlobsImpl {
         return service
             .setTierNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, snapshot, versionId, timeout, tier,
                 rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6432,9 +6444,10 @@ public final class BlobsImpl {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.getAccountInfo(this.client.getUrl(), containerName, blob,
-            restype, comp, this.client.getVersion(), accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+        return FluxUtil
+            .withContext(context -> service.getAccountInfo(this.client.getUrl(), containerName, blob, restype, comp,
+                this.client.getVersion(), accept, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6457,7 +6470,7 @@ public final class BlobsImpl {
         return service
             .getAccountInfo(this.client.getUrl(), containerName, blob, restype, comp, this.client.getVersion(), accept,
                 context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6472,7 +6485,8 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getAccountInfoAsync(String containerName, String blob) {
-        return getAccountInfoWithResponseAsync(containerName, blob).onErrorMap(ModelHelper::mapToBlobStorageException)
+        return getAccountInfoWithResponseAsync(containerName, blob)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -6490,7 +6504,7 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getAccountInfoAsync(String containerName, String blob, Context context) {
         return getAccountInfoWithResponseAsync(containerName, blob, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -6512,7 +6526,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.getAccountInfoNoCustomHeaders(this.client.getUrl(), containerName, blob,
                 restype, comp, this.client.getVersion(), accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6535,7 +6549,7 @@ public final class BlobsImpl {
         return service
             .getAccountInfoNoCustomHeaders(this.client.getUrl(), containerName, blob, restype, comp,
                 this.client.getVersion(), accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6593,10 +6607,12 @@ public final class BlobsImpl {
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.query(this.client.getUrl(), containerName, blob, comp, snapshot,
-            timeout, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, queryRequest,
-            accept, context)).onErrorMap(ModelHelper::mapToBlobStorageException);
+        return FluxUtil
+            .withContext(context -> service.query(this.client.getUrl(), containerName, blob, comp, snapshot, timeout,
+                leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
+                queryRequest, accept, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6659,7 +6675,7 @@ public final class BlobsImpl {
             .query(this.client.getUrl(), containerName, blob, comp, snapshot, timeout, leaseId, encryptionKey,
                 encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, queryRequest, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6697,7 +6713,7 @@ public final class BlobsImpl {
         String ifNoneMatch, String ifTags, String requestId, QueryRequest queryRequest, CpkInfo cpkInfo) {
         return queryWithResponseAsync(containerName, blob, snapshot, timeout, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, queryRequest, cpkInfo)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
@@ -6738,7 +6754,7 @@ public final class BlobsImpl {
         Context context) {
         return queryWithResponseAsync(containerName, blob, snapshot, timeout, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, queryRequest, cpkInfo, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
@@ -6802,7 +6818,7 @@ public final class BlobsImpl {
                 snapshot, timeout, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, queryRequest, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6866,7 +6882,7 @@ public final class BlobsImpl {
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
                 queryRequest, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6900,7 +6916,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.getTags(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, snapshot, versionId, ifTags, leaseId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6936,7 +6952,7 @@ public final class BlobsImpl {
         return service
             .getTags(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(), requestId,
                 snapshot, versionId, ifTags, leaseId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -6966,7 +6982,7 @@ public final class BlobsImpl {
     public Mono<BlobTags> getTagsAsync(String containerName, String blob, Integer timeout, String requestId,
         String snapshot, String versionId, String ifTags, String leaseId) {
         return getTagsWithResponseAsync(containerName, blob, timeout, requestId, snapshot, versionId, ifTags, leaseId)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -6998,7 +7014,7 @@ public final class BlobsImpl {
     public Mono<BlobTags> getTagsAsync(String containerName, String blob, Integer timeout, String requestId,
         String snapshot, String versionId, String ifTags, String leaseId, Context context) {
         return getTagsWithResponseAsync(containerName, blob, timeout, requestId, snapshot, versionId, ifTags, leaseId,
-            context).onErrorMap(ModelHelper::mapToBlobStorageException)
+            context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -7033,7 +7049,7 @@ public final class BlobsImpl {
         return FluxUtil
             .withContext(context -> service.getTagsNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 timeout, this.client.getVersion(), requestId, snapshot, versionId, ifTags, leaseId, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -7069,7 +7085,7 @@ public final class BlobsImpl {
         return service
             .getTagsNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
                 requestId, snapshot, versionId, ifTags, leaseId, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -7106,7 +7122,7 @@ public final class BlobsImpl {
             .withContext(context -> service.setTags(this.client.getUrl(), containerName, blob, comp,
                 this.client.getVersion(), timeout, versionId, transactionalContentMD5Converted,
                 transactionalContentCrc64Converted, requestId, ifTags, leaseId, tags, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -7144,7 +7160,7 @@ public final class BlobsImpl {
             .setTags(this.client.getUrl(), containerName, blob, comp, this.client.getVersion(), timeout, versionId,
                 transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, ifTags, leaseId, tags,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -7175,7 +7191,7 @@ public final class BlobsImpl {
         String leaseId, BlobTags tags) {
         return setTagsWithResponseAsync(containerName, blob, timeout, versionId, transactionalContentMD5,
             transactionalContentCrc64, requestId, ifTags, leaseId, tags)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -7208,7 +7224,7 @@ public final class BlobsImpl {
         String leaseId, BlobTags tags, Context context) {
         return setTagsWithResponseAsync(containerName, blob, timeout, versionId, transactionalContentMD5,
             transactionalContentCrc64, requestId, ifTags, leaseId, tags, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -7246,7 +7262,7 @@ public final class BlobsImpl {
             .withContext(context -> service.setTagsNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 this.client.getVersion(), timeout, versionId, transactionalContentMD5Converted,
                 transactionalContentCrc64Converted, requestId, ifTags, leaseId, tags, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -7284,6 +7300,6 @@ public final class BlobsImpl {
             .setTagsNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, this.client.getVersion(), timeout,
                 versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, ifTags,
                 leaseId, tags, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 }

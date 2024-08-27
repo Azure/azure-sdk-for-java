@@ -40,7 +40,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 import com.azure.storage.queue.implementation.util.ModelHelper;
-import com.azure.storage.queue.models.QueueStorageException;
 
 /**
  * An instance of this class provides access to all the operations defined in Services.
@@ -284,7 +283,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.setProperties(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, queueServiceProperties, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -312,7 +311,7 @@ public final class ServicesImpl {
         return service
             .setProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
                 queueServiceProperties, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -334,7 +333,7 @@ public final class ServicesImpl {
     public Mono<Void> setPropertiesAsync(QueueServiceProperties queueServiceProperties, Integer timeout,
         String requestId) {
         return setPropertiesWithResponseAsync(queueServiceProperties, timeout, requestId)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -358,7 +357,7 @@ public final class ServicesImpl {
     public Mono<Void> setPropertiesAsync(QueueServiceProperties queueServiceProperties, Integer timeout,
         String requestId, Context context) {
         return setPropertiesWithResponseAsync(queueServiceProperties, timeout, requestId, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -386,7 +385,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, queueServiceProperties, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -414,7 +413,7 @@ public final class ServicesImpl {
         return service
             .setPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, queueServiceProperties, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -443,7 +442,7 @@ public final class ServicesImpl {
             return service.setPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, queueServiceProperties, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -492,7 +491,7 @@ public final class ServicesImpl {
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, queueServiceProperties, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -520,7 +519,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.getProperties(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -548,7 +547,7 @@ public final class ServicesImpl {
         return service
             .getProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept,
                 context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -568,7 +567,8 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueServiceProperties> getPropertiesAsync(Integer timeout, String requestId) {
-        return getPropertiesWithResponseAsync(timeout, requestId).onErrorMap(ModelHelper::mapToQueueStorageException)
+        return getPropertiesWithResponseAsync(timeout, requestId)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -591,7 +591,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueServiceProperties> getPropertiesAsync(Integer timeout, String requestId, Context context) {
         return getPropertiesWithResponseAsync(timeout, requestId, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -619,7 +619,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -647,7 +647,7 @@ public final class ServicesImpl {
         return service
             .getPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -676,7 +676,7 @@ public final class ServicesImpl {
             return service.getPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -700,7 +700,7 @@ public final class ServicesImpl {
         try {
             return getPropertiesWithResponse(timeout, requestId, Context.NONE).getValue();
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -730,7 +730,7 @@ public final class ServicesImpl {
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -757,7 +757,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.getStatistics(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -784,7 +784,7 @@ public final class ServicesImpl {
         return service
             .getStatistics(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept,
                 context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -803,7 +803,8 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueServiceStatistics> getStatisticsAsync(Integer timeout, String requestId) {
-        return getStatisticsWithResponseAsync(timeout, requestId).onErrorMap(ModelHelper::mapToQueueStorageException)
+        return getStatisticsWithResponseAsync(timeout, requestId)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -825,7 +826,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueServiceStatistics> getStatisticsAsync(Integer timeout, String requestId, Context context) {
         return getStatisticsWithResponseAsync(timeout, requestId, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -852,7 +853,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.getStatisticsNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -879,7 +880,7 @@ public final class ServicesImpl {
         return service
             .getStatisticsNoCustomHeaders(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException);
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException);
     }
 
     /**
@@ -907,7 +908,7 @@ public final class ServicesImpl {
             return service.getStatisticsSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -930,7 +931,7 @@ public final class ServicesImpl {
         try {
             return getStatisticsWithResponse(timeout, requestId, Context.NONE).getValue();
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -959,7 +960,7 @@ public final class ServicesImpl {
             return service.getStatisticsNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1003,7 +1004,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.listQueuesSegment(this.client.getUrl(), comp, prefix, marker, maxresults,
                 includeConverted, timeout, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -1049,7 +1050,7 @@ public final class ServicesImpl {
         return service
             .listQueuesSegment(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted, timeout,
                 this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -1165,7 +1166,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.listQueuesSegmentNoCustomHeaders(this.client.getUrl(), comp, prefix, marker,
                 maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null));
     }
@@ -1211,7 +1212,7 @@ public final class ServicesImpl {
         return service
             .listQueuesSegmentNoCustomHeaders(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
                 timeout, this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null));
     }
@@ -1329,7 +1330,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1377,7 +1378,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1495,7 +1496,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1543,7 +1544,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1636,7 +1637,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.listQueuesSegmentNext(nextLink, this.client.getUrl(),
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -1662,7 +1663,7 @@ public final class ServicesImpl {
         final String accept = "application/xml";
         return service
             .listQueuesSegmentNext(nextLink, this.client.getUrl(), this.client.getVersion(), requestId, accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
@@ -1688,7 +1689,7 @@ public final class ServicesImpl {
         return FluxUtil
             .withContext(context -> service.listQueuesSegmentNextNoCustomHeaders(nextLink, this.client.getUrl(),
                 this.client.getVersion(), requestId, accept, context))
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null));
     }
@@ -1715,7 +1716,7 @@ public final class ServicesImpl {
         return service
             .listQueuesSegmentNextNoCustomHeaders(nextLink, this.client.getUrl(), this.client.getVersion(), requestId,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToQueueStorageException)
+            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null));
     }
@@ -1743,7 +1744,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1772,7 +1773,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1798,7 +1799,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 
@@ -1826,7 +1827,7 @@ public final class ServicesImpl {
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getQueueItems(), res.getValue().getNextMarker(), null);
         } catch (QueueStorageExceptionInternal internalException) {
-            throw (QueueStorageException) ModelHelper.mapToQueueStorageException(internalException);
+            throw ModelHelper.mapToQueueStorageException(internalException);
         }
     }
 }

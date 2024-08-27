@@ -257,12 +257,12 @@ public class BlobStorageCustomization extends Customization {
      * <p>
      * - Check for the return of the method not equaling to PagedFlux, PagedIterable, PollerFlux, or SyncPoller. Those
      * types wrap other APIs and those APIs being update is the correct change.
-     * - For asynchronous methods, add a call to {@code .onErrorMap(ModelHelper::mapToBlobStorageException} to handle
+     * - For asynchronous methods, add a call to
+     * {@code .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)} to handle
      * mapping BlobStorageExceptionInternal to BlobStorageException.
      * - For synchronous methods, wrap the return statement in a try-catch block that catches
-     * BlobStorageExceptionInternal and rethrows
-     * {@code (BlobStorageException) ModelHelper.mapToBlobStorageException(e)}. Or, for void methods wrap the last
-     * statement.
+     * BlobStorageExceptionInternal and rethrows {@code ModelHelper.mapToBlobStorageException(e)}. Or, for void methods
+     * wrap the last statement.
      *
      * @param implPackage The implementation package.
      */
@@ -315,8 +315,8 @@ public class BlobStorageCustomization extends Customization {
             .getExpression().get().toString();
         int insertionPoint = findAsyncOnErrorMapInsertionPoint(originalReturnStatement);
         String newReturnStatement = "return " + originalReturnStatement.substring(0, insertionPoint)
-            + ".onErrorMap(ModelHelper::mapToBlobStorageException)" + originalReturnStatement.substring(insertionPoint)
-            + ";";
+            + ".onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)"
+            + originalReturnStatement.substring(insertionPoint) + ";";
         try {
             Statement newReturn = StaticJavaParser.parseStatement(newReturnStatement);
             body.getStatements().set(body.getStatements().size() - 1, newReturn);
@@ -348,7 +348,7 @@ public class BlobStorageCustomization extends Customization {
         // Turn the last statement into a BlockStmt that will be used as the try block.
         BlockStmt tryBlock = new BlockStmt(new NodeList<>(body.getStatement(body.getStatements().size() - 1)));
         BlockStmt catchBlock = new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement(
-            "throw (BlobStorageException) ModelHelper.mapToBlobStorageException(internalException);")));
+            "throw ModelHelper.mapToBlobStorageException(internalException);")));
         Parameter catchParameter = new Parameter().setType("BlobStorageExceptionInternal")
             .setName("internalException");
         CatchClause catchClause = new CatchClause(catchParameter, catchBlock);

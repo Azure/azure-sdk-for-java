@@ -410,12 +410,14 @@ public final class AppendBlobsImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 immutabilityPolicyExpiryConverted
             = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return FluxUtil.withContext(context -> service.create(this.client.getUrl(), containerName, blob, blobType,
-            timeout, contentLength, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl,
-            metadata, leaseId, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
-            encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
-            immutabilityPolicyMode, legalHold, accept, context)).onErrorMap(ModelHelper::mapToBlobStorageException);
+        return FluxUtil
+            .withContext(context -> service.create(this.client.getUrl(), containerName, blob, blobType, timeout,
+                contentLength, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl,
+                metadata, leaseId, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
+                encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode, legalHold, accept, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -527,7 +529,7 @@ public final class AppendBlobsImpl {
             encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
             ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
             blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -576,7 +578,7 @@ public final class AppendBlobsImpl {
         return createWithResponseAsync(containerName, blob, contentLength, timeout, metadata, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry,
             immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -627,7 +629,7 @@ public final class AppendBlobsImpl {
         return createWithResponseAsync(containerName, blob, contentLength, timeout, metadata, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry,
             immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -741,7 +743,7 @@ public final class AppendBlobsImpl {
                 encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobTagsString,
                 immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -855,7 +857,7 @@ public final class AppendBlobsImpl {
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
                 immutabilityPolicyMode, legalHold, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -937,7 +939,7 @@ public final class AppendBlobsImpl {
                 appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, body, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1020,7 +1022,7 @@ public final class AppendBlobsImpl {
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, body,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1070,7 +1072,7 @@ public final class AppendBlobsImpl {
         return appendBlockWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1123,7 +1125,7 @@ public final class AppendBlobsImpl {
         return appendBlockWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1206,7 +1208,7 @@ public final class AppendBlobsImpl {
                 maxSize, appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, body, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1289,7 +1291,7 @@ public final class AppendBlobsImpl {
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, body,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1371,7 +1373,7 @@ public final class AppendBlobsImpl {
                 appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, body, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1454,7 +1456,7 @@ public final class AppendBlobsImpl {
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, body,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1504,7 +1506,7 @@ public final class AppendBlobsImpl {
         return appendBlockWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1557,7 +1559,7 @@ public final class AppendBlobsImpl {
         return appendBlockWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -1640,7 +1642,7 @@ public final class AppendBlobsImpl {
                 maxSize, appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, body, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1723,7 +1725,7 @@ public final class AppendBlobsImpl {
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, body,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1824,7 +1826,7 @@ public final class AppendBlobsImpl {
             encryptionScope, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
             ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
             sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept,
-            context)).onErrorMap(ModelHelper::mapToBlobStorageException);
+            context)).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1926,7 +1928,7 @@ public final class AppendBlobsImpl {
             leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
             ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
             sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -1991,7 +1993,8 @@ public final class AppendBlobsImpl {
             sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize, appendPosition,
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
             sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
-            encryptionScopeParam).onErrorMap(ModelHelper::mapToBlobStorageException).flatMap(ignored -> Mono.empty());
+            encryptionScopeParam).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2057,7 +2060,8 @@ public final class AppendBlobsImpl {
             sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize, appendPosition,
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
             sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
-            encryptionScopeParam, context).onErrorMap(ModelHelper::mapToBlobStorageException)
+            encryptionScopeParam, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2160,7 +2164,7 @@ public final class AppendBlobsImpl {
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId,
                 copySourceAuthorization, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2261,7 +2265,7 @@ public final class AppendBlobsImpl {
             leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
             ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
             sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2305,7 +2309,7 @@ public final class AppendBlobsImpl {
             .withContext(context -> service.seal(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 ifMatch, ifNoneMatch, appendPosition, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2350,7 +2354,7 @@ public final class AppendBlobsImpl {
             .seal(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(), requestId,
                 leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, appendPosition,
                 accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2385,7 +2389,8 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         Long appendPosition) {
         return sealWithResponseAsync(containerName, blob, timeout, requestId, leaseId, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, appendPosition).onErrorMap(ModelHelper::mapToBlobStorageException)
+            ifUnmodifiedSince, ifMatch, ifNoneMatch, appendPosition)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2423,7 +2428,7 @@ public final class AppendBlobsImpl {
         Long appendPosition, Context context) {
         return sealWithResponseAsync(containerName, blob, timeout, requestId, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, appendPosition, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -2468,7 +2473,7 @@ public final class AppendBlobsImpl {
             .withContext(context -> service.sealNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
                 timeout, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, appendPosition, accept, context))
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2513,6 +2518,6 @@ public final class AppendBlobsImpl {
             .sealNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
                 requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
                 appendPosition, accept, context)
-            .onErrorMap(ModelHelper::mapToBlobStorageException);
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 }
