@@ -25,4 +25,10 @@ public interface ChangeFeedProcessorContext {
      * */
     @Beta(value = Beta.SinceVersion.V4_51_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     String getLeaseToken();
+
+    /**
+     * Get the diagnostics from the underlying feed response.
+     * @return
+     */
+    CosmosDiagnostics getDiagnostics();
 }
