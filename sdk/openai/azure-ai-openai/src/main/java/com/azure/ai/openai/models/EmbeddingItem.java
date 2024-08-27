@@ -12,7 +12,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64ToFloatList;
 
 /**
@@ -20,12 +19,14 @@ import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64To
  */
 @Immutable
 public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
+
     /*
      * List of embeddings value for the input prompt. These represent a measurement of the
      * vector-based relatedness of the provided input.
      */
     @Generated
-    private List<Double> embedding;
+    private final List<Double> embedding;
+
     private final String embeddingBase64;
 
     /**
@@ -39,7 +40,6 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
         this.promptIndex = promptIndex;
         this.embedding = embedding;
     }
-
 
     /**
      * Get the embedding property: List of embeddings value for the input prompt. These represent a measurement of the
@@ -114,23 +114,10 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
                 reader.nextToken();
                 if ("embedding".equals(fieldName)) {
                     JsonToken jsonToken = reader.currentToken();
-
                     if (jsonToken == JsonToken.STRING) {
                         embedding = reader.getString();
                     } else if (jsonToken == JsonToken.START_ARRAY) {
-                        embeddingInDouble = reader.readArray(
-                            arrayReader -> arrayReader.getDouble()
-//                                arrayReader.readObject(
-//                                    itemReader -> {
-//                                        if (itemReader.currentToken() == JsonToken.NUMBER) {
-//                                            return itemReader.getDouble();
-//                                        } else {
-//                                            throw new IllegalStateException("Unexpected 'embedding' type found when deserializing"
-//                                                + " EmbeddingItem JSON Array object: " + itemReader.currentToken());
-//                                        }
-//                                    }
-//                                )
-                        );
+                        embeddingInDouble = reader.readArray(JsonReader::getDouble);
                     } else {
                         throw new IllegalStateException("Unexpected 'embedding' type found when deserializing"
                             + " EmbeddingItem JSON object: " + jsonToken);
