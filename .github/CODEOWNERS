@@ -516,6 +516,7 @@
 # ServiceLabel: %Lab Services
 # ServiceOwners:                                     @Tanmayeekamath
 
+# ServiceLabel: %Load Testing
 # PRLabel: %Load Testing
 /sdk/loadtesting/                                    @Harshan01 @prativen
 
@@ -730,7 +731,7 @@
 
 # PRLabel: %WebPubSub
 /sdk/webpubsub/azure-messaging-webpubsub-client/     @vicancy @chenkennt @zackliu
-/sdk/webpubsub/azure-messaging-webpubsub/            @vicancy @chenkennt 
+/sdk/webpubsub/azure-messaging-webpubsub/            @vicancy @chenkennt
 
 # ServiceLabel:  %WebPubSub
 # ServiceOwners:                                     @vicancy @chenkennt
