@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
@@ -497,7 +498,9 @@ public class StorageImplUtils {
             } else if (cause instanceof RuntimeException) {
                 // Throw as is if it's already a RuntimeException
                 throw (RuntimeException) cause;
-            } else if (cause instanceof Error) {
+            } else if (e instanceof UnexpectedLengthException) {
+                throw (UnexpectedLengthException) e;
+            }  else if (cause instanceof Error) {
                 // Propagate if it's an Error
                 throw (Error) cause;
             } else {

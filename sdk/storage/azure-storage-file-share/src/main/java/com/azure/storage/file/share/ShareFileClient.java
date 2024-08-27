@@ -17,6 +17,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -83,11 +84,15 @@ import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -2062,8 +2067,41 @@ public class ShareFileClient {
      */
     public Response<ShareFileUploadInfo> uploadWithResponse(ShareFileUploadOptions options,
         Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(
-            shareFileAsyncClient.uploadWithResponse(options, context), timeout);
+        StorageImplUtils.assertNotNull("options", options);
+        ShareRequestConditions validatedRequestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions()
+            : options.getRequestConditions();
+        final ParallelTransferOptions validatedParallelTransferOptions =
+            ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+        long validatedOffset = options.getOffset() == null ? 0 : options.getOffset();
+        int chunkSize = (int) Math.min(validatedParallelTransferOptions.getBlockSizeLong(), Integer.MAX_VALUE);
+
+        Response<ShareFileUploadInfo> finalResponse = wrapServiceCallWithExceptionMapping(() -> {
+            try (InputStream dataStream = options.getDataStream()) {
+                long currentOffset = validatedOffset;
+                byte[] buffer = new byte[chunkSize];
+                int readBytes;
+                Response<ShareFileUploadInfo> response = null;
+                while ((readBytes = dataStream.read(buffer)) != -1) {
+                    // Since we are using InputStream, we need to handle partial reads
+                    if (readBytes < buffer.length) {
+                        buffer = Arrays.copyOf(buffer, readBytes);
+                    }
+
+                    InputStream bufferStream = new ByteArrayInputStream(buffer);
+                    ShareFileUploadRangeOptions rangeOptions = new ShareFileUploadRangeOptions(bufferStream, readBytes)
+                        .setOffset(currentOffset)
+                        .setRequestConditions(validatedRequestConditions);
+
+                    response = this.uploadRangeWithResponse(rangeOptions, timeout, context);
+                    currentOffset += readBytes;
+                }
+                return response;
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
+        });
+        return finalResponse;
     }
 
     /**
@@ -2127,9 +2165,23 @@ public class ShareFileClient {
      */
     public Response<ShareFileUploadInfo> uploadRangeWithResponse(ShareFileUploadRangeOptions options,
         Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(
-            shareFileAsyncClient.uploadRangeWithResponse(options, context), timeout);
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        long rangeOffset = (options.getOffset() == null) ? 0L : options.getOffset();
+        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + options.getLength() - 1);
+        Context finalContext = context == null ? Context.NONE : context;
+
+        BinaryData binaryData = BinaryData.fromStream(options.getDataStream());
+
+        Callable<ResponseBase<FilesUploadRangeHeaders, Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(
+            () -> azureFileStorageClient.getFiles().uploadRangeWithResponse(shareName, filePath, range.toString(),
+            ShareFileRangeWriteType.UPDATE, options.getLength(), null, null, requestConditions.getLeaseId(),
+            options.getLastWrittenMode(), binaryData, finalContext));
+
+        return ModelHelper.uploadRangeHeadersToShareFileInfo(sendRequest(operation, timeout,
+            ShareStorageException.class));
     }
+
 
     /**
      * Uploads a range of bytes from one file to another file.
