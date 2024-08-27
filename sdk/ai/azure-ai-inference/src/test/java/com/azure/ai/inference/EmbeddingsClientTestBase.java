@@ -95,9 +95,11 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
     }
 
     private void addTestRecordCustomSanitizers() {
+        String sanitizedRequestUri = "https://REDACTED/";
+        String requestUriRegex = "https://.*/openai/deployments/.*?/";
         interceptorManager.addSanitizers(Arrays.asList(
                 new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-                new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("$..endpoint", requestUriRegex, sanitizedRequestUri, TestProxySanitizerType.URL),
                 new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
                         "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
         ));
