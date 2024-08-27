@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import org.slf4j.Logger;
@@ -189,7 +188,7 @@ public class GlobalEndpointManager implements AutoCloseable {
             if (forceRefresh) {
                 Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                     this.defaultEndpoint,
-                    new ArrayList<>(getEffectivePreferredReadRegions()),
+                    new ArrayList<>(getEffectivePreferredRegions(false)),
                     this::getDatabaseAccountAsync);
 
                 return databaseAccountObs.map(dbAccount -> {
@@ -220,8 +219,8 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.latestDatabaseAccount;
     }
 
-    public int getPreferredLocationCount() {
-        List<String> effectivePreferredReadRegions = getEffectivePreferredReadRegions();
+    public int getPreferredLocationCount(boolean isWriteOperation) {
+        List<String> effectivePreferredReadRegions = getEffectivePreferredRegions(isWriteOperation);
 
         return effectivePreferredReadRegions != null ? effectivePreferredReadRegions.size() : 0;
     }
@@ -243,7 +242,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                             this.defaultEndpoint,
-                            new ArrayList<>(getEffectivePreferredReadRegions()),
+                            new ArrayList<>(getEffectivePreferredRegions(false)),
                             this::getDatabaseAccountAsync);
 
                     return databaseAccountObs.map(dbAccount -> {
@@ -303,7 +302,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             }
 
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
-                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(getEffectivePreferredReadRegions()),
+                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(getEffectivePreferredRegions(false)),
                                     this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {
@@ -344,17 +343,27 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.connectionPolicy;
     }
 
-    private List<String> getEffectivePreferredReadRegions() {
+    private List<String> getEffectivePreferredRegions(boolean isWriteOperation) {
         if (this.connectionPolicy.getPreferredRegions() != null && !this.connectionPolicy.getPreferredRegions().isEmpty()) {
             return this.connectionPolicy.getPreferredRegions();
         }
 
-        if (this.locationCache.getReadEndpoints() != null) {
-            return this.locationCache
-                .getReadEndpoints()
-                .stream()
-                .map(locationEndpoint -> this.getRegionName(locationEndpoint, OperationType.Read))
-                .collect(Collectors.toList());
+        if (isWriteOperation) {
+            if (this.locationCache.getWriteEndpoints() != null) {
+                return this.locationCache
+                    .getWriteEndpoints()
+                    .stream()
+                    .map(locationEndpoint -> this.getRegionName(locationEndpoint, OperationType.Create))
+                    .collect(Collectors.toList());
+            }
+        } else {
+            if (this.locationCache.getReadEndpoints() != null) {
+                return this.locationCache
+                    .getReadEndpoints()
+                    .stream()
+                    .map(locationEndpoint -> this.getRegionName(locationEndpoint, OperationType.Read))
+                    .collect(Collectors.toList());
+            }
         }
 
         return Collections.emptyList();

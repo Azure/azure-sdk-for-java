@@ -238,7 +238,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URI("http://localhost:")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
-        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
+        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount(false);
 
         RetryContext retryContext = new RetryContext();
         WebExceptionRetryPolicy webExceptionRetryPolicy = new WebExceptionRetryPolicy(retryContext);

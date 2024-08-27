@@ -151,7 +151,7 @@ public class ClientRetryPolicyTest {
 
         Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
-        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
+        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount(false);
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions, null, globalPartitionEndpointManager);
 
         Exception exception = ReadTimeoutException.INSTANCE;
@@ -234,7 +234,7 @@ public class ClientRetryPolicyTest {
 
         Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
-        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
+        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount(true);
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions, null, globalPartitionEndpointManager);
 
         //Non retribale exception for write
@@ -327,7 +327,7 @@ public class ClientRetryPolicyTest {
 
         Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
-        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
+        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount(true);
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions, null, globalPartitionEndpointManager);
 
         Exception exception = new SocketException("Dummy SocketException");
@@ -397,7 +397,7 @@ public class ClientRetryPolicyTest {
 
         Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
-        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
+        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount(true);
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions, null, globalPartitionEndpointManager);
 
         Exception exception = ReadTimeoutException.INSTANCE;
