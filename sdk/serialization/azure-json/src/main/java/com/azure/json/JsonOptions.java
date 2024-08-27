@@ -55,6 +55,13 @@ public final class JsonOptions {
         return isJsoncSupported;
     }
 
+    /**
+     * Sets whether JSONC (JSON with comments) is supported.
+     * By default, this is configured to false.
+     *
+     * @param jsoncSupported Whether JSONC is supported.
+     * @return The updated JsonOptions object.
+     */
     public JsonOptions setJsoncSupported(boolean jsoncSupported) {
         this.isJsoncSupported = jsoncSupported;
         return this;
