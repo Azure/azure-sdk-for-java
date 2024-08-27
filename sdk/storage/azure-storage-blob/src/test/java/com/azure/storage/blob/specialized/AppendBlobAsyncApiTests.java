@@ -26,6 +26,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -854,7 +855,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.sealWithResponse(null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals("true", r.getHeaders().getValue("x-ms-blob-sealed"));
+                assertEquals("true", r.getHeaders().getValue(X_MS_BLOB_SEALED));
             })
             .verifyComplete();
     }
@@ -1008,7 +1009,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .buildAppendBlobAsyncClient();
 
         StepVerifier.create(aadBlob.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 

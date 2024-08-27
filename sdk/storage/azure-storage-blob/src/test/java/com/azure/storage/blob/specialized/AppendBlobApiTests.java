@@ -738,7 +738,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void sealDefaults() {
         Response<Void> sealResponse = bc.sealWithResponse(null, null, null);
         assertResponseStatusCode(sealResponse, 200);
-        assertEquals("true", sealResponse.getHeaders().getValue("x-ms-blob-sealed"));
+        assertEquals("true", sealResponse.getHeaders().getValue(X_MS_BLOB_SEALED));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")

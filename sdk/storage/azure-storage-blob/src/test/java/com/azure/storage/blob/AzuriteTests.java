@@ -53,11 +53,10 @@ public class AzuriteTests extends BlobTestBase {
         return builder.buildClient();
     }
 
-    private static void validateBlobClient(BlobClientBase client, String accountName, String containerName,
-        String blobName, String blobUrl) {
-        assertEquals(client.getAccountName(), accountName);
-        assertEquals(client.getContainerName(), containerName);
-        assertEquals(client.getBlobName(), blobName);
+    private static void validateBlobClient(BlobClientBase client, String blobUrl) {
+        assertEquals(client.getAccountName(), "devstoreaccount1");
+        assertEquals(client.getContainerName(), "container");
+        assertEquals(client.getBlobName(), "blob");
         assertEquals(client.getBlobUrl(), blobUrl);
     }
 
@@ -188,7 +187,7 @@ public class AzuriteTests extends BlobTestBase {
             .getBlobContainerClient("container")
             .getBlobClient("blob");
 
-        validateBlobClient(blobClient, "devstoreaccount1", "container", "blob",
+        validateBlobClient(blobClient,
             AZURITE_ENDPOINTS[index] + "/container/blob");
     }
 
@@ -200,7 +199,7 @@ public class AzuriteTests extends BlobTestBase {
             .credential(AZURITE_CREDENTIAL)
             .buildClient();
 
-        validateBlobClient(blobClient, "devstoreaccount1", "container", "blob",
+        validateBlobClient(blobClient,
             AZURITE_ENDPOINTS[index] + "/container/blob");
     }
 
@@ -212,7 +211,7 @@ public class AzuriteTests extends BlobTestBase {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        validateBlobClient(blobClient, "devstoreaccount1", "container", "blob",
+        validateBlobClient(blobClient,
             AZURITE_ENDPOINTS[index] + "/container/blob");
     }
 
@@ -223,12 +222,12 @@ public class AzuriteTests extends BlobTestBase {
             .getBlobContainerClient("container")
             .getBlobClient("blob");
 
-        validateBlobClient(blobClient.getAppendBlobClient(), "devstoreaccount1", "container",
-            "blob", AZURITE_ENDPOINTS[index] + "/container/blob");
-        validateBlobClient(blobClient.getBlockBlobClient(), "devstoreaccount1", "container",
-            "blob", AZURITE_ENDPOINTS[index] + "/container/blob");
-        validateBlobClient(blobClient.getPageBlobClient(), "devstoreaccount1", "container",
-            "blob", AZURITE_ENDPOINTS[index] + "/container/blob");
+        validateBlobClient(blobClient.getAppendBlobClient(),
+            AZURITE_ENDPOINTS[index] + "/container/blob");
+        validateBlobClient(blobClient.getBlockBlobClient(),
+            AZURITE_ENDPOINTS[index] + "/container/blob");
+        validateBlobClient(blobClient.getPageBlobClient(),
+            AZURITE_ENDPOINTS[index] + "/container/blob");
     }
 
     @ParameterizedTest
@@ -238,12 +237,12 @@ public class AzuriteTests extends BlobTestBase {
             .endpoint(AZURITE_ENDPOINTS[index] + "/container/blob")
             .credential(AZURITE_CREDENTIAL);
 
-        validateBlobClient(specializedClientBuilder.buildAppendBlobClient(), "devstoreaccount1",
-            "container", "blob", AZURITE_ENDPOINTS[index] + "/container/blob");
-        validateBlobClient(specializedClientBuilder.buildBlockBlobClient(), "devstoreaccount1",
-            "container", "blob", AZURITE_ENDPOINTS[index] + "/container/blob");
-        validateBlobClient(specializedClientBuilder.buildPageBlobClient(), "devstoreaccount1",
-            "container", "blob", AZURITE_ENDPOINTS[index] + "/container/blob");
+        validateBlobClient(specializedClientBuilder.buildAppendBlobClient(),
+            AZURITE_ENDPOINTS[index] + "/container/blob");
+        validateBlobClient(specializedClientBuilder.buildBlockBlobClient(),
+            AZURITE_ENDPOINTS[index] + "/container/blob");
+        validateBlobClient(specializedClientBuilder.buildPageBlobClient(),
+            AZURITE_ENDPOINTS[index] + "/container/blob");
     }
 
     @ParameterizedTest

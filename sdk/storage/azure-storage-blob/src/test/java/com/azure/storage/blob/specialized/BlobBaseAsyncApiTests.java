@@ -452,6 +452,7 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         });
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void querySnapshot() {

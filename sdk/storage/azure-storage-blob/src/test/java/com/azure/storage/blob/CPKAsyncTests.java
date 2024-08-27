@@ -50,7 +50,7 @@ public class CPKAsyncTests extends BlobTestBase {
     public void setup() {
         key = new CustomerProvidedKey(getRandomKey());
         BlobContainerClientBuilder builder = instrument(new BlobContainerClientBuilder()
-            .endpoint(ccAsync.getBlobContainerUrl().toString())
+            .endpoint(ccAsync.getBlobContainerUrl())
             .customerProvidedKey(key)
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential()));
 
@@ -77,6 +77,7 @@ public class CPKAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getBlobWithCPK() {
         StepVerifier.create(cpkBlockBlob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())

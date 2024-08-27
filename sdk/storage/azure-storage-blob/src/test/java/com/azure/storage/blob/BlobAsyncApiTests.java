@@ -69,6 +69,7 @@ import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -419,6 +420,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             });
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void downloadMin() {
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bc.download()))
@@ -1406,13 +1408,11 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .getBlobAsyncClient("javablobgetpropertiesors2blobapitestgetpropertiesors57d93407b");
 
         StepVerifier.create(sourceBlob.getProperties())
-            .assertNext(r -> assertTrue(validateOR(r.getObjectReplicationSourcePolicies(),
-                "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")))
+            .assertNext(r -> assertTrue(validateOR(r.getObjectReplicationSourcePolicies())))
             .verifyComplete();
         StepVerifier.create(sourceBlob.downloadWithResponse(null, null, null,
             false))
-            .assertNext(r -> assertTrue(validateOR(r.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
-                "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")))
+            .assertNext(r -> assertTrue(validateOR(r.getDeserializedHeaders().getObjectReplicationSourcePolicies())))
             .verifyComplete();
 
         // There is a sas token attached at the end. Only check that the path is the same.
@@ -1431,14 +1431,14 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    private static boolean validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
+    private static boolean validateOR(List<ObjectReplicationPolicy> policies) {
         return policies.stream()
-            .filter(policy -> policyId.equals(policy.getPolicyId()))
+            .filter(policy -> "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80".equals(policy.getPolicyId()))
             .findFirst()
             .get()
             .getRules()
             .stream()
-            .filter(rule -> ruleId.equals(rule.getRuleId()))
+            .filter(rule -> "105f9aad-f39b-4064-8e47-ccd7937295ca".equals(rule.getRuleId()))
             .findFirst()
             .get()
             .getStatus() == ObjectReplicationStatus.COMPLETE;
@@ -1808,7 +1808,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
         Flux<Response<Map<String, String>>> response = bc.setTags(t).thenMany(Flux.fromArray(tagsList)
             .flatMap(tags -> {
-                if (tags == "null") {
+                if (Objects.equals(tags, "null")) {
                     // Handle the null case separately, Flux.fromArray doesn't like the null value
                     return bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(
                         new BlobRequestConditions().setTagsConditions(null)));
@@ -1828,8 +1828,6 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void getTagsACFail() {
-        Map<String, String> t = new HashMap<>();
-        t.put("fizz", "buzz");
         String tags = "\"foo\" = 'bar'";
 
         StepVerifier.create(bc.getTagsWithResponse(new BlobGetTagsOptions()
@@ -1914,7 +1912,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 assertTrue(validateBasicHeaders(r.getHeaders()));
                 return r.getValue().exists();
             }))
-            .assertNext(r -> assertTrue(r))
+            .assertNext(Assertions::assertTrue)
             .verifyComplete();
     }
 
@@ -2456,7 +2454,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
     @Test
     public void deleteIfExistsContainer() {
         StepVerifier.create(bc.deleteIfExists())
-            .assertNext(r -> assertTrue(r))
+            .assertNext(Assertions::assertTrue)
             .verifyComplete();
     }
 
@@ -3033,7 +3031,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         assertEquals(ccAsync.getBlobContainerUrl(), bc.getContainerAsyncClient().getBlobContainerUrl());
         // Ensure it is a functional client
         StepVerifier.create(bc.getContainerAsyncClient().getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -3183,7 +3181,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadBlob.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 

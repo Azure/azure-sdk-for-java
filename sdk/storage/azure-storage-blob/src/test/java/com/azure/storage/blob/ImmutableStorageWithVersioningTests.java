@@ -207,10 +207,6 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     public static final class Properties implements JsonSerializable<Properties> {
         private ImmutableStorageWithVersioning immutableStorageWithVersioning;
 
-        public ImmutableStorageWithVersioning getImmutableStorageWithVersioning() {
-            return immutableStorageWithVersioning;
-        }
-
         public void setImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
             this.immutableStorageWithVersioning = immutableStorageWithVersioning;
         }

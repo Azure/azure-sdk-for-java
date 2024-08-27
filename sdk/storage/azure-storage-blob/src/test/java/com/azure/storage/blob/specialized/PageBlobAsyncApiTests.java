@@ -403,7 +403,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 assertTrue(validateBasicHeaders(r.getHeaders()));
-                assertNotNull(r.getHeaders().getValue("x-ms-content-crc64"));
+                assertNotNull(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
                 assertEquals(0, r.getValue().getBlobSequenceNumber());
                 assertTrue(r.getValue().isServerEncrypted());
             })
@@ -834,6 +834,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void clearPage() {
         StepVerifier.create(bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -940,6 +941,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRanges() {
         StepVerifier.create(bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -954,6 +956,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesMin() {
         StepVerifier.create(bc.getPageRanges(null))
@@ -961,6 +964,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
@@ -997,6 +1001,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void getPageRangesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1029,6 +1034,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesError() {
         bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
@@ -1188,6 +1194,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("getPageRangesDiffSupplier")
     public void getPageRangesDiff(List<PageRange> rangesToUpdate, List<PageRange> rangesToClear,
@@ -1271,6 +1278,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         return clearRanges;
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesDiffMin() {
         Mono<PageList> response = bc.createSnapshot()
@@ -1281,6 +1289,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
@@ -1319,6 +1328,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void getPageRangesDiffACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
@@ -1352,6 +1362,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesDiffError() {
         bc = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();

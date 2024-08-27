@@ -60,6 +60,7 @@ import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.RequestAssertionPolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -377,7 +378,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void stageBlockRetryOnTransientFailure() {
         BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
@@ -721,10 +721,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .then(blockBlobAsyncClient.getPropertiesWithResponse(null));
 
         StepVerifier.create(response)
-            .assertNext(r -> {
+            .assertNext(r ->
                 validateBlobProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage,
-                    contentMD5, finalContentType);
-            })
+                    contentMD5, finalContentType))
             .verifyComplete();
     }
 
@@ -1419,10 +1418,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
             headers, null, null, null, null)
             .then(blockBlobAsyncClient.getPropertiesWithResponse(null)))
-            .assertNext(r -> {
+            .assertNext(r ->
                 validateBlobProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage, finalContentMD,
-                    finalContentType);
-            })
+                    finalContentType))
             .verifyComplete();
     }
 
@@ -1807,6 +1805,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("bufferedUploadWithReporterSupplier")
     @LiveOnly
@@ -2096,6 +2095,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("bufferedUploadTagsSupplier")
@@ -2282,7 +2282,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @LiveOnly
     @Test
-    public void bufferedUploadNetworkError() throws MalformedURLException {
+    public void bufferedUploadNetworkError() {
         /*
          This test uses a Flowable that does not allow multiple subscriptions and therefore ensures that we are
          buffering properly to allow for retries even given this source behavior.
@@ -2302,7 +2302,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         BlobAsyncClient blobAsyncClient = new BlobServiceClientBuilder()
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .retryOptions(new RequestRetryOptions((RetryPolicyType) null, 3, (Integer) null, 500L,
+            .retryOptions(new RequestRetryOptions(null, 3, null, 500L,
                 1500L, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName());
@@ -2555,7 +2555,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             });
     }
 
-    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void uploadFromUrlMax() throws NoSuchAlgorithmException {
@@ -2800,7 +2799,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .buildBlockBlobAsyncClient();
 
         StepVerifier.create(aadBlob.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 

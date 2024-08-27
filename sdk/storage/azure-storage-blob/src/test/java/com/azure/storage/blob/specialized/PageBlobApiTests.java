@@ -376,7 +376,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
         assertResponseStatusCode(response, 201);
         assertTrue(validateBasicHeaders(response.getHeaders()));
-        assertNotNull(response.getHeaders().getValue("x-ms-content-crc64"));
+        assertNotNull(response.getHeaders().getValue(X_MS_CONTENT_CRC64));
         assertEquals(response.getValue().getBlobSequenceNumber(), 0);
         assertTrue(response.getValue().isServerEncrypted());
     }
@@ -582,7 +582,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @Test
-    public void uploadPageFromURLMD5() throws NoSuchAlgorithmException {
+    public void uploadPageFromURLMD5() {
         PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         destURL.create(PageBlobClient.PAGE_BYTES);
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
@@ -733,6 +733,7 @@ public class PageBlobApiTests extends BlobTestBase {
             Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void clearPage() {
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -810,6 +811,7 @@ public class PageBlobApiTests extends BlobTestBase {
             bc.clearPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRanges() {
         bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -823,11 +825,13 @@ public class PageBlobApiTests extends BlobTestBase {
         assertEquals("512", response.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesMin() {
         assertDoesNotThrow(() -> bc.getPageRanges(null));
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
@@ -850,6 +854,7 @@ public class PageBlobApiTests extends BlobTestBase {
             bac, null, null));
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void getPageRangesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -866,6 +871,7 @@ public class PageBlobApiTests extends BlobTestBase {
             new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), bac, null, null));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesError() {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();
@@ -1015,6 +1021,7 @@ public class PageBlobApiTests extends BlobTestBase {
             .count());
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("getPageRangesDiffSupplier")
     public void getPageRangesDiff(List<PageRange> rangesToUpdate, List<PageRange> rangesToClear,
@@ -1096,12 +1103,14 @@ public class PageBlobApiTests extends BlobTestBase {
         return clearRanges;
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesDiffMin() {
         String snapId = bc.createSnapshot().getSnapshotId();
         assertDoesNotThrow(() -> bc.getPageRangesDiff(null, snapId).getPageRange());
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
@@ -1123,6 +1132,7 @@ public class PageBlobApiTests extends BlobTestBase {
             (long) PageBlobClient.PAGE_BYTES), snapId, bac, null, null));
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void getPageRangesDiffACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
@@ -1141,6 +1151,7 @@ public class PageBlobApiTests extends BlobTestBase {
             new BlobRange(0, (long) PageBlobClient.PAGE_BYTES), snapId, bac, null, null));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getPageRangesDiffError() {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();

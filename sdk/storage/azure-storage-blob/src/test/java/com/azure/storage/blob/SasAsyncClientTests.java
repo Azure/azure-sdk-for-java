@@ -113,6 +113,7 @@ public class SasAsyncClientTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void blobSasReadPermissions() {
         BlobSasPermission permissions = new BlobSasPermission()
@@ -201,6 +202,7 @@ public class SasAsyncClientTests extends BlobTestBase {
         });
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void blobSasSnapshot() {
         BlobSasPermission permissions = new BlobSasPermission()
@@ -245,6 +247,7 @@ public class SasAsyncClientTests extends BlobTestBase {
     }
 
     // RBAC replication lag
+    @SuppressWarnings("deprecation")
     @Test
     public void blobSasSnapshotUserDelegation() {
         liveTestScenarioWithRetry(() -> {

@@ -269,7 +269,7 @@ public class BlobBaseApiTests extends BlobTestBase {
             /* Input Stream. */
             InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression)
                 .setInputSerialization(ser).setOutputSerialization(ser)).getValue();
-            byte[] queryData = new byte[0];
+            byte[] queryData;
             try {
                 queryData = readFromInputStream(qqStream, downloadedData.length);
             } catch (IOException e) {
@@ -629,6 +629,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void querySnapshot() {

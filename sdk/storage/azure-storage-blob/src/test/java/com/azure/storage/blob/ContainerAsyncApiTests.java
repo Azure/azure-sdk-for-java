@@ -39,11 +39,11 @@ import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -315,7 +315,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void getPropertiesMin() {
         StepVerifier.create(ccAsync.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -1029,6 +1029,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void listBlobsFlatOptionsMaxResults() {
         int pageSize = 2;
@@ -1047,6 +1048,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void listBlobsFlatOptionsMaxResultsByPage() {
         int pageSize = 2;
@@ -1080,8 +1082,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         blob.delete().block();
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(blobName).setDetails(new BlobListDetails()
             .setRetrieveDeletedBlobsWithVersions(true));
-
-        BlobItem test = versionedCC.listBlobs(options).blockLast();
 
         StepVerifier.create(versionedCC.listBlobs(options))
             .assertNext(r -> {
@@ -1246,9 +1246,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 assertNull(blob.getObjectReplicationSourcePolicies());
             } else {
                 assertTrue(validateOR(
-                    blob.getObjectReplicationSourcePolicies(),
-                    "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80",
-                    "105f9aad-f39b-4064-8e47-ccd7937295ca"));
+                    blob.getObjectReplicationSourcePolicies()
+                ));
             }
             i++;
         }
@@ -1259,14 +1258,14 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         }
     }
 
-    private boolean validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
+    private boolean validateOR(List<ObjectReplicationPolicy> policies) {
         return policies.stream()
-            .filter(policy -> policyId.equals(policy.getPolicyId()))
+            .filter(policy -> "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80".equals(policy.getPolicyId()))
             .findFirst()
             .get()
             .getRules()
             .stream()
-            .filter(rule -> ruleId.equals(rule.getRuleId()))
+            .filter(rule -> "105f9aad-f39b-4064-8e47-ccd7937295ca".equals(rule.getRuleId()))
             .findFirst()
             .get()
             .getStatus() == ObjectReplicationStatus.COMPLETE;
@@ -1399,6 +1398,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void listBlobsHierOptionsmaxResults() {
         ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
@@ -1543,8 +1543,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             if (i == 1) {
                 assertNull(blob.getObjectReplicationSourcePolicies());
             } else {
-                assertTrue(validateOR(blob.getObjectReplicationSourcePolicies(),
-                    "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca"));
+                assertTrue(validateOR(blob.getObjectReplicationSourcePolicies()
+                ));
             }
             i++;
         }
@@ -1641,15 +1641,15 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         if (!delimiter) {
             StepVerifier.create(ccAsync.listBlobsByHierarchy("", null))
                 .assertNext(r -> {
-                    assertEquals(r.getName(), (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName));
-                    assertEquals(delimiter, r.isPrefix());
+                    assertEquals(r.getName(), blobName);
+                    assertEquals(false, r.isPrefix());
                 })
                 .verifyComplete();
         } else {
             StepVerifier.create(ccAsync.listBlobsByHierarchy(".b", null))
                 .assertNext(r -> {
-                    assertEquals(r.getName(), (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName));
-                    assertEquals(delimiter, r.isPrefix());
+                    assertEquals(r.getName(), "dir1/dir2/file\uFFFE.b");
+                    assertEquals(true, r.isPrefix());
                 })
                 .verifyComplete();
         }
@@ -1665,7 +1665,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     private void setupContainerForListing(BlobContainerAsyncClient containerClient) {
         List<String> blobNames = Arrays.asList("foo", "bar", "baz", "foo/foo", "foo/bar", "baz/foo", "baz/foo/bar",
             "baz/bar/foo");
-        byte[] data = getRandomByteArray(Constants.KB);
 
         for (String blob : blobNames) {
             BlockBlobAsyncClient blockBlobClient = containerClient.getBlobAsyncClient(blob).getBlockBlobAsyncClient();
@@ -1714,6 +1713,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsQuery() {
@@ -1810,6 +1810,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsWithTimeoutStillBackedByPagedFlux() {
@@ -1961,7 +1962,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(ccAsync.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
         assertEquals(BlobContainerAsyncClient.ROOT_CONTAINER_NAME, ccAsync.getBlobContainerName());
@@ -2122,7 +2123,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .buildAsyncClient();
 
         StepVerifier.create(aadContainer.exists())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 

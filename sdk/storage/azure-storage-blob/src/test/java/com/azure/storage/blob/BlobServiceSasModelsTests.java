@@ -184,6 +184,7 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
         assertTrue(ex.getMessage().contains("accountName"));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void ensureStateIllegalArgument() {
         BlobServiceSasSignatureValues sasSignatureValues = new BlobServiceSasSignatureValues();

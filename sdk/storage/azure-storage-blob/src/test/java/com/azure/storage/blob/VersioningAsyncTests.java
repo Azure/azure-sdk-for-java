@@ -115,6 +115,7 @@ public class VersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void downloadBlobByVersion() {
         Flux<ByteBuffer> inputV1 = Flux.just(ByteBuffer.wrap(contentV1.getBytes(StandardCharsets.UTF_8)));

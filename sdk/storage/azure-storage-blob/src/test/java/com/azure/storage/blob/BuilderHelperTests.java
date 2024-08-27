@@ -171,6 +171,7 @@ public class BuilderHelperTests {
     /**
      * Tests that a user application id will be honored in the UA string when using the default pipeline builder.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void customApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA) {
@@ -197,6 +198,7 @@ public class BuilderHelperTests {
      * Tests that a user application id will be honored in the UA string when using the serviceClientBuilder's
      * default pipeline.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void serviceClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
@@ -218,6 +220,7 @@ public class BuilderHelperTests {
      * Tests that a user application id will be honored in the UA string when using the serviceClientBuilder
      * default pipeline.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void containerClientcustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
@@ -239,6 +242,7 @@ public class BuilderHelperTests {
     /**
      * Tests that a user application id will be honored in the UA string when using the blobClientBuilder default pipeline.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void blobClientcustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
@@ -262,6 +266,7 @@ public class BuilderHelperTests {
      * Tests that a user application id will be honored in the UA string when using the specializedBlobClientBuilder
      * default pipeline.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void specializedBlobClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
@@ -649,6 +654,7 @@ public class BuilderHelperTests {
             this.headers = headers;
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             headers.forEach(header -> {

@@ -43,6 +43,7 @@ import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
@@ -345,9 +346,8 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 // Ensure cleanup is completed
                 setInitialProperties()
                     .then(primaryBlobServiceAsyncClient.getProperties())
-                    .doOnNext(properties -> {
-                        assertFalse(properties.getLogging().getRetentionPolicy().isEnabled());
-                    })
+                    .doOnNext(properties ->
+                        assertFalse(properties.getLogging().getRetentionPolicy().isEnabled()))
                     .subscribe();
             });
 
@@ -366,6 +366,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void findBlobsQuery() {
@@ -398,6 +399,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMarker() {
@@ -433,6 +435,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMaxResults() {
@@ -463,6 +466,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMaxResultsByPage() {
@@ -544,6 +548,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyError(IllegalStateException.class);
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsWithTimeoutStillBackedByPagedFlux() {
@@ -1064,6 +1069,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreContainerIntoExistingContainerError() {
@@ -1222,7 +1228,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -1233,7 +1239,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -1249,7 +1255,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -1263,6 +1269,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();        }
 }

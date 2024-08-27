@@ -93,7 +93,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -198,6 +197,7 @@ public class BlobApiTests extends BlobTestBase {
 
     /* TODO (gapra): Add more tests to test large data sizes. */
 
+    @SuppressWarnings("deprecation")
     @LiveOnly
     @Test
     public void uploadInputStreamLargeData() {
@@ -219,6 +219,7 @@ public class BlobApiTests extends BlobTestBase {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @LiveOnly
     @ParameterizedTest
     @MethodSource("uploadNumBlocksSupplier")
@@ -261,6 +262,7 @@ public class BlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(bc.downloadContent().toBytes(), DATA.getDefaultBytes());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void uploadInputStreamNoLengthOverwrite() {
         byte[] randomData = getRandomByteArray(Constants.KB);
@@ -280,6 +282,7 @@ public class BlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(bc.downloadContent().toBytes(), DATA.getDefaultBytes());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void uploadInputStreamBadLength() {
         long[] badLengths = {0, -100, DATA.getDefaultDataSize() - 1, DATA.getDefaultDataSize() + 1};
@@ -299,6 +302,7 @@ public class BlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(bc.downloadContent().toBytes(), DATA.getDefaultBytes());
     }
 
+    @SuppressWarnings("deprecation")
     @LiveOnly
     @Test
     // Reading from recordings will not allow for the timing of the test to work correctly.
@@ -311,6 +315,7 @@ public class BlobApiTests extends BlobTestBase {
             null, null, null, null, Duration.ofNanos(5L), null));
     }
 
+    @SuppressWarnings("deprecation")
     @LiveOnly
     @Test
     public void uploadFailWithSmallTimeoutsForServiceClient() {
@@ -386,6 +391,7 @@ public class BlobApiTests extends BlobTestBase {
         blobClient2.uploadWithResponse(parallelUploadOptions, null, null);
     }
 
+    @SuppressWarnings("deprecation")
     @LiveOnly
     @Test
     public void uploadAndDownloadAndUploadAgainWithSize() {
@@ -416,6 +422,7 @@ public class BlobApiTests extends BlobTestBase {
         blobClient2.uploadWithResponse(parallelUploadOptions, null, null);
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void downloadAllNull() {
@@ -573,6 +580,7 @@ public class BlobApiTests extends BlobTestBase {
         assertInstanceOf(IOException.class, e.getCause());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void downloadMin() {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -680,6 +688,7 @@ public class BlobApiTests extends BlobTestBase {
         assertResponseStatusCode(response, 200);
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void downloadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1355,9 +1364,10 @@ public class BlobApiTests extends BlobTestBase {
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
      */
 
+    @SuppressWarnings("deprecation")
     @PlaybackOnly
     @Test
-    public void getPropertiesORS() throws MalformedURLException {
+    public void getPropertiesORS() {
         BlobClient sourceBlob = primaryBlobServiceClient.getBlobContainerClient("test1")
             .getBlobClient("javablobgetpropertiesors2blobapitestgetpropertiesors57d93407b");
         BlobClient destBlob = alternateBlobServiceClient.getBlobContainerClient("test2")
@@ -1370,10 +1380,8 @@ public class BlobApiTests extends BlobTestBase {
         BlobDownloadResponse destDownloadHeaders = destBlob.downloadWithResponse(new ByteArrayOutputStream(), null,
             null, null, false, null, null);
 
-        assertTrue(validateOR(sourceProperties.getObjectReplicationSourcePolicies(),
-            "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca"));
-        validateOR(sourceDownloadHeaders.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
-            "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca");
+        assertTrue(validateOR(sourceProperties.getObjectReplicationSourcePolicies()));
+        validateOR(sourceDownloadHeaders.getDeserializedHeaders().getObjectReplicationSourcePolicies());
 
         // There is a sas token attached at the end. Only check that the path is the same.
         // disable recording copy source URL since the URL is redacted in playback mode
@@ -1383,14 +1391,14 @@ public class BlobApiTests extends BlobTestBase {
             "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80");
     }
 
-    private static boolean validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
+    private static boolean validateOR(List<ObjectReplicationPolicy> policies) {
         return policies.stream()
-            .filter(policy -> policyId.equals(policy.getPolicyId()))
+            .filter(policy -> "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80".equals(policy.getPolicyId()))
             .findFirst()
             .get()
             .getRules()
             .stream()
-            .filter(rule -> ruleId.equals(rule.getRuleId()))
+            .filter(rule -> "105f9aad-f39b-4064-8e47-ccd7937295ca".equals(rule.getRuleId()))
             .findFirst()
             .get()
             .getStatus() == ObjectReplicationStatus.COMPLETE;
@@ -1690,8 +1698,6 @@ public class BlobApiTests extends BlobTestBase {
 
     @Test
     public void getTagsACFail() {
-        Map<String, String> t = new HashMap<>();
-        t.put("fizz", "buzz");
         String tags = "\"foo\" = 'bar'";
 
         assertThrows(BlobStorageException.class, () -> bc.getTagsWithResponse(new BlobGetTagsOptions()

@@ -101,6 +101,7 @@ public class SasClientTests extends BlobTestBase {
         assertTrue(validateSasProperties(properties));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void blobSasReadPermissions() {
         BlobSasPermission permissions = new BlobSasPermission()
@@ -181,6 +182,7 @@ public class SasClientTests extends BlobTestBase {
         });
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void blobSasSnapshot() {
         BlockBlobClient snapshotBlob = new SpecializedBlobClientBuilder()
@@ -214,6 +216,7 @@ public class SasClientTests extends BlobTestBase {
     }
 
     // RBAC replication lag
+    @SuppressWarnings("deprecation")
     @Test
     public void blobSasSnapshotUserDelegation() {
         liveTestScenarioWithRetry(() -> {
