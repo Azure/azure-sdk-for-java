@@ -3,8 +3,10 @@
 ## 1.0.0-beta.11 (Unreleased)
 
 ### Features Added
+
 - Added a new overload `getImageGenerationsWithResponse` that takes `RequestOptions` to provide the flexibility to
   modify the HTTP request.
+- Added the capability to handle the float[] `embedding` type when serializing to `toJson()` and deserializing from `fromJson()` in the `EmbeddingItem` class. ([#41159](https://github.com/Azure/azure-sdk-for-java/issues/41159))
 
 ### Breaking Changes
 

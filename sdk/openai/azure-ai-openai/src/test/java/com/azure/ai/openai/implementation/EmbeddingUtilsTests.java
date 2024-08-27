@@ -3,15 +3,23 @@
 
 package com.azure.ai.openai.implementation;
 
+import com.azure.ai.openai.models.EmbeddingItem;
+import com.azure.ai.openai.models.Embeddings;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Unit tests for EmbeddingItem.
@@ -39,7 +47,7 @@ public class EmbeddingUtilsTests {
     }
 
     @Test
-    public void testBinaryDataHasNoEncodingFormat() throws JsonProcessingException {
+    public void testBinaryDataHasNoEncodingFormat() {
         // Arrange
         String jsonWithoutEncodingFormat = "{\"input\":[\"Your text string goes here\"]}";
         String expectedJson = "{\"input\":[\"Your text string goes here\"],\"encoding_format\":\"base64\"}";
@@ -50,12 +58,74 @@ public class EmbeddingUtilsTests {
     }
 
     @Test
-    public void testBinaryDataHasEncodingFormat() throws JsonProcessingException {
+    public void testBinaryDataHasEncodingFormat() {
         // Arrange
         String jsonWithEncodingFormat = "{\"input\":[\"Your text string goes here\"],\"encoding_format\":\"float\"}";
         // Act
         BinaryData binaryData = addEncodingFormat(BinaryData.fromString(jsonWithEncodingFormat));
         // Assert
         assertEquals(jsonWithEncodingFormat, binaryData.toString());
+    }
+
+    @Test
+    public void testEmbeddingItemSerializationAndDeserialization() throws IOException {
+        // Test EmbeddingItem deserialization
+        // Arrange
+        String embeddingItemJson = "{\"object\":\"embedding\",\"index\":1,\"embedding\":[0.014820415,-0.010995179,0.0050360323,-0.009382891]}";
+        JsonReader reader = JsonProviders.createReader(embeddingItemJson);
+        // Act
+        EmbeddingItem embeddingItem = EmbeddingItem.fromJson(reader);
+        // Assert
+        List<Float> embedding = embeddingItem.getEmbedding();
+        assertNotNull(embedding);
+        assertEquals(4, embedding.size());
+        assertEquals(0.014820415f, embedding.get(0));
+        assertEquals(-0.010995179f, embedding.get(1));
+        assertEquals(0.0050360323f, embedding.get(2));
+        assertEquals(-0.009382891f, embedding.get(3));
+        assertEquals(1, embeddingItem.getPromptIndex());
+
+        // Test EmbeddingItem serialization
+        // Use above embeddingItem to serialize it back to JSON
+        // Arrange
+        OutputStream outputStream = new ByteArrayOutputStream();
+        // Act
+        JsonWriter jsonWriter = embeddingItem.toJson(JsonProviders.createWriter(outputStream));
+        jsonWriter.close();
+        // Assert
+        assertEquals(embeddingItemJson, outputStream.toString());
+    }
+
+    @Test
+    public void testEmbeddingItemsInEmbeddings() throws IOException {
+        // Test Embeddings deserialization
+        // Arrange
+        String embeddingsJson = "{\"data\":[{\"object\":\"embedding\",\"index\":0,\"embedding\":[0.014820415,-0.010995179,0.0050360323,-0.009382891]}],\"usage\":{\"prompt_tokens\":9,\"total_tokens\":9}}";
+        JsonReader reader = JsonProviders.createReader(embeddingsJson);
+        // Act
+        Embeddings embeddings = Embeddings.fromJson(reader);
+        // Assert
+        List<EmbeddingItem> data = embeddings.getData();
+        assertNotNull(data);
+        assertEquals(1, data.size());
+        EmbeddingItem embeddingItem = data.get(0);
+        List<Float> embedding = embeddingItem.getEmbedding();
+        assertNotNull(embedding);
+        assertEquals(4, embedding.size());
+        assertEquals(0.014820415f, embedding.get(0));
+        assertEquals(-0.010995179f, embedding.get(1));
+        assertEquals(0.0050360323f, embedding.get(2));
+        assertEquals(-0.009382891f, embedding.get(3));
+        assertEquals(0, embeddingItem.getPromptIndex());
+
+        // Test Embeddings serialization
+        // Use above embeddingItem to serialize it back to JSON
+        // Arrange
+        OutputStream outputStream = new ByteArrayOutputStream();
+        // Act
+        JsonWriter jsonWriter = embeddings.toJson(JsonProviders.createWriter(outputStream));
+        jsonWriter.close();
+        // Assert
+        assertEquals(embeddingsJson, outputStream.toString());
     }
 }
