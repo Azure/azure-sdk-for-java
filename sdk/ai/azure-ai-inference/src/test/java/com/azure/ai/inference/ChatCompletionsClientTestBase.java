@@ -8,12 +8,7 @@ package com.azure.ai.inference;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
-import com.azure.ai.inference.models.ChatChoice;
-import com.azure.ai.inference.models.ChatCompletions;
-import com.azure.ai.inference.models.ChatRequestMessage;
-import com.azure.ai.inference.models.ChatRequestUserMessage;
-import com.azure.ai.inference.models.ChatRequestSystemMessage;
-import com.azure.ai.inference.models.ChatRequestAssistantMessage;
+import com.azure.ai.inference.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
@@ -98,7 +93,7 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
         testRunner.accept(getChatMessages());
     }
 
-    static void assertCompletionsStream(ChatCompletions chatCompletions) {
+    static void assertCompletionsStream(StreamingChatCompletionsUpdate chatCompletions) {
         if (chatCompletions.getId() != null && !chatCompletions.getId().isEmpty()) {
             assertNotNull(chatCompletions.getId());
             assertNotNull(chatCompletions.getChoices());

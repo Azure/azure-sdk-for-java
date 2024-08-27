@@ -12,6 +12,7 @@ import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.implementation.models.ExtraParameters;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ModelInfo;
+import com.azure.ai.inference.models.StreamingChatCompletionsUpdate;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -40,7 +41,7 @@ public final class ChatCompletionsAsyncClient {
 
     /**
      * Initializes an instance of ChatCompletionsAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -64,7 +65,7 @@ public final class ChatCompletionsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     messages (Required): [
@@ -104,9 +105,9 @@ public final class ChatCompletionsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -139,7 +140,7 @@ public final class ChatCompletionsAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param completeRequest The completeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -160,7 +161,7 @@ public final class ChatCompletionsAsyncClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     model_name: String (Required)
@@ -168,7 +169,7 @@ public final class ChatCompletionsAsyncClient {
      *     model_provider_name: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -199,14 +200,14 @@ public final class ChatCompletionsAsyncClient {
      * generate text that continues from or "completes" provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<ChatCompletions> completeStreaming(ChatCompletionsOptions options) {
+    public Flux<StreamingChatCompletionsUpdate> completeStreaming(ChatCompletionsOptions options) {
         options.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream
             = completeWithResponse(BinaryData.fromObject(options),
             requestOptions).flatMapMany(response -> response.getValue().toFluxByteBuffer());
-        InferenceServerSentEvents<ChatCompletions> chatCompletionsStream
-            = new InferenceServerSentEvents<>(responseStream, ChatCompletions.class);
+        InferenceServerSentEvents<StreamingChatCompletionsUpdate> chatCompletionsStream
+            = new InferenceServerSentEvents<>(responseStream, StreamingChatCompletionsUpdate.class);
         return chatCompletionsStream.getEvents();
     }
 
@@ -234,7 +235,7 @@ public final class ChatCompletionsAsyncClient {
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data. The method makes a REST API call to the `/chat/completions` route
      * on the given endpoint.
-     * 
+     *
      * @param options Options for complete API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -276,7 +277,7 @@ public final class ChatCompletionsAsyncClient {
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.

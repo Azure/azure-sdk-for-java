@@ -88,7 +88,7 @@ public final class ReadmeSamples {
                 if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
                     return;
                 }
-                ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
+                StreamingChatResponseMessageUpdate delta = chatCompletions.getChoices().get(0).getDelta();
                 if (delta.getRole() != null) {
                     System.out.println("Role = " + delta.getRole());
                 }

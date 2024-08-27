@@ -37,12 +37,6 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
     @Generated
     private final ChatResponseMessage message;
 
-    /*
-     * The delta message content for a streaming response.
-     */
-    @Generated
-    private ChatResponseMessage delta;
-
     /**
      * Creates an instance of ChatChoice class.
      *
@@ -65,15 +59,6 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
     @Generated
     public int getIndex() {
         return this.index;
-    }
-
-    /**
-     * Get the delta property: The delta message content for a streaming response.
-     *
-     * @return the delta value.
-     */
-    public ChatResponseMessage getDelta() {
-        return this.delta;
     }
 
     /**
@@ -105,7 +90,6 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
         jsonWriter.writeIntField("index", this.index);
         jsonWriter.writeStringField("finish_reason", this.finishReason == null ? null : this.finishReason.toString());
         jsonWriter.writeJsonField("message", this.message);
-        jsonWriter.writeJsonField("delta", this.delta);
         return jsonWriter.writeEndObject();
     }
 
@@ -123,7 +107,6 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
             int index = 0;
             CompletionsFinishReason finishReason = null;
             ChatResponseMessage message = null;
-            ChatResponseMessage delta = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -132,8 +115,6 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
                     index = reader.getInt();
                 } else if ("finish_reason".equals(fieldName)) {
                     finishReason = CompletionsFinishReason.fromString(reader.getString());
-                } else if ("delta".equals(fieldName)) {
-                    delta = ChatResponseMessage.fromJson(reader);
                 } else if ("message".equals(fieldName)) {
                     message = ChatResponseMessage.fromJson(reader);
                 } else {
@@ -141,9 +122,7 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
                 }
             }
 
-            ChatChoice deserializedChatChoice = new ChatChoice(index, finishReason, message);
-            deserializedChatChoice.delta = delta;
-            return deserializedChatChoice;
+            return new ChatChoice(index, finishReason, message);
         });
     }
 }

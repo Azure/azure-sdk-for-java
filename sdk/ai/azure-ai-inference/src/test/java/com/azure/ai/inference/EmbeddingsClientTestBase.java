@@ -116,15 +116,6 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
         testRunner.accept(getPrompts());
     }
 
-    static void assertCompletionsStream(ChatCompletions chatCompletions) {
-        if (chatCompletions.getId() != null && !chatCompletions.getId().isEmpty()) {
-            assertNotNull(chatCompletions.getId());
-            assertNotNull(chatCompletions.getChoices());
-            assertFalse(chatCompletions.getChoices().isEmpty());
-            assertNotNull(chatCompletions.getChoices().get(0).getDelta());
-        }
-    }
-
     static void assertEmbeddings(EmbeddingsResult actual) {
         List<EmbeddingItem> data = actual.getData();
         assertNotNull(data);

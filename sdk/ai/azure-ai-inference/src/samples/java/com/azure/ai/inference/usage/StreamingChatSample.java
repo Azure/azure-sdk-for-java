@@ -34,7 +34,7 @@ public final class StreamingChatSample {
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(ChatRequestUserMessage.fromString("What's the best way to train a parrot?"));
 
-        IterableStream<ChatCompletions> chatCompletionsStream = client.completeStreaming(
+        IterableStream<StreamingChatCompletionsUpdate> chatCompletionsStream = client.completeStreaming(
             new ChatCompletionsOptions(chatMessages));
 
         // The delta is the message content for a streaming response.
@@ -58,7 +58,7 @@ public final class StreamingChatSample {
                     return;
                 }
 
-                ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
+                StreamingChatResponseMessageUpdate delta = chatCompletions.getChoices().get(0).getDelta();
 
                 if (delta.getRole() != null) {
                     System.out.println("Role = " + delta.getRole());
