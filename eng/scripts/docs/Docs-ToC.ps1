@@ -155,10 +155,10 @@ function Fetch-Namespaces-From-Javadoc($package, $groupId, $version, $javadocJar
         # If the $javadocJarFile is passed in, copy it to the $tempDirectory, otherwise download it
         # from the dev feed or maven
         if ($javadocJarFile) {
-            if (Test-Path $javadocJar -PathType Leaf) {
+            if (Test-Path $javadocJarFile -PathType Leaf) {
                 Copy-Item $javadocJarFile -Destination $tempDirectory
             } else {
-                LogWarning "javadocJar parameter's jar file, $javadocJar, does not exist."
+                LogWarning "$javadocJarFile, does not exist."
             }
         } else {
             # Download the Jar file
