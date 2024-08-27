@@ -64,7 +64,7 @@
 # ServiceLabel: %Advisor
 # ServiceOwners:                                     @mojayara @Prasanna-Padmanabhan
 
-# PRLabel: %AI
+# PRLabel: %AI Model Inference
 /sdk/ai/azure-ai-inference/                          @dargilco @jhakulin @glharper
 
 # ServiceLabel: %AKS
