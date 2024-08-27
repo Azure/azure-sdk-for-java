@@ -83,8 +83,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.Callable;
-import java.util.function.Supplier;
 
 import static com.azure.core.http.HttpHeaderName.LAST_MODIFIED;
 
@@ -632,31 +630,7 @@ public class ModelHelper {
      * @param internal The internal exception.
      * @return The public exception.
      */
-    public static Throwable mapToShareStorageException(Throwable internal) {
-        if (internal instanceof ShareStorageExceptionInternal) {
-            ShareStorageExceptionInternal internalException = (ShareStorageExceptionInternal) internal;
-            return new ShareStorageException(internalException.getMessage(), internalException.getResponse(),
-                internalException.getValue());
-        }
-
-        return internal;
-    }
-
-    public static <T> Callable<T> wrapTimeoutServiceCallWithExceptionMapping(Supplier<T> serviceCall) {
-        return () -> {
-            try {
-                return serviceCall.get();
-            } catch (ShareStorageExceptionInternal internal) {
-                throw (ShareStorageException) mapToShareStorageException(internal);
-            }
-        };
-    }
-
-    public static <T> T wrapServiceCallWithExceptionMapping(Supplier<T> serviceCall) {
-        try {
-            return serviceCall.get();
-        } catch (ShareStorageExceptionInternal internal) {
-            throw (ShareStorageException) mapToShareStorageException(internal);
-        }
+    public static ShareStorageException mapToShareStorageException(ShareStorageExceptionInternal internal) {
+        return new ShareStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
 }

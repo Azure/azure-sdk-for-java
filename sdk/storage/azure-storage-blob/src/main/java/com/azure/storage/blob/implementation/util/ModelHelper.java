@@ -479,14 +479,8 @@ public final class ModelHelper {
      * @param internal The internal exception.
      * @return The public exception.
      */
-    public static Throwable mapToBlobStorageException(Throwable internal) {
-        if (internal instanceof BlobStorageExceptionInternal) {
-            BlobStorageExceptionInternal internalException = (BlobStorageExceptionInternal) internal;
-            return new BlobStorageException(internalException.getMessage(), internalException.getResponse(),
-                internalException.getValue());
-        }
-
-        return internal;
+    public static BlobStorageException mapToBlobStorageException(BlobStorageExceptionInternal internal) {
+        return new BlobStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
 
     private ModelHelper() {
