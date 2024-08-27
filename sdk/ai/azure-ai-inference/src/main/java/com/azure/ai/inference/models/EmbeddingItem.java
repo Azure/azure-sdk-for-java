@@ -53,7 +53,7 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      * @return the embedding value.
      */
     public List<Float> getEmbedding() {
-        return this.embedding.toObject(new TypeReference<>() { });
+        return this.embedding.toObject(new TypeReference<List<Float>>() { });
     }
 
     /**
