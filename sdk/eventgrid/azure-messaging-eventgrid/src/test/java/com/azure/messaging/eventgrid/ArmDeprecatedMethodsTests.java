@@ -108,7 +108,7 @@ public class ArmDeprecatedMethodsTests {
         eventData.getClass().getMethod("setResourceClaims", Map.class).invoke(eventData, CLAIM_MAP);
         Method getResourceClaimsMethod = eventData.getClass().getMethod("getResourceClaims");
 
-        Map<String, String> resourceClaims = (Map<String, String>)getResourceClaimsMethod.invoke(eventData);
+        Map<String, String> resourceClaims = (Map<String, String>) getResourceClaimsMethod.invoke(eventData);
 
         assertEquals(CLAIM_VALUE_1, resourceClaims.get(CLAIM_KEY_1));
         assertEquals(CLAIM_VALUE_2, resourceClaims.get(CLAIM_KEY_2));
