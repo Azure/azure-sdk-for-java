@@ -578,8 +578,8 @@ extends:
       - name: spring-cloud-azure-appconfiguration-config-web
         groupId: com.azure.spring
         safeName: springcloudazureappconfigurationconfigweb
-        skipPublishDocGithubIo: false
-        skipPublishDocMs: false
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazureappconfigurationconfigweb }}
