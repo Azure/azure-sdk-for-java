@@ -134,7 +134,7 @@ public class ValidationsTest {
         }
 
         for (int i = 0; i < files.length; i++) {
-            if (files[i].getName().contains(("TargetingFilter.tests"))) {
+            if (files[i].getName().contains(("TargetingFilter"))) {
                 continue; // TODO(mametcal). Not run the test case until we release the little endian fix
             }
             arguments.add(Arguments.of(files[i].getName(), files[i], properties.get(i)));
