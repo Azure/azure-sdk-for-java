@@ -42,9 +42,6 @@ public final class MSIToken extends AccessToken implements JsonSerializable<MSIT
 
     private String expiresIn;
 
-    private String refreshIn;
-
-
     /**
      * Creates an access token instance.
      *
@@ -71,12 +68,18 @@ public final class MSIToken extends AccessToken implements JsonSerializable<MSIT
         jsonWriter.writeStringField("access_token", accessToken);
         jsonWriter.writeStringField("expires_on", expiresOn);
         jsonWriter.writeStringField("expires_in", expiresIn);
+        // the following values aren't really necessary, but keeping them matches existing behavior.
+        jsonWriter.writeStringField("token", getToken());
+        jsonWriter.writeStringField("expiresAt", getExpiresAt().toString());
+        jsonWriter.writeStringField("refreshAt", getRefreshAt() == null ? null : getRefreshAt().toString());
         jsonWriter.writeEndObject();
         return jsonWriter;
     }
 
     public static MSIToken fromJson(JsonReader jsonReader) throws IOException {
 
+        // a serialized MSIToken will have more fields in it, but we don't need them
+        // as they represent computed values anyway. These three are all we need to construct one.
         return jsonReader.readObject(reader -> {
             String accessToken = null;
             String expiresOn = null;
